@@ -15,9 +15,15 @@ FROM --platform=linux/amd64 debian:bookworm-slim
 RUN dpkg --add-architecture i386 \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
-      ca-certificates curl xz-utils python3 libc6:i386 \
-      binutils-mips-linux-gnu make ninja-build \
+      ca-certificates curl xz-utils python3 python3-venv libc6:i386 \
+      binutils-mips-linux-gnu make ninja-build git \
  && rm -rf /var/lib/apt/lists/*
+
+# Python tooling for splitting and building (pinned for reproducibility)
+RUN python3 -m venv /opt/venv \
+ && /opt/venv/bin/pip install --no-cache-dir \
+      "splat64[mips]==0.50.0" pyelftools ninja_syntax
+ENV PATH="/opt/venv/bin:$PATH"
 
 ARG WIBO_VERSION=1.2.0
 RUN curl -fsSL -o /usr/local/bin/wibo \

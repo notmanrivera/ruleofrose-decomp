@@ -1,32 +1,62 @@
 # Rule of Rose — decompilation
 
 A full decompilation of *Rule of Rose* (PlayStation 2, NTSC-U **SLUS-214.48**) into
-C++ source, as the basis for a faithful native port to PS Vita.
+C++ source, as the basis for a faithful native port (PC first, then PS Vita).
 
 **This repository contains no game code or assets.** Everyone works from files
-extracted from their own disc; `disc/` and the generated Ghidra project are
-git-ignored.
+extracted from their own disc; `disc/`, the generated `asm/`, `assets/`,
+`build/` and the Ghidra project are git-ignored.
 
 ## Status
 
-Reverse-engineering groundwork. Nothing is decompiled yet. See
-[notes/PROJECT_STATE.md](notes/PROJECT_STATE.md) for findings and the roadmap.
+The matching build works: splitting the ELF with splat and rebuilding it
+reproduces the game's load image byte for byte (SHA-1 checked). No C++ is
+linked in yet. See [notes/PROJECT_STATE.md](notes/PROJECT_STATE.md) for
+findings and the roadmap.
 
 | | |
 |---|---|
+| Matching build | ✅ all-asm build, SHA-1 `fa157dc8…1997` of the load image |
+| Compiler | **ee-gcc 2.96 (SCE), `-Os`**: 3/3 test functions match byte for byte ([details](matching/compiler_id/README.md)) |
 | Functions found by Ghidra | 7,230 |
-| Functions with their original name | 1,449 (from `.gnu.linkonce`) + 431 (inferred from vtable overrides) |
-| Functions tied to a class only | 332 (`Class::vfunc_NN`) |
-| Parameter types applied | 1,587 functions (validated against Ghidra's GCC2 demangler: 1,160/1,160 equivalent) |
+| Functions with their original name | 1,449 exact (`.gnu.linkonce`) + 111 inferred from vtable overrides |
+| Virtual methods tied to a class only | 651 (`Class::vfunc_NN`) |
+| Parameter types applied | 1,267 functions (demangler validated against Ghidra's GCC2 one: 1,160/1,160 equivalent) |
 | C++ classes / vtables | 289 / 284, hierarchy in [notes/class_hierarchy.txt](notes/class_hierarchy.txt) |
 | Functions tied to an original source file | 529, over 72 files ([notes/object_layout.txt](notes/object_layout.txt)) |
-| Compiler | **ee-gcc 2.96 (SCE), `-Os`**: 3/3 test functions match byte for byte ([details](matching/compiler_id/README.md)) |
 
 ## Setup
 
-Requirements: Python 3 (plus `python3 -m venv tools/.venv && tools/.venv/bin/pip install 'splat64[mips]'` for `tools/disasm.py`), Ghidra 12.1.4 + JDK 21, and the
+Requirements: Docker (Apple Silicon: enable Rosetta emulation in Docker
+Desktop), Python 3, Ghidra 12.1.4 + JDK 21, and the
 [ghidra-emotionengine-reloaded](https://github.com/chaoticgd/ghidra-emotionengine-reloaded)
 extension (it handles EE-specific instructions such as MMI and VU0 macro mode).
+
+Copy `SLUS_214.48` from your disc into `disc/` first.
+
+### Matching build
+
+Everything runs inside the shared `ror-build` image (all EE-GCC 2.9x builds,
+binutils, splat), through `tools/dock`:
+
+```bash
+docker build --platform linux/amd64 -t ror-build docker/
+tools/dock python3 tools/configure.py   # extract the target image, split with splat, write build.ninja
+tools/dock ninja                        # assemble/compile, link, verify SHA-1 (creates build/ok)
+```
+
+The first build takes a few minutes under emulation. When the SHA-1 doesn't
+match, `tools/.venv/bin/python tools/first_diff.py` lists the differing
+regions and the symbols they fall in.
+
+### Host tools
+
+```bash
+python3 -m venv tools/.venv
+tools/.venv/bin/pip install 'splat64[mips]==0.50.0' pyelftools
+```
+
+### Ghidra
 
 ```bash
 brew install ghidra            # pulls openjdk@21 too
@@ -44,16 +74,7 @@ $GHIDRA_INSTALL_DIR/support/gradle/gradlew buildExtension -x test
 unzip dist/*.zip -d ~/Library/ghidra/ghidra_12.1.4_PUBLIC/Extensions/
 ```
 
-For compiling (compiler matrix now, the matching build later), build the
-shared Docker image. It runs as linux/amd64; on Apple Silicon enable
-Rosetta emulation in Docker Desktop:
-
-```bash
-docker build --platform linux/amd64 -t ror-build docker/
-tools/.venv/bin/pip install pyelftools
-```
-
-Then copy `SLUS_214.48` from your disc into `disc/` and build the Ghidra project:
+Then build the project:
 
 ```bash
 tools/ghidra_setup.sh
@@ -68,24 +89,32 @@ tags functions with their source files (about a minute). Open the project with
 
 | Path | Contents |
 |---|---|
+| `tools/configure.py` | Generates `config/SLUS_214.48.yaml` from the ELF, runs splat, writes `build.ninja` |
+| `tools/dock` | Runs a command inside the `ror-build` image |
+| `tools/first_diff.py` | Where the built image differs from the original, by symbol |
+| `config/` | splat config (generated), manual symbol overrides, extra linker script |
+| `docker/` | Shared build image: all EE-GCC 2.9x builds, binutils, splat; `ee-cc` compiler front end |
+| `include/` | splat's assembler macros and `INCLUDE_ASM` header |
 | `tools/ror_symbols.py` | Extracts symbols from the ELF: GCC2 demangling, RTTI hierarchy, vtable name propagation, source-path strings |
 | `tools/ghidra_setup.sh` | One-shot headless Ghidra project build |
 | `ghidra_scripts/ImportRoRSymbols.java` | Applies `symbols/ghidra_symbols.tsv` (classes, names, parameter types with explicit `this`, typed vtables); never overwrites names or signatures set by hand |
 | `ghidra_scripts/TagSourceFiles.java` | Tags functions that reference assert source paths; writes `symbols/function_sources.tsv` |
 | `tools/disasm.py` | R5900 disassembly of any function by name or address (GNU as syntax, for decomp.me) |
-| `docker/` | Shared build image: all EE-GCC 2.9x builds + `ee-cc` front end |
 | `tools/compiler_id.py` | Compiles the test kit with every compiler/flag set and scores it against the game |
 | `matching/compiler_id/` | Compiler-identification kit and result |
-| `symbols/ghidra_symbols.tsv` | All recovered symbols, with provenance (`linkonce`, `vtable-override`, `vtable-slot`, `rtti-helper`) |
-| `symbols/symbol_addrs.txt` | Same, in splat format, for the future matching build |
+| `symbols/ghidra_symbols.tsv` | All recovered symbols, with provenance |
+| `symbols/symbol_addrs.txt` | Same, in splat format (GCC2-mangled names) |
 | `notes/` | Findings, class hierarchy, object-file order |
 
 ## Symbol provenance
 
 - `linkonce` — exact original (mangled) name from the ELF section table.
 - `vtable-override` — a slot overriding a named slot in a parent or child
-  class, so it has the same method name. Very reliable, not guaranteed:
-  check the signature when decompiling.
+  class, so it has the same method name; its mangled name is derived from
+  the overridden method's. Very reliable, not guaranteed: check the
+  signature when decompiling.
 - `vtable-slot` — unnamed virtual method; only the class is known.
+- `shared-stub` — a function used at several vtable slot indexes
+  (`__pure_virtual`); excluded from name propagation.
 - `rtti-helper` — libgcc `__rtti_*` helpers, identified by how `__tf`
   functions call them.

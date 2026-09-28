@@ -1,0 +1,6 @@
+// Hand-maintained symbol overrides, loaded after symbols/symbol_addrs.txt.
+// Keep each entry justified with a comment.
+
+// GCC2 exception table header: 0xFFFFFFFE is the "new-style table" marker,
+// not a label address.
+__EXCEPTION_TABLE__ = 0x00307F80; // type:s32

@@ -36,7 +36,7 @@ Sin `.symtab` ni información de depuración (no hay DWARF ni STABS), pero sí:
 - 1,449 funciones con nombre original (`.gnu.linkonce.t.*`, métodos inline).
 - 284 vtables (`.gnu.linkonce.d._vt$*`), formato GCC2 sin thunks: entradas de 8 bytes `{short delta; short index; void *pfn}`, la 0 apunta a `__tf`.
 - 289 clases; jerarquía reconstruida desde las funciones `__tf` → `notes/class_hierarchy.txt`.
-- 431 nombres más inferidos por overrides de vtable, y 332 métodos virtuales ligados solo a su clase.
+- 111 nombres más inferidos por overrides de vtable (con su nombre mangled derivado), y 651 métodos virtuales ligados solo a su clase. Una función compartida por 5 clases abstractas en 6 posiciones distintas es `__pure_virtual` (`0x272a30`); se excluye de la propagación (antes contaminaba 320 nombres).
 - 142 cadenas de ruta de fuente (asserts), 133 referenciadas desde código → 529 funciones ligadas a su archivo; orden de archivos en `notes/object_layout.txt`.
 
 ## Módulos del motor
@@ -68,9 +68,10 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 
 ## Hoja de ruta
 
-1. ✅ Recuperación de símbolos y proyecto Ghidra reproducible, con tipos de parámetros (1,587 firmas).
+1. ✅ Recuperación de símbolos y proyecto Ghidra reproducible, con tipos de parámetros (1,267 firmas).
 2. ✅ Compilador identificado: **ee-gcc 2.96 (SCE) con `-Os`**. 3 funciones coinciden byte a byte (87/87 instrucciones); falta confirmar en más módulos y averiguar `-G`. Entorno reproducible en `docker/` (imagen `ror-build`).
-3. Configurar splat + build (ninja, dentro de `ror-build`) que produzca un ELF idéntico byte a byte (checksum). Usar `notes/object_layout.txt` para los límites de archivo.
+3. ✅ splat + build: `tools/dock python3 tools/configure.py && tools/dock ninja` reconstruye la imagen de carga idéntica byte a byte (SHA-1 `fa157dc8763b2f376f6bb73a70b6a4c250181997`), todo en asm por ahora. Claves: `subalign: 4` (las secciones linkonce originales van alineadas a 4) y `ld_align_section_vram_end: False`.
+3b. Dividir `.text` (hoy un solo `asm/main/text.s` de 24 MB) y `.rodata` en un archivo por `.cpp` original, usando `notes/object_layout.txt` y las sugerencias de splat. Es requisito para compilar C++: las cadenas de cada función (paths de assert, etc.) viven en el `.rodata` de su objeto, y mientras `.rodata` sea un solo bloque en asm, un `.cpp` que las emita duplicaría bytes.
 4. Decompilar archivo por archivo, empezando por `bed/` y `utl/` (pequeños, sin dependencias).
 5. Documentar los formatos RPK / MAPUNIT / ARA / STR.
 6. Capa de port: reemplazar las libs `sce*` por equivalentes Vita; reescribir el render (VU1 + GS) sobre vitaGL.

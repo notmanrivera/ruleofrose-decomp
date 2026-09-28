@@ -5,14 +5,14 @@ addr	kind	class	name	size	source	mangled	signature	params
 0010e5c0	method	DogActor	vfunc_12	0	vtable-slot			
 0010eab8	method	DogActor	vfunc_17	0	vtable-slot			
 0010eb28	method	DogActor	vfunc_18	0	vtable-slot			
-0010f16c	dtor	DogActor	~DogActor	0	vtable-override		DogActor::~DogActor()	-
+0010f16c	dtor	DogActor	~DogActor	0	vtable-override	_$_8DogActor	DogActor::~DogActor()	-
 0010f1f0	method	DogActor	vfunc_15	0	vtable-slot			
 0010f244	method	DogActor	vfunc_14	0	vtable-slot			
-0011023c	method	DogEntityEx	reset	0	vtable-override		DogEntityEx::reset()	-
-0011034c	method	DogEntityEx	transform	0	vtable-override		DogEntityEx::transform()	-
+0011023c	method	DogEntityEx	reset	0	vtable-override	reset__11DogEntityEx	DogEntityEx::reset()	-
+0011034c	method	DogEntityEx	transform	0	vtable-override	transform__11DogEntityEx	DogEntityEx::transform()	-
 00114d04	method	DogModel	vfunc_05	0	vtable-slot			
 00114e38	method	DogModel	vfunc_11	0	vtable-slot			
-001150c0	method	DogModel	transform	0	vtable-override		DogModel::transform()	-
+001150c0	method	DogModel	transform	0	vtable-override	transform__8DogModel	DogModel::transform()	-
 001151f4	method	DogModel	vfunc_12	0	vtable-slot			
 001152a8	method	DogModel	vfunc_13	0	vtable-slot			
 00115790	method	DogModel	vfunc_15	0	vtable-slot			
@@ -20,19 +20,19 @@ addr	kind	class	name	size	source	mangled	signature	params
 00115c60	method	DogModel	vfunc_16	0	vtable-slot			
 00115cec	method	DogModel	vfunc_06	0	vtable-slot			
 00119fe0	method	MagLifeControlChara	vfunc_09	0	vtable-slot			
-0011a8f4	method	MagLifeBillboard	live	0	vtable-override		MagLifeBillboard::live()	-
-0011ade4	method	MagLifePC	live	0	vtable-override		MagLifePC::live()	-
+0011a8f4	method	MagLifeBillboard	live	0	vtable-override	live__16MagLifeBillboard	MagLifeBillboard::live()	-
+0011ade4	method	MagLifePC	live	0	vtable-override	live__9MagLifePC	MagLifePC::live()	-
 0011b30c	method	MagLifePC	vfunc_16	0	vtable-slot			
-0011b5e0	method	MagLifePC	message	0	vtable-override		MagLifePC::message(int, int, void *)	int;int;void *
-0011bd4c	method	MagLifePC	setActor	0	vtable-override		MagLifePC::setActor(DogActor *, int, int)	DogActor *;int;int
-0011be60	method	MagLifePC	reset4MapJump	0	vtable-override		MagLifePC::reset4MapJump()	-
-0011c418	method	MagLifePC	termWorld	0	vtable-override		MagLifePC::termWorld()	-
-001208b8	method	MagLifePCMode	live	0	vtable-override		MagLifePCMode::live(MagLifePC &)	MagLifePC &
-00120900	method	MagLifePCModeNull	init	0	vtable-override		MagLifePCModeNull::init(MagLifePC &)	MagLifePC &
-001209b0	method	MagLifePCModeNull	live	0	vtable-override		MagLifePCModeNull::live(MagLifePC &)	MagLifePC &
-001209e0	method	MagLifePCModeWait	init	0	vtable-override		MagLifePCModeWait::init(MagLifePC &)	MagLifePC &
-00120b9c	method	MagLifePCModeWait	live	0	vtable-override		MagLifePCModeWait::live(MagLifePC &)	MagLifePC &
-00120bdc	method	MagLifePCModeWait	pad	0	vtable-override		MagLifePCModeWait::pad(MagLifePC &, const BedPad &)	MagLifePC &;const BedPad &
+0011b5e0	method	MagLifePC	message	0	vtable-override	message__9MagLifePCiiPv	MagLifePC::message(int, int, void *)	int;int;void *
+0011bd4c	method	MagLifePC	setActor	0	vtable-override	setActor__9MagLifePCP8DogActorii	MagLifePC::setActor(DogActor *, int, int)	DogActor *;int;int
+0011be60	method	MagLifePC	reset4MapJump	0	vtable-override	reset4MapJump__9MagLifePC	MagLifePC::reset4MapJump()	-
+0011c418	method	MagLifePC	termWorld	0	vtable-override	termWorld__9MagLifePC	MagLifePC::termWorld()	-
+001208b8	method	MagLifePCMode	live	0	vtable-override	live__13MagLifePCModeR9MagLifePC	MagLifePCMode::live(MagLifePC &)	MagLifePC &
+00120900	method	MagLifePCModeNull	init	0	vtable-override	init__17MagLifePCModeNullR9MagLifePC	MagLifePCModeNull::init(MagLifePC &)	MagLifePC &
+001209b0	method	MagLifePCModeNull	live	0	vtable-override	live__17MagLifePCModeNullR9MagLifePC	MagLifePCModeNull::live(MagLifePC &)	MagLifePC &
+001209e0	method	MagLifePCModeWait	init	0	vtable-override	init__17MagLifePCModeWaitR9MagLifePC	MagLifePCModeWait::init(MagLifePC &)	MagLifePC &
+00120b9c	method	MagLifePCModeWait	live	0	vtable-override	live__17MagLifePCModeWaitR9MagLifePC	MagLifePCModeWait::live(MagLifePC &)	MagLifePC &
+00120bdc	method	MagLifePCModeWait	pad	0	vtable-override	pad__17MagLifePCModeWaitR9MagLifePCRC6BedPad	MagLifePCModeWait::pad(MagLifePC &, const BedPad &)	MagLifePC &;const BedPad &
 00120f60	method	MagLifePCModeWalk2D	vfunc_01	0	vtable-slot			
 00121070	method	MagLifePCModeWalk2D	vfunc_02	0	vtable-slot			
 00121078	method	MagLifePCModeWalk2D	vfunc_03	0	vtable-slot			
@@ -42,63 +42,63 @@ addr	kind	class	name	size	source	mangled	signature	params
 001212c8	method	MagLifePCModeTurn	vfunc_01	0	vtable-slot			
 00121364	method	MagLifePCModeTurn	vfunc_02	0	vtable-slot			
 0012136c	method	MagLifePCModeTurn	vfunc_03	0	vtable-slot			
-001214b4	method	MagLifePCModeAtkWait2D	init	0	vtable-override		MagLifePCModeAtkWait2D::init(MagLifePC &)	MagLifePC &
-001216a4	method	MagLifePCModeAtkWait2D	live	0	vtable-override		MagLifePCModeAtkWait2D::live(MagLifePC &)	MagLifePC &
-001217c0	method	MagLifePCModeAtkWait2D	pad	0	vtable-override		MagLifePCModeAtkWait2D::pad(MagLifePC &, const BedPad &)	MagLifePC &;const BedPad &
+001214b4	method	MagLifePCModeAtkWait2D	init	0	vtable-override	init__22MagLifePCModeAtkWait2DR9MagLifePC	MagLifePCModeAtkWait2D::init(MagLifePC &)	MagLifePC &
+001216a4	method	MagLifePCModeAtkWait2D	live	0	vtable-override	live__22MagLifePCModeAtkWait2DR9MagLifePC	MagLifePCModeAtkWait2D::live(MagLifePC &)	MagLifePC &
+001217c0	method	MagLifePCModeAtkWait2D	pad	0	vtable-override	pad__22MagLifePCModeAtkWait2DR9MagLifePCRC6BedPad	MagLifePCModeAtkWait2D::pad(MagLifePC &, const BedPad &)	MagLifePC &;const BedPad &
 00121858	method	MagLifePCModeAtkMove2D	vfunc_01	0	vtable-slot			
 00121890	method	MagLifePCModeAtkMove2D	vfunc_02	0	vtable-slot			
 00121898	method	MagLifePCModeAtkMove2D	vfunc_03	0	vtable-slot			
 001218fc	method	MagLifePCModeAttacking	vfunc_01	0	vtable-slot			
 00121934	method	MagLifePCModeAttacking	vfunc_02	0	vtable-slot			
 00121c64	method	MagLifePCModeAttacking	vfunc_03	0	vtable-slot			
-00121cd8	method	MagLifePCModeDamage	init	0	vtable-override		MagLifePCModeDamage::init(MagLifePC &)	MagLifePC &
-00121fc8	method	MagLifePCModeDamage	live	0	vtable-override		MagLifePCModeDamage::live(MagLifePC &)	MagLifePC &
-001220f0	method	MagLifePCModeItem	init	0	vtable-override		MagLifePCModeItem::init(MagLifePC &)	MagLifePC &
-001221ec	method	MagLifePCModeItem	live	0	vtable-override		MagLifePCModeItem::live(MagLifePC &)	MagLifePC &
-00122338	method	MagLifePCModeDogGo	init	0	vtable-override		MagLifePCModeDogGo::init(MagLifePC &)	MagLifePC &
-001223c0	method	MagLifePCModeDogGo	live	0	vtable-override		MagLifePCModeDogGo::live(MagLifePC &)	MagLifePC &
-0012245c	method	MagLifePCModeDogCome	init	0	vtable-override		MagLifePCModeDogCome::init(MagLifePC &)	MagLifePC &
-00122668	method	MagLifePCModeDogCome	live	0	vtable-override		MagLifePCModeDogCome::live(MagLifePC &)	MagLifePC &
-001226d0	method	MagLifePCModeDogStay	init	0	vtable-override		MagLifePCModeDogStay::init(MagLifePC &)	MagLifePC &
-00122758	method	MagLifePCModeDogStay	live	0	vtable-override		MagLifePCModeDogStay::live(MagLifePC &)	MagLifePC &
-001227e4	method	MagLifePCModeHold	init	0	vtable-override		MagLifePCModeHold::init(MagLifePC &)	MagLifePC &
-00122828	method	MagLifePCModeHold	pad	0	vtable-override		MagLifePCModeHold::pad(MagLifePC &, const BedPad &)	MagLifePC &;const BedPad &
-001228fc	method	MagLifePCModeHoldAttack	init	0	vtable-override		MagLifePCModeHoldAttack::init(MagLifePC &)	MagLifePC &
-00122930	method	MagLifePCModeUnhold	init	0	vtable-override		MagLifePCModeUnhold::init(MagLifePC &)	MagLifePC &
-00122954	method	MagLifePCModeRide	init	0	vtable-override		MagLifePCModeRide::init(MagLifePC &)	MagLifePC &
-00122ad4	method	MagLifePCModeRide	live	0	vtable-override		MagLifePCModeRide::live(MagLifePC &)	MagLifePC &
-00122bd4	method	MagLifePCModeRide	pad	0	vtable-override		MagLifePCModeRide::pad(MagLifePC &, const BedPad &)	MagLifePC &;const BedPad &
-00122d70	method	MagLifePCModeRoped	init	0	vtable-override		MagLifePCModeRoped::init(MagLifePC &)	MagLifePC &
-00122dec	method	MagLifePCModeRoped	live	0	vtable-override		MagLifePCModeRoped::live(MagLifePC &)	MagLifePC &
-00122e2c	method	MagLifePCModeRoped	pad	0	vtable-override		MagLifePCModeRoped::pad(MagLifePC &, const BedPad &)	MagLifePC &;const BedPad &
-00122fc4	method	MagLifePCModeReload	init	0	vtable-override		MagLifePCModeReload::init(MagLifePC &)	MagLifePC &
-00123004	method	MagLifePCModeReload	live	0	vtable-override		MagLifePCModeReload::live(MagLifePC &)	MagLifePC &
-001230a8	method	MagLifePCModeHug	init	0	vtable-override		MagLifePCModeHug::init(MagLifePC &)	MagLifePC &
-001230fc	method	MagLifePCModeHug	live	0	vtable-override		MagLifePCModeHug::live(MagLifePC &)	MagLifePC &
+00121cd8	method	MagLifePCModeDamage	init	0	vtable-override	init__19MagLifePCModeDamageR9MagLifePC	MagLifePCModeDamage::init(MagLifePC &)	MagLifePC &
+00121fc8	method	MagLifePCModeDamage	live	0	vtable-override	live__19MagLifePCModeDamageR9MagLifePC	MagLifePCModeDamage::live(MagLifePC &)	MagLifePC &
+001220f0	method	MagLifePCModeItem	init	0	vtable-override	init__17MagLifePCModeItemR9MagLifePC	MagLifePCModeItem::init(MagLifePC &)	MagLifePC &
+001221ec	method	MagLifePCModeItem	live	0	vtable-override	live__17MagLifePCModeItemR9MagLifePC	MagLifePCModeItem::live(MagLifePC &)	MagLifePC &
+00122338	method	MagLifePCModeDogGo	init	0	vtable-override	init__18MagLifePCModeDogGoR9MagLifePC	MagLifePCModeDogGo::init(MagLifePC &)	MagLifePC &
+001223c0	method	MagLifePCModeDogGo	live	0	vtable-override	live__18MagLifePCModeDogGoR9MagLifePC	MagLifePCModeDogGo::live(MagLifePC &)	MagLifePC &
+0012245c	method	MagLifePCModeDogCome	init	0	vtable-override	init__20MagLifePCModeDogComeR9MagLifePC	MagLifePCModeDogCome::init(MagLifePC &)	MagLifePC &
+00122668	method	MagLifePCModeDogCome	live	0	vtable-override	live__20MagLifePCModeDogComeR9MagLifePC	MagLifePCModeDogCome::live(MagLifePC &)	MagLifePC &
+001226d0	method	MagLifePCModeDogStay	init	0	vtable-override	init__20MagLifePCModeDogStayR9MagLifePC	MagLifePCModeDogStay::init(MagLifePC &)	MagLifePC &
+00122758	method	MagLifePCModeDogStay	live	0	vtable-override	live__20MagLifePCModeDogStayR9MagLifePC	MagLifePCModeDogStay::live(MagLifePC &)	MagLifePC &
+001227e4	method	MagLifePCModeHold	init	0	vtable-override	init__17MagLifePCModeHoldR9MagLifePC	MagLifePCModeHold::init(MagLifePC &)	MagLifePC &
+00122828	method	MagLifePCModeHold	pad	0	vtable-override	pad__17MagLifePCModeHoldR9MagLifePCRC6BedPad	MagLifePCModeHold::pad(MagLifePC &, const BedPad &)	MagLifePC &;const BedPad &
+001228fc	method	MagLifePCModeHoldAttack	init	0	vtable-override	init__23MagLifePCModeHoldAttackR9MagLifePC	MagLifePCModeHoldAttack::init(MagLifePC &)	MagLifePC &
+00122930	method	MagLifePCModeUnhold	init	0	vtable-override	init__19MagLifePCModeUnholdR9MagLifePC	MagLifePCModeUnhold::init(MagLifePC &)	MagLifePC &
+00122954	method	MagLifePCModeRide	init	0	vtable-override	init__17MagLifePCModeRideR9MagLifePC	MagLifePCModeRide::init(MagLifePC &)	MagLifePC &
+00122ad4	method	MagLifePCModeRide	live	0	vtable-override	live__17MagLifePCModeRideR9MagLifePC	MagLifePCModeRide::live(MagLifePC &)	MagLifePC &
+00122bd4	method	MagLifePCModeRide	pad	0	vtable-override	pad__17MagLifePCModeRideR9MagLifePCRC6BedPad	MagLifePCModeRide::pad(MagLifePC &, const BedPad &)	MagLifePC &;const BedPad &
+00122d70	method	MagLifePCModeRoped	init	0	vtable-override	init__18MagLifePCModeRopedR9MagLifePC	MagLifePCModeRoped::init(MagLifePC &)	MagLifePC &
+00122dec	method	MagLifePCModeRoped	live	0	vtable-override	live__18MagLifePCModeRopedR9MagLifePC	MagLifePCModeRoped::live(MagLifePC &)	MagLifePC &
+00122e2c	method	MagLifePCModeRoped	pad	0	vtable-override	pad__18MagLifePCModeRopedR9MagLifePCRC6BedPad	MagLifePCModeRoped::pad(MagLifePC &, const BedPad &)	MagLifePC &;const BedPad &
+00122fc4	method	MagLifePCModeReload	init	0	vtable-override	init__19MagLifePCModeReloadR9MagLifePC	MagLifePCModeReload::init(MagLifePC &)	MagLifePC &
+00123004	method	MagLifePCModeReload	live	0	vtable-override	live__19MagLifePCModeReloadR9MagLifePC	MagLifePCModeReload::live(MagLifePC &)	MagLifePC &
+001230a8	method	MagLifePCModeHug	init	0	vtable-override	init__16MagLifePCModeHugR9MagLifePC	MagLifePCModeHug::init(MagLifePC &)	MagLifePC &
+001230fc	method	MagLifePCModeHug	live	0	vtable-override	live__16MagLifePCModeHugR9MagLifePC	MagLifePCModeHug::live(MagLifePC &)	MagLifePC &
 001233d8	method	MagLifeBwn	vfunc_16	0	vtable-slot			
-001247c8	method	MagLifeBwn	message	0	vtable-override		MagLifeBwn::message(int, int, void *)	int;int;void *
-00124e40	method	MagLifeBwn	live	0	vtable-override		MagLifeBwn::live()	-
-00124f38	method	MagLifeBwn	reset4MapJump	0	vtable-override		MagLifeBwn::reset4MapJump()	-
-001256d4	method	MagLifeBwn	setActor	0	vtable-override		MagLifeBwn::setActor(DogActor *, int, int)	DogActor *;int;int
-001259e8	method	MagLifeBwn	renderPostProcess	0	vtable-override		MagLifeBwn::renderPostProcess()	-
-00125bd4	method	MagLifeBwnMode	live	0	vtable-override		MagLifeBwnMode::live(MagLifeBwn &)	MagLifeBwn &
-00125c24	method	MagLifeBwnModeNull	init	0	vtable-override		MagLifeBwnModeNull::init(MagLifeBwn &)	MagLifeBwn &
-00125c2c	method	MagLifeBwnModeWait	init	0	vtable-override		MagLifeBwnModeWait::init(MagLifeBwn &)	MagLifeBwn &
-00125cb8	method	MagLifeBwnModeSit	init	0	vtable-override		MagLifeBwnModeSit::init(MagLifeBwn &)	MagLifeBwn &
-00125d38	method	MagLifeBwnModeSit	term	0	vtable-override		MagLifeBwnModeSit::term(MagLifeBwn &, int)	MagLifeBwn &;int
-00125db4	method	MagLifeBwnModeFuse	init	0	vtable-override		MagLifeBwnModeFuse::init(MagLifeBwn &)	MagLifeBwn &
-00125e34	method	MagLifeBwnModeFuse	term	0	vtable-override		MagLifeBwnModeFuse::term(MagLifeBwn &, int)	MagLifeBwn &;int
-00125eb0	method	MagLifeBwnModeMove	init	0	vtable-override		MagLifeBwnModeMove::init(MagLifeBwn &)	MagLifeBwn &
-00125f48	method	MagLifeBwnModeMove	live	0	vtable-override		MagLifeBwnModeMove::live(MagLifeBwn &)	MagLifeBwn &
-00126008	method	MagLifeBwnModePath	init	0	vtable-override		MagLifeBwnModePath::init(MagLifeBwn &)	MagLifeBwn &
-00126044	method	MagLifeBwnModePath	live	0	vtable-override		MagLifeBwnModePath::live(MagLifeBwn &)	MagLifeBwn &
-001262a4	method	MagLifeBwnModePath	term	0	vtable-override		MagLifeBwnModePath::term(MagLifeBwn &, int)	MagLifeBwn &;int
-00126364	method	MagLifeBwnModeTurn	init	0	vtable-override		MagLifeBwnModeTurn::init(MagLifeBwn &)	MagLifeBwn &
-001263a0	method	MagLifeBwnModeOne	init	0	vtable-override		MagLifeBwnModeOne::init(MagLifeBwn &)	MagLifeBwn &
-001263ec	method	MagLifeBwnModeOne	live	0	vtable-override		MagLifeBwnModeOne::live(MagLifeBwn &)	MagLifeBwn &
-00126450	method	MagLifeBwnModeWall	init	0	vtable-override		MagLifeBwnModeWall::init(MagLifeBwn &)	MagLifeBwn &
-001264d8	method	MagLifeBwnModeRotate	init	0	vtable-override		MagLifeBwnModeRotate::init(MagLifeBwn &)	MagLifeBwn &
-0012668c	method	MagLifeBwnModeRotate	live	0	vtable-override		MagLifeBwnModeRotate::live(MagLifeBwn &)	MagLifeBwn &
+001247c8	method	MagLifeBwn	message	0	vtable-override	message__10MagLifeBwniiPv	MagLifeBwn::message(int, int, void *)	int;int;void *
+00124e40	method	MagLifeBwn	live	0	vtable-override	live__10MagLifeBwn	MagLifeBwn::live()	-
+00124f38	method	MagLifeBwn	reset4MapJump	0	vtable-override	reset4MapJump__10MagLifeBwn	MagLifeBwn::reset4MapJump()	-
+001256d4	method	MagLifeBwn	setActor	0	vtable-override	setActor__10MagLifeBwnP8DogActorii	MagLifeBwn::setActor(DogActor *, int, int)	DogActor *;int;int
+001259e8	method	MagLifeBwn	renderPostProcess	0	vtable-override	renderPostProcess__10MagLifeBwn	MagLifeBwn::renderPostProcess()	-
+00125bd4	method	MagLifeBwnMode	live	0	vtable-override	live__14MagLifeBwnModeR10MagLifeBwn	MagLifeBwnMode::live(MagLifeBwn &)	MagLifeBwn &
+00125c24	method	MagLifeBwnModeNull	init	0	vtable-override	init__18MagLifeBwnModeNullR10MagLifeBwn	MagLifeBwnModeNull::init(MagLifeBwn &)	MagLifeBwn &
+00125c2c	method	MagLifeBwnModeWait	init	0	vtable-override	init__18MagLifeBwnModeWaitR10MagLifeBwn	MagLifeBwnModeWait::init(MagLifeBwn &)	MagLifeBwn &
+00125cb8	method	MagLifeBwnModeSit	init	0	vtable-override	init__17MagLifeBwnModeSitR10MagLifeBwn	MagLifeBwnModeSit::init(MagLifeBwn &)	MagLifeBwn &
+00125d38	method	MagLifeBwnModeSit	term	0	vtable-override	term__17MagLifeBwnModeSitR10MagLifeBwni	MagLifeBwnModeSit::term(MagLifeBwn &, int)	MagLifeBwn &;int
+00125db4	method	MagLifeBwnModeFuse	init	0	vtable-override	init__18MagLifeBwnModeFuseR10MagLifeBwn	MagLifeBwnModeFuse::init(MagLifeBwn &)	MagLifeBwn &
+00125e34	method	MagLifeBwnModeFuse	term	0	vtable-override	term__18MagLifeBwnModeFuseR10MagLifeBwni	MagLifeBwnModeFuse::term(MagLifeBwn &, int)	MagLifeBwn &;int
+00125eb0	method	MagLifeBwnModeMove	init	0	vtable-override	init__18MagLifeBwnModeMoveR10MagLifeBwn	MagLifeBwnModeMove::init(MagLifeBwn &)	MagLifeBwn &
+00125f48	method	MagLifeBwnModeMove	live	0	vtable-override	live__18MagLifeBwnModeMoveR10MagLifeBwn	MagLifeBwnModeMove::live(MagLifeBwn &)	MagLifeBwn &
+00126008	method	MagLifeBwnModePath	init	0	vtable-override	init__18MagLifeBwnModePathR10MagLifeBwn	MagLifeBwnModePath::init(MagLifeBwn &)	MagLifeBwn &
+00126044	method	MagLifeBwnModePath	live	0	vtable-override	live__18MagLifeBwnModePathR10MagLifeBwn	MagLifeBwnModePath::live(MagLifeBwn &)	MagLifeBwn &
+001262a4	method	MagLifeBwnModePath	term	0	vtable-override	term__18MagLifeBwnModePathR10MagLifeBwni	MagLifeBwnModePath::term(MagLifeBwn &, int)	MagLifeBwn &;int
+00126364	method	MagLifeBwnModeTurn	init	0	vtable-override	init__18MagLifeBwnModeTurnR10MagLifeBwn	MagLifeBwnModeTurn::init(MagLifeBwn &)	MagLifeBwn &
+001263a0	method	MagLifeBwnModeOne	init	0	vtable-override	init__17MagLifeBwnModeOneR10MagLifeBwn	MagLifeBwnModeOne::init(MagLifeBwn &)	MagLifeBwn &
+001263ec	method	MagLifeBwnModeOne	live	0	vtable-override	live__17MagLifeBwnModeOneR10MagLifeBwn	MagLifeBwnModeOne::live(MagLifeBwn &)	MagLifeBwn &
+00126450	method	MagLifeBwnModeWall	init	0	vtable-override	init__18MagLifeBwnModeWallR10MagLifeBwn	MagLifeBwnModeWall::init(MagLifeBwn &)	MagLifeBwn &
+001264d8	method	MagLifeBwnModeRotate	init	0	vtable-override	init__20MagLifeBwnModeRotateR10MagLifeBwn	MagLifeBwnModeRotate::init(MagLifeBwn &)	MagLifeBwn &
+0012668c	method	MagLifeBwnModeRotate	live	0	vtable-override	live__20MagLifeBwnModeRotateR10MagLifeBwn	MagLifeBwnModeRotate::live(MagLifeBwn &)	MagLifeBwn &
 00126ba0	method	MagLifeBwnCtrlModeNull	vfunc_01	0	vtable-slot			
 00126bd8	method	MagLifeBwnCtrlModeNull	vfunc_02	0	vtable-slot			
 00126ccc	method	MagLifeBwnCtrlModeWait	vfunc_01	0	vtable-slot			
@@ -189,435 +189,435 @@ addr	kind	class	name	size	source	mangled	signature	params
 0012f128	method	MagLifeFader	vfunc_06	0	vtable-slot			
 0012f84c	method	MagLifeFadeKeyHole	vfunc_02	0	vtable-slot			
 0012f95c	method	MagLifeFadeKeyHole	vfunc_06	0	vtable-slot			
-0012ff84	method	MagLifeWindow	live	0	vtable-override		MagLifeWindow::live()	-
-0012ff9c	method	MagLifeWindow	render	0	vtable-override		MagLifeWindow::render(tag_I3dRenderStage_s *)	tag_I3dRenderStage_s *
+0012ff84	method	MagLifeWindow	live	0	vtable-override	live__13MagLifeWindow	MagLifeWindow::live()	-
+0012ff9c	method	MagLifeWindow	render	0	vtable-override	render__13MagLifeWindowP20tag_I3dRenderStage_s	MagLifeWindow::render(tag_I3dRenderStage_s *)	tag_I3dRenderStage_s *
 00130de8	method	MagLifeNoise	vfunc_06	0	vtable-slot			
-00130ee8	method	MagLifeTest	live	0	vtable-override		MagLifeTest::live()	-
+00130ee8	method	MagLifeTest	live	0	vtable-override	live__11MagLifeTest	MagLifeTest::live()	-
 00131120	method	MagLifeTest	vfunc_16	0	vtable-slot			
 0014529c	method	HfmMain	vfunc_01	0	vtable-slot			
-001453c0	method	HfmMain	liveMain	0	vtable-override		HfmMain::liveMain()	-
+001453c0	method	HfmMain	vfunc_04	0	vtable-slot			
 00145560	method	HfmMain	vfunc_05	0	vtable-slot			
-00145604	method	HfmMain	liveMain	0	vtable-override		HfmMain::liveMain()	-
-00145680	method	HfmMain	liveMain	0	vtable-override		HfmMain::liveMain()	-
+00145604	method	HfmMain	vfunc_06	0	vtable-slot			
+00145680	method	HfmMain	vfunc_02	0	vtable-slot			
 001457e8	method	HfmMain	vfunc_07	0	vtable-slot			
-00145844	method	HfmOutWalk	liveMain	0	vtable-override		HfmOutWalk::liveMain()	-
-00145894	method	HfmOutWalk	liveMain	0	vtable-override		HfmOutWalk::liveMain()	-
-00145d28	method	HfmOutWalk	liveMain	0	vtable-override		HfmOutWalk::liveMain()	-
-00145d60	method	HfmOutSlap	liveMain	0	vtable-override		HfmOutSlap::liveMain()	-
-00145dc0	method	HfmOutSlap	liveMain	0	vtable-override		HfmOutSlap::liveMain()	-
-0014635c	method	HfmOutSlap	liveMain	0	vtable-override		HfmOutSlap::liveMain()	-
-00146378	method	HfmOutBreak	liveMain	0	vtable-override		HfmOutBreak::liveMain()	-
-001463b8	method	HfmOutBreak	liveMain	0	vtable-override		HfmOutBreak::liveMain()	-
-00146460	method	HfmOutBreak	liveMain	0	vtable-override		HfmOutBreak::liveMain()	-
-0014647c	method	HfmOutWalk2	liveMain	0	vtable-override		HfmOutWalk2::liveMain()	-
-001464cc	method	HfmOutWalk2	liveMain	0	vtable-override		HfmOutWalk2::liveMain()	-
-001469b0	method	HfmOutWalk2	liveMain	0	vtable-override		HfmOutWalk2::liveMain()	-
-001469e8	method	HfmOutRide	liveMain	0	vtable-override		HfmOutRide::liveMain()	-
-00146a20	method	HfmOutRide	liveMain	0	vtable-override		HfmOutRide::liveMain()	-
-00146ab8	method	HfmOutRide	liveMain	0	vtable-override		HfmOutRide::liveMain()	-
-00148d30	method	HfmOutDead	liveMain	0	vtable-override		HfmOutDead::liveMain()	-
-00148e48	method	HfmOutDead	liveMain	0	vtable-override		HfmOutDead::liveMain()	-
-00148e50	method	HfmOutDead	liveMain	0	vtable-override		HfmOutDead::liveMain()	-
-00148e6c	method	HfmOutWin	liveMain	0	vtable-override		HfmOutWin::liveMain()	-
-00148ed4	method	HfmOutWin	liveMain	0	vtable-override		HfmOutWin::liveMain()	-
-00148f34	method	HfmOutWin	liveMain	0	vtable-override		HfmOutWin::liveMain()	-
-00148f50	method	HfmOutBitten	liveMain	0	vtable-override		HfmOutBitten::liveMain()	-
-00148f74	method	HfmOutBitten	liveMain	0	vtable-override		HfmOutBitten::liveMain()	-
-00149168	method	HfmOutBitten	liveMain	0	vtable-override		HfmOutBitten::liveMain()	-
-00149184	method	HfmOutCounter	liveMain	0	vtable-override		HfmOutCounter::liveMain()	-
-001491ec	method	HfmOutCounter	liveMain	0	vtable-override		HfmOutCounter::liveMain()	-
-001494ac	method	HfmOutCounter	liveMain	0	vtable-override		HfmOutCounter::liveMain()	-
-001494c8	method	HfmOutTest	liveMain	0	vtable-override		HfmOutTest::liveMain()	-
-00149500	method	HfmOutTest	liveMain	0	vtable-override		HfmOutTest::liveMain()	-
+00145844	method	HfmOutWalk	vfunc_02	0	vtable-slot			
+00145894	method	HfmOutWalk	vfunc_03	0	vtable-slot			
+00145d28	method	HfmOutWalk	vfunc_04	0	vtable-slot			
+00145d60	method	HfmOutSlap	vfunc_02	0	vtable-slot			
+00145dc0	method	HfmOutSlap	vfunc_03	0	vtable-slot			
+0014635c	method	HfmOutSlap	vfunc_04	0	vtable-slot			
+00146378	method	HfmOutBreak	vfunc_02	0	vtable-slot			
+001463b8	method	HfmOutBreak	vfunc_03	0	vtable-slot			
+00146460	method	HfmOutBreak	vfunc_04	0	vtable-slot			
+0014647c	method	HfmOutWalk2	vfunc_02	0	vtable-slot			
+001464cc	method	HfmOutWalk2	vfunc_03	0	vtable-slot			
+001469b0	method	HfmOutWalk2	vfunc_04	0	vtable-slot			
+001469e8	method	HfmOutRide	vfunc_02	0	vtable-slot			
+00146a20	method	HfmOutRide	vfunc_03	0	vtable-slot			
+00146ab8	method	HfmOutRide	vfunc_04	0	vtable-slot			
+00148d30	method	HfmOutDead	vfunc_02	0	vtable-slot			
+00148e48	method	HfmOutDead	vfunc_03	0	vtable-slot			
+00148e50	method	HfmOutDead	vfunc_04	0	vtable-slot			
+00148e6c	method	HfmOutWin	vfunc_02	0	vtable-slot			
+00148ed4	method	HfmOutWin	vfunc_03	0	vtable-slot			
+00148f34	method	HfmOutWin	vfunc_04	0	vtable-slot			
+00148f50	method	HfmOutBitten	vfunc_02	0	vtable-slot			
+00148f74	method	HfmOutBitten	vfunc_03	0	vtable-slot			
+00149168	method	HfmOutBitten	vfunc_04	0	vtable-slot			
+00149184	method	HfmOutCounter	vfunc_02	0	vtable-slot			
+001491ec	method	HfmOutCounter	vfunc_03	0	vtable-slot			
+001494ac	method	HfmOutCounter	vfunc_04	0	vtable-slot			
+001494c8	method	HfmOutTest	vfunc_02	0	vtable-slot			
+00149500	method	HfmOutTest	vfunc_03	0	vtable-slot			
 00149eb0	method	BdsMain	vfunc_01	0	vtable-slot			
-00149f10	method	BdsMain	liveMain	0	vtable-override		BdsMain::liveMain()	-
+00149f10	method	BdsMain	vfunc_04	0	vtable-slot			
 0014a034	method	BdsMain	vfunc_05	0	vtable-slot			
-0014a0dc	method	BdsMain	liveMain	0	vtable-override		BdsMain::liveMain()	-
-0014a158	method	BdsMain	liveMain	0	vtable-override		BdsMain::liveMain()	-
-0014a2cc	method	BdsOutWalk	liveMain	0	vtable-override		BdsOutWalk::liveMain()	-
-0014a2f8	method	BdsOutWalk	liveMain	0	vtable-override		BdsOutWalk::liveMain()	-
-0014a7f8	method	BdsOutWalk	liveMain	0	vtable-override		BdsOutWalk::liveMain()	-
-0014a830	method	BdsOutStared	liveMain	0	vtable-override		BdsOutStared::liveMain()	-
-0014a860	method	BdsOutStared	liveMain	0	vtable-override		BdsOutStared::liveMain()	-
-0014a9cc	method	BdsOutStared	liveMain	0	vtable-override		BdsOutStared::liveMain()	-
-0014ab38	method	BdsOutSearch	liveMain	0	vtable-override		BdsOutSearch::liveMain()	-
-0014ab74	method	BdsOutSearch	liveMain	0	vtable-override		BdsOutSearch::liveMain()	-
-0014ac24	method	BdsOutSearch	liveMain	0	vtable-override		BdsOutSearch::liveMain()	-
-0014ac40	method	BdsOutAtk	liveMain	0	vtable-override		BdsOutAtk::liveMain()	-
-0014ac98	method	BdsOutAtk	liveMain	0	vtable-override		BdsOutAtk::liveMain()	-
-0014b180	method	BdsOutAtk	liveMain	0	vtable-override		BdsOutAtk::liveMain()	-
-0014b19c	method	BdsOutWin	liveMain	0	vtable-override		BdsOutWin::liveMain()	-
-0014b1f4	method	BdsOutWin	liveMain	0	vtable-override		BdsOutWin::liveMain()	-
-0014b25c	method	BdsOutWin	liveMain	0	vtable-override		BdsOutWin::liveMain()	-
-0014b278	method	BdsOutDead	liveMain	0	vtable-override		BdsOutDead::liveMain()	-
-0014b398	method	BdsOutDead	liveMain	0	vtable-override		BdsOutDead::liveMain()	-
-0014b3a0	method	BdsOutDead	liveMain	0	vtable-override		BdsOutDead::liveMain()	-
+0014a0dc	method	BdsMain	vfunc_06	0	vtable-slot			
+0014a158	method	BdsMain	vfunc_02	0	vtable-slot			
+0014a2cc	method	BdsOutWalk	vfunc_02	0	vtable-slot			
+0014a2f8	method	BdsOutWalk	vfunc_03	0	vtable-slot			
+0014a7f8	method	BdsOutWalk	vfunc_04	0	vtable-slot			
+0014a830	method	BdsOutStared	vfunc_02	0	vtable-slot			
+0014a860	method	BdsOutStared	vfunc_03	0	vtable-slot			
+0014a9cc	method	BdsOutStared	vfunc_04	0	vtable-slot			
+0014ab38	method	BdsOutSearch	vfunc_02	0	vtable-slot			
+0014ab74	method	BdsOutSearch	vfunc_03	0	vtable-slot			
+0014ac24	method	BdsOutSearch	vfunc_04	0	vtable-slot			
+0014ac40	method	BdsOutAtk	vfunc_02	0	vtable-slot			
+0014ac98	method	BdsOutAtk	vfunc_03	0	vtable-slot			
+0014b180	method	BdsOutAtk	vfunc_04	0	vtable-slot			
+0014b19c	method	BdsOutWin	vfunc_02	0	vtable-slot			
+0014b1f4	method	BdsOutWin	vfunc_03	0	vtable-slot			
+0014b25c	method	BdsOutWin	vfunc_04	0	vtable-slot			
+0014b278	method	BdsOutDead	vfunc_02	0	vtable-slot			
+0014b398	method	BdsOutDead	vfunc_03	0	vtable-slot			
+0014b3a0	method	BdsOutDead	vfunc_04	0	vtable-slot			
 0014b554	method	BdlMain	vfunc_01	0	vtable-slot			
-0014b5b4	method	BdlMain	liveMain	0	vtable-override		BdlMain::liveMain()	-
+0014b5b4	method	BdlMain	vfunc_04	0	vtable-slot			
 0014b6d8	method	BdlMain	vfunc_05	0	vtable-slot			
-0014b780	method	BdlMain	liveMain	0	vtable-override		BdlMain::liveMain()	-
-0014b7fc	method	BdlMain	liveMain	0	vtable-override		BdlMain::liveMain()	-
-0014b974	method	BdlOutWalk	liveMain	0	vtable-override		BdlOutWalk::liveMain()	-
-0014b9a0	method	BdlOutWalk	liveMain	0	vtable-override		BdlOutWalk::liveMain()	-
-0014beb4	method	BdlOutWalk	liveMain	0	vtable-override		BdlOutWalk::liveMain()	-
-0014beec	method	BdlOutStared	liveMain	0	vtable-override		BdlOutStared::liveMain()	-
-0014bf1c	method	BdlOutStared	liveMain	0	vtable-override		BdlOutStared::liveMain()	-
-0014c088	method	BdlOutStared	liveMain	0	vtable-override		BdlOutStared::liveMain()	-
-0014c1f4	method	BdlOutSearch	liveMain	0	vtable-override		BdlOutSearch::liveMain()	-
-0014c230	method	BdlOutSearch	liveMain	0	vtable-override		BdlOutSearch::liveMain()	-
-0014c2e0	method	BdlOutSearch	liveMain	0	vtable-override		BdlOutSearch::liveMain()	-
-0014c2fc	method	BdlOutAtk	liveMain	0	vtable-override		BdlOutAtk::liveMain()	-
-0014c370	method	BdlOutAtk	liveMain	0	vtable-override		BdlOutAtk::liveMain()	-
-0014cbb8	method	BdlOutAtk	liveMain	0	vtable-override		BdlOutAtk::liveMain()	-
-0014cbd4	method	BdlOutWin	liveMain	0	vtable-override		BdlOutWin::liveMain()	-
-0014cc2c	method	BdlOutWin	liveMain	0	vtable-override		BdlOutWin::liveMain()	-
-0014cc94	method	BdlOutWin	liveMain	0	vtable-override		BdlOutWin::liveMain()	-
-0014ccb0	method	BdlOutDead	liveMain	0	vtable-override		BdlOutDead::liveMain()	-
-0014cdc0	method	BdlOutDead	liveMain	0	vtable-override		BdlOutDead::liveMain()	-
-0014cdc8	method	BdlOutDead	liveMain	0	vtable-override		BdlOutDead::liveMain()	-
+0014b780	method	BdlMain	vfunc_06	0	vtable-slot			
+0014b7fc	method	BdlMain	vfunc_02	0	vtable-slot			
+0014b974	method	BdlOutWalk	vfunc_02	0	vtable-slot			
+0014b9a0	method	BdlOutWalk	vfunc_03	0	vtable-slot			
+0014beb4	method	BdlOutWalk	vfunc_04	0	vtable-slot			
+0014beec	method	BdlOutStared	vfunc_02	0	vtable-slot			
+0014bf1c	method	BdlOutStared	vfunc_03	0	vtable-slot			
+0014c088	method	BdlOutStared	vfunc_04	0	vtable-slot			
+0014c1f4	method	BdlOutSearch	vfunc_02	0	vtable-slot			
+0014c230	method	BdlOutSearch	vfunc_03	0	vtable-slot			
+0014c2e0	method	BdlOutSearch	vfunc_04	0	vtable-slot			
+0014c2fc	method	BdlOutAtk	vfunc_02	0	vtable-slot			
+0014c370	method	BdlOutAtk	vfunc_03	0	vtable-slot			
+0014cbb8	method	BdlOutAtk	vfunc_04	0	vtable-slot			
+0014cbd4	method	BdlOutWin	vfunc_02	0	vtable-slot			
+0014cc2c	method	BdlOutWin	vfunc_03	0	vtable-slot			
+0014cc94	method	BdlOutWin	vfunc_04	0	vtable-slot			
+0014ccb0	method	BdlOutDead	vfunc_02	0	vtable-slot			
+0014cdc0	method	BdlOutDead	vfunc_03	0	vtable-slot			
+0014cdc8	method	BdlOutDead	vfunc_04	0	vtable-slot			
 0014cef8	method	MrtMain	vfunc_01	0	vtable-slot			
-0014cf58	method	MrtMain	liveMain	0	vtable-override		MrtMain::liveMain()	-
+0014cf58	method	MrtMain	vfunc_04	0	vtable-slot			
 0014d13c	method	MrtMain	vfunc_05	0	vtable-slot			
-0014d1c4	method	MrtMain	liveMain	0	vtable-override		MrtMain::liveMain()	-
-0014d240	method	MrtMain	liveMain	0	vtable-override		MrtMain::liveMain()	-
-0014d3cc	method	MrtOutYyy	liveMain	0	vtable-override		MrtOutYyy::liveMain()	-
-0014d3f8	method	MrtOutYyy	liveMain	0	vtable-override		MrtOutYyy::liveMain()	-
-0014d400	method	MrtOutYyy	liveMain	0	vtable-override		MrtOutYyy::liveMain()	-
-0014d41c	method	MrtOutSerch	liveMain	0	vtable-override		MrtOutSerch::liveMain()	-
-0014d4a4	method	MrtOutSerch	liveMain	0	vtable-override		MrtOutSerch::liveMain()	-
-0014d500	method	MrtOutSerch	liveMain	0	vtable-override		MrtOutSerch::liveMain()	-
-0014d614	method	MrtOutAtk	liveMain	0	vtable-override		MrtOutAtk::liveMain()	-
-0014d65c	method	MrtOutAtk	liveMain	0	vtable-override		MrtOutAtk::liveMain()	-
-0014db88	method	MrtOutAtk	liveMain	0	vtable-override		MrtOutAtk::liveMain()	-
-0014dba4	method	MrtOutWin	liveMain	0	vtable-override		MrtOutWin::liveMain()	-
-0014dbf4	method	MrtOutWin	liveMain	0	vtable-override		MrtOutWin::liveMain()	-
-0014dc60	method	MrtOutWin	liveMain	0	vtable-override		MrtOutWin::liveMain()	-
+0014d1c4	method	MrtMain	vfunc_06	0	vtable-slot			
+0014d240	method	MrtMain	vfunc_02	0	vtable-slot			
+0014d3cc	method	MrtOutYyy	vfunc_02	0	vtable-slot			
+0014d3f8	method	MrtOutYyy	vfunc_03	0	vtable-slot			
+0014d400	method	MrtOutYyy	vfunc_04	0	vtable-slot			
+0014d41c	method	MrtOutSerch	vfunc_02	0	vtable-slot			
+0014d4a4	method	MrtOutSerch	vfunc_03	0	vtable-slot			
+0014d500	method	MrtOutSerch	vfunc_04	0	vtable-slot			
+0014d614	method	MrtOutAtk	vfunc_02	0	vtable-slot			
+0014d65c	method	MrtOutAtk	vfunc_03	0	vtable-slot			
+0014db88	method	MrtOutAtk	vfunc_04	0	vtable-slot			
+0014dba4	method	MrtOutWin	vfunc_02	0	vtable-slot			
+0014dbf4	method	MrtOutWin	vfunc_03	0	vtable-slot			
+0014dc60	method	MrtOutWin	vfunc_04	0	vtable-slot			
 0014dc7c	method	ClrMain	vfunc_07	0	vtable-slot			
 0014de54	method	ClrMain	vfunc_01	0	vtable-slot			
-0014deb4	method	ClrMain	liveMain	0	vtable-override		ClrMain::liveMain()	-
+0014deb4	method	ClrMain	vfunc_04	0	vtable-slot			
 0014e0b4	method	ClrMain	vfunc_05	0	vtable-slot			
-0014e16c	method	ClrMain	liveMain	0	vtable-override		ClrMain::liveMain()	-
-0014e224	method	ClrMain	liveMain	0	vtable-override		ClrMain::liveMain()	-
-0014e73c	method	ClrOutUp	liveMain	0	vtable-override		ClrOutUp::liveMain()	-
-0014e750	method	ClrOutUp	liveMain	0	vtable-override		ClrOutUp::liveMain()	-
-0014e834	method	ClrOutUp	liveMain	0	vtable-override		ClrOutUp::liveMain()	-
-0014eb54	method	ClrOutDeathUp	liveMain	0	vtable-override		ClrOutDeathUp::liveMain()	-
-0014ebcc	method	ClrOutDeathUp	liveMain	0	vtable-override		ClrOutDeathUp::liveMain()	-
-0014ecf4	method	ClrOutDeathUp	liveMain	0	vtable-override		ClrOutDeathUp::liveMain()	-
-0014ee40	method	ClrOutMove	liveMain	0	vtable-override		ClrOutMove::liveMain()	-
-0014ee9c	method	ClrOutMove	liveMain	0	vtable-override		ClrOutMove::liveMain()	-
-0014f220	method	ClrOutMove	liveMain	0	vtable-override		ClrOutMove::liveMain()	-
-0014f88c	method	ClrOutAtk	liveMain	0	vtable-override		ClrOutAtk::liveMain()	-
-0014f8e8	method	ClrOutAtk	liveMain	0	vtable-override		ClrOutAtk::liveMain()	-
-00150a24	method	ClrOutAtk	liveMain	0	vtable-override		ClrOutAtk::liveMain()	-
-00150a40	method	ClrOutWin	liveMain	0	vtable-override		ClrOutWin::liveMain()	-
-00150a90	method	ClrOutWin	liveMain	0	vtable-override		ClrOutWin::liveMain()	-
-00150b08	method	ClrOutWin	liveMain	0	vtable-override		ClrOutWin::liveMain()	-
+0014e16c	method	ClrMain	vfunc_06	0	vtable-slot			
+0014e224	method	ClrMain	vfunc_02	0	vtable-slot			
+0014e73c	method	ClrOutUp	vfunc_02	0	vtable-slot			
+0014e750	method	ClrOutUp	vfunc_03	0	vtable-slot			
+0014e834	method	ClrOutUp	vfunc_04	0	vtable-slot			
+0014eb54	method	ClrOutDeathUp	vfunc_02	0	vtable-slot			
+0014ebcc	method	ClrOutDeathUp	vfunc_03	0	vtable-slot			
+0014ecf4	method	ClrOutDeathUp	vfunc_04	0	vtable-slot			
+0014ee40	method	ClrOutMove	vfunc_02	0	vtable-slot			
+0014ee9c	method	ClrOutMove	vfunc_03	0	vtable-slot			
+0014f220	method	ClrOutMove	vfunc_04	0	vtable-slot			
+0014f88c	method	ClrOutAtk	vfunc_02	0	vtable-slot			
+0014f8e8	method	ClrOutAtk	vfunc_03	0	vtable-slot			
+00150a24	method	ClrOutAtk	vfunc_04	0	vtable-slot			
+00150a40	method	ClrOutWin	vfunc_02	0	vtable-slot			
+00150a90	method	ClrOutWin	vfunc_03	0	vtable-slot			
+00150b08	method	ClrOutWin	vfunc_04	0	vtable-slot			
 00150df8	method	NorMain	vfunc_01	0	vtable-slot			
-00150e58	method	NorMain	liveMain	0	vtable-override		NorMain::liveMain()	-
+00150e58	method	NorMain	vfunc_04	0	vtable-slot			
 0015102c	method	NorMain	vfunc_05	0	vtable-slot			
-001510dc	method	NorMain	liveMain	0	vtable-override		NorMain::liveMain()	-
-00151158	method	NorMain	liveMain	0	vtable-override		NorMain::liveMain()	-
+001510dc	method	NorMain	vfunc_06	0	vtable-slot			
+00151158	method	NorMain	vfunc_02	0	vtable-slot			
 00151460	method	NorMain	vfunc_07	0	vtable-slot			
-00151674	method	NorOutAttack	liveMain	0	vtable-override		NorOutAttack::liveMain()	-
-001516ac	method	NorOutAttack	liveMain	0	vtable-override		NorOutAttack::liveMain()	-
-00151744	method	NorOutAttack	liveMain	0	vtable-override		NorOutAttack::liveMain()	-
-00153030	method	NorOutBitten	liveMain	0	vtable-override		NorOutBitten::liveMain()	-
-00153068	method	NorOutBitten	liveMain	0	vtable-override		NorOutBitten::liveMain()	-
-00153340	method	NorOutBitten	liveMain	0	vtable-override		NorOutBitten::liveMain()	-
-0015335c	method	NorOutWalk	liveMain	0	vtable-override		NorOutWalk::liveMain()	-
-00153398	method	NorOutWalk	liveMain	0	vtable-override		NorOutWalk::liveMain()	-
-001536dc	method	NorOutWalk	liveMain	0	vtable-override		NorOutWalk::liveMain()	-
-001536f8	method	NorOutDead	liveMain	0	vtable-override		NorOutDead::liveMain()	-
-0015373c	method	NorOutDead	liveMain	0	vtable-override		NorOutDead::liveMain()	-
-00153744	method	NorOutDead	liveMain	0	vtable-override		NorOutDead::liveMain()	-
-00153760	method	NorOutBrownEv	liveMain	0	vtable-override		NorOutBrownEv::liveMain()	-
-001537a0	method	NorOutBrownEv	liveMain	0	vtable-override		NorOutBrownEv::liveMain()	-
-001537fc	method	NorOutCounter	liveMain	0	vtable-override		NorOutCounter::liveMain()	-
-00153864	method	NorOutCounter	liveMain	0	vtable-override		NorOutCounter::liveMain()	-
-00153b18	method	NorOutCounter	liveMain	0	vtable-override		NorOutCounter::liveMain()	-
-00153b34	method	NorOutCoax	liveMain	0	vtable-override		NorOutCoax::liveMain()	-
-00153b78	method	NorOutCoax	liveMain	0	vtable-override		NorOutCoax::liveMain()	-
-00153d00	method	NorOutTest	liveMain	0	vtable-override		NorOutTest::liveMain()	-
-00153d24	method	NorOutTest	liveMain	0	vtable-override		NorOutTest::liveMain()	-
+00151674	method	NorOutAttack	vfunc_02	0	vtable-slot			
+001516ac	method	NorOutAttack	vfunc_03	0	vtable-slot			
+00151744	method	NorOutAttack	vfunc_04	0	vtable-slot			
+00153030	method	NorOutBitten	vfunc_02	0	vtable-slot			
+00153068	method	NorOutBitten	vfunc_03	0	vtable-slot			
+00153340	method	NorOutBitten	vfunc_04	0	vtable-slot			
+0015335c	method	NorOutWalk	vfunc_02	0	vtable-slot			
+00153398	method	NorOutWalk	vfunc_03	0	vtable-slot			
+001536dc	method	NorOutWalk	vfunc_04	0	vtable-slot			
+001536f8	method	NorOutDead	vfunc_02	0	vtable-slot			
+0015373c	method	NorOutDead	vfunc_03	0	vtable-slot			
+00153744	method	NorOutDead	vfunc_04	0	vtable-slot			
+00153760	method	NorOutBrownEv	vfunc_02	0	vtable-slot			
+001537a0	method	NorOutBrownEv	vfunc_03	0	vtable-slot			
+001537fc	method	NorOutCounter	vfunc_02	0	vtable-slot			
+00153864	method	NorOutCounter	vfunc_03	0	vtable-slot			
+00153b18	method	NorOutCounter	vfunc_04	0	vtable-slot			
+00153b34	method	NorOutCoax	vfunc_02	0	vtable-slot			
+00153b78	method	NorOutCoax	vfunc_03	0	vtable-slot			
+00153d00	method	NorOutTest	vfunc_02	0	vtable-slot			
+00153d24	method	NorOutTest	vfunc_03	0	vtable-slot			
 00154030	method	GrgMain	vfunc_01	0	vtable-slot			
-00154090	method	GrgMain	liveMain	0	vtable-override		GrgMain::liveMain()	-
+00154090	method	GrgMain	vfunc_04	0	vtable-slot			
 00154208	method	GrgMain	vfunc_05	0	vtable-slot			
-00154270	method	GrgMain	liveMain	0	vtable-override		GrgMain::liveMain()	-
-00154340	method	GrgMain	liveMain	0	vtable-override		GrgMain::liveMain()	-
-00154780	method	GrgOutCatch	liveMain	0	vtable-override		GrgOutCatch::liveMain()	-
-001547e8	method	GrgOutCatch	liveMain	0	vtable-override		GrgOutCatch::liveMain()	-
-00154a18	method	GrgOutCatch	liveMain	0	vtable-override		GrgOutCatch::liveMain()	-
-00154a34	method	GrgOutBitten	liveMain	0	vtable-override		GrgOutBitten::liveMain()	-
-00154a94	method	GrgOutBitten	liveMain	0	vtable-override		GrgOutBitten::liveMain()	-
-00154b44	method	GrgOutBitten	liveMain	0	vtable-override		GrgOutBitten::liveMain()	-
-00154b60	method	GrgOutDisappear	liveMain	0	vtable-override		GrgOutDisappear::liveMain()	-
-00154bd8	method	GrgOutDisappear	liveMain	0	vtable-override		GrgOutDisappear::liveMain()	-
-00154f1c	method	GrgOutDisappear	liveMain	0	vtable-override		GrgOutDisappear::liveMain()	-
-00154f54	method	GrgOutEvent	liveMain	0	vtable-override		GrgOutEvent::liveMain()	-
-00154f88	method	GrgOutEvent	liveMain	0	vtable-override		GrgOutEvent::liveMain()	-
-00154f90	method	GrgOutWalk	liveMain	0	vtable-override		GrgOutWalk::liveMain()	-
-00154fd8	method	GrgOutWalk	liveMain	0	vtable-override		GrgOutWalk::liveMain()	-
-00155bf8	method	GrgOutWalk	liveMain	0	vtable-override		GrgOutWalk::liveMain()	-
-00155c14	method	GrgOutTest	liveMain	0	vtable-override		GrgOutTest::liveMain()	-
-00155c2c	method	GrgOutTest	liveMain	0	vtable-override		GrgOutTest::liveMain()	-
+00154270	method	GrgMain	vfunc_06	0	vtable-slot			
+00154340	method	GrgMain	vfunc_02	0	vtable-slot			
+00154780	method	GrgOutCatch	vfunc_02	0	vtable-slot			
+001547e8	method	GrgOutCatch	vfunc_03	0	vtable-slot			
+00154a18	method	GrgOutCatch	vfunc_04	0	vtable-slot			
+00154a34	method	GrgOutBitten	vfunc_02	0	vtable-slot			
+00154a94	method	GrgOutBitten	vfunc_03	0	vtable-slot			
+00154b44	method	GrgOutBitten	vfunc_04	0	vtable-slot			
+00154b60	method	GrgOutDisappear	vfunc_02	0	vtable-slot			
+00154bd8	method	GrgOutDisappear	vfunc_03	0	vtable-slot			
+00154f1c	method	GrgOutDisappear	vfunc_04	0	vtable-slot			
+00154f54	method	GrgOutEvent	vfunc_02	0	vtable-slot			
+00154f88	method	GrgOutEvent	vfunc_03	0	vtable-slot			
+00154f90	method	GrgOutWalk	vfunc_02	0	vtable-slot			
+00154fd8	method	GrgOutWalk	vfunc_03	0	vtable-slot			
+00155bf8	method	GrgOutWalk	vfunc_04	0	vtable-slot			
+00155c14	method	GrgOutTest	vfunc_02	0	vtable-slot			
+00155c2c	method	GrgOutTest	vfunc_03	0	vtable-slot			
 00155d54	method	FshMain	vfunc_01	0	vtable-slot			
-00155db4	method	FshMain	liveMain	0	vtable-override		FshMain::liveMain()	-
+00155db4	method	FshMain	vfunc_04	0	vtable-slot			
 00156048	method	FshMain	vfunc_05	0	vtable-slot			
-00156140	method	FshMain	liveMain	0	vtable-override		FshMain::liveMain()	-
-001561bc	method	FshMain	liveMain	0	vtable-override		FshMain::liveMain()	-
-0015694c	method	FshOutDisappear	liveMain	0	vtable-override		FshOutDisappear::liveMain()	-
-001569d8	method	FshOutDisappear	liveMain	0	vtable-override		FshOutDisappear::liveMain()	-
-00156a5c	method	FshOutAppear	liveMain	0	vtable-override		FshOutAppear::liveMain()	-
-00156a7c	method	FshOutAppear	liveMain	0	vtable-override		FshOutAppear::liveMain()	-
-00156b48	method	FshOutAtk	liveMain	0	vtable-override		FshOutAtk::liveMain()	-
-00156c00	method	FshOutAtk	liveMain	0	vtable-override		FshOutAtk::liveMain()	-
-001570e0	method	FshOutAtk	liveMain	0	vtable-override		FshOutAtk::liveMain()	-
-001574e4	method	FshOutWait	liveMain	0	vtable-override		FshOutWait::liveMain()	-
-0015750c	method	FshOutWait	liveMain	0	vtable-override		FshOutWait::liveMain()	-
-00157514	method	FshOutWalk	liveMain	0	vtable-override		FshOutWalk::liveMain()	-
-00157548	method	FshOutWalk	liveMain	0	vtable-override		FshOutWalk::liveMain()	-
-001577dc	method	FshOutWalk	liveMain	0	vtable-override		FshOutWalk::liveMain()	-
-00157814	method	FshOutSerch	liveMain	0	vtable-override		FshOutSerch::liveMain()	-
-00157864	method	FshOutSerch	liveMain	0	vtable-override		FshOutSerch::liveMain()	-
-001578c4	method	FshOutSerch	liveMain	0	vtable-override		FshOutSerch::liveMain()	-
-001578e0	method	FshOutRound	liveMain	0	vtable-override		FshOutRound::liveMain()	-
-00157934	method	FshOutRound	liveMain	0	vtable-override		FshOutRound::liveMain()	-
-001579b4	method	FshOutRound	liveMain	0	vtable-override		FshOutRound::liveMain()	-
-001579d0	method	FshOutStared	liveMain	0	vtable-override		FshOutStared::liveMain()	-
-00157a30	method	FshOutStared	liveMain	0	vtable-override		FshOutStared::liveMain()	-
-00157b74	method	FshOutStared	liveMain	0	vtable-override		FshOutStared::liveMain()	-
-00157b90	method	FshOutCollision	liveMain	0	vtable-override		FshOutCollision::liveMain()	-
-00157df8	method	FshOutCollision	liveMain	0	vtable-override		FshOutCollision::liveMain()	-
-00157e48	method	FshOutWin	liveMain	0	vtable-override		FshOutWin::liveMain()	-
-00157eb4	method	FshOutWin	liveMain	0	vtable-override		FshOutWin::liveMain()	-
-00157f44	method	FshOutWin	liveMain	0	vtable-override		FshOutWin::liveMain()	-
-00157f60	method	FshOutTest	liveMain	0	vtable-override		FshOutTest::liveMain()	-
-00157f68	method	FshOutTest	liveMain	0	vtable-override		FshOutTest::liveMain()	-
-001580b4	method	FshOutDead	liveMain	0	vtable-override		FshOutDead::liveMain()	-
-001581ec	method	FshOutDead	liveMain	0	vtable-override		FshOutDead::liveMain()	-
-00158218	method	FshOutDead	liveMain	0	vtable-override		FshOutDead::liveMain()	-
+00156140	method	FshMain	vfunc_06	0	vtable-slot			
+001561bc	method	FshMain	vfunc_02	0	vtable-slot			
+0015694c	method	FshOutDisappear	vfunc_02	0	vtable-slot			
+001569d8	method	FshOutDisappear	vfunc_04	0	vtable-slot			
+00156a5c	method	FshOutAppear	vfunc_02	0	vtable-slot			
+00156a7c	method	FshOutAppear	vfunc_03	0	vtable-slot			
+00156b48	method	FshOutAtk	vfunc_02	0	vtable-slot			
+00156c00	method	FshOutAtk	vfunc_03	0	vtable-slot			
+001570e0	method	FshOutAtk	vfunc_04	0	vtable-slot			
+001574e4	method	FshOutWait	vfunc_02	0	vtable-slot			
+0015750c	method	FshOutWait	vfunc_03	0	vtable-slot			
+00157514	method	FshOutWalk	vfunc_02	0	vtable-slot			
+00157548	method	FshOutWalk	vfunc_03	0	vtable-slot			
+001577dc	method	FshOutWalk	vfunc_04	0	vtable-slot			
+00157814	method	FshOutSerch	vfunc_02	0	vtable-slot			
+00157864	method	FshOutSerch	vfunc_03	0	vtable-slot			
+001578c4	method	FshOutSerch	vfunc_04	0	vtable-slot			
+001578e0	method	FshOutRound	vfunc_02	0	vtable-slot			
+00157934	method	FshOutRound	vfunc_03	0	vtable-slot			
+001579b4	method	FshOutRound	vfunc_04	0	vtable-slot			
+001579d0	method	FshOutStared	vfunc_02	0	vtable-slot			
+00157a30	method	FshOutStared	vfunc_03	0	vtable-slot			
+00157b74	method	FshOutStared	vfunc_04	0	vtable-slot			
+00157b90	method	FshOutCollision	vfunc_02	0	vtable-slot			
+00157df8	method	FshOutCollision	vfunc_03	0	vtable-slot			
+00157e48	method	FshOutWin	vfunc_02	0	vtable-slot			
+00157eb4	method	FshOutWin	vfunc_03	0	vtable-slot			
+00157f44	method	FshOutWin	vfunc_04	0	vtable-slot			
+00157f60	method	FshOutTest	vfunc_02	0	vtable-slot			
+00157f68	method	FshOutTest	vfunc_03	0	vtable-slot			
+001580b4	method	FshOutDead	vfunc_03	0	vtable-slot			
+001581ec	method	FshOutDead	vfunc_04	0	vtable-slot			
+00158218	method	FshOutDead	vfunc_02	0	vtable-slot			
 00158798	method	GotMain	vfunc_01	0	vtable-slot			
-001587f8	method	GotMain	liveMain	0	vtable-override		GotMain::liveMain()	-
+001587f8	method	GotMain	vfunc_04	0	vtable-slot			
 00158ca4	method	GotMain	vfunc_05	0	vtable-slot			
-00158d5c	method	GotMain	liveMain	0	vtable-override		GotMain::liveMain()	-
-00158dd8	method	GotMain	liveMain	0	vtable-override		GotMain::liveMain()	-
-00159f98	method	GotOutParts	liveMain	0	vtable-override		GotOutParts::liveMain()	-
-0015a034	method	GotOutParts	liveMain	0	vtable-override		GotOutParts::liveMain()	-
-0015a03c	method	GotOutParts	liveMain	0	vtable-override		GotOutParts::liveMain()	-
-0015a058	method	GotOutTest	liveMain	0	vtable-override		GotOutTest::liveMain()	-
-0015a060	method	GotOutTest	liveMain	0	vtable-override		GotOutTest::liveMain()	-
+00158d5c	method	GotMain	vfunc_06	0	vtable-slot			
+00158dd8	method	GotMain	vfunc_02	0	vtable-slot			
+00159f98	method	GotOutParts	vfunc_02	0	vtable-slot			
+0015a034	method	GotOutParts	vfunc_03	0	vtable-slot			
+0015a03c	method	GotOutParts	vfunc_04	0	vtable-slot			
+0015a058	method	GotOutTest	vfunc_02	0	vtable-slot			
+0015a060	method	GotOutTest	vfunc_03	0	vtable-slot			
 0015a580	method	PigMain	vfunc_01	0	vtable-slot			
-0015a5e0	method	PigMain	liveMain	0	vtable-override		PigMain::liveMain()	-
+0015a5e0	method	PigMain	vfunc_04	0	vtable-slot			
 0015aa8c	method	PigMain	vfunc_05	0	vtable-slot			
-0015ab48	method	PigMain	liveMain	0	vtable-override		PigMain::liveMain()	-
-0015abc4	method	PigMain	liveMain	0	vtable-override		PigMain::liveMain()	-
-0015bd58	method	PigOutParts	liveMain	0	vtable-override		PigOutParts::liveMain()	-
-0015bdbc	method	PigOutParts	liveMain	0	vtable-override		PigOutParts::liveMain()	-
-0015bdc4	method	PigOutParts	liveMain	0	vtable-override		PigOutParts::liveMain()	-
-0015bde0	method	PigOutTackle	liveMain	0	vtable-override		PigOutTackle::liveMain()	-
-0015be28	method	PigOutTackle	liveMain	0	vtable-override		PigOutTackle::liveMain()	-
-0015c164	method	PigOutTackle	liveMain	0	vtable-override		PigOutTackle::liveMain()	-
-0015c180	method	PigOutTest	liveMain	0	vtable-override		PigOutTest::liveMain()	-
-0015c188	method	PigOutTest	liveMain	0	vtable-override		PigOutTest::liveMain()	-
+0015ab48	method	PigMain	vfunc_06	0	vtable-slot			
+0015abc4	method	PigMain	vfunc_02	0	vtable-slot			
+0015bd58	method	PigOutParts	vfunc_02	0	vtable-slot			
+0015bdbc	method	PigOutParts	vfunc_03	0	vtable-slot			
+0015bdc4	method	PigOutParts	vfunc_04	0	vtable-slot			
+0015bde0	method	PigOutTackle	vfunc_02	0	vtable-slot			
+0015be28	method	PigOutTackle	vfunc_03	0	vtable-slot			
+0015c164	method	PigOutTackle	vfunc_04	0	vtable-slot			
+0015c180	method	PigOutTest	vfunc_02	0	vtable-slot			
+0015c188	method	PigOutTest	vfunc_03	0	vtable-slot			
 0015c2a4	method	DwfMain	vfunc_01	0	vtable-slot			
-0015c710	method	DwfMain	liveMain	0	vtable-override		DwfMain::liveMain()	-
+0015c710	method	DwfMain	vfunc_04	0	vtable-slot			
 0015cc84	method	DwfMain	vfunc_05	0	vtable-slot			
-0015cd30	method	DwfMain	liveMain	0	vtable-override		DwfMain::liveMain()	-
-0015cdac	method	DwfMain	liveMain	0	vtable-override		DwfMain::liveMain()	-
-0015e214	method	DwfOutDisappear	liveMain	0	vtable-override		DwfOutDisappear::liveMain()	-
-0015e2a0	method	DwfOutDisappear	liveMain	0	vtable-override		DwfOutDisappear::liveMain()	-
-0015e324	method	DwfOutAppear	liveMain	0	vtable-override		DwfOutAppear::liveMain()	-
-0015e344	method	DwfOutAppear	liveMain	0	vtable-override		DwfOutAppear::liveMain()	-
-0015e4b0	method	DwfOutWait	liveMain	0	vtable-override		DwfOutWait::liveMain()	-
-0015e514	method	DwfOutWait	liveMain	0	vtable-override		DwfOutWait::liveMain()	-
-0015e51c	method	DwfOutWalk	liveMain	0	vtable-override		DwfOutWalk::liveMain()	-
-0015e5bc	method	DwfOutWalk	liveMain	0	vtable-override		DwfOutWalk::liveMain()	-
-0015ea8c	method	DwfOutWalk	liveMain	0	vtable-override		DwfOutWalk::liveMain()	-
-0015eac4	method	DwfOutSerch	liveMain	0	vtable-override		DwfOutSerch::liveMain()	-
-0015eb00	method	DwfOutSerch	liveMain	0	vtable-override		DwfOutSerch::liveMain()	-
-0015eba8	method	DwfOutSerch	liveMain	0	vtable-override		DwfOutSerch::liveMain()	-
-0015ebc4	method	DwfOutPickup	liveMain	0	vtable-override		DwfOutPickup::liveMain()	-
-0015ec30	method	DwfOutPickup	liveMain	0	vtable-override		DwfOutPickup::liveMain()	-
-0015ef78	method	DwfOutPickup	liveMain	0	vtable-override		DwfOutPickup::liveMain()	-
-0015ef94	method	DwfOutAtkNear	liveMain	0	vtable-override		DwfOutAtkNear::liveMain()	-
-0015efb0	method	DwfOutAtkNear	liveMain	0	vtable-override		DwfOutAtkNear::liveMain()	-
-0015f2fc	method	DwfOutAtkNear	liveMain	0	vtable-override		DwfOutAtkNear::liveMain()	-
-001606ec	method	DwfOutAtkFar	liveMain	0	vtable-override		DwfOutAtkFar::liveMain()	-
-00160784	method	DwfOutAtkFar	liveMain	0	vtable-override		DwfOutAtkFar::liveMain()	-
-0016097c	method	DwfOutAtkFar	liveMain	0	vtable-override		DwfOutAtkFar::liveMain()	-
-00160a44	method	DwfOutStared	liveMain	0	vtable-override		DwfOutStared::liveMain()	-
-00160b08	method	DwfOutStared	liveMain	0	vtable-override		DwfOutStared::liveMain()	-
-00160c9c	method	DwfOutStared	liveMain	0	vtable-override		DwfOutStared::liveMain()	-
-00160cb8	method	DwfOutWin	liveMain	0	vtable-override		DwfOutWin::liveMain()	-
-00160d50	method	DwfOutWin	liveMain	0	vtable-override		DwfOutWin::liveMain()	-
-00161160	method	DwfOutWin	liveMain	0	vtable-override		DwfOutWin::liveMain()	-
-0016117c	method	DwfOutParts	liveMain	0	vtable-override		DwfOutParts::liveMain()	-
-001611e0	method	DwfOutParts	liveMain	0	vtable-override		DwfOutParts::liveMain()	-
-001611e8	method	DwfOutParts	liveMain	0	vtable-override		DwfOutParts::liveMain()	-
-00161204	method	DwfOutTest	liveMain	0	vtable-override		DwfOutTest::liveMain()	-
-00161228	method	DwfOutTest	liveMain	0	vtable-override		DwfOutTest::liveMain()	-
-00161230	method	DwfOutFort	liveMain	0	vtable-override		DwfOutFort::liveMain()	-
-00161300	method	DwfOutFort	liveMain	0	vtable-override		DwfOutFort::liveMain()	-
-00161a90	method	DwfOutFort	liveMain	0	vtable-override		DwfOutFort::liveMain()	-
-00161b48	method	DwfOutIrritate	liveMain	0	vtable-override		DwfOutIrritate::liveMain()	-
-00161bd4	method	DwfOutIrritate	liveMain	0	vtable-override		DwfOutIrritate::liveMain()	-
-00161d8c	method	DwfOutIrritate	liveMain	0	vtable-override		DwfOutIrritate::liveMain()	-
-00162118	method	DwfOutDead	liveMain	0	vtable-override		DwfOutDead::liveMain()	-
-00162394	method	DwfOutDead	liveMain	0	vtable-override		DwfOutDead::liveMain()	-
-00162630	method	DwfOutDead	liveMain	0	vtable-override		DwfOutDead::liveMain()	-
+0015cd30	method	DwfMain	vfunc_06	0	vtable-slot			
+0015cdac	method	DwfMain	vfunc_02	0	vtable-slot			
+0015e214	method	DwfOutDisappear	vfunc_02	0	vtable-slot			
+0015e2a0	method	DwfOutDisappear	vfunc_04	0	vtable-slot			
+0015e324	method	DwfOutAppear	vfunc_02	0	vtable-slot			
+0015e344	method	DwfOutAppear	vfunc_03	0	vtable-slot			
+0015e4b0	method	DwfOutWait	vfunc_02	0	vtable-slot			
+0015e514	method	DwfOutWait	vfunc_03	0	vtable-slot			
+0015e51c	method	DwfOutWalk	vfunc_02	0	vtable-slot			
+0015e5bc	method	DwfOutWalk	vfunc_03	0	vtable-slot			
+0015ea8c	method	DwfOutWalk	vfunc_04	0	vtable-slot			
+0015eac4	method	DwfOutSerch	vfunc_02	0	vtable-slot			
+0015eb00	method	DwfOutSerch	vfunc_03	0	vtable-slot			
+0015eba8	method	DwfOutSerch	vfunc_04	0	vtable-slot			
+0015ebc4	method	DwfOutPickup	vfunc_02	0	vtable-slot			
+0015ec30	method	DwfOutPickup	vfunc_03	0	vtable-slot			
+0015ef78	method	DwfOutPickup	vfunc_04	0	vtable-slot			
+0015ef94	method	DwfOutAtkNear	vfunc_04	0	vtable-slot			
+0015efb0	method	DwfOutAtkNear	vfunc_02	0	vtable-slot			
+0015f2fc	method	DwfOutAtkNear	vfunc_03	0	vtable-slot			
+001606ec	method	DwfOutAtkFar	vfunc_02	0	vtable-slot			
+00160784	method	DwfOutAtkFar	vfunc_03	0	vtable-slot			
+0016097c	method	DwfOutAtkFar	vfunc_04	0	vtable-slot			
+00160a44	method	DwfOutStared	vfunc_02	0	vtable-slot			
+00160b08	method	DwfOutStared	vfunc_03	0	vtable-slot			
+00160c9c	method	DwfOutStared	vfunc_04	0	vtable-slot			
+00160cb8	method	DwfOutWin	vfunc_02	0	vtable-slot			
+00160d50	method	DwfOutWin	vfunc_03	0	vtable-slot			
+00161160	method	DwfOutWin	vfunc_04	0	vtable-slot			
+0016117c	method	DwfOutParts	vfunc_02	0	vtable-slot			
+001611e0	method	DwfOutParts	vfunc_03	0	vtable-slot			
+001611e8	method	DwfOutParts	vfunc_04	0	vtable-slot			
+00161204	method	DwfOutTest	vfunc_02	0	vtable-slot			
+00161228	method	DwfOutTest	vfunc_03	0	vtable-slot			
+00161230	method	DwfOutFort	vfunc_02	0	vtable-slot			
+00161300	method	DwfOutFort	vfunc_03	0	vtable-slot			
+00161a90	method	DwfOutFort	vfunc_04	0	vtable-slot			
+00161b48	method	DwfOutIrritate	vfunc_02	0	vtable-slot			
+00161bd4	method	DwfOutIrritate	vfunc_03	0	vtable-slot			
+00161d8c	method	DwfOutIrritate	vfunc_04	0	vtable-slot			
+00162118	method	DwfOutDead	vfunc_02	0	vtable-slot			
+00162394	method	DwfOutDead	vfunc_03	0	vtable-slot			
+00162630	method	DwfOutDead	vfunc_04	0	vtable-slot			
 00162700	method	EmyManager	vfunc_06	0	vtable-slot			
 0016275c	method	EmyManager	vfunc_04	0	vtable-slot			
 00164208	method	EmyMain	vfunc_01	0	vtable-slot			
 00164fc0	method	EmyMain	vfunc_05	0	vtable-slot			
-00166a74	dtor	EmyOut	~EmyOut	0	vtable-override		EmyOut::~EmyOut()	-
-0016a950	dtor	Eff0	~Eff0	0	vtable-override		Eff0::~Eff0()	-
+00166a74	dtor	EmyOut	~EmyOut	0	vtable-override	_$_6EmyOut	EmyOut::~EmyOut()	-
+0016a950	dtor	Eff0	~Eff0	0	vtable-override	_$_4Eff0	Eff0::~Eff0()	-
 0016a9ac	method	Eff0	vfunc_02	0	vtable-slot			
 0016a9e0	method	Eff0	vfunc_03	0	vtable-slot			
 0016aa04	method	Eff0	vfunc_10	0	vtable-slot			
 0016aa2c	method	Eff0	vfunc_04	0	vtable-slot			
-0016aacc	method	Eff0	render	0	vtable-override		Eff0::render(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
-0016ab10	method	Eff0	renderPreMain	0	vtable-override		Eff0::renderPreMain(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
-0016abe4	method	Eff0	createPacketEntry	0	vtable-override		Eff0::createPacketEntry(tag_I3dRenderStage_s *)	tag_I3dRenderStage_s *
-0016affc	dtor	EffBg1	~EffBg1	0	vtable-override		EffBg1::~EffBg1()	-
+0016aacc	method	Eff0	render	0	vtable-override	render__4Eff0PQ24Eff011RENDERPARAM	Eff0::render(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
+0016ab10	method	Eff0	renderPreMain	0	vtable-override	renderPreMain__4Eff0PQ24Eff011RENDERPARAM	Eff0::renderPreMain(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
+0016abe4	method	Eff0	createPacketEntry	0	vtable-override	createPacketEntry__4Eff0P20tag_I3dRenderStage_s	Eff0::createPacketEntry(tag_I3dRenderStage_s *)	tag_I3dRenderStage_s *
+0016affc	dtor	EffBg1	~EffBg1	0	vtable-override	_$_6EffBg1	EffBg1::~EffBg1()	-
 0016b060	method	EffBg1	vfunc_02	0	vtable-slot			
-0016b348	method	EffBg1	liveMain	0	vtable-override		EffBg1::liveMain()	-
-0016b444	method	EffBg1	renderPreMain	0	vtable-override		EffBg1::renderPreMain(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
+0016b348	method	EffBg1	vfunc_05	0	vtable-slot			
+0016b444	method	EffBg1	renderPreMain	0	vtable-override	renderPreMain__6EffBg1PQ24Eff011RENDERPARAM	EffBg1::renderPreMain(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
 0016b668	method	EffBloodSpray1	vfunc_02	0	vtable-slot			
-0016b978	method	EffBloodSpray1	liveMain	0	vtable-override		EffBloodSpray1::liveMain()	-
-0016ba7c	method	EffBloodSpray1	liveMain	0	vtable-override		EffBloodSpray1::liveMain()	-
-0016bdd4	method	EffBloodSpray1	updateZDepth	0	vtable-override		EffBloodSpray1::updateZDepth()	-
+0016b978	method	EffBloodSpray1	vfunc_05	0	vtable-slot			
+0016ba7c	method	EffBloodSpray1	vfunc_08	0	vtable-slot			
+0016bdd4	method	EffBloodSpray1	updateZDepth	0	vtable-override	updateZDepth__14EffBloodSpray1	EffBloodSpray1::updateZDepth()	-
 0016be70	method	EffBloodSpray2	vfunc_02	0	vtable-slot			
-0016c258	method	EffBloodSpray2	liveMain	0	vtable-override		EffBloodSpray2::liveMain()	-
-0016c400	method	EffBloodSpray2	liveMain	0	vtable-override		EffBloodSpray2::liveMain()	-
-0016c748	method	EffBloodSpray2	updateZDepth	0	vtable-override		EffBloodSpray2::updateZDepth()	-
+0016c258	method	EffBloodSpray2	vfunc_05	0	vtable-slot			
+0016c400	method	EffBloodSpray2	vfunc_08	0	vtable-slot			
+0016c748	method	EffBloodSpray2	updateZDepth	0	vtable-override	updateZDepth__14EffBloodSpray2	EffBloodSpray2::updateZDepth()	-
 0016c7c0	method	EffBloodStay1	vfunc_02	0	vtable-slot			
-0016ca00	method	EffBloodStay1	liveMain	0	vtable-override		EffBloodStay1::liveMain()	-
-0016cac0	method	EffBloodStay1	liveMain	0	vtable-override		EffBloodStay1::liveMain()	-
+0016ca00	method	EffBloodStay1	vfunc_05	0	vtable-slot			
+0016cac0	method	EffBloodStay1	vfunc_08	0	vtable-slot			
 0016d01c	method	EffBloodStay2	vfunc_02	0	vtable-slot			
-0016d0d0	method	EffBloodStay2	liveMain	0	vtable-override		EffBloodStay2::liveMain()	-
-0016d4bc	method	EffBloodStay2	liveMain	0	vtable-override		EffBloodStay2::liveMain()	-
-0016d804	dtor	EffBloodStay3	~EffBloodStay3	0	vtable-override		EffBloodStay3::~EffBloodStay3()	-
+0016d0d0	method	EffBloodStay2	vfunc_05	0	vtable-slot			
+0016d4bc	method	EffBloodStay2	vfunc_08	0	vtable-slot			
+0016d804	dtor	EffBloodStay3	~EffBloodStay3	0	vtable-override	_$_13EffBloodStay3	EffBloodStay3::~EffBloodStay3()	-
 0016d870	method	EffBloodStay3	vfunc_02	0	vtable-slot			
-0016d8ac	method	EffBloodStay3	liveMain	0	vtable-override		EffBloodStay3::liveMain()	-
+0016d8ac	method	EffBloodStay3	vfunc_05	0	vtable-slot			
 0016d9a8	method	EffBloodStay3Prim	vfunc_02	0	vtable-slot			
-0016da30	method	EffBloodStay3Prim	liveMain	0	vtable-override		EffBloodStay3Prim::liveMain()	-
-0016da44	method	EffBloodStay3Prim	liveMain	0	vtable-override		EffBloodStay3Prim::liveMain()	-
+0016da30	method	EffBloodStay3Prim	vfunc_05	0	vtable-slot			
+0016da44	method	EffBloodStay3Prim	vfunc_08	0	vtable-slot			
 0016dcc8	method	EffBreath1	vfunc_02	0	vtable-slot			
-0016de40	method	EffBreath1	liveMain	0	vtable-override		EffBreath1::liveMain()	-
-0016df38	method	EffBreath1	liveMain	0	vtable-override		EffBreath1::liveMain()	-
-0016e3ec	method	EffBreath1	updateZDepth	0	vtable-override		EffBreath1::updateZDepth()	-
+0016de40	method	EffBreath1	vfunc_05	0	vtable-slot			
+0016df38	method	EffBreath1	vfunc_08	0	vtable-slot			
+0016e3ec	method	EffBreath1	updateZDepth	0	vtable-override	updateZDepth__10EffBreath1	EffBreath1::updateZDepth()	-
 0016e6e4	method	EffBreath1Space	vfunc_02	0	vtable-slot			
-0016e7cc	method	EffBreath1Space	liveMain	0	vtable-override		EffBreath1Space::liveMain()	-
+0016e7cc	method	EffBreath1Space	vfunc_05	0	vtable-slot			
 0016eb00	method	EffBreath2	vfunc_02	0	vtable-slot			
-0016eb98	method	EffBreath2	liveMain	0	vtable-override		EffBreath2::liveMain()	-
+0016eb98	method	EffBreath2	vfunc_05	0	vtable-slot			
 0016edc0	method	EffBreath2Prim	vfunc_02	0	vtable-slot			
-0016eeb4	method	EffBreath2Prim	liveMain	0	vtable-override		EffBreath2Prim::liveMain()	-
-0016ef74	method	EffBreath2Prim	liveMain	0	vtable-override		EffBreath2Prim::liveMain()	-
-0016f160	method	EffBreath2Prim	updateZDepth	0	vtable-override		EffBreath2Prim::updateZDepth()	-
+0016eeb4	method	EffBreath2Prim	vfunc_05	0	vtable-slot			
+0016ef74	method	EffBreath2Prim	vfunc_08	0	vtable-slot			
+0016f160	method	EffBreath2Prim	updateZDepth	0	vtable-override	updateZDepth__14EffBreath2Prim	EffBreath2Prim::updateZDepth()	-
 0016f1a0	method	EffBreath2Ground	vfunc_02	0	vtable-slot			
-0016f380	method	EffBreath2Ground	liveMain	0	vtable-override		EffBreath2Ground::liveMain()	-
-0016f3c8	method	EffBreath2Ground	liveMain	0	vtable-override		EffBreath2Ground::liveMain()	-
+0016f380	method	EffBreath2Ground	vfunc_05	0	vtable-slot			
+0016f3c8	method	EffBreath2Ground	vfunc_08	0	vtable-slot			
 0016f71c	method	EffCameraAnim1	vfunc_02	0	vtable-slot			
-0016faa0	method	EffCameraAnim1	liveMain	0	vtable-override		EffCameraAnim1::liveMain()	-
+0016faa0	method	EffCameraAnim1	vfunc_05	0	vtable-slot			
 001704a4	method	EffDust2	vfunc_02	0	vtable-slot			
-00170594	method	EffDust2	liveMain	0	vtable-override		EffDust2::liveMain()	-
+00170594	method	EffDust2	vfunc_05	0	vtable-slot			
 0017093c	method	EffDust2Prim	vfunc_02	0	vtable-slot			
-001709c8	method	EffDust2Prim	liveMain	0	vtable-override		EffDust2Prim::liveMain()	-
-001709f4	method	EffDust2Prim	liveMain	0	vtable-override		EffDust2Prim::liveMain()	-
-00170c64	method	EffDust2Prim	updateZDepth	0	vtable-override		EffDust2Prim::updateZDepth()	-
+001709c8	method	EffDust2Prim	vfunc_05	0	vtable-slot			
+001709f4	method	EffDust2Prim	vfunc_08	0	vtable-slot			
+00170c64	method	EffDust2Prim	updateZDepth	0	vtable-override	updateZDepth__12EffDust2Prim	EffDust2Prim::updateZDepth()	-
 00170ca4	method	EffFire1	vfunc_02	0	vtable-slot			
-00170d44	method	EffFire1	liveMain	0	vtable-override		EffFire1::liveMain()	-
-00170e14	method	EffFire1	liveMain	0	vtable-override		EffFire1::liveMain()	-
-001711fc	method	EffFire1	updateZDepth	0	vtable-override		EffFire1::updateZDepth()	-
-00171278	method	EffFire1	liveActivateExec	0	vtable-override		EffFire1::liveActivateExec()	-
+00170d44	method	EffFire1	vfunc_05	0	vtable-slot			
+00170e14	method	EffFire1	vfunc_08	0	vtable-slot			
+001711fc	method	EffFire1	updateZDepth	0	vtable-override	updateZDepth__8EffFire1	EffFire1::updateZDepth()	-
+00171278	method	EffFire1	liveActivateExec	0	vtable-override	liveActivateExec__8EffFire1	EffFire1::liveActivateExec()	-
 001712bc	method	EffFire1Ex	vfunc_02	0	vtable-slot			
-00171378	method	EffFire1Ex	updateZDepth	0	vtable-override		EffFire1Ex::updateZDepth()	-
+00171378	method	EffFire1Ex	updateZDepth	0	vtable-override	updateZDepth__10EffFire1Ex	EffFire1Ex::updateZDepth()	-
 0017145c	method	EffFire2	vfunc_02	0	vtable-slot			
-00171534	method	EffFire2	liveMain	0	vtable-override		EffFire2::liveMain()	-
-00171548	method	EffFire2	liveMain	0	vtable-override		EffFire2::liveMain()	-
-0017167c	method	EffFire2	updateZDepth	0	vtable-override		EffFire2::updateZDepth()	-
+00171534	method	EffFire2	vfunc_05	0	vtable-slot			
+00171548	method	EffFire2	vfunc_08	0	vtable-slot			
+0017167c	method	EffFire2	updateZDepth	0	vtable-override	updateZDepth__8EffFire2	EffFire2::updateZDepth()	-
 001716bc	method	EffFog1	vfunc_02	0	vtable-slot			
-001717b8	method	EffFog1	liveMain	0	vtable-override		EffFog1::liveMain()	-
-001717f4	method	EffFog1	liveMain	0	vtable-override		EffFog1::liveMain()	-
-00171bbc	method	EffFog1	updateZDepth	0	vtable-override		EffFog1::updateZDepth()	-
+001717b8	method	EffFog1	vfunc_05	0	vtable-slot			
+001717f4	method	EffFog1	vfunc_08	0	vtable-slot			
+00171bbc	method	EffFog1	updateZDepth	0	vtable-override	updateZDepth__7EffFog1	EffFog1::updateZDepth()	-
 00171bfc	method	EffFog2	vfunc_02	0	vtable-slot			
-00171c94	method	EffFog2	liveMain	0	vtable-override		EffFog2::liveMain()	-
+00171c94	method	EffFog2	vfunc_05	0	vtable-slot			
 00171e28	method	EffFog2Prim	vfunc_02	0	vtable-slot			
-00172058	method	EffFog2Prim	liveMain	0	vtable-override		EffFog2Prim::liveMain()	-
-00172284	method	EffFog2Prim	liveMain	0	vtable-override		EffFog2Prim::liveMain()	-
-00172638	method	EffFog2Prim	updateZDepth	0	vtable-override		EffFog2Prim::updateZDepth()	-
-00172ac8	dtor	EffFog3	~EffFog3	0	vtable-override		EffFog3::~EffFog3()	-
+00172058	method	EffFog2Prim	vfunc_05	0	vtable-slot			
+00172284	method	EffFog2Prim	vfunc_08	0	vtable-slot			
+00172638	method	EffFog2Prim	updateZDepth	0	vtable-override	updateZDepth__11EffFog2Prim	EffFog2Prim::updateZDepth()	-
+00172ac8	dtor	EffFog3	~EffFog3	0	vtable-override	_$_7EffFog3	EffFog3::~EffFog3()	-
 00172b30	method	EffFog3	vfunc_02	0	vtable-slot			
-00172cb8	method	EffFog3	liveMain	0	vtable-override		EffFog3::liveMain()	-
+00172cb8	method	EffFog3	vfunc_05	0	vtable-slot			
 00172d98	method	EffFog3Dark	vfunc_02	0	vtable-slot			
 00172de8	method	EffFog3WeakUp	vfunc_02	0	vtable-slot			
-00172e08	method	EffFog3WeakUp	liveMain	0	vtable-override		EffFog3WeakUp::liveMain()	-
+00172e08	method	EffFog3WeakUp	vfunc_05	0	vtable-slot			
 00172e4c	method	EffFoot1	vfunc_02	0	vtable-slot			
-00172f4c	method	EffFoot1	liveMain	0	vtable-override		EffFoot1::liveMain()	-
+00172f4c	method	EffFoot1	vfunc_05	0	vtable-slot			
 001731f0	method	EffFoot1Prim	vfunc_02	0	vtable-slot			
-00173274	method	EffFoot1Prim	liveMain	0	vtable-override		EffFoot1Prim::liveMain()	-
-001732d8	method	EffFoot1Prim	liveMain	0	vtable-override		EffFoot1Prim::liveMain()	-
-00173340	method	EffFoot1Prim	updateZDepth	0	vtable-override		EffFoot1Prim::updateZDepth()	-
+00173274	method	EffFoot1Prim	vfunc_05	0	vtable-slot			
+001732d8	method	EffFoot1Prim	vfunc_08	0	vtable-slot			
+00173340	method	EffFoot1Prim	updateZDepth	0	vtable-override	updateZDepth__12EffFoot1Prim	EffFoot1Prim::updateZDepth()	-
 00173630	method	EffFoot2	vfunc_02	0	vtable-slot			
-00173688	method	EffFoot2	liveMain	0	vtable-override		EffFoot2::liveMain()	-
+00173688	method	EffFoot2	vfunc_05	0	vtable-slot			
 00173a90	method	EffFoot2Prim	vfunc_02	0	vtable-slot			
-00173b2c	method	EffFoot2Prim	liveMain	0	vtable-override		EffFoot2Prim::liveMain()	-
-00173b68	method	EffFoot2Prim	liveMain	0	vtable-override		EffFoot2Prim::liveMain()	-
-00173e48	dtor	EffGeneric1	~EffGeneric1	0	vtable-override		EffGeneric1::~EffGeneric1()	-
+00173b2c	method	EffFoot2Prim	vfunc_05	0	vtable-slot			
+00173b68	method	EffFoot2Prim	vfunc_08	0	vtable-slot			
+00173e48	dtor	EffGeneric1	~EffGeneric1	0	vtable-override	_$_11EffGeneric1	EffGeneric1::~EffGeneric1()	-
 00173f3c	method	EffGeneric1	vfunc_02	0	vtable-slot			
-00174438	method	EffGeneric1	liveMain	0	vtable-override		EffGeneric1::liveMain()	-
-00174534	method	EffGeneric1	renderPreMain	0	vtable-override		EffGeneric1::renderPreMain(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
+00174438	method	EffGeneric1	vfunc_05	0	vtable-slot			
+00174534	method	EffGeneric1	renderPreMain	0	vtable-override	renderPreMain__11EffGeneric1PQ24Eff011RENDERPARAM	EffGeneric1::renderPreMain(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
 00174dd8	method	EffLight1	vfunc_02	0	vtable-slot			
-00174e9c	method	EffLight1	liveMain	0	vtable-override		EffLight1::liveMain()	-
-00174eb0	method	EffLight1	liveMain	0	vtable-override		EffLight1::liveMain()	-
-0017512c	method	EffLight1	liveActivateExec	0	vtable-override		EffLight1::liveActivateExec()	-
+00174e9c	method	EffLight1	vfunc_05	0	vtable-slot			
+00174eb0	method	EffLight1	vfunc_08	0	vtable-slot			
+0017512c	method	EffLight1	liveActivateExec	0	vtable-override	liveActivateExec__9EffLight1	EffLight1::liveActivateExec()	-
 00175170	method	EffLight2	vfunc_02	0	vtable-slot			
-00175254	method	EffLight2	liveMain	0	vtable-override		EffLight2::liveMain()	-
-00175268	method	EffLight2	render	0	vtable-override		EffLight2::render(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
-00175378	method	EffLight2	liveMain	0	vtable-override		EffLight2::liveMain()	-
-001755e8	method	EffLight2	liveActivateExec	0	vtable-override		EffLight2::liveActivateExec()	-
-00175664	dtor	EffLight3	~EffLight3	0	vtable-override		EffLight3::~EffLight3()	-
+00175254	method	EffLight2	vfunc_05	0	vtable-slot			
+00175268	method	EffLight2	render	0	vtable-override	render__9EffLight2PQ24Eff011RENDERPARAM	EffLight2::render(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
+00175378	method	EffLight2	vfunc_08	0	vtable-slot			
+001755e8	method	EffLight2	liveActivateExec	0	vtable-override	liveActivateExec__9EffLight2	EffLight2::liveActivateExec()	-
+00175664	dtor	EffLight3	~EffLight3	0	vtable-override	_$_9EffLight3	EffLight3::~EffLight3()	-
 00175804	method	EffLight3	vfunc_02	0	vtable-slot			
-00175dc4	method	EffLight3	liveMain	0	vtable-override		EffLight3::liveMain()	-
+00175dc4	method	EffLight3	vfunc_05	0	vtable-slot			
 00176694	method	EffFindItem1	vfunc_02	0	vtable-slot			
-00176700	method	EffFindItem1	liveMain	0	vtable-override		EffFindItem1::liveMain()	-
-00176728	method	EffFindItem1	render	0	vtable-override		EffFindItem1::render(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
-00176754	method	EffFindItem1	liveMain	0	vtable-override		EffFindItem1::liveMain()	-
-001769ec	method	EffFindItem1	updateZDepth	0	vtable-override		EffFindItem1::updateZDepth()	-
+00176700	method	EffFindItem1	vfunc_05	0	vtable-slot			
+00176728	method	EffFindItem1	render	0	vtable-override	render__12EffFindItem1PQ24Eff011RENDERPARAM	EffFindItem1::render(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
+00176754	method	EffFindItem1	vfunc_08	0	vtable-slot			
+001769ec	method	EffFindItem1	updateZDepth	0	vtable-override	updateZDepth__12EffFindItem1	EffFindItem1::updateZDepth()	-
 001788ec	method	EffMuzzleFlash1	vfunc_02	0	vtable-slot			
-00178ac0	method	EffMuzzleFlash1	liveMain	0	vtable-override		EffMuzzleFlash1::liveMain()	-
-00178c84	method	EffMuzzleFlash1	liveMain	0	vtable-override		EffMuzzleFlash1::liveMain()	-
-001790a4	method	EffMuzzleFlash1	updateZDepth	0	vtable-override		EffMuzzleFlash1::updateZDepth()	-
-0017911c	dtor	EffReload1	~EffReload1	0	vtable-override		EffReload1::~EffReload1()	-
+00178ac0	method	EffMuzzleFlash1	vfunc_05	0	vtable-slot			
+00178c84	method	EffMuzzleFlash1	vfunc_08	0	vtable-slot			
+001790a4	method	EffMuzzleFlash1	updateZDepth	0	vtable-override	updateZDepth__15EffMuzzleFlash1	EffMuzzleFlash1::updateZDepth()	-
+0017911c	dtor	EffReload1	~EffReload1	0	vtable-override	_$_10EffReload1	EffReload1::~EffReload1()	-
 001791ac	method	EffReload1	vfunc_02	0	vtable-slot			
-00179324	method	EffReload1	liveMain	0	vtable-override		EffReload1::liveMain()	-
-00179390	method	EffReload1	renderPreMain	0	vtable-override		EffReload1::renderPreMain(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
+00179324	method	EffReload1	vfunc_05	0	vtable-slot			
+00179390	method	EffReload1	renderPreMain	0	vtable-override	renderPreMain__10EffReload1PQ24Eff011RENDERPARAM	EffReload1::renderPreMain(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
 00179428	method	EffSteam1	vfunc_02	0	vtable-slot			
-0017955c	method	EffSteam1	liveMain	0	vtable-override		EffSteam1::liveMain()	-
+0017955c	method	EffSteam1	vfunc_05	0	vtable-slot			
 001797d8	method	EffSteam1Prim	vfunc_02	0	vtable-slot			
-001798d8	method	EffSteam1Prim	liveMain	0	vtable-override		EffSteam1Prim::liveMain()	-
-00179998	method	EffSteam1Prim	liveMain	0	vtable-override		EffSteam1Prim::liveMain()	-
-00179b5c	method	EffSteam1Prim	updateZDepth	0	vtable-override		EffSteam1Prim::updateZDepth()	-
+001798d8	method	EffSteam1Prim	vfunc_05	0	vtable-slot			
+00179998	method	EffSteam1Prim	vfunc_08	0	vtable-slot			
+00179b5c	method	EffSteam1Prim	updateZDepth	0	vtable-override	updateZDepth__13EffSteam1Prim	EffSteam1Prim::updateZDepth()	-
 00179b9c	method	EffSteam2	vfunc_02	0	vtable-slot			
-00179c30	method	EffSteam2	liveMain	0	vtable-override		EffSteam2::liveMain()	-
+00179c30	method	EffSteam2	vfunc_05	0	vtable-slot			
 00179dfc	method	EffSteam2Prim	vfunc_02	0	vtable-slot			
-00179e70	method	EffSteam2Prim	liveMain	0	vtable-override		EffSteam2Prim::liveMain()	-
-00179ed0	method	EffSteam2Prim	liveMain	0	vtable-override		EffSteam2Prim::liveMain()	-
-0017a2bc	method	EffSteam2Prim	updateZDepth	0	vtable-override		EffSteam2Prim::updateZDepth()	-
+00179e70	method	EffSteam2Prim	vfunc_05	0	vtable-slot			
+00179ed0	method	EffSteam2Prim	vfunc_08	0	vtable-slot			
+0017a2bc	method	EffSteam2Prim	updateZDepth	0	vtable-override	updateZDepth__13EffSteam2Prim	EffSteam2Prim::updateZDepth()	-
 0017a2fc	method	EffCloud1	vfunc_02	0	vtable-slot			
-0017a534	method	EffCloud1	liveMain	0	vtable-override		EffCloud1::liveMain()	-
-0017a5ec	method	EffCloud1	liveMain	0	vtable-override		EffCloud1::liveMain()	-
-0017a8d8	method	EffCloud1	updateZDepth	0	vtable-override		EffCloud1::updateZDepth()	-
-0017a94c	dtor	EffWater1	~EffWater1	0	vtable-override		EffWater1::~EffWater1()	-
+0017a534	method	EffCloud1	vfunc_05	0	vtable-slot			
+0017a5ec	method	EffCloud1	vfunc_08	0	vtable-slot			
+0017a8d8	method	EffCloud1	updateZDepth	0	vtable-override	updateZDepth__9EffCloud1	EffCloud1::updateZDepth()	-
+0017a94c	dtor	EffWater1	~EffWater1	0	vtable-override	_$_9EffWater1	EffWater1::~EffWater1()	-
 0017a9c8	method	EffWater1	vfunc_02	0	vtable-slot			
-0017ac5c	method	EffWater1	liveMain	0	vtable-override		EffWater1::liveMain()	-
-0017adc0	method	EffWater1	liveActivateExec	0	vtable-override		EffWater1::liveActivateExec()	-
-0017ae04	method	EffWater1	renderPreMain	0	vtable-override		EffWater1::renderPreMain(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
-0017b010	dtor	EffWater3	~EffWater3	0	vtable-override		EffWater3::~EffWater3()	-
+0017ac5c	method	EffWater1	vfunc_05	0	vtable-slot			
+0017adc0	method	EffWater1	liveActivateExec	0	vtable-override	liveActivateExec__9EffWater1	EffWater1::liveActivateExec()	-
+0017ae04	method	EffWater1	renderPreMain	0	vtable-override	renderPreMain__9EffWater1PQ24Eff011RENDERPARAM	EffWater1::renderPreMain(Eff0::RENDERPARAM *)	Eff0::RENDERPARAM *
+0017b010	dtor	EffWater3	~EffWater3	0	vtable-override	_$_9EffWater3	EffWater3::~EffWater3()	-
 0017b0a4	method	EffWater3	vfunc_02	0	vtable-slot			
-0017b5e0	method	EffWater3	liveMain	0	vtable-override		EffWater3::liveMain()	-
-0017b6d4	method	EffWater3	liveMain	0	vtable-override		EffWater3::liveMain()	-
+0017b5e0	method	EffWater3	vfunc_05	0	vtable-slot			
+0017b6d4	method	EffWater3	vfunc_08	0	vtable-slot			
 0017c5b0	method	SctLayer	vfunc_01	0	vtable-slot			
 0017e564	method	WrdSrv	vfunc_01	0	vtable-slot			
 00190ad4	method	S2dCineSco	vfunc_01	0	vtable-slot			
@@ -635,24 +635,24 @@ addr	kind	class	name	size	source	mangled	signature	params
 001938a8	method	mnuBase	vfunc_10	0	vtable-slot			
 00193920	method	mnuBase	vfunc_11	0	vtable-slot			
 00194858	method	MnuMap	vfunc_01	0	vtable-slot			
-00194908	method	MnuMap	liveMain	0	vtable-override		MnuMap::liveMain()	-
+00194908	method	MnuMap	vfunc_02	0	vtable-slot			
 00194960	method	MnuMap	vfunc_03	0	vtable-slot			
-00194fe4	method	MnuMap	liveMain	0	vtable-override		MnuMap::liveMain()	-
-00195e90	method	MnuMap	liveMain	0	vtable-override		MnuMap::liveMain()	-
+00194fe4	method	MnuMap	vfunc_05	0	vtable-slot			
+00195e90	method	MnuMap	vfunc_06	0	vtable-slot			
 00196b2c	method	MnuPBook	vfunc_01	0	vtable-slot			
-00196bdc	method	MnuPBook	liveMain	0	vtable-override		MnuPBook::liveMain()	-
+00196bdc	method	MnuPBook	vfunc_02	0	vtable-slot			
 00196d98	method	MnuPBook	vfunc_03	0	vtable-slot			
-001976b8	method	MnuPBook	liveMain	0	vtable-override		MnuPBook::liveMain()	-
-00197f70	method	MnuPBook	liveMain	0	vtable-override		MnuPBook::liveMain()	-
+001976b8	method	MnuPBook	vfunc_05	0	vtable-slot			
+00197f70	method	MnuPBook	vfunc_06	0	vtable-slot			
 00198290	method	MnuPBook	vfunc_07	0	vtable-slot			
 001987b0	method	MnuDiary	vfunc_01	0	vtable-slot			
-00198860	method	MnuDiary	liveMain	0	vtable-override		MnuDiary::liveMain()	-
+00198860	method	MnuDiary	vfunc_02	0	vtable-slot			
 00198a38	method	MnuDiary	vfunc_03	0	vtable-slot			
-001990b0	method	MnuDiary	liveMain	0	vtable-override		MnuDiary::liveMain()	-
-00199c94	method	MnuDiary	liveMain	0	vtable-override		MnuDiary::liveMain()	-
+001990b0	method	MnuDiary	vfunc_05	0	vtable-slot			
+00199c94	method	MnuDiary	vfunc_06	0	vtable-slot			
 00199fcc	method	MnuDiary	vfunc_07	0	vtable-slot			
 001c0c8c	method	GamMan	vfunc_01	0	vtable-slot			
-001d88c8	dtor	ObjStat	~ObjStat	0	vtable-override		ObjStat::~ObjStat()	-
+001d88c8	dtor	ObjStat	~ObjStat	0	vtable-override	_$_7ObjStat	ObjStat::~ObjStat()	-
 001e0eb8	method	GamSndMan	vfunc_01	0	vtable-slot			
 001e7ed0	method	TskTest	vfunc_04	0	vtable-slot			
 001e7f18	method	TskLogger	vfunc_04	0	vtable-slot			
@@ -731,7 +731,7 @@ addr	kind	class	name	size	source	mangled	signature	params
 001fc16c	method	TskCamera	vfunc_05	0	vtable-slot			
 001fc174	method	TskCamera	vfunc_04	0	vtable-slot			
 001fce0c	method	TskBGLoad	vfunc_03	0	vtable-slot			
-001fce14	method	TskBGLoad	term	0	vtable-override		TskBGLoad::term()	-
+001fce14	method	TskBGLoad	term	0	vtable-override	term__9TskBGLoad	TskBGLoad::term()	-
 001fce1c	method	TskBGLoad	vfunc_04	0	vtable-slot			
 001fcf6c	method	TskBGLoadArea	vfunc_07	0	vtable-slot			
 001fd008	method	TskBGLoadArea	vfunc_04	0	vtable-slot			
@@ -750,8 +750,8 @@ addr	kind	class	name	size	source	mangled	signature	params
 002168bc	method	EventTestTask	vfunc_06	0	vtable-slot			
 002168f0	method	EventTestTask	vfunc_03	0	vtable-slot			
 002168f8	method	EventTestTask	vfunc_04	0	vtable-slot			
-00272a30	method	Eff0	liveMain	0	vtable-override		Eff0::liveMain()	-
-00275cf8	dtor	type_info	~type_info	0	vtable-override		type_info::~type_info()	-
+00272a30	function		__pure_virtual	0	shared-stub	__pure_virtual		
+00275cf8	dtor	type_info	~type_info	0	vtable-override	_$_9type_info	type_info::~type_info()	-
 00275d98	function		__rtti_si	0	rtti-helper	__rtti_si		
 00275db8	function		__rtti_user	0	rtti-helper	__rtti_user		
 00275f98	method	__user_type_info	vfunc_02	0	vtable-slot			

@@ -1,0 +1,11 @@
+#!/bin/sh
+# Run a command inside the ror-build image with the repo mounted at /work.
+#   tools/dock ninja
+#   tools/dock python3 tools/configure.py
+set -e
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+DOCKER="$(command -v docker || echo "$HOME/.docker/bin/docker")"
+TTY=""
+[ -t 0 ] && [ -t 1 ] && TTY="-it"
+exec "$DOCKER" run --rm $TTY --platform linux/amd64 \
+  -v "$ROOT":/work -w /work ror-build "$@"

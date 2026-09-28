@@ -390,7 +390,7 @@ addr	function	source_files
 00151d4c	FUN_00151d4c	dog/dogmodel.h
 00157230	FUN_00157230	dog/dogmodel.h
 0015ff54	FUN_0015ff54	dog/dogmodel.h
-00161300	DwfOutFort::liveMain	dog/dogmodel.h
+00161300	DwfOutFort::vfunc_03	dog/dogmodel.h
 00164364	FUN_00164364	emy/emy_main.cpp
 00164508	FUN_00164508	emy/emy_main.cpp
 00165280	FUN_00165280	dog/dogmodel.h
@@ -413,17 +413,17 @@ addr	function	source_files
 0016af20	FUN_0016af20	dog/doglightpool.h
 0016b060	EffBg1::vfunc_02	bed/bedpfh.h
 0016dcc8	EffBreath1::vfunc_02	dog/dogmodel.h
-0016e7cc	EffBreath1Space::liveMain	dog/dogmodel.h
+0016e7cc	EffBreath1Space::vfunc_05	dog/dogmodel.h
 0016e9f4	FUN_0016e9f4	dog/dogmodel.h
 00170158	FUN_00170158	dog/dogmodel.h
 00172b30	EffFog3::vfunc_02	bed/bedpfh.h
-00172f4c	EffFoot1::liveMain	dog/dogmodel.h, mag/magscene.h
-00173688	EffFoot2::liveMain	dog/dogmodel.h, mag/magscene.h
+00172f4c	EffFoot1::vfunc_05	dog/dogmodel.h, mag/magscene.h
+00173688	EffFoot2::vfunc_05	dog/dogmodel.h, mag/magscene.h
 00173948	FUN_00173948	dog/dogmodel.h
 00173f3c	EffGeneric1::vfunc_02	bed/bedpfh.h
 001782cc	FUN_001782cc	bed/bedpfh.h
 001788ec	EffMuzzleFlash1::vfunc_02	dog/doglightpool.h
-00178ac0	EffMuzzleFlash1::liveMain	dog/doglightpool.h
+00178ac0	EffMuzzleFlash1::vfunc_05	dog/doglightpool.h
 0017a9c8	EffWater1::vfunc_02	bed/bedpfh.h
 00180230	FUN_00180230	snd/sndman.cpp
 00181c14	FUN_00181c14	snd/rxmpeg.cpp
