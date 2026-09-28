@@ -754,15 +754,6 @@ TskEnemyTurn__vfunc_02 = 0x0020395C; // type:func // provenance=vtable-slot
 EventTestTask__vfunc_06 = 0x002168BC; // type:func // provenance=vtable-slot
 EventTestTask__vfunc_03 = 0x002168F0; // type:func // provenance=vtable-slot
 EventTestTask__vfunc_04 = 0x002168F8; // type:func // provenance=vtable-slot
-sceVu0ClampVector = 0x00236AC8; // type:func size:0x24 // provenance=sce-sdb
-sceVu0TransposeMatrix = 0x00236CE8; // type:func size:0x44 // provenance=sce-sdb
-sceVu0ClampVector_002374E0 = 0x002374E0; // type:func size:0x24 // provenance=sce-sdb
-sceVu0ClampVector_00237508 = 0x00237508; // type:func size:0x24 // provenance=sce-sdb
-sceVu0TransposeMatrix_00237788 = 0x00237788; // type:func size:0x44 // provenance=sce-sdb
-__get_eh_context = 0x00238740; // type:func size:0x24 // provenance=sce-sdb
-__get_eh_context_00238768 = 0x00238768; // type:func size:0x24 // provenance=sce-sdb
-__get_eh_context_002390A8 = 0x002390A8; // type:func size:0x24 // provenance=sce-sdb
-__get_eh_context_002390D0 = 0x002390D0; // type:func size:0x24 // provenance=sce-sdb
 sceCdCallback = 0x0024B490; // type:func size:0x68 // provenance=sce-sdb
 _sceCd_cd_read_intr = 0x0024B708; // type:func size:0xB8 // provenance=sce-sdb
 cmd_sem_init = 0x0024B7C0; // type:func size:0xE4 // provenance=sce-sdb
@@ -946,7 +937,7 @@ sceVu0ApplyMatrix = 0x0025B658; // type:func size:0x2C // provenance=sce-sdb
 sceVu0MulMatrix = 0x0025B688; // type:func size:0x44 // provenance=sce-sdb
 sceVu0InnerProduct = 0x0025B6F0; // type:func size:0x24 // provenance=sce-sdb
 sceVu0Normalize = 0x0025B718; // type:func size:0x3C // provenance=sce-sdb
-sceVu0TransposeMatrix_0025B758 = 0x0025B758; // type:func size:0x44 // provenance=sce-sdb
+sceVu0TransposeMatrix = 0x0025B758; // type:func size:0x44 // provenance=sce-sdb
 sceVu0InversMatrix = 0x0025B7A0; // type:func size:0x6C // provenance=sce-sdb
 sceVu0DivVector = 0x0025B810; // type:func size:0x20 // provenance=sce-sdb
 sceVu0DivVectorXYZ = 0x0025B830; // type:func size:0x20 // provenance=sce-sdb
@@ -959,7 +950,7 @@ sceVu0RotMatrixZ = 0x0025BA20; // type:func size:0xA4 // provenance=sce-sdb
 sceVu0RotMatrixX = 0x0025BAC8; // type:func size:0xA8 // provenance=sce-sdb
 sceVu0RotMatrixY = 0x0025BB70; // type:func size:0xA8 // provenance=sce-sdb
 sceVu0RotMatrix = 0x0025BC18; // type:func size:0x50 // provenance=sce-sdb
-sceVu0ClampVector_0025BC68 = 0x0025BC68; // type:func size:0x24 // provenance=sce-sdb
+sceVu0ClampVector = 0x0025BC68; // type:func size:0x24 // provenance=sce-sdb
 sceVu0CameraMatrix = 0x0025BC90; // type:func size:0xB0 // provenance=sce-sdb
 sceVu0NormalLightMatrix = 0x0025BD40; // type:func size:0xC0 // provenance=sce-sdb
 sceVu0LightColorMatrix = 0x0025BE00; // type:func size:0x68 // provenance=sce-sdb
@@ -1274,7 +1265,7 @@ __fixunssfdi = 0x00272780; // type:func size:0x128 // provenance=sce-sdb
 __pure_virtual = 0x00272A30; // type:func // provenance=shared-stub
 new_eh_context = 0x00272AB0; // type:func size:0x54 // provenance=sce-sdb
 eh_context_free = 0x00272B08; // type:func size:0x24 // provenance=sce-sdb
-__get_eh_context_00272B30 = 0x00272B30; // type:func size:0x24 // provenance=sce-sdb
+__get_eh_context = 0x00272B30; // type:func size:0x24 // provenance=sce-sdb
 __get_eh_info = 0x00272B58; // type:func size:0x28 // provenance=sce-sdb
 init_reg_size_table = 0x00272B80; // type:func size:0x208 // provenance=sce-sdb
 eh_context_initialize = 0x00272DA0; // type:func size:0x64 // provenance=sce-sdb

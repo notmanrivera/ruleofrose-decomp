@@ -141,6 +141,9 @@ def main():
                      if b > last_game and has_padding(rom, a, b)), TEXT_END)
     game = [a for a in starts if a < game_end]
     lib = [a for a in starts if a >= game_end]
+    # Ghidra and splat can disagree on where a function starts (and splat's
+    # view shifts as files move); map each tag to the splat function holding it.
+    tags = sorted({(game[bisect.bisect_right(game, a) - 1], f) for a, f in tags if a >= game[0]})
     lib_ro = min((r for a in lib for r in funcs[a]["refs"]), default=RODATA[1])
     refs = [{r for r in funcs[a]["refs"] if r < lib_ro} for a in game]
     n = len(game)
@@ -331,7 +334,13 @@ def main():
           f"{unmet} unmet; ctor anchors: {len(anchors)}; hidden files added: {hidden}")
 
     assign_rodata(rows, game, refs, names, lib_ro)
-    rows += sdk_rows(game_end, lib_ro, TEXT_END)
+    lib_rows = apply_manual(sdk_rows(game_end, lib_ro, TEXT_END), starts)
+    lib = [a for a in starts if a >= game_end]
+    for r in lib_rows:
+        r[1] = None
+    assign_rodata(lib_rows, lib, [{x for x in funcs[a]["refs"] if x >= lib_ro} for a in lib],
+                  names, RODATA[1], region=(lib_ro, RODATA[1]))
+    rows += lib_rows
     for r in rows:
         r[2:2] = [None, None]  # data, bss
     stats = assign_owned(rows, funcs, names, rom)
@@ -343,7 +352,8 @@ def main():
         f.write("# by class/call evidence; conflict = no cut separates the .rodata references;\n")
         f.write("# anchor = exact file end from .ctors/.dtors; family = class-family change with\n")
         f.write("# clean .rodata and no split local symbol;\n")
-        f.write("# signature = SDK library identified by tools/sce_symbols.py; unknown = unidentified.\n")
+        f.write("# signature = SDK library identified by tools/sce_symbols.py; unknown = unidentified;\n")
+        f.write("# manual = from config/splits_manual.tsv.\n")
         f.write("# rodata/data/bss '-' = no chunk of its own (shares the previous file's).\n")
         f.write("text\trodata\tdata\tbss\tfile\tconfidence\n")
         for t, ro, da, bs, name, conf in rows:
@@ -444,7 +454,7 @@ def score(k, i, j, game, evidence, f1, f2):
     return s
 
 
-def assign_rodata(rows, game, refs, names, lib_ro):
+def assign_rodata(rows, game, refs, names, lib_ro, region=None):
     """Give each game file the .rodata chunk its functions reference.
 
     Chunks are in link order, so each file's chunk starts where the fewest
@@ -453,16 +463,17 @@ def assign_rodata(rows, game, refs, names, lib_ro):
     first 8-aligned symbol after the previous files' last reference. Files
     that reference no .rodata get none (they share the previous chunk).
     """
-    cands = sorted({a for a in names.values() if RODATA[0] <= a < lib_ro and a % 8 == 0})
+    lo_ro, hi_ro = region or (RODATA[0], lib_ro)
+    cands = sorted({a for a in names.values() if lo_ro <= a < hi_ro and a % 8 == 0})
     bounds = [bisect.bisect_left(game, r[0]) for r in rows] + [len(game)]
     per_file = [sorted(x for k in range(bounds[i], bounds[i + 1]) for x in refs[k])
                 for i in range(len(rows))]
-    before, last = [], RODATA[0] - 1
+    before, last = [], lo_ro - 1
     for i, mine in enumerate(per_file):
         if not mine:
             continue
-        if last < RODATA[0]:
-            cut = RODATA[0]
+        if last < lo_ro:
+            cut = lo_ro
         else:
             lo = bisect.bisect_right(cands, last)
             hi = bisect.bisect_right(cands, mine[-1])
@@ -541,6 +552,28 @@ def longest_nondecreasing(seq):
         out.append(k)
         k = prev[k]
     return out[::-1]
+
+
+def apply_manual(rows, starts):
+    """Merge config/splits_manual.tsv into `rows` ([text, rodata, name, conf])."""
+    path = ROOT / "config/splits_manual.tsv"
+    if not path.exists():
+        return rows
+    for line in path.read_text().splitlines():
+        if line.startswith(("#", "text\t")) or not line.strip():
+            continue
+        text, name, _ = line.split("\t", 2)
+        a = int(text, 16)
+        if a not in starts:
+            raise SystemExit(f"splits_manual.tsv: 0x{a:08X} is not a function start")
+        for r in rows:
+            if r[0] == a:
+                r[2], r[3] = name, "manual"
+                break
+        else:
+            rows.append([a, None, name, "manual"])
+    rows.sort(key=lambda r: r[0])
+    return rows
 
 
 def sdk_rows(game_end, lib_ro, text_end):

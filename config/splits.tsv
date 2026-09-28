@@ -3,7 +3,8 @@
 # by class/call evidence; conflict = no cut separates the .rodata references;
 # anchor = exact file end from .ctors/.dtors; family = class-family change with
 # clean .rodata and no split local symbol;
-# signature = SDK library identified by tools/sce_symbols.py; unknown = unidentified.
+# signature = SDK library identified by tools/sce_symbols.py; unknown = unidentified;
+# manual = from config/splits_manual.tsv.
 # rodata/data/bss '-' = no chunk of its own (shares the previous file's).
 text	rodata	data	bss	file	confidence
 00100000	-	-	00308100	sdk/crt0	likely
@@ -129,24 +130,23 @@ text	rodata	data	bss	file	confidence
 00216690	00301AA0	-	-	unk/00216690	likely
 00216728	00301AC0	-	-	debug/naga_debug	certain
 00216828	00301AF8	002DB2A0	007B4E08	unk/EventTestTask	likely
-00218500	00301E78	002DB330	-	sdk/unknown_00218500	unknown
-00236AC8	-	002DB638	007B5AC0	sdk/libvu0	signature
-00238740	-	002DB960	007B6B00	sdk/libgcc	signature
-0024B490	-	002DC2D0	00818680	sdk/libcdvd	signature
-0024D220	-	002DDE88	00818940	sdk/libmc	signature
-0024EA58	-	002DDEA8	00819F40	sdk/libmpeg	signature
-00258F78	-	002DE090	-	sdk/libgraph	signature
-0025AE10	-	002DE0E0	0081A140	sdk/libdma	signature
-0025B658	-	002DE120	-	sdk/libvu0_2	signature
-0025C3D0	-	-	-	sdk/libdev	signature
-0025DD70	-	002DE15C	0081A160	sdk/libkernl	signature
+00218500	00301E78	002DB330	-	mw/i3d	manual
+00237D00	00303CB0	002DB638	007B5AC0	mw/sound	manual
+0024B490	00305048	002DC2D0	00818680	sdk/libcdvd	signature
+0024D220	003052D8	002DDE88	00818940	sdk/libmc	signature
+0024EA58	00305390	002DDEA8	00819F40	sdk/libmpeg	signature
+00258F78	00305968	002DE090	-	sdk/libgraph	signature
+0025AE10	00305EA0	002DE0E0	0081A140	sdk/libdma	signature
+0025B658	-	002DE120	-	sdk/libvu0	signature
+0025C3D0	00305F10	-	-	sdk/libdev	signature
+0025DD70	00305F48	002DE15C	0081A160	sdk/libkernl	signature
 00269948	-	002DF840	-	sdk/libipu	signature
-00269F88	-	002DF8C0	00821E40	sdk/libdbc	signature
-0026B1D8	-	002DF8D8	00824308	sdk/libpad2	signature
+00269F88	003065A8	002DF8C0	00821E40	sdk/libdbc	signature
+0026B1D8	00306850	002DF8D8	00824308	sdk/libpad2	signature
 0026BA90	-	-	-	sdk/libvib	signature
-0026BC00	-	002DF8E8	-	sdk/libscf	signature
-0026C2F0	-	-	-	sdk/libm	signature
-00270CF8	-	002DF930	00827648	sdk/libgcc_2	signature
-002781E8	-	002DF9F0	-	sdk/libc	signature
+0026BC00	003068B0	002DF918	-	sdk/libscf	signature
+0026C2F0	003068D0	-	-	sdk/libm	signature
+00270CF8	003072E0	002DF930	00827648	sdk/libgcc	signature
+002781E8	00307900	002DF9F0	-	sdk/libc	signature
 00280B88	-	-	-	sdk/libkernl_2	signature
-00280E08	-	-	-	sdk/libgcc_3	signature
+00280E08	-	-	-	sdk/libgcc_2	signature

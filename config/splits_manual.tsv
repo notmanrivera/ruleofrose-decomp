@@ -1,0 +1,6 @@
+# Hand-made file boundaries and names, merged by tools/split_files.py.
+# A row forces a file to start at `text` with this name (renaming the
+# generated file if one already starts there). Give the evidence.
+text	file	evidence
+00218500	mw/i3d	Engine graphics library (C): I3D_BIN/I3D_I3M/I3D_I3C format IDs in its .rodata; called from dog/, mag/, effects and menus. Every function is 8-aligned (built with other flags than the game).
+00237D00	mw/sound	Sound library: from here on callers are snd/ and game/ (sound manager); 0x237D00 is the first function calling into this region, the ones before it are called by i3d.

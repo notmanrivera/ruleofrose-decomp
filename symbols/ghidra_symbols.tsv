@@ -750,15 +750,6 @@ addr	kind	class	name	size	source	mangled	signature	params
 002168bc	method	EventTestTask	vfunc_06	0	vtable-slot			
 002168f0	method	EventTestTask	vfunc_03	0	vtable-slot			
 002168f8	method	EventTestTask	vfunc_04	0	vtable-slot			
-00236ac8	function		sceVu0ClampVector	24	sce-sdb	sceVu0ClampVector		
-00236ce8	function		sceVu0TransposeMatrix	44	sce-sdb	sceVu0TransposeMatrix		
-002374e0	function		sceVu0ClampVector	24	sce-sdb	sceVu0ClampVector		
-00237508	function		sceVu0ClampVector	24	sce-sdb	sceVu0ClampVector		
-00237788	function		sceVu0TransposeMatrix	44	sce-sdb	sceVu0TransposeMatrix		
-00238740	function		__get_eh_context	24	sce-sdb	__get_eh_context		
-00238768	function		__get_eh_context	24	sce-sdb	__get_eh_context		
-002390a8	function		__get_eh_context	24	sce-sdb	__get_eh_context		
-002390d0	function		__get_eh_context	24	sce-sdb	__get_eh_context		
 0024b490	function		sceCdCallback	68	sce-sdb	sceCdCallback		
 0024b708	function		_sceCd_cd_read_intr	b8	sce-sdb	_sceCd_cd_read_intr		
 0024b7c0	function		cmd_sem_init	e4	sce-sdb	cmd_sem_init		

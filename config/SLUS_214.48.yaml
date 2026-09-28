@@ -175,15 +175,14 @@ segments:
       - [0x116690, asm, unk/00216690] # .text (likely)
       - [0x116728, asm, debug/naga_debug] # .text (certain)
       - [0x116828, asm, unk/EventTestTask] # .text (likely)
-      - [0x118500, asm, sdk/unknown_00218500] # .text (unknown)
-      - [0x136AC8, asm, sdk/libvu0] # .text (signature)
-      - [0x138740, asm, sdk/libgcc] # .text (signature)
+      - [0x118500, asm, mw/i3d] # .text (manual)
+      - [0x137D00, asm, mw/sound] # .text (manual)
       - [0x14B490, asm, sdk/libcdvd] # .text (signature)
       - [0x14D220, asm, sdk/libmc] # .text (signature)
       - [0x14EA58, asm, sdk/libmpeg] # .text (signature)
       - [0x158F78, asm, sdk/libgraph] # .text (signature)
       - [0x15AE10, asm, sdk/libdma] # .text (signature)
-      - [0x15B658, asm, sdk/libvu0_2] # .text (signature)
+      - [0x15B658, asm, sdk/libvu0] # .text (signature)
       - [0x15C3D0, asm, sdk/libdev] # .text (signature)
       - [0x15DD70, asm, sdk/libkernl] # .text (signature)
       - [0x169948, asm, sdk/libipu] # .text (signature)
@@ -192,10 +191,10 @@ segments:
       - [0x16BA90, asm, sdk/libvib] # .text (signature)
       - [0x16BC00, asm, sdk/libscf] # .text (signature)
       - [0x16C2F0, asm, sdk/libm] # .text (signature)
-      - [0x170CF8, asm, sdk/libgcc_2] # .text (signature)
+      - [0x170CF8, asm, sdk/libgcc] # .text (signature)
       - [0x1781E8, asm, sdk/libc] # .text (signature)
       - [0x180B88, asm, sdk/libkernl_2] # .text (signature)
-      - [0x180E08, asm, sdk/libgcc_3] # .text (signature)
+      - [0x180E08, asm, sdk/libgcc_2] # .text (signature)
       - [0x180E88, asm, inline/__tf9DogEntity] # .gnu.linkonce.t.__tf9DogEntity
       - [0x180EC8, asm, inline/reset__9DogEntity] # .gnu.linkonce.t.reset__9DogEntity
       - [0x180F18, asm, inline/transform__9DogEntity] # .gnu.linkonce.t.transform__9DogEntity
@@ -1684,21 +1683,20 @@ segments:
       - [0x1D9950, data, unk/0020ED9C] # .data (likely)
       - [0x1D9E08, data, unk/002155F4] # .data (anchor)
       - [0x1DB2A0, data, unk/EventTestTask] # .data (likely)
-      - [0x1DB330, data, sdk/unknown_00218500] # .data (unknown)
-      - [0x1DB638, data, sdk/libvu0] # .data (signature)
-      - [0x1DB960, data, sdk/libgcc] # .data (signature)
+      - [0x1DB330, data, mw/i3d] # .data (manual)
+      - [0x1DB638, data, mw/sound] # .data (manual)
       - [0x1DC2D0, data, sdk/libcdvd] # .data (signature)
       - [0x1DDE88, data, sdk/libmc] # .data (signature)
       - [0x1DDEA8, data, sdk/libmpeg] # .data (signature)
       - [0x1DE090, data, sdk/libgraph] # .data (signature)
       - [0x1DE0E0, data, sdk/libdma] # .data (signature)
-      - [0x1DE120, data, sdk/libvu0_2] # .data (signature)
+      - [0x1DE120, data, sdk/libvu0] # .data (signature)
       - [0x1DE15C, data, sdk/libkernl] # .data (signature)
       - [0x1DF840, data, sdk/libipu] # .data (signature)
       - [0x1DF8C0, data, sdk/libdbc] # .data (signature)
       - [0x1DF8D8, data, sdk/libpad2] # .data (signature)
-      - [0x1DF8E8, data, sdk/libscf] # .data (signature)
-      - [0x1DF930, data, sdk/libgcc_2] # .data (signature)
+      - [0x1DF918, data, sdk/libscf] # .data (signature)
+      - [0x1DF930, data, sdk/libgcc] # .data (signature)
       - [0x1DF9F0, data, sdk/libc] # .data (signature)
       - [0x1E014C, data, main/ctors] # .ctors
       - [0x1E0164, data, main/dtors] # .dtors
@@ -2107,7 +2105,21 @@ segments:
       - [0x201AA0, rodata, unk/00216690] # .rodata (likely)
       - [0x201AC0, rodata, debug/naga_debug] # .rodata (certain)
       - [0x201AF8, rodata, unk/EventTestTask] # .rodata (likely)
-      - [0x201E78, rodata, sdk/unknown_00218500] # .rodata (unknown)
+      - [0x201E78, rodata, mw/i3d] # .rodata (manual)
+      - [0x203CB0, rodata, mw/sound] # .rodata (manual)
+      - [0x205048, rodata, sdk/libcdvd] # .rodata (signature)
+      - [0x2052D8, rodata, sdk/libmc] # .rodata (signature)
+      - [0x205390, rodata, sdk/libmpeg] # .rodata (signature)
+      - [0x205968, rodata, sdk/libgraph] # .rodata (signature)
+      - [0x205EA0, rodata, sdk/libdma] # .rodata (signature)
+      - [0x205F10, rodata, sdk/libdev] # .rodata (signature)
+      - [0x205F48, rodata, sdk/libkernl] # .rodata (signature)
+      - [0x2065A8, rodata, sdk/libdbc] # .rodata (signature)
+      - [0x206850, rodata, sdk/libpad2] # .rodata (signature)
+      - [0x2068B0, rodata, sdk/libscf] # .rodata (signature)
+      - [0x2068D0, rodata, sdk/libm] # .rodata (signature)
+      - [0x2072E0, rodata, sdk/libgcc] # .rodata (signature)
+      - [0x207900, rodata, sdk/libc] # .rodata (signature)
       - [0x207F80, gcc_except_table, main/gcc_except_table] # .gcc_except_table
       - { type: sbss, vram: 0x00308000, name: main/sbss } # .sbss
       - { type: bss, vram: 0x00308100, name: sdk/crt0 } # .bss
@@ -2130,8 +2142,7 @@ segments:
       - { type: bss, vram: 0x007A3350, name: system/sysnowloading } # .bss
       - { type: bss, vram: 0x007B2060, name: unk/0020ED9C } # .bss
       - { type: bss, vram: 0x007B4E08, name: unk/EventTestTask } # .bss
-      - { type: bss, vram: 0x007B5AC0, name: sdk/libvu0 } # .bss
-      - { type: bss, vram: 0x007B6B00, name: sdk/libgcc } # .bss
+      - { type: bss, vram: 0x007B5AC0, name: mw/sound } # .bss
       - { type: bss, vram: 0x00818680, name: sdk/libcdvd } # .bss
       - { type: bss, vram: 0x00818940, name: sdk/libmc } # .bss
       - { type: bss, vram: 0x00819F40, name: sdk/libmpeg } # .bss
@@ -2139,5 +2150,5 @@ segments:
       - { type: bss, vram: 0x0081A160, name: sdk/libkernl } # .bss
       - { type: bss, vram: 0x00821E40, name: sdk/libdbc } # .bss
       - { type: bss, vram: 0x00824308, name: sdk/libpad2 } # .bss
-      - { type: bss, vram: 0x00827648, name: sdk/libgcc_2 } # .bss
+      - { type: bss, vram: 0x00827648, name: sdk/libgcc } # .bss
   - [0x207FFC]

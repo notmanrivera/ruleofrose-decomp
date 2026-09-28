@@ -17,10 +17,10 @@ findings and the roadmap.
 | | |
 |---|---|
 | Matching build | ✅ all-asm build, SHA-1 `fa157dc8…1997` of the load image |
-| File split | 144 files ([config/splits.tsv](config/splits.tsv)): 72 game files named from assert paths, 50 inferred `unk/<main class>` files, crt0, the engine middleware and 20 SDK library runs; `.text`, `.rodata`, `.data` and `.bss` each split per file |
+| File split | 143 files ([config/splits.tsv](config/splits.tsv)): 72 game files named from assert paths, 50 inferred `unk/<main class>` files, crt0, the engine middleware (`mw/i3d` graphics, `mw/sound`) and 18 SDK library runs; `.text`, `.rodata`, `.data` and `.bss` each split per file |
 | Compiler | **ee-gcc 2.96 (SCE), `-Os -G0 -fno-exceptions`**: 3/3 test functions match byte for byte ([details](matching/compiler_id/README.md)) |
 | Functions found by Ghidra | 7,230 |
-| Functions with their original name | 1,449 exact (`.gnu.linkonce`) + 111 inferred from vtable overrides + 657 SDK/libc/libgcc functions by signature |
+| Functions with their original name | 1,449 exact (`.gnu.linkonce`) + 111 inferred from vtable overrides + 648 SDK/libc/libgcc functions by signature |
 | Virtual methods tied to a class only | 651 (`Class::vfunc_NN`) |
 | Parameter types applied | 1,267 functions (demangler validated against Ghidra's GCC2 one: 1,160/1,160 equivalent) |
 | C++ classes / vtables | 289 / 284, hierarchy in [notes/class_hierarchy.txt](notes/class_hierarchy.txt) |
@@ -108,7 +108,7 @@ tags functions with their source files (about a minute). Open the project with
 | `tools/first_diff.py` | Where the built image differs from the original, by symbol |
 | `tools/split_files.py` | Infers where each original file starts in `.text`/`.rodata` → `config/splits.tsv` |
 | `tools/sce_symbols.py` | Names SDK functions with PS2Recomp's signature database (downloaded to `build/cache`, GPL, not committed) |
-| `config/` | splat config (generated), manual symbol overrides, extra linker script |
+| `config/` | splat config (generated), `splits.tsv` (generated file boundaries), `splits_manual.tsv` (hand-made boundaries/names with evidence), manual symbol overrides, extra linker script |
 | `docker/` | Shared build image: all EE-GCC 2.9x builds, binutils, splat; `ee-cc` compiler front end |
 | `include/` | splat's assembler macros and `INCLUDE_ASM` header |
 | `tools/ror_symbols.py` | Extracts symbols from the ELF: GCC2 demangling, RTTI hierarchy, vtable name propagation, source-path strings |
