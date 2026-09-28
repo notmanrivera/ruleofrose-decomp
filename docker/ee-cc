@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+"""Uniform front end for every installed EE-GCC.
+
+  ee-cc <compiler-id> [gcc args...]      e.g. ee-cc ee-gcc2.96 -O2 -G0 -c a.cpp -o a.o
+  ee-cc --list
+
+SCE builds (Linux) run through their own ee-gcc driver, as decomp.me does.
+
+SN Systems builds (Windows) run under wibo, but their driver can't spawn its
+subprograms under Rosetta (wibo's clone() fails there). So for those we let
+the driver print its preprocessor command (-v), then run cpp, cc1/cc1plus and
+as ourselves, each directly under wibo, with the arguments the driver's specs
+would have passed.
+"""
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+
+ROOT = "/compilers/ps2"
+
+
+def die(msg, code=2):
+    print(f"ee-cc: {msg}", file=sys.stderr)
+    sys.exit(code)
+
+
+def sn_compile(cdir, args):
+    ver = "2.95.3" if "2.95.3" in cdir else "2.95.2"
+    libdir = f"{cdir}/lib/gcc-lib/ee/{ver}"
+    driver = [f"{cdir}/bin/ee-gcc.exe", "-B", f"{libdir}/"]
+
+    src = out = None
+    mode = "o"
+    flags = []
+    it = iter(args)
+    for a in it:
+        if a == "-o":
+            out = next(it)
+        elif a == "-c":
+            mode = "o"
+        elif a == "-S":
+            mode = "s"
+        elif a.endswith((".c", ".cpp", ".cc", ".cxx", ".C")):
+            src = a
+        else:
+            flags.append(a)
+    if not src:
+        die("no input file")
+    base = os.path.basename(src)
+    stem = os.path.splitext(base)[0]
+    out = out or f"{stem}.{mode}"
+    cxx = not src.endswith(".c")
+
+    tmp = tempfile.mkdtemp(prefix="ee-cc-")
+    try:
+        ii, s = f"{tmp}/{stem}.ii", f"{tmp}/{stem}.s"
+
+        # 1. preprocessor: take the exact command line the driver prints
+        probe = subprocess.run(["wibo", *driver, "-v", *flags, "-S", src, "-o", s],
+                               capture_output=True, text=True)
+        cpp = next((l.split() for l in probe.stderr.splitlines() if "cpp.exe" in l), None)
+        if not cpp:
+            die("could not read the preprocessor command from the driver:\n" + probe.stderr)
+        cpp = [a for a in cpp if a != "-v"][:-1] + [ii]  # last arg is the driver's temp file
+        run(["wibo", *cpp])
+
+        # 2. compiler proper (cc1 spec only adds -G*, which is in flags already)
+        cc1 = f"{libdir}/{'cc1plus' if cxx else 'cc1'}.exe"
+        cc1_flags = [f for f in flags if not f.startswith(("-I", "-D", "-U", "-include"))]
+        run(["wibo", cc1, ii, "-quiet", "-dumpbase", base, *cc1_flags, "-o", s])
+        if mode == "s":
+            shutil.copy(s, out)
+            return
+
+        # 3. assembler, per the gas_asm_spec / subtarget_asm_optimizing_spec
+        as_flags = [f for f in flags if f.startswith(("-G", "-g", "-mcpu", "-mabi", "-EL", "-EB"))]
+        if not any(f.startswith("-mabi") for f in flags):
+            as_flags.append("-mabi=eabi")
+        opt = {"-O": "-O2", "-O1": "-O2", "-O2": "-O2", "-O3": "-O3"}
+        as_flags += [opt[f] for f in flags if f in opt][-1:]
+        run(["wibo", f"{libdir}/as.exe", *as_flags, "-o", out, s])
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def run(cmd):
+    r = subprocess.run(cmd, capture_output=True, text=True)
+    noise = [l for l in (r.stderr + r.stdout).splitlines() if l.strip()]
+    if r.returncode != 0:
+        die(f"{os.path.basename(cmd[1])} failed ({r.returncode}):\n" + "\n".join(noise), 1)
+    for l in noise:
+        print(l, file=sys.stderr)
+
+
+def main():
+    if len(sys.argv) < 2:
+        die(__doc__.strip().splitlines()[2].strip())
+    if sys.argv[1] == "--list":
+        print("\n".join(sorted(os.listdir(ROOT))))
+        return
+    cid, args = sys.argv[1], sys.argv[2:]
+    cdir = f"{ROOT}/{cid}"
+    if not os.path.isdir(cdir):
+        die(f"unknown compiler '{cid}' (see ee-cc --list)")
+    if cid.startswith("ee-gcc2.95"):
+        sn_compile(cdir, args)
+    elif cid in ("ee-gcc2.9-990721", "ee-gcc2.96"):
+        os.execv(f"{cdir}/bin/ee-gcc", [f"{cdir}/bin/ee-gcc", "-B", f"{cdir}/bin/ee-", *args])
+    else:
+        os.execv(f"{cdir}/bin/ee-gcc", [f"{cdir}/bin/ee-gcc", *args])
+
+
+if __name__ == "__main__":
+    main()

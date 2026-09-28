@@ -28,7 +28,7 @@ extrae sus archivos de su propio disco.
 | `.vutext` | `0x291230`, 0x4180 bytes: microcódigo VU + 44 overlays `.DVP.overlay` |
 | `.data` / `.rodata` | `0x295f00` / `0x2e5300` |
 | `.bss` | `0x308100`, ~5.3 MB |
-| Compilador | EE GCC 2.9x (mangling GCC2, `.gnu.linkonce`, RTTI `__tf`, excepciones, `.mdebug.eabi64` vacío); versión exacta por identificar |
+| Compilador | **ee-gcc 2.96 (SCE), `-Os`**; confirmado byte a byte en 3 funciones (`matching/compiler_id/`) |
 | SDK | Sony libs 3.0 (`libgraph`, `libdma`, `libvu0`, `libipu`, `libmpeg`, `libpad2`, `libmc`, `libcdvd`, `libvib`, `libscf`) |
 
 Sin `.symtab` ni información de depuración (no hay DWARF ni STABS), pero sí:
@@ -69,8 +69,8 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 ## Hoja de ruta
 
 1. ✅ Recuperación de símbolos y proyecto Ghidra reproducible, con tipos de parámetros (1,587 firmas).
-2. 🔄 Identificar la versión exacta del compilador: kit listo en `matching/compiler_id/`; falta ejecutarlo (requiere Linux/Docker o decomp.me). Descartados ee-gcc 3.2 y Metrowerks; candidatos principales: ee-gcc 2.96 (SCE) y 2.95.3 de SN Systems.
-3. Configurar splat + build que produzca un ELF idéntico byte a byte (checksum).
+2. ✅ Compilador identificado: **ee-gcc 2.96 (SCE) con `-Os`**. 3 funciones coinciden byte a byte (87/87 instrucciones); falta confirmar en más módulos y averiguar `-G`. Entorno reproducible en `docker/` (imagen `ror-build`).
+3. Configurar splat + build (ninja, dentro de `ror-build`) que produzca un ELF idéntico byte a byte (checksum). Usar `notes/object_layout.txt` para los límites de archivo.
 4. Decompilar archivo por archivo, empezando por `bed/` y `utl/` (pequeños, sin dependencias).
 5. Documentar los formatos RPK / MAPUNIT / ARA / STR.
 6. Capa de port: reemplazar las libs `sce*` por equivalentes Vita; reescribir el render (VU1 + GS) sobre vitaGL.

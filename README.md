@@ -20,6 +20,7 @@ Reverse-engineering groundwork. Nothing is decompiled yet. See
 | Parameter types applied | 1,587 functions (validated against Ghidra's GCC2 demangler: 1,160/1,160 equivalent) |
 | C++ classes / vtables | 289 / 284, hierarchy in [notes/class_hierarchy.txt](notes/class_hierarchy.txt) |
 | Functions tied to an original source file | 529, over 72 files ([notes/object_layout.txt](notes/object_layout.txt)) |
+| Compiler | **ee-gcc 2.96 (SCE), `-Os`**: 3/3 test functions match byte for byte ([details](matching/compiler_id/README.md)) |
 
 ## Setup
 
@@ -43,6 +44,15 @@ $GHIDRA_INSTALL_DIR/support/gradle/gradlew buildExtension -x test
 unzip dist/*.zip -d ~/Library/ghidra/ghidra_12.1.4_PUBLIC/Extensions/
 ```
 
+For compiling (compiler matrix now, the matching build later), build the
+shared Docker image. It runs as linux/amd64; on Apple Silicon enable
+Rosetta emulation in Docker Desktop:
+
+```bash
+docker build --platform linux/amd64 -t ror-build docker/
+tools/.venv/bin/pip install pyelftools
+```
+
 Then copy `SLUS_214.48` from your disc into `disc/` and build the Ghidra project:
 
 ```bash
@@ -63,7 +73,9 @@ tags functions with their source files (about a minute). Open the project with
 | `ghidra_scripts/ImportRoRSymbols.java` | Applies `symbols/ghidra_symbols.tsv` (classes, names, parameter types with explicit `this`, typed vtables); never overwrites names or signatures set by hand |
 | `ghidra_scripts/TagSourceFiles.java` | Tags functions that reference assert source paths; writes `symbols/function_sources.tsv` |
 | `tools/disasm.py` | R5900 disassembly of any function by name or address (GNU as syntax, for decomp.me) |
-| `matching/compiler_id/` | Kit to identify the exact compiler and flags |
+| `docker/` | Shared build image: all EE-GCC 2.9x builds + `ee-cc` front end |
+| `tools/compiler_id.py` | Compiles the test kit with every compiler/flag set and scores it against the game |
+| `matching/compiler_id/` | Compiler-identification kit and result |
 | `symbols/ghidra_symbols.tsv` | All recovered symbols, with provenance (`linkonce`, `vtable-override`, `vtable-slot`, `rtti-helper`) |
 | `symbols/symbol_addrs.txt` | Same, in splat format, for the future matching build |
 | `notes/` | Findings, class hierarchy, object-file order |

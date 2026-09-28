@@ -1,7 +1,9 @@
 // Compiler-identification candidates. Each function below is a reconstruction
-// of an inline method emitted in SLUS_214.48; its target assembly is in the
-// matching <mangled>.s file. Compile with each candidate EE-GCC and flag set
-// and compare instruction-for-instruction (relocations aside).
+// of an inline method emitted in SLUS_214.48. tools/compiler_id.py compiles
+// this file with every EE-GCC build and flag set and compares the result
+// instruction by instruction (relocations aside).
+//
+// Result: all three functions match byte for byte with ee-gcc2.96 -Os.
 //
 // Layouts are only as complete as these three functions need. The #line
 // directives reproduce the original __FILE__/__LINE__ that the asserts pass.
@@ -52,7 +54,7 @@ void DogActor::setMotionSpeedSub(int n, float speed) { ASSERT(n>=0 && n<=4); m_s
 
 // target: getMotionSpeedSub__C8DogActori.s (0x0028109C)
 #line 234 "dog/dogactor.h"
-float DogActor::getMotionSpeedSub(int n) const { ASSERT(n>=0 && n<=4); return m_sub[n].speed; }
+float DogActor::getMotionSpeedSub(int n) const { ASSERT(n>=0 && n<=4); const Sub &s = m_sub[n]; return s.speed; }
 
 // target: getMotionLinkTime__8DogActori.s (0x00281114)
 #line 300 "dog/dogactor.h"

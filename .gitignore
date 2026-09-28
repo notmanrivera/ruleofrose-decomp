@@ -7,3 +7,4 @@ __pycache__/
 
 # Disassembly of game code: regenerate locally with tools/disasm.py
 matching/**/*.s
+build/

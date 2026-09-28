@@ -4,6 +4,24 @@ Goal: find the exact EE-GCC build and flags that reproduce the game's code
 byte for byte. Everything after this (splat config, build system, matching
 decomp) depends on it.
 
+## Result (2026-09-28)
+
+**`ee-gcc2.96` (SCE) with `-Os`**: all three test functions match byte for
+byte (87/87 instructions). Every other build differs in 65+ instructions,
+and `-O2`/`-O3` leave a register-allocation difference in
+`getMotionLinkTime` that no source variant removed (6 tried).
+
+Caveats: the sample is three inline methods from `dog/` headers. Other
+modules may have been built with different flags, and `-G` can't be told
+apart yet (no small globals involved). Confirm on more functions while
+setting up splat.
+
+```bash
+docker build --platform linux/amd64 -t ror-build docker/
+tools/.venv/bin/python tools/compiler_id.py          # full matrix
+tools/.venv/bin/python tools/compiler_id.py --show ee-gcc2.96@3   # side-by-side
+```
+
 ## What the binary already tells us
 
 | Evidence | Conclusion |
@@ -26,9 +44,6 @@ From [decompme/compilers](https://github.com/decompme/compilers/tree/main/platfo
 | `ee-gcc2.95.2-273a`, `ee-gcc2.95.2-274` | SN Systems ProDG | Windows (via wibo) |
 | `ee-gcc2.95.3-107`, `-114`, `-136` | SN Systems ProDG | Windows (via wibo) |
 
-A 2006 game on SDK 3.0 makes `ee-gcc2.96` and the SN `2.95.3-1xx` builds
-the most likely, but only compiling can tell.
-
 ## Test set
 
 `candidates.cpp` reconstructs three inline methods. Their target assembly
@@ -46,17 +61,10 @@ done
 | `DogActor::getMotionSpeedSub(int) const` | `0x0028109C` | float return, same shape as above |
 | `DogActor::getMotionLinkTime(int)` | `0x00281114` | inlined callee, two asserts, `bnel` branch-likely |
 
-Start with flags `-O2 -G0`; then try `-O1`, `-O3`, and `-fno-exceptions`.
+## How the matrix runs
 
-## Running it
-
-The compilers only run on Linux (or Windows for the SN builds), so either:
-
-- **decomp.me** (browser): new scratch → PS2 → paste a `.s` as target and
-  `candidates.cpp` as source → switch compilers and flags until the diff is
-  empty. Note that scratches are public.
-- **Locally**, in a Linux container: download the tarballs listed in
-  `decompme/compilers/platforms/ps2/*/Dockerfile` and run `ee-gcc -S` on
-  `candidates.cpp`.
-
-Record the winning compiler and flags in `notes/PROJECT_STATE.md`.
+`docker/Dockerfile` installs all eleven 2.9x builds from decomp.me's
+tarballs (`ee-gcc2.9-991111b-r4` is the same tarball as `-991111`). The
+SN builds are Windows binaries run with wibo; under Rosetta their driver
+can't spawn subprocesses, so `docker/ee-cc` runs cpp, cc1plus and as
+itself with the arguments the driver's specs produce.
