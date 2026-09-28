@@ -1,0 +1,9 @@
+disc/*
+!disc/.gitkeep
+ghidra/
+tools/.venv/
+__pycache__/
+.DS_Store
+
+# Disassembly of game code: regenerate locally with tools/disasm.py
+matching/**/*.s

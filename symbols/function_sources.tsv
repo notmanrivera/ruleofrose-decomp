@@ -1,0 +1,530 @@
+addr	function	source_files
+00100258	FUN_00100258	bed/bedsubmode.cpp
+001002c0	FUN_001002c0	bed/bedsubmode.cpp
+00100354	FUN_00100354	bed/bedmemory.cpp
+001003f8	FUN_001003f8	bed/bedmemory.cpp
+001005ac	FUN_001005ac	bed/bedmemory.cpp
+00100714	FUN_00100714	bed/bedmemory.cpp
+00100a3c	FUN_00100a3c	bed/bedmemory.cpp
+00100ce4	FUN_00100ce4	bed/bedmemory.cpp
+00100d30	FUN_00100d30	bed/bedmemory.cpp
+00100ecc	FUN_00100ecc	bed/bedmemory.cpp
+001010a4	FUN_001010a4	bed/bedmemory.cpp
+00101328	FUN_00101328	bed/bedmemory.cpp
+00101518	FUN_00101518	bed/bedmemory.cpp
+001015fc	FUN_001015fc	bed/bedmemory.cpp
+00101750	FUN_00101750	bed/bedpfh.cpp, bed/bedpfh.h
+00101928	FUN_00101928	bed/bedpfh.cpp, bed/bedpfh.h
+001019f0	FUN_001019f0	bed/bedpfh.h
+00101bcc	FUN_00101bcc	bed/bedpad.cpp
+00101c7c	FUN_00101c7c	bed/bedpad.cpp
+001024d0	FUN_001024d0	utl/utlgame.cpp
+001025c0	FUN_001025c0	utl/utlgame.cpp
+00102adc	FUN_00102adc	utl/utlgame.cpp
+00102b24	FUN_00102b24	utl/utlgame.cpp
+00103240	FUN_00103240	utl/utlgame.cpp
+00103510	FUN_00103510	dog/dogmodel.h, utl/utlgame.cpp
+00103654	FUN_00103654	utl/utlgame.cpp
+0010376c	FUN_0010376c	dog/dogmodel.h
+00103a90	FUN_00103a90	dog/dogmodel.h
+00103e4c	FUN_00103e4c	utl/utlgame.cpp
+00103e94	FUN_00103e94	utl/utlgame.cpp
+0010456c	FUN_0010456c	utl/utlbtl.cpp
+001046b4	FUN_001046b4	utl/utlbtl.cpp
+00104e64	FUN_00104e64	utl/utltm2.cpp
+00104ef8	FUN_00104ef8	utl/utltm2.cpp
+001050e0	FUN_001050e0	utl/utltm2.cpp
+0010528c	FUN_0010528c	utl/utltm2.cpp
+0010559c	FUN_0010559c	utl/utltm2.cpp
+00105650	FUN_00105650	utl/utlmisc.cpp
+00105e50	FUN_00105e50	utl/utlfile.cpp
+00105f0c	FUN_00105f0c	utl/utlfile.cpp
+001060e8	FUN_001060e8	utl/utlfind.cpp
+00106138	FUN_00106138	utl/utlfind.cpp
+00106178	FUN_00106178	utl/utlfind.cpp
+001061b8	FUN_001061b8	utl/utlfind.cpp
+00106344	FUN_00106344	utl/utlfind.cpp
+00107560	FUN_00107560	dog/dogmotionblend.cpp
+00107678	FUN_00107678	dog/dogmotionblend.cpp
+001079d8	FUN_001079d8	dog/dogmotionblend.cpp
+00107e30	FUN_00107e30	dog/dogmotionblend.cpp
+001081b0	FUN_001081b0	dog/dogmotionblend.cpp
+00108428	FUN_00108428	dog/dogmotionblend.cpp
+00108674	FUN_00108674	dog/dogactor.cpp, dog/dogactor.h
+00108850	FUN_00108850	dog/dogactor.cpp
+0010897c	FUN_0010897c	dog/dogactor.cpp
+00108a14	FUN_00108a14	dog/dogactor.cpp
+00108bb0	FUN_00108bb0	dog/dogactor.cpp
+00108c90	FUN_00108c90	dog/dogactor.cpp, dog/dogactor.h
+00109284	FUN_00109284	dog/dogactor.h
+00109348	FUN_00109348	dog/dogactor.h
+00109634	FUN_00109634	dog/dogactor.h
+00109860	FUN_00109860	dog/dogactor.cpp
+00109b88	FUN_00109b88	dog/dogactor.cpp, dog/dogactor.h
+00109ed0	FUN_00109ed0	dog/dogactor.cpp
+00109fb4	FUN_00109fb4	dog/dogactor.cpp
+0010a2d0	FUN_0010a2d0	dog/dogactor.h
+0010a448	FUN_0010a448	dog/dogactor.h
+0010a584	FUN_0010a584	dog/dogactor.cpp
+0010a650	FUN_0010a650	dog/dogactor.cpp, dog/dogactor.h
+0010a8b8	FUN_0010a8b8	dog/dogactor.cpp
+0010aa9c	FUN_0010aa9c	dog/dogactor.cpp
+0010ab40	FUN_0010ab40	dog/dogactor.cpp
+0010abf4	FUN_0010abf4	dog/dogactor.cpp
+0010ad0c	FUN_0010ad0c	dog/dogactor.cpp, dog/dogmotionblend.h
+0010ae90	FUN_0010ae90	dog/dogactor.cpp
+0010af18	FUN_0010af18	dog/dogactor.cpp, dog/dogmotionblend.h
+0010b1b0	FUN_0010b1b0	dog/dogactor.cpp
+0010b328	FUN_0010b328	dog/dogactor.cpp, dog/dogactor.h
+0010b620	FUN_0010b620	dog/dogactor.cpp, dog/dogactor.h
+0010b918	FUN_0010b918	dog/dogactor.h
+0010ba20	FUN_0010ba20	dog/dogactor.cpp
+0010bac4	FUN_0010bac4	dog/dogactor.cpp
+0010bbac	FUN_0010bbac	dog/dogactor.h
+0010bcc8	FUN_0010bcc8	dog/dogactor.h
+0010bf08	FUN_0010bf08	dog/dogactor.cpp, dog/dogactor.h, dog/dogmodel.h
+0010c17c	FUN_0010c17c	bed/bedpfh.h, dog/dogactor.cpp
+0010c568	FUN_0010c568	bed/bedpfh.h, dog/dogactor.cpp, dog/dogactor.h
+0010cd5c	FUN_0010cd5c	bed/bedpfh.h, dog/dogactor.cpp
+0010cffc	DogActor::vfunc_21	dog/dogactor.cpp
+0010d0e8	FUN_0010d0e8	dog/dogactor.cpp
+0010d1d0	FUN_0010d1d0	dog/dogactor.cpp, dog/dogactor.h
+0010d388	FUN_0010d388	dog/dogactor.cpp
+0010db48	FUN_0010db48	dog/dogactor.cpp, dog/dogmotionblend.h
+0010dd30	FUN_0010dd30	dog/dogactor.cpp, dog/dogmotionblend.h
+0010df54	FUN_0010df54	dog/dogactor.cpp, dog/dogmodel.h
+0010e534	DogActor::vfunc_20	dog/dogactor.cpp
+0010e5c0	DogActor::vfunc_12	dog/dogactor.cpp
+0010e9ac	FUN_0010e9ac	dog/dogactor.h
+0010eab8	DogActor::vfunc_17	dog/dogactor.cpp
+0010eb28	DogActor::vfunc_18	dog/dogactor.cpp
+0010ec8c	FUN_0010ec8c	dog/dogactor.cpp
+0010ed2c	FUN_0010ed2c	dog/dogactor.cpp
+0010f2dc	FUN_0010f2dc	dog/dogactor.cpp
+0010f860	FUN_0010f860	dog/dogcamera.cpp
+0010f8cc	FUN_0010f8cc	dog/dogcamera.cpp
+001102b4	FUN_001102b4	dog/dogentity.cpp
+001103dc	FUN_001103dc	dog/doglightpool.cpp
+00110660	FUN_00110660	dog/doglightpool.cpp
+0011076c	FUN_0011076c	dog/doglightpool.cpp
+00110878	FUN_00110878	dog/doglightpool.cpp
+00110988	FUN_00110988	dog/doglightpool.cpp
+00110af8	FUN_00110af8	dog/doglightpool.cpp
+00110c0c	FUN_00110c0c	dog/doglightpool.cpp
+00110d68	FUN_00110d68	dog/doglightpool.cpp
+00110e64	FUN_00110e64	dog/doglightpool.cpp
+00110f78	FUN_00110f78	dog/doglightpool.cpp
+00111120	FUN_00111120	dog/doglightpool.cpp
+001111e4	FUN_001111e4	dog/doglightpool.cpp
+001112a8	FUN_001112a8	dog/doglightpool.cpp
+0011139c	FUN_0011139c	dog/doglightpool.cpp
+00111584	FUN_00111584	dog/doglightpool.cpp, dog/doglightpool.h
+00111b5c	FUN_00111b5c	dog/doglightpool.cpp, dog/doglightpool.h
+00112134	FUN_00112134	dog/doglightpool.cpp
+001123b0	FUN_001123b0	dog/doglightpool.cpp
+0011262c	FUN_0011262c	dog/doglightpool.h
+001129cc	FUN_001129cc	dog/doglightpool.h
+00112bc8	FUN_00112bc8	dog/doglight.cpp
+00112d60	FUN_00112d60	dog/doglight.cpp
+00112fc8	FUN_00112fc8	dog/doglight.cpp
+001136d0	FUN_001136d0	dog/doglight.cpp
+00114758	FUN_00114758	dog/dogmodel.h
+001149d4	FUN_001149d4	dog/dogmodel.h
+0011533c	FUN_0011533c	dog/dogmodel.h
+0011550c	FUN_0011550c	dog/dogmodel.h
+00115790	DogModel::vfunc_15	dog/dogmodel.h
+001158ec	DogModel::vfunc_14	bed/bedpfh.h, dog/dogmodel.h
+00115cec	DogModel::vfunc_06	bed/bedpfh.h
+00116038	FUN_00116038	dog/dogmodel.h
+001161e4	FUN_001161e4	dog/dogtexinfo.cpp
+001162ac	FUN_001162ac	dog/dogtexinfo.cpp
+00116618	FUN_00116618	dog/dogtexinfo.cpp
+001167f4	FUN_001167f4	dog/dogmodel.h, dog/dogtexinfo.cpp
+001169d0	FUN_001169d0	dog/dogtexinfo.cpp
+00116b5c	FUN_00116b5c	dog/dogtexinfo.cpp
+00116d14	FUN_00116d14	dog/dogtexinfo.cpp
+001170b8	FUN_001170b8	bed/bedpfh.h, dog/dogtexinfo.cpp
+001173d4	FUN_001173d4	dog/dogtexinfo.cpp
+001174c4	FUN_001174c4	dog/dogtexinfo.cpp
+0011756c	FUN_0011756c	dog/dogtexinfo.cpp
+001176fc	FUN_001176fc	mag/magsystem.cpp
+00117e18	FUN_00117e18	mag/magsystem.cpp
+00117ed0	FUN_00117ed0	mag/magsystem.cpp
+00117fc4	FUN_00117fc4	mag/magsystem.cpp
+001182dc	FUN_001182dc	mag/magsystem.cpp
+0011845c	FUN_0011845c	mag/magsystem.cpp
+00118640	FUN_00118640	mag/magsystem.cpp
+00118a18	FUN_00118a18	mag/magsystem.cpp
+00118adc	FUN_00118adc	mag/magsystem.cpp
+00118c14	FUN_00118c14	mag/magsystem.cpp
+00118ccc	FUN_00118ccc	dog/dogmodel.h
+00118d9c	FUN_00118d9c	dog/dogmodel.h
+0011939c	FUN_0011939c	mag/magsystem.cpp
+0011950c	FUN_0011950c	mag/maglifeman.cpp
+001195ac	FUN_001195ac	mag/maglifeman.cpp
+001196d4	FUN_001196d4	mag/maglifeman.cpp
+00119810	FUN_00119810	mag/maglifeman.cpp
+00119908	FUN_00119908	mag/maglifeman.cpp
+00119968	FUN_00119968	mag/maglifeman.cpp
+00119a38	FUN_00119a38	mag/maglifeman.cpp
+0011a064	FUN_0011a064	mag/maglife.cpp
+0011a14c	FUN_0011a14c	mag/maglife.cpp
+0011a27c	FUN_0011a27c	mag/maglife.cpp
+0011a320	FUN_0011a320	mag/maglife.cpp
+0011a4ec	FUN_0011a4ec	mag/maglife.cpp
+0011a738	FUN_0011a738	mag/maglife.cpp
+0011a8f4	MagLifeBillboard::live	mag/maglife.cpp
+0011af30	FUN_0011af30	mag/maglifepc.cpp
+0011b07c	FUN_0011b07c	mag/maglifepc.cpp
+0011b5e0	MagLifePC::message	mag/maglifepc.cpp
+0011b964	FUN_0011b964	mag/maglifepc.cpp
+0011bc64	FUN_0011bc64	mag/maglifepc.cpp
+0011bcd8	FUN_0011bcd8	mag/maglifepc.cpp
+0011c1e8	FUN_0011c1e8	mag/maglifepc.cpp
+0011c64c	FUN_0011c64c	mag/maglifepc2.cpp
+0011caf8	FUN_0011caf8	mag/maglifepc2.cpp
+0011ce5c	FUN_0011ce5c	dog/dogmodel.h, mag/maglifepc2.cpp
+0011d1cc	FUN_0011d1cc	mag/maglifepc2.cpp
+0011d3d0	FUN_0011d3d0	dog/dogmodel.h, mag/maglifepc2.cpp
+0011d720	FUN_0011d720	mag/maglifepc3.cpp
+0011d790	FUN_0011d790	mag/maglifepc3.cpp
+0011d7c0	FUN_0011d7c0	mag/maglifepc3.cpp
+0011d990	FUN_0011d990	bed/bedpfh.h, mag/maglifepc3.cpp
+0011dc64	FUN_0011dc64	mag/maglifepc3.cpp
+0011ddf4	FUN_0011ddf4	mag/maglifepc3.cpp
+0011de78	FUN_0011de78	mag/maglifepc3.cpp
+0011df14	FUN_0011df14	mag/maglifepc3.cpp
+0011e4c4	FUN_0011e4c4	mag/maglifepcmove.cpp
+0011ea04	FUN_0011ea04	mag/maglifepcmove.cpp
+0011f0b4	FUN_0011f0b4	mag/maglifepcmove.cpp
+0011f4a8	FUN_0011f4a8	mag/maglifepcmove.cpp
+0011f884	FUN_0011f884	mag/maglifepcmove.cpp
+0011f9f8	FUN_0011f9f8	mag/maglifepcmove.cpp
+0011ff10	FUN_0011ff10	mag/maglifepcmove.cpp
+001203a0	FUN_001203a0	mag/maglifepcmove.cpp
+00120668	FUN_00120668	mag/maglifepcmove.cpp
+00120bdc	MagLifePCModeWait::pad	mag/maglifepcmode.cpp
+001214b4	MagLifePCModeAtkWait2D::init	mag/maglifepcmode.cpp
+00121934	MagLifePCModeAttacking::vfunc_02	mag/maglifepcmode.cpp
+00121cd8	MagLifePCModeDamage::init	mag/maglifepcmode.cpp
+001220f0	MagLifePCModeItem::init	mag/maglifepcmode.cpp
+00122954	MagLifePCModeRide::init	mag/maglifepcmode.cpp
+00122c9c	FUN_00122c9c	mag/maglifepcmode.cpp
+00122d70	MagLifePCModeRoped::init	mag/maglifepcmode.cpp
+00122e2c	MagLifePCModeRoped::pad	mag/maglifepcmode.cpp
+001230fc	MagLifePCModeHug::live	mag/maglifepcmode.cpp
+001233f4	FUN_001233f4	mag/maglifebwn.cpp
+0012349c	FUN_0012349c	mag/maglifebwn.cpp
+0012391c	FUN_0012391c	dog/dogmodel.h, mag/maglifebwn.cpp
+00124008	FUN_00124008	mag/maglifebwn.cpp
+0012481c	FUN_0012481c	mag/maglifebwn.cpp
+001249b4	FUN_001249b4	mag/maglifebwn.cpp
+00125368	FUN_00125368	mag/maglifebwn.cpp
+00125704	FUN_00125704	mag/maglifebwn.cpp
+00126044	MagLifeBwnModePath::live	mag/maglifebwnmode.cpp
+001264f8	FUN_001264f8	mag/maglifebwnmode.cpp
+00127150	MagLifeBwnCtrlModeFollow::vfunc_02	mag/maglifebwnctrl.cpp
+00127558	FUN_00127558	mag/maglifebwnctrl.cpp
+00127b28	MagLifeBwnCtrlModeFind::vfunc_01	mag/maglifebwnctrl.cpp
+00127e68	MagLifeBwnCtrlModeFind::vfunc_02	mag/maglifebwnctrl.cpp
+00128970	MagLifeBwnCtrlModeFindEnd::vfunc_02	mag/maglifebwnctrl.cpp
+00128cec	MagLifeBwnCtrlModeDamage::vfunc_01	mag/maglifebwnctrl.cpp
+00128dbc	MagLifeBwnCtrlModeDamage::vfunc_02	mag/maglifebwnctrl.cpp
+00128e6c	FUN_00128e6c	mag/maglifebwnctrl.cpp
+00129028	MagLifeBwnCtrlModeBark::vfunc_02	mag/maglifebwnctrl.cpp
+0012a21c	MagLifeBwnCtrlModeWound::vfunc_01	mag/maglifebwnctrl.cpp
+0012a394	FUN_0012a394	mag/maglifebwnctrl.cpp
+0012a56c	FUN_0012a56c	mag/maglifebwnctrl.cpp
+0012ab20	FUN_0012ab20	mag/maglifebwnctrl.cpp
+0012b7cc	FUN_0012b7cc	mag/maglifebwnctrl.cpp
+0012bc20	FUN_0012bc20	mag/maglifepcbtl.cpp
+0012bc98	FUN_0012bc98	dog/dogmodel.h, mag/maglifepcbtl.cpp
+0012c104	FUN_0012c104	mag/maglifepcbtl.cpp
+0012c1fc	FUN_0012c1fc	mag/maglifepcbtl.cpp
+0012c31c	FUN_0012c31c	mag/maglifepcbtl.cpp
+0012cb50	FUN_0012cb50	mag/maglifepcbtl.cpp
+0012ccac	FUN_0012ccac	dog/dogmodel.h
+0012cdb0	FUN_0012cdb0	mag/maglifepceff.cpp
+0012cddc	FUN_0012cddc	mag/maglifepceff.cpp
+0012ce08	FUN_0012ce08	mag/maglifepceff.cpp
+0012ce3c	FUN_0012ce3c	mag/maglifepcmsg.cpp
+0012cf3c	FUN_0012cf3c	mag/maglifemenu.cpp
+0012d400	MagLifeMenuPBook::vfunc_09	mag/maglifemenu.cpp
+0012d648	MagLifeMenuBoard3D::vfunc_09	mag/maglifemenu.cpp
+0012d6c0	MagLifeMenuBoard3D::vfunc_10	mag/maglifemenu.cpp
+0012d788	MagLifeMenuBoard3D::vfunc_06	mag/maglifemenu.cpp
+0012d9c8	MagLifeMenuSpecial::vfunc_09	mag/maglifemenusp.cpp
+0012dac4	MagLifeMenuSpecial::vfunc_10	mag/maglifemenusp.cpp
+0012db64	MagLifeMenuSpecial::vfunc_12	mag/maglifemenusp.cpp
+0012dda4	MagLifeMenuSpecial::vfunc_06	mag/maglifemenusp.cpp
+0012e34c	MagLifeMenuSpecial2::vfunc_09	mag/maglifemenusp.cpp
+0012e498	MagLifeMenuSpecial2::vfunc_10	mag/maglifemenusp.cpp
+0012e538	MagLifeMenuSpecial2::vfunc_12	mag/maglifemenusp.cpp
+0012e854	MagLifeMenuSpecial2::vfunc_06	mag/maglifemenusp.cpp
+0012f2f0	FUN_0012f2f0	mag/maglifefadekey.cpp
+0012f518	FUN_0012f518	mag/maglifefadekey.cpp
+0012f790	FUN_0012f790	mag/maglifefadekey.cpp
+0012fca8	FUN_0012fca8	mag/maglifewindow.cpp
+0012fd30	FUN_0012fd30	mag/maglifewindow.cpp
+0012fd88	FUN_0012fd88	mag/maglifewindow.cpp
+0012fddc	FUN_0012fddc	mag/maglifewindow.cpp
+00130258	FUN_00130258	mag/maglifewindow.cpp
+001305ec	FUN_001305ec	mag/maglifewindow.cpp
+00130778	FUN_00130778	mag/maglifewindow.cpp
+0013086c	FUN_0013086c	mag/maglifewindow.cpp
+00130ee8	MagLifeTest::live	mag/maglifetest.cpp
+001311f4	FUN_001311f4	mag/magscene.cpp
+00131a28	FUN_00131a28	mag/magscene.cpp
+00132048	FUN_00132048	mag/magscene.cpp
+00132430	FUN_00132430	mag/magscene.cpp
+001327dc	FUN_001327dc	mag/magscene.cpp
+00133090	FUN_00133090	mag/magscene.cpp
+0013386c	FUN_0013386c	mag/magscene.cpp
+00133a0c	FUN_00133a0c	mag/magscene.cpp
+00133b80	FUN_00133b80	mag/magscene.cpp
+00134730	FUN_00134730	mag/magscene.cpp
+001348b0	FUN_001348b0	mag/magscene.cpp
+00134944	FUN_00134944	mag/magscene.cpp
+00134a00	FUN_00134a00	mag/magscene.cpp
+00134ab8	FUN_00134ab8	mag/magscene.cpp
+00134b34	FUN_00134b34	mag/magscene.cpp
+00134bb8	FUN_00134bb8	mag/magscene.cpp
+00134c4c	FUN_00134c4c	mag/magscene.cpp
+00134cd0	FUN_00134cd0	mag/magscene.cpp
+00134d6c	FUN_00134d6c	mag/magscene.cpp
+00134e18	FUN_00134e18	mag/magscene.cpp
+00134e88	FUN_00134e88	mag/magscene.cpp
+00134f2c	FUN_00134f2c	mag/magscene.cpp
+00134fa0	FUN_00134fa0	mag/magscene.cpp
+00135014	FUN_00135014	mag/magscene.cpp
+00135088	FUN_00135088	mag/magscene.cpp
+0013511c	FUN_0013511c	mag/magscene.cpp
+001351b0	FUN_001351b0	mag/magscene.cpp
+00135234	FUN_00135234	mag/magscene.cpp
+00135364	FUN_00135364	mag/magscene.cpp
+00135418	FUN_00135418	mag/magscene.cpp
+00135494	FUN_00135494	mag/magscene.cpp
+00135594	FUN_00135594	mag/magscene.cpp
+00135628	FUN_00135628	mag/magscene.cpp
+0013569c	FUN_0013569c	mag/magscene.cpp
+00135740	FUN_00135740	mag/magscene.cpp
+0013580c	FUN_0013580c	mag/magscene.cpp
+00135cac	FUN_00135cac	mag/magscene.cpp
+00135d58	FUN_00135d58	mag/magscene.cpp
+00135e20	FUN_00135e20	mag/magscene.cpp
+00135f44	FUN_00135f44	mag/magscene.cpp
+00137330	FUN_00137330	mag/magscene2.cpp
+001377f0	FUN_001377f0	bed/bedpfh.h, dog/dogmodel.h, mag/magscene2.cpp
+0013836c	FUN_0013836c	bed/bedpfh.h, mag/magscene2.cpp
+00138610	FUN_00138610	mag/magscene2.cpp
+0013884c	FUN_0013884c	dog/dogmodel.h
+001388e8	FUN_001388e8	dog/dogmodel.h, mag/magscene2.cpp
+001389c4	FUN_001389c4	dog/dogmodel.h, mag/magscene2.cpp
+00138ac8	FUN_00138ac8	mag/magscene2.cpp
+00138bc4	FUN_00138bc4	mag/magscene2.cpp
+00138ce8	FUN_00138ce8	mag/magscene2.cpp
+00138ed0	FUN_00138ed0	mag/magscene2.cpp
+00139010	FUN_00139010	mag/magscene2.cpp
+0013910c	FUN_0013910c	bed/bedpfh.h, mag/magscene2.cpp
+00139308	FUN_00139308	mag/magscene2.cpp
+00139664	FUN_00139664	mag/magscenerender.cpp
+00139920	FUN_00139920	mag/magscenerender.cpp
+00139b4c	FUN_00139b4c	dog/doglightpool.h, mag/magscenerender.cpp
+0013a464	FUN_0013a464	dog/dogmodel.h, mag/magscenerender.cpp
+0013a57c	FUN_0013a57c	dog/dogmodel.h
+0013a924	FUN_0013a924	dog/dogmodel.h, mag/magscenerender.cpp
+0013ab30	FUN_0013ab30	dog/dogmodel.h, mag/magscenerender.cpp
+0013ad24	FUN_0013ad24	mag/magscenerender.cpp
+0013b20c	FUN_0013b20c	dog/dogmodel.h
+0013b2ac	FUN_0013b2ac	dog/dogmodel.h, mag/magscenerender.cpp
+0013b580	FUN_0013b580	mag/magscenerender.cpp
+0013b650	FUN_0013b650	mag/magscenerender.cpp
+0013bcc0	FUN_0013bcc0	mag/magscenerender.cpp
+0013c328	FUN_0013c328	mag/magsceneoption.cpp
+0013c664	FUN_0013c664	mag/magscenecamera.cpp
+0013d240	FUN_0013d240	dog/dogmodel.h, mag/magscenecamera.cpp
+0013d5e4	FUN_0013d5e4	dog/dogmodel.h, mag/magscenecamera.cpp
+0013d8f8	FUN_0013d8f8	mag/magscenecamera.cpp
+0013e190	FUN_0013e190	mag/magscenecamera.cpp
+0013e548	FUN_0013e548	dog/dogmodel.h
+0013f49c	FUN_0013f49c	mag/magscenelight.cpp
+0013f4d0	FUN_0013f4d0	mag/magscenelight.cpp
+0013f528	FUN_0013f528	mag/magscenelight.cpp
+0013f658	FUN_0013f658	mag/magscenelight.cpp
+0013f980	FUN_0013f980	mag/magscenelight.cpp
+0013fa50	FUN_0013fa50	mag/magscenelight.cpp
+0013fb3c	FUN_0013fb3c	mag/magscenelight.cpp
+0013fbe4	FUN_0013fbe4	dog/doglightpool.h, mag/magscenelight.cpp
+0013ff00	FUN_0013ff00	mag/magscenetenkyu.cpp
+00140030	FUN_00140030	bed/bedpfh.h
+00140b20	FUN_00140b20	mag/magscenefocus.cpp
+00141184	FUN_00141184	mag/magscenefocus.cpp
+001419d8	FUN_001419d8	mag/magscenefocus.cpp
+00141e90	FUN_00141e90	mag/magloader.cpp
+00141f54	FUN_00141f54	mag/magloader.cpp
+001420f8	FUN_001420f8	mag/magloader.cpp
+001425dc	FUN_001425dc	bed/bedpfh.h, mag/magloader.cpp
+00142908	FUN_00142908	bed/bedpfh.h, mag/magloader.cpp
+00142b18	FUN_00142b18	mag/magloader.cpp
+00142c88	FUN_00142c88	mag/magloader.cpp
+00142ed8	FUN_00142ed8	bed/bedpfh.h
+00142fd0	FUN_00142fd0	mag/magloader.cpp
+0014313c	FUN_0014313c	mag/magscenedebug.cpp
+0014324c	FUN_0014324c	mag/magscenedebug.cpp
+00143430	FUN_00143430	mag/magscenedebug.cpp
+00143498	FUN_00143498	mag/magsceneif.cpp
+001434e4	FUN_001434e4	mag/magsceneif.cpp
+00143578	FUN_00143578	mag/magsceneif.cpp
+001435f4	FUN_001435f4	mag/magsceneif.cpp
+00143640	FUN_00143640	mag/magsceneif.cpp
+001436d4	FUN_001436d4	mag/magsceneif.cpp
+00143750	FUN_00143750	mag/magsceneif.cpp
+001437c0	FUN_001437c0	mag/magsceneif.cpp
+001438b0	FUN_001438b0	mag/magsceneif.cpp
+0014395c	FUN_0014395c	mag/magsceneif.cpp
+00143ba0	FUN_00143ba0	dog/dogmodel.h, mag/magsceneif.cpp
+00143c48	FUN_00143c48	dog/dogmodel.h, mag/magsceneif.cpp
+00150290	FUN_00150290	dog/dogmodel.h
+00150804	FUN_00150804	dog/dogmodel.h
+00151508	FUN_00151508	dog/dogmodel.h
+00151d4c	FUN_00151d4c	dog/dogmodel.h
+00157230	FUN_00157230	dog/dogmodel.h
+0015ff54	FUN_0015ff54	dog/dogmodel.h
+00161300	DwfOutFort::liveMain	dog/dogmodel.h
+00164364	FUN_00164364	emy/emy_main.cpp
+00164508	FUN_00164508	emy/emy_main.cpp
+00165280	FUN_00165280	dog/dogmodel.h
+00166b74	FUN_00166b74	dog/dogmodel.h
+00166c8c	FUN_00166c8c	dog/dogmodel.h
+001672e8	FUN_001672e8	dog/dogmodel.h
+0016768c	FUN_0016768c	dog/dogmodel.h
+00167a64	FUN_00167a64	dog/dogmodel.h
+00168a30	FUN_00168a30	dog/dogmodel.h
+00168ea0	FUN_00168ea0	dog/dogmodel.h
+0016913c	FUN_0016913c	dog/dogmodel.h
+00169810	FUN_00169810	dog/dogmodel.h
+00169bac	FUN_00169bac	dog/dogmodel.h
+00169f94	FUN_00169f94	dog/dogmodel.h
+0016a1dc	FUN_0016a1dc	dog/dogmodel.h
+0016a424	FUN_0016a424	dog/dogmodel.h
+0016a594	FUN_0016a594	dog/dogmodel.h
+0016a6b4	FUN_0016a6b4	dog/dogmodel.h
+0016a7ac	FUN_0016a7ac	dog/dogmodel.h
+0016af20	FUN_0016af20	dog/doglightpool.h
+0016b060	EffBg1::vfunc_02	bed/bedpfh.h
+0016dcc8	EffBreath1::vfunc_02	dog/dogmodel.h
+0016e7cc	EffBreath1Space::liveMain	dog/dogmodel.h
+0016e9f4	FUN_0016e9f4	dog/dogmodel.h
+00170158	FUN_00170158	dog/dogmodel.h
+00172b30	EffFog3::vfunc_02	bed/bedpfh.h
+00172f4c	EffFoot1::liveMain	dog/dogmodel.h, mag/magscene.h
+00173688	EffFoot2::liveMain	dog/dogmodel.h, mag/magscene.h
+00173948	FUN_00173948	dog/dogmodel.h
+00173f3c	EffGeneric1::vfunc_02	bed/bedpfh.h
+001782cc	FUN_001782cc	bed/bedpfh.h
+001788ec	EffMuzzleFlash1::vfunc_02	dog/doglightpool.h
+00178ac0	EffMuzzleFlash1::liveMain	dog/doglightpool.h
+0017a9c8	EffWater1::vfunc_02	bed/bedpfh.h
+00180230	FUN_00180230	snd/sndman.cpp
+00181c14	FUN_00181c14	snd/rxmpeg.cpp
+001825e4	FUN_001825e4	snd/rxmpeg.cpp
+001830fc	FUN_001830fc	snd/unitque.cpp
+00183db0	FUN_00183db0	msg/msgman.cpp
+00184a94	FUN_00184a94	msg/msgman.cpp
+00187a28	FUN_00187a28	mcd/mcdman.cpp
+00187b10	FUN_00187b10	bed/bedpfh.h
+0018a50c	FUN_0018a50c	mcd/mcdman.cpp
+0018bcc0	FUN_0018bcc0	spr/sprman.cpp
+0018c2e4	FUN_0018c2e4	bed/bedpfh.h
+0018fbb0	FUN_0018fbb0	bed/bedpfh.h
+0018febc	FUN_0018febc	bed/bedpfh.h, spr/sprtexture.cpp
+00190904	FUN_00190904	spr/sprtexture.cpp
+0019e474	FUN_0019e474	spr/sprman.h
+0019fbc8	FUN_0019fbc8	spr/sprman.h
+001a08d4	FUN_001a08d4	mnu/mnuselect.cpp
+001a4db8	FUN_001a4db8	mnu/mnudlg.cpp
+001a5af4	FUN_001a5af4	mnu/mnusvld.cpp
+001a6764	FUN_001a6764	mnu/mnusvld.cpp
+001a67d8	FUN_001a67d8	mnu/mnusvld.cpp
+001c0d70	FUN_001c0d70	game/gamman.cpp
+001c1b48	FUN_001c1b48	bed/bedpfh.h, game/gamman.cpp
+001c204c	FUN_001c204c	bed/bedpfh.h, game/gamman.cpp
+001c2848	FUN_001c2848	game/gamman.cpp
+001c2f50	FUN_001c2f50	game/gamman.cpp
+001c3a48	FUN_001c3a48	bed/bedpfh.h
+001c47c4	FUN_001c47c4	bed/bedpfh.h, game/gamman.cpp
+001c7494	FUN_001c7494	mag/magscene.h
+001c772c	FUN_001c772c	game/gamman.cpp
+001c7a4c	FUN_001c7a4c	dog/dogmodel.h
+001ca0dc	FUN_001ca0dc	game/gamman.cpp
+001d1a5c	FUN_001d1a5c	dog/dogmodel.h
+001d84c8	FUN_001d84c8	game/gamstat.cpp
+001dd558	FUN_001dd558	game/gamtrg.cpp
+001e0f1c	FUN_001e0f1c	game/gamsnd.cpp
+001e4540	FUN_001e4540	game/gamsnd.cpp
+001f5410	FUN_001f5410	dog/dogmodel.h
+001f5558	FUN_001f5558	dog/dogmodel.h
+001f5680	FUN_001f5680	dog/dogmodel.h
+001f6f4c	FUN_001f6f4c	dog/dogmodel.h
+001f7444	FUN_001f7444	dog/dogmodel.h
+001f8034	FUN_001f8034	task/tsk_scene.cpp
+001f81a8	FUN_001f81a8	task/tsk_scene.cpp
+001f83f4	FUN_001f83f4	bed/bedpfh.h
+001f8cec	FUN_001f8cec	bed/bedpfh.h
+001fc4f0	FUN_001fc4f0	task/naga_chunk.cpp
+001fc89c	FUN_001fc89c	task/naga_chunk.cpp
+001fcb14	FUN_001fcb14	task/naga_chunk.cpp
+001fd008	TskBGLoadArea::vfunc_04	bed/bedpfh.h, task/tsk_bg_load.cpp
+001fd2dc	TskBGLoadMap::vfunc_04	bed/bedpfh.h, task/tsk_bg_load.cpp
+001fd9bc	FUN_001fd9bc	dog/dogmodel.h
+001fe87c	FUN_001fe87c	dog/dogmodel.h
+001feb38	FUN_001feb38	dog/dogmodel.h
+0020313c	FUN_0020313c	dog/dogmodel.h
+00203b44	FUN_00203b44	dog/dogmodel.h
+002050e8	FUN_002050e8	system/sysnowloading.cpp
+002052ac	FUN_002052ac	system/sysnowloading.cpp
+0020e690	FUN_0020e690	sequence/sequence.cpp
+00215e1c	FUN_00215e1c	debug/mimu_debug.cpp
+00216184	FUN_00216184	debug/motnamecnv0.cpp
+0021628c	FUN_0021628c	debug/motnamecnv0.cpp
+002163ac	FUN_002163ac	debug/motnamecnv.cpp
+0021641c	FUN_0021641c	debug/motnamecnv.cpp
+0021649c	FUN_0021649c	debug/motnamecnv.cpp
+002165c0	FUN_002165c0	debug/motnamecnv.cpp
+00216768	FUN_00216768	debug/naga_debug.cpp
+00281030	DogActor::setMotionSpeedSub	dog/dogactor.h
+0028109c	DogActor::getMotionSpeedSub	dog/dogactor.h
+00281114	DogActor::getMotionLinkTime	dog/dogmotionblend.h
+002811a4	DogActor::getMotionNoSub	dog/dogactor.h
+002812b4	DogActor::getNodeMatrixPtr	dog/dogactor.h
+0028130c	DogActor::GetI3mRootPtr	dog/dogactor.h
+002813b4	DogActor::getMotionAuxData	dog/dogactor.h
+0028141c	DogActor::getMotionTagData	dog/dogactor.h
+00281484	DogActor::getMaxTime0	dog/dogactor.h
+00281518	DogActor::unpack	dog/dogactor.h
+002815d4	DogActor::get_nNode	dog/dogactor.h
+00281690	DogActor::getNodeName	dog/dogactor.h
+00281778	DogActor::i3mGetNodeIndexByName	dog/dogactor.h
+00281860	DogActor::getMotion	dog/dogactor.h
+00281990	DogActor::getBlendMotion	dog/dogactor.h
+00281df0	DogModel::isAlive	dog/dogmodel.h
+00281e48	DogModel::assignTex	dog/dogmodel.h
+00281ec0	DogModel::unpack	dog/dogmodel.h
+00281f08	DogModel::get_nNode	dog/dogmodel.h
+00281f50	DogModel::get_nTex	dog/dogmodel.h
+00281f98	DogModel::getTexName	dog/dogmodel.h
+0028200c	DogModel::assignTex	dog/dogmodel.h
+002820ac	DogModel::copyLocalBasicTransform	dog/dogmodel.h
+00282104	DogModel::copyLocalBasicTransform	dog/dogmodel.h
+0028215c	DogModel::getNodeIndexByName	dog/dogmodel.h
+002821d0	DogModel::convertLocalToModel	dog/dogmodel.h
+00282274	DogModel::convertLocalToModel	dog/dogmodel.h
+00282318	DogModel::getNodeName	dog/dogmodel.h
+0028238c	DogModel::copyClipSphere	dog/dogmodel.h
+00282410	DogModel::copyClipSphere	dog/dogmodel.h
+00282494	DogModel::replaceStqMapEntity	dog/dogmodel.h
+00282508	DogModel::updateMarkedMaterial	dog/dogmodel.h
+00282550	DogModel::get_nGroup	dog/dogmodel.h
+00282598	DogModel::setBothFaceEnable	dog/dogmodel.h
+002833e4	MagLifeBwn::getLastSearchPos	mag/maglifebwn.h
+00283d54	MagLifeBwnCtrl::setMission	mag/maglifebwnctrl.h
