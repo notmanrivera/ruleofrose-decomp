@@ -4,3 +4,12 @@
 // GCC2 exception table header: 0xFFFFFFFE is the "new-style table" marker,
 // not a label address.
 __EXCEPTION_TABLE__ = 0x00307F80; // type:s32
+
+// Names chosen by the decomp: the binary does not contain them.
+// bed/bedsubmode.cpp (class name from setNextSubMode__24MagLifeBwnCtrlModeSitOutRC10BedSubMode)
+push__10BedSubMode = 0x00100258; // type:func size:0x68
+pop__10BedSubMode = 0x001002C0; // type:func size:0x60
+// Assert handler used by bed/ and others: prints "Assertion Failed: %s(%d)   %s\n".
+ror_assert = 0x00215A30; // type:func
+// utl/utlmisc.cpp (parameter name theName from its assert string)
+utlIsTcc__FPCc = 0x00105650; // type:func size:0x98

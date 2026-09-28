@@ -50,17 +50,17 @@ segments:
     start: 0x000000
     vram: 0x00100000
     bss_size: 0x520E98
-    subalign: 4  # original .gnu.linkonce.t sections are 4-aligned; gap bytes live in the asm
+    subalign: null  # natural alignment; asm objects get theirs from ASM_ALIGN
     subsegments:
       - [0x000000, asm, sdk/crt0] # .text (likely)
-      - [0x000258, asm, bed/bedsubmode] # .text (likely)
+      - [0x000258, cpp, bed/bedsubmode] # .text (likely)
       - [0x000320, asm, bed/bedmemory] # .text (likely)
       - [0x001718, asm, bed/bedpfh] # .text (likely)
       - [0x001AEC, asm, bed/bedpad] # .text (likely)
       - [0x001CCC, asm, utl/utlgame] # .text (likely)
       - [0x003EDC, asm, utl/utlbtl] # .text (likely)
       - [0x004970, asm, utl/utltm2] # .text (likely)
-      - [0x005650, asm, utl/utlmisc] # .text (certain)
+      - [0x005650, cpp, utl/utlmisc] # .text (certain)
       - [0x0056E8, asm, utl/utlfile] # .text (likely)
       - [0x006010, asm, utl/utlfind] # .text (likely)
       - [0x006658, asm, dog/dogmotionblend] # .text (likely)
@@ -1985,14 +1985,14 @@ segments:
       - [0x1E5288, data, vtbl/_vt_19__builtin_type_info] # .gnu.linkonce.d._vt$19__builtin_type_info
       - [0x1E52A0, data, vtbl/_vt_16__attr_type_info] # .gnu.linkonce.d._vt$16__attr_type_info
       - [0x1E52B8, data, vtbl/_vt_19__pointer_type_info] # .gnu.linkonce.d._vt$19__pointer_type_info
-      - [0x1E5300, rodata, bed/bedsubmode] # .rodata (likely)
+      - [0x1E5300, .rodata, bed/bedsubmode] # .rodata (likely)
       - [0x1E5340, rodata, bed/bedmemory] # .rodata (likely)
       - [0x1E5668, rodata, bed/bedpfh] # .rodata (likely)
       - [0x1E56C8, rodata, bed/bedpad] # .rodata (likely)
       - [0x1E5728, rodata, utl/utlgame] # .rodata (likely)
       - [0x1E75F8, rodata, utl/utlbtl] # .rodata (likely)
       - [0x1E76B0, rodata, utl/utltm2] # .rodata (likely)
-      - [0x1E7748, rodata, utl/utlmisc] # .rodata (certain)
+      - [0x1E7748, .rodata, utl/utlmisc] # .rodata (certain)
       - [0x1E7760, rodata, utl/utlfile] # .rodata (likely)
       - [0x1E7798, rodata, utl/utlfind] # .rodata (likely)
       - [0x1E77C8, rodata, dog/dogmotionblend] # .rodata (likely)

@@ -11,15 +11,18 @@ byte (87/87 instructions). Every other build differs in 65+ instructions,
 and `-O2`/`-O3` leave a register-allocation difference in
 `getMotionLinkTime` that no source variant removed (6 tried).
 
-Two more flags come from the binary itself: **`-G0`** (no instruction in
+`-fno-strict-aliasing` came from the first decompiled file
+(`bed/bedsubmode`, which re-reads a member after a 128-bit store); these
+three test functions match with or without it. Two more flags come from the
+binary itself: **`-G0`** (no instruction in
 the whole program uses `$gp` as a base register, so nothing was placed in
 small-data sections for gp-relative access) and **`-fno-exceptions`**
 (`.eh_frame` only covers libgcc's C++ runtime; without the flag each object
 emits its own `.eh_frame`).
 
-Caveats: the sample is three inline methods from `dog/` headers. Other
-modules may have been built with different flags, and `-G` can't be told
-apart yet (no small globals involved). Confirm on more functions while
+Caveats: the sample is three inline methods from `dog/` headers; other
+modules may have been built with different flags (the engine middleware
+clearly was: all its functions are 8-aligned). Confirm on more functions while
 setting up splat.
 
 ```bash

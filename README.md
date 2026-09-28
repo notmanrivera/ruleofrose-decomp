@@ -11,14 +11,16 @@ extracted from their own disc; `disc/`, the generated `asm/`, `assets/`,
 
 The matching build works: splitting the ELF with splat into one file per
 original source file and rebuilding it reproduces the game's load image
-byte for byte (SHA-1 checked). No C++ is linked in yet. See [notes/PROJECT_STATE.md](notes/PROJECT_STATE.md) for
+byte for byte (SHA-1 checked), now with decompiled C++ files linked in.
+How to decompile a file: [docs/DECOMPILING.md](docs/DECOMPILING.md). See [notes/PROJECT_STATE.md](notes/PROJECT_STATE.md) for
 findings and the roadmap.
 
 | | |
 |---|---|
-| Matching build | ✅ all-asm build, SHA-1 `fa157dc8…1997` of the load image |
+| Matching build | ✅ SHA-1 `fa157dc8…1997` of the load image, with C++ linked in |
+| Decompiled | 2 of 122 game files (`bed/bedsubmode`, `utl/utlmisc`), byte for byte; `tools/progress.py` |
 | File split | 143 files ([config/splits.tsv](config/splits.tsv)): 72 game files named from assert paths, 50 inferred `unk/<main class>` files, crt0, the engine middleware (`mw/i3d` graphics, `mw/sound`) and 18 SDK library runs; `.text`, `.rodata`, `.data` and `.bss` each split per file |
-| Compiler | **ee-gcc 2.96 (SCE), `-Os -G0 -fno-exceptions`**: 3/3 test functions match byte for byte ([details](matching/compiler_id/README.md)) |
+| Compiler | **ee-gcc 2.96 (SCE), `-Os -G0 -fno-exceptions -fno-strict-aliasing`**: 3/3 test functions match byte for byte ([details](matching/compiler_id/README.md)) |
 | Functions found by Ghidra | 7,230 |
 | Functions with their original name | 1,449 exact (`.gnu.linkonce`) + 111 inferred from vtable overrides + 648 SDK/libc/libgcc functions by signature |
 | Virtual methods tied to a class only | 651 (`Class::vfunc_NN`) |
@@ -67,7 +69,8 @@ regions and the symbols they fall in.
 
 ```bash
 python3 -m venv tools/.venv
-tools/.venv/bin/pip install 'splat64[mips]==0.50.0' pyelftools
+tools/.venv/bin/pip install 'splat64[mips]==0.50.0' pyelftools ninja_syntax
+tools/.venv/bin/pip install git+https://github.com/matt-kempster/m2c.git@708d2d2cb2698f091a92492b328f73b24209f72d
 ```
 
 ### Ghidra
@@ -106,6 +109,9 @@ tags functions with their source files (about a minute). Open the project with
 | `tools/configure.py` | Generates `config/SLUS_214.48.yaml` from the ELF, runs splat, writes `build.ninja` |
 | `tools/dock` | Runs a command inside the `ror-build` image |
 | `tools/first_diff.py` | Where the built image differs from the original, by symbol |
+| `tools/match.py` | Compiles one `src/` file and compares each function and data section with the game |
+| `tools/progress.py` | Decompilation progress by files and bytes |
+| `src/`, `include/ror.h` | Decompiled C++ (compiled from `src/` so `__FILE__` matches) and shared definitions |
 | `tools/split_files.py` | Infers where each original file starts in `.text`/`.rodata` → `config/splits.tsv` |
 | `tools/sce_symbols.py` | Names SDK functions with PS2Recomp's signature database (downloaded to `build/cache`, GPL, not committed) |
 | `config/` | splat config (generated), `splits.tsv` (generated file boundaries), `splits_manual.tsv` (hand-made boundaries/names with evidence), manual symbol overrides, extra linker script |
