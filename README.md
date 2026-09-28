@@ -17,7 +17,7 @@ findings and the roadmap.
 | | |
 |---|---|
 | Matching build | ✅ all-asm build, SHA-1 `fa157dc8…1997` of the load image |
-| File split | 93 files: 72 game files named from assert paths ([config/splits.tsv](config/splits.tsv)), crt0, 20 SDK library runs; `.text`, `.rodata`, `.data` and `.bss` each split per file |
+| File split | 144 files ([config/splits.tsv](config/splits.tsv)): 72 game files named from assert paths, 50 inferred `unk/<main class>` files, crt0, the engine middleware and 20 SDK library runs; `.text`, `.rodata`, `.data` and `.bss` each split per file |
 | Compiler | **ee-gcc 2.96 (SCE), `-Os -G0 -fno-exceptions`**: 3/3 test functions match byte for byte ([details](matching/compiler_id/README.md)) |
 | Functions found by Ghidra | 7,230 |
 | Functions with their original name | 1,449 exact (`.gnu.linkonce`) + 111 inferred from vtable overrides + 657 SDK/libc/libgcc functions by signature |

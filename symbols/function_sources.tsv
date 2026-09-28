@@ -128,13 +128,21 @@ addr	function	source_files
 00112d60	FUN_00112d60	dog/doglight.cpp
 00112fc8	FUN_00112fc8	dog/doglight.cpp
 001136d0	FUN_001136d0	dog/doglight.cpp
-00114758	FUN_00114758	dog/dogmodel.h
-001149d4	FUN_001149d4	dog/dogmodel.h
-0011533c	FUN_0011533c	dog/dogmodel.h
-0011550c	FUN_0011550c	dog/dogmodel.h
-00115790	DogModel::vfunc_15	dog/dogmodel.h
-001158ec	DogModel::vfunc_14	bed/bedpfh.h, dog/dogmodel.h
-00115cec	DogModel::vfunc_06	bed/bedpfh.h
+0011440c	FUN_0011440c	dog/dogmodel.cpp
+001145c0	FUN_001145c0	dog/dogmodel.cpp
+00114758	FUN_00114758	dog/dogmodel.cpp, dog/dogmodel.h
+001149d4	FUN_001149d4	dog/dogmodel.cpp, dog/dogmodel.h
+00114d04	DogModel::vfunc_05	dog/dogmodel.cpp
+00114e38	DogModel::vfunc_11	dog/dogmodel.cpp
+001151f4	DogModel::vfunc_12	dog/dogmodel.cpp
+001152a8	DogModel::vfunc_13	dog/dogmodel.cpp
+0011533c	FUN_0011533c	dog/dogmodel.cpp, dog/dogmodel.h
+0011550c	FUN_0011550c	dog/dogmodel.cpp, dog/dogmodel.h
+00115694	FUN_00115694	dog/dogmodel.cpp
+00115790	DogModel::vfunc_15	dog/dogmodel.cpp, dog/dogmodel.h
+001158ec	DogModel::vfunc_14	bed/bedpfh.h, dog/dogmodel.cpp, dog/dogmodel.h
+00115c60	DogModel::vfunc_16	dog/dogmodel.cpp
+00115cec	DogModel::vfunc_06	bed/bedpfh.h, dog/dogmodel.cpp
 00116038	FUN_00116038	dog/dogmodel.h
 001161e4	FUN_001161e4	dog/dogtexinfo.cpp
 001162ac	FUN_001162ac	dog/dogtexinfo.cpp
@@ -275,13 +283,17 @@ addr	function	source_files
 00130ee8	MagLifeTest::live	mag/maglifetest.cpp
 001311f4	FUN_001311f4	mag/magscene.cpp
 00131a28	FUN_00131a28	mag/magscene.cpp
-00132048	FUN_00132048	mag/magscene.cpp
+00132048	FUN_00132048	dog/dogmodel.h, mag/magscene.cpp
 00132430	FUN_00132430	mag/magscene.cpp
+0013262c	FUN_0013262c	dog/dogmodel.h
 001327dc	FUN_001327dc	mag/magscene.cpp
 00133090	FUN_00133090	mag/magscene.cpp
+00133454	FUN_00133454	dog/dogmodel.h
+00133658	FUN_00133658	dog/dogmodel.h
 0013386c	FUN_0013386c	mag/magscene.cpp
 00133a0c	FUN_00133a0c	mag/magscene.cpp
 00133b80	FUN_00133b80	mag/magscene.cpp
+00133d10	FUN_00133d10	dog/dogmodel.h
 00134730	FUN_00134730	mag/magscene.cpp
 001348b0	FUN_001348b0	mag/magscene.cpp
 00134944	FUN_00134944	mag/magscene.cpp
@@ -416,11 +428,15 @@ addr	function	source_files
 0016e7cc	EffBreath1Space::vfunc_05	dog/dogmodel.h
 0016e9f4	FUN_0016e9f4	dog/dogmodel.h
 00170158	FUN_00170158	dog/dogmodel.h
+00171378	EffFire1Ex::updateZDepth	dog/dogmodel.h
 00172b30	EffFog3::vfunc_02	bed/bedpfh.h
 00172f4c	EffFoot1::vfunc_05	dog/dogmodel.h, mag/magscene.h
 00173688	EffFoot2::vfunc_05	dog/dogmodel.h, mag/magscene.h
 00173948	FUN_00173948	dog/dogmodel.h
 00173f3c	EffGeneric1::vfunc_02	bed/bedpfh.h
+00175804	EffLight3::vfunc_02	dog/doglightpool.h
+00175dc4	EffLight3::vfunc_05	dog/doglightpool.h
+001765e8	FUN_001765e8	dog/doglightpool.h
 001782cc	FUN_001782cc	bed/bedpfh.h
 001788ec	EffMuzzleFlash1::vfunc_02	dog/doglightpool.h
 00178ac0	EffMuzzleFlash1::vfunc_05	dog/doglightpool.h

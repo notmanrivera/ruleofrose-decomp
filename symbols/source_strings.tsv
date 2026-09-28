@@ -22,6 +22,7 @@ addr	path
 002e8578	dog/doglightpool.cpp
 002e86b8	dog/doglightpool.h
 002e8800	dog/doglight.cpp
+002e8b10	dog/dogmodel.cpp
 002e8b78	dog/dogmodel.h
 002e8cd0	bed/bedpfh.h
 002e8dc0	dog/dogtexinfo.cpp
@@ -58,6 +59,7 @@ addr	path
 002ed328	mag/maglifewindow.cpp
 002ed438	mag/maglifetest.cpp
 002ed4a0	mag/magscene.cpp
+002ed570	dog/dogmodel.h
 002ed7b0	mag/maglifebwnctrl.h
 002edc58	mag/magscene2.cpp
 002edd68	bed/bedpfh.h
@@ -93,10 +95,12 @@ addr	path
 002f1f58	bed/bedpfh.h
 002f21d0	dog/dogmodel.h
 002f2328	dog/dogmodel.h
+002f2410	dog/dogmodel.h
 002f2660	bed/bedpfh.h
 002f2700	mag/magscene.h
 002f2720	dog/dogmodel.h
 002f2830	bed/bedpfh.h
+002f28d0	dog/doglightpool.h
 002f2dc0	bed/bedpfh.h
 002f2e10	dog/doglightpool.h
 002f3028	bed/bedpfh.h
@@ -135,6 +139,7 @@ addr	path
 002ff588	dog/dogmodel.h
 002ff670	dog/dogmodel.h
 002ff8d0	system/sysnowloading.cpp
+002ff910	mag/magsystem.h
 003016e0	sequence/sequence.cpp
 00301998	debug/mimu_debug.cpp
 00301a08	debug/motnamecnv0.cpp

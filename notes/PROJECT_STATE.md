@@ -71,7 +71,7 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 1. ✅ Recuperación de símbolos y proyecto Ghidra reproducible, con tipos de parámetros (1,267 firmas).
 2. ✅ Compilador identificado: **ee-gcc 2.96 (SCE) con `-Os`**. 3 funciones coinciden byte a byte (87/87 instrucciones); falta confirmar en más módulos y averiguar `-G`. Entorno reproducible en `docker/` (imagen `ror-build`).
 3. ✅ splat + build: `tools/dock python3 tools/configure.py && tools/dock ninja` reconstruye la imagen de carga idéntica byte a byte (SHA-1 `fa157dc8763b2f376f6bb73a70b6a4c250181997`), todo en asm por ahora. Claves: `subalign: 4` (las secciones linkonce originales van alineadas a 4) y `ld_align_section_vram_end: False`.
-3b. ✅ División en 93 archivos (`config/splits.tsv`, `tools/split_files.py`), compilación sigue idéntica. Método: rutas de assert dan 72 archivos conocidos; el orden de `.rodata` acota cada corte (se excluyen referencias a `.rodata` de las librerías, p. ej. `_ctype_`); clase y llamadas desempatan; 6 cortes en `game/`/`task/` tienen referencias cruzadas ("conflict"). El juego termina en `0x218500`; las librerías se dividen por las firmas del SDK. Pendiente: archivos sin asserts escondidos dentro de los rangos, y dividir `.data`/`.bss`.
+3b. ✅ División en 144 archivos (`config/splits.tsv`, `tools/split_files.py`), compilación sigue idéntica. Evidencias: (1) rutas de assert → 72 archivos conocidos (se corrigió la extracción de rutas: una ruta precedida por el último byte de un float, `0x3F`, se perdía, p. ej. `dog/dogmodel.cpp`); (2) orden de `.rodata`, midiendo contra la cadena más larga de referencias en orden (las pocas cruzadas son `extern const`); (3) **textos duplicados**: GCC comparte literales idénticos solo dentro de un archivo, así que dos copias = dos archivos → 339 restricciones de corte, ninguna contradice el orden de enlace; (4) `.ctors`/`.dtors` → 4 finales exactos; (5) no partir variables locales (candidatas a `static`); (6) cambio de familia de clase (`Hfm*`→`Bds*`) solo si lo anterior lo permite. Resultado: 50 archivos escondidos `unk/<clase principal>` (p. ej. un archivo por tipo de enemigo), 2 cortes con conflicto menor (`dog/dogcamera`, `game/gamstat`). Validación: la ruta `.cpp` de cada archivo conocido cae en su propio bloque de `.rodata`.
 4. Decompilar archivo por archivo, empezando por `bed/` y `utl/` (pequeños, sin dependencias).
 5. Documentar los formatos RPK / MAPUNIT / ARA / STR.
 6. Capa de port: reemplazar las libs `sce*` por equivalentes Vita; reescribir el render (VU1 + GS) sobre vitaGL.
@@ -82,6 +82,11 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 - **Zona `0x218500`–`0x236AC8` (~120 KB)**: no es SDK (ninguna firma), y el juego la llama cientos de veces (`snd/` 311, `mag/` 304, `dog/` 104, `spr/` 104). Es middleware del motor (probablemente la librería gráfica "I3": `tag_I3dMatrixF4x4_s`, `I3M_INTER`, `i3mGetNodeIndexByName`; y el lado EE del driver de sonido). Para el port hay que decompilarla.
 - ✅ **`.data` y `.bss` divididos por archivo** (antes bloqueaban el C++). Dueño de cada variable = el único archivo cuyo código la usa, o (en `.data`) cuyas funciones/`.rodata` apunta una tabla; luego la secuencia más larga que respeta el orden de enlace. `.data`: 450 variables con dueño único, 443 (98%) consistentes, 46 archivos con bloque. `.bss`: 318, 291 (92%), 31 archivos; el primero es el buffer `_args` de crt0 (0x144 bytes). `.sbss` (188 bytes, usada por las funciones RTTI y libc) queda en un solo bloque. El tamaño de `.bss` se calcula del ELF (splat omitía 0x48 bytes de alineación): el ELF reconstruido termina en `0x828E94` como el original.
 - **Prototipo**: existe un prototipo de localización del 19-jul-2006 catalogado en Hidden Palace, y una demo USA. Se desconoce si conservan símbolos (Sly 1 obtuvo nombres y archivos de un prototipo así).
+
+## Formatos de audio
+
+- `DATA/SND/XWS/*.STR` (844): PS-ADPCM crudo sin cabecera; `vgmstream` lo lee con un `.txth` (falta la frecuencia).
+- `DATA/SND/XV/*.SE` (36): bancos con firma `XVAB` y bloques `HEAD`/`TGIF`/`TGPG`/`TGSP`; formato sin documentar (no está en vgmstream). Se entenderá al decompilar `snd/`.
 
 ## Librerías del SDK
 
@@ -113,6 +118,11 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 | `ethteck/kh1`, `Fantaskink/SOTC`, `RossyDoubleUnderscore/ICO-decomp`, `weirdbeardgame/Fatal-Frame-1`, `parappadev/parappa2` | Usan ee-gcc 2.96 + splat: referencias para `.data`/`.bss`, objdiff, progreso |
 | `LostTemplarRH/sce-symbol-scanner` | Origen de la base de firmas; su CLI (Java, pre-release, sin licencia) usa además vecindad para funciones cortas. No ejecutado |
 | `cualquiercosa327/psretrox` | Existe (herramienta de decompilación/recompilación PS2); no evaluada a fondo |
+| `matt-kempster/m2c` | Sí, para decompilar: MIPS→C con GCC y C++ parcial (GPL, se instala como herramienta) |
+| `vgmstream/vgmstream` | Sí, para el audio `.STR` (con `.txth`); no conoce los bancos `XVAB` |
+| `ps2dev/ps2sdk` | Referencia de registros de hardware (GS/DMA/VIF); su API no es la de Sony (`sce*`) |
+| `xerpi/libvita2d` | Posible para la UI en Vita; sin cambios desde 2022, vitaGL cubre lo mismo |
+| Scripts de Noesis | No hay scripts públicos para Rule of Rose (búsqueda sin resultados) |
 | `ran-j/PS2Recomp` | **En uso su base de firmas del SDK** (vía `tools/sce_symbols.py`). Su recompilador estático queda como opción para arrancar el port antes de terminar la decompilación |
 | `jhuapl/codecut` | No: guarda el archivo de cada función en el *Namespace* de Ghidra, que usamos para las clases C++; nuestras pistas (asserts + orden de `.rodata`) son más exactas que su heurística |
 | `astrelsky/ghidra_MIPSR5900` | Archivado (2020); reemplazado por ghidra-emotionengine-reloaded |

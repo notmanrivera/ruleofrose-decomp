@@ -362,12 +362,19 @@ def main():
                            size=int(size, 16), source="sce-sdb")
 
     # --- source-path strings left by asserts
-    src_re = re.compile(rb"(?<![\x21-\x7e])([a-z0-9_]+/[a-z0-9_]+\.(?:cpp|c|h))\x00")
+    # Strings in .rodata are word-aligned; the byte before one can be the
+    # tail of a float (0x3F = '?'), so align rather than look behind.
+    src_re = re.compile(rb"([A-Za-z0-9_]*[a-z0-9_]+/[a-z0-9_]+\.(?:cpp|c|h))\x00")
     src_strings = []
     for name, _, addr, off, size in elf.sections:
         if name in (".rodata", ".data"):
             for m in src_re.finditer(elf.d, off, off + size):
-                src_strings.append((addr + m.start(1) - off, m.group(1).decode()))
+                start = m.start(1)
+                while (addr + start - off) % 4 and start < m.end(1):
+                    start += 1
+                path = elf.d[start:m.end(1)].decode()
+                if re.fullmatch(r"[a-z0-9_]+/[a-z0-9_]+\.(?:cpp|c|h)", path):
+                    src_strings.append((addr + start - off, path))
 
     write_outputs(syms, parents, vtables, order, src_strings, failed)
 

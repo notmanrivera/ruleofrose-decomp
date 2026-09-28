@@ -12,12 +12,19 @@ Evidence, strongest first:
      .text, so a real boundary separates every earlier function's .rodata
      references from every later one's. References into the SDK libraries'
      .rodata (e.g. newlib's _ctype_) are excluded: any file may use them.
-  3. Between two known files, the cut is chosen among those positions by
-     class membership (methods of one class live in one file) and by
-     callers/callees, then as early as possible.
-  4. The SDK library region (after the last game file) is split per library
+  3. GCC shares identical string literals within a translation unit only,
+     so functions using different copies of one string are in different
+     files: each pair of copies demands a cut between its users (339
+     constraints, none contradicting link order). .ctors/.dtors give exact
+     file ends. The fewest cuts meeting all of this come from minimum
+     stabbing; extra cuts are hidden files, named unk/<main class>.
+  4. Each cut is placed inside its window by .rodata order, then where the
+     class changes (methods of one class live in one file), then by
+     callers/callees and class votes for known files, then as early as
+     possible.
+  5. The SDK library region (after the last game file) is split per library
      run, from the signatures in symbols/sce_symbols.tsv.
-  5. .data and .bss follow the same link order, but globals are shared, so
+  6. .data and .bss follow the same link order, but globals are shared, so
      only ownership evidence counts: a symbol referenced by the code of a
      single file, or (for .data) a table whose pointers all lead to one
      file's functions or .rodata. The chunk starts come from the longest
@@ -138,18 +145,39 @@ def main():
     refs = [{r for r in funcs[a]["refs"] if r < lib_ro} for a in game]
     n = len(game)
 
+    # A few references cross files on purpose (extern const tables). Keep the
+    # largest set of references consistent with link order and measure cuts
+    # against that, or one such reference taints every cut it spans.
+    ordered = consistent_refs(refs)
     pmax, cur = [0] * n, 0
     for k in range(n):
-        cur = max([cur, *refs[k]])
+        cur = max([cur, *ordered[k]])
         pmax[k] = cur
     smin, cur = [RODATA[1]] * (n + 1), RODATA[1]
     for k in range(n - 1, -1, -1):
-        cur = min([cur, *refs[k]])
+        cur = min([cur, *ordered[k]])
         smin[k] = cur
 
     def violations(k):
         """References that a cut after game[k] would leave on the wrong side."""
-        return sum(1 for j in range(k + 1, n) for r in refs[j] if r < pmax[k])
+        return sum(1 for j in range(k + 1, n) for r in ordered[j] if r < pmax[k])
+
+    # .data/.bss symbols and the span of functions using each. Statics are
+    # never shared across files, so a cut should not split a symbol whose
+    # users all sit in the two neighbouring files (globals used elsewhere too
+    # say nothing about this cut and are ignored).
+    span = {}
+    for k, a in enumerate(game):
+        for sym in funcs[a]["data"] | funcs[a]["bss"]:
+            lo_, hi_ = span.get(sym, (k, k))
+            span[sym] = (min(lo_, k), max(hi_, k))
+    spans = sorted(span.values())
+
+    def shared(k, lo, hi):
+        """Local symbols (all users in game[lo:hi]) used on both sides of k."""
+        i = bisect.bisect_left(spans, (lo, -1))
+        j = bisect.bisect_left(spans, (k, -1))
+        return sum(1 for a_, b_ in spans[i:j] if k <= b_ < hi)
 
     # Class -> majority file, and call-graph neighbours, from the tags.
     tag_of = dict(tags)
@@ -183,20 +211,124 @@ def main():
         else:
             runs.append([a, a, f])
 
-    # Everything before the first tagged function is crt0 plus whatever
-    # untagged code precedes it.
-    first = bisect.bisect_left(game, runs[0][0])
+    # Class of the nearest classed function before/at-or-after each index,
+    # to prefer cuts where the class (or the class family) changes.
+    prev_cls, next_cls, cur_c = [None] * (n + 1), [None] * (n + 1), None
+    for k in range(n):
+        prev_cls[k] = cur_c
+        cur_c = classes.get(game[k], cur_c)
+    prev_cls[n] = cur_c
+    cur_c = None
+    for k in range(n - 1, -1, -1):
+        cur_c = classes.get(game[k], cur_c)
+        next_cls[k] = cur_c
+
+    def class_change(k):
+        """2 if the class family changes at a cut before game[k], 1 if the class does."""
+        a, b = prev_cls[k], next_cls[k]
+        if not a or not b or a == b:
+            return 0
+        return 1 if common_prefix(a, b) >= 3 else 2
+
+    def is_clean(k):
+        return pmax[k - 1] < smin[k]
+
+    def place(lo, hi, left, right, prefer=lambda k: 0):
+        """Best index k in (lo, hi] for a file starting at game[k]; the files on
+        either side span at least game[left:k] and game[k:right]."""
+        return min(range(lo + 1, hi + 1),
+                   key=lambda k: (violations(k - 1), shared(k, left, right), -class_change(k),
+                                  prefer(k), k))
+
+    idx = {a: k for k, a in enumerate(game)}
+    runs_i = [(idx[s], idx[e], f) for s, e, f in runs]
+    intervals = string_copy_intervals(game, refs, rom)
+    anchors = ctor_anchors(game)
+
+    # Every gap between two known files needs one cut (the next file's start)
+    # plus as many more as the string-copy intervals and ctor anchors inside
+    # it demand. Minimum stabbing (greedy by right end) gives the fewest extra
+    # files; each cut is then placed inside its window.
+    first = runs_i[0][0]
     rows = [[game[0], None, "sdk/crt0", "likely"],
             [game[first], None, module_name(runs[0][2]), "likely"]]
-    for (_, e1, f1), (s2, _, f2) in zip(runs, runs[1:]):
-        i, j = bisect.bisect_left(game, e1), bisect.bisect_left(game, s2)
-        cands = range(i, j)
-        clean = [k for k in cands if pmax[k] < smin[k + 1]]
-        pool = clean or list(cands)
-        best = min(pool, key=lambda k: (violations(k) if not clean else 0,
-                                        -score(k, i, j, game, evidence, f1, f2), k))
-        conf = "certain" if len(clean) == 1 else "likely" if clean else "conflict"
-        rows.append([game[best + 1], None, module_name(f2), conf])
+    gaps = [(s1, e, s2, e2, f1, f2) for (s1, e, f1), (s2, e2, f2) in zip(runs_i, runs_i[1:])]
+    gaps.append((runs_i[-1][0], runs_i[-1][1], n - 1, n - 1, runs_i[-1][2], None))  # tail
+    inside_run = sum(1 for l, r in intervals for s_, e_, _ in runs_i if s_ <= l and r <= e_)
+    hidden = 0
+    prev_start = first
+    for s1, e, s2, next_end, f1, f2 in gaps:
+        prev_start = max(prev_start, s1)
+        need = [] if f2 is None else [(e, s2)]
+        for l, r in intervals:
+            lo, hi = max(l, e), min(r, s2)
+            if lo < hi and not (l <= e and r >= s2):
+                need.append((lo, hi))
+        need += [(k - 1, k) for k in anchors if e < k <= s2]
+        stabs = []
+        for l, r in sorted(need, key=lambda x: x[1]):
+            if stabs and l < stabs[-1][1]:
+                stabs[-1][0] = max(stabs[-1][0], l)
+            else:
+                stabs.append([l, r])
+        last_k, left = e, prev_start
+        for j, (l, r) in enumerate(stabs):
+            l = max(l, last_k)
+            if l >= r:
+                continue
+            known = f2 is not None and j == len(stabs) - 1
+            right = next_end + 1 if known else (stabs[j + 1][0] + 1 if j + 1 < len(stabs) else s2 + 1)
+            if known:
+                k = place(l, r, left, right, lambda k: -score(k - 1, e, s2, game, evidence, f1, f2))
+            else:
+                k = place(l, r, left, right)
+            left = k
+            window = range(l + 1, r + 1)
+            conf = ("anchor" if k in anchors else
+                    "certain" if sum(map(is_clean, window)) == 1 and is_clean(k) else
+                    "likely" if is_clean(k) else "conflict")
+            rows.append([game[k], None, module_name(f2) if known else None, conf])
+            hidden += not known
+            last_k = k
+        prev_start = last_k
+
+    # Optional cuts where the class family changes (HfmMain.. -> BdsMain..),
+    # kept only when the cut is clean for .rodata and splits no local symbol.
+    tagged_idx = {idx[a]: f for a, f in tags if a in idx}
+    starts_k = sorted(idx[r[0]] for r in rows if r[0] in idx)
+    extra = []
+    for i, k0 in enumerate(starts_k):
+        k1 = starts_k[i + 1] if i + 1 < len(starts_k) else n
+        members = [k for k in range(k0, k1) if game[k] in classes]
+        for a_, b_ in zip(members, members[1:]):
+            ca, cb = classes[game[a_]], classes[game[b_]]
+            if ca == cb or common_prefix(ca, cb) >= 3:
+                continue
+            if any(k < a_ for k in tagged_idx if k0 <= k < k1) and \
+               any(k > b_ for k in tagged_idx if k0 <= k < k1):
+                continue  # would split a known file
+            k = place(a_, b_, k0, k1)
+            if violations(k - 1) == 0 and shared(k, k0, k1) == 0:
+                extra.append(k)
+    for k in extra:
+        rows.append([game[k], None, None, "family"])
+    rows.sort(key=lambda r: r[0])
+    hidden += len(extra)
+
+    # Name hidden files after the class with most methods in them.
+    bounds = [r[0] for r in rows] + [game_end]
+    used = Counter()
+    for i, r in enumerate(rows):
+        if r[2] is None:
+            members = Counter(classes[a] for a in game if bounds[i] <= a < bounds[i + 1] and a in classes)
+            base = f"unk/{members.most_common(1)[0][0]}" if members else f"unk/{r[0]:08X}"
+            used[base] += 1
+            r[2] = base if used[base] == 1 else f"{base}_{used[base]}"
+
+    cuts = sorted(idx[r[0]] for r in rows if r[0] in idx)
+    unmet = sum(1 for l, r in intervals if not any(l < c <= r for c in cuts))
+    print(f"string-copy constraints: {len(intervals)}, {inside_run} inside a known file's run, "
+          f"{unmet} unmet; ctor anchors: {len(anchors)}; hidden files added: {hidden}")
 
     assign_rodata(rows, game, refs, names, lib_ro)
     rows += sdk_rows(game_end, lib_ro, TEXT_END)
@@ -209,6 +341,8 @@ def main():
         f.write("# Generated by tools/split_files.py: where each original file starts.\n")
         f.write("# confidence: certain = only one consistent cut; likely = chosen among several\n")
         f.write("# by class/call evidence; conflict = no cut separates the .rodata references;\n")
+        f.write("# anchor = exact file end from .ctors/.dtors; family = class-family change with\n")
+        f.write("# clean .rodata and no split local symbol;\n")
         f.write("# signature = SDK library identified by tools/sce_symbols.py; unknown = unidentified.\n")
         f.write("# rodata/data/bss '-' = no chunk of its own (shares the previous file's).\n")
         f.write("text\trodata\tdata\tbss\tfile\tconfidence\n")
@@ -220,6 +354,74 @@ def main():
     for sec, (owned, kept) in stats.items():
         print(f"{sec}: {owned} symbols with a single owner, {kept} consistent with link order, "
               f"{sum(1 for r in rows if r[2 if sec == '.data' else 3] is not None)} files get a chunk")
+
+
+def consistent_refs(refs):
+    """Per function, the .rodata references on a longest chain that is
+    non-decreasing in link order; the rest cross files (extern consts)."""
+    pts = [(k, a) for k, rs in enumerate(refs) for a in sorted(rs)]
+    keep = longest_nondecreasing([a for _, a in pts])
+    out = [set() for _ in refs]
+    for i in keep:
+        k, a = pts[i]
+        out[k].add(a)
+    return out
+
+
+def string_copy_intervals(game, refs, rom):
+    """Cut constraints from duplicated string literals.
+
+    GCC shares identical string literals within a translation unit but not
+    across units, so two copies of one string belong to two files, and the
+    functions using each copy are in different files. For consecutive copies
+    used by functions i (all before) and j (all after), some file starts in
+    (i, j]; returns those intervals as (i, j) indices into `game`."""
+    users = defaultdict(set)
+    for k, rs in enumerate(refs):
+        for a in rs:
+            users[a].add(k)
+    copies = defaultdict(list)
+    for a in users:
+        o = a - TEXT_START
+        end = rom.index(b"\0", o)
+        s = rom[o:end]
+        if s and all(32 <= c < 127 or c in (9, 10) for c in s):
+            copies[s].append(a)
+    out = []
+    for addrs in copies.values():
+        addrs.sort()
+        for a1, a2 in zip(addrs, addrs[1:]):
+            i, j = max(users[a1]), min(users[a2])
+            if i < j:
+                out.append((i, j))
+    return out
+
+
+def ctor_anchors(game):
+    """Files with global constructors end with their _GLOBAL_$I$/$D$
+    functions, which .ctors/.dtors list: the next function starts a file."""
+    import ror_symbols
+    elf = ror_symbols.Elf(ROOT / "disc/SLUS_214.48")
+    fns = []
+    for name in (".ctors", ".dtors"):
+        _, _, addr, off, size = elf.section(name)
+        fns += [w for w in (elf.word(addr + i) for i in range(0, size, 4)) if w not in (0, 0xFFFFFFFF)]
+    ends = sorted(fns)
+    anchors = set()
+    for i, a in enumerate(ends):
+        if i + 1 < len(ends) and ends[i + 1] - a <= 0x40:
+            continue  # the paired dtor follows: the file ends after it
+        k = bisect.bisect_right(game, a)
+        if k < len(game):
+            anchors.add(k)
+    return anchors
+
+
+def common_prefix(a, b):
+    n = 0
+    while n < min(len(a), len(b)) and a[n] == b[n]:
+        n += 1
+    return n
 
 
 def has_padding(rom, a, b):
