@@ -348,6 +348,19 @@ def main():
                 syms[pfn] = dict(mangled="", cls=cls, name=f"vfunc_{i + 1:02d}", sig="", params=None,
                                  kind="method", size=0, source="vtable-slot")
 
+    # --- SDK / libgcc / libc names matched by signature (tools/sce_symbols.py)
+    sce = ROOT / "symbols/sce_symbols.tsv"
+    if sce.exists():
+        for line in sce.read_text().splitlines():
+            if line.startswith(("#", "addr")):
+                continue
+            a, lib, nm, size = line.split("\t")
+            a = int(a, 16)
+            if syms.get(a, {}).get("source") == "linkonce":
+                continue
+            syms[a] = dict(mangled=nm, cls=None, name=nm, sig="", params=None, kind="function",
+                           size=int(size, 16), source="sce-sdb")
+
     # --- source-path strings left by asserts
     src_re = re.compile(rb"(?<![\x21-\x7e])([a-z0-9_]+/[a-z0-9_]+\.(?:cpp|c|h))\x00")
     src_strings = []

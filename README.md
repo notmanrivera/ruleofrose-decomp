@@ -9,17 +9,18 @@ extracted from their own disc; `disc/`, the generated `asm/`, `assets/`,
 
 ## Status
 
-The matching build works: splitting the ELF with splat and rebuilding it
-reproduces the game's load image byte for byte (SHA-1 checked). No C++ is
-linked in yet. See [notes/PROJECT_STATE.md](notes/PROJECT_STATE.md) for
+The matching build works: splitting the ELF with splat into one file per
+original source file and rebuilding it reproduces the game's load image
+byte for byte (SHA-1 checked). No C++ is linked in yet. See [notes/PROJECT_STATE.md](notes/PROJECT_STATE.md) for
 findings and the roadmap.
 
 | | |
 |---|---|
 | Matching build | ✅ all-asm build, SHA-1 `fa157dc8…1997` of the load image |
+| File split | 93 files: 72 game files named from assert paths ([config/splits.tsv](config/splits.tsv)), crt0, 20 SDK library runs |
 | Compiler | **ee-gcc 2.96 (SCE), `-Os`**: 3/3 test functions match byte for byte ([details](matching/compiler_id/README.md)) |
 | Functions found by Ghidra | 7,230 |
-| Functions with their original name | 1,449 exact (`.gnu.linkonce`) + 111 inferred from vtable overrides |
+| Functions with their original name | 1,449 exact (`.gnu.linkonce`) + 111 inferred from vtable overrides + 657 SDK/libc/libgcc functions by signature |
 | Virtual methods tied to a class only | 651 (`Class::vfunc_NN`) |
 | Parameter types applied | 1,267 functions (demangler validated against Ghidra's GCC2 one: 1,160/1,160 equivalent) |
 | C++ classes / vtables | 289 / 284, hierarchy in [notes/class_hierarchy.txt](notes/class_hierarchy.txt) |
@@ -45,7 +46,20 @@ tools/dock python3 tools/configure.py   # extract the target image, split with s
 tools/dock ninja                        # assemble/compile, link, verify SHA-1 (creates build/ok)
 ```
 
-The first build takes a few minutes under emulation. When the SHA-1 doesn't
+The first build takes a few minutes under emulation; later builds only redo
+what changed.
+
+To re-derive symbols and file boundaries (after a build, since they read
+`asm/` and the linker map):
+
+```bash
+python3 tools/sce_symbols.py                     # SDK names by signature
+python3 tools/ror_symbols.py                     # all symbols
+tools/.venv/bin/python tools/split_files.py      # config/splits.tsv
+tools/dock python3 tools/configure.py && tools/dock ninja
+```
+
+ When the SHA-1 doesn't
 match, `tools/.venv/bin/python tools/first_diff.py` lists the differing
 regions and the symbols they fall in.
 
@@ -92,6 +106,8 @@ tags functions with their source files (about a minute). Open the project with
 | `tools/configure.py` | Generates `config/SLUS_214.48.yaml` from the ELF, runs splat, writes `build.ninja` |
 | `tools/dock` | Runs a command inside the `ror-build` image |
 | `tools/first_diff.py` | Where the built image differs from the original, by symbol |
+| `tools/split_files.py` | Infers where each original file starts in `.text`/`.rodata` → `config/splits.tsv` |
+| `tools/sce_symbols.py` | Names SDK functions with PS2Recomp's signature database (downloaded to `build/cache`, GPL, not committed) |
 | `config/` | splat config (generated), manual symbol overrides, extra linker script |
 | `docker/` | Shared build image: all EE-GCC 2.9x builds, binutils, splat; `ee-cc` compiler front end |
 | `include/` | splat's assembler macros and `INCLUDE_ASM` header |
@@ -104,6 +120,7 @@ tags functions with their source files (about a minute). Open the project with
 | `matching/compiler_id/` | Compiler-identification kit and result |
 | `symbols/ghidra_symbols.tsv` | All recovered symbols, with provenance |
 | `symbols/symbol_addrs.txt` | Same, in splat format (GCC2-mangled names) |
+| `symbols/sce_symbols.tsv` | SDK functions matched by signature (address, library, name, size) |
 | `notes/` | Findings, class hierarchy, object-file order |
 
 ## Symbol provenance
@@ -118,3 +135,5 @@ tags functions with their source files (about a minute). Open the project with
   (`__pure_virtual`); excluded from name propagation.
 - `rtti-helper` — libgcc `__rtti_*` helpers, identified by how `__tf`
   functions call them.
+- `sce-sdb` — SDK, libc or libgcc function whose masked bytes match a
+  signature in PS2Recomp's database.

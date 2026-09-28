@@ -34,7 +34,7 @@ CONFIG = ROOT / f"config/{BASENAME}.yaml"
 SEG = "main"
 
 COMPILER = "ee-gcc2.96"
-CFLAGS = "-Os -G8 -x c++ -Iinclude -Isrc"
+CFLAGS = "-Os -G8 -fno-exceptions -x c++ -Iinclude -Isrc"  # game code has no .eh_frame
 ASFLAGS = "-EL -march=r5900 -mabi=eabi -G8 -no-pad-sections -Iinclude"
 
 
@@ -111,7 +111,16 @@ def write_config(info):
             "    subsegments:",
         ]
         seen = set()
+        splits = load_splits()
         for s in seg.sections:
+            if s.name in (".text", ".rodata") and splits:
+                col = 0 if s.name == ".text" else 1
+                typ = s.splat_segment_type
+                for row in splits:
+                    if row[col] is not None:
+                        lines.append(f"      - [0x{row[col] - seg.vram:06X}, {typ}, {row[2]}] "
+                                     f"# {s.name} ({row[3]})")
+                continue
             name = subsegment_name(s)
             while name in seen:
                 name += "_"
@@ -126,12 +135,30 @@ def write_config(info):
     CONFIG.write_text("\n".join(lines) + "\n")
 
 
+def load_splits():
+    """config/splits.tsv (tools/split_files.py): [(text, rodata|None, name, confidence)]."""
+    path = ROOT / "config/splits.tsv"
+    if not path.exists():
+        return []
+    rows = []
+    for line in path.read_text().splitlines():
+        if line.startswith(("#", "text\t")) or not line.strip():
+            continue
+        text, ro, name, conf = line.split("\t")
+        rows.append((int(text, 16), None if ro == "-" else int(ro, 16), name, conf))
+    return rows
+
+
 def sbss_start(info):
     return next(s.vram for seg in info.segs for s in seg.sections if s.name == ".sbss")
 
 
 def write_ninja():
-    asm = sorted(ROOT.glob("asm/**/*.s"))
+    # Only the asm the linker script uses: a re-split leaves stale files behind.
+    ld = (ROOT / f"build/{BASENAME}.ld").read_text()
+    linked = set(re.findall(r"build/(asm/\S+?)\.o\(", ld))
+    asm = sorted(p for p in ROOT.glob("asm/**/*.s")
+                 if str(p.relative_to(ROOT).with_suffix("")) in linked)
     src = sorted(ROOT.glob("src/**/*.cpp"))
     with open(ROOT / "build.ninja", "w") as f:
         n = ninja_syntax.Writer(f, width=120)

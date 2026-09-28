@@ -28,7 +28,7 @@ extrae sus archivos de su propio disco.
 | `.vutext` | `0x291230`, 0x4180 bytes: microcódigo VU + 44 overlays `.DVP.overlay` |
 | `.data` / `.rodata` | `0x295f00` / `0x2e5300` |
 | `.bss` | `0x308100`, ~5.3 MB |
-| Compilador | **ee-gcc 2.96 (SCE), `-Os`**; confirmado byte a byte en 3 funciones (`matching/compiler_id/`) |
+| Compilador | **ee-gcc 2.96 (SCE), `-Os -fno-exceptions`**; confirmado byte a byte en 3 funciones (`matching/compiler_id/`). `-fno-exceptions` porque `.eh_frame` solo cubre libgcc: sin esa opción cada objeto C++ emitiría 0x70+ bytes de `.eh_frame` que el original no tiene |
 | SDK | Sony libs 3.0 (`libgraph`, `libdma`, `libvu0`, `libipu`, `libmpeg`, `libpad2`, `libmc`, `libcdvd`, `libvib`, `libscf`) |
 
 Sin `.symtab` ni información de depuración (no hay DWARF ni STABS), pero sí:
@@ -71,10 +71,21 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 1. ✅ Recuperación de símbolos y proyecto Ghidra reproducible, con tipos de parámetros (1,267 firmas).
 2. ✅ Compilador identificado: **ee-gcc 2.96 (SCE) con `-Os`**. 3 funciones coinciden byte a byte (87/87 instrucciones); falta confirmar en más módulos y averiguar `-G`. Entorno reproducible en `docker/` (imagen `ror-build`).
 3. ✅ splat + build: `tools/dock python3 tools/configure.py && tools/dock ninja` reconstruye la imagen de carga idéntica byte a byte (SHA-1 `fa157dc8763b2f376f6bb73a70b6a4c250181997`), todo en asm por ahora. Claves: `subalign: 4` (las secciones linkonce originales van alineadas a 4) y `ld_align_section_vram_end: False`.
-3b. Dividir `.text` (hoy un solo `asm/main/text.s` de 24 MB) y `.rodata` en un archivo por `.cpp` original, usando `notes/object_layout.txt` y las sugerencias de splat. Es requisito para compilar C++: las cadenas de cada función (paths de assert, etc.) viven en el `.rodata` de su objeto, y mientras `.rodata` sea un solo bloque en asm, un `.cpp` que las emita duplicaría bytes.
+3b. ✅ División en 93 archivos (`config/splits.tsv`, `tools/split_files.py`), compilación sigue idéntica. Método: rutas de assert dan 72 archivos conocidos; el orden de `.rodata` acota cada corte (se excluyen referencias a `.rodata` de las librerías, p. ej. `_ctype_`); clase y llamadas desempatan; 6 cortes en `game/`/`task/` tienen referencias cruzadas ("conflict"). El juego termina en `0x218500`; las librerías se dividen por las firmas del SDK. Pendiente: archivos sin asserts escondidos dentro de los rangos, y dividir `.data`/`.bss`.
 4. Decompilar archivo por archivo, empezando por `bed/` y `utl/` (pequeños, sin dependencias).
 5. Documentar los formatos RPK / MAPUNIT / ARA / STR.
 6. Capa de port: reemplazar las libs `sce*` por equivalentes Vita; reescribir el render (VU1 + GS) sobre vitaGL.
+
+## Pendientes de la división y pistas nuevas (2026-09-28)
+
+- **`.ctors`/`.dtors`** marcan 4 archivos con constructores globales; GCC los emite al final del archivo, así que dan finales exactos: `0x17F0D0` (dentro de `snd/sndman`), `0x2043DC` (dentro de `system/sysnowloading`), `0x2155F4` y `0x215A30` (dentro de `debug/mimu_debug`; el handler de assert `0x215A30` abre su propio archivo). Hay archivos escondidos en esos rangos.
+- **Zona `0x218500`–`0x236AC8` (~120 KB)**: no es SDK (ninguna firma), y el juego la llama cientos de veces (`snd/` 311, `mag/` 304, `dog/` 104, `spr/` 104). Es middleware del motor (probablemente la librería gráfica "I3": `tag_I3dMatrixF4x4_s`, `I3M_INTER`, `i3mGetNodeIndexByName`; y el lado EE del driver de sonido). Para el port hay que decompilarla.
+- **Bloqueante antes de C++**: dividir `.data`/`.sdata`/`.bss`/`.sbss` por archivo (mismo método que `.rodata`).
+- **Prototipo**: existe un prototipo de localización del 19-jul-2006 catalogado en Hidden Palace, y una demo USA. Se desconoce si conservan símbolos (Sly 1 obtuvo nombres y archivos de un prototipo así).
+
+## Librerías del SDK
+
+`tools/sce_symbols.py` identifica 657 funciones por firma (base de datos de PS2Recomp). Orden en `.text`: zona sin identificar `0x218500`–`0x236AC8` (¿otra librería o código propio?), libvu0, libgcc, libcdvd, libmc, libmpeg, libgraph, libdma, libvu0, libdev, libkernl, libipu, libdbc, libpad2, libvib, libscf, libm, libgcc, libc. Ninguna firma coincide dentro del código del juego, lo que confirma el límite `0x218500`.
 
 ## Pistas para decompilar
 
@@ -98,3 +109,13 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 | `Cwf1997/ruleofrose` | "Decomp" vacío (solo README); sin código |
 | `blueroses107-ai/Rule-of-rose-korean-translation` | Solo README |
 | Cheats widescreen de OPL para SLUS_214.48 | Pueden dar direcciones de cámara/FOV |
+| `TheOnlyZac/sly1` + `theclub654/ProjectCane` | Referencia principal: decomp C++ de PS2 con splat (ee-gcc 2.95.2 de SN) y su port jugable a PC. Obtuvo nombres/archivos de un prototipo con símbolos |
+| `ethteck/kh1`, `Fantaskink/SOTC`, `RossyDoubleUnderscore/ICO-decomp`, `weirdbeardgame/Fatal-Frame-1`, `parappadev/parappa2` | Usan ee-gcc 2.96 + splat: referencias para `.data`/`.bss`, objdiff, progreso |
+| `LostTemplarRH/sce-symbol-scanner` | Origen de la base de firmas; su CLI (Java, pre-release, sin licencia) usa además vecindad para funciones cortas. No ejecutado |
+| `cualquiercosa327/psretrox` | Existe (herramienta de decompilación/recompilación PS2); no evaluada a fondo |
+| `ran-j/PS2Recomp` | **En uso su base de firmas del SDK** (vía `tools/sce_symbols.py`). Su recompilador estático queda como opción para arrancar el port antes de terminar la decompilación |
+| `jhuapl/codecut` | No: guarda el archivo de cada función en el *Namespace* de Ghidra, que usamos para las clases C++; nuestras pistas (asserts + orden de `.rodata`) son más exactas que su heurística |
+| `astrelsky/ghidra_MIPSR5900` | Archivado (2020); reemplazado por ghidra-emotionengine-reloaded |
+| `Rinnegatamante/vitaGL` | Sí, en la etapa Vita: capa OpenGL sobre sceGxm, muy activa |
+| `TheOfficialFloW/gtasa_vita`, `bully_vita` | Referencia para la etapa Vita (audio, memoria, vitaGL); son ports de binarios Android, no de PS2 |
+| `vitasdk/vitasdk` (imagen Docker oficial) | Sí, en la etapa Vita, fijando una serie mensual |
