@@ -11,6 +11,12 @@ byte (87/87 instructions). Every other build differs in 65+ instructions,
 and `-O2`/`-O3` leave a register-allocation difference in
 `getMotionLinkTime` that no source variant removed (6 tried).
 
+Two more flags come from the binary itself: **`-G0`** (no instruction in
+the whole program uses `$gp` as a base register, so nothing was placed in
+small-data sections for gp-relative access) and **`-fno-exceptions`**
+(`.eh_frame` only covers libgcc's C++ runtime; without the flag each object
+emits its own `.eh_frame`).
+
 Caveats: the sample is three inline methods from `dog/` headers. Other
 modules may have been built with different flags, and `-G` can't be told
 apart yet (no small globals involved). Confirm on more functions while
@@ -31,7 +37,7 @@ tools/.venv/bin/python tools/compiler_id.py --show ee-gcc2.96@3   # side-by-side
 | `.mdebug.eabi64` (empty) | `-mabi=eabi`, 64-bit `long`: standard EE-GCC configuration |
 | Sony libraries tagged `3000` / `3020` (SDK 3.0.x) | Contemporary with ee-gcc 2.96 (SCE) and SN's 2.95.3 builds |
 | Register moves via `daddu rd, rs, $zero`; callee-saved GPRs spilled with `sd` / `ld` (64-bit, not `sq`); `$f20` saved with `swc1` | Typical EE-GCC 2.9x codegen; doesn't separate versions by itself |
-| Strings are loaded with `lui`/`addiu`, never `$gp`-relative | Probably `-G0` (or strings above the `-G` threshold) |
+| No instruction anywhere uses `$gp` as a base register | `-G0` (confirmed program-wide) |
 
 ## Candidates
 

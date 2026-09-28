@@ -34,8 +34,8 @@ CONFIG = ROOT / f"config/{BASENAME}.yaml"
 SEG = "main"
 
 COMPILER = "ee-gcc2.96"
-CFLAGS = "-Os -G8 -fno-exceptions -x c++ -Iinclude -Isrc"  # game code has no .eh_frame
-ASFLAGS = "-EL -march=r5900 -mabi=eabi -G8 -no-pad-sections -Iinclude"
+CFLAGS = "-Os -G0 -fno-exceptions -x c++ -Iinclude -Isrc"  # no .eh_frame, no $gp access in the game
+ASFLAGS = "-EL -march=r5900 -mabi=eabi -G0 -no-pad-sections -Iinclude"
 
 
 def sh(cmd):
@@ -106,20 +106,25 @@ def write_config(info):
             "    type: code",
             f"    start: 0x{seg.start:06X}",
             f"    vram: 0x{seg.vram:08X}",
-            f"    bss_size: 0x{seg.bss_size:X}",
+            f"    bss_size: 0x{bss_size(seg, info):X}",
             "    subalign: 4  # original .gnu.linkonce.t sections are 4-aligned; gap bytes live in the asm",
             "    subsegments:",
         ]
         seen = set()
         splits = load_splits()
+        columns = {".text": 0, ".rodata": 1, ".data": 2, ".bss": 3}
         for s in seg.sections:
-            if s.name in (".text", ".rodata") and splits:
-                col = 0 if s.name == ".text" else 1
-                typ = s.splat_segment_type
+            if s.name in columns and splits:
+                col, typ = columns[s.name], s.splat_segment_type
                 for row in splits:
-                    if row[col] is not None:
-                        lines.append(f"      - [0x{row[col] - seg.vram:06X}, {typ}, {row[2]}] "
-                                     f"# {s.name} ({row[3]})")
+                    if row[col] is None:
+                        continue
+                    if s.is_nobits:
+                        lines.append(f"      - {{ type: {typ}, vram: 0x{row[col]:08X}, name: {row[4]} }} "
+                                     f"# {s.name}")
+                    else:
+                        lines.append(f"      - [0x{row[col] - seg.vram:06X}, {typ}, {row[4]}] "
+                                     f"# {s.name} ({row[5]})")
                 continue
             name = subsegment_name(s)
             while name in seen:
@@ -135,8 +140,19 @@ def write_config(info):
     CONFIG.write_text("\n".join(lines) + "\n")
 
 
+def bss_size(seg, info):
+    """Bytes from the end of the loaded image to the end of .bss.
+
+    splat's own value sums the NOBITS section sizes and so misses the
+    alignment gaps before .sbss and between .sbss and .bss (0x48 bytes here),
+    which would leave the rebuilt .bss short."""
+    end = max(s.vram + s.size for s in seg.sections if s.is_nobits)
+    return end - (seg.vram + info.size)
+
+
 def load_splits():
-    """config/splits.tsv (tools/split_files.py): [(text, rodata|None, name, confidence)]."""
+    """config/splits.tsv (tools/split_files.py):
+    [(text, rodata, data, bss, name, confidence)], None where a file has no chunk."""
     path = ROOT / "config/splits.tsv"
     if not path.exists():
         return []
@@ -144,8 +160,8 @@ def load_splits():
     for line in path.read_text().splitlines():
         if line.startswith(("#", "text\t")) or not line.strip():
             continue
-        text, ro, name, conf = line.split("\t")
-        rows.append((int(text, 16), None if ro == "-" else int(ro, 16), name, conf))
+        *addrs, name, conf = line.split("\t")
+        rows.append((*(None if a == "-" else int(a, 16) for a in addrs), name, conf))
     return rows
 
 

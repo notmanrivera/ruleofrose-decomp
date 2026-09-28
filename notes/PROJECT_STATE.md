@@ -28,7 +28,7 @@ extrae sus archivos de su propio disco.
 | `.vutext` | `0x291230`, 0x4180 bytes: microcódigo VU + 44 overlays `.DVP.overlay` |
 | `.data` / `.rodata` | `0x295f00` / `0x2e5300` |
 | `.bss` | `0x308100`, ~5.3 MB |
-| Compilador | **ee-gcc 2.96 (SCE), `-Os -fno-exceptions`**; confirmado byte a byte en 3 funciones (`matching/compiler_id/`). `-fno-exceptions` porque `.eh_frame` solo cubre libgcc: sin esa opción cada objeto C++ emitiría 0x70+ bytes de `.eh_frame` que el original no tiene |
+| Compilador | **ee-gcc 2.96 (SCE), `-Os -G0 -fno-exceptions`**; `-G0` porque ninguna instrucción del programa usa `$gp` como base; confirmado byte a byte en 3 funciones (`matching/compiler_id/`). `-fno-exceptions` porque `.eh_frame` solo cubre libgcc: sin esa opción cada objeto C++ emitiría 0x70+ bytes de `.eh_frame` que el original no tiene |
 | SDK | Sony libs 3.0 (`libgraph`, `libdma`, `libvu0`, `libipu`, `libmpeg`, `libpad2`, `libmc`, `libcdvd`, `libvib`, `libscf`) |
 
 Sin `.symtab` ni información de depuración (no hay DWARF ni STABS), pero sí:
@@ -80,7 +80,7 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 
 - **`.ctors`/`.dtors`** marcan 4 archivos con constructores globales; GCC los emite al final del archivo, así que dan finales exactos: `0x17F0D0` (dentro de `snd/sndman`), `0x2043DC` (dentro de `system/sysnowloading`), `0x2155F4` y `0x215A30` (dentro de `debug/mimu_debug`; el handler de assert `0x215A30` abre su propio archivo). Hay archivos escondidos en esos rangos.
 - **Zona `0x218500`–`0x236AC8` (~120 KB)**: no es SDK (ninguna firma), y el juego la llama cientos de veces (`snd/` 311, `mag/` 304, `dog/` 104, `spr/` 104). Es middleware del motor (probablemente la librería gráfica "I3": `tag_I3dMatrixF4x4_s`, `I3M_INTER`, `i3mGetNodeIndexByName`; y el lado EE del driver de sonido). Para el port hay que decompilarla.
-- **Bloqueante antes de C++**: dividir `.data`/`.sdata`/`.bss`/`.sbss` por archivo (mismo método que `.rodata`).
+- ✅ **`.data` y `.bss` divididos por archivo** (antes bloqueaban el C++). Dueño de cada variable = el único archivo cuyo código la usa, o (en `.data`) cuyas funciones/`.rodata` apunta una tabla; luego la secuencia más larga que respeta el orden de enlace. `.data`: 450 variables con dueño único, 443 (98%) consistentes, 46 archivos con bloque. `.bss`: 318, 291 (92%), 31 archivos; el primero es el buffer `_args` de crt0 (0x144 bytes). `.sbss` (188 bytes, usada por las funciones RTTI y libc) queda en un solo bloque. El tamaño de `.bss` se calcula del ELF (splat omitía 0x48 bytes de alineación): el ELF reconstruido termina en `0x828E94` como el original.
 - **Prototipo**: existe un prototipo de localización del 19-jul-2006 catalogado en Hidden Palace, y una demo USA. Se desconoce si conservan símbolos (Sly 1 obtuvo nombres y archivos de un prototipo así).
 
 ## Librerías del SDK

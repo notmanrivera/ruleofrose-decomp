@@ -49,7 +49,7 @@ segments:
     type: code
     start: 0x000000
     vram: 0x00100000
-    bss_size: 0x520E50
+    bss_size: 0x520E98
     subalign: 4  # original .gnu.linkonce.t sections are 4-aligned; gap bytes live in the asm
     subsegments:
       - [0x000000, asm, sdk/crt0] # .text (likely)
@@ -1595,7 +1595,52 @@ segments:
       - [0x195DB0, asm, inline/__tf16__ptmd_type_info] # .gnu.linkonce.t.__tf16__ptmd_type_info
       - [0x195E00, asm, inline/___17__array_type_info] # .gnu.linkonce.t._$_17__array_type_info
       - [0x195E68, asm, inline/__tf17__array_type_info] # .gnu.linkonce.t.__tf17__array_type_info
-      - [0x195F00, data, main/data] # .data
+      - [0x195F00, data, utl/utlfile] # .data (likely)
+      - [0x195F08, data, dog/dogmotionblend] # .data (likely)
+      - [0x196190, data, mag/magsystem] # .data (likely)
+      - [0x1961A8, data, mag/maglifepc3] # .data (certain)
+      - [0x197220, data, mag/maglifepcmove] # .data (likely)
+      - [0x197408, data, mag/maglifebwn] # .data (likely)
+      - [0x198178, data, mag/maglifepcbtl] # .data (likely)
+      - [0x198318, data, mag/maglifemenu] # .data (certain)
+      - [0x198B78, data, mag/maglifetest] # .data (likely)
+      - [0x198B80, data, mag/magscene2] # .data (likely)
+      - [0x198C40, data, mag/magscenerender] # .data (likely)
+      - [0x198D80, data, mag/magloader] # .data (likely)
+      - [0x198DD0, data, emy/emy_main] # .data (likely)
+      - [0x198DE8, data, snd/sndman] # .data (likely)
+      - [0x198EE0, data, snd/rxmpeg] # .data (likely)
+      - [0x198FE8, data, msg/msgman] # .data (likely)
+      - [0x1998C0, data, mcd/mcdman] # .data (likely)
+      - [0x199950, data, spr/sprtexture] # .data (likely)
+      - [0x19C508, data, mnu/mnuselect] # .data (likely)
+      - [0x1A4524, data, mnu/mnudlg] # .data (likely)
+      - [0x1A4530, data, mnu/mnusvld] # .data (likely)
+      - [0x1A8428, data, game/gamman] # .data (likely)
+      - [0x1C0000, data, game/gamstat] # .data (conflict)
+      - [0x1D8F60, data, game/gamtrg] # .data (conflict)
+      - [0x1D8F64, data, game/gamsnd] # .data (conflict)
+      - [0x1D8F68, data, task/tsk_scene] # .data (conflict)
+      - [0x1D8FF8, data, system/sysnowloading] # .data (likely)
+      - [0x1D90F8, data, sequence/sequence] # .data (likely)
+      - [0x1D9950, data, debug/mimu_debug] # .data (likely)
+      - [0x1DB2A0, data, debug/naga_debug] # .data (likely)
+      - [0x1DB330, data, sdk/unknown_00218500] # .data (unknown)
+      - [0x1DB638, data, sdk/libvu0] # .data (signature)
+      - [0x1DB960, data, sdk/libgcc] # .data (signature)
+      - [0x1DC2D0, data, sdk/libcdvd] # .data (signature)
+      - [0x1DDE88, data, sdk/libmc] # .data (signature)
+      - [0x1DDEA8, data, sdk/libmpeg] # .data (signature)
+      - [0x1DE090, data, sdk/libgraph] # .data (signature)
+      - [0x1DE0E0, data, sdk/libdma] # .data (signature)
+      - [0x1DE120, data, sdk/libvu0_2] # .data (signature)
+      - [0x1DE15C, data, sdk/libkernl] # .data (signature)
+      - [0x1DF840, data, sdk/libipu] # .data (signature)
+      - [0x1DF8C0, data, sdk/libdbc] # .data (signature)
+      - [0x1DF8D8, data, sdk/libpad2] # .data (signature)
+      - [0x1DF8E8, data, sdk/libscf] # .data (signature)
+      - [0x1DF930, data, sdk/libgcc_2] # .data (signature)
+      - [0x1DF9F0, data, sdk/libc] # .data (signature)
       - [0x1E014C, data, main/ctors] # .ctors
       - [0x1E0164, data, main/dtors] # .dtors
       - [0x1E0178, data, main/eh_frame] # .eh_frame
@@ -1957,5 +2002,35 @@ segments:
       - [0x201E78, rodata, sdk/unknown_00218500] # .rodata (unknown)
       - [0x207F80, gcc_except_table, main/gcc_except_table] # .gcc_except_table
       - { type: sbss, vram: 0x00308000, name: main/sbss } # .sbss
-      - { type: bss, vram: 0x00308100, name: main/bss } # .bss
+      - { type: bss, vram: 0x00308100, name: sdk/crt0 } # .bss
+      - { type: bss, vram: 0x00308244, name: bed/bedmemory } # .bss
+      - { type: bss, vram: 0x00308280, name: bed/bedpad } # .bss
+      - { type: bss, vram: 0x00308484, name: utl/utlbtl } # .bss
+      - { type: bss, vram: 0x00308488, name: utl/utltm2 } # .bss
+      - { type: bss, vram: 0x00308580, name: mag/magsystem } # .bss
+      - { type: bss, vram: 0x0030FFF0, name: mag/maglifepcmove } # .bss
+      - { type: bss, vram: 0x006646F0, name: mag/magscenerender } # .bss
+      - { type: bss, vram: 0x00666D20, name: snd/sndman } # .bss
+      - { type: bss, vram: 0x006BABF0, name: snd/rxmpeg } # .bss
+      - { type: bss, vram: 0x006E9280, name: snd/unitque } # .bss
+      - { type: bss, vram: 0x006E92D0, name: msg/msgman } # .bss
+      - { type: bss, vram: 0x006E93D4, name: spr/sprman } # .bss
+      - { type: bss, vram: 0x006E9408, name: mnu/mnuselect } # .bss
+      - { type: bss, vram: 0x006E9450, name: mnu/mnusvld } # .bss
+      - { type: bss, vram: 0x006E9640, name: game/gamman } # .bss
+      - { type: bss, vram: 0x007811AC, name: game/gamstat } # .bss
+      - { type: bss, vram: 0x00781280, name: task/tsk_scene } # .bss
+      - { type: bss, vram: 0x007A3350, name: sequence/sequence } # .bss
+      - { type: bss, vram: 0x007B2060, name: debug/mimu_debug } # .bss
+      - { type: bss, vram: 0x007B4E08, name: debug/naga_debug } # .bss
+      - { type: bss, vram: 0x007B5AC0, name: sdk/libvu0 } # .bss
+      - { type: bss, vram: 0x007B6B00, name: sdk/libgcc } # .bss
+      - { type: bss, vram: 0x00818680, name: sdk/libcdvd } # .bss
+      - { type: bss, vram: 0x00818940, name: sdk/libmc } # .bss
+      - { type: bss, vram: 0x00819F40, name: sdk/libmpeg } # .bss
+      - { type: bss, vram: 0x0081A140, name: sdk/libdma } # .bss
+      - { type: bss, vram: 0x0081A160, name: sdk/libkernl } # .bss
+      - { type: bss, vram: 0x00821E40, name: sdk/libdbc } # .bss
+      - { type: bss, vram: 0x00824308, name: sdk/libpad2 } # .bss
+      - { type: bss, vram: 0x00827648, name: sdk/libgcc_2 } # .bss
   - [0x207FFC]

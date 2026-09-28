@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Infer where each original source file starts in .text and .rodata.
+"""Infer where each original source file starts in .text, .rodata, .data and .bss.
 
     tools/.venv/bin/python tools/split_files.py      # writes config/splits.tsv
 
@@ -15,8 +15,14 @@ Evidence, strongest first:
   3. Between two known files, the cut is chosen among those positions by
      class membership (methods of one class live in one file) and by
      callers/callees, then as early as possible.
-  4. The SDK library region (after the last game file) is left whole; its
-     objects are 8-aligned, so nop padding marks them if ever needed.
+  4. The SDK library region (after the last game file) is split per library
+     run, from the signatures in symbols/sce_symbols.tsv.
+  5. .data and .bss follow the same link order, but globals are shared, so
+     only ownership evidence counts: a symbol referenced by the code of a
+     single file, or (for .data) a table whose pointers all lead to one
+     file's functions or .rodata. The chunk starts come from the longest
+     run of that evidence that respects link order; the rest is noise
+     (extern globals, COMMON symbols allocated at the end of .bss).
 
 Unknown files without asserts can hide inside the ranges; the confidence
 column says how well each boundary is pinned down.
@@ -31,6 +37,8 @@ ROOT = Path(__file__).resolve().parent.parent
 TEXT_START = 0x00100000
 TEXT_END = 0x00280E88          # end of .text proper (linkonce sections follow)
 RODATA = (0x002E5300, 0x00307F70)
+DATA = (0x00295F00, 0x002E014C)
+BSS = (0x00308100, 0x00828E94)
 
 
 def load_map():
@@ -42,10 +50,16 @@ def load_map():
     return names
 
 
+def linked_asm():
+    """asm files the current linker script uses (a re-split leaves stale ones)."""
+    ld = (ROOT / "build/SLUS_214.48.ld").read_text()
+    return sorted(ROOT / f"{p}.s" for p in set(re.findall(r"build/(asm/\S+?)\.o\(", ld)))
+
+
 def parse_asm(names):
-    """Functions in .text proper: start -> dict(name, refs, calls)."""
+    """Functions in .text proper: start -> dict(name, refs, data, bss, calls)."""
     funcs = {}
-    for path in sorted((ROOT / "asm").glob("**/*.s")):
+    for path in linked_asm():
         if "/data/" in str(path) or "/inline/" in str(path):
             continue
         label, cur = None, None
@@ -59,15 +73,19 @@ def parse_asm(names):
                 continue
             pc = int(m.group(1), 16)
             if label is not None:
-                cur = funcs.setdefault(pc, dict(name=label, refs=set(), calls=set()))
+                cur = funcs.setdefault(pc, dict(name=label, refs=set(), data=set(), bss=set(),
+                                                calls=set()))
                 label = None
             if cur is None or not TEXT_START <= pc < TEXT_END:
                 continue
             op, args = m.group(2), m.group(3)
             for sym in re.findall(r"%(?:lo|hi|gp_rel)\(([^)+\-\s]+)", args):
                 a = resolve(sym, names)
-                if a is not None and RODATA[0] <= a < RODATA[1]:
-                    cur["refs"].add(a)
+                if a is None:
+                    continue
+                for key, (lo, hi) in (("refs", RODATA), ("data", DATA), ("bss", BSS)):
+                    if lo <= a < hi:
+                        cur[key].add(a)
             if op == "jal":
                 a = resolve(args.split()[0], names)
                 if a is not None:
@@ -182,6 +200,9 @@ def main():
 
     assign_rodata(rows, game, refs, names, lib_ro)
     rows += sdk_rows(game_end, lib_ro, TEXT_END)
+    for r in rows:
+        r[2:2] = [None, None]  # data, bss
+    stats = assign_owned(rows, funcs, names, rom)
 
     out = ROOT / "config/splits.tsv"
     with open(out, "w") as f:
@@ -189,12 +210,16 @@ def main():
         f.write("# confidence: certain = only one consistent cut; likely = chosen among several\n")
         f.write("# by class/call evidence; conflict = no cut separates the .rodata references;\n")
         f.write("# signature = SDK library identified by tools/sce_symbols.py; unknown = unidentified.\n")
-        f.write("# rodata '-' = no .rodata chunk of its own (shares the previous file's).\n")
-        f.write("text\trodata\tfile\tconfidence\n")
-        for t, ro, name, conf in rows:
-            f.write(f"{t:08X}\t{'-' if ro is None else f'{ro:08X}'}\t{name}\t{conf}\n")
+        f.write("# rodata/data/bss '-' = no chunk of its own (shares the previous file's).\n")
+        f.write("text\trodata\tdata\tbss\tfile\tconfidence\n")
+        for t, ro, da, bs, name, conf in rows:
+            cols = [f"{t:08X}"] + ["-" if x is None else f"{x:08X}" for x in (ro, da, bs)]
+            f.write("\t".join(cols + [name, conf]) + "\n")
     print(f"{len(rows)} files -> {out.relative_to(ROOT)}; game code ends at 0x{game_end:08X}")
-    print("confidence:", dict(Counter(r[3] for r in rows)))
+    print("confidence:", dict(Counter(r[5] for r in rows)))
+    for sec, (owned, kept) in stats.items():
+        print(f"{sec}: {owned} symbols with a single owner, {kept} consistent with link order, "
+              f"{sum(1 for r in rows if r[2 if sec == '.data' else 3] is not None)} files get a chunk")
 
 
 def has_padding(rom, a, b):
@@ -248,6 +273,72 @@ def assign_rodata(rows, game, refs, names, lib_ro):
         rows[i][1] = cut
         last = cut
         before = sorted(before + mine)
+
+
+def assign_owned(rows, funcs, names, rom):
+    """Fill the data/bss columns of `rows` from single-owner symbols."""
+    starts = [r[0] for r in rows]
+    ro_rows = [(r[1], i) for i, r in enumerate(rows) if r[1] is not None]
+    ro_starts = [a for a, _ in ro_rows]
+
+    def file_of(addr):
+        return bisect.bisect_right(starts, addr) - 1
+
+    def ro_file_of(addr):
+        k = bisect.bisect_right(ro_starts, addr) - 1
+        return ro_rows[k][1] if k >= 0 else None
+
+    stats = {}
+    for col, key, (lo, hi), name in ((2, "data", DATA, ".data"), (3, "bss", BSS, ".bss")):
+        syms = sorted({a for a in names.values() if lo <= a < hi} | {lo})
+        owners = defaultdict(set)
+        for f, info in funcs.items():
+            for a in info[key]:
+                owners[a].add(file_of(f))
+        if key == "data":
+            # Tables of pointers into one file's functions or .rodata.
+            for addr in range(lo, hi, 4):
+                v = int.from_bytes(rom[addr - TEXT_START:addr - TEXT_START + 4], "little")
+                owner = (file_of(v) if v in funcs else
+                         ro_file_of(v) if RODATA[0] <= v < RODATA[1] else None)
+                if owner is not None:
+                    owners[syms[bisect.bisect_right(syms, addr) - 1]].add(owner)
+        points = sorted((a, next(iter(o))) for a, o in owners.items() if len(o) == 1)
+        keep = longest_nondecreasing([f for _, f in points])
+        kept = [points[i] for i in keep]
+        # Each owner's chunk starts at the first 8-aligned symbol after the
+        # previous owner's last kept symbol (the first owner at the section start).
+        prev_a, prev_f = None, None
+        for a, f in kept:
+            if f != prev_f and rows[f][col] is None:
+                if prev_a is None:
+                    rows[f][col] = lo
+                else:
+                    i = bisect.bisect_right(syms, prev_a)
+                    while i < len(syms) and syms[i] < a and syms[i] % 8:
+                        i += 1
+                    rows[f][col] = syms[i] if i < len(syms) and syms[i] <= a else a
+            prev_a, prev_f = a, f
+        stats[name] = (len(points), len(kept))
+    return stats
+
+
+def longest_nondecreasing(seq):
+    """Indices of a longest non-decreasing subsequence of `seq`."""
+    tails, tails_i, prev = [], [], [-1] * len(seq)
+    for i, x in enumerate(seq):
+        j = bisect.bisect_right(tails, x)
+        if j == len(tails):
+            tails.append(x)
+            tails_i.append(i)
+        else:
+            tails[j], tails_i[j] = x, i
+        prev[i] = tails_i[j - 1] if j else -1
+    out, k = [], tails_i[-1] if tails_i else -1
+    while k != -1:
+        out.append(k)
+        k = prev[k]
+    return out[::-1]
 
 
 def sdk_rows(game_end, lib_ro, text_end):
