@@ -25,3 +25,6 @@ __builtin_delete = 0x00105BA4; // type:func size:0x20
 // bed/bedpfh.cpp (class and method names are ours; the class follows the
 // file name, like BedPad)
 clear__6BedPfh = 0x00101738; // type:func size:0x18
+setTop__6BedPfhPv = 0x00101750; // type:func size:0x1D8
+getName__C6BedPfhi = 0x00101928; // type:func size:0xC8
+getIndex__C6BedPfhPCc = 0x001019F0; // type:func size:0xFC

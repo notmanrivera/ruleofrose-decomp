@@ -112,6 +112,7 @@ def write_config(info, new=()):
         "  ld_align_section_vram_end: False  # else the image gains 4 bytes of tail padding",
         "  find_file_boundaries: False",
         "  generate_asm_macros_files: False  # include/ is ours (tools/configure.py)",
+        "  make_full_disasm_for_code: True  # asm/<file>.s of decompiled files too, for split_files.py",
         f"  create_c_files: {bool(new)}  # only for --new files",
         f"  generated_c_preamble: {json.dumps(C_PREAMBLE)}",
         "  o_as_suffix: True",

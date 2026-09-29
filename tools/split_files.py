@@ -58,9 +58,13 @@ def load_map():
 
 
 def linked_asm():
-    """asm files the current linker script uses (a re-split leaves stale ones)."""
+    """asm files the current linker script uses (a re-split leaves stale ones),
+    plus the whole-file disassembly splat keeps for decompiled files
+    (make_full_disasm_for_code), so the result does not depend on progress."""
     ld = (ROOT / "build/SLUS_214.48.ld").read_text()
-    return sorted(ROOT / f"{p}.s" for p in set(re.findall(r"build/(asm/\S+?)\.o\(", ld)))
+    files = set(re.findall(r"build/(asm/\S+?)\.o\(", ld))
+    files |= {f"asm/{p.relative_to(ROOT / 'src').with_suffix('')}" for p in (ROOT / "src").glob("**/*.cpp")}
+    return sorted(ROOT / f"{p}.s" for p in files)
 
 
 def parse_asm(names):
@@ -317,6 +321,7 @@ def main():
         rows.append([game[k], None, None, "family"])
     rows.sort(key=lambda r: r[0])
     hidden += len(extra)
+    rows = apply_manual(rows, starts, TEXT_START, game_end)
 
     # Name hidden files after the class with most methods in them.
     bounds = [r[0] for r in rows] + [game_end]
@@ -334,7 +339,7 @@ def main():
           f"{unmet} unmet; ctor anchors: {len(anchors)}; hidden files added: {hidden}")
 
     assign_rodata(rows, game, refs, names, lib_ro)
-    lib_rows = apply_manual(sdk_rows(game_end, lib_ro, TEXT_END), starts)
+    lib_rows = apply_manual(sdk_rows(game_end, lib_ro, TEXT_END), starts, game_end, TEXT_END)
     lib = [a for a in starts if a >= game_end]
     for r in lib_rows:
         r[1] = None
@@ -464,7 +469,10 @@ def assign_rodata(rows, game, refs, names, lib_ro, region=None):
     that reference no .rodata get none (they share the previous chunk).
     """
     lo_ro, hi_ro = region or (RODATA[0], lib_ro)
-    cands = sorted({a for a in names.values() if lo_ro <= a < hi_ro and a % 8 == 0})
+    # Symbols, plus referenced addresses: a decompiled file's .rodata has no
+    # symbols in the map (the compiler uses local labels).
+    cands = sorted({a for a in names.values() if lo_ro <= a < hi_ro and a % 8 == 0} |
+                   {a for fr in refs for a in fr if lo_ro <= a < hi_ro and a % 8 == 0})
     bounds = [bisect.bisect_left(game, r[0]) for r in rows] + [len(game)]
     per_file = [sorted(x for k in range(bounds[i], bounds[i + 1]) for x in refs[k])
                 for i in range(len(rows))]
@@ -503,7 +511,8 @@ def assign_owned(rows, funcs, names, rom):
 
     stats = {}
     for col, key, (lo, hi), name in ((2, "data", DATA, ".data"), (3, "bss", BSS, ".bss")):
-        syms = sorted({a for a in names.values() if lo <= a < hi} | {lo})
+        syms = sorted({a for a in names.values() if lo <= a < hi} | {lo} |
+                      {a for info in funcs.values() for a in info[key]})  # see assign_rodata
         owners = defaultdict(set)
         for f, info in funcs.items():
             for a in info[key]:
@@ -554,8 +563,11 @@ def longest_nondecreasing(seq):
     return out[::-1]
 
 
-def apply_manual(rows, starts):
-    """Merge config/splits_manual.tsv into `rows` ([text, rodata, name, conf])."""
+def apply_manual(rows, starts, lo, hi):
+    """Merge the config/splits_manual.tsv rows in [lo, hi) into `rows`
+    ([text, rodata, name, conf]). A row makes a file start at `text`; a
+    generated start with the same name elsewhere is dropped (its functions
+    join the file before it), so a row can also move a file's start."""
     path = ROOT / "config/splits_manual.tsv"
     if not path.exists():
         return rows
@@ -564,8 +576,11 @@ def apply_manual(rows, starts):
             continue
         text, name, _ = line.split("\t", 2)
         a = int(text, 16)
+        if not lo <= a < hi:
+            continue
         if a not in starts:
             raise SystemExit(f"splits_manual.tsv: 0x{a:08X} is not a function start")
+        rows[:] = [r for r in rows if r[2] != name or r[0] == a or r[3] == "manual"]
         for r in rows:
             if r[0] == a:
                 r[2], r[3] = name, "manual"

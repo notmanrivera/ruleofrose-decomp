@@ -10,7 +10,7 @@ text	rodata	data	bss	file	confidence
 00100000	-	-	00308100	sdk/crt0	likely
 00100258	002E5300	-	-	bed/bedsubmode	likely
 00100320	002E5340	-	00308244	bed/bedmemory	likely
-00101718	002E5668	-	-	bed/bedpfh	likely
+00101738	002E5668	-	-	bed/bedpfh	manual
 00101AEC	002E56C8	-	00308280	bed/bedpad	likely
 00101CCC	002E5728	-	-	utl/utlgame	likely
 00103EDC	002E75F8	-	00308484	utl/utlbtl	likely

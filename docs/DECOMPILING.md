@@ -9,6 +9,14 @@ one function at a time.
 starts. Small game files with real names (from assert paths) are the easiest.
 `tools/.venv/bin/python tools/progress.py` shows what is done.
 
+Check its edges first: boundaries marked `likely` can be off by a function
+or two. `bed/bedpfh` was split one function early: its first function was
+`bed/bedmemory`'s heap constructor (another class's fields, called only from
+a static initialiser). If the first or last functions belong elsewhere
+(class layout, callers), move the start with a row in
+`config/splits_manual.tsv` (with the evidence), then run
+`tools/.venv/bin/python tools/split_files.py` and reconfigure.
+
 ```bash
 tools/dock python3 tools/configure.py --new bed/bedpfh
 ```
@@ -52,6 +60,11 @@ straight from the binary:
   blank lines); the expression text is in the file's `.rodata`.
 - **Member and parameter names** often appear in those expressions
   (`m_depth < MAX_STACK`, `theName`).
+- `tools/.venv/bin/python tools/asserts.py <file> [--lines]` lists every
+  assert of a source file across the game. Inline methods of a header assert
+  with the header's path and line, so run it on the `.h` first: it tells
+  which line each inline sits on (keep them there) and what it reads, from
+  every file that includes it (`bed/bedpfh.h`: lines 70-73, 81, 85-86, 91).
 - `lq`/`sq` are 128-bit copies: `u_long128` (see `include/ror.h`).
 
 ## 3. Match it
@@ -77,6 +90,9 @@ Things that changed codegen so far:
 - Walking a string with a separate pointer (`for (const char *p = name; ...)`)
   vs. modifying the parameter changes register use.
 - `x[i++] = y` vs `x[i] = y; i++` changes the order of stores.
+- Equivalent loops can differ: skipping a string with `while (*p) p++; p++;`
+  matched where `while (*p++);` gave `lbu` instead of `lb` and a different
+  loop (`BedPfh::getName`). m2c's draft is a start, not the answer.
 - A tail call (`j callee` instead of `jal`) only happens when the function
   returns the callee's value: `int close() { ...; return scePad2DeleteSocket(s); }`
   (`BedPad::close`), not with a `void` function.
