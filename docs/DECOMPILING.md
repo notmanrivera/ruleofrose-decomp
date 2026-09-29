@@ -48,8 +48,13 @@ The `.s` files are assembled by ee-gcc 2.96's own assembler (GNU as
 ## 2. Draft a function
 
 ```bash
-tools/.venv/bin/python -m m2c.main -t mips-gcc-c++ asm/nonmatchings/<file>/<func>.s
+tools/.venv/bin/python -m m2c.main -t mips-gcc-c --function <func> asm/<file>.s
 ```
+
+Use the whole-file `asm/<file>.s` (splat keeps it for decompiled files too):
+the `asm/nonmatchings/` copies use numbered registers (`$31`), and m2c then
+fails to see the returns. m2c does not know the R5900's `sqrt.s`, which
+spimdisasm prints as `c1 0xC0084`: that is g++'s inline `sqrtf` (see below).
 
 Ghidra (`tools/ghidra_setup.sh`) helps with types and callers. Useful facts
 straight from the binary:
@@ -96,6 +101,32 @@ Things that changed codegen so far:
 - A tail call (`j callee` instead of `jal`) only happens when the function
   returns the callee's value: `int close() { ...; return scePad2DeleteSocket(s); }`
   (`BedPad::close`), not with a `void` function.
+- Chained assignments share one register: `m_x = m_y = 0.0f` stores
+  `mtc1 $zero` + `swc1`, separate `= 0.0f` store `sw $zero`. The chain's
+  order sets the order of the stores (`BedPad::update`).
+- Write the members, not locals, when the original does: `m_press = ~raw;
+  m_trigger = m_press & ~m_old;` keeps the 32-bit value and truncates only
+  where a 16-bit value is compared (`andi 0xFFFF`); a local `unsigned short`
+  truncates at once.
+- Bit tests: `(m_press >> 4) & 1` on an `unsigned short` compiles to
+  `srl; andi 1; andi 0xFFFF`, `m_press & 0x10` to `andi 0x10`, and a bit
+  field to `lw` + `andi`.
+- A value re-read from memory in each branch (`lbu` again) means the source
+  used the member each time; a helper function, even inline, reads it once.
+- Evaluation order follows statements: `d = d * 100.0f * 0.001f; return
+  a + d;` differs from `return a + d * 100.0f * 0.001f;`.
+- Operand order matters for jump threading: after `if (dir == m_dir ...)`,
+  `if (dir != m_dir)` is recognised as the same test and skipped, `if (m_dir
+  != dir)` is not.
+- A load in the delay slot of a plain (non-likely) branch was before the
+  branch in the source: GCC never moves a load from the code after a branch
+  into its delay slot (it could trap if the branch is taken).
+- `sqrtf` declared `extern "C" float sqrtf(float);` (`include/sdk/math.h`)
+  becomes the inline `sqrt.s` + NaN check + call that the game has.
+- To see why GCC placed something, dump its passes: copy `src/` to
+  `build/dump/` and compile there with `-da -S` inside the image; the
+  `.28.mach` file shows each branch's `REG_BR_PROB` (the delay-slot pass
+  fills from the target when it is 5000 or more).
 
 ## 4. Name it
 

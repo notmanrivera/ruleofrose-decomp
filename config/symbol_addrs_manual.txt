@@ -9,6 +9,7 @@ __EXCEPTION_TABLE__ = 0x00307F80; // type:s32
 // bed/bedsubmode.cpp (class name from setNextSubMode__24MagLifeBwnCtrlModeSitOutRC10BedSubMode)
 push__10BedSubMode = 0x00100258; // type:func size:0x68
 pop__10BedSubMode = 0x001002C0; // type:func size:0x60
+clear__10BedSubMode = 0x00100320; // type:func size:0x34
 // Assert handler used by bed/ and others: prints "Assertion Failed: %s(%d)   %s\n".
 ror_assert = 0x00215A30; // type:func
 // utl/utlmisc.cpp (parameter name theName from its assert string)
@@ -19,6 +20,15 @@ _$_6BedPad = 0x00101AEC; // type:func size:0x64
 vibrate__6BedPadii = 0x00101B50; // type:func size:0x7C
 open__6BedPadi = 0x00101BCC; // type:func size:0xB0
 close__6BedPad = 0x00101C7C; // type:func size:0x50
+update__6BedPad = 0x00101CCC; // type:func size:0x198
+getRightX__C6BedPad = 0x00101E64; // type:func size:0x88
+getRightY__C6BedPad = 0x00101EEC; // type:func size:0x88
+getLeftX__C6BedPad = 0x00101F74; // type:func size:0x88
+getLeftY__C6BedPad = 0x00101FFC; // type:func size:0x88
+getStick__C6BedPadPfT1 = 0x00102084; // type:func size:0x18
+getChange__C6BedPad = 0x0010209C; // type:func size:0x8
+calcChange__C6BedPad = 0x001020A4; // type:func size:0xE4
+updateStick__6BedPad = 0x00102188; // type:func size:0x308
 // utl/utlfile.cpp: GCC2's global operator delete; destructors (_$_6BedPad)
 // tail-call it when __in_chrg & 1.
 __builtin_delete = 0x00105BA4; // type:func size:0x20
@@ -28,3 +38,6 @@ clear__6BedPfh = 0x00101738; // type:func size:0x18
 setTop__6BedPfhPv = 0x00101750; // type:func size:0x1D8
 getName__C6BedPfhi = 0x00101928; // type:func size:0xC8
 getIndex__C6BedPfhPCc = 0x001019F0; // type:func size:0xFC
+// sdk/libm: newlib's sqrtf wrapper (tail-calls __ieee754_sqrtf). g++ expands
+// sqrtf inline as sqrt.s and calls this only for a NaN (BedPad::updateStick).
+sqrtf = 0x0026CB48; // type:func size:0x14

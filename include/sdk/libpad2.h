@@ -16,6 +16,8 @@ struct scePad2SocketParam {
 
 int scePad2CreateSocket(scePad2SocketParam *param, void *dmaBuf);
 int scePad2DeleteSocket(int socket);
+int scePad2GetState(int socket);            // 1: ready to read (BedPad::update)
+int scePad2Read(int socket, void *data);    // buttons, then the sticks
 
 }
 

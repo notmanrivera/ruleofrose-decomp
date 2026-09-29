@@ -19,6 +19,7 @@ public:
 
     void push();
     void pop();
+    void clear();
 };
 
 #endif
