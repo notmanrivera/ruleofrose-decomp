@@ -13,3 +13,15 @@ pop__10BedSubMode = 0x001002C0; // type:func size:0x60
 ror_assert = 0x00215A30; // type:func
 // utl/utlmisc.cpp (parameter name theName from its assert string)
 utlIsTcc__FPCc = 0x00105650; // type:func size:0x98
+// bed/bedpad.cpp (class name from MagLife*::pad(MagLifePC &, const BedPad &);
+// the method name is ours)
+_$_6BedPad = 0x00101AEC; // type:func size:0x64
+vibrate__6BedPadii = 0x00101B50; // type:func size:0x7C
+open__6BedPadi = 0x00101BCC; // type:func size:0xB0
+close__6BedPad = 0x00101C7C; // type:func size:0x50
+// utl/utlfile.cpp: GCC2's global operator delete; destructors (_$_6BedPad)
+// tail-call it when __in_chrg & 1.
+__builtin_delete = 0x00105BA4; // type:func size:0x20
+// bed/bedpfh.cpp (class and method names are ours; the class follows the
+// file name, like BedPad)
+clear__6BedPfh = 0x00101738; // type:func size:0x18

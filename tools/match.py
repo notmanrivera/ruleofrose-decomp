@@ -11,6 +11,10 @@ lines up naturally. Fields the linker fills in (jump targets, %hi/%lo
 halves, 32-bit pointers in data) are masked out. Exit status 0 = the whole
 object matches.
 
+Partial files (still with INCLUDE_ASM) are fine: their asm functions are
+listed as "asm" (splat's `nonmatching` macro leaves a <name>.NON_MATCHING
+symbol) and their .data/.bss stay in asm, so the object must have none.
+
 Compiles inside the ror-build image from src/, so __FILE__ is the original
 relative path (e.g. "bed/bedsubmode.cpp") that the game's asserts contain.
 """
@@ -81,9 +85,12 @@ def section_words(elf, name):
 
 
 def functions(elf):
+    """[(offset, size, name, from_asm)] of the object's .text."""
     text_idx = elf.get_section_index(".text")
-    fns = [(s["st_value"], s["st_size"], s.name) for s in elf.get_section_by_name(".symtab").iter_symbols()
-           if s["st_info"]["type"] == "STT_FUNC" and s["st_shndx"] == text_idx]
+    syms = [s for s in elf.get_section_by_name(".symtab").iter_symbols() if s["st_shndx"] == text_idx]
+    asm = {s.name.removesuffix(".NON_MATCHING") for s in syms if s.name.endswith(".NON_MATCHING")}
+    fns = [(s["st_value"], s["st_size"], s.name, s.name in asm) for s in syms
+           if s["st_info"]["type"] == "STT_FUNC" and not s.name.endswith(".NON_MATCHING")]
     return sorted(fns)
 
 
@@ -104,7 +111,12 @@ def main():
     rom = (ROOT / "build/SLUS_214.48.rom").read_bytes()
     obj = compile_file(name, a.src, a.extra)
     rng = ranges(name)
+    partial = configure.is_partial(Path(a.src) if a.src else ROOT / "src" / f"{name}.cpp")
+    if partial:
+        # .data/.bss stay in asm until the file has no INCLUDE_ASM left
+        rng = {k: v for k, v in rng.items() if k not in (".data", ".bss")}
     ok = True
+    n_asm = 0
     with open(obj, "rb") as f:
         elf = ELFFile(f)
 
@@ -113,7 +125,8 @@ def main():
         data = text.data() if text else b""
         start = rng[".text"][0]
         print(f"{name}  (.text at 0x{start:08X})")
-        for off, size, fname in functions(elf):
+        for off, size, fname, from_asm in functions(elf):
+            n_asm += from_asm
             bad = []
             for o in range(off, off + size, 4):
                 mine = int.from_bytes(data[o:o + 4], "little")
@@ -121,7 +134,7 @@ def main():
                 m = masks.get(o, 0xFFFFFFFF)
                 if (mine & m) != (want & m):
                     bad.append((o, mine, want))
-            status = "MATCH" if not bad else f"{len(bad)}/{size // 4} differ"
+            status = ("asm" if from_asm else "MATCH") if not bad else f"{len(bad)}/{size // 4} differ"
             ok &= not bad
             print(f"  0x{start + off:08X} {fname:40} {size:#6x}  {status}")
             if bad and a.diff:
@@ -142,7 +155,8 @@ def main():
             if sec_name not in rng:
                 if size:
                     ok = False
-                    print(f"  {sec_name}: object has 0x{size:X} bytes, original file has none")
+                    print(f"  {sec_name}: object has 0x{size:X} bytes, "
+                          f"{'still in asm (partial file)' if partial else 'original file has none'}")
                 continue
             lo, hi = rng[sec_name]
             want = rom[lo - BASE:(hi or lo + size) - BASE]
@@ -158,14 +172,22 @@ def main():
         bss = elf.get_section_by_name(".bss")
         if bss is not None and bss["sh_size"] and ".bss" not in rng:
             ok = False
-            print(f"  .bss: object has 0x{bss['sh_size']:X} bytes, original file has none")
+            print(f"  .bss: object has 0x{bss['sh_size']:X} bytes, "
+                  f"{'still in asm (partial file)' if partial else 'original file has none'}")
         elif ".bss" in rng:
             lo, hi = rng[".bss"]
             size = bss["sh_size"] if bss is not None else 0
             print(f"  .bss: 0x{size:X} bytes vs 0x{(hi or lo) - lo:X}")
             ok &= hi is not None and 0 <= (hi - lo) - size < 16
 
-    print("OK: whole object matches" if ok else "NOT MATCHING")
+    if not ok:
+        print("NOT MATCHING")
+    elif n_asm:
+        print(f"OK: object matches ({n_asm} functions still INCLUDE_ASM)")
+    elif partial:
+        print("OK: object matches (INCLUDE_RODATA and .data/.bss still asm)")
+    else:
+        print("OK: whole object matches")
     sys.exit(0 if ok else 1)
 
 

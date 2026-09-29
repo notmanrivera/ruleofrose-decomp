@@ -3,11 +3,14 @@
 
     tools/.venv/bin/python tools/progress.py
 
-A file counts as decompiled when src/<file>.cpp exists; the matching build
-(tools/dock ninja) is what proves it matches. Sizes are .text bytes from
-config/splits.tsv; the SDK region is reported apart because the port
-replaces those libraries instead of decompiling them.
+A file counts once src/<file>.cpp exists; the matching build (tools/dock
+ninja) is what proves it matches. Sizes are .text bytes from
+config/splits.tsv, minus the functions a partial file still pulls in with
+INCLUDE_ASM (their size is on the `nonmatching` line of their .s). The SDK
+region is reported apart because the port replaces those libraries instead
+of decompiling them.
 """
+import re
 import sys
 from pathlib import Path
 
@@ -16,6 +19,17 @@ import configure  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 TEXT_END = 0x00280E88
+
+
+def asm_bytes(name, src):
+    """.text bytes of src still coming from INCLUDE_ASM."""
+    total = 0
+    for func in re.findall(r"^INCLUDE_ASM\(\s*\"[^\"]*\"\s*,\s*([^\s)]+)\s*\)", src.read_text(), re.M):
+        s = ROOT / "asm/nonmatchings" / name / f"{func}.s"
+        if not s.exists():
+            sys.exit(f"{s.relative_to(ROOT)} missing: run tools/dock python3 tools/configure.py")
+        total += int(re.search(r"^nonmatching \S+, (0x[0-9A-Fa-f]+)", s.read_text(), re.M).group(1), 16)
+    return total
 
 
 def main():
@@ -29,15 +43,18 @@ def main():
         g = groups[group]
         g[0] += 1
         g[2] += end - start
-        if (ROOT / "src" / f"{name}.cpp").exists():
+        src = ROOT / "src" / f"{name}.cpp"
+        if src.exists():
+            size = end - start - asm_bytes(name, src)
             g[1] += 1
-            g[3] += end - start
-            done.append((name, end - start))
+            g[3] += size
+            done.append((name, size, end - start))
     print(f"{'':12} {'files':>12} {'.text bytes':>24}")
     for group, (files, files_done, size, size_done) in groups.items():
         pct = 100 * size_done / size if size else 0
         print(f"{group:12} {files_done:5} / {files:<5} {size_done:9,} / {size:<9,} {pct:6.2f}%")
-    print("\ndecompiled:", ", ".join(f"{n} ({s:,} B)" for n, s in done) or "none")
+    print("\ndecompiled:", ", ".join(f"{n} ({s:,} B)" if s == t else f"{n} ({s:,} of {t:,} B)"
+                                     for n, s, t in done) or "none")
 
 
 if __name__ == "__main__":

@@ -20,6 +20,9 @@ options:
   ld_bss_contains_common: True
   ld_align_section_vram_end: False  # else the image gains 4 bytes of tail padding
   find_file_boundaries: False
+  generate_asm_macros_files: False  # include/ is ours (tools/configure.py)
+  create_c_files: False  # only for --new files
+  generated_c_preamble: "#include \"ror.h\"\n#include \"include_asm.h\""
   o_as_suffix: True
   symbol_addrs_path:
     - symbols/symbol_addrs.txt
@@ -55,8 +58,8 @@ segments:
       - [0x000000, asm, sdk/crt0] # .text (likely)
       - [0x000258, cpp, bed/bedsubmode] # .text (likely)
       - [0x000320, asm, bed/bedmemory] # .text (likely)
-      - [0x001718, asm, bed/bedpfh] # .text (likely)
-      - [0x001AEC, asm, bed/bedpad] # .text (likely)
+      - [0x001718, cpp, bed/bedpfh] # .text (likely)
+      - [0x001AEC, cpp, bed/bedpad] # .text (likely)
       - [0x001CCC, asm, utl/utlgame] # .text (likely)
       - [0x003EDC, asm, utl/utlbtl] # .text (likely)
       - [0x004970, asm, utl/utltm2] # .text (likely)
@@ -1987,8 +1990,8 @@ segments:
       - [0x1E52B8, data, vtbl/_vt_19__pointer_type_info] # .gnu.linkonce.d._vt$19__pointer_type_info
       - [0x1E5300, .rodata, bed/bedsubmode] # .rodata (likely)
       - [0x1E5340, rodata, bed/bedmemory] # .rodata (likely)
-      - [0x1E5668, rodata, bed/bedpfh] # .rodata (likely)
-      - [0x1E56C8, rodata, bed/bedpad] # .rodata (likely)
+      - [0x1E5668, .rodata, bed/bedpfh] # .rodata (likely)
+      - [0x1E56C8, .rodata, bed/bedpad] # .rodata (likely)
       - [0x1E5728, rodata, utl/utlgame] # .rodata (likely)
       - [0x1E75F8, rodata, utl/utlbtl] # .rodata (likely)
       - [0x1E76B0, rodata, utl/utltm2] # .rodata (likely)

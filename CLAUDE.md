@@ -35,7 +35,10 @@ roadmap: `notes/PROJECT_STATE.md` (Spanish). Setup: `README.md` (English).
   original relative path.
 - Decompiling: follow `docs/DECOMPILING.md` (m2c draft → `tools/match.py`
   until the whole object matches → mangled names in
-  `config/symbol_addrs_manual.txt` → full build). Whole files only for now. Treat other modules' flags as unconfirmed until matched.
+  `config/symbol_addrs_manual.txt` → full build). Start a file with
+  `tools/configure.py --new <file>` (one `INCLUDE_ASM` per function) and
+  replace them one by one; partial files keep `.data`/`.bss` in asm.
+  Treat other modules' flags as unconfirmed until matched.
 - Compile only inside the `ror-build` image (`docker/`), via
   `ee-cc <compiler-id> <gcc args>`. On macOS the docker CLI may live in
   `~/.docker/bin`.
