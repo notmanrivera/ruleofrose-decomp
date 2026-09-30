@@ -15,7 +15,11 @@ or two. `bed/bedpfh` was split one function early: its first function was
 a static initialiser). If the first or last functions belong elsewhere
 (class layout, callers), move the start with a row in
 `config/splits_manual.tsv` (with the evidence), then run
-`tools/.venv/bin/python tools/split_files.py` and reconfigure.
+`tools/.venv/bin/python tools/split_files.py` and reconfigure. Assert line
+numbers help too: `utl/utlfile.cpp`'s first asserts are on lines 15-16, so
+the function holding them is the file's first, and the 25 functions before
+it (placed there by `split_files.py`, which starts a file as early as it
+can) became `unk/001056E8`.
 
 ```bash
 tools/dock python3 tools/configure.py --new bed/bedpfh
@@ -87,6 +91,11 @@ straight from the binary:
   which line each inline sits on (keep them there) and what it reads, from
   every file that includes it (`bed/bedpfh.h`: lines 70-73, 81, 85-86, 91).
 - `lq`/`sq` are 128-bit copies: `u_long128` (see `include/ror.h`).
+- g++ 2.96 names the global `operator new(size_t)`, `new[]`, `delete` and
+  `delete[]` `__builtin_new`, `__builtin_vec_new`, `__builtin_delete` and
+  `__builtin_vec_delete`; other overloads mangle normally (`__nw__FUiPCcii`).
+- Linker script symbols (`_end`, `_stack_size`, `_ctype_`) are named in
+  `config/symbol_addrs_manual.txt`; declare them `extern char _end[];`.
 
 ## 3. Match it
 
@@ -100,7 +109,15 @@ tools/.venv/bin/python tools/match.py <file> --diff
 It compiles inside Docker from `src/` (so `__FILE__` is the original path)
 and compares every function, `.rodata`, `.data` and `.bss` against the game;
 functions still in asm are listed as `asm`. Each function is compared at its
-address in the game, so one of the wrong size does not throw off the rest. Iterate until it prints `OK:
+address in the game, so one of the wrong size does not throw off the rest.
+Relocations are filled in the way the linker would, with the game's
+addresses (imported names from the last link map, `build/SLUS_214.48.map`),
+so a call to the wrong function or a load of the wrong symbol shows as
+`N relocs differ`, one line per reference, e.g. `reloc at +0x74:
+txtSkipCtrl__FPc (0x00105750), game 0x00105710 (txtSkipSpace__FPc)`. While
+the object's `.rodata`, `.data` or `.bss` has the wrong size, everything
+after the wrong piece moves, so references into it are not checked (its
+line says so). Iterate until it prints `OK:
 object matches (N functions still INCLUDE_ASM)`, or `OK: whole object
 matches` once the file is complete. `--src` compiles a
 variant file and `--extra` adds compiler flags for experiments.
@@ -164,6 +181,33 @@ Things that changed codegen so far:
   `build/dump/` and compile there with `-da -S` inside the image; the
   `.28.mach` file shows each branch's `REG_BR_PROB` (the delay-slot pass
   fills from the target when it is 5000 or more).
+- A value computed into the variable's own register (`sll $s1` after
+  `subu $s1`) means an assignment to it: `max = ...; max = (max >> 8) << 8;`,
+  `ival *= 10; ival += c - '0';` (`heapInit`, `txtParse`).
+- A `char c` local is a byte register: `lbu`, then `sll 24`/`sra 24` where
+  it is used as an int. `*p` used directly is `lb`. Reading through an
+  `unsigned char *` gives `lbu` and unsigned compares (`sltiu`) throughout
+  (`txtNextLine`).
+- `for (p++; test(*p); p++) { char c = *p; ... }` loads `*p` separately in
+  the test and the body, like the game; `c = *p++` let CSE merge the loads.
+- A call used as an argument (`heap.alloc(size, attr(align))`) comes after
+  g++ has loaded the other arguments (here `&heap`), which then take saved
+  registers across it; with a local first (`int a = attr(align);
+  heap.alloc(size, a);`) they are loaded after the call.
+- A small `switch` is a balanced tree: with cases 32, 64, 128 g++ tests 64
+  first. The game testing 32 first (then `< 33`) means a fourth case below
+  32 that did nothing, so its test vanished (`heapAlignAttr`).
+- A `for (;;)`/`break` retry loop and the equivalent `do { } while` place
+  the argument set-up of the next call differently; try both (`heapInit`).
+- `sym1 + (sym2 + K)` loads `sym2+K` with `lui`/`addiu` and adds `sym1` as
+  `la sym1($reg)`; `(sym1 + sym2) + K` does the reverse. `match.py` reports
+  the swap as two wrong references (`reloc at +0x0: _end (0x00828E94), game
+  0x00081000`).
+- Inline asm: an `"f"` input that the asm itself reads from `$f12` (and
+  clobbers) makes g++ copy it to `$f0` first, a dead `mov.s` the game has
+  (`vu0FTOI15`). The assembler fills the `jr $ra` delay slot with the asm's
+  last instruction.
+- g++ 2.96 puts zero-initialised globals (`int n = 0;`) in `.data`.
 
 ## 4. Name it
 

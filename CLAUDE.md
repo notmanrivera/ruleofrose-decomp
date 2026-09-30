@@ -60,8 +60,8 @@ roadmap: `notes/PROJECT_STATE.md` (Spanish). Setup: `README.md` (English).
   assert expressions such as `n>=0 && n<=4`, source paths). Assert calls
   (`FUN_00215a30`) give the original file, line and expression; reproduce
   them with `#line` and the `ASSERT` macro.
-- A function counts as done only when it compiles to identical bytes
-  (relocations aside). Measure with `tools/compiler_id.py`-style scoring;
+- A function counts as done only when it compiles to identical bytes,
+  relocation targets included. Measure with `tools/compiler_id.py`-style scoring;
   never mark near-matches as matched.
 - Ghidra scripts must not overwrite `USER_DEFINED` names or signatures.
 

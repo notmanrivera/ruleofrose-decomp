@@ -65,7 +65,8 @@ segments:
       - [0x003EDC, asm, utl/utlbtl] # .text (likely)
       - [0x004970, asm, utl/utltm2] # .text (likely)
       - [0x005650, cpp, utl/utlmisc] # .text (certain)
-      - [0x0056E8, asm, utl/utlfile] # .text (likely)
+      - [0x0056E8, cpp, unk/001056E8] # .text (manual)
+      - [0x005E50, cpp, utl/utlfile] # .text (manual)
       - [0x006010, asm, utl/utlfind] # .text (likely)
       - [0x006658, asm, dog/dogmotionblend] # .text (likely)
       - [0x008588, asm, dog/dogactor] # .text (likely)
@@ -1649,7 +1650,7 @@ segments:
       - [0x195DB0, asm, inline/__tf16__ptmd_type_info] # .gnu.linkonce.t.__tf16__ptmd_type_info
       - [0x195E00, asm, inline/___17__array_type_info] # .gnu.linkonce.t._$_17__array_type_info
       - [0x195E68, asm, inline/__tf17__array_type_info] # .gnu.linkonce.t.__tf17__array_type_info
-      - [0x195F00, data, utl/utlfile] # .data (likely)
+      - [0x195F00, .data, unk/001056E8] # .data (manual)
       - [0x195F08, data, dog/dogmotionblend] # .data (likely)
       - [0x196190, data, mag/magsystem] # .data (likely)
       - [0x1961A8, data, mag/maglifepc3] # .data (certain)
@@ -1997,7 +1998,7 @@ segments:
       - [0x1E75F8, rodata, utl/utlbtl] # .rodata (likely)
       - [0x1E76B0, rodata, utl/utltm2] # .rodata (likely)
       - [0x1E7748, .rodata, utl/utlmisc] # .rodata (certain)
-      - [0x1E7760, rodata, utl/utlfile] # .rodata (likely)
+      - [0x1E7760, .rodata, utl/utlfile] # .rodata (manual)
       - [0x1E7798, rodata, utl/utlfind] # .rodata (likely)
       - [0x1E77C8, rodata, dog/dogmotionblend] # .rodata (likely)
       - [0x1E7A80, rodata, dog/dogactor] # .rodata (likely)

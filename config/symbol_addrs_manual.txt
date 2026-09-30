@@ -48,9 +48,45 @@ free__9BedMemoryPv = 0x00101328; // type:func size:0x1F0
 check__9BedMemoryi = 0x00101518; // type:func size:0xE4
 getInfo__9BedMemoryP13BedMemoryInfo = 0x001015FC; // type:func size:0x11C
 __9BedMemory = 0x00101718; // type:func size:0x20
-// utl/utlfile.cpp: GCC2's global operator delete; destructors (_$_6BedPad)
-// tail-call it when __in_chrg & 1.
+// unk/001056E8. GCC2 gives the global operator new/delete these names (the
+// other two overloads mangle normally); destructors (_$_6BedPad) tail-call
+// __builtin_delete when __in_chrg & 1. The rest are ours.
+vu0FTOI15Vector__FPiPCf = 0x001056E8; // type:func size:0x10
+vu0FTOI15__Ff = 0x001056F8; // type:func size:0x18
+txtSkipSpace__FPc = 0x00105710; // type:func size:0x40
+txtSkipCtrl__FPc = 0x00105750; // type:func size:0x58
+txtSkipName__FPc = 0x001057A8; // type:func size:0x90
+txtNextLine__FPc = 0x00105838; // type:func size:0x68
+txtParse__FP8TxtTokeniPc = 0x001058A0; // type:func size:0x29C
+countFrame__Fv = 0x00105B3C; // type:func size:0x18
+gFrameCount = 0x00295F00; // type:s32 size:0x4
+__builtin_new = 0x00105B54; // type:func size:0x14
+__nw__FUiPCcii = 0x00105B68; // type:func size:0x14
+__builtin_vec_new = 0x00105B7C; // type:func size:0x14
+__vn__FUiPCcii = 0x00105B90; // type:func size:0x14
 __builtin_delete = 0x00105BA4; // type:func size:0x20
+__builtin_vec_delete = 0x00105BC4; // type:func size:0x20
+heapInit__Fv = 0x00105BE4; // type:func size:0x9C
+heapExit__Fv = 0x00105C80; // type:func size:0x20
+heapAlloc__Fi = 0x00105CA0; // type:func size:0x24
+heapAlignAttr__Fi = 0x00105CC4; // type:func size:0x44
+heapAlloc__Fii = 0x00105D08; // type:func size:0x38
+heapAlloc__FiPCcii = 0x00105D40; // type:func size:0x38
+heapAlloc__FiiPCcii = 0x00105D78; // type:func size:0x68
+heapRealloc__FPvi = 0x00105DE0; // type:func size:0x28
+heapFree__FPv = 0x00105E08; // type:func size:0x24
+heapCheck__Fv = 0x00105E2C; // type:func size:0x24
+// Linker script symbols, named as in the SDK's crt0 (SetupThread(_gp, _stack,
+// _stack_size, ...), SetupHeap(_end, _heap_size)).
+_end = 0x00828E94;
+_stack_size = 0x00080000;
+// sdk/libc: newlib's ctype table; entry 0 is EOF, so the macros index
+// _ctype_ + 1 (0x003079A9).
+_ctype_ = 0x003079A8;
+// utl/utlfile.cpp (function names are ours; theDest and theSize come from
+// the assert strings)
+utlStrCopy__FPciPCc = 0x00105E50; // type:func size:0xBC
+utlStrJoin__FPciPCcT2 = 0x00105F0C; // type:func size:0x104
 // bed/bedpfh.cpp (class and method names are ours; the class follows the
 // file name, like BedPad)
 clear__6BedPfh = 0x00101738; // type:func size:0x18
