@@ -208,6 +208,15 @@ Things that changed codegen so far:
   (`vu0FTOI15`). The assembler fills the `jr $ra` delay slot with the asm's
   last instruction.
 - g++ 2.96 puts zero-initialised globals (`int n = 0;`) in `.data`.
+- A class with a user-written copy constructor is BLKmode: its locals get
+  16-byte stack slots, in declaration order (`GamList::iterator` in
+  `utlFindNearest`: 0x0, 0x10, 0x20). Without one they pack 4 bytes apart.
+- CSE reuses a register that holds an array's address only for element 0:
+  `float *w = wpos; w[0] = w[1] = w[2] = 0.0f;` stores `[0]` through the
+  register and the rest `$sp`-relative, as the game does, and the extra use
+  moves that register up in the allocation order.
+- An inline accessor that writes through a `void *` (`get_o_smell_range(&r)`)
+  keeps the local in the frame.
 
 ## 4. Name it
 

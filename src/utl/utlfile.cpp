@@ -1,15 +1,15 @@
-// utl/utlfile.cpp: bounded string copies, used to build file names.
+// utl/utlfile.cpp: string helpers for file names (bounded copies, a join,
+// a case-insensitive compare).
 //
 // Matching decompilation. The asserts must stay on lines 15-16 and 36-37.
 // Function names and theSrc* are ours; theDest and theSize come from the
 // assert strings.
 
 #include "ror.h"
+#include "sdk/ctype.h"
 
 // 0x00105E50: copies theSrc into theDest, a buffer of theSize bytes,
 // cutting it short if it does not fit; theDest always ends with a NUL.
-
-
 void utlStrCopy(char *theDest, int theSize, const char *theSrc)
 {
     ASSERT(theDest);
@@ -49,4 +49,37 @@ void utlStrJoin(char *theDest, int theSize, const char *theSrc1, const char *the
         }
     }
     *p = '\0';
+}
+
+// 0x00106010: are a and b the same, ignoring case? (MagLoader)
+int utlStrCaseEqual(const char *a, const char *b)
+{
+    int ca, cb;
+    do {
+        ca = *a++;
+        cb = *b++;
+        if (ca >= 'a' && ca <= 'z') {
+            ca -= 'a' - 'A';
+        }
+        if (cb >= 'a' && cb <= 'z') {
+            cb -= 'a' - 'A';
+        }
+        if (ca != cb) {
+            return 0;
+        }
+    } while (ca != '\0');
+    return 1;
+}
+
+// 0x00106064: utlStrCopy in upper case; returns theDest.
+char *utlStrCopyUpper(char *theDest, int theSize, const char *theSrc)
+{
+    char *p = theDest;
+    for (int i = 0; i < theSize; i++, p++, theSrc++) {
+        if ((*p = toupper(*theSrc)) == '\0') {
+            break;
+        }
+    }
+    theDest[theSize - 1] = '\0';
+    return theDest;
 }

@@ -87,6 +87,19 @@ _ctype_ = 0x003079A8;
 // the assert strings)
 utlStrCopy__FPciPCc = 0x00105E50; // type:func size:0xBC
 utlStrJoin__FPciPCcT2 = 0x00105F0C; // type:func size:0x104
+utlStrCaseEqual__FPCcT0 = 0x00106010; // type:func size:0x54
+utlStrCopyUpper__FPciPCc = 0x00106064; // type:func size:0x84
+// utl/utlfind.cpp (names are ours; theHandle comes from its assert strings)
+utlFindGetArea__FP7ObjStat = 0x001060E8; // type:func size:0x50
+utlFindGetUID__FP7ObjStat = 0x00106138; // type:func size:0x40
+utlFindGetOID__FP7ObjStat = 0x00106178; // type:func size:0x40
+utlFindGetPos__FP7ObjStatPf = 0x001061B8; // type:func size:0x54
+utlFindClear__FP7UtlFind = 0x0010620C; // type:func size:0x34
+utlFindIsSet__FP7UtlFind = 0x00106240; // type:func size:0x40
+utlFindSet__FP7UtlFindii = 0x00106280; // type:func size:0x34
+utlFindIsTarget__FP7UtlFindi = 0x001062B4; // type:func size:0x24
+utlFindFirst__FP7UtlFind = 0x001062D8; // type:func size:0x6C
+utlFindNearest__FP7UtlFindPfi = 0x00106344; // type:func size:0x314
 // bed/bedpfh.cpp (class and method names are ours; the class follows the
 // file name, like BedPad)
 clear__6BedPfh = 0x00101738; // type:func size:0x18

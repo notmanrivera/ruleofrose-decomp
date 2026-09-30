@@ -18,7 +18,7 @@ text	rodata	data	bss	file	confidence
 00105650	002E7748	-	-	utl/utlmisc	certain
 001056E8	-	00295F00	-	unk/001056E8	manual
 00105E50	002E7760	-	-	utl/utlfile	manual
-00106010	002E7798	-	-	utl/utlfind	likely
+001060E8	002E7798	-	-	utl/utlfind	manual
 00106658	002E77C8	00295F08	-	dog/dogmotionblend	likely
 00108588	002E7A80	-	-	dog/dogactor	likely
 0010F5E4	002E84B0	-	-	dog/dogcamera	conflict
