@@ -7,6 +7,10 @@
 extern "C" {
 
 float sqrtf(float x);
+float cosf(float x);
+float sinf(float x);
+float atanf(float x);
+float asinf(float x);
 
 }
 

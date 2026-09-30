@@ -52,4 +52,7 @@ public:
 // The game manager, constructed by the main file's static initialiser.
 extern GamMan D_007812C0;
 
+// Still asm (game/gamman.cpp).
+extern "C" int func_001C6C38(GamMan *theGamMan);    // 0-2 or -1: which sound-id column is in use
+
 #endif

@@ -217,6 +217,14 @@ Things that changed codegen so far:
   moves that register up in the allocation order.
 - An inline accessor that writes through a `void *` (`get_o_smell_range(&r)`)
   keeps the local in the frame.
+- A constant loaded before a branch, with the store in a `bc1tl` delay slot,
+  is a conditional expression: `*yaw = x < 0.0f ? -HALF_PI : HALF_PI;`; the
+  same `if`/`else` loads each constant in its own block (`vecDistYaw`).
+- `if (col == cur || cur == -1) return id;` and two separate `if`s pick
+  different delay-slot fillers (`sndConvertId`).
+- A local initialised where it is declared (`float a = 0.0f;`) shares the
+  register of that constant; assigned later, in a branch, it gets its own
+  register and a `mov.s` copy (`vecPitch`).
 
 ## 4. Name it
 

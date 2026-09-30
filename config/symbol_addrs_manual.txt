@@ -76,6 +76,33 @@ heapAlloc__FiiPCcii = 0x00105D78; // type:func size:0x68
 heapRealloc__FPvi = 0x00105DE0; // type:func size:0x28
 heapFree__FPv = 0x00105E08; // type:func size:0x24
 heapCheck__Fv = 0x00105E2C; // type:func size:0x24
+// unk/00106658 (names are ours)
+sndConvertId__Fi = 0x00106658; // type:func size:0x108
+gSndIdTable = 0x00295F08; // size:0x288
+i3dCallLocked__FPvN40 = 0x00106760; // type:func size:0x78
+i3dSetUserAll__FP8I3dOwneri = 0x001067D8; // type:func size:0x94
+i3dSetUser__FP8I3dOwnerii = 0x0010686C; // type:func size:0x68
+i3dGetUser__FP8I3dOwneri = 0x001068D4; // type:func size:0x4C
+vecRotateX__FP9UtlVectorPC9UtlVectorf = 0x00106920; // type:func size:0x90
+vecRotateY__FP9UtlVectorPC9UtlVectorf = 0x001069B0; // type:func size:0x90
+vecRotateZ__FP9UtlVectorPC9UtlVectorf = 0x00106A40; // type:func size:0x90
+vecLength3__FPCf = 0x00106AD0; // type:func size:0x54
+vecTurnX__FPff = 0x00106B24; // type:func size:0xA4
+vecTurnY__FPff = 0x00106BC8; // type:func size:0xA4
+vecTurnZ__FPff = 0x00106C6C; // type:func size:0xA4
+vecDot__FPfT0 = 0x00106D10; // type:func size:0x14
+vecCross__FPfN20 = 0x00106D24; // type:func size:0x1C
+vecLerp__FPfPCfT1f = 0x00106D40; // type:func size:0x70
+vecNormalize__FPf = 0x00106DB0; // type:func size:0x20
+vecLength__FPf = 0x00106DD0; // type:func size:0x44
+vecDist2__FPCfT0 = 0x00106E14; // type:func size:0x5C
+vecDist__FPCfT0 = 0x00106E70; // type:func size:0x44
+vecDist3__FPCfT0 = 0x00106EB4; // type:func size:0x84
+vecDistXZ__FPCfT0 = 0x00106F38; // type:func size:0x7C
+vecDistYaw__FPCfPfT0 = 0x00106FB4; // type:func size:0x144
+vecYaw__FPCf = 0x001070F8; // type:func size:0xD0
+vecPitch__FPCf = 0x001071C8; // type:func size:0x80
+vecDirToRot__FPfT0 = 0x00107248; // type:func size:0x134
 // Linker script symbols, named as in the SDK's crt0 (SetupThread(_gp, _stack,
 // _stack_size, ...), SetupHeap(_end, _heap_size)).
 _end = 0x00828E94;
@@ -83,6 +110,10 @@ _stack_size = 0x00080000;
 // sdk/libc: newlib's ctype table; entry 0 is EOF, so the macros index
 // _ctype_ + 1 (0x003079A9).
 _ctype_ = 0x003079A8;
+// sdk/libm: newlib's asinf wrapper (tail-calls __ieee754_asinf).
+asinf = 0x0026CAE8; // type:func size:0x14
+// sdk/libvu0: between sceVu0MulMatrix and sceVu0InnerProduct, as in libvu0.c.
+sceVu0OuterProduct = 0x0025B6D0; // type:func size:0x20
 // utl/utlfile.cpp (function names are ours; theDest and theSize come from
 // the assert strings)
 utlStrCopy__FPciPCc = 0x00105E50; // type:func size:0xBC
