@@ -40,6 +40,22 @@ While a `.cpp` still has `INCLUDE_ASM`/`INCLUDE_RODATA` it is **partial**:
   `ror.h` makes `ASSERT` use it instead of a second copy of `__FILE__`.
 - C++ calling a function that is still asm declares it `extern "C"` with its
   `func_xxxxxxxx` name, or names it first (step 4).
+- A string used by both C++ and asm functions stays an `INCLUDE_RODATA`;
+  the C++ asserts name it with `ASSERT_S(expr, D_xxxxxxxx)` (and
+  `ASSERT_FILE` for the `__FILE__` string). Back to `ASSERT` once the file
+  has no asm left.
+- A function that will not match yet keeps its C++ next to the asm, the
+  usual decomp convention (`bed/bedmemory`):
+
+  ```cpp
+  #ifdef NON_MATCHING
+  void Foo::bar() { ... }
+  #else
+  INCLUDE_ASM("asm/nonmatchings/foo/foo", bar__3Foo);
+  #endif
+  ```
+
+  `tools/match.py <file> --extra=-DNON_MATCHING` shows how close it is.
 
 The `.s` files are assembled by ee-gcc 2.96's own assembler (GNU as
 2.10-ee) as part of the compiler's output; `include/include_asm.h` and
@@ -83,7 +99,8 @@ tools/.venv/bin/python tools/match.py <file> --diff
 
 It compiles inside Docker from `src/` (so `__FILE__` is the original path)
 and compares every function, `.rodata`, `.data` and `.bss` against the game;
-functions still in asm are listed as `asm`. Iterate until it prints `OK:
+functions still in asm are listed as `asm`. Each function is compared at its
+address in the game, so one of the wrong size does not throw off the rest. Iterate until it prints `OK:
 object matches (N functions still INCLUDE_ASM)`, or `OK: whole object
 matches` once the file is complete. `--src` compiles a
 variant file and `--extra` adds compiler flags for experiments.
@@ -123,6 +140,26 @@ Things that changed codegen so far:
   into its delay slot (it could trap if the branch is taken).
 - `sqrtf` declared `extern "C" float sqrtf(float);` (`include/sdk/math.h`)
   becomes the inline `sqrt.s` + NaN check + call that the game has.
+- Stores through two different pointers (`this` and a header pointer)
+  keep their source order: GCC cannot tell that they do not alias. The
+  same goes for a load after such a store, so when the original reads a
+  field before writing elsewhere, so must the source (`BedMemory::free`,
+  `shrink`). Stores through one pointer to different fields can be
+  reordered, and a run of them often comes out with the last one first.
+- Register choice follows priority: uses per instruction of lifetime. A
+  local working copy of a parameter (`int size = theSize;`) starts later
+  and can win a register the parameter lost (`BedMemory::init`).
+  Temporaries of equal priority take `$v0`, `$v1`, `$a0`... in the order
+  they were created, i.e. source order.
+- `.rodata` strings no code refers to are real: an assert whose condition
+  is always true (`ASSERT(p->m_header_size = sizeof( BEDMEMHEADER ))`, `=`
+  for `==`) or code under `if (0)` still emit their strings. Reproduce
+  them the same way (`BedMemory::alloc`, `check`).
+- `tools/try_variants.py <file> <function> variants.json` compiles text
+  variants of a file one after another and prints each function's status:
+  the fastest way to find a statement order.
+- `-fno-schedule-insns` breaks nearly every matched function: the first
+  scheduling pass is on, and the flags in CLAUDE.md stand.
 - To see why GCC placed something, dump its passes: copy `src/` to
   `build/dump/` and compile there with `-da -S` inside the image; the
   `.28.mach` file shows each branch's `REG_BR_PROB` (the delay-slot pass

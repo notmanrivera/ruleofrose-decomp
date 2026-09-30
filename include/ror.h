@@ -25,4 +25,9 @@ extern "C" void ror_assert(const char *file, int line, const char *expr);
 #define ASSERT_FILE __FILE__
 #endif
 
+// Also for partial files: an ASSERT whose expression string is shared with
+// asm functions, so it is an INCLUDE_RODATA symbol too. Back to ASSERT once
+// the file has no asm left.
+#define ASSERT_S(e, str) ((e) ? (void)0 : ror_assert(ASSERT_FILE, __LINE__, str))
+
 #endif

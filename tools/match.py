@@ -94,6 +94,26 @@ def functions(elf):
     return sorted(fns)
 
 
+def original_functions(name):
+    """[(address, size)] of the file's functions in the game, from splat's
+    whole-file disassembly (kept for decompiled files too), or None."""
+    path = ROOT / "asm" / f"{name}.s"
+    if not path.exists():
+        return None
+    import re
+    out, size = [], None
+    for line in path.read_text(errors="replace").splitlines():
+        m = re.match(r"nonmatching (\S+), (0x[0-9A-Fa-f]+)", line)
+        if m:
+            size = int(m.group(2), 16)
+            continue
+        m = re.match(r"\s+/\* [0-9A-F]+ ([0-9A-F]{8}) [0-9A-F]{8} \*/", line)
+        if m and size is not None:
+            out.append((int(m.group(1), 16), size))
+            size = None
+    return out
+
+
 def disasm(word, pc):
     import rabbitizer
     return rabbitizer.Instruction(word, vram=pc, category=rabbitizer.InstrCategory.R5900).disassemble()
@@ -125,24 +145,35 @@ def main():
         data = text.data() if text else b""
         start = rng[".text"][0]
         print(f"{name}  (.text at 0x{start:08X})")
-        for off, size, fname, from_asm in functions(elf):
+        fns = functions(elf)
+        # Compare the Nth function with the game's Nth (at its real address),
+        # so one function of the wrong size does not shift all the others.
+        orig = original_functions(name)
+        if orig is None or len(orig) != len(fns):
+            orig = [(start + off, None) for off, _, _, _ in fns]
+        for (off, size, fname, from_asm), (addr, osize) in zip(fns, orig):
             n_asm += from_asm
             bad = []
             for o in range(off, off + size, 4):
                 mine = int.from_bytes(data[o:o + 4], "little")
-                want = int.from_bytes(rom[start + o - BASE:start + o - BASE + 4], "little")
+                pc = addr + o - off
+                want = int.from_bytes(rom[pc - BASE:pc - BASE + 4], "little")
                 m = masks.get(o, 0xFFFFFFFF)
                 if (mine & m) != (want & m):
                     bad.append((o, mine, want))
             status = ("asm" if from_asm else "MATCH") if not bad else f"{len(bad)}/{size // 4} differ"
+            if osize is not None and osize != size:
+                status += f" (size 0x{size:X}, game 0x{osize:X})"
+                bad.append(None)
             ok &= not bad
-            print(f"  0x{start + off:08X} {fname:40} {size:#6x}  {status}")
+            print(f"  0x{addr:08X} {fname:40} {size:#6x}  {status}")
             if bad and a.diff:
-                for o in range(off, off + size, 4):
-                    mine = int.from_bytes(data[o:o + 4], "little")
-                    want = int.from_bytes(rom[start + o - BASE:start + o - BASE + 4], "little")
-                    mark = "*" if any(o == b[0] for b in bad) else " "
-                    print(f"    {mark} {disasm(want, start + o):38} | {disasm(mine, start + o)}")
+                for o in range(off, off + max(size, osize or 0), 4):
+                    pc = addr + o - off
+                    want = int.from_bytes(rom[pc - BASE:pc - BASE + 4], "little")
+                    mine = int.from_bytes(data[o:o + 4], "little") if o < off + size else None
+                    mark = "*" if any(b is not None and o == b[0] for b in bad) or mine is None else " "
+                    print(f"    {mark} {disasm(want, pc):38} | {disasm(mine, pc) if mine is not None else ''}")
         end = rng[".text"][1]
         if end is not None and len(data) != end - start:
             ok = False
