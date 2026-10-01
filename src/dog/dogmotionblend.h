@@ -2,8 +2,9 @@
 // (its member at +0x1E4): one main motion, and up to 4 more laid over it
 // on chosen nodes.
 //
-// DogMotionBlend, m_main, m_sub, m_no, m_time, m_motion, m_max_motion and
-// m_i3m_root come from assert strings; the rest is ours. DogActor's inline
+// DogMotionBlend, m_main, m_sub, m_no, m_time, m_motion, m_max_motion,
+// m_i3m_root and getMainMotionNo come from assert strings (DogActor's
+// member is m_motion_now); the rest is ours. DogActor's inline
 // methods (getMotionNo, setMotionSpeed, setMotionTickTime...) use the
 // fields at +0x04 to +0x14. Lines 122-123 hold inline methods that assert
 // m_motion and n>=0 && n<m_max_motion (DogActor::getMotionLinkTime), not
@@ -53,6 +54,7 @@ public:
     DogMotionData *m_motion;        // +0x1C
     Sub m_sub[4];                   // +0x20
 
+    DogMotionBlend();
     void validate();
     float getTimeRatio();
     float setTimeRatio(float theRatio);
@@ -61,7 +63,7 @@ public:
     int update();
     int updateOnce();
     void stop();
-    int getMotionNo();
+    int getMainMotionNo() const;
     int getPosture(I3mPosture *thePosture);
     void setSub(int theNo, float theRatio, int theTime);
 };

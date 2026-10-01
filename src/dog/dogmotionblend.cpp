@@ -36,7 +36,7 @@ void DogMotionBlend::validate()
         }
         return;
     }
-    int no = getMotionNo();
+    int no = getMainMotionNo();
     if (no >= 0 && m_motion[no].m_i3m_root == 0) {
         m_main.m_no = -1;
         m_main.m_speed = 0.016666694f;
@@ -481,7 +481,7 @@ void DogMotionBlend::stop()
 }
 
 // 0x001081A8
-int DogMotionBlend::getMotionNo()
+int DogMotionBlend::getMainMotionNo() const
 {
     return m_main.m_no;
 }
@@ -593,6 +593,27 @@ void DogMotionBlend::setSub(int theNo, float theRatio, int theTime)
     } else if (theRatio == 0.0f && m_sub[theNo].m_no >= 0) {
         if (m_sub[theNo].m_blendCount >= m_sub[theNo].m_blendTime) {
             m_sub[theNo].m_no = -1;
+        }
+    }
+}
+
+// 0x00108588
+DogMotionBlend::DogMotionBlend()
+{
+    m_speedRatio = 1.0f;
+    m_tickTime = -1;
+    m_main.m_no = -1;
+    m_main.m_speed = 0.016666694f;
+    m_main.m_time = 0.0f;
+    for (int i = 0; i < 4; i++) {
+        m_sub[i].m_no = -1;
+        m_sub[i].m_time = 0.0f;
+        m_sub[i].m_speed = 0.016666694f;
+        m_sub[i].m_ratio = -1.0f;
+        m_sub[i].m_unk18 = 1.0f;
+        m_sub[i].m_ratio = -1.0f;
+        for (int j = 3; j >= 0; j--) {
+            m_sub[i].m_mask[j] = 0;
         }
     }
 }

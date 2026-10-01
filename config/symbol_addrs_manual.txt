@@ -103,7 +103,8 @@ vecDistYaw__FPCfPfT0 = 0x00106FB4; // type:func size:0x144
 vecYaw__FPCf = 0x001070F8; // type:func size:0xD0
 vecPitch__FPCf = 0x001071C8; // type:func size:0x80
 vecDirToRot__FPfT0 = 0x00107248; // type:func size:0x134
-// dog/dogmotionblend.cpp (DogMotionBlend is original; method names are ours)
+// dog/dogmotionblend.cpp (DogMotionBlend and getMainMotionNo are original, from
+// assert strings; the other method names are ours)
 validate__14DogMotionBlend = 0x0010737C; // type:func size:0x1E4
 getTimeRatio__14DogMotionBlend = 0x00107560; // type:func size:0x118
 setTimeRatio__14DogMotionBlendf = 0x00107678; // type:func size:0x124
@@ -112,9 +113,10 @@ getNodeWeight__14DogMotionBlendi = 0x001078DC; // type:func size:0xFC
 update__14DogMotionBlend = 0x001079D8; // type:func size:0x458
 updateOnce__14DogMotionBlend = 0x00107E30; // type:func size:0x348
 stop__14DogMotionBlend = 0x00108178; // type:func size:0x30
-getMotionNo__14DogMotionBlend = 0x001081A8; // type:func size:0x8
+getMainMotionNo__C14DogMotionBlend = 0x001081A8; // type:func size:0x8
 getPosture__14DogMotionBlendP16tag_I3mPosture_s = 0x001081B0; // type:func size:0x278
 setSub__14DogMotionBlendifi = 0x00108428; // type:func size:0x160
+__14DogMotionBlend = 0x00108588; // type:func size:0xD8
 // Linker script symbols, named as in the SDK's crt0 (SetupThread(_gp, _stack,
 // _stack_size, ...), SetupHeap(_end, _heap_size)).
 _end = 0x00828E94;
