@@ -172,6 +172,8 @@ Things that changed codegen so far:
   is always true (`ASSERT(p->m_header_size = sizeof( BEDMEMHEADER ))`, `=`
   for `==`) or code under `if (0)` still emit their strings. Reproduce
   them the same way (`BedMemory::alloc`, `check`).
+- `tools/pad_asserts.py src/<file>.cpp <lines>` adds blank lines so every
+  assert sits on its original line (`tools/asserts.py <file>.cpp` lists them).
 - `tools/try_variants.py <file> <function> variants.json` compiles text
   variants of a file one after another and prints each function's status:
   the fastest way to find a statement order.
@@ -225,6 +227,14 @@ Things that changed codegen so far:
 - A local initialised where it is declared (`float a = 0.0f;`) shares the
   register of that constant; assigned later, in a branch, it gets its own
   register and a `mov.s` copy (`vecPitch`).
+- Then and else blocks keep their source order: `if (mf == 0.0f) { m_time
+  = 0; } else { ... }` puts the short block first (a `b` over the long
+  one), `if (mf != 0.0f)` the other way round (`DogMotionBlend::update`).
+- An early `if (no < 0) return 0.0f;` loads the 0.0 at the top of the
+  function; `if (no >= 0) { ... } return 0.0f;` loads it in the last block
+  (`getTimeRatio`, `getPosture`).
+- In a loop, `if (a && b) { ... }` and two `continue` tests give different
+  code (`getNodeWeight`).
 
 ## 4. Name it
 
