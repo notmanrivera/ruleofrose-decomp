@@ -11,17 +11,6 @@
 
 class BedPfh;
 
-// The 16-byte state DogModel::getSubMode returns (BedSubMode stacks them).
-union DogSubMode {
-    u_long128 m_all;
-    struct {
-        int m_mode;
-        int m_step;
-        int m_unk08;
-        int m_unk0C;
-    };
-};
-
 class DogModel : public DogEntityEx {
 public:
     DogSubMode m_submode;           // +0xF0
@@ -72,6 +61,17 @@ public:
     virtual int vfunc14(void *theTex, BedPfh *thePfh, int theA, int theB);
     virtual int vfunc15(void *theData, void *theA, void *theB);
     virtual void vfunc16();
+
+
+
+
+
+
+
+
+
+
+
 
 
 

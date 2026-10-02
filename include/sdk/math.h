@@ -11,6 +11,7 @@ float cosf(float x);
 float sinf(float x);
 float atanf(float x);
 float asinf(float x);
+float modff(float x, float *iptr);
 
 }
 

@@ -274,7 +274,17 @@ getIndex__C6BedPfhPCc = 0x001019F0; // type:func size:0xFC
 // sdk/libm: newlib's sqrtf wrapper (tail-calls __ieee754_sqrtf). g++ expands
 // sqrtf inline as sqrt.s and calls this only for a NaN (BedPad::updateStick).
 sqrtf = 0x0026CB48; // type:func size:0x14
-// dog/dogcamera.cpp (save/restore are our names; m_saved comes from the
+// dog/dogcamera.cpp (method names are ours; m_saved comes from the
 // asserts)
 save__9DogCamera = 0x0010F860; // type:func size:0x6C
 restore__9DogCamera = 0x0010F8CC; // type:func size:0x78
+update__9DogCamera = 0x0010F944; // type:func size:0xFC
+moveTo__9DogCameraRC9DogVectorT1i = 0x0010FA40; // type:func size:0x2C
+getViewMatrix__9DogCamera = 0x0010FA6C; // type:func size:0x54
+func_0010FAC0__9DogCamera = 0x0010FAC0; // type:func size:0x114
+func_0010FBD4__9DogCamera = 0x0010FBD4; // type:func size:0x34
+func_0010FC08__9DogCameraf = 0x0010FC08; // type:func size:0x20
+getYaw__9DogCamera = 0x0010FC28; // type:func size:0x54
+// sdk/libm: newlib's modff (sf_modf.c: split into integer and fraction
+// parts by masking the mantissa).
+modff = 0x0026C8E0; // type:func size:0x8C

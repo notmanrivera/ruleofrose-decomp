@@ -33,6 +33,7 @@ void func_00231198(float *theQuat, const float *theRot);  // quaternion from ang
 void func_00230470(float *theOut, const float *a, const float *b);  // quaternion product
 void func_00230660(float *theOut, const float *theIn);   // normalized quaternion
 void func_00237390(float *theOut, const float *theIn, float theScale);  // scaled vector
+void func_00237678(float (*theOut)[4], float (*theIn)[4]);  // DogCamera's view matrix from its matrix
 float func_0022E958(void *theRoot);                      // length in frames
 void func_0022E960(void *theRoot, tag_I3mPosture_s *theOut, int theFlags, float theTime);
 // Blends motion theA at theTimeA with theB at theTimeB by theRate into theOut.

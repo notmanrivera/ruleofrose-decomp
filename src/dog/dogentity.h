@@ -44,6 +44,18 @@ public:
     }
 } __attribute__((aligned(16)));
 
+// The 16-byte state of DogModel and DogCamera (getSubMode; BedSubMode
+// stacks them).
+union DogSubMode {
+    u_long128 m_all;
+    struct {
+        int m_mode;
+        int m_step;
+        int m_unk08;
+        int m_unk0C;
+    };
+};
+
 class DogEntity {
 public:
     float m_unk00[4][4];        // +0x00

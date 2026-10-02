@@ -278,6 +278,14 @@ Things that changed codegen so far:
   expand, so write the expanded form.
 - A register that holds a value before a call is not always an argument:
   `$a2` before `func_0010BF08`'s call was only a free register.
+- `getSubMode()->m_step++` and `++getSubMode()->m_step` differ: the
+  post-increment folds the member offset into the pointer (`addiu $v1,
+  $s1, 0x134`) and later reads reuse the value; the pre-increment keeps
+  `0x130` + `4($v1)` and the next read loads again (`DogCamera::update`).
+- One local variable reused for two values (`r = deg; ...; r = result;`)
+  dies twice, so local allocation leaves it to global allocation and the
+  registers change; two variables, or none, give other registers
+  (`DogCamera::func_0010FAC0`).
 
 ## 4. Name it
 
