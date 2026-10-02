@@ -274,3 +274,7 @@ getIndex__C6BedPfhPCc = 0x001019F0; // type:func size:0xFC
 // sdk/libm: newlib's sqrtf wrapper (tail-calls __ieee754_sqrtf). g++ expands
 // sqrtf inline as sqrt.s and calls this only for a NaN (BedPad::updateStick).
 sqrtf = 0x0026CB48; // type:func size:0x14
+// dog/dogcamera.cpp (save/restore are our names; m_saved comes from the
+// asserts)
+save__9DogCamera = 0x0010F860; // type:func size:0x6C
+restore__9DogCamera = 0x0010F8CC; // type:func size:0x78
