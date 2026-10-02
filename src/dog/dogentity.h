@@ -26,6 +26,12 @@ public:
         m_x = m_y = m_z = 0.0f;
         m_w = 1.0f;
     }
+    // (0, 0, 0, 1), like the constructor. The name is ours.
+    void clear()
+    {
+        m_x = m_y = m_z = 0.0f;
+        m_w = 1.0f;
+    }
     void set(float x, float y, float z, float w)
     {
         m_z = z;
@@ -58,13 +64,13 @@ union DogSubMode {
 
 class DogEntity {
 public:
-    float m_unk00[4][4];        // +0x00
-    DogVector m_unk40;          // +0x40
-    DogVector m_unk50;          // +0x50
-    DogVector m_unk60;          // +0x60: (1, 1, 1, 1) after reset
-    DogVector m_unk70;          // +0x70
-    DogVector m_rot_offset;     // +0x80
-    int m_unk90;                // +0x90
+    float m_unk00[4][4];        // +0x00: the matrix (transform)
+    DogVector m_unk40;          // +0x40: position
+    DogVector m_unk50;          // +0x50: rotation around X, Y, Z (radians)
+    DogVector m_unk60;          // +0x60: scale, (1, 1, 1, 1) after reset
+    DogVector m_unk70;          // +0x70: added to the position
+    DogVector m_rot_offset;     // +0x80: added to the rotation
+    int m_unk90;                // +0x90: the matrix is out of date
                                 // +0x94: vtable
 
     DogEntity() { init(); }
@@ -76,8 +82,7 @@ public:
     }
     virtual void reset()
     {
-        m_rot_offset.m_x = m_rot_offset.m_z = m_rot_offset.m_y = 0.0f;
-        m_rot_offset.m_w = 1.0f;
+        m_rot_offset.clear();
         init();
     }
     void setRotOffset(float x, float y, float z)
@@ -96,16 +101,23 @@ public:
         }
         m_unk90 = 1;
     }
-    void func_0010FCB4(float theRot);
-    void func_0010FD18(DogEntity *theEntity);
-    void func_0010FF74();
-    virtual void transform() { func_0010FD18(this); }
+    void setRot(float x, float y, float z);
+    void setRotOffsetY(float theRot);
+    int makeMatrix(float (*theMat)[4]);
+    void normalizeRot();
+    DogVector *getAxisZ(DogVector *theOut);
+    DogVector *getAxisX(DogVector *theOut);
+    DogVector *getAxisY(DogVector *theOut);
+    void lookAt(const DogVector &thePos, int theMode);
+    void getPos(DogVector *theOut);
+    void getDirRot(DogVector *theRot);
+    virtual void transform() { makeMatrix(m_unk00); }
     virtual ~DogEntity() {}
 };
 
 class DogEntityEx : public DogEntity {
 public:
-    unsigned char m_unkA0[0x40];    // +0xA0
+    float m_local[4][4];            // +0xA0: the matrix in m_parent's space
     DogEntityEx *m_parent;          // +0xE0
     unsigned char m_unkE4[0xC];     // +0xE4
 
@@ -114,6 +126,7 @@ public:
     virtual void transform();
     virtual ~DogEntityEx() {}
     virtual DogEntityEx *getParent() { return m_parent; }
+    void setParent(DogEntityEx *theParent);
 };
 
 #endif

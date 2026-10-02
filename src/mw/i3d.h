@@ -33,7 +33,16 @@ void func_00231198(float *theQuat, const float *theRot);  // quaternion from ang
 void func_00230470(float *theOut, const float *a, const float *b);  // quaternion product
 void func_00230660(float *theOut, const float *theIn);   // normalized quaternion
 void func_00237390(float *theOut, const float *theIn, float theScale);  // scaled vector
-void func_00237678(float (*theOut)[4], float (*theIn)[4]);  // DogCamera's view matrix from its matrix
+// 4x4 float matrices (rows: x, y, z axes and the position).
+void func_002372F0(float (*theOut)[4], float (*theIn)[4]);                 // copy
+void func_00237340(float (*theMat)[4]);                                     // unit matrix
+void func_00237640(float (*theOut)[4], float (*theIn)[4], const float *theVec);  // translated
+void func_00237678(float (*theOut)[4], float (*theIn)[4]);                 // DogCamera's view matrix from its matrix
+void func_002377D0(float (*theOut)[4], float (*a)[4], float (*b)[4]);      // product
+void func_00237818(float (*theOut)[4], float (*theIn)[4], float theRot);   // rotated around X
+void func_00237830(float (*theOut)[4], float (*theIn)[4], float theRot);   // rotated around Y
+void func_00237848(float (*theOut)[4], float (*theIn)[4], float theRot);   // rotated around Z
+void func_00237A78(float (*theOut)[4], float (*theIn)[4], const float *theScale);  // scaled
 float func_0022E958(void *theRoot);                      // length in frames
 void func_0022E960(void *theRoot, tag_I3mPosture_s *theOut, int theFlags, float theTime);
 // Blends motion theA at theTimeA with theB at theTimeB by theRate into theOut.

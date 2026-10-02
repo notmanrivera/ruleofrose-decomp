@@ -15,9 +15,9 @@ struct I3dOwner;
 int i3dCallLocked(void *a, void *b, void *c, void *d, void *e);
 int i3dSetUser(I3dOwner *theOwner, int theValue, int theNo);
 int i3dGetUser(I3dOwner *theOwner, int theNo);
-extern "C" void func_002377D0(float (*theOut)[4], DogEntity *theEntity, float (*theMat)[4]);
 int vu0FTOI15(float theValue);
 void vecTurnY(float *theVec, float theAngle);
+
 
 // A disc file read (code at 0x001BE2CC-0x001BE768, between
 // mnu/mnuSelectLanguage and game/gamman); the names are ours.
@@ -1196,10 +1196,10 @@ void DogActor::func_0010A090(const DogVector &theMove, float theRot, float theAa
     float rot = theAar - aux.m_w;
     angleNormalize(rot);
     m_unk50.m_y = rot;
-    func_0010FF74();
+    normalizeRot();
     m_unk90 = 1;
     m_base_rot.m_y = rot;
-    func_0010FCB4(0.0f);
+    setRotOffsetY(0.0f);
 }
 
 // 0x0010A1C8: func_0010A090 with a position instead of a move.
@@ -1214,10 +1214,10 @@ void DogActor::func_0010A1C8(const DogVector &thePos, float theRot, float theAar
     float rot = theAar - aux.m_w;
     angleNormalize(rot);
     m_unk50.m_y = rot;
-    func_0010FF74();
+    normalizeRot();
     m_unk90 = 1;
     m_base_rot.m_y = rot;
-    func_0010FCB4(0.0f);
+    setRotOffsetY(0.0f);
 }
 
 // 0x0010A2D0: the model's position and rotation with the main motion's aux
@@ -1670,7 +1670,7 @@ void DogActor::func_0010AC98()
 {
     func_0010E930();
     m_unk50.m_y = func_0010A650();
-    func_0010FF74();
+    normalizeRot();
     m_unk90 = 1;
     m_rot_offset.set(0.0f, 0.0f, 0.0f, 1.0f);
     m_unk90 = 1;
@@ -1907,7 +1907,7 @@ int DogActor::func_0010B1B0(int theNo, float theSpeed, int theFlag, int theNext,
         func_0010E930();
         float rot = func_0010A650();
         m_unk50.m_y = rot;
-        func_0010FF74();
+        normalizeRot();
         m_unk90 = 1;
         func_0010ED2C(rot);
         setRotOffset(0.0f, 0.0f, 0.0f);
@@ -3083,7 +3083,7 @@ void DogActor::func_0010D388()
         m_unk70.m_y = y;
         m_unk70.m_w = 1.0f;
         m_unk90 = 1;
-        func_0010FCB4(rot);
+        setRotOffsetY(rot);
     }
     func_0010F480();
 }
@@ -4086,7 +4086,7 @@ void DogActor::func_0010EAAC(const DogVector &theV)
 void DogActor::vfunc17(float (*theOut)[4], int theNode)
 {
     ASSERT(m_mat_model);
-    func_002377D0(theOut, this, m_mat_model[theNode]);
+    func_002377D0(theOut, m_unk00, m_mat_model[theNode]);
 }
 
 
@@ -4111,7 +4111,7 @@ void DogActor::vfunc18(DogVector &theOut, int theNode)
 {
     ASSERT(m_mat_model);
     float m[4][4];
-    func_002377D0(m, this, m_mat_model[theNode]);
+    func_002377D0(m, m_unk00, m_mat_model[theNode]);
     theOut = *(DogVector *)m[3];
 }
 

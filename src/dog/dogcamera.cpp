@@ -59,7 +59,7 @@ void DogCamera::update()
             m_unk90 = 1;
             vecLerp(&v.m_x, &m_move_rot0.m_x, &m_move_rot.m_x, t);
             m_unk50 = v;
-            func_0010FF74();
+            normalizeRot();
             m_unk90 = 1;
             nextStep();
             if (m_submode.m_step < m_move_frames) {

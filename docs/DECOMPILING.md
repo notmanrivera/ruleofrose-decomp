@@ -156,7 +156,8 @@ Things that changed codegen so far:
   loop (`BedPfh::getName`). m2c's draft is a start, not the answer.
 - A tail call (`j callee` instead of `jal`) only happens when the function
   returns the callee's value: `int close() { ...; return scePad2DeleteSocket(s); }`
-  (`BedPad::close`), not with a `void` function.
+  (`BedPad::close`). A `void` function gets one from `return f();` with a
+  `void` f (`DogEntityEx::transform`), never from a plain call statement.
 - Chained assignments share one register: `m_x = m_y = 0.0f` stores
   `mtc1 $zero` + `swc1`, separate `= 0.0f` store `sw $zero`. The chain's
   order sets the order of the stores (`BedPad::update`).
@@ -286,6 +287,16 @@ Things that changed codegen so far:
   dies twice, so local allocation leaves it to global allocation and the
   registers change; two variables, or none, give other registers
   (`DogCamera::func_0010FAC0`).
+- Stores to a member struct through an inline method of that struct
+  (`m_rot_offset.clear()`, `m_unk70.set(...)`) use a pointer (`addiu $v0,
+  $s0, 0x80` and offsets 0 to 0xC); stores written member by member use
+  offsets from `this` (0x80 to 0x8C). The order of a chained assignment
+  (`m_x = m_y = m_z = 0.0f`) sets the order of the stores
+  (`DogEntityEx::reset`, `setParent`).
+- A function returning early (`if (!m_unk90) return 0;`) loads the 0 into
+  `$v0` before the test; `if (m_unk90) { ...; return 1; } return 0;` loads
+  it at the end (`DogEntity::makeMatrix`), as with floats above.
+- g++ 2.x mangles `float (*)[4]` as `PA3_f`: the array bound minus one.
 
 ## 4. Name it
 

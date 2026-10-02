@@ -235,8 +235,6 @@ vfunc14__8DogModelPvP6BedPfhii = 0x001158EC; // type:func
 vfunc15__8DogModelPvN21 = 0x00115790; // type:func
 func_0011533C__8DogModel = 0x0011533C; // type:func
 func_00116130__8DogModel = 0x00116130; // type:func
-func_0010FCB4__9DogEntityf = 0x0010FCB4; // type:func
-func_0010FF74__9DogEntity = 0x0010FF74; // type:func
 // Linker script symbols, named as in the SDK's crt0 (SetupThread(_gp, _stack,
 // _stack_size, ...), SetupHeap(_end, _heap_size)).
 _end = 0x00828E94;
@@ -288,3 +286,16 @@ getYaw__9DogCamera = 0x0010FC28; // type:func size:0x54
 // sdk/libm: newlib's modff (sf_modf.c: split into integer and fraction
 // parts by masking the mantissa).
 modff = 0x0026C8E0; // type:func size:0x8C
+// dog/dogentity.cpp (method names are ours; DogEntityEx::reset and
+// transform are vtable overrides)
+setRot__9DogEntityfff = 0x0010FC7C; // type:func size:0x38
+setRotOffsetY__9DogEntityf = 0x0010FCB4; // type:func size:0x64
+makeMatrix__9DogEntityPA3_f = 0x0010FD18; // type:func size:0x25C
+normalizeRot__9DogEntity = 0x0010FF74; // type:func size:0x1A0
+getAxisZ__9DogEntityP9DogVector = 0x00110114; // type:func size:0x10
+getAxisX__9DogEntityP9DogVector = 0x00110124; // type:func size:0x10
+getAxisY__9DogEntityP9DogVector = 0x00110134; // type:func size:0x10
+lookAt__9DogEntityRC9DogVectori = 0x00110144; // type:func size:0xAC
+getPos__9DogEntityP9DogVector = 0x001101F0; // type:func size:0xC
+getDirRot__9DogEntityP9DogVector = 0x001101FC; // type:func size:0x40
+setParent__11DogEntityExP11DogEntityEx = 0x001102B4; // type:func size:0x98
