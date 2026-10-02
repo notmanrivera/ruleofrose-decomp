@@ -22,6 +22,7 @@ text	rodata	data	bss	file	confidence
 00106658	-	00295F08	-	unk/00106658	manual
 0010737C	002E77C8	-	-	dog/dogmotionblend	manual
 00108660	002E7A80	-	-	dog/dogactor	manual
+0010F3A4	002E8488	-	-	unk/0010F3A4	manual
 0010F860	002E84C0	-	-	dog/dogcamera	manual
 0010F944	002E84F8	-	-	dog/dogentity	likely
 001103DC	002E8558	-	-	dog/doglightpool	likely

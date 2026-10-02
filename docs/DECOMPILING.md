@@ -19,7 +19,9 @@ a static initialiser). If the first or last functions belong elsewhere
 numbers help too: `utl/utlfile.cpp`'s first asserts are on lines 15-16, so
 the function holding them is the file's first, and the 25 functions before
 it (placed there by `split_files.py`, which starts a file as early as it
-can) became `unk/001056E8`.
+can) became `unk/001056E8`. A row can also force where a file's `.rodata`
+starts, when the inferred cut is wrong: `unk/0010F3A4`'s strings come after
+`dog/dogactor`'s RTTI names, which a file emits last.
 
 ```bash
 tools/dock python3 tools/configure.py --new bed/bedpfh
@@ -44,6 +46,15 @@ While a `.cpp` still has `INCLUDE_ASM`/`INCLUDE_RODATA` it is **partial**:
   `ror.h` makes `ASSERT` use it instead of a second copy of `__FILE__`.
 - C++ calling a function that is still asm declares it `extern "C"` with its
   `func_xxxxxxxx` name, or names it first (step 4).
+- A function of the file that is still asm and is called by C++ further
+  down ends its declaration in `ASM_NOTHROW` (`include/ror.h`). With
+  `-fno-exceptions`, g++ 2.96 knows that a function it has already compiled
+  cannot throw, and a call to it can compile differently (`beql` instead of
+  `beq` in `DogActor::vfunc12`); an asm function is never compiled.
+- Asm that uses a label inside the compiled `.rodata` (the linkonce copies
+  of the file's inline methods, an `INCLUDE_ASM` function using a string
+  the C++ emits) gets it from `build/cpp_syms.ld`, which `configure.py`
+  writes.
 - A string used by both C++ and asm functions stays an `INCLUDE_RODATA`;
   the C++ asserts name it with `ASSERT_S(expr, D_xxxxxxxx)` (and
   `ASSERT_FILE` for the `__FILE__` string). Back to `ASSERT` once the file
@@ -64,6 +75,17 @@ While a `.cpp` still has `INCLUDE_ASM`/`INCLUDE_RODATA` it is **partial**:
 The `.s` files are assembled by ee-gcc 2.96's own assembler (GNU as
 2.10-ee) as part of the compiler's output; `include/include_asm.h` and
 `include/labels.inc` are ours (splat's generation is off).
+
+Classes with virtual methods: the file with a class's key method (its first
+non-inline virtual, e.g. `~DogActor`) emits the vtable, the `__tf<Class>`
+RTTI function and its copies of the inline methods as linkonce sections.
+The build drops the compiler's copies and links the game's from
+`asm/inline/` and `asm/data/vtbl/`, but their strings stay in the file: the
+RTTI names (`8DogActor`) and the inline methods' assert strings close its
+`.rodata`. A class without a key method (`DogEntity`, all virtuals inline)
+emits them in every file that constructs one. The `__ti<Class>` type_info
+objects are COMMON symbols of those files; `symbols/symbol_addrs.txt` names
+them (provenance `rtti-node`) so they resolve to the game's `.bss`.
 
 ## 2. Draft a function
 
@@ -235,6 +257,27 @@ Things that changed codegen so far:
   (`getTimeRatio`, `getPosture`).
 - In a loop, `if (a && b) { ... }` and two `continue` tests give different
   code (`getNodeWeight`).
+- Code hoisting (`-Os` GCSE) moves an expression to the block that
+  dominates its uses only when two or more blocks compute it, so writing a
+  call or store in both branches instead of once after them changes the
+  result (`DogActor::func_0010BF08`, `func_0010F73C`).
+- `int r; if (c) r = f(); else r = 1;` and `int r = 1; if (c) r = f();`
+  differ in CSE and register allocation; try both (`func_0010CD5C`,
+  `func_0010C568`, `vfunc12`).
+- `while (c) { }` and `do { } while (c)` differ in CSE's jump following, e.g.
+  whether repeated `$a0 = this` copies are deleted (`func_0010D388`).
+- A negation passed through an inline function's parameter stays `neg.s` +
+  `add.s`; written directly, `a + -b` folds to `sub.s`.
+- An inline whose `if (n < 0) return 0;` makes a following `ASSERT(n >= 0)`
+  always true drops the test but still emits its string.
+- String literals go to `.rodata` when a function using them is first
+  expanded, so `.rodata` follows the order of first use in the file.
+- The original `ASSERT` stringified its expression after macro expansion:
+  `#define`d constants appear expanded (`theIndex < (4)`, `== (2048)`,
+  `__null` for `NULL`) while enum and `const` names stay. Ours does not
+  expand, so write the expanded form.
+- A register that holds a value before a call is not always an argument:
+  `$a2` before `func_0010BF08`'s call was only a free register.
 
 ## 4. Name it
 

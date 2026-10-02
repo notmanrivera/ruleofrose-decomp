@@ -30,4 +30,15 @@ extern "C" void ror_assert(const char *file, int line, const char *expr);
 // the file has no asm left.
 #define ASSERT_S(e, str) ((e) ? (void)0 : ror_assert(ASSERT_FILE, __LINE__, str))
 
+// Also for partial files: with -fno-exceptions, g++ 2.96 knows that a
+// function it has already compiled in the file cannot throw, and a later
+// call to it can compile differently (a beql instead of a beq in
+// DogActor::vfunc12). An INCLUDE_ASM function is never compiled, so its
+// declaration ends in ASM_NOTHROW while its callers are C++ and it is not.
+#ifdef NON_MATCHING
+#define ASM_NOTHROW
+#else
+#define ASM_NOTHROW throw()
+#endif
+
 #endif

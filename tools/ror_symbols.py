@@ -8,6 +8,7 @@ methods, vtables and RTTI. This script:
   1. reads those section names (GCC2-mangled) and their addresses,
   2. demangles them (GCC 2.x ABI, the subset this game uses),
   3. rebuilds the class hierarchy from the `__tf<Class>` RTTI functions,
+     and finds the type_info object `__ti<Class>` each one returns,
   4. walks every vtable and propagates method names through overrides
      (a child slot that overrides a named parent slot gets the same name),
   5. locates the source-path strings left behind by asserts.
@@ -220,6 +221,19 @@ def jal_targets(elf, start, size):
     return out
 
 
+def first_address(elf, start, size):
+    """The first address a function builds with lui + addiu, or None."""
+    hi = {}
+    for pc in range(start, start + size, 4):
+        w = elf.word(pc)
+        op, rs, rt, imm = w >> 26, (w >> 21) & 31, (w >> 16) & 31, w & 0xFFFF
+        if op == 0x0F:  # lui
+            hi[rt] = imm << 16
+        elif op == 0x09 and rs in hi:  # addiu
+            return (hi[rs] + (imm - 0x10000 if imm & 0x8000 else imm)) & 0xFFFFFFFF
+    return None
+
+
 def main():
     elf = Elf(ELF)
     text = elf.section(".text")
@@ -267,6 +281,24 @@ def main():
         nm = {0: "__rtti_user", 1: "__rtti_si", 2: "__rtti_class"}[kind]
         syms[callee] = dict(mangled=nm, cls=None, name=nm, sig="", params=None, kind="function",
                             size=0, source="rtti-helper")
+
+    # --- type_info objects: __tf<X> fills in and returns __ti<X>, the first
+    # address it builds (libgcc's __rtti_* write it on first use, so it is
+    # zero-initialised: a COMMON symbol of every file that emits __tf<X>).
+    # Its type follows the helper: __user_type_info (8 bytes),
+    # __si_type_info (0xC) or __class_type_info (0x10).
+    node_size = {"__rtti_user": 0x8, "__rtti_si": 0xC, "__rtti_class": 0x10}
+    nobits = [(s[2], s[2] + s[4]) for s in elf.sections if s[1] == 8]  # SHT_NOBITS
+    nodes = {}
+    for a in tf_by_addr:
+        node = first_address(elf, a, syms[a]["size"])
+        helper = [syms[t]["name"] for t in jal_targets(elf, a, syms[a]["size"])
+                  if t not in tf_by_addr and t in syms]
+        if node is None or node in nodes or len(helper) != 1 or \
+                not any(lo <= node < hi for lo, hi in nobits):
+            sys.exit(f"{syms[a]['mangled']}: no type_info object found")
+        nodes[node] = dict(mangled="__ti" + syms[a]["mangled"][len("__tf"):],
+                           size=node_size[helper[0]])
 
     classes = sorted({s["cls"] for s in syms.values() if s["cls"]})
 
@@ -376,7 +408,7 @@ def main():
                 if re.fullmatch(r"[a-z0-9_]+/[a-z0-9_]+\.(?:cpp|c|h)", path):
                     src_strings.append((addr + start - off, path))
 
-    write_outputs(syms, parents, vtables, order, src_strings, failed)
+    write_outputs(syms, nodes, parents, vtables, order, src_strings, failed)
 
 
 def override_mangled(other, cls):
@@ -406,7 +438,7 @@ def params_col(params):
     return ";".join(params) if params else "-"
 
 
-def write_outputs(syms, parents, vtables, order, src_strings, failed):
+def write_outputs(syms, nodes, parents, vtables, order, src_strings, failed):
     (ROOT / "symbols").mkdir(exist_ok=True)
     (ROOT / "notes").mkdir(exist_ok=True)
 
@@ -437,6 +469,9 @@ def write_outputs(syms, parents, vtables, order, src_strings, failed):
             if s["size"]:
                 attrs.append(f"size:0x{s['size']:X}")
             f.write(f"{nm} = 0x{a:08X}; // {' '.join(attrs)} // provenance={s['source']}\n")
+        for a in sorted(nodes):
+            f.write(f"{nodes[a]['mangled']} = 0x{a:08X}; // size:0x{nodes[a]['size']:X} "
+                    f"// provenance=rtti-node\n")
 
     with open(ROOT / "symbols/source_strings.tsv", "w") as f:
         f.write("addr\tpath\n")

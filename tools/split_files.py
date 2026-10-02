@@ -476,8 +476,13 @@ def assign_rodata(rows, game, refs, names, lib_ro, region=None):
     bounds = [bisect.bisect_left(game, r[0]) for r in rows] + [len(game)]
     per_file = [sorted(x for k in range(bounds[i], bounds[i + 1]) for x in refs[k])
                 for i in range(len(rows))]
+    forced = manual_rodata()
     before, last = [], lo_ro - 1
     for i, mine in enumerate(per_file):
+        if rows[i][0] in forced:
+            rows[i][1] = last = forced[rows[i][0]]
+            before = sorted(before + mine)
+            continue
         if not mine:
             continue
         if last < lo_ro:
@@ -574,7 +579,7 @@ def apply_manual(rows, starts, lo, hi):
     for line in path.read_text().splitlines():
         if line.startswith(("#", "text\t")) or not line.strip():
             continue
-        text, name, _ = line.split("\t", 2)
+        text, _, name, _ = line.split("\t", 3)
         a = int(text, 16)
         if not lo <= a < hi:
             continue
@@ -589,6 +594,22 @@ def apply_manual(rows, starts, lo, hi):
             rows.append([a, None, name, "manual"])
     rows.sort(key=lambda r: r[0])
     return rows
+
+
+def manual_rodata():
+    """text start -> .rodata start, for the config/splits_manual.tsv rows
+    that give one (the inferred cut can only follow the file's own
+    references, not those of the inline methods it emits)."""
+    path = ROOT / "config/splits_manual.tsv"
+    forced = {}
+    if path.exists():
+        for line in path.read_text().splitlines():
+            if line.startswith(("#", "text\t")) or not line.strip():
+                continue
+            text, rodata, _ = line.split("\t", 2)
+            if rodata != "-":
+                forced[int(text, 16)] = int(rodata, 16)
+    return forced
 
 
 def sdk_rows(game_end, lib_ro, text_end):

@@ -54,7 +54,8 @@ roadmap: `notes/PROJECT_STATE.md` (Spanish). Setup: `README.md` (English).
   `symbols/*.tsv` by hand. Respect provenance: `linkonce` names are exact,
   `vtable-override` names are inferred (check signatures), `vtable-slot`
   names (`vfunc_NN`) are placeholders, `shared-stub` is `__pure_virtual`,
-  `sce-sdb` names come from SDK signatures.
+  `sce-sdb` names come from SDK signatures, `rtti-node` (`__ti<Class>`) is
+  the type_info object its `__tf<Class>` returns.
 - Never commit PS2Recomp's symbol database (GPL); only derived names.
 - Keep original identifiers where the binary reveals them (mangled names,
   assert expressions such as `n>=0 && n<=4`, source paths). Assert calls

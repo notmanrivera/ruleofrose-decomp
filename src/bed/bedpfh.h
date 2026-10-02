@@ -3,10 +3,8 @@
 // Original names: m_top, m_user_data, m_num_file, getNumFile, checkID and
 // getFileOffset (from assert strings here and in the files that include
 // this header); the rest are ours. The inline methods assert with this
-// file's __LINE__, so they must stay on their lines: 70-73 and 91 are
-// written; 81 (ASSERT(m_user_data), reads m_user_data[n]) and 85-86
-// (ASSERT(m_top); ASSERT(n >= 0 && n < m_top->m_num_file); returns
-// (char *)m_top + m_file_offset[n]) are used by other files.
+// file's __LINE__, so they must stay on their lines (70-73, 81, 85-86 and
+// 91).
 #ifndef BED_BEDPFH_H
 #define BED_BEDPFH_H
 
@@ -45,11 +43,13 @@ public:
     // Callers call clear() right after reserving a BedPfh, so the
     // constructor is inline.
     BedPfh() { clear(); }
+    BedPfh(void *top) { setTop(top); }
 
     void clear();
     void setTop(void *top);
     const char *getName(int theN) const;
     int getIndex(const char *theName) const;
+
 
 
 
@@ -73,19 +73,19 @@ public:
     int getNameSize() const { ASSERT(m_top); return m_top->m_name_size; }
 
 
+    // -1 without a size table.
+    int getFileSize(int n) const { return m_file_size ? m_file_size[n] : -1; }
+    int getFileOffset(int n) const { return m_file_offset ? m_file_offset[n] : -1; }
 
 
+    short getUserData(int n) const { ASSERT(m_user_data); return m_user_data[n]; }
 
 
-
-
-
-
-
-
-
-
-
+    void *getFileTop(int n) const {
+        ASSERT(m_top);
+        ASSERT(n >= 0 && n < m_top->m_num_file);
+        return (char *)m_top + m_file_offset[n];
+    }
 
 
     bool checkID() const { ASSERT(m_top); return m_top->m_id == BEDPFH_ID; }
