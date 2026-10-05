@@ -3355,9 +3355,9 @@ float DogActor::func_0010DD30(int theNode)
 // the node matrices (scaled nodes too). Returns 0 without a motion.
 // NON_MATCHING: in the first loop the game keeps i++ at the bottom (i in
 // $s2, the pose pointer in $s3); here sched1 moves it to the top and the
-// two registers swap.
+// two registers swap. Tried: while/do loops, ++i, one i for both loops,
+// continue, a pose pointer, inline helpers.
 #ifdef NON_MATCHING
-
 
 int DogActor::func_0010DF54(int theStep)
 {

@@ -1,10 +1,8 @@
-// dog/doglightpool.h: the scene's lights. A DogLightPool keeps every light
-// of each type and up to 8 sets (masks of the lights each set uses);
-// DogLightSet holds the copies of one set's lights in the form i3d reads.
-// The light types, DOG_MAX_LIGHT_TYPE, m_light, m_num, m_data and the
-// parameter names come from assert strings; the class and method names
-// other than DogLightPool are ours. The inline getters must stay on lines
-// 129-132 and 140-143 (their asserts carry this header's __LINE__).
+// dog/doglightpool.h: the scene's lights. A DogLightPool keeps every light of
+// each type and up to 8 sets of them; DogLightSet holds one set's copies as
+// i3d reads them. Types, m_light, m_num, m_data and parameter names come from
+// asserts; other names but DogLightPool are ours. The inline getters must
+// stay on lines 129-132 and 140-143 (their asserts carry this __LINE__).
 #ifndef DOG_DOGLIGHTPOOL_H
 #define DOG_DOGLIGHTPOOL_H
 
@@ -22,17 +20,18 @@ enum {
 
 // What setParam/getParam read or write (values ours).
 enum {
-    DOG_LIGHT_PARAM_POS,            // point, spot
-    DOG_LIGHT_PARAM_DIR,            // direct, spot
+    DOG_LIGHT_PARAM_POS,            // point, spot, dist
+    DOG_LIGHT_PARAM_DIR,            // direct, spot, hemi
     DOG_LIGHT_PARAM_COLOR,
-    DOG_LIGHT_PARAM_3,
-    DOG_LIGHT_PARAM_4,
-    DOG_LIGHT_PARAM_ANGLE           // spot: two angles, in degrees outside
+    DOG_LIGHT_PARAM_COLOR2,         // hemi
+    DOG_LIGHT_PARAM_DIST,           // dist
+    DOG_LIGHT_PARAM_ANGLE,          // spot: two angles, in degrees outside
+    DOG_LIGHT_PARAM_ENABLE          // DogLight: the type on (value != 0) or off
 };
 
-struct DogLightAmbient {            // 0x10
+struct DogLightAmbient {            // 0x10; copied 8 bytes at a time
     float m_color[4];
-};
+} __attribute__((aligned(8)));
 
 struct DogLightDirect {             // 0x20
     float m_dir[4];
@@ -51,20 +50,21 @@ struct DogLightSpot {               // 0x40
     float m_angle[2];               // radians
     float m_unk38[2];
 };
-
+struct DogLightHemi;               // both defined below the getters
+struct DogLightDist;
 // The light list i3d draws with (func_0021AC80 clears it).
 struct I3dLightList {               // 0x40
-    float m_ambient[4];             // +0x00
+    DogLightAmbient m_ambient;      // +0x00
     int m_num_direct;               // +0x10
     DogLightDirect *m_direct;       // +0x14
     int m_num_point;                // +0x18
     DogLightPoint *m_point;         // +0x1C
     int m_num_spot;                 // +0x20
     DogLightSpot *m_spot;           // +0x24
-    int m_unk28;                    // +0x28
-    int m_unk2C;                    // +0x2C
-    int m_unk30;                    // +0x30
-    int m_unk34;                    // +0x34
+    int m_num_hemi;                 // +0x28
+    DogLightHemi *m_hemi;           // +0x2C
+    int m_num_dist;                 // +0x30
+    DogLightDist *m_dist;           // +0x34
     int m_unk38;                    // +0x38
     int m_unk3C;                    // +0x3C
 };
@@ -145,5 +145,18 @@ public:
 
 // Grey: each of r, g, b becomes their luminance.
 void dogLightGray(float *theColor);
+
+
+struct DogLightHemi {               // 0x30
+    float m_dir[4];
+    float m_color[4];
+    float m_color2[4];              // setParam 3
+};
+
+struct DogLightDist {               // 0x30
+    float m_pos[4];
+    float m_color[4];
+    float m_unk20[4];               // setParam 4
+};
 
 #endif

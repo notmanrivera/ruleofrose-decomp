@@ -204,7 +204,8 @@ Things that changed codegen so far:
   shows).
 - `tools/try_variants.py <file> <function> variants.json` compiles text
   variants of a file one after another and prints each function's status:
-  the fastest way to find a statement order.
+  the fastest way to find a statement order; `--extra=-DNON_MATCHING` tries
+  a function kept under `NON_MATCHING`.
 - `-fno-schedule-insns` breaks nearly every matched function: the first
   scheduling pass is on, and the flags in CLAUDE.md stand.
 - To see why GCC placed something, dump its passes: copy `src/` to
@@ -322,6 +323,16 @@ Things that changed codegen so far:
   function's strings; a file-scope one after everything the file emits.
   Count the game's entries: a table can have more than the code reads
   (`sLightSize[8]` with six types).
+- Stores that stay in source order where the scheduler would hoist the
+  constants ahead of them sit in a `do { } while (0)` (a macro, most
+  likely): its loop notes stop the scheduler (`DogLight::init`).
+- An assert the compiler can prove (`if (!m_spot) return; ASSERT(m_spot);`)
+  leaves no code but still emits its string where it is expanded; strings
+  in `.rodata` that no code of the function uses, in that function's
+  order, point to such asserts (`DogLight::setParam`).
+- A struct copied with `ld`/`sd` (neither `lw`/`sw` nor `lq`/`sq`) has
+  8-byte alignment (`DogLightAmbient`); a static one placed at a multiple
+  of 16 also needs `__attribute__((aligned(16)))` on the variable.
 
 ## 4. Name it
 

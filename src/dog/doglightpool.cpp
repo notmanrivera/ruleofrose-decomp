@@ -133,7 +133,7 @@ void DogLightSet::setup()
 {
     func_0021AC80(&m_list);
     if (m_num[DOG_LIGHT_AMBIENT] > 0) {
-        func_002372E0(m_list.m_ambient, m_ambient[0].m_color);
+        func_002372E0(m_list.m_ambient.m_color, m_ambient[0].m_color);
     }
     if (m_num[8] > 0) {
         m_list.m_num_direct = m_num[8];
@@ -147,10 +147,10 @@ void DogLightSet::setup()
         m_list.m_num_spot = m_num[8];
         m_list.m_spot = m_spot;
     }
-    m_list.m_unk28 = 0;
-    m_list.m_unk2C = 0;
-    m_list.m_unk30 = 0;
-    m_list.m_unk34 = 0;
+    m_list.m_num_hemi = 0;
+    m_list.m_hemi = 0;
+    m_list.m_num_dist = 0;
+    m_list.m_dist = 0;
 }
 
 // 0x00110614
@@ -1039,7 +1039,7 @@ void DogLightPool::setParam(int theType, int theNo, int theParam, const float *t
 
             ASSERT(0);
         }
-    } else if (theParam == DOG_LIGHT_PARAM_3) {
+    } else if (theParam == DOG_LIGHT_PARAM_COLOR2) {
 
 
 
@@ -1051,7 +1051,7 @@ void DogLightPool::setParam(int theType, int theNo, int theParam, const float *t
 
 
         ASSERT(0);
-    } else if (theParam == DOG_LIGHT_PARAM_4) {
+    } else if (theParam == DOG_LIGHT_PARAM_DIST) {
 
 
 
@@ -1203,7 +1203,7 @@ void DogLightPool::getParam(int theType, int theNo, int theParam, float *theValu
 
             ASSERT(0);
         }
-    } else if (theParam == DOG_LIGHT_PARAM_3) {
+    } else if (theParam == DOG_LIGHT_PARAM_COLOR2) {
 
 
 
@@ -1215,7 +1215,7 @@ void DogLightPool::getParam(int theType, int theNo, int theParam, float *theValu
 
 
         ASSERT(0);
-    } else if (theParam == DOG_LIGHT_PARAM_4) {
+    } else if (theParam == DOG_LIGHT_PARAM_DIST) {
 
 
 
@@ -1463,20 +1463,20 @@ void DogLightPool::apply(void *theTarget, int theSet, float theScale, int theGra
             if (m_set[theSet][DOG_LIGHT_AMBIENT] & bit) {
                 const float *c = getAmbient(i)->m_color;
                 if (theScale == 1.0f) {
-                    func_002372E0(list.m_ambient, c);
+                    func_002372E0(list.m_ambient.m_color, c);
                 } else {
-                    list.m_ambient[0] = c[0] * theScale;
-                    list.m_ambient[1] = c[1] * theScale;
-                    list.m_ambient[2] = c[2] * theScale;
+                    list.m_ambient.m_color[0] = c[0] * theScale;
+                    list.m_ambient.m_color[1] = c[1] * theScale;
+                    list.m_ambient.m_color[2] = c[2] * theScale;
                 }
                 if (theGray) {
-                    dogLightGray(list.m_ambient);
+                    dogLightGray(list.m_ambient.m_color);
                 }
                 break;
             }
         }
     }
-    list.m_ambient[3] = 1.0f;
+    list.m_ambient.m_color[3] = 1.0f;
     if (m_set[theSet][DOG_LIGHT_DIRECT]) {
         int n = 0;
         unsigned int bit = 1;
