@@ -351,10 +351,16 @@ def main():
                 mine = sec.data() if sec else b""
                 lo, hi = rng[sec_name]
                 want = rom[lo - BASE:(hi or lo + len(mine)) - BASE]
-                # Zeros after the object's end are the next object's alignment
-                # padding; with no bytes at all there is nothing to pad.
+                # Zeros after the object's end are the padding that aligns the
+                # next chunk (to the largest power of two dividing its start,
+                # up to 8, as in tools/configure.py); with no bytes at all
+                # there is nothing to pad.
+                pad_ok = True
+                if hi is not None:
+                    align = min(8, hi & -hi)
+                    pad_ok = (lo + len(mine) + align - 1) & -align == hi
                 size_ok = (len(mine) <= len(want) and not any(want[len(mine):])
-                           and len(want) - len(mine) < 16 and (len(mine) > 0 or not want))
+                           and pad_ok and (len(mine) > 0 or not want))
                 chunks[sec_name] = (mine, want, size_ok)
                 if not size_ok:
                     moved.add(sec_name)

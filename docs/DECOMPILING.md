@@ -142,7 +142,9 @@ after the wrong piece moves, so references into it are not checked (its
 line says so). Iterate until it prints `OK:
 object matches (N functions still INCLUDE_ASM)`, or `OK: whole object
 matches` once the file is complete. `--src` compiles a
-variant file and `--extra` adds compiler flags for experiments.
+variant file and `--extra` adds compiler flags for experiments. Imported
+addresses come from the last link: after a failed build, references into
+everything it moved show as wrong until the build is green again.
 
 Things that changed codegen so far:
 
@@ -195,8 +197,11 @@ Things that changed codegen so far:
   is always true (`ASSERT(p->m_header_size = sizeof( BEDMEMHEADER ))`, `=`
   for `==`) or code under `if (0)` still emit their strings. Reproduce
   them the same way (`BedMemory::alloc`, `check`).
-- `tools/pad_asserts.py src/<file>.cpp <lines>` adds blank lines so every
-  assert sits on its original line (`tools/asserts.py <file>.cpp` lists them).
+- `tools/pad_asserts.py src/<file>.cpp <lines>` adds or removes blank lines
+  so every assert sits on its original line, and moves the padding above
+  the function (`tools/asserts.py <file>.cpp` lists the lines; it misses
+  asserts whose arguments are set far from the call, which m2c's draft
+  shows).
 - `tools/try_variants.py <file> <function> variants.json` compiles text
   variants of a file one after another and prints each function's status:
   the fastest way to find a statement order.
@@ -297,6 +302,26 @@ Things that changed codegen so far:
   `$v0` before the test; `if (m_unk90) { ...; return 1; } return 0;` loads
   it at the end (`DogEntity::makeMatrix`), as with floats above.
 - g++ 2.x mangles `float (*)[4]` as `PA3_f`: the array bound minus one.
+- A `switch` with five or more cases becomes a jump table in `.rodata`;
+  a chain of compares in the game (each `bne` in turn, in source order)
+  means `if`/`else if` (`DogLightPool::setParam`: 5, 0, 1, 2, 3, 4).
+- `xori $v0, $x, 1; andi $v0, $v0, 1; bnez` is a negated flag kept in a
+  variable: `bool off = !(mask & 1); mask >>= 1; if (!off)`
+  (`getNearestPoint`); `(mask & 1) == 1` gives `bne` against a register
+  holding 1.
+- A return value (`-1`) loaded into `$v0` before an early test means an
+  early `return -1;` was hoisted ahead of it; `if (n >= 32) return -1;` at
+  the top leaves `$v0` free and loads it in the branch delay slot
+  (`DogLightPool::add`).
+- Arguments past the fourth come in `$t0`, `$t1` (EABI). Check which value
+  each callee receives before naming them: swapped names compile to the
+  same mangled signature (`setSetParam`).
+- A copy of `this` (`const T *self = this;`) to call `const` overloads is
+  one more register; make the method `const` instead (`apply`).
+- A function-scope `static const` table goes to `.rodata` right after that
+  function's strings; a file-scope one after everything the file emits.
+  Count the game's entries: a table can have more than the code reads
+  (`sLightSize[8]` with six types).
 
 ## 4. Name it
 
