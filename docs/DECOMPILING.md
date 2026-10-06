@@ -364,6 +364,15 @@ Things that changed codegen so far:
   names of other classes it instantiates (`"8DogModel"`, `"p"`, `"n>0"`,
   `"9DogEntity"`). Check what follows the RTTI name before fixing where a
   file's `.rodata` ends; a missing string there is a missing inline method.
+- Loops that share one register in the game share one variable in the
+  source: `int i;` for a search loop and the trimming loop after it
+  (`DogTexInfo::releaseModel`), or `i` and `name` reused by three loops
+  (`loadPack`); a variable per loop gets other registers.
+- Writing the element out (`m_tex_info[i].pszTexName` twice) instead of
+  a local `name` changes how the loop is rotated (`func_00116B5C`).
+- `__LINE__` passed to `BedMemory::alloc` must sit on the game's line too;
+  `pad_asserts.py` only places asserts, so pad those calls by hand
+  (`loadTM2`: lines 501 and 505).
 
 ## 4. Name it
 

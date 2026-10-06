@@ -39,6 +39,15 @@ struct tag_I3dMatrixF4x4_s {
     float m[4][4];
 };
 
+// A texture as a model's root sees it (pszTexName and pPicture from
+// DogTexInfo's asserts; DogTexInfo keeps an array of them).
+struct tag_I3dTexInfo_s {           // 0x10
+    const char *pszTexName;         // +0x00
+    void *pPicture;                 // +0x04: the picture (DogTexData)
+    void *pUnk08;                   // +0x08: its palette, if any
+    int nUnk0C;                     // +0x0C
+};
+
 extern "C" {
 
 int I3rRoot__CheckIdString(tag_I3rRoot_s *theRoot);     // I3D_OK if theRoot is one
@@ -48,6 +57,19 @@ const char *func_0022B388(tag_I3rRoot_s *theRoot, int theNode);   // node name
 void func_0021A700(tag_I3rRoot_s *theRoot, void *theLocal);  // local matrices
 void func_0021A828(tag_I3rRoot_s *theRoot, float *theCenter, float *theRadius);  // clip sphere
 int func_0021A5B0(tag_I3rRoot_s *theRoot, const tag_I3dTexInfo_s *theTex, int theNum);  // assigns textures
+int func_0022B428(tag_I3rRoot_s *theRoot);               // number of textures
+const char *func_0022B438(tag_I3rRoot_s *theRoot, int theTex);   // texture name
+int func_002193F0(void *thePicture, void *theTM2, int, int);  // loads a TM2 picture
+void func_002197C8(void *thePicture, void *theSrc);      // copies theSrc
+void func_00219A98(void *thePicture, tag_I3dTexInfo_s *theInfo);
+int func_00219AB0(void *theClut, void *theTM2, int, int);   // loads a TM2 palette
+void func_00219D80(void *thePicture, int theTcc);
+void func_00219DA8(void *thePicture, int);
+int func_00219E58(void *thePicture);                     // I3D_OK: cleared
+void func_00219E98(void *thePicture);                    // releases it
+int func_00219EB8(void *theClut);                        // I3D_OK: cleared
+void func_00219EF8(void *theClut);                       // releases it
+void func_0021F1E8(void *theTarget, tag_I3dTexInfo_s *theInfo, int theNum);
 int func_0022BBA0(void *theColli);                       // 0 if theColli is a collision root
 int func_0022BFD8(void *theColli);                       // number of nodes
 const char *func_0022BFE0(void *theColli, unsigned short theNode);  // node name

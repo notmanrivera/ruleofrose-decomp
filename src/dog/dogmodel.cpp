@@ -1397,7 +1397,7 @@ int DogModel::vfunc14(void *theTex, BedPfh *thePfh, int theA, int theB)
     }
     ASSERT(m_pack_file);            // folded: its string stays
     BedPfh tex(thePfh->getFileTop(0));
-    ((DogTexInfo *)theTex)->func_001170B8(&tex, 0, 0, theA);
+    ((DogTexInfo *)theTex)->loadPack(&tex, 0, 0, theA);
     vfunc05((tag_I3rRoot_s *)thePfh->getFileTop(1));
     if (theA && theB) {
         m_user_scale[0] = m_user_scale[1] = m_user_scale[2] = 0.0f;
@@ -1592,7 +1592,7 @@ void DogModel::vfunc06(int theForce)
         // The file offsets follow the header; the textures are file 0.
         int *offset = (int *)((BedPfhHeader *)m_pack_file + 1);
         ASSERT(m_tex_info);
-        m_tex_info->func_001169D0((char *)m_pack_file + offset[0]);
+        m_tex_info->releasePack((char *)m_pack_file + offset[0]);
         D_006E9800.free(m_pack_file);
         m_pack_file = 0;
         break;
@@ -1618,7 +1618,7 @@ void DogModel::vfunc06(int theForce)
 
 
         ASSERT(m_tex_info);
-        m_tex_info->func_001167F4(this);
+        m_tex_info->releaseModel(this);
 
 
 
@@ -1651,7 +1651,7 @@ void DogModel::vfunc06(int theForce)
 
             ASSERT(m_tex_info);
             BedPfh pfh(m_pack_file);
-            m_tex_info->func_001169D0(pfh.getFileTop(0));
+            m_tex_info->releasePack(pfh.getFileTop(0));
             m_pack_file = 0;
         }
         break;

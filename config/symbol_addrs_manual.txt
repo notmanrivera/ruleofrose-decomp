@@ -363,12 +363,26 @@ getClipRadius__8DogModel = 0x00116038; // type:func size:0x70
 func_001160A8__8DogModel = 0x001160A8; // type:func size:0x88
 func_00116130__8DogModel = 0x00116130; // type:func size:0x5C
 setUser__8DogModelPCf = 0x0011618C; // type:func size:0x58
-// dog/dogtexinfo.cpp: DogTexInfo methods dog/dogmodel.cpp calls (names
-// ours; the parameters follow those calls)
-func_001167F4__10DogTexInfoP8DogModel = 0x001167F4; // type:func
-func_001169D0__10DogTexInfoPv = 0x001169D0; // type:func
-func_001170B8__10DogTexInfoP6BedPfhiii = 0x001170B8; // type:func
-func_0011764C__10DogTexInfo = 0x0011764C; // type:func
+// dog/dogtexinfo.cpp (DogTexInfo follows the file name; method names are
+// ours)
+getTexInfo__10DogTexInfoi = 0x001161E4; // type:func size:0x88
+func_0011626C__10DogTexInfoiii = 0x0011626C; // type:func size:0x10
+clear__10DogTexInfo = 0x0011627C; // type:func size:0x30
+create__10DogTexInfoi = 0x001162AC; // type:func size:0x130
+find__10DogTexInfoPCc = 0x001163DC; // type:func size:0x90
+findFree__10DogTexInfo = 0x0011646C; // type:func size:0x64
+release__10DogTexInfo = 0x001164D0; // type:func size:0x148
+releaseTex__10DogTexInfoi = 0x00116618; // type:func size:0x1DC
+releaseModel__10DogTexInfoP8DogModel = 0x001167F4; // type:func size:0x1DC
+releasePack__10DogTexInfoPv = 0x001169D0; // type:func size:0x18C
+func_00116B5C__10DogTexInfoPvPCc = 0x00116B5C; // type:func size:0x1B8
+loadTM2__10DogTexInfoPCcPvii = 0x00116D14; // type:func size:0x3A4
+loadPack__10DogTexInfoP6BedPfhP13tag_I3rRoot_sii = 0x001170B8; // type:func size:0x31C
+func_001173D4__10DogTexInfoPCcT1 = 0x001173D4; // type:func size:0xE8
+func_001174BC__10DogTexInfo = 0x001174BC; // type:func size:0x8
+setTcc__10DogTexInfoii = 0x001174C4; // type:func size:0xA8
+func_0011756C__10DogTexInfoPv = 0x0011756C; // type:func size:0xE0
+func_0011764C__10DogTexInfo = 0x0011764C; // type:func size:0x8
 // mw/i3d (C): named in dog/dogmodel.cpp's asserts
 // (I3D_OK == I3rRoot__CheckIdString( p )).
 I3rRoot__CheckIdString = 0x0022B228; // type:func

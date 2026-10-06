@@ -295,8 +295,8 @@ public:
 
     int unpack() { ASSERT(m_i3r_root); return func_0022B330(m_i3r_root); }
     int get_nNode() { ASSERT(m_i3r_root); return func_0022B370(m_i3r_root); }
-
-
+    int get_nTex() { ASSERT(m_i3r_root); return func_0022B428(m_i3r_root); }
+    const char *getTexName(int i) { ASSERT(m_i3r_root); ASSERT(i>=0); return func_0022B438(m_i3r_root, i); }
     int assignTex(const tag_I3dTexInfo_s *p, int n) { ASSERT(m_i3r_root); ASSERT(p); ASSERT(n>0); return func_0021A5B0(m_i3r_root, p, n); }
 
 
