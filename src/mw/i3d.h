@@ -4,6 +4,30 @@
 #define MW_I3D_H
 
 struct tag_I3mPosture_s;
+struct tag_I3rRoot_s;
+struct tag_I3dTexInfo_s;
+
+// i3d's result codes (I3D_OK from DogModel's asserts).
+enum {
+    I3D_OK
+};
+
+// A collision query (names ours): the callback gets every triangle hit.
+struct I3cQuery {
+    void *m_root;                   // +0x00: i3c root
+    float (*m_mat)[4][4];           // +0x04: node matrices
+    short *m_colli_tbl;             // +0x08: i3c node -> matrix
+    int m_group;                    // +0x0C: -1: all
+    int (*m_func)(I3cQuery *theQuery, void *, unsigned short *theTri, float (*theVert)[4],
+                  float *theNormal, float *theHit);   // +0x10
+    int m_unk14;                    // +0x14
+    void *m_user;                   // +0x18
+    int m_unk1C;                    // +0x1C
+    int m_unk20;                    // +0x20
+    int m_unk24;                    // +0x24
+    int m_unk28;                    // +0x28
+    int m_unk2C;                    // +0x2C
+};
 
 // The interpolation mode passed with motion lookups (name from the
 // mangled DogActor::getMotion; values unknown).
@@ -16,6 +40,23 @@ struct tag_I3dMatrixF4x4_s {
 };
 
 extern "C" {
+
+int I3rRoot__CheckIdString(tag_I3rRoot_s *theRoot);     // I3D_OK if theRoot is one
+int func_0022B330(tag_I3rRoot_s *theRoot);               // unpacks it
+int func_0022B370(tag_I3rRoot_s *theRoot);               // number of nodes
+const char *func_0022B388(tag_I3rRoot_s *theRoot, int theNode);   // node name
+void func_0021A700(tag_I3rRoot_s *theRoot, void *theLocal);  // local matrices
+void func_0021A828(tag_I3rRoot_s *theRoot, float *theCenter, float *theRadius);  // clip sphere
+int func_0021A5B0(tag_I3rRoot_s *theRoot, const tag_I3dTexInfo_s *theTex, int theNum);  // assigns textures
+int func_0022BBA0(void *theColli);                       // 0 if theColli is a collision root
+int func_0022BFD8(void *theColli);                       // number of nodes
+const char *func_0022BFE0(void *theColli, unsigned short theNode);  // node name
+int func_0022C010(void *theColli);                       // number of groups
+const char *func_0022C018(void *theColli, unsigned short theGroup);  // group name
+void func_0022C1D8(void *theColli, int);
+void func_002324B8(I3cQuery *theQuery, float *theSphere, float (*theMat)[4][4]);
+void func_00232508(I3cQuery *theQuery, float *theSegment, float (*theMat)[4][4]);
+void func_002325A8(I3cQuery *theQuery, float *theCapsule, float (*theMat)[4][4]);
 
 int func_0022B518(void *theRoot);                        // unpack a motion; 0 = ok
 int func_0022B6F8(void *theRoot);                        // number of nodes

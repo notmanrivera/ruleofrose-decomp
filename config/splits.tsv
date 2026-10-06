@@ -28,7 +28,7 @@ text	rodata	data	bss	file	confidence
 001103DC	002E8578	-	-	dog/doglightpool	manual
 00112B08	002E8800	-	-	dog/doglight	likely
 00114034	002E8B10	-	-	dog/dogmodel	manual
-001160A8	002E8D90	-	-	dog/dogtexinfo	likely
+001161E4	002E8DC0	-	-	dog/dogtexinfo	manual
 0011764C	002E9050	00296190	00308580	mag/magsystem	likely
 0011948C	002E93D8	-	-	mag/maglifeman	likely
 00119B34	002E9598	-	-	mag/maglife	likely

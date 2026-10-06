@@ -228,13 +228,6 @@ __10FileReader = 0x001BE2CC; // type:func size:0x10
 _$_10FileReader = 0x001BE2DC; // type:func
 func_001BE524__10FileReaderP11FileReadReqi = 0x001BE524; // type:func size:0x24
 __11FileReadReq = 0x001BE734; // type:func size:0x34
-init__8DogModel = 0x00114C54; // type:func
-vfunc06__8DogModeli = 0x00115CEC; // type:func
-func_001154CC__8DogModel = 0x001154CC; // type:func
-vfunc14__8DogModelPvP6BedPfhii = 0x001158EC; // type:func
-vfunc15__8DogModelPvN21 = 0x00115790; // type:func
-func_0011533C__8DogModel = 0x0011533C; // type:func
-func_00116130__8DogModel = 0x00116130; // type:func
 // Linker script symbols, named as in the SDK's crt0 (SetupThread(_gp, _stack,
 // _stack_size, ...), SetupHeap(_end, _heap_size)).
 _end = 0x00828E94;
@@ -342,3 +335,40 @@ setParam__8DogLightiiiPCf = 0x00112FC8; // type:func size:0x708
 getParam__C8DogLightiiiPf = 0x001136D0; // type:func size:0x7D8
 copyTo__8DogLightP8DogLight = 0x00113EA8; // type:func size:0x80
 getList__8DogLight = 0x00113F28; // type:func size:0x10C
+// dog/dogmodel.cpp (DogModel and its inline methods' names are original;
+// vfuncNN and the other method names are ours; the two static functions are
+// collision callbacks)
+func_00114034__FP8I3cQueryPvPUsPA3_fPfT4 = 0x00114034; // type:func size:0x194
+func_001141C8__FP8I3cQueryPvPUsPA3_fPfT4 = 0x001141C8; // type:func size:0x244
+collide__8DogModelP11DogModelHitPCfT2 = 0x0011440C; // type:func size:0x1B4
+collideSphere__8DogModelP11DogModelHitPCff = 0x001145C0; // type:func size:0x198
+getGroundY__8DogModelPCfT1 = 0x00114758; // type:func size:0x27C
+collideWall__8DogModelPCfT1P11DogModelHitf = 0x001149D4; // type:func size:0x280
+init__8DogModel = 0x00114C54; // type:func size:0xB0
+vfunc05__8DogModelP13tag_I3rRoot_s = 0x00114D04; // type:func size:0x88
+func_00114D8C__8DogModelPUI80 = 0x00114D8C; // type:func size:0xAC
+vfunc11__8DogModelP9DogVectorT1 = 0x00114E38; // type:func size:0x288
+vfunc12__8DogModelPvN21 = 0x001151F4; // type:func size:0xB4
+vfunc13__8DogModelPv = 0x001152A8; // type:func size:0x74
+setBillboard__8DogModeli = 0x0011531C; // type:func size:0x20
+func_0011533C__8DogModel = 0x0011533C; // type:func size:0x190
+func_001154CC__8DogModel = 0x001154CC; // type:func size:0x40
+setMatFlag__8DogModel = 0x0011550C; // type:func size:0x188
+makeColliTbl__8DogModel = 0x00115694; // type:func size:0xFC
+vfunc15__8DogModelPvN21 = 0x00115790; // type:func size:0x15C
+vfunc14__8DogModelPvP6BedPfhii = 0x001158EC; // type:func size:0x374
+vfunc16__8DogModelP8DogModel = 0x00115C60; // type:func size:0x8C
+vfunc06__8DogModeli = 0x00115CEC; // type:func size:0x34C
+getClipRadius__8DogModel = 0x00116038; // type:func size:0x70
+func_001160A8__8DogModel = 0x001160A8; // type:func size:0x88
+func_00116130__8DogModel = 0x00116130; // type:func size:0x5C
+setUser__8DogModelPCf = 0x0011618C; // type:func size:0x58
+// dog/dogtexinfo.cpp: DogTexInfo methods dog/dogmodel.cpp calls (names
+// ours; the parameters follow those calls)
+func_001167F4__10DogTexInfoP8DogModel = 0x001167F4; // type:func
+func_001169D0__10DogTexInfoPv = 0x001169D0; // type:func
+func_001170B8__10DogTexInfoP6BedPfhiii = 0x001170B8; // type:func
+func_0011764C__10DogTexInfo = 0x0011764C; // type:func
+// mw/i3d (C): named in dog/dogmodel.cpp's asserts
+// (I3D_OK == I3rRoot__CheckIdString( p )).
+I3rRoot__CheckIdString = 0x0022B228; // type:func

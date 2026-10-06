@@ -333,6 +333,37 @@ Things that changed codegen so far:
 - A struct copied with `ld`/`sd` (neither `lw`/`sw` nor `lq`/`sq`) has
   8-byte alignment (`DogLightAmbient`); a static one placed at a multiple
   of 16 also needs `__attribute__((aligned(16)))` on the variable.
+- The scheduler issues a store as early as it can when a register dies
+  there (the last use of a constant's register, or of `this`); other
+  independent stores keep source order. So the statement that uses a
+  register last shows up first: `getSubMode()->m_step = -1;
+  getSubMode()->m_mode = -1;` puts `m_mode` first (`DogModel::init`,
+  `vfunc05`, `transform`'s matrix rows).
+- A chained float assignment (`a = b = c = 0.0f`) keeps the constant in an
+  FPR (`swc1 $fN`); separate `a = 0.0f;` statements store `$zero`
+  (`DogModel::init`, `vfunc14`).
+- Through an inline helper's pointer parameter (`fromI3d(&hit->m_normal.m_x,
+  n)`) or an inline method on another object (`theOriginal->incRefCount()`)
+  the address goes to a register first (`addiu $v0, $s0, 0x10`); written
+  member by member it stays an offset of the base.
+- `for (i = 0; i < 0x1C; i++) { dst[i] = src[i]; if (src[i] == 0) break; }`
+  comes out with the first copy peeled (constant offsets) and `i++` plus
+  the bound test at the loop's top (`DogModel`'s collision callbacks).
+- `&tbl[i]` adds the pointer first; `addu $v0, $v0, $v1` with the index in
+  `$v0` and the result there is integer arithmetic, index first:
+  `(short *)(i * sizeof(short) + (unsigned int)tbl)` (`makeColliTbl`).
+- A member read before a call and used after it is reloaded; the game
+  keeping it in a saved register means a local (`DogEntityEx *p =
+  m_parent;`, `DogModel::transform`). A value computed before an assert
+  and used after it also needs a saved register: compute it there
+  (`vfunc06`: the pack's offset table before `ASSERT(m_tex_info)`).
+- A frame 16 bytes bigger than the locals means a bigger or unused local
+  (`collideSphere`: `float sphere[8]` like the segment's).
+- The key-method file emits its class's inline methods out of line; their
+  new assert strings go after the class's RTTI name, followed by the RTTI
+  names of other classes it instantiates (`"8DogModel"`, `"p"`, `"n>0"`,
+  `"9DogEntity"`). Check what follows the RTTI name before fixing where a
+  file's `.rodata` ends; a missing string there is a missing inline method.
 
 ## 4. Name it
 

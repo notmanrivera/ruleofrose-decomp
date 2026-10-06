@@ -1106,7 +1106,7 @@ void DogActor::release(int theAll)
         func_001154CC();
     } else {
         if (decRefCount() > 0) {
-            m_unk140 = 1;
+            m_hide = 1;
             return;
         }
         func_00109E28(theAll);
@@ -2782,7 +2782,7 @@ int DogActor::vfunc21(DogActor *theSrc)
     ASSERT(n>=0);
     allocMotion(n);
     DogActor *orig = theSrc->m_original ? (DogActor *)theSrc->m_original : theSrc;
-    m_unk110 = 3;
+    m_load_flag = LOAD_COPY;
     m_original = orig;
     m_id = theSrc->m_id;
     m_i3r_root = orig->m_i3r_root;
@@ -3540,14 +3540,14 @@ struct DogDrawParam {
 void DogActor::vfunc19(void *theRenderStage, int theUseMatrix, DogEntity *theParent)
 {
     int user = 0;
-    if (m_unk13C >= 0) {
+    if (m_attention >= 0) {
         int f = D_006E9840 & 0x1F;
         if (f >= 16) {
             f = 31 - f;
         }
-        user = i3dGetUser((I3dOwner *)m_i3r_root, m_unk13C);
+        user = i3dGetUser((I3dOwner *)m_i3r_root, m_attention);
         m_unk4B0[0] = m_unk4B0[1] = m_unk4B0[2] = f * 0.25f + 1.0f;
-        i3dSetUser((I3dOwner *)m_i3r_root, (int)m_unk4A0, m_unk13C);
+        i3dSetUser((I3dOwner *)m_i3r_root, (int)m_unk4A0, m_attention);
     }
     if (m_unk16C) {
         DogDrawParam param;
@@ -3563,8 +3563,8 @@ void DogActor::vfunc19(void *theRenderStage, int theUseMatrix, DogEntity *thePar
     } else {
         i3dCallLocked(theRenderStage, m_i3r_root, theUseMatrix ? m_mat_model : 0, theParent ? theParent : this, 0);
     }
-    if (m_unk13C >= 0) {
-        i3dSetUser((I3dOwner *)m_i3r_root, user, m_unk13C);
+    if (m_attention >= 0) {
+        i3dSetUser((I3dOwner *)m_i3r_root, user, m_attention);
     }
 }
 
@@ -3876,10 +3876,10 @@ void DogActor::vfunc12(void *theRenderStage, void *a, void *b)
     } else {
         r = 1;
     }
-    if (!vfunc11(a, b)) {
+    if (!vfunc11((DogVector *)a, (DogVector *)b)) {
         transform();
     }
-    if (!m_unk140) {
+    if (!m_hide) {
         vfunc19(theRenderStage, r, 0);
     }
     if (m_rot_y_aar != 0.0f) {
@@ -4248,9 +4248,9 @@ int DogActor::vfunc14(void *theTex, BedPfh *thePfh, int theA, int theB)
 // 0x0010F298
 void DogActor::func_0010F298()
 {
-    m_unk164 = m_unk160;
-    m_unk160 = -1;
-    m_unk168 = -1;
+    m_shadow_light_old = m_shadow_light;
+    m_shadow_light = -1;
+    m_shadow_count = -1;
     getSubMode()->m_mode |= 8;
     m_motion_now.setMainMotion(0);
 }
