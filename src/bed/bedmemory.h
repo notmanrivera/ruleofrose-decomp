@@ -64,7 +64,7 @@ public:
     void *realloc(void *thePtr, int theNewSize);
     void free(void *thePtr);
     void check(int theMode);
-    void getInfo(BedMemoryInfo *theInfo);
+    void getInfo(BedMemoryInfo *theInfo, int theUnused); // every caller passes 0
 };
 
 #endif

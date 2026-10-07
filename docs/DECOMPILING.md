@@ -373,6 +373,30 @@ Things that changed codegen so far:
 - `__LINE__` passed to `BedMemory::alloc` must sit on the game's line too;
   `pad_asserts.py` only places asserts, so pad those calls by hand
   (`loadTM2`: lines 501 and 505).
+- A reload (`lw`) of a bit-field just stored with `ld`/`sd`, then 32-bit
+  arithmetic (`andi 0x1FF; sll 1`), is a read through an `int` pointer:
+  `(*(unsigned int *)&m_db.disp[1].dispfb & 0x1FF) * 2`; reading the
+  `unsigned long` bit-field reuses the stored register and shifts with
+  `dsll`. Two inserts of one value with different masks (`0x1FF`, `0x1FE`)
+  are a chained assignment (`MagSystem::setDisplay448`).
+- Argument set-up hoisted above a test (`a0..t1` filled before a `bltz`)
+  is interblock scheduling: it only happens when the function is small
+  enough, so an `if`/`switch` written differently can stop it.
+- A `switch` on 0, 1, 2 that tests `== 1`, `== 0`, `== 2` (no ordered
+  compare) has an unsigned index: the left leaf (0) is bounded by the
+  type's minimum, so `< 1` becomes `== 0` (`func_00117FC4`).
+- A function whose only work is a call and a dead `x / n` keeps the
+  divide-by-zero trap (`beql $v0, $zero; break 7`) when `n` is a variable
+  set to a constant; the trap register is `$v0` only in a `void` function
+  (`getPacketSize`).
+- Element-by-element copies with loads and stores interleaved
+  (`lwc1`/`swc1` pairs) are through pointers that may alias
+  (`DogVector::set(const float *)`); all loads first, then all stores, is a
+  temporary built from values (`DogVector(x, y, z, w)`).
+- A member reached through a pointer kept in a saved register after a call
+  (`s1 + 0x29120`) is an inline method on that member, or a local pointer;
+  written `m_scene.m_x[r]` the offsets fold into one constant from `this`
+  (`loadModel`).
 
 ## 4. Name it
 

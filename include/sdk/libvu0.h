@@ -15,6 +15,7 @@ void sceVu0UnitMatrix(sceVu0FMATRIX m0);
 void sceVu0RotMatrixZ(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rz);
 void sceVu0RotMatrixX(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float rx);
 void sceVu0RotMatrixY(sceVu0FMATRIX m0, sceVu0FMATRIX m1, float ry);
+void sceVpu0Reset(void);
 
 }
 

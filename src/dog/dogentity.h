@@ -39,6 +39,30 @@ public:
         m_x = x;
         m_w = w;
     }
+    // MagSystem builds them from float arrays.
+    DogVector(float x, float y, float z, float w)
+    {
+        m_x = x;
+        m_y = y;
+        m_z = z;
+        m_w = w;
+    }
+    // A point (MagSystem::setActorRot).
+    void set(float x, float y, float z)
+    {
+        m_x = x;
+        m_y = y;
+        m_z = z;
+        m_w = 1.0f;
+    }
+    // From 4 floats (MagSystem::setActorRot).
+    void set(const float *p)
+    {
+        m_x = p[0];
+        m_y = p[1];
+        m_z = p[2];
+        m_w = p[3];
+    }
     DogVector(const DogVector &theV)
     {
         *(u_long128 *)this = *(const u_long128 *)&theV;

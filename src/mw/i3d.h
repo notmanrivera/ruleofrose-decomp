@@ -39,6 +39,13 @@ struct tag_I3dMatrixF4x4_s {
     float m[4][4];
 };
 
+// The drawing context MagSystem keeps (+0x3A0): its packet buffer and
+// state. 0x12168 bytes, which i3d itself reports (func_0021F1A8); the name
+// is ours.
+struct I3dDraw {
+    unsigned char m_unk[0x12168];
+};
+
 // A texture as a model's root sees it (pszTexName and pPicture from
 // DogTexInfo's asserts; DogTexInfo keeps an array of them).
 struct tag_I3dTexInfo_s {           // 0x10
@@ -78,6 +85,17 @@ const char *func_0022C018(void *theColli, unsigned short theGroup);  // group na
 void func_0022C1D8(void *theColli, int);
 void func_002324B8(I3cQuery *theQuery, float *theSphere, float (*theMat)[4][4]);
 void func_00232508(I3cQuery *theQuery, float *theSegment, float (*theMat)[4][4]);
+int func_0021EB28();                                     // 0 if not set up yet
+int func_0021F1A8(int theType);                          // sizeof of an i3d type
+void func_0021F900(I3dDraw *theDraw, void *theBuf, int theSize, int theN);
+void func_0021ED10(I3dDraw *theDraw, int theX, int theY);
+void func_0021F8C8(I3dDraw *theDraw);
+void func_0021F6A0(I3dDraw *theDraw);
+int func_0021F200(I3dDraw *theDraw);                     // packet bytes used
+int func_0021F250(I3dDraw *theDraw);                     // trash overrun
+void func_0021F760(I3dDraw *theDraw);
+void *func_0021F1F8(I3dDraw *theDraw);                   // DMA tag of the packet
+int func_00237C68(const char *theFormat, ...);           // printf
 void func_002325A8(I3cQuery *theQuery, float *theCapsule, float (*theMat)[4][4]);
 
 int func_0022B518(void *theRoot);                        // unpack a motion; 0 = ok

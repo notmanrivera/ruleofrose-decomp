@@ -1037,7 +1037,7 @@ void BedMemory::check(int theMode)
 
 // 0x001015FC: free space (total and largest block) and size; checks each
 // block on the way.
-void BedMemory::getInfo(BedMemoryInfo *theInfo)
+void BedMemory::getInfo(BedMemoryInfo *theInfo, int)
 {
     int maxfree = 0;
     int total = 0;

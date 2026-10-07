@@ -46,7 +46,7 @@ cutHead__9BedMemoryPvT1 = 0x00100ECC; // type:func size:0x1D8
 realloc__9BedMemoryPvi = 0x001010A4; // type:func size:0x284
 free__9BedMemoryPv = 0x00101328; // type:func size:0x1F0
 check__9BedMemoryi = 0x00101518; // type:func size:0xE4
-getInfo__9BedMemoryP13BedMemoryInfo = 0x001015FC; // type:func size:0x11C
+getInfo__9BedMemoryP13BedMemoryInfoi = 0x001015FC; // type:func size:0x11C (every caller passes a 0 in $a2)
 __9BedMemory = 0x00101718; // type:func size:0x20
 // unk/001056E8. GCC2 gives the global operator new/delete these names (the
 // other two overloads mangle normally); destructors (_$_6BedPad) tail-call
@@ -386,3 +386,108 @@ func_0011764C__10DogTexInfo = 0x0011764C; // type:func size:0x8
 // mw/i3d (C): named in dog/dogmodel.cpp's asserts
 // (I3D_OK == I3rRoot__CheckIdString( p )).
 I3rRoot__CheckIdString = 0x0022B228; // type:func
+// sdk/libkernl syscall wrappers, named from their syscall numbers (0x40
+// CreateSema, 0x41 DeleteSema, -0x43 iSignalSema, 0x44 WaitSema, 0x45
+// PollSema, 0x64 FlushCache).
+CreateSema = 0x0025D8E0; // type:func
+DeleteSema = 0x0025D8F0; // type:func
+iSignalSema = 0x0025D910; // type:func
+WaitSema = 0x0025D920; // type:func
+PollSema = 0x0025D930; // type:func
+FlushCache = 0x0025DB60; // type:func
+// mag/magscene*.cpp: MagScene (class name from mnuBase::setScene(MagScene *)),
+// called by mag/magsystem.cpp on its m_scene (+0x12540). Method names are
+// addresses until decompiled; the parameter types are what MagSystem passes.
+// The constructor and destructor are the ones MagSystem's run on m_scene.
+__8MagScene = 0x001360A0; // type:func
+_$_8MagScene = 0x00136D14; // type:func
+func_001316B8__8MagSceneii = 0x001316B8; // type:func
+func_00131790__8MagSceneii = 0x00131790; // type:func
+func_00131840__8MagScene = 0x00131840; // type:func
+func_00131A28__8MagScene = 0x00131A28; // type:func
+func_00131B90__8MagSceneP7I3dDraw = 0x00131B90; // type:func
+func_001327DC__8MagSceneP6BedPadT1 = 0x001327DC; // type:func
+func_00134944__8MagSceneiPi = 0x00134944; // type:func
+func_00135234__8MagSceneiiiii = 0x00135234; // type:func
+func_0013604C__8MagScene = 0x0013604C; // type:func
+func_001377F0__8MagSceneP7I3dDrawiii = 0x001377F0; // type:func
+func_00138BC4__8MagSceneP7I3dDrawiiPCc = 0x00138BC4; // type:func
+func_00138ED0__8MagSceneP7I3dDrawiPCc = 0x00138ED0; // type:func
+func_001390D4__8MagSceneiii = 0x001390D4; // type:func
+func_0013910C__8MagSceneiii = 0x0013910C; // type:func
+func_0013BCC0__8MagSceneP7I3dDrawP10sceGsDBuffi = 0x0013BCC0; // type:func
+func_0013C29C__8MagScene = 0x0013C29C; // type:func
+func_0013C2EC__8MagSceneRC9DogVectorT1 = 0x0013C2EC; // type:func
+func_0013CAF0__8MagSceneii = 0x0013CAF0; // type:func
+func_0013D5AC__8MagScenePi = 0x0013D5AC; // type:func
+func_0013F528__8MagScenePii = 0x0013F528; // type:func
+func_0013F980__8MagSceneiiiPfi = 0x0013F980; // type:func
+func_0013FA50__8MagSceneiiiPfi = 0x0013FA50; // type:func
+func_0013FE64__8MagSceneii = 0x0013FE64; // type:func
+// mag/maglifepcmove.cpp: a MagLifePC method (MagSystem calls it on the
+// scene's player, +0x2ADC0 of MagScene, whose termWorld__9MagLifePC
+// mag/magscene2 calls on the same address).
+func_0011E080__9MagLifePC = 0x0011E080; // type:func
+// mag/magsystem.cpp's static members (.data, still in asm): m_current_system
+// and m_v_sema are original (assert strings), the other names are ours.
+_9MagSystem$m_current_system = 0x00296190;
+_9MagSystem$m_v_count = 0x00296194;
+_9MagSystem$m_v_rate = 0x00296198;
+_9MagSystem$m_v_sema = 0x0029619C;
+// mag/magsystem.cpp (MagSystem follows the file name; the vsync handlers and
+// method names are ours)
+vsyncHandler__Fi = 0x00117654; // type:func size:0x68
+vsyncHandler1__Fi = 0x001176BC; // type:func size:0x40
+__9MagSystem = 0x001176FC; // type:func size:0x10C
+_$_9MagSystem = 0x00117808; // type:func size:0xB0
+startSequence__9MagSystemi = 0x001178B8; // type:func size:0x6C
+vibrate__9MagSystemi = 0x00117924; // type:func size:0x50
+setActorLight__9MagSystemii = 0x00117974; // type:func size:0x1C
+init__9MagSystem = 0x00117990; // type:func size:0x2C8
+setDisplay448__9MagSystem = 0x00117C58; // type:func size:0xBC
+setDisplay384__9MagSystem = 0x00117D14; // type:func size:0xB4
+func_00117DC8__9MagSystem = 0x00117DC8; // type:func size:0x34
+func_00117DFC__9MagSystem = 0x00117DFC; // type:func size:0x1C
+start__9MagSystem = 0x00117E18; // type:func size:0xA8
+func_00117EC0__9MagSystem = 0x00117EC0; // type:func size:0x10
+term__9MagSystem = 0x00117ED0; // type:func size:0xB0
+func_00117F80__9MagSystemiiiiiii = 0x00117F80; // type:func size:0x44
+func_00117FC4__9MagSystemUiiPfT3 = 0x00117FC4; // type:func size:0x128
+setPlayer__9MagSystemii = 0x001180EC; // type:func size:0x170
+func_0011825C__9MagSystemii = 0x0011825C; // type:func size:0x30
+func_0011828C__9MagSystem = 0x0011828C; // type:func size:0x50
+update__9MagSystem = 0x001182DC; // type:func size:0x164
+beginDraw__9MagSystem = 0x00118440; // type:func size:0x1C
+storeImage__9MagSystem = 0x0011845C; // type:func size:0x1E4
+endFrame__9MagSystem = 0x00118640; // type:func size:0xB0
+getPacketSize__9MagSystem = 0x001186F0; // type:func size:0x2C
+setPmodeEn2__9MagSystemi = 0x0011871C; // type:func size:0x38
+waitVSync__9MagSystem = 0x00118754; // type:func size:0xEC
+sendPacket__9MagSystem = 0x00118840; // type:func size:0x40
+func_00118880__9MagSystemii = 0x00118880; // type:func size:0x28
+func_001188A8__9MagSystemiiiffff = 0x001188A8; // type:func size:0x3C
+func_001188E4__9MagSystemiiiPfN34 = 0x001188E4; // type:func size:0x7C
+func_00118960__9MagSystemPi = 0x00118960; // type:func size:0x20
+func_00118980__9MagSystemiiiiii = 0x00118980; // type:func size:0x3C
+func_001189BC__9MagSystemiiiii = 0x001189BC; // type:func size:0x28
+func_001189E4__9MagSystemiii = 0x001189E4; // type:func size:0x34
+attachActor__9MagSystemiii = 0x00118A18; // type:func size:0xC4
+getActorNodeMatrix__9MagSystemiP19tag_I3dMatrixF4x4_si = 0x00118ADC; // type:func size:0x138
+getActorNodeMatrix__9MagSystemiPA3_fi = 0x00118C14; // type:func size:0xB8
+getActorNodeMatrix__9MagSystemiP19tag_I3dMatrixF4x4_sPCc = 0x00118CCC; // type:func size:0xD0
+getActorNodeMatrix__9MagSystemiPA3_fPCc = 0x00118D9C; // type:func size:0xD0
+func_00118E6C__9MagSystemiffR9DogVectorPfP9DogVector = 0x00118E6C; // type:func size:0x38
+func_00118EA4__9MagSystemiRC9DogVectorff = 0x00118EA4; // type:func size:0x34
+func_00118ED8__9MagSystemiii = 0x00118ED8; // type:func size:0x2C
+func_00118F04__9MagSystemiii = 0x00118F04; // type:func size:0x2C
+func_00118F30__9MagSystemii = 0x00118F30; // type:func size:0x34
+func_00118F64__9MagSystemPCfT1 = 0x00118F64; // type:func size:0x78
+func_00118FDC__9MagSystem = 0x00118FDC; // type:func size:0x10
+func_00118FEC__9MagSystem = 0x00118FEC; // type:func size:0xA4
+func_00119090__9MagSystem = 0x00119090; // type:func size:0xA8
+loadModel__9MagSystemii = 0x00119138; // type:func size:0xA8
+func_001191E0__9MagSystemiii = 0x001191E0; // type:func size:0x54
+setActorPos__9MagSystemifff = 0x00119234; // type:func size:0x94
+setActorRot__9MagSystemifff = 0x001192C8; // type:func size:0xD4
+setActorRot__9MagSystemiPCf = 0x0011939C; // type:func size:0xF0
+func_0011948C__9MagSystem = 0x0011948C; // type:func size:0x28

@@ -82,6 +82,17 @@ public:
     unsigned char m_stick[4];       // +0x7E: m_rawStick of the last read
     unsigned char m_unk82[0xE];     // +0x82
 
+    // MagSystem's pads (its constructor builds them inline).
+    BedPad()
+    {
+        m_portNo = -1;
+        m_socket = -1;
+        m_repeatInterval = 0;
+        m_repeatDelay = 0;
+        m_frame = 0;
+    }
+    // MagSystem::setPlayer (the name is ours).
+    void clearLast() { m_lastY = m_lastX = m_lastMag = 0.0f; }
     ~BedPad();
     void vibrate(int small, int big);
     void open(int thePortNo);
