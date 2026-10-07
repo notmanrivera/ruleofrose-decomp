@@ -18,8 +18,8 @@ findings and the roadmap.
 | | |
 |---|---|
 | Matching build | ✅ SHA-1 `fa157dc8…1997` of the load image, with C++ linked in |
-| Decompiled | 2 of 122 game files (`bed/bedsubmode`, `utl/utlmisc`), byte for byte; `tools/progress.py` |
-| File split | 143 files ([config/splits.tsv](config/splits.tsv)): 72 game files named from assert paths, 50 inferred `unk/<main class>` files, crt0, the engine middleware (`mw/i3d` graphics, `mw/sound`) and 18 SDK library runs; `.text`, `.rodata`, `.data` and `.bss` each split per file |
+| Decompiled | 19 of 125 game files, 84,620 of 1,147,560 bytes of game code (7.37%), byte for byte: 14 complete, 5 with a few functions still asm (their C++ kept under `NON_MATCHING`); `tools/progress.py` |
+| File split | 146 files ([config/splits.tsv](config/splits.tsv)): 125 game files (72 named from assert paths, 53 inferred `unk/...` files), the engine middleware (`mw/i3d` graphics, `mw/sound`) and 19 SDK runs (crt0 included); `.text`, `.rodata`, `.data` and `.bss` each split per file |
 | Compiler | **ee-gcc 2.96 (SCE), `-Os -G0 -fno-exceptions -fno-strict-aliasing`**: 3/3 test functions match byte for byte ([details](matching/compiler_id/README.md)) |
 | Functions found by Ghidra | 7,230 |
 | Functions with their original name | 1,449 exact (`.gnu.linkonce`) + 111 inferred from vtable overrides + 648 SDK/libc/libgcc functions by signature |
