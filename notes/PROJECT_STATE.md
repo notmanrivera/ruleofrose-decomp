@@ -59,11 +59,11 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 | Ruta | Contenido |
 |---|---|
 | `MOVIE/*.PSS` | 41 videos MPEG-2 (convertibles a H.264 para la Vita) |
-| `DATA/BG/MAPUNIT.BIN` | 600 MB, escenarios; formato desconocido |
+| `DATA/BG/MAPUNIT.BIN` | 600 MB, escenarios: un `RTPK` con 263 salas (`docs/formats/mapunit.md`) |
 | `DATA/CH/CHARA.RPK` | 523 MB, personajes; contenedor RPK desconocido |
 | `DATA/EVT/*.RPK`, `DATA/MNURPK/*.RPK` | eventos, menús |
-| `DATA/SEQ/W###/A###/` | 1,134 `.ARA` + 844 `.STR` (secuencias/scripts por área) |
-| `DATA/SND/` | `XV`, `XWS` (audio) |
+| `DATA/SEQ/W###/A###/` | 1,134 `.ARA` (script y sonidos de cada área, `docs/formats/ara.md`); además `DATA/SEQ/G000.GRB` y 15 `W000.WRD` |
+| `DATA/SND/` | `XV` (bancos `.SE`), `XWS` (844 `.STR` de audio en streaming, `docs/formats/str.md`) |
 | `DATA/WRD/` | 15 `.WRD` (texto) |
 
 ## Hoja de ruta
@@ -93,7 +93,10 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
    - `match.py` ya comprueba las relocaciones: rellena cada dirección como lo haría el enlazador (los nombres importados salen del mapa de la última compilación, `build/SLUS_214.48.map`) y la compara con la del juego. Antes las enmascaraba y daba por buenos dos símbolos intercambiados (pasó en `heapInit`: solo lo detectaba la compilación completa); ahora eso, o una llamada a la función equivocada, sale como `N relocs differ`, con una línea por referencia (`reloc at +0x0: _end (0x00828E94), game 0x00081000`). Si el `.rodata`/`.data`/`.bss` del objeto tiene otro tamaño que el del juego, las referencias a él no se comprueban (todo lo que va detrás de la pieza equivocada se desplaza) y su línea lo indica. Comprobado contra el enlazador real: las 417 relocaciones de los 7 archivos decompilados salen idénticas. Tampoco da por buena una sección `.data`/`.rodata` vacía cuando el original tiene bytes.
    - Herramientas: `tools/match.py` compara cada función en su dirección real (una función de tamaño distinto ya no descuadra las demás); `tools/try_variants.py` prueba variantes de código en serie (órdenes de sentencias, formas de expresión) y dice cuáles coinciden.
    - `tools/asserts.py` lista los 1,475 asserts del juego (archivo, línea, expresión, función); con `--lines` resume las líneas de un `.h`.
-5. 🔄 Documentar los formatos. ✅ **RPK** (`docs/formats/rpk.md`): cabecera de 0x20 bytes con firma `RTPK`, tamaño total, banderas, alineación (0x800) y número de archivos; tablas opcionales de tamaños, posiciones, datos de usuario y nombres. Sacado del código de `bed/bedpfh` y comprobado contra los 49 `.RPK` del disco sin ninguna discrepancia. Falta el significado de la bandera `0x4000`. Pendientes: MAPUNIT / ARA / STR.
+5. 🔄 Documentar los formatos. ✅ **RPK** (`docs/formats/rpk.md`): cabecera de 0x20 bytes con firma `RTPK`, tamaño total, banderas, alineación (0x800) y número de archivos; tablas opcionales de tamaños, posiciones, datos de usuario y nombres. Sacado del código de `bed/bedpfh` y comprobado contra los 49 `.RPK` del disco sin ninguna discrepancia. Falta el significado de la bandera `0x4000`.
+   - ✅ **MAPUNIT** (`docs/formats/mapunit.md`): un `RTPK` de 263 salas, cada una otro `RTPK` con el modelo (`.mdl`: texturas TIM2 + dos `I3D_BIN`), las cámaras (`_c.bin`: posiciones fijas o caminos, con el campo de visión), la niebla y otros parámetros (`mapparam.bbb`), la colisión (`.i3r`/`.i3c`), las luces (`_l.bin`), el cielo (`tenkyu.rpk`) y los sectores (`sector.sec`, clase `SctLayer`). Comprobado contra las 263 salas sin discrepancias.
+   - ✅ **ARA** (`docs/formats/ara.md`): un `RTPK` por área con el script del área, compilado a código MIPS (`ELFR101`) que el juego ejecuta en un intérprete MIPS propio (`sequence/`), una tabla de nodos (probablemente para la navegación), datos del área (nombres en japonés y sus salas) y, en 666 áreas, sus bancos de sonido `XVAB`. Comprobado contra los 1,134 `.ARA` sin discrepancias.
+   - ✅ **STR** (`docs/formats/str.md`): están en `DATA/SND/XWS`, no en `DATA/SEQ`. PS-ADPCM sin cabecera a 48,000 Hz; los `S0xxxxx` son mono y los `S1xxxxx` estéreo, intercalados cada 0x10 bytes. Incluye los `.txth` para vgmstream y la tabla `STR_TBL.BIN`.
 6. Capa de port: reemplazar las libs `sce*` por equivalentes Vita; reescribir el render (VU1 + GS) sobre vitaGL.
 
 ## Pendientes de la división y pistas nuevas (2026-09-28)
@@ -106,7 +109,7 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 
 ## Formatos de audio
 
-- `DATA/SND/XWS/*.STR` (844): PS-ADPCM crudo sin cabecera; `vgmstream` lo lee con un `.txth` (falta la frecuencia).
+- `DATA/SND/XWS/*.STR` (844): PS-ADPCM crudo sin cabecera, 48,000 Hz; mono (`S0xxxxx`) o estéreo intercalado cada 0x10 (`S1xxxxx`); `vgmstream` lo lee con los `.txth` de `docs/formats/str.md`.
 - `DATA/SND/XV/*.SE` (36): bancos con firma `XVAB` y bloques `HEAD`/`TGIF`/`TGPG`/`TGSP`; formato sin documentar (no está en vgmstream). Se entenderá al decompilar `snd/`.
 
 ## Librerías del SDK
