@@ -10,6 +10,7 @@ float sqrtf(float x);
 float cosf(float x);
 float sinf(float x);
 float atanf(float x);
+float tanf(float x);
 float asinf(float x);
 float modff(float x, float *iptr);
 
