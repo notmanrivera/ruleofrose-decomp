@@ -507,3 +507,4 @@ motFindName__FiPCc = 0x0021641C; // type:func size:0x80
 motGetName2__FiPciii = 0x0021649C; // type:func size:0xFC
 motFunc5__Fv = 0x00216598; // type:func size:0x28
 motGetName3__FiPciii = 0x002165C0; // type:func size:0xD0
+func_0013FF00__8MagScenei = 0x0013FF00; // type:func size:0x130

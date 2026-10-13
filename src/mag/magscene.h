@@ -69,7 +69,8 @@ public:
     void func_0013F528(int *theParam, int theA);
     void func_0013F980(int theType, int theNo, int theMode, float *theColor, int theA);
     void func_0013FA50(int theType, int theNo, int theMode, float *theColor, int theA);
-    int func_0013FE64(int theType, int theA);
+    int func_0013FE64(int theType, int theMask);
+    void func_0013FF00(int theNo);
 };
 
 #endif
