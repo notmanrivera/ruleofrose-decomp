@@ -493,3 +493,7 @@ setActorRot__9MagSystemiPCf = 0x0011939C; // type:func size:0xF0
 func_0011948C__9MagSystem = 0x0011948C; // type:func size:0x28
 assertFail__FPCciT0 = 0x00216728; // type:func size:0x40 (naga_debug copy of the assert handler)
 nagaLoadFile__FPCc = 0x00216768; // type:func size:0xC0 (reads a whole file into the global heap)
+motNop__Fv = 0x0021614C; // type:func size:0x8
+lookupName__Fii = 0x00216154; // type:func size:0x30
+motConvert__FiP8MotEntryP6MotKey = 0x00216184; // type:func size:0x108
+motSetName__FPCc = 0x0021628C; // type:func size:0x54
