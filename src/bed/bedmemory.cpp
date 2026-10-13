@@ -602,15 +602,15 @@ out:
     return thePtr;
 }
 
-
-
-
 INCLUDE_RODATA("asm/nonmatchings/bed/bedmemory", D_002E5500);
 
 #ifdef NON_MATCHING
 // 0x00100ECC: move the start of the block at theOldPtr up to theNewPtr;
 // the part cut off becomes a free block (merged with the previous one if
 // that is free). newsize subtracts both pointers (as in the game).
+// NON_MATCHING: local-alloc puts the m_chunk_size temporaries in $v0 and
+// the -1 for m_line in $v1, the game the other way round. Tried: every
+// order of these stores, the size computed earlier, other subtractions.
 void *BedMemory::cutHead(void *theOldPtr, void *theNewPtr)
 {
 

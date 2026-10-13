@@ -2,12 +2,12 @@
 // mag/magsystem.h): display and pad set-up, the frame loop, screenshots and
 // the wrappers the game calls on its scene.
 //
-// 53 of 55 functions match. setPlayer and endFrame are still the game's asm;
-// their C++ (under NON_MATCHING) only differs in delay slots (setPlayer's
-// switch) and in where the prologue saves $ra (endFrame). Until they match,
-// .data/.bss stay in asm and the strings they share with the C++ functions
-// are INCLUDE_RODATA symbols (ASSERT_FILE). Names are ours unless an assert
-// string gives them.
+// 53 of 55 functions match. setPlayer and endFrame are still the game's asm.
+// setPlayer: if-conversion (the ce pass, IF-CASE-2) moves each case's
+// `type = n` above its compare; the game keeps them in the cases (delay
+// slots). endFrame: sched2 issues `addiu $s1` before `sd $ra`. Until they
+// match, .data/.bss stay in asm and shared strings are INCLUDE_RODATA
+// symbols (ASSERT_FILE). Names are ours unless an assert string gives them.
 #include "ror.h"
 #include "mag/magsystem.h"
 #include "bed/bedmemory.h"
