@@ -512,3 +512,5 @@ func_0011948C__9MagSystem = 0x0011948C; // type:func size:0x28
 func_0012CDB0__9MagLifePC = 0x0012CDB0; // type:func
 func_0012CDDC__9MagLifePC = 0x0012CDDC; // type:func
 func_0012CE08__9MagLifePC = 0x0012CE08; // type:func
+assertFail__FPCciT0 = 0x00216728; // type:func size:0x40 (naga_debug copy of the assert handler)
+nagaLoadFile__FPCc = 0x00216768; // type:func size:0xC0 (reads a whole file into the global heap)
