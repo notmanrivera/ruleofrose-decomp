@@ -14,7 +14,7 @@ text	rodata	data	bss	file	confidence
 00101AEC	002E56C8	-	00308280	bed/bedpad	likely
 00102490	002E5728	-	-	utl/utlgame	manual
 00103EDC	002E75F8	-	00308484	utl/utlbtl	likely
-00104970	002E76B0	-	00308488	utl/utltm2	likely
+00104E1C	002E76B0	-	00308488	utl/utltm2	manual
 00105650	002E7748	-	-	utl/utlmisc	certain
 001056E8	-	00295F00	-	unk/001056E8	manual
 00105E50	002E7760	-	-	utl/utlfile	manual

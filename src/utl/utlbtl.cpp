@@ -333,6 +333,103 @@ extern "C" int func_001046B4(UtlHitCone *theHitCheck)
     return ret;
 }
 
+// 0x00104970: cone test, types 0 and 0x100.
+extern "C" int func_00104970(UtlHitCone *theHitCheck)
+{
+    int ret = 0;
+    float aim[4];
+    func_0025B890(aim, theHitCheck->m_pos_aim, theHitCheck->m_pos_self);
+    sceVu0Normalize(aim, aim);
+    float tgt[4];
+    func_0025B890(tgt, theHitCheck->m_pos_target, theHitCheck->m_pos_self);
+    float dist = sqrtf(tgt[0] * tgt[0] + tgt[1] * tgt[1] + tgt[2] * tgt[2]);
+    sceVu0Normalize(tgt, tgt);
+    float dot = sceVu0InnerProduct(aim, tgt);
+    switch (theHitCheck->m_type) {
+    case 0x100: {
+        if (dist > 250.0f) break;
+        if (dot <= 0.0f) break;
+        float a = func_0026CAD0(dot);
+        if (dist * tanf(a) <= theHitCheck->m_size) ret = 1;
+        break;
+    }
+    case 0:
+        if (dist > 100.0f) break;
+        if (dot <= 0.85f) break;
+        ret = 1;
+        break;
+    }
+    return ret;
+}
+
+// 0x00104AD0: cone test, types 0 and 6.
+extern "C" int func_00104AD0(UtlHitCone *theHitCheck)
+{
+    int ret = 0;
+    float aim[4];
+    func_0025B890(aim, theHitCheck->m_pos_aim, theHitCheck->m_pos_self);
+    sceVu0Normalize(aim, aim);
+    float tgt[4];
+    func_0025B890(tgt, theHitCheck->m_pos_target, theHitCheck->m_pos_self);
+    float dist = sqrtf(tgt[0] * tgt[0] + tgt[1] * tgt[1] + tgt[2] * tgt[2]);
+    sceVu0Normalize(tgt, tgt);
+    float dot = sceVu0InnerProduct(aim, tgt);
+    switch (theHitCheck->m_type) {
+    case 6: {
+        if (dist > 200.0f && dist < 100.0f) break;
+        if (dot <= 0.0f) break;
+        float a = func_0026CAD0(dot);
+        if (dist * tanf(a) <= theHitCheck->m_size) ret = 1;
+        break;
+    }
+    case 0:
+        if (dist > 50.0f) break;
+        if (dot <= 0.85f) break;
+        ret = 1;
+        break;
+    }
+    return ret;
+}
+
+// 0x00104C44: cone test, types 0, 2, 4 and 5.
+extern "C" int func_00104C44(UtlHitCone *theHitCheck)
+{
+    int ret = 0;
+    float aim[4];
+    func_0025B890(aim, theHitCheck->m_pos_aim, theHitCheck->m_pos_self);
+    sceVu0Normalize(aim, aim);
+    float tgt[4];
+    func_0025B890(tgt, theHitCheck->m_pos_target, theHitCheck->m_pos_self);
+    float dist = sqrtf(tgt[0] * tgt[0] + tgt[1] * tgt[1] + tgt[2] * tgt[2]);
+    sceVu0Normalize(tgt, tgt);
+    float dot = sceVu0InnerProduct(aim, tgt);
+    switch (theHitCheck->m_type) {
+    case 5:
+        if (dist > 250.0f) break;
+        if (dist < 150.0f) break;
+        goto cone;
+    case 0:
+        if (dist > 50.0f) break;
+        if (dot <= 0.5f) break;
+        ret = 1;
+        break;
+    case 4:
+        if (dist > 100.0f) break;
+        if (dot <= 0.5f) break;
+        ret = 1;
+        break;
+    case 2:
+        if ((float)theHitCheck->m_range < dist) break;
+    cone: {
+        if (dot <= 0.0f) break;
+        float a = func_0026CAD0(dot);
+        if (dist * tanf(a) <= theHitCheck->m_size) ret = 1;
+        break;
+    }
+    }
+    return ret;
+}
+
 // The game's .rodata for this file ends with 8 zero bytes after the last
 // string (utl/utltm2's strings start at a multiple of 16). What they were is
 // unknown: reproduced as an unused constant with external linkage (so it is
