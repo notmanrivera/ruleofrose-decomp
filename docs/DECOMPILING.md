@@ -397,6 +397,41 @@ Things that changed codegen so far:
   (`s1 + 0x29120`) is an inline method on that member, or a local pointer;
   written `m_scene.m_x[r]` the offsets fold into one constant from `this`
   (`loadModel`).
+- A branch after a call compiled as a branch-likely (`beql`, filled from
+  its target) has no predicted direction: the result went through a flag,
+  `bool ok = f(...) == I3D_OK; if (!ok)`. Tested directly, `if (f(...) != 0)`
+  is predicted not taken (EQ is "unlikely") and fills from the fall-through
+  (`loadTM2`). `-fsched-verbose` and the `.28.mach` notes show it.
+- Two tests that each return (`if (!name) return i; if (!name[0]) return
+  i;`) branch to one shared `jr $ra`; a `||` gave a `movz` and a second
+  return, and with two tests the tail still has to be `if (n >= max)
+  return -1; return n;`, not `if (n < max) return n; return -1;`
+  (`findFree`).
+- loop.c moves a `return -N` block out of a loop when a barrier at the
+  same depth follows (a `return 0;` closing the branch); an `if`/`else` with
+  one `return 0;` after it leaves the blocks in place (`loadPack`).
+- A search loop with the bound in its condition and the failure test after
+  it (`for (i = 0; i < n; i++) if (!strcmp(...)) break; if (i >= n) return
+  -3;`) matched; the test inside the loop put the compare in another
+  register (`loadPack`).
+- `(const char *)((int)(h + 1) + n * sizeof(int))` adds the constant
+  first (`addiu` then `addu`); `(const char *)(h + 1) + n * sizeof(int)`
+  adds `n * 4` first (`releasePack`).
+- An early `if (rest < 64) return thePtr;` puts `$v0 = thePtr` in the
+  test's delay slot and keeps `$v0` out of the temporaries computed
+  before it (`shrink`).
+- Stores the game shares between branches (one copy, reached by a jump
+  from one branch and a fall-through from the other) can be one copy in
+  the source too, after the `if`, with a `goto` past them from the branch
+  that does not do them; separate copies were scheduled differently before
+  cross-jumping (`shrink`).
+- Interblock scheduling (sched1, inside a loop) appends insns that become
+  ready to the ready list without sorting, so one that is freed by the insn
+  just issued is issued next: `a1 = i` before a call frees the loop's `i++`
+  from the latch block (`func_0010DF54`, still not matching).
+- If-conversion (`.15.ce`, "IF-CASE-2") hoists `x = k` from a `case` body
+  above the compare that jumps to it when the body is one insn and `x` is
+  dead on the other path (`MagSystem::setPlayer`, still not matching).
 
 ## 4. Name it
 

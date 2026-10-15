@@ -3,10 +3,10 @@
 // blocks are found first-fit from the bottom or the top, and remember the
 // file and line that asked for them.
 //
-// 14 of 17 functions match. init, shrink and cutHead are still the game's
-// asm; their C++ (under NON_MATCHING) only differs in register allocation
-// and scheduling details. Until they match, .data/.bss stay in asm and the
-// strings shared with them are INCLUDE_RODATA symbols (ASSERT_FILE,
+// 16 of 17 functions match. cutHead is still the game's asm; its C++
+// (under NON_MATCHING) only differs in register allocation ($v0 and $v1
+// swap between two temporaries). Until it matches, .data/.bss stay in asm
+// and the strings shared with it are INCLUDE_RODATA symbols (ASSERT_FILE,
 // ASSERT_S). Method names are ours; BEDMEMHEADER and m_* names are original.
 
 // Strings the asm functions share with the C++ ones (INCLUDE_RODATA).
@@ -82,7 +82,7 @@ void BedMemory::create(int theSize, int theAttr)
     m_count = 0;
 }
 
-#ifdef NON_MATCHING
+
 // 0x001003F8: a heap in theBuffer. Aligns it to 16 bytes, fills it with
 // "$RUNTIME" and makes it one free block.
 void BedMemory::init(void *theBuffer, int theSize, int theAttr)
@@ -125,7 +125,6 @@ void BedMemory::init(void *theBuffer, int theSize, int theAttr)
     m_own = 0;
     BEDMEMHEADER *h = (BEDMEMHEADER *)ptr;
     h->m_chunk_size = size - sizeof(BEDMEMHEADER);
-    h->m_header_size = sizeof(BEDMEMHEADER);
     h->m_line = -1;
     h->m_ptr = h + 1;
     h->m_flag = 0;
@@ -133,10 +132,11 @@ void BedMemory::init(void *theBuffer, int theSize, int theAttr)
     h->m_next = 0;
     h->m_filename = 0;
     h->m_attr = theAttr;
+    h->m_header_size = sizeof(BEDMEMHEADER);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/bed/bedmemory", init__9BedMemoryPvii);
-#endif
+
+
+
 
 // 0x00100568
 void BedMemory::destroy()
@@ -535,10 +535,10 @@ BEDMEMHEADER *BedMemory::getHeader(void *thePtr)
     return h;
 }
 
-#ifdef NON_MATCHING
 // 0x00100D30: shrink the block at thePtr to theNewSize, in place; the rest
 // becomes a free block (merged with the next one if that is free). When
-// the next block is in use its m_prev is not updated (as in the game).
+// the next block is in use its m_prev is not updated (as in the game). The
+// free-next case jumps past the three stores the other two share.
 void *BedMemory::shrink(void *thePtr, int theNewSize, int)
 {
 
@@ -546,64 +546,61 @@ void *BedMemory::shrink(void *thePtr, int theNewSize, int)
 
 
 
-    ASSERT(thePtr != __null);
+    ASSERT_S(thePtr != __null, D_002E53B0);
     ASSERT(theNewSize > 0);
     BEDMEMHEADER *h = getHeader(thePtr);
 
 
 
 
-    ASSERT((((int)thePtr)%4) == 0);
+    ASSERT_S((((int)thePtr)%4) == 0, D_002E5500);
     int newsize = (theNewSize + 15) >> 4 << 4;
     int rest = h->m_chunk_size - newsize;
-    if (rest >= 64) {
-        BEDMEMHEADER *next = h->m_next;
-        BEDMEMHEADER *h2 = (BEDMEMHEADER *)((char *)h->m_ptr + newsize);
-        h->m_chunk_size = newsize;
-        if (next == 0) {
-            h->m_next = h2;
-            h2->m_chunk_size = rest - sizeof(BEDMEMHEADER);
-            h2->m_line = -1;
-            h2->m_ptr = h2 + 1;
-            h2->m_header_size = sizeof(BEDMEMHEADER);
-            h2->m_prev = h;
-            h2->m_next = 0;
-            h2->m_flag = 0;
-            h2->m_filename = 0;
-            h2->m_id = 0;
-        } else if (next->m_flag == 0) {
-            rest += next->m_chunk_size + next->m_header_size;
-            h->m_next = h2;
-            h2->m_line = -1;
-            h2->m_ptr = h2 + 1;
-            h2->m_header_size = sizeof(BEDMEMHEADER);
-            h2->m_chunk_size = rest - sizeof(BEDMEMHEADER);
-            h2->m_prev = h;
-            h2->m_flag = 0;
-            h2->m_filename = 0;
-            h2->m_id = 0;
-            h2->m_next = next->m_next;
-            if (h2->m_next != 0) {
-                h2->m_next->m_prev = h2;
-            }
-        } else {
-            h->m_next = h2;
-            h2->m_next = next;
-            h2->m_chunk_size = rest - sizeof(BEDMEMHEADER);
-            h2->m_line = -1;
-            h2->m_ptr = h2 + 1;
-            h2->m_header_size = sizeof(BEDMEMHEADER);
-            h2->m_prev = h;
-            h2->m_flag = 0;
-            h2->m_filename = 0;
-            h2->m_id = 0;
-        }
+    if (rest < 64) {
+        return thePtr;
     }
+    BEDMEMHEADER *next = h->m_next;
+    BEDMEMHEADER *h2 = (BEDMEMHEADER *)((char *)h->m_ptr + newsize);
+    h->m_chunk_size = newsize;
+    if (next == 0) {
+        h->m_next = h2;
+        h2->m_chunk_size = rest - sizeof(BEDMEMHEADER);
+        h2->m_line = -1;
+        h2->m_ptr = h2 + 1;
+        h2->m_header_size = sizeof(BEDMEMHEADER);
+        h2->m_prev = h;
+        h2->m_next = 0;
+    } else if (next->m_flag == 0) {
+        rest += next->m_chunk_size + next->m_header_size;
+        h->m_next = h2;
+        h2->m_line = -1;
+        h2->m_ptr = h2 + 1;
+        h2->m_header_size = sizeof(BEDMEMHEADER);
+        h2->m_chunk_size = rest - sizeof(BEDMEMHEADER);
+        h2->m_prev = h;
+        h2->m_flag = 0;
+        h2->m_filename = 0;
+        h2->m_id = 0;
+        h2->m_next = next->m_next;
+        if (h2->m_next != 0) {
+            h2->m_next->m_prev = h2;
+        }
+        goto out;
+    } else {
+        h->m_next = h2;
+        h2->m_next = next;
+        h2->m_chunk_size = rest - sizeof(BEDMEMHEADER);
+        h2->m_line = -1;
+        h2->m_ptr = h2 + 1;
+        h2->m_header_size = sizeof(BEDMEMHEADER);
+        h2->m_prev = h;
+    }
+    h2->m_filename = 0;
+    h2->m_id = 0;
+    h2->m_flag = 0;
+out:
     return thePtr;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/bed/bedmemory", shrink__9BedMemoryPvii);
-#endif
 
 INCLUDE_RODATA("asm/nonmatchings/bed/bedmemory", D_002E5500);
 
@@ -611,6 +608,9 @@ INCLUDE_RODATA("asm/nonmatchings/bed/bedmemory", D_002E5500);
 // 0x00100ECC: move the start of the block at theOldPtr up to theNewPtr;
 // the part cut off becomes a free block (merged with the previous one if
 // that is free). newsize subtracts both pointers (as in the game).
+// NON_MATCHING: local-alloc puts the m_chunk_size temporaries in $v0 and
+// the -1 for m_line in $v1, the game the other way round. Tried: every
+// order of these stores, the size computed earlier, other subtractions.
 void *BedMemory::cutHead(void *theOldPtr, void *theNewPtr)
 {
 

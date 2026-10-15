@@ -26,6 +26,9 @@ public:
     unsigned char m_unk10[0xD0];    // +0x10
 
     int func_0011E080();
+    void func_0012CDB0();           // mag/maglifepceff.cpp: ASSERT(0) stubs
+    void func_0012CDDC();
+    void func_0012CE08();
 };
 
 class MagScene {

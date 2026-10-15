@@ -491,3 +491,8 @@ setActorPos__9MagSystemifff = 0x00119234; // type:func size:0x94
 setActorRot__9MagSystemifff = 0x001192C8; // type:func size:0xD4
 setActorRot__9MagSystemiPCf = 0x0011939C; // type:func size:0xF0
 func_0011948C__9MagSystem = 0x0011948C; // type:func size:0x28
+// mag/maglifepceff.cpp: MagLifePC methods (MagLifePC::message calls them
+// with this in $a0).
+func_0012CDB0__9MagLifePC = 0x0012CDB0; // type:func
+func_0012CDDC__9MagLifePC = 0x0012CDDC; // type:func
+func_0012CE08__9MagLifePC = 0x0012CE08; // type:func

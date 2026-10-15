@@ -3354,11 +3354,11 @@ float DogActor::func_0010DD30(int theNode)
 // from the saved pose while interpolating, the control node's turn, then
 // the node matrices (scaled nodes too). Returns 0 without a motion.
 // NON_MATCHING: in the first loop the game keeps i++ at the bottom (i in
-// $s2, the pose pointer in $s3); here sched1 moves it to the top and the
-// two registers swap. Tried: while/do loops, ++i, one i for both loops,
-// continue, a pose pointer, inline helpers.
+// $s2, the pose pointer in $s3); here sched1's interblock pass moves it up:
+// a1 = i outranks a0 = this by one dependent (the i++), and the i++, ready
+// right after it, is issued next. The registers then swap. Tried: while/do
+// loops, ++i, one i, continue, a pose pointer, inline helpers.
 #ifdef NON_MATCHING
-
 int DogActor::func_0010DF54(int theStep)
 {
     if (m_motion_now.getMainMotionNo() < 0 || m_max_motion <= 0) {
