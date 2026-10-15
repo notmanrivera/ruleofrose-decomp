@@ -1,0 +1,20 @@
+{
+  "$schema": "https://recomp.fyi/schema/v1.json",
+  "game": "Rule of Rose",
+  "system": "PS2",
+  "type": "decomp",
+  "project": "Rule of Rose decompilation",
+  "status": "in-progress",
+  "toolchain": "Splat",
+  "original": {
+    "region": "USA",
+    "serial": "SLUS-21448",
+    "sha1": "f9abd6dc53070750dfcae3b44184fb9852e603fb"
+  },
+  "approach": "Matching decompilation into C++, file by file, checked byte for byte against the original executable",
+  "notes": "Each source file is rebuilt with the original SCE compiler (ee-gcc 2.96, -Os) until it matches the original object exactly. The goal after the decomp is a native PC port, then PS Vita.",
+  "help": ["Matching C++ functions", "PS2 / Emotion Engine reverse engineering", "Identifying original source file boundaries"],
+  "tags": ["matching", "cpp", "survival-horror"],
+  "maintainers": [{ "name": "notmanrivera", "link": "https://github.com/notmanrivera" }],
+  "links": [{ "label": "Repository", "url": "https://github.com/notmanrivera/ruleofrose-decomp" }]
+}
