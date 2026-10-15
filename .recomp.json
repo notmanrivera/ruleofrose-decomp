@@ -5,7 +5,7 @@
   "type": "decomp",
   "project": "Rule of Rose decompilation",
   "status": "in-progress",
-  "toolchain": ["Splat", "ee-gcc 2.96"],
+  "toolchain": "Splat",
   "original": {
     "region": "USA",
     "serial": "SLUS-21448",
