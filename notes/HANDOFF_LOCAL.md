@@ -76,19 +76,21 @@ Pedirle al agente: «mira `build/auto_setup.log` y sigue». Con
 
 ## En curso / siguiente
 
-- **`mag/maglifeman`** (siguiente archivo; 0x680 bytes, rango
-  0x1194B4–0x119B34, `.rodata` en 0x2E9510): análisis empezado, aún sin C++.
-  - Clase `MagLifeMan`: `m_life_buf[MAX_LIFE]` (64 entradas de 0x10 bytes:
-    `{plife, flags, next, prev}`), cabecera de lista en 0x400 y
-    `MAX_LIFE` = 64. Los objetos enlazados («life»; p. ej. `MagLife`) se
-    llaman a través de una tabla de métodos en el campo +0x14 del objeto
-    (formato `{short delta; fn}`).
-  - Asserts originales y sus líneas: 103/104 (`thePod1`, `thePod2`),
-    140/141 (`thePod1`, `thePod2`), 210 y 296 y 314
-    (`ppod >= &m_life_buf[0] && ppod < &m_life_buf[MAX_LIFE]`),
-    235/299/319 (`plife`), 268 (`theNo >= 0 && theNo < MAX_LIFE`).
-    Las cadenas van a `tools/pad_asserts.py`; los nombres de `ror_assert`
-    en el asm están en `D_002E9xxx`.
+- **`mag/maglifeman` terminado** (12 funciones byte a byte y su `.rodata`,
+  en la compilación completa y con el SHA-1 verificado). Clase
+  `MagLifeManager` en `src/mag/maglifeman.h`; los nombres manglados de las
+  12 funciones (y sus tamaños) están en `config/symbol_addrs_manual.txt`
+  (extraídos del propio objeto). Si se edita `src/mag/maglifeman.cpp`, los
+  asserts tienen que seguir en las líneas 103/104, 140/141, 210, 232/235,
+  268, 296/299 y 314/319 (`tools/pad_asserts.py`, y `tools/asserts.py
+  mag/maglifeman.cpp` los relee). Lección nueva del compilador en
+  `docs/DECOMPILING.md`: un tramo de stores al final de una función hoja
+  sale rotado (el último primero y el penúltimo en el hueco de `jr $ra`),
+  así que hay que probar el orden de las sentencias.
+- Siguiente: **`mag/maglife`** (0x119B34–0x11AB40: `MagLife0`/`MagLife` y
+  las clases que cuelgan de ellas; sus vtables e inline están en
+  `asm/data/vtbl/_vt_8MagLife0.data.s` etc. y `asm/inline/`), o cerrar los
+  pendientes `NON_MATCHING`.
 - Pendientes anteriores (C++ bajo `NON_MATCHING`): `bed/bedmemory` (init,
   shrink, cutHead), `dog/dogactor` (func_0010DF54), `dog/dogmodel` (vfunc11),
   `dog/dogtexinfo` (findFree, releasePack, loadTM2, loadPack),

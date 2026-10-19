@@ -428,6 +428,22 @@ func_0013FE64__8MagSceneii = 0x0013FE64; // type:func
 // scene's player, +0x2ADC0 of MagScene, whose termWorld__9MagLifePC
 // mag/magscene2 calls on the same address).
 func_0011E080__9MagLifePC = 0x0011E080; // type:func
+// mag/maglifeman.cpp: MagLifeManager, the pool of the scene's life objects
+// (MagScene owns one at +0x2330). The class name is original
+// (MagLife0::attached takes a MagLifeManager); MagLifePod, m_life_buf and
+// MAX_LIFE come from the assert strings; the method names are ours.
+clearPod__14MagLifeManagerP10MagLifePod = 0x001194B4; // type:func size:0x14
+unlink__14MagLifeManagerP10MagLifePod = 0x001194C8; // type:func size:0x44
+insertBefore__14MagLifeManagerP10MagLifePodT1 = 0x0011950C; // type:func size:0xA0
+insertAfter__14MagLifeManagerP10MagLifePodT1 = 0x001195AC; // type:func size:0x84
+init__14MagLifeManager = 0x00119630; // type:func size:0x30
+term__14MagLifeManager = 0x00119660; // type:func size:0x74
+add__14MagLifeManagerP7MagLifei = 0x001196D4; // type:func size:0x13C
+remove__14MagLifeManagerP7MagLife = 0x00119810; // type:func size:0xC0
+indexOf__14MagLifeManagerP7MagLife = 0x001198D0; // type:func size:0x38
+removeAt__14MagLifeManageri = 0x00119908; // type:func size:0x60
+live__14MagLifeManageri = 0x00119968; // type:func size:0xD0
+render__14MagLifeManagerP20tag_I3dRenderStage_si = 0x00119A38; // type:func size:0xFC
 // mag/magsystem.cpp's static members (.data, still in asm): m_current_system
 // and m_v_sema are original (assert strings), the other names are ours.
 _9MagSystem$m_current_system = 0x00296190;
