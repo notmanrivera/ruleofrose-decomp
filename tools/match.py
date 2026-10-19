@@ -69,7 +69,9 @@ def compile_file(name, source=None, extra=""):
     src = f"{name}.cpp" if source is None else f"../{Path(source).resolve().relative_to(ROOT)}"
     cmd = (f"cd src && ee-cc {configure.COMPILER} {configure.CFLAGS.replace('-Isrc', '-I.').replace('-Iinclude', '-I../include')} "
            f"{extra} -c {src} -o ../{out.relative_to(ROOT)}")
-    r = subprocess.run([docker(), "run", "--rm", "--platform", "linux/amd64", "-v", f"{volume_path(ROOT)}:/work",
+    mirror = ["-e", "EE_CC_MIRROR=1"] if sys.platform == "win32" else []
+    r = subprocess.run([docker(), "run", "--rm", "--platform", "linux/amd64", *mirror,
+                        "-v", f"{volume_path(ROOT)}:/work",
                         "-w", "/work", "ror-build", "sh", "-c", cmd], capture_output=True, text=True)
     if r.returncode:
         sys.exit(r.stdout + r.stderr)

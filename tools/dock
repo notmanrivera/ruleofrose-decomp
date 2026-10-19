@@ -10,5 +10,14 @@ DOCKER="$(command -v docker || echo "$HOME/.docker/bin/docker")"
 command -v cygpath >/dev/null 2>&1 && ROOT="$(cygpath -m "$ROOT")"
 TTY=""
 [ -t 0 ] && [ -t 1 ] && TTY="-it"
-exec "$DOCKER" run --rm $TTY --platform linux/amd64 \
+# Git Bash rewrites container paths like /work into C:/Program Files/Git/work;
+# we already passed a native path for the volume, so turn that off entirely.
+export MSYS_NO_PATHCONV=1
+export MSYS2_ARG_CONV_EXCL='*'
+# The old 32-bit compilers hit EOVERFLOW on the Windows bind mount; tell
+# ee-cc to compile from a copy on the container's own filesystem.
+MIRROR=""
+case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) MIRROR="-e EE_CC_MIRROR=1" ;; esac
+if [ -n "$EE_CC_MIRROR" ]; then MIRROR="-e EE_CC_MIRROR=$EE_CC_MIRROR"; fi
+exec "$DOCKER" run --rm $TTY --platform linux/amd64 $MIRROR \
   -v "$ROOT":/work -w /work ror-build "$@"

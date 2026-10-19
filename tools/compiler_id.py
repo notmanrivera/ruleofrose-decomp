@@ -51,7 +51,8 @@ def compile_all(flag_sets):
         script.append(
             f'for id in $(ee-cc --list); do ee-cc $id {flags} -c {SRC} '
             f'-o build/compiler_id/$id@{i}.o 2>build/compiler_id/$id@{i}.err || true; done')
-    subprocess.run([docker(), "run", "--rm", "--platform", "linux/amd64",
+    mirror = ["-e", "EE_CC_MIRROR=1"] if sys.platform == "win32" else []
+    subprocess.run([docker(), "run", "--rm", "--platform", "linux/amd64", *mirror,
                     "-v", f"{volume_path(ROOT)}:/work", "-w", "/work", "ror-build", "sh", "-c", "; ".join(script)],
                    check=True)
 
