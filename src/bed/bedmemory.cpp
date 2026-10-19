@@ -3,8 +3,8 @@
 // blocks are found first-fit from the bottom or the top, and remember the
 // file and line that asked for them.
 //
-// 14 of 17 functions match. init, shrink and cutHead are still the game's
-// asm; their C++ (under NON_MATCHING) only differs in register allocation
+// 15 of 17 functions match. init and cutHead are still the game's asm;
+// their C++ (under NON_MATCHING) only differs in register allocation
 // and scheduling details. Until they match, .data/.bss stay in asm and the
 // strings shared with them are INCLUDE_RODATA symbols (ASSERT_FILE,
 // ASSERT_S). Method names are ours; BEDMEMHEADER and m_* names are original.
@@ -27,6 +27,46 @@ extern BEDMEMHEADER *D_00308248;
 
 INCLUDE_RODATA("asm/nonmatchings/bed/bedmemory", D_002E5340);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 0x00100354: a heap in a new malloc'd buffer.
 void BedMemory::create(int theSize, int theAttr)
 {
@@ -36,46 +76,6 @@ void BedMemory::create(int theSize, int theAttr)
     m_size = 0;
     m_own = 0;
     void *h = ::malloc((theSize >> 4) << 4);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     ASSERT(h != __null);
     init(h, theSize, theAttr);
     m_own = 1;
@@ -83,17 +83,17 @@ void BedMemory::create(int theSize, int theAttr)
 }
 
 #ifdef NON_MATCHING
+
+
+
+
+
+
+
 // 0x001003F8: a heap in theBuffer. Aligns it to 16 bytes, fills it with
 // "$RUNTIME" and makes it one free block.
 void BedMemory::init(void *theBuffer, int theSize, int theAttr)
 {
-
-
-
-
-
-
-
     ASSERT(theBuffer != __null);
     ASSERT(theSize >= 256);
     m_attr = theAttr;
@@ -124,8 +124,8 @@ void BedMemory::init(void *theBuffer, int theSize, int theAttr)
     m_unk04 = (BEDMEMHEADER *)ptr;
     m_own = 0;
     BEDMEMHEADER *h = (BEDMEMHEADER *)ptr;
-    h->m_chunk_size = size - sizeof(BEDMEMHEADER);
     h->m_header_size = sizeof(BEDMEMHEADER);
+    h->m_chunk_size = size - sizeof(BEDMEMHEADER);
     h->m_line = -1;
     h->m_ptr = h + 1;
     h->m_flag = 0;
@@ -152,20 +152,20 @@ void BedMemory::destroy()
 
 INCLUDE_RODATA("asm/nonmatchings/bed/bedmemory", D_002E53B0);
 
+
+
+
+
+
+
+
+
+
 // 0x001005AC: align the block of free header thePtr up to its alignment
 // (theAttr) by growing its header. Returns the bytes moved, 0 if already
 // aligned, -1 if theSize would no longer fit.
 int BedMemory::alignBottom(BEDMEMHEADER *thePtr, int theSize, int theAttr)
 {
-
-
-
-
-
-
-
-
-
     ASSERT_S(thePtr != __null, D_002E53B0);
     ASSERT(((int)thePtr & 3) == 0);
 
@@ -230,20 +230,20 @@ int BedMemory::alignBottom(BEDMEMHEADER *thePtr, int theSize, int theAttr)
     return ns;
 }
 
+
+
+
+
+
+
+
+
+
 // 0x00100714: take theSize bytes from the top of free block thePtr, as a
 // new block with its own header, aligned per theAttr. Falls back to the
 // bottom of the block when the top does not fit.
 BEDMEMHEADER *BedMemory::alignTop(BEDMEMHEADER *thePtr, int theSize, int theAttr)
 {
-
-
-
-
-
-
-
-
-
     ASSERT_S(thePtr != __null, D_002E53B0);
     ASSERT(((int)thePtr & 3) == 0);
 
@@ -369,40 +369,40 @@ BEDMEMHEADER *BedMemory::findTop(int theSize, int theAttr)
     return 0;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 0x00100A3C: a zeroed block of theSize bytes (rounded up to 16), or 0.
 void *BedMemory::alloc(int theSize, int theAttr)
 {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     ASSERT(m_size > 0);
     ASSERT(m_buffer > 0);
 
@@ -506,137 +506,137 @@ void *BedMemory::alloc(int theSize, const char *theFile, int theLine, int theId,
     return ptr;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 0x00100CE4: the header of the block at thePtr.
 BEDMEMHEADER *BedMemory::getHeader(void *thePtr)
 {
     int headersize = ((int *)thePtr)[-1];
     BEDMEMHEADER *h = (BEDMEMHEADER *)((char *)thePtr - headersize);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     ASSERT(h->m_header_size == headersize);
     return h;
 }
 
-#ifdef NON_MATCHING
+
+
+
+
+
+
 // 0x00100D30: shrink the block at thePtr to theNewSize, in place; the rest
 // becomes a free block (merged with the next one if that is free). When
 // the next block is in use its m_prev is not updated (as in the game).
 void *BedMemory::shrink(void *thePtr, int theNewSize, int)
 {
-
-
-
-
-
-    ASSERT(thePtr != __null);
+    ASSERT_S(thePtr != __null, D_002E53B0);
     ASSERT(theNewSize > 0);
     BEDMEMHEADER *h = getHeader(thePtr);
 
 
 
 
-    ASSERT((((int)thePtr)%4) == 0);
+    ASSERT_S((((int)thePtr)%4) == 0, D_002E5500);
     int newsize = (theNewSize + 15) >> 4 << 4;
     int rest = h->m_chunk_size - newsize;
-    if (rest >= 64) {
-        BEDMEMHEADER *next = h->m_next;
-        BEDMEMHEADER *h2 = (BEDMEMHEADER *)((char *)h->m_ptr + newsize);
-        h->m_chunk_size = newsize;
-        if (next == 0) {
-            h->m_next = h2;
-            h2->m_chunk_size = rest - sizeof(BEDMEMHEADER);
-            h2->m_line = -1;
-            h2->m_ptr = h2 + 1;
-            h2->m_header_size = sizeof(BEDMEMHEADER);
-            h2->m_prev = h;
-            h2->m_next = 0;
-            h2->m_flag = 0;
-            h2->m_filename = 0;
-            h2->m_id = 0;
-        } else if (next->m_flag == 0) {
-            rest += next->m_chunk_size + next->m_header_size;
-            h->m_next = h2;
-            h2->m_line = -1;
-            h2->m_ptr = h2 + 1;
-            h2->m_header_size = sizeof(BEDMEMHEADER);
-            h2->m_chunk_size = rest - sizeof(BEDMEMHEADER);
-            h2->m_prev = h;
-            h2->m_flag = 0;
-            h2->m_filename = 0;
-            h2->m_id = 0;
-            h2->m_next = next->m_next;
-            if (h2->m_next != 0) {
-                h2->m_next->m_prev = h2;
-            }
-        } else {
-            h->m_next = h2;
-            h2->m_next = next;
-            h2->m_chunk_size = rest - sizeof(BEDMEMHEADER);
-            h2->m_line = -1;
-            h2->m_ptr = h2 + 1;
-            h2->m_header_size = sizeof(BEDMEMHEADER);
-            h2->m_prev = h;
-            h2->m_flag = 0;
-            h2->m_filename = 0;
-            h2->m_id = 0;
+    if (rest < 64) {
+        return thePtr;
+    }
+    BEDMEMHEADER *next = h->m_next;
+    BEDMEMHEADER *h2 = (BEDMEMHEADER *)((char *)h->m_ptr + newsize);
+    h->m_chunk_size = newsize;
+    if (next == 0) {
+        h->m_next = h2;
+        h2->m_chunk_size = rest - sizeof(BEDMEMHEADER);
+        h2->m_line = -1;
+        h2->m_ptr = h2 + 1;
+        h2->m_header_size = sizeof(BEDMEMHEADER);
+        h2->m_prev = h;
+        h2->m_flag = 0;
+        h2->m_filename = 0;
+        h2->m_id = 0;
+        h2->m_next = 0;
+    } else if (next->m_flag == 0) {
+        rest += next->m_chunk_size + next->m_header_size;
+        h->m_next = h2;
+        h2->m_line = -1;
+        h2->m_ptr = h2 + 1;
+        h2->m_header_size = sizeof(BEDMEMHEADER);
+        h2->m_chunk_size = rest - sizeof(BEDMEMHEADER);
+        h2->m_prev = h;
+        h2->m_flag = 0;
+        h2->m_filename = 0;
+        h2->m_id = 0;
+        h2->m_next = next->m_next;
+        if (h2->m_next != 0) {
+            h2->m_next->m_prev = h2;
         }
+    } else {
+        h->m_next = h2;
+        h2->m_next = next;
+        h2->m_chunk_size = rest - sizeof(BEDMEMHEADER);
+        h2->m_line = -1;
+        h2->m_ptr = h2 + 1;
+        h2->m_header_size = sizeof(BEDMEMHEADER);
+        h2->m_prev = h;
+        h2->m_filename = 0;
+        h2->m_id = 0;
+        h2->m_flag = 0;
     }
     return thePtr;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/bed/bedmemory", shrink__9BedMemoryPvii);
-#endif
 
 INCLUDE_RODATA("asm/nonmatchings/bed/bedmemory", D_002E5500);
 
 #ifdef NON_MATCHING
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 0x00100ECC: move the start of the block at theOldPtr up to theNewPtr;
 // the part cut off becomes a free block (merged with the previous one if
 // that is free). newsize subtracts both pointers (as in the game).
 void *BedMemory::cutHead(void *theOldPtr, void *theNewPtr)
 {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     ASSERT(theOldPtr);
     ASSERT(theNewPtr);
     ASSERT(theNewPtr > theOldPtr);
@@ -679,6 +679,34 @@ void *BedMemory::cutHead(void *theOldPtr, void *theNewPtr)
 INCLUDE_ASM("asm/nonmatchings/bed/bedmemory", cutHead__9BedMemoryPvT1);
 #endif
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 0x001010A4: resize the block at thePtr, in place when the next block is
 // free and big enough, else by alloc + memcpy + free. When it grows in
 // place and splits the next block, h->m_next is not updated (as in the
@@ -689,34 +717,6 @@ void *BedMemory::realloc(void *thePtr, int theNewSize)
         if (theNewSize > 0) {
             return alloc(theNewSize, -1);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         ASSERT(0);
         return 0;
     }
@@ -809,19 +809,19 @@ void *BedMemory::realloc(void *thePtr, int theNewSize)
     return thePtr;
 }
 
+
+
+
+
+
+
+
+
+
+
 // 0x00101328: free the block at thePtr, merging it with free neighbours.
 void BedMemory::free(void *thePtr)
 {
-
-
-
-
-
-
-
-
-
-
     ASSERT_S(thePtr != __null, D_002E53B0);
     BEDMEMHEADER *h = getHeader(thePtr);
     int total = h->m_header_size;
@@ -1035,6 +1035,20 @@ void BedMemory::check(int theMode)
     ASSERT(errcnt == 0);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 0x001015FC: free space (total and largest block) and size; checks each
 // block on the way.
 void BedMemory::getInfo(BedMemoryInfo *theInfo, int)
@@ -1044,20 +1058,6 @@ void BedMemory::getInfo(BedMemoryInfo *theInfo, int)
     for (BEDMEMHEADER *p = m_buffer; p != 0; p = p->m_next) {
         if ((int)p & 3) {
             check(0);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             ASSERT(0);
         }
         if (p->m_flag != 0 && p->m_flag != 1) {
