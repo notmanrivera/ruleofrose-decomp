@@ -5,6 +5,9 @@
 set -e
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 DOCKER="$(command -v docker || echo "$HOME/.docker/bin/docker")"
+[ -x "$DOCKER" ] || DOCKER="/c/Program Files/Docker/Docker/resources/bin/docker.exe"
+# Git Bash: docker.exe wants C:/... volume paths, not /c/...
+command -v cygpath >/dev/null 2>&1 && ROOT="$(cygpath -m "$ROOT")"
 TTY=""
 [ -t 0 ] && [ -t 1 ] && TTY="-it"
 exec "$DOCKER" run --rm $TTY --platform linux/amd64 \
