@@ -29,11 +29,13 @@ import argparse
 import hashlib
 import json
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
 
 import ninja_syntax
+from elftools.elf.elffile import ELFFile
 from splat.util.ps2 import ps2elfinfo
 
 import split_files  # tools/ is on sys.path when this runs as a script
@@ -73,10 +75,31 @@ def sh(cmd):
 
 def extract_rom():
     ROM.parent.mkdir(exist_ok=True)
-    sh(["mips-linux-gnu-objcopy", "-O", "binary", "--gap-fill=0x00", str(ELF), str(ROM)])
+    objcopy = shutil.which("mips-linux-gnu-objcopy")
+    if objcopy:
+        sh([objcopy, "-O", "binary", "--gap-fill=0x00", str(ELF), str(ROM)])
+    else:
+        write_rom_binary()  # host without binutils (Windows/macOS dev box)
     got = hashlib.sha1(ROM.read_bytes()).hexdigest()
     if got != ROM_SHA1:
         sys.exit(f"{ROM}: SHA-1 {got}, expected {ROM_SHA1}. Is disc/SLUS_214.48 the NTSC-U v1.00 ELF?")
+
+
+def write_rom_binary():
+    """What `objcopy -O binary --gap-fill=0x00` would write: every loadable
+    section with contents (SHF_ALLOC, not NOBITS) at its address, zeroes in
+    between; the trailing NOBITS .sbss/.bss are not part of the image."""
+    secs = []
+    with ELF.open("rb") as f:
+        for s in ELFFile(f).iter_sections():
+            if (s["sh_flags"] & 0x2) and s["sh_type"] != "SHT_NOBITS":
+                secs.append((s["sh_addr"], s["sh_offset"], s["sh_size"]))
+    base = min(a for a, _, _ in secs)
+    image = bytearray(max(a + sz for a, _, sz in secs) - base)
+    data = ELF.read_bytes()
+    for addr, off, sz in secs:
+        image[addr - base:addr - base + sz] = data[off:off + sz]
+    ROM.write_bytes(image)
 
 
 def subsegment_name(section):
