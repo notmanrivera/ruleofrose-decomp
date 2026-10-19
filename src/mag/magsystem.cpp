@@ -2,12 +2,11 @@
 // mag/magsystem.h): display and pad set-up, the frame loop, screenshots and
 // the wrappers the game calls on its scene.
 //
-// 53 of 55 functions match. setPlayer and endFrame are still the game's asm;
-// their C++ (under NON_MATCHING) only differs in delay slots (setPlayer's
-// switch) and in where the prologue saves $ra (endFrame). Until they match,
-// .data/.bss stay in asm and the strings they share with the C++ functions
-// are INCLUDE_RODATA symbols (ASSERT_FILE). Names are ours unless an assert
-// string gives them.
+// 54 of 55 functions match. endFrame is still the game's asm; the C++ under
+// NON_MATCHING only differs in where the prologue saves $ra (a scheduling
+// tie). Until it matches, .data/.bss stay in asm and the strings it shares
+// with the C++ functions are INCLUDE_RODATA symbols (ASSERT_FILE). Names
+// are ours unless an assert string gives them.
 #include "ror.h"
 #include "mag/magsystem.h"
 #include "bed/bedmemory.h"
@@ -98,6 +97,7 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magsystem", D_002E9050);
 MagSystem::MagSystem()
     : m_frame(0), m_vibrate_time(0), m_vibrate(0), m_store_image_filename(0), m_store_image(0)
 {
+
 
 
 
@@ -724,7 +724,6 @@ void MagSystem::func_00117FC4(unsigned int theType, int theA, float *theColor0, 
 }
 
 // 0x001180EC: the player's actor (-1: none) and how it is played.
-#ifdef NON_MATCHING
 void MagSystem::setPlayer(int theNo, int theType)
 {
     if (theNo >= 0) {
@@ -751,6 +750,7 @@ void MagSystem::setPlayer(int theNo, int theType)
         type = theType;
         break;
     case 'NORM':
+    case 'RMAL':
         type = 0;
         break;
     case 'PC02':
@@ -762,9 +762,6 @@ void MagSystem::setPlayer(int theNo, int theType)
     case 'PC05':
         type = 3;
         break;
-    case 'RMAL':
-        type = 0;
-        break;
     default:
         type = 0;
         break;
@@ -772,9 +769,6 @@ void MagSystem::setPlayer(int theNo, int theType)
     m_scene.func_001316B8(theNo, type);
     m_vibrate = func_00103484();
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/magsystem", setPlayer__9MagSystemii);
-#endif
 
 // 0x0011825C
 void MagSystem::func_0011825C(int theA, int theB)
@@ -793,6 +787,12 @@ void MagSystem::func_0011828C()
     waitVSync();
     sendPacket();
 }
+
+
+
+
+
+
 
 
 

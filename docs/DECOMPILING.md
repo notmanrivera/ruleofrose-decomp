@@ -387,6 +387,11 @@ Things that changed codegen so far:
 - A `switch` on 0, 1, 2 that tests `== 1`, `== 0`, `== 2` (no ordered
   compare) has an unsigned index: the left leaf (0) is bounded by the
   type's minimum, so `< 1` becomes `== 0` (`func_00117FC4`).
+- Cases that map to the same value must share one body (`case 'NORM':
+  case 'RMAL':`), not repeat it: sharing is what lets GCC drop the second
+  compare, and the delay slots of the whole tree follow. The game's dead
+  `ori` before the values that share a body is the tell
+  (`MagSystem::setPlayer`).
 - A function whose only work is a call and a dead `x / n` keeps the
   divide-by-zero trap (`beql $v0, $zero; break 7`) when `n` is a variable
   set to a constant; the trap register is `$v0` only in a `void` function
