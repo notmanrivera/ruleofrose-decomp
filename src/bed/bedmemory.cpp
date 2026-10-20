@@ -3,11 +3,11 @@
 // blocks are found first-fit from the bottom or the top, and remember the
 // file and line that asked for them.
 //
-// 15 of 17 functions match. init and cutHead are still the game's asm;
-// their C++ (under NON_MATCHING) only differs in register allocation
-// and scheduling details. Until they match, .data/.bss stay in asm and the
-// strings shared with them are INCLUDE_RODATA symbols (ASSERT_FILE,
-// ASSERT_S). Method names are ours; BEDMEMHEADER and m_* names are original.
+// 16 of 17 functions match. cutHead is still the game's asm; its C++
+// (under NON_MATCHING) only differs in register allocation and scheduling
+// details. Until it matches, .data/.bss stay in asm and the strings shared
+// with it are INCLUDE_RODATA symbols (ASSERT_FILE, ASSERT_S). Method names
+// are ours; BEDMEMHEADER and m_* names are original.
 
 // Strings the asm functions share with the C++ ones (INCLUDE_RODATA).
 #define ASSERT_FILE D_002E5340
@@ -82,7 +82,7 @@ void BedMemory::create(int theSize, int theAttr)
     m_count = 0;
 }
 
-#ifdef NON_MATCHING
+
 
 
 
@@ -124,19 +124,20 @@ void BedMemory::init(void *theBuffer, int theSize, int theAttr)
     m_unk04 = (BEDMEMHEADER *)ptr;
     m_own = 0;
     BEDMEMHEADER *h = (BEDMEMHEADER *)ptr;
-    h->m_header_size = sizeof(BEDMEMHEADER);
-    h->m_chunk_size = size - sizeof(BEDMEMHEADER);
-    h->m_line = -1;
-    h->m_ptr = h + 1;
+    short line = -1;
+    BEDMEMHEADER *next = h + 1;
+    int hsize = sizeof(BEDMEMHEADER);
+    int chunk = size - hsize;
+    h->m_header_size = hsize;
+    h->m_chunk_size = chunk;
+    h->m_line = line;
+    h->m_ptr = next;
     h->m_flag = 0;
     h->m_prev = 0;
     h->m_next = 0;
     h->m_filename = 0;
     h->m_attr = theAttr;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/bed/bedmemory", init__9BedMemoryPvii);
-#endif
 
 // 0x00100568
 void BedMemory::destroy()
@@ -151,7 +152,6 @@ void BedMemory::destroy()
 }
 
 INCLUDE_RODATA("asm/nonmatchings/bed/bedmemory", D_002E53B0);
-
 
 
 
