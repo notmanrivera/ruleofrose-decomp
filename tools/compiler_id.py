@@ -30,10 +30,16 @@ MASK = {4: 0xFC000000, 5: 0xFFFF0000, 6: 0xFFFF0000}  # R_MIPS_26, HI16, LO16
 
 
 def docker():
-    for c in ("docker", str(Path.home() / ".docker/bin/docker")):
+    for c in ("docker", str(Path.home() / ".docker/bin/docker"),
+              r"C:\Program Files\Docker\Docker\resources\bin\docker.exe"):
         if shutil.which(c):
             return shutil.which(c)
     sys.exit("docker not found")
+
+
+def volume_path(path):
+    """Host path for `docker run -v`: docker.exe on Windows takes C:/..."""
+    return str(path).replace("\\", "/")
 
 
 def compile_all(flag_sets):
@@ -45,8 +51,9 @@ def compile_all(flag_sets):
         script.append(
             f'for id in $(ee-cc --list); do ee-cc $id {flags} -c {SRC} '
             f'-o build/compiler_id/$id@{i}.o 2>build/compiler_id/$id@{i}.err || true; done')
-    subprocess.run([docker(), "run", "--rm", "--platform", "linux/amd64",
-                    "-v", f"{ROOT}:/work", "ror-build", "sh", "-c", "; ".join(script)],
+    mirror = ["-e", "EE_CC_MIRROR=1"] if sys.platform == "win32" else []
+    subprocess.run([docker(), "run", "--rm", "--platform", "linux/amd64", *mirror,
+                    "-v", f"{volume_path(ROOT)}:/work", "-w", "/work", "ror-build", "sh", "-c", "; ".join(script)],
                    check=True)
 
 
