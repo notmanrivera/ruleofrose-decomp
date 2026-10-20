@@ -3,11 +3,11 @@
 // blocks are found first-fit from the bottom or the top, and remember the
 // file and line that asked for them.
 //
-// 16 of 17 functions match. cutHead is still the game's asm; its C++
-// (under NON_MATCHING) only differs in register allocation and scheduling
-// details. Until it matches, .data/.bss stay in asm and the strings shared
-// with it are INCLUDE_RODATA symbols (ASSERT_FILE, ASSERT_S). Method names
-// are ours; BEDMEMHEADER and m_* names are original.
+// All 17 functions match. The .data/.bss sections stay in asm, and the
+// strings shared with them are INCLUDE_RODATA symbols (ASSERT_FILE,
+// ASSERT_S). Method names are ours; BEDMEMHEADER and m_* names are the
+// game's. cutHead pins the byte difference to $v1 with a register
+// variable: the allocator otherwise gives it $v0 and moves -1 to $v1.
 
 // Strings the asm functions share with the C++ ones (INCLUDE_RODATA).
 #define ASSERT_FILE D_002E5340
@@ -605,7 +605,7 @@ void *BedMemory::shrink(void *thePtr, int theNewSize, int)
 
 INCLUDE_RODATA("asm/nonmatchings/bed/bedmemory", D_002E5500);
 
-#ifdef NON_MATCHING
+
 
 
 
@@ -659,7 +659,12 @@ void *BedMemory::cutHead(void *theOldPtr, void *theNewPtr)
     h2->m_ptr = theNewPtr;
     h2->m_header_size = sizeof(BEDMEMHEADER);
     h2->m_prev = h;
-    h->m_chunk_size = (int)h2 - (int)h - sizeof(BEDMEMHEADER);
+    // The game keeps the byte difference in $v1 (not $v0, which holds the
+    // -1 line); pinning it reproduces that allocation.
+    register int diff asm("$3");
+    diff = (int)h2 - (int)h;
+    diff -= sizeof(BEDMEMHEADER);
+    h->m_chunk_size = diff;
     BEDMEMHEADER *prev = h->m_prev;
     h->m_ptr = h + 1;
     h->m_line = -1;
@@ -675,11 +680,6 @@ void *BedMemory::cutHead(void *theOldPtr, void *theNewPtr)
     }
     return theNewPtr;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/bed/bedmemory", cutHead__9BedMemoryPvT1);
-#endif
-
-
 
 
 

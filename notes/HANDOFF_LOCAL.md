@@ -87,12 +87,22 @@ Pedirle al agente: «mira `build/auto_setup.log` y sigue». Con
   `docs/DECOMPILING.md`: un tramo de stores al final de una función hoja
   sale rotado (el último primero y el penúltimo en el hueco de `jr $ra`),
   así que hay que probar el orden de las sentencias.
+- **`bed/bedmemory` terminado (17/17)**: `init`, `shrink` y `cutHead`
+  emparejan byte a byte, más `.rodata`; la imagen completa sigue con el
+  SHA-1 `fa157dc8…1997` y `build/ok` regenerado. `cutHead` necesitó una
+  variable de registro explícita: `register int diff asm("$3");` para la
+  diferencia `h2 - h - 32`. Sin ella, local-alloc le da `$v0` (su PRI es
+  80000/16 = 5000 frente a 20000/10 = 2000 del `li -1`) y el `-1` cae en
+  `$v1`; el juego tiene justo lo contrario (`diff` en `$v1`, `-1` en
+  `$v0`). Fijar `diff` a `$3` deja libres `$v0`, `$a0` y `$a1`, y el
+  resto de la asignación sale sola. La forma del fuente es la del juego:
+  `diff = (int)h2 - (int)h; diff -= sizeof(BEDMEMHEADER);`.
 - Siguiente: **`mag/maglife`** (0x119B34–0x11AB40: `MagLife0`/`MagLife` y
   las clases que cuelgan de ellas; sus vtables e inline están en
   `asm/data/vtbl/_vt_8MagLife0.data.s` etc. y `asm/inline/`), o cerrar los
   pendientes `NON_MATCHING`.
-- Pendientes anteriores (C++ bajo `NON_MATCHING`): `bed/bedmemory` (init,
-  shrink, cutHead), `dog/dogactor` (func_0010DF54), `dog/dogmodel` (vfunc11),
+- Pendientes anteriores (C++ bajo `NON_MATCHING`): `dog/dogactor`
+  (func_0010DF54), `dog/dogmodel` (vfunc11),
   `dog/dogtexinfo` (findFree, releasePack, loadTM2, loadPack),
   `mag/magsystem` (setPlayer, endFrame).
 
