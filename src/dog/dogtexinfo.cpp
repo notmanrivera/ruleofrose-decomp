@@ -127,28 +127,24 @@ int DogTexInfo::find(const char *theName)
     return -1;
 }
 
-// 0x0011646C: the first empty entry, or a new one, or -1.
-// NON_MATCHING: the game loads m_tex_info once before the loop and
-// branches to one return; here loop.c keeps the load in the loop and
-// if-conversion makes a movz.
-#ifdef NON_MATCHING
+// 0x0011646C: the first empty entry, or a new one, or -1. The two
+// empty-name cases are separate checks in the game; the tail keeps
+// m_num_tex in $v0 and sets -1 only when the table is full. The loop
+// loads m_tex_info once before the first iteration.
 int DogTexInfo::findFree()
 {
     int i;
     for (i = 0; i < m_num_tex; i++) {
         const char *name = m_tex_info[i].pszTexName;
-        if (!name || !name[0]) {
-            return i;
-        }
+        if (!name) return i;
+        // (the game checks both, in this order)
+        if (!name[0]) return i;
     }
-    if (m_num_tex < m_max_tex) {
-        return m_num_tex;
+    if (m_num_tex >= m_max_tex) {
+        return -1;
     }
-    return -1;
+    return m_num_tex;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/dog/dogtexinfo", findFree__10DogTexInfo);
-#endif
 
 // 0x001164D0
 void DogTexInfo::release()
@@ -183,6 +179,10 @@ void DogTexInfo::release()
     }
     clear();
 }
+
+
+
+
 
 
 
