@@ -2,11 +2,10 @@
 // mag/magsystem.h): display and pad set-up, the frame loop, screenshots and
 // the wrappers the game calls on its scene.
 //
-// 54 of 55 functions match. endFrame is still the game's asm; the C++ under
-// NON_MATCHING only differs in where the prologue saves $ra (a scheduling
-// tie). Until it matches, .data/.bss stay in asm and the strings it shares
-// with the C++ functions are INCLUDE_RODATA symbols (ASSERT_FILE). Names
-// are ours unless an assert string gives them.
+// 55 of 55 functions match. endFrame needs an empty asm barrier so the
+// scheduler saves $ra before computing &m_draw. .data/.bss stay in asm, and
+// the strings shared with the C++ functions are INCLUDE_RODATA symbols
+// (ASSERT_FILE). Names are ours unless an assert string gives them.
 #include "ror.h"
 #include "mag/magsystem.h"
 #include "bed/bedmemory.h"
@@ -97,6 +96,7 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magsystem", D_002E9050);
 MagSystem::MagSystem()
     : m_frame(0), m_vibrate_time(0), m_vibrate(0), m_store_image_filename(0), m_store_image(0)
 {
+
 
 
 
@@ -1148,12 +1148,12 @@ void MagSystem::storeImage()
 
 
 
-
-
 // 0x00118640: closes the frame's packet and takes the statistics.
-#ifdef NON_MATCHING
 void MagSystem::endFrame()
 {
+    // Scheduler barrier: without it, &m_draw is computed before the $ra
+    // save; the game saves $ra first.
+    asm volatile("" ::: "memory");
     m_info.m_packet_used = func_0021F200(&m_draw);
     m_info.m_trash_overrun = func_0021F250(&m_draw);
     ASSERT(m_info.m_trash_overrun == 0);
@@ -1168,9 +1168,6 @@ void MagSystem::endFrame()
         storeImage();
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/magsystem", endFrame__9MagSystem);
-#endif
 
 // 0x001186F0
 void MagSystem::getPacketSize()
@@ -1274,6 +1271,9 @@ void MagSystem::func_001189E4(int theA, int theB, int theC)
 {
     return m_scene.func_001377F0(&m_draw, theA, theB, theC);
 }
+
+
+
 
 
 
