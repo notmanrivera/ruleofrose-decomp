@@ -385,4 +385,8 @@ public:
     }
 };
 
+// Matching aid: call DogActor::func_0010DD30 with this in $a0 and the node
+// index in $a1, letting the loop schedule the argument setup like the game.
+extern "C" float func_0010DD30_onearg(DogActor *) asm("func_0010DD30__8DogActori");
+
 #endif

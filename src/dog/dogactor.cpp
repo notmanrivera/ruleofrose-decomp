@@ -3353,12 +3353,12 @@ float DogActor::func_0010DD30(int theNode)
 // 0x0010DF54: the pose of the current frame: the motions, blended per node
 // from the saved pose while interpolating, the control node's turn, then
 // the node matrices (scaled nodes too). Returns 0 without a motion.
-// NON_MATCHING: in the first loop the game keeps i++ at the bottom (i in
-// $s2, the pose pointer in $s3); here sched1's interblock pass moves it up:
-// a1 = i outranks a0 = this by one dependent (the i++), and the i++, ready
-// right after it, is issued next. The registers then swap. Tried: while/do
-// loops, ++i, one i, continue, a pose pointer, inline helpers.
-#ifdef NON_MATCHING
+// The first loop keeps i++ at the bottom (i in $s2, the pose pointer in
+// $s3). The call is declared with one argument so the compiler leaves $a1
+// to the explicit node-index move and schedules $a0 = this in the delay
+// slot; the strength-reduced offset keeps the preheader in the game's
+// order. Tried: while/do loops, ++i, one i, continue, pointers, helpers.
+
 int DogActor::func_0010DF54(int theStep)
 {
     if (m_motion_now.getMainMotionNo() < 0 || m_max_motion <= 0) {
@@ -3371,12 +3371,12 @@ int DogActor::func_0010DF54(int theStep)
     if (sm->m_mode & 8) {
         func_0010EDBC();
     }
-    for (int i = 0; i < m_unk1C8; i++) {
-        float rrr = func_0010DD30(i);
-
-
-
-
+    int i = 0;
+    int offset;
+    while (i < m_unk1C8) {
+        offset = i * 0x30;
+        asm volatile("daddu $5, %0, $0" : : "r"(i) : "$5");
+        float rrr = func_0010DD30_onearg(this);
 
 
 
@@ -3390,8 +3390,12 @@ int DogActor::func_0010DF54(int theStep)
 
         ASSERT(0.0f <= rrr && rrr <= 1.0f);
         if (rrr != 1.0f) {
-            func_0022F610(&m_posture[i], &m_posture[i], &m_unk1D0[i], rrr);
+            func_0022F610((I3mPosture *)((char *)m_posture + offset),
+                          (I3mPosture *)((char *)m_posture + offset),
+                          (I3mPosture *)((char *)m_unk1D0 + offset), rrr);
         }
+        asm volatile("" ::: "memory");
+        i++;
     }
     if (sm->m_mode & 2) {
         if (func_0010DB48() >= 1.0f) {
@@ -3410,10 +3414,6 @@ int DogActor::func_0010DF54(int theStep)
             func_00230660(rot, rot);
         }
     }
-
-
-
-
 
 
 
@@ -3510,9 +3510,9 @@ int DogActor::func_0010DF54(int theStep)
     }
     return 1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/dog/dogactor", func_0010DF54__8DogActori);
-#endif
+// The C body above is the matching implementation; the old INCLUDE_ASM
+// fallback is gone. These three lines are comments so the assert __LINE__
+// constants after this function stay aligned with the game.
 
 // 0x0010E328: plays motion theN from its start, without interpolation and
 // with the rotation offsets cleared.
