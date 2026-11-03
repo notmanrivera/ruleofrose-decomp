@@ -1,0 +1,22 @@
+diff --git a/config/SLUS_214.48.yaml b/config/SLUS_214.48.yaml
+index 2ca4692..2e917b7 100644
+--- a/config/SLUS_214.48.yaml
++++ b/config/SLUS_214.48.yaml
+@@ -92,7 +92,7 @@ segments:
+       - [0x0267C0, asm, mag/maglifebwnctrl] # .text (likely)
+       - [0x02B870, asm, mag/maglifepcbtl] # .text (likely)
+       - [0x02CCAC, asm, unk/0012CCAC] # .text (certain)
+-      - [0x02CDB0, asm, mag/maglifepceff] # .text (certain)
++      - [0x02CDB0, cpp, mag/maglifepceff] # .text (certain)
+       - [0x02CE34, asm, mag/maglifepcmsg] # .text (likely)
+       - [0x02CF3C, asm, mag/maglifemenu] # .text (certain)
+       - [0x02D9C8, asm, mag/maglifemenusp] # .text (certain)
+@@ -2025,7 +2025,7 @@ segments:
+       - [0x1EBD00, rodata, mag/maglifebwnctrl] # .rodata (likely)
+       - [0x1EC4B0, rodata, mag/maglifepcbtl] # .rodata (likely)
+       - [0x1ECDF8, rodata, unk/0012CCAC] # .rodata (certain)
+-      - [0x1ECE30, rodata, mag/maglifepceff] # .rodata (certain)
++      - [0x1ECE30, .rodata, mag/maglifepceff] # .rodata (certain)
+       - [0x1ECE50, rodata, mag/maglifepcmsg] # .rodata (likely)
+       - [0x1ECE90, rodata, mag/maglifemenu] # .rodata (certain)
+       - [0x1ECEF8, rodata, mag/maglifemenusp] # .rodata (certain)
