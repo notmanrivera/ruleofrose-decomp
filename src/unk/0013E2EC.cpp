@@ -2,6 +2,10 @@
 #include "include_asm.h"
 #include "mag/magscene.h"
 #include "game/gamman.h"
+void vecNormalize(float *);
+float vecPitch(const float *);
+float vecYaw(const float *);
+
 struct MagMsgReq {
     int m_param[16];
     int m_id;
@@ -48,9 +52,72 @@ extern "C" void func_00134CD0(MagScene *theScene, int theNo, int theX, int theY,
 extern "C" void func_00135494(MagScene *theScene, int theNo, int theOn);
 extern "C" void func_00135594(MagScene *theScene, int theNo);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0013E2EC", func_0013E2EC);
+static inline float limitAngle(float theTo, float theFrom, float theMax)
+{
+    float d = theTo - theFrom;
+    if (d < -DOG_PI) {
+        d += DOG_PI2;
+    }
+    if (d >= DOG_PI) {
+        d -= DOG_PI2;
+    }
+    if (d < -theMax) {
+        return theFrom - theMax;
+    }
+    if (theMax < d) {
+        return theFrom + theMax;
+    }
+    return theTo;
+}
 
+// NON_MATCHING: close, not identical yet.
+#ifdef NON_MATCHING
+extern "C" void func_0013E2EC(MagScene *self, const DogVector *theDir, const float *theRot, float theMaxPitch, float theMaxYaw)
+{
+    DogVector v;
+    v = *theDir;
+    vecNormalize(&v.m_x);
+    float a;
+    if (theMaxPitch > 0.0f) {
+        a = limitAngle(vecPitch(&v.m_x), theRot[0], theMaxPitch);
+    } else {
+        a = theRot[0];
+    }
+    DogEntity *cam = (DogEntity *)((char *)self + 0x2AB70);
+    cam->m_unk50.m_x = a;
+    cam->normalizeRot();
+    cam->m_unk90 = 1;
+    if (theMaxYaw > 0.0f) {
+        a = limitAngle(vecYaw(&v.m_x), theRot[1], theMaxYaw);
+    } else {
+        a = theRot[1];
+    }
+    cam = (DogEntity *)((char *)self + 0x2AB70);
+    cam->m_unk50.m_y = a;
+    cam->normalizeRot();
+    cam->m_unk90 = 1;
+}
+#else
+INCLUDE_ASM("asm/nonmatchings/unk/0013E2EC", func_0013E2EC);
+#endif
+
+
+// NON_MATCHING: close, not identical yet.
+#ifdef NON_MATCHING
+extern "C" void func_0013E4C0(MagScene *self, int theN, float *theA, float *theB)
+{
+    if (theN == 0) {
+        *theA = *theB = 0.0f;
+        return;
+    }
+    int n = theN / 8;
+    *theA = (float)n * 1.5707963f / 3.0f;
+    *theB = (float)(theN - n * 8) * 1.5707963f / 9.0f;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/0013E2EC", func_0013E4C0);
+#endif
+
 
 INCLUDE_ASM("asm/nonmatchings/unk/0013E2EC", func_0013E548);
 
