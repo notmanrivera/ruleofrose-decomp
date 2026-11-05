@@ -53,8 +53,6 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011AB88);
 #endif
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" int func_0011AC24(MagPC *self, BedPad *thePad)
 {
     int r = 0;
@@ -73,14 +71,11 @@ extern "C" int func_0011AC24(MagPC *self, BedPad *thePad)
             r = 1;
         }
     } else {
-        I(self, 0x84) = 0;
         *(float *)((char *)self + 0x104) = 0.0f;
+        I(self, 0x84) = 0;
     }
     return r;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011AC24);
-#endif
 
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011ACF4);
