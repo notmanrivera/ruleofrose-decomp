@@ -1,0 +1,903 @@
+#include "include_asm.h"
+// Translated mechanically from m2c drafts: only what matches byte for byte.
+extern "C" int X_func_00131184(...) asm("func_00131184");
+extern "C" int X_func_001348B0(...) asm("func_001348B0");
+extern "C" int X_func_001351B0(...) asm("func_001351B0");
+extern "C" int X_func_00135594(...) asm("func_00135594");
+extern "C" int X_func_0017F8FC(...) asm("func_0017F8FC");
+extern "C" int X_func_00187464(...) asm("func_00187464");
+extern "C" int X_func_001913C4(...) asm("func_001913C4");
+extern "C" int X_func_0019143C(...) asm("func_0019143C");
+extern "C" int X_func_00191478(...) asm("func_00191478");
+extern "C" int X_func_00191F44(...) asm("func_00191F44");
+extern "C" int X_func_00191F98(...) asm("func_00191F98");
+extern "C" int X_func_001A0684(...) asm("func_001A0684");
+extern "C" int X_func_001A074C(...) asm("func_001A074C");
+extern "C" int X_func_001C5D08(...) asm("func_001C5D08");
+extern "C" int X_func_001C65E8(...) asm("func_001C65E8");
+extern "C" int X_func_001C6A40(...) asm("func_001C6A40");
+extern "C" int X_func_001CD044(...) asm("func_001CD044");
+extern "C" int X_func_001CF9D4(...) asm("func_001CF9D4");
+extern "C" int X_func_001CFA5C(...) asm("func_001CFA5C");
+extern "C" int X_func_001D046C(...) asm("func_001D046C");
+extern "C" int X_func_001D19A8(...) asm("func_001D19A8");
+extern "C" int X_func_001E7724(...) asm("func_001E7724");
+extern "C" int X_func_001E7D7C(...) asm("func_001E7D7C");
+extern "C" int X_func_001EA5EC(...) asm("func_001EA5EC");
+extern "C" int X_func_001EAFB0(...) asm("func_001EAFB0");
+extern "C" int X_func_001F61EC(...) asm("func_001F61EC");
+extern "C" int X_func_00211BE4(...) asm("func_00211BE4");
+extern "C" int X_func_00213D00(...) asm("func_00213D00");
+extern "C" int X_rand(...) asm("rand");
+extern int D_006E9840;
+extern int D_006FBD80;
+extern int D_0073E91C;
+extern int D_007812C0;
+extern int D_007A3D80;
+extern int D_007A4440;
+extern int D_007B2580;
+
+extern "C" int func_001E9A34()
+{
+    return 1;
+}
+
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001E9A3C);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveTypeGen__vfunc_06);
+
+extern "C" void TskMoveTypeGen__vfunc_05(void) {
+}
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDA88);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDA98);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDAC0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDAC8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDAD0);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001E9CB4);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EA5EC);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAA38);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAB54);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAC38);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EACB8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveTypeGen__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAF00);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAFB0);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EB63C);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveTypeRound__vfunc_06);
+
+extern "C" void TskMoveTypeRound__vfunc_05(void) {
+}
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveTypeRound__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EBB80);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EBDE8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC0E4);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB20);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB28);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB30);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB38);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB40);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB48);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB50);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB58);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB60);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB68);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB70);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB78);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB80);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB88);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB90);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB98);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDBA0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDBA8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDBB0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDBB8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDBC0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDBC8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDBD0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDBD8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDBE0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDBE8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDBF0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC10);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC18);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC20);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC28);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC30);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC38);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC40);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC48);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC50);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC58);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC60);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC68);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC70);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC78);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC80);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC88);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC90);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDC98);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCA0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCA8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCB0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCB8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCC0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCC8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCD0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCD8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCE0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCE8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCF0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCF8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD00);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD08);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD10);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD18);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD20);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD28);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD30);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD38);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD40);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD48);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD50);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD58);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD60);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD68);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD70);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD78);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC344);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovePointPath__vfunc_06);
+
+extern "C" void TskMovePointPath__vfunc_05(void) {
+}
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovePointPath__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC6E8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC72C);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC774);
+
+extern "C" int func_001EC7E8(int arg0)
+{
+    (*(int *)(int *)((char *)(arg0) + 0x10)) = (int) ((*(int *)(int *)((char *)(arg0) + 0xC)) + ((X_rand() % (int) (*(int *)(int *)((char *)(arg0) + 0x18))) * 8));
+    return 0;
+}
+
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC834);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC940);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveSectaFindPath__vfunc_06);
+
+extern "C" void TskMoveSectaFindPath__vfunc_05(void) {
+}
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001ECBE0);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001ECDD4);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001ECEBC);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001ECF3C);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveSectaFindPath__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001ED1D0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDDA0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDDA8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDDB0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDDB8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDDC0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDDC8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDDD0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDDD8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDDE0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDDE8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDDF0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDDF8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDE00);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDE08);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDE10);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDE18);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDE20);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDE28);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDE30);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDE38);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDE40);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDE48);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDE50);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDE58);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001ED998);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveSecta__vfunc_06);
+
+extern "C" void TskMoveSecta__vfunc_05(int arg0)
+{
+    if (X_func_001E7D7C((int)&D_007A3D80, *(int *)(*(int *)(int *)((char *)(arg0) + 0x10))) != 0) {
+        X_func_001E7724((int)&D_007A3D80, *(int *)(*(int *)(int *)((char *)(arg0) + 0x10)));
+    }
+}
+
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveSecta__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EE2FC);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveAdj__vfunc_06);
+
+extern "C" void TskMoveAdj__vfunc_05(void) {
+}
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveAdj__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EE4A8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskRotAdj__vfunc_06);
+
+extern "C" void TskRotAdj__vfunc_05(void) {
+}
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskRotAdj__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EE7F0);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EE954);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EEAEC);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovePhysic__vfunc_06);
+
+extern "C" void TskMovePhysic__vfunc_05(void) {
+}
+
+extern "C" int func_001EEC44()
+{
+    return 0;
+}
+
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EEC4C);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF0D8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF100);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovePhysic__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF184);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskAvoidMove__vfunc_06);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskAvoidMove__vfunc_05);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF498);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF888);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF9CC);
+
+extern "C" int func_001EFAA8()
+{
+    return 1;
+}
+
+
+extern "C" int func_001EFAB0()
+{
+    return 1;
+}
+
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EFAB8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EFEB8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0288);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0358);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskAvoidMove__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0434);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskChrRot__vfunc_06);
+
+extern "C" void TskChrRot__vfunc_05(void) {
+}
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskChrRot__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F090C);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0B50);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0E14);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0E90);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0F9C);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F10A4);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F11A0);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F1298);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F13A8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F14CC);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F1670);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEC0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEC8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDED0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDED8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEE0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEE8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEF0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEF8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF00);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF08);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF10);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF28);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF40);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF58);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF70);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF80);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF90);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDFB0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDFB8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDFD8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDFE0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDFF0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDFF8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE000);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE008);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE010);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE018);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE020);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE028);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE030);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE038);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE040);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE048);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE050);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE058);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE060);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE068);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE070);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE078);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE080);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE088);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE090);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE098);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE0A0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE0A8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE0B0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE0B8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE0C0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE0C8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE0D0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE0D8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE0E0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE0E8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE0F0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE0F8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE100);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE108);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE110);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE130);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE140);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE148);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE150);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE158);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE160);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE168);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE170);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE178);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE180);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE188);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE190);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE198);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1A0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1A8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1B0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1B8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1C0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1C8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1D0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1D8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1E0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1E8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1F0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1F8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE200);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE208);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE210);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE218);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE220);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE228);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE230);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE238);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE240);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE248);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE250);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE258);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE260);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE268);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE270);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE278);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE280);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE288);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE290);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE298);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE2A0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE2C0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE2C8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE2D0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE2D8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE2E0);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F184C);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskFrameFunc__vfunc_06);
+
+extern "C" void TskFrameFunc__vfunc_05(int arg0)
+{
+    int temp_v0;
+    int temp_v0_2;
+
+    if ((*(int *)(int *)((char *)(arg0) + 0x4)) == 8) {
+        temp_v0 = (*(int *)(int *)((char *)(arg0) + 0x18));
+        if (temp_v0 != 0) {
+            X_func_001A074C(temp_v0);
+            temp_v0_2 = (*(int *)(int *)((char *)(arg0) + 0x18));
+            if (temp_v0_2 != 0) {
+                X_func_001A0684(temp_v0_2, 3);
+            }
+            (*(int *)(int *)((char *)(arg0) + 0x18)) = 0;
+        }
+    }
+}
+
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskFrameFunc__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F27E0);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2920);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2A84);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2BCC);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2D38);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2EC4);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE3B8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE3C0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE3C8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE3D0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE3D8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE3E0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE3E8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE3F0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE3F8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE400);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE408);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE410);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE418);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", jtbl_002FE420);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE480);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE488);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE490);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE498);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE4A0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE4A8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE4B0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE4B8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE4C0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE4C8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE4D0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE4D8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE4E0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE4E8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE4F0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE4F8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE500);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE508);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE510);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE518);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE520);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2F0C);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F34C8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F370C);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3760);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3788);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F37B8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE548);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE550);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE558);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE560);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3824);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3B3C);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3B74);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3C44);
+
+extern "C" int func_001F3D90()
+{
+    return 1;
+}
+
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3D98);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F4088);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskGenFrameFunc__vfunc_06);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskGenFrameFunc__vfunc_04);
+
+extern "C" int func_001F415C(int arg0)
+{
+    X_func_0017F8FC((int)&D_007B2580, (*(int *)(int *)((char *)(arg0) + 0x10)));
+    return 1;
+}
+
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F4184);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskSysFunc__vfunc_06);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskSysFunc__vfunc_05);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskSysFunc__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F42C4);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F438C);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovie__vfunc_06);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovie__vfunc_05);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE588);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE590);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovie__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F47F0);
+
+extern "C" void TskSeqEvent__vfunc_05(void) {
+}
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskSeqEvent__vfunc_04);
+
+extern "C" int func_001F4910()
+{
+    return 1;
+}
+
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F4918);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE5E0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE5E8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F4A24);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMsgMan__vfunc_06);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMsgMan__vfunc_05);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMsgMan__vfunc_02);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMsgMan__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F50B8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F5244);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskAttach__vfunc_06);
+
+extern "C" void TskAttach__vfunc_05(void) {
+}
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskAttach__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F5350);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F5410);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F5558);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE698);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE6A8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE6B8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F5680);
