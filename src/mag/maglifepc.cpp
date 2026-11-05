@@ -7,8 +7,20 @@ public:
     virtual void vfunc09(int theMode, int theA);
 };
 #define I(p, off) (*(int *)((char *)(p) + (off)))
+#include "bed/bedpad.h"
+class MagPCMode {
+public:
+    virtual void vfunc01();
+    virtual void vfunc02();
+    virtual int vfunc03(MagPC *thePC, void *theA);
+};
+extern int D_00297140;
+extern int D_006E9840;
+extern "C" int func_0011C464(MagPC *self, int theA);
+extern "C" int func_0011C4C0(MagPC *self);
+extern "C" int func_0011BE30(MagPC *self);
 extern "C" int func_0011AB88(MagPC *self);
-extern "C" int func_0011AC24(MagPC *self, void *thePad);
+extern "C" int func_0011AC24(MagPC *self, BedPad *thePad);
 extern "C" int func_0011ACF4(MagPC *self, void *thePad);
 extern "C" int func_00131550(void *theScene);
 extern "C" void func_0011C1E8(MagPC *self, int theMode, int theA, int theForce);
@@ -17,9 +29,59 @@ extern "C" void func_0011C2AC(MagPC *self, int theA);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011AB40);
 
+// NON_MATCHING: close, not identical yet.
+#ifdef NON_MATCHING
+extern "C" int func_0011AB88(MagPC *self)
+{
+    if (I(self, 0x1B4) >= 0) {
+        return I(self, 0x1B4);
+    }
+    if (I(self, 0x54) == 1) {
+        return 3;
+    }
+    if (I(self, 0x54) == 3) {
+        return 4;
+    }
+    float life = (float)func_0011C464(self, I(self, 0x54));
+    if (life / (float)func_0011C4C0(self) <= 0.29999999f) {
+        return 2;
+    }
+    return I(self, 0xD0) < 0x12D;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011AB88);
+#endif
 
+
+// NON_MATCHING: close, not identical yet.
+#ifdef NON_MATCHING
+extern "C" int func_0011AC24(MagPC *self, BedPad *thePad)
+{
+    int r = 0;
+    float s = thePad->getStick((float *)((char *)self + 0x108), (float *)((char *)self + 0x10C));
+    *(float *)((char *)self + 0x114) = thePad->getChange();
+    if (*(float *)((char *)self + 0x1F8) <= s) {
+        *(float *)((char *)self + 0x104) = s;
+        if (s > 0.96999997f && I(self, 0xE4) != 2) {
+            r = 2;
+            I(self, 0x84) = 0;
+            if (I(self, 0xEC) != 2) {
+                D_00297140 = D_006E9840;
+            }
+        } else {
+            I(self, 0x84) = 0;
+            r = 1;
+        }
+    } else {
+        I(self, 0x84) = 0;
+        *(float *)((char *)self + 0x104) = 0.0f;
+    }
+    return r;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011AC24);
+#endif
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011ACF4);
 
@@ -28,7 +90,7 @@ extern "C" void func_0011AD6C(MagPC *self, void *thePad)
     I(self, 0xF0) = I(self, 0xE4);
     I(self, 0xE4) = func_0011AB88(self);
     I(self, 0xEC) = I(self, 0xE0);
-    I(self, 0xE0) = func_0011AC24(self, thePad);
+    I(self, 0xE0) = func_0011AC24(self, (BedPad *)thePad);
     I(self, 0xE8) = I(self, 0xDC);
     I(self, 0xDC) = func_0011ACF4(self, thePad);
     if (I(self, 0xDC) < 0) {
@@ -366,9 +428,39 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011B07C);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011B128);
 
+// NON_MATCHING: close, not identical yet.
+#ifdef NON_MATCHING
+extern "C" int func_0011B204(MagPC *self, float theA, float theB)
+{
+    int r = 1;
+    if (func_0011BE30(self) == 0) {
+        float d = theB - theA;
+        if (d < -DOG_PI) {
+            d += DOG_PI2;
+        } else if (d >= DOG_PI) {
+            d -= DOG_PI2;
+        }
+        r = 0;
+        if (-2.670354f <= d && d < 2.670354f) {
+            r = 1;
+        }
+    }
+    return r;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011B204);
+#endif
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011B2C4);
+
+extern "C" int func_0011B2C4(MagPC *self, void *theA)
+{
+    MagPCMode *mode = *(MagPCMode **)((char *)self + 0x134);
+    if (mode) {
+        return mode->vfunc03(self, theA);
+    }
+    return 0;
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", MagLifePC__vfunc_16);
 
