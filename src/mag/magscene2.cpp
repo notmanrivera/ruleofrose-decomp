@@ -1,5 +1,7 @@
 #include "ror.h"
 #include "include_asm.h"
+extern const char D_002EDD80[];
+extern const char D_002EDF50[];
 #undef ASSERT_FILE
 #define ASSERT_FILE D_002EDC58
 extern const char D_002EDC58[];
@@ -7,6 +9,17 @@ extern const char D_002EDF08[];
 extern const char D_002EDED0[];
 #include "mag/magscene.h"
 #include "dog/dogtexinfo.h"
+#include "bed/bedmemory.h"
+extern BedMemory D_006E9800;
+extern "C" void *func_00142FD0(void *theLoader, const char *theName);
+extern "C" int func_00142C88(void *theLoader, int theID);
+extern "C" void *func_00142B18(void *theLoader, int theIndex);
+extern "C" void func_0017C2C0(void *theA);
+extern "C" int func_00138CE8(MagScene *self, I3dDraw *theDraw, int theID, void *thePtr, int theA);
+extern "C" int func_001388E8(MagScene *self, int theID);
+extern "C" int func_0013884C(MagScene *self);
+extern "C" int func_00138AC8(MagScene *self, int theActorNo);
+extern "C" int func_001377F0_0(MagScene *self, I3dDraw *theDraw, int theA, void *thePtr, int theB) asm("func_001377F0__8MagSceneP7I3dDrawiii");
 
 extern "C" int func_001425DC(void *theLoader);
 extern "C" int func_00142ED8(void *theLoader);
@@ -220,9 +233,52 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magscene2", D_002EDE30);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene2", func_0013836C);
 
+// NON_MATCHING: other registers.
+#ifdef NON_MATCHING
+extern "C" void func_00138610(MagScene *self, I3dDraw *theDraw, const char *theName)
+{
+#line 763
+    ASSERT_S(theName, D_002EDED0);
+    void *p = func_00142FD0((char *)self + 0x224C, theName);
+#line 768
+    ASSERT_S(p, D_002EDD80);
+    int no = func_001377F0_0(self, theDraw, 9999, p, 0);
+    *(void **)((char *)self + no * 0x520 + 0x29540) = p;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscene2", func_00138610);
+#endif
 
+
+// NON_MATCHING: other registers.
+#ifdef NON_MATCHING
+extern "C" void func_001386D4(MagScene *self, int theNo)
+{
+    int *t = (int *)((char *)self + theNo * 0x520 + 0x29A30);
+    if (t[0] >= 0) {
+        char *base = (char *)self + theNo * 0x520;
+        sceGsSyncPath(0, 0);
+        ((DogModel *)(base + 0x29550))->vfunc06(0);
+        ((DogModel *)(base + 0x296F0))->vfunc06(0);
+        ((DogModel *)(base + 0x29890))->vfunc06(0);
+        t[1] = 0;
+        t[2] = 0;
+        t[3] = 0;
+        void **root = (void **)((char *)self + theNo * 0x520 + 0x29540);
+        *(int *)((char *)self + theNo * 0x520 + 0x29A40) = 0;
+        if (*root) {
+            D_006E9800.free(*root);
+            *root = 0;
+        }
+        t[0] = -1;
+        self->func_0013FF00(theNo);
+        func_0017C2C0((char *)self + 0x8542C);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscene2", func_001386D4);
+#endif
+
 
 extern "C" void func_00138804(MagScene *self)
 {
@@ -295,7 +351,24 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magscene2", D_002EDED8);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/magscene2", D_002EDF08);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene2", func_00138AC8);
+extern "C" int func_00138AC8(MagScene *self, int theActorNo)
+{
+    if (!(theActorNo >= 0 && theActorNo < 128)) {
+#line 965
+        ASSERT(theActorNo >= 0 && theActorNo < 128);
+        return -300;
+    }
+    int no = func_0013884C(self);
+    if (no < 0) {
+        return -100;
+    }
+    DogActor *actor = &self->m_actor[no];
+    actor->reset();
+    self->m_unk29120[no] = 0;
+    self->m_unk29120[no + 0x80] = 0;
+    return actor->vfunc21(&self->m_actor[theActorNo]) ? -200 : no;
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene2", func_00138BC4__8MagSceneP7I3dDrawiiPCc);
 
@@ -303,7 +376,32 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magscene2", D_002EDF50);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene2", func_00138CE8);
 
+// NON_MATCHING: other registers.
+#ifdef NON_MATCHING
+int MagScene::func_00138ED0(I3dDraw *theDraw, int theID, const char *thePack)
+{
+    if (theID < 0) {
+#line 1281
+        ASSERT_S(theID >= 0, D_002EDF08);
+        return -999;
+    }
+    int no = func_001388E8(this, theID);
+    if (no >= 0) {
+        return func_00138AC8(this, no);
+    }
+    void *loader = (char *)this + 0x215C;
+    int k = func_00142C88(loader, theID);
+#line 1302
+    ASSERT_S(k >= 0, D_002EDF50);
+    void *p = func_00142B18(loader, k);
+#line 1304
+    ASSERT_S(p, D_002EDD80);
+    return func_00138CE8(this, theDraw, theID, p, 0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscene2", func_00138ED0__8MagSceneP7I3dDrawiPCc);
+#endif
+
 
 extern "C" void func_00139010(MagScene *self, int theN)
 {
