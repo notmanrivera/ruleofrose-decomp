@@ -9,8 +9,15 @@
 #include "ror.h"
 #include "dog/dogactor.h"
 #include "sdk/libgraph.h"
+#include "mag/maglifeman.h"
 
 class BedPad;
+class MagLifeWindow;
+
+// The 0x6C bytes MagScene keeps per window; func_001BEBEC fills them.
+struct MagWindowPage {
+    unsigned char m_unk00[0x6C];
+};
 
 // One line of a parameter text, split by txtParse (unk/001056E8.cpp).
 struct TxtToken {
@@ -50,9 +57,17 @@ public:
     float m_opt_shadow_blackness;   // +0x022A0
     float m_opt_shadow_offset;      // +0x022A4
     float m_opt_ambient_extra;      // +0x022A8
-    unsigned char m_unk022AC[0x20];
+    unsigned char m_unk022AC[0x10];
+    int m_dbg_window[4];            // +0x022BC
     int m_unk022CC;                 // +0x022CC
-    unsigned char m_unk022D0[0x650];
+    unsigned char m_unk022D0[0x60];
+    MagLifeManager m_life_man;      // +0x02330
+    MagLifeWindow *m_window[4];     // +0x02734
+    MagWindowPage m_unk02744[4];    // +0x02744
+    int m_unk028F4[4];              // +0x028F4
+    int m_unk02904;                 // +0x02904
+    void *m_unk02908;               // +0x02908
+    unsigned char m_unk0290C[0x14];
     DogActor m_actor[MAG_MAX_ACTOR]; // +0x02920
     int m_unk29120[0x200];          // +0x29120: per model (func_00138ED0's result)
     unsigned char m_unk29920[0x1394];
@@ -89,6 +104,10 @@ public:
     void func_001390D4(int theA, int theB, int theC);
     void func_0013910C(int theA, int theB, int theC);
     void func_0013BCC0(I3dDraw *theDraw, sceGsDBuff *theDb, int theFrame);
+    MagLifeWindow *func_00143114(int theLevel) asm("func_00143114");
+    void func_0014313C(const BedPad &thePad0, const BedPad &thePad1) asm("func_0014313C");
+    int func_0014324C(int theLevel) asm("func_0014324C");
+    void func_00143430(int theLevel) asm("func_00143430");
     void func_0013C29C();
     void func_0013C2EC(const DogVector &thePos, const DogVector &theDir);
     void func_0013C328(char *theText) asm("func_0013C328");
