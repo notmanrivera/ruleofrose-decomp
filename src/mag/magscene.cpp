@@ -25,6 +25,13 @@ extern "C" void func_001BFF28(void *thePage, int theA);
 extern "C" void func_001BFF5C(void *thePage, int theA);
 extern "C" void func_001BFF64(void *thePage, int theA);
 extern "C" void func_001C047C(void *thePage, int theA);
+extern "C" void setActor__9MagLifePCP8DogActorii(void *thePC, DogActor *theActor, int theNo, int theType);
+extern "C" void setActor__10MagLifeBwnP8DogActorii(void *theBwn, DogActor *theActor, int theNo, int theType);
+extern "C" void func_0011DD40(void *thePC);
+extern "C" void func_00132430(MagScene *self, int theNo);
+extern "C" void transform__11DogEntityEx(void *theCamera);
+extern const char D_002ED570[];
+extern const char D_002ED580[];
 extern "C" void func_00133144(MagScene *self, int theNo, int theID, int theA, int theB, int theC, float theD);
 extern "C" void func_001331F4(MagScene *self, int theNo, int theID, int theA, int theB, int theC, float theD);
 extern "C" void func_0012F790(void *theFader, void *theTexInfo);
@@ -81,9 +88,53 @@ extern "C" void func_00131690(MagScene *self)
 }
 
 
+// NON_MATCHING: close, not identical yet.
+#ifdef NON_MATCHING
+void MagScene::func_001316B8(int theNo, int theType)
+{
+    void *pc = &m_pc;
+    BedSubMode *sub = &m_sub_mode;
+    *(int *)((char *)this + 0x853B8) = theNo;
+    *(int *)((char *)this + 0x22AC) = theType;
+    if (theNo >= 0) {
+        setActor__9MagLifePCP8DogActorii(pc, &m_actor[theNo], theNo, theType);
+        m_unk29120[theNo] |= 0x60;
+        func_0011DD40(pc);
+        ((int *)sub)[0] = 1;
+        ((int *)sub)[1] = -1;
+    } else {
+        setActor__9MagLifePCP8DogActorii(pc, 0, theNo, theType);
+        ((int *)sub)[1] = -1;
+        ((int *)sub)[0] = 0;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001316B8__8MagSceneii);
+#endif
 
+
+// NON_MATCHING: close, not identical yet.
+#ifdef NON_MATCHING
+void MagScene::func_00131790(int theNo, int theType)
+{
+    void *bwn = (char *)this + 0x2AFE0;
+    *(int *)((char *)this + 0x853B4) = theNo;
+    if (theNo >= 0) {
+        setActor__10MagLifeBwnP8DogActorii(bwn, &m_actor[theNo], theNo, theType);
+        char *ctrl = (char *)this + 0x2BD20;
+        *(void **)(ctrl + 0x70) = bwn;
+        *(void **)(ctrl + 0x74) = &m_pc;
+    } else {
+        setActor__10MagLifeBwnP8DogActorii(bwn, 0, -1, 0);
+        char *ctrl = (char *)this + 0x2BD20;
+        *(void **)(ctrl + 0x70) = 0;
+        *(void **)(ctrl + 0x74) = 0;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131790__8MagSceneii);
+#endif
+
 
 INCLUDE_RODATA("asm/nonmatchings/mag/magscene", D_002ED500);
 
@@ -110,7 +161,35 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_0013233C);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00132430);
 
+// NON_MATCHING: close, not identical yet.
+#ifdef NON_MATCHING
+extern "C" void func_0013262C(MagScene *self, int theA)
+{
+    int *flag = self->m_unk29120;
+    for (int i = 0; i < 128; i++) {
+        DogActor *actor = &self->m_actor[i];
+        if (actor->m_i3r_root && I3rRoot__CheckIdString(actor->m_i3r_root) != 0) {
+            ror_assert(D_002ED570, 248, D_002ED580);
+        }
+        if (actor->m_i3r_root) {
+            if (theA == 0) {
+                if (!(*flag & 8)) {
+                    self->m_actor[i].func_0010D388();
+                    if (flag[0x80]) {
+                        func_00132430(self, i);
+                    }
+                }
+            } else if (*flag & 8) {
+                self->m_actor[i].func_0010D388();
+            }
+        }
+        flag++;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_0013262C);
+#endif
+
 
 extern "C" void func_00132744(MagScene *self)
 {
@@ -128,7 +207,12 @@ extern "C" void func_00132784(MagScene *self)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001327A0);
+extern "C" void func_001327A0(MagScene *self)
+{
+    self->m_life_man.live(4);
+    transform__11DogEntityEx((char *)self + 0x2AB70);
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001327DC__8MagSceneP6BedPadT1);
 
@@ -140,7 +224,18 @@ extern "C" int func_00133090(MagScene *self, DogActor *thePtr)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001330F4);
+extern "C" int func_001330F4(MagScene *self, int theNo)
+{
+    DogMotionBlend *m = &self->m_actor[theNo].m_motion_now;
+    int r;
+    if (*(float *)((char *)m + 4) == 0.0f) {
+        r = ~m->getMainMotionNo();
+    } else {
+        r = m->getMainMotionNo();
+    }
+    return r;
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133144);
 
@@ -530,7 +625,22 @@ extern "C" void func_00135740(MagScene *self, int winNo)
 }
 
 
+// NON_MATCHING: close, not identical yet.
+#ifdef NON_MATCHING
+extern "C" void func_001357B0(MagScene *self, int theA, int theB)
+{
+    BedSubMode *sub = &self->m_sub_mode;
+    ((int *)sub)[0] = 3;
+    ((int *)sub)[1] = -1;
+    *(int *)((char *)self + 0x2BE54) = theB;
+    ((int *)sub)[2] = theA;
+    ((int *)sub)[3] = *(int *)((char *)self + 0x853B8) | (*(int *)((char *)self + 0x22AC) << 16);
+    self->func_0013F07C();
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001357B0);
+#endif
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_0013580C);
 
