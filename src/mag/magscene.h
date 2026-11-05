@@ -11,6 +11,18 @@
 #include "sdk/libgraph.h"
 
 class BedPad;
+
+// One line of a parameter text, split by txtParse (unk/001056E8.cpp).
+struct TxtToken {
+    char *m_name;
+    int m_type;
+    union {
+        int m_int;
+        float m_float;
+        char *m_str;
+    };
+};
+int txtParse(TxtToken *theToken, int theMax, char *theText);
 struct I3dDraw;
 
 // The scene's actors (the characters, the dog...).
@@ -26,6 +38,7 @@ public:
     unsigned char m_unk10[0xD0];    // +0x10
 
     int func_0011E080();
+    void func_0011B964(int theID, float theValue) asm("func_0011B964");
     void func_0012CDB0();           // mag/maglifepceff.cpp: ASSERT(0) stubs
     void func_0012CDDC();
     void func_0012CE08();
@@ -33,18 +46,29 @@ public:
 
 class MagScene {
 public:
-    unsigned char m_unk00000[0x22CC];
+    unsigned char m_unk00000[0x22A0];
+    float m_opt_shadow_blackness;   // +0x022A0
+    float m_opt_shadow_offset;      // +0x022A4
+    float m_opt_ambient_extra;      // +0x022A8
+    unsigned char m_unk022AC[0x20];
     int m_unk022CC;                 // +0x022CC
     unsigned char m_unk022D0[0x650];
     DogActor m_actor[MAG_MAX_ACTOR]; // +0x02920
     int m_unk29120[0x200];          // +0x29120: per model (func_00138ED0's result)
-    unsigned char m_unk29920[0x14A0];
+    unsigned char m_unk29920[0x1394];
+    float m_opt_zoom_ratio;         // +0x2ACB4
+    unsigned char m_unk2ACB8[0xE4];
+    int m_unk2AD9C;                 // +0x2AD9C
+    DogVector m_unk2ADA0;           // +0x2ADA0
+    DogVector m_unk2ADB0;           // +0x2ADB0
     MagLifePC m_pc;                 // +0x2ADC0
     int m_unk2AEA0;                 // +0x2AEA0
     int m_unk2AEA4;                 // +0x2AEA4
     unsigned char m_unk2AEA8[0xE78];
     int m_unk2BD20;                 // +0x2BD20
-    unsigned char m_unk2BD24[0x597DC];
+    unsigned char m_unk2BD24[0x179F8];
+    TxtToken m_option_bucket[16];   // +0x4371C
+    unsigned char m_unk437DC[0x41D24];
 
     MagScene();
     ~MagScene();
@@ -67,6 +91,7 @@ public:
     void func_0013BCC0(I3dDraw *theDraw, sceGsDBuff *theDb, int theFrame);
     void func_0013C29C();
     void func_0013C2EC(const DogVector &thePos, const DogVector &theDir);
+    void func_0013C328(char *theText) asm("func_0013C328");
     void func_0013CAF0(int theA, int theB);
     void func_0013D5AC(int *theOut);
     void func_0013F528(int *theParam, int theA);
