@@ -25,6 +25,19 @@ extern "C" void func_001BFF28(void *thePage, int theA);
 extern "C" void func_001BFF5C(void *thePage, int theA);
 extern "C" void func_001BFF64(void *thePage, int theA);
 extern "C" void func_001C047C(void *thePage, int theA);
+extern "C" void func_00133144(MagScene *self, int theNo, int theID, int theA, int theB, int theC, float theD);
+extern "C" void func_001331F4(MagScene *self, int theNo, int theID, int theA, int theB, int theC, float theD);
+extern "C" void func_0012F790(void *theFader, void *theTexInfo);
+extern "C" void func_0012FC80(void *theFader, float theMagnify, int theA);
+extern "C" void func_0012F518(void *theFader, void *theTexInfo, const char *theName);
+extern "C" void func_0012F7F4(void *theFader, int theA, int theB);
+extern "C" void func_001BEEB4(void *thePage);
+extern "C" void func_001BFE30(void *thePage, int theA);
+extern "C" void updatePicture(void *thePicture) asm("func_00219A98");
+extern "C" void func_001305EC(MagLifeWindow *w, int a, int b);
+extern "C" void func_0011AF04(void *thePC);
+extern "C" void message__9MagLifePCiiPv(void *thePC, int theA, int theB, void *theC);
+extern "C" void func_0012C9C0(void *thePC);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_0013114C);
 
@@ -42,15 +55,31 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001311F4);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131550);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131608);
+extern "C" int func_00131608(MagScene *self)
+{
+    return *(int *)((char *)self + 0x41880);
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131618);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_0013164C);
+extern "C" void func_0013164C(MagScene *self)
+{
+    return func_0011AF04(&self->m_pc);
+}
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_0013166C);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131690);
+extern "C" void func_0013166C(MagScene *self, int theA, int theB)
+{
+    return message__9MagLifePCiiPv(&self->m_pc, theA, theB, 0);
+}
+
+
+extern "C" void func_00131690(MagScene *self)
+{
+    func_0012C9C0(&self->m_pc);
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001316B8__8MagSceneii);
 
@@ -83,15 +112,33 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00132430);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_0013262C);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00132744);
+extern "C" void func_00132744(MagScene *self)
+{
+    BedSubMode *sub = &self->m_sub_mode;
+    int mode = 8;
+    sub->push();
+    ((int *)sub)[0] = mode;
+    ((int *)sub)[1] = -1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00132784);
+
+extern "C" void func_00132784(MagScene *self)
+{
+    self->m_sub_mode.pop();
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001327A0);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001327DC__8MagSceneP6BedPadT1);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133090);
+extern "C" int func_00133090(MagScene *self, DogActor *thePtr)
+{
+#line 1495
+    ASSERT(thePtr);
+    return (unsigned int)((char *)thePtr - (char *)self - 0x2920) / sizeof(DogActor);
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001330F4);
 
@@ -99,15 +146,44 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133144);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001331F4);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133288);
+extern "C" void func_00133288(MagScene *self, int theNo, const char *theName, int theA, int theB, int theC, float theD)
+{
+    int id = self->m_actor[theNo].func_0010AA9C(theName);
+    if (id >= 0) {
+        func_00133144(self, theNo, id, theA, theB, theC, theD);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133324);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001333C0);
+extern "C" void func_00133324(MagScene *self, int theNo, const char *theName, int theA, int theB, int theC, float theD)
+{
+    int id = self->m_actor[theNo].func_0010AA9C(theName);
+    if (id >= 0) {
+        func_001331F4(self, theNo, id, theA, theB, theC, theD);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001333E4);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133440);
+extern "C" void func_001333C0(MagScene *self, int theNo, float theSpeed)
+{
+    self->m_actor[theNo].m_motion_now.setMainSpeed(theSpeed * 0.016666694f);
+}
+
+
+extern "C" float func_001333E4(MagScene *self, int theNo, int theID)
+{
+    if (theID < 0) {
+        theID = self->m_actor[theNo].m_motion_now.getMainMotionNo();
+    }
+    return self->m_actor[theNo].func_0010D0E8(theID);
+}
+
+
+extern "C" float func_00133440(MagScene *self, int theNo)
+{
+    return *(float *)((char *)&self->m_actor[theNo] + 0x1E8);
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133454);
 
@@ -376,7 +452,17 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magscene", D_002ED6A8);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135234__8MagSceneiiiii);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135364);
+extern "C" void func_00135364(MagScene *self, int winNo, int theA, int theB)
+{
+#line 2395
+    ASSERT_S(winNo >= 0 && winNo < MAX_WINDOW, D_002ED680);
+    if (self->m_window[winNo]) {
+        func_001305EC(self->m_window[winNo], theA, theB);
+        tag_I3dTexInfo_s *tab = ((DogTexInfo *)((char *)self + 0x29520))->m_tex_info;
+    updatePicture(tab[self->m_unk028F4[winNo]].pPicture);
+    }
+}
+
 
 extern "C" void func_00135418(MagScene *self, int winNo, int theA)
 {
@@ -407,27 +493,84 @@ extern "C" void func_0013555C(MagScene *self, int theN, int theA)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135594);
+extern "C" void func_00135594(MagScene *self, int winNo)
+{
+#line 2452
+    ASSERT_S(winNo >= 0 && winNo < MAX_WINDOW, D_002ED680);
+    func_001BEEB4(&self->m_unk02744[winNo]);
+    tag_I3dTexInfo_s *tab = ((DogTexInfo *)((char *)self + 0x29520))->m_tex_info;
+    updatePicture(tab[self->m_unk028F4[winNo]].pPicture);
+}
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135628);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_0013569C);
+extern "C" void func_00135628(MagScene *self, int winNo)
+{
+#line 2469
+    ASSERT_S(winNo >= 0 && winNo < MAX_WINDOW, D_002ED680);
+    tag_I3dTexInfo_s *tab = ((DogTexInfo *)((char *)self + 0x29520))->m_tex_info;
+    updatePicture(tab[self->m_unk028F4[winNo]].pPicture);
+}
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135740);
+
+extern "C" void func_0013569C(MagScene *self, int theN, int theA)
+{
+#line 2478
+    ASSERT_S(theN >= 0 && theN < MAX_WINDOW, D_002ED6A8);
+    func_001BFE30(&self->m_unk02744[theN], theA);
+    tag_I3dTexInfo_s *tab = ((DogTexInfo *)((char *)self + 0x29520))->m_tex_info;
+    updatePicture(tab[self->m_unk028F4[theN]].pPicture);
+}
+
+
+extern "C" void func_00135740(MagScene *self, int winNo)
+{
+#line 2489
+    ASSERT_S(winNo >= 0 && winNo < MAX_WINDOW, D_002ED680);
+    func_001BEBEC(&self->m_unk02744[winNo], self->m_unk02908);
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001357B0);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_0013580C);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135B64);
+extern "C" int func_00135B64(MagScene *self)
+{
+    return *(int *)((char *)self + 0x2BE58) == 0;
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135B78);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135CAC);
+extern "C" void func_00135CAC(MagScene *self, const char *theTexName)
+{
+#line 2711
+    ASSERT(theTexName);
+    MagLife *fader = (MagLife *)((char *)self + 0x41890);
+    func_0012F518(fader, (char *)self + 0x29520, theTexName);
+    MagLifeManager *man = &self->m_life_man;
+    func_0012F7F4(fader, 5, 0);
+    if (man->indexOf(fader) < 0) {
+        man->add(fader, 0x8003);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135D58);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135DCC);
+extern "C" void func_00135D58(MagScene *self, float theMagnify, int theA)
+{
+#line 2725
+    ASSERT(theMagnify > 0.0f);
+    func_0012FC80((char *)self + 0x41890, theMagnify, theA);
+}
+
+
+extern "C" void func_00135DCC(MagScene *self)
+{
+    MagLife *fader = (MagLife *)((char *)self + 0x41890);
+    self->m_life_man.remove(fader);
+    func_0012F790(fader, (char *)self + 0x29520);
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135E20);
 
