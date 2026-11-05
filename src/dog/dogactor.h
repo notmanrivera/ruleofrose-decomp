@@ -137,7 +137,7 @@ public:
     void func_0010AE58();
     void func_0010AE90(int theN, int theUnused);
     int func_0010AF18(int theID, int theFlag, float theSpeed, int theLoop, int theInterp);
-    int func_0010B1B0(int theNo, float theSpeed, int theFlag, int theNext, int theInterp);
+    int func_0010B1B0(int theNo, int theFlag, float theSpeed, int theNext, int theInterp);
     int func_0010B328(int theSub, int theID, const char **theNodes);
     int func_0010B620(int theSub, const char *theName, const char **theNodes);
     void func_0010B918(int n, float theRatio);

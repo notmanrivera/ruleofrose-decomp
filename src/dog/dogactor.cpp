@@ -1886,7 +1886,7 @@ int DogActor::func_0010AF18(int theID, int theFlag, float theSpeed, int theLoop,
 // 0x0010B1B0: plays motion theNo (an id, as func_0010AF18) unless, with
 // flag 4, it or theNext already plays: then only the speed changes and it
 // returns -1. Otherwise the model first takes the old motion's offsets.
-int DogActor::func_0010B1B0(int theNo, float theSpeed, int theFlag, int theNext, int theInterp)
+int DogActor::func_0010B1B0(int theNo, int theFlag, float theSpeed, int theNext, int theInterp)
 {
     ASSERT(theNo >= 0);
     if (theFlag & 4) {
@@ -2882,7 +2882,7 @@ int DogActor::func_0010D1D0(int theID, int theFlag)
             }
         }
     }
-    func_0010B1B0(theID, 0.016666694f, 0, -1, -1);
+    func_0010B1B0(theID, 0, 0.016666694f, -1, -1);
     if (t != 0.0f) {
         m_motion_now.m_main.m_time = t;
     }
@@ -3067,7 +3067,7 @@ void DogActor::func_0010D388()
                     ready();
                     m_motion_now.stop();
                 } else if (flag & 2) {
-                    func_0010B1B0(m_motion_flag[1], 0.016666694f, 1, -1, -1);
+                    func_0010B1B0(m_motion_flag[1], 1, 0.016666694f, -1, -1);
                     sm->m_mode = 1;
                     sm->m_step = 0;
                     m_motion_flag[1] = -1;
