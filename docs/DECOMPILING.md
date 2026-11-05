@@ -439,6 +439,29 @@ Things that changed codegen so far:
 - If-conversion (`.15.ce`, "IF-CASE-2") hoists `x = k` from a `case` body
   above the compare that jumps to it when the body is one insn and `x` is
   dead on the other path (`MagSystem::setPlayer`, still not matching).
+- The moves of a call's arguments come out in reverse declaration order, and
+  a float argument is one of them even though it has its own registers: the
+  game moving `$a2` before `$f12` means the int is declared before the float
+  (`DogActor::func_0010B1B0(int, int, float, int, int)`). Names ending in
+  our own `func_` signature can change for this.
+- A store of a constant loaded into a saved register (`addiu $s2, $zero, 5`
+  after a call) is a local set before the call: `int mode = 5; sub->push();
+  ...[0] = mode;` (`func_0013F210`, `func_00132744`).
+- A `.rodata` table referred to by file-scope data or by code in another
+  function follows all the strings: at file scope it goes after the jump
+  tables, inside a function right after its strings (`sOption`,
+  `mag/magsceneoption`).
+- `#line N` right before an assert saves padding a partial file with
+  thousands of blank lines (`mag/magscene`).
+- In a partial file a string used by asm stays `INCLUDE_RODATA`: `ASSERT_S`
+  with its `D_` symbol, `ASSERT_FILE` for the path. A literal of the same text
+  makes a second copy and `.rodata` comes out too big. Strings used only by
+  C++ can stay literals, and asm finds them through `build/cpp_syms.ld`.
+- Inline methods of a header that assert: if asm of the file uses their
+  strings too, write the assert out with the `D_` symbols
+  (`actorAlive` in `mag/magscene2`).
+- An empty function that `--new` writes for you is plain C++: when asm calls
+  it, it needs `extern "C"` or the link fails (`msg/msgman`).
 
 ## 4. Name it
 

@@ -154,3 +154,21 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 | `Rinnegatamante/vitaGL` | Sí, en la etapa Vita: capa OpenGL sobre sceGxm, muy activa |
 | `TheOfficialFloW/gtasa_vita`, `bully_vita` | Referencia para la etapa Vita (audio, memoria, vitaGL); son ports de binarios Android, no de PS2 |
 | `vitasdk/vitasdk` (imagen Docker oficial) | Sí, en la etapa Vita, fijando una serie mensual |
+
+## Estado de la decompilación (2026-11-05)
+
+Ver `tools/progress.py`. Todo lo subido compila idéntico (SHA-1 del load image).
+Pendientes concretos y cercanos, todos con su C++ bajo `NON_MATCHING`:
+
+- `mag/maglife`: `func_0011A14C` (2 instrucciones) y `func_0011A320` (1). El
+  relleno de delay slots ve `$a0` vivo en el destino del salto; no se encontró
+  qué lo provoca en el fuente.
+- `mag/magloader`: `func_001420F8` ($s2/$s3 cambiados) y `func_00142908`
+  (6 instrucciones de orden).
+- `mag/magscene`: `func_00134944` y `func_00134A00` (registros de float).
+- `mag/maglifewindow`: `func_0012F7F4`, `func_0012F824`, `func_0012FE30` (orden
+  de stores; `build/perm.py`, local, prueba órdenes a fuerza bruta).
+
+Pistas: el RTTI de `mag/magscene2` nombra `MagSceneIF`, `MagSceneIFMap` y
+`MagSceneIFChara`; las clases `MagSceneIfList1/2` y `MagSceneIf` de
+`mag/magsceneif.h` deberían renombrarse cuando se vea cuál es cuál.
