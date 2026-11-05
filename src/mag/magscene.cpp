@@ -233,7 +233,7 @@ extern "C" int func_00134730(MagScene *self, int theW, int theH, int theA, int t
     ASSERT_S(self->m_window[n], "m_window[ n ]");
     self->m_window[n]->func_0012FE30(theW, theH);
     func_001BEBEC(&self->m_unk02744[n], self->m_unk02908);
-    self->m_window[n]->func_00130778(&self->m_unk02744[n]);
+    self->m_window[n]->func_00130778((MagFntMan *)&self->m_unk02744[n]);
     self->m_window[n]->m_font_tex = self->m_unk028F4[n];
     self->m_window[n]->m_unk80 = theFlag;
     if (theFlag > 0) {
@@ -371,7 +371,7 @@ extern "C" void func_00134E18(MagScene *self, int theN, int *theOut)
     ASSERT_S(theN >= 0 && theN < MAX_WINDOW, D_002ED6A8);
     MagLifeWindow *w = self->m_window[theN];
     if (w) {
-        *theOut = w->m_unkCC;
+        *theOut = w->m_ch_h;
     }
 }
 

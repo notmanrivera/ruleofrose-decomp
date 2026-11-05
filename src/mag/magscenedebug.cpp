@@ -56,7 +56,7 @@ int MagScene::func_0014324C(int theLevel)
     ASSERT(m_window[n]);
     m_window[n]->func_0012FE30(0x200, 0x100);
     func_001BEBEC(&m_unk02744[n], m_unk02908);
-    m_window[n]->func_00130778(&m_unk02744[n]);
+    m_window[n]->func_00130778((MagFntMan *)&m_unk02744[n]);
     m_window[n]->m_font_tex = m_unk028F4[n];
     m_life_man.add(m_window[n], 0x8000);
     func_00135494(this, n, 1);
