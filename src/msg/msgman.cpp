@@ -851,7 +851,7 @@ extern "C" void func_001856F4(MsgWin *self, int theA)
 }
 
 
-void func_001856FC(void) {
+extern "C" void func_001856FC(void) {
 }
 
 extern "C" void func_00185704(MsgWin *self)

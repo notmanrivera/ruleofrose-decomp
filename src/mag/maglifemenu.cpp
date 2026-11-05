@@ -125,7 +125,7 @@ extern "C" void MagLifeMenuSave__vfunc_09(char *self)
 
 extern "C" void MagLifeMenuSave__vfunc_12(char *self)
 {
-    return func_001A5CC4(self + 0x40);
+    func_001A5CC4(self + 0x40);
 }
 
 
@@ -145,7 +145,7 @@ extern "C" void MagLifeMenuLoad__vfunc_09(char *self)
 
 extern "C" void MagLifeMenuLoad__vfunc_12(char *self)
 {
-    return func_001A5CC4(self + 0x40);
+    func_001A5CC4(self + 0x40);
 }
 
 
