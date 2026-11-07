@@ -1,0 +1,3 @@
+# The repo is edited from Linux, macOS and Windows (via Docker): keep LF
+# everywhere so a Windows checkout does not rewrite every file.
+* text=auto eol=lf

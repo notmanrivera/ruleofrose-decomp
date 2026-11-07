@@ -1,0 +1,148 @@
+#include "include_asm.h"
+// Translated mechanically from m2c drafts: only what matches byte for byte.
+extern "C" int X_func_0010423C(...) asm("func_0010423C");
+extern "C" int X_func_00118FEC__9MagSystem(...) asm("func_00118FEC__9MagSystem");
+extern "C" int X_func_00119090__9MagSystem(...) asm("func_00119090__9MagSystem");
+extern "C" int X_func_0015ACA0(...) asm("func_0015ACA0");
+extern "C" int X_func_0015AD18(...) asm("func_0015AD18");
+extern "C" int X_func_0015AE78(...) asm("func_0015AE78");
+extern "C" int X_func_0015AEF0(...) asm("func_0015AEF0");
+extern "C" int X_func_0015AF68(...) asm("func_0015AF68");
+extern "C" int X_func_0015AFE0(...) asm("func_0015AFE0");
+extern "C" int X_func_0015B058(...) asm("func_0015B058");
+extern "C" int X_func_0015B0DC(...) asm("func_0015B0DC");
+extern "C" int X_func_0015B154(...) asm("func_0015B154");
+extern "C" int X_func_0015B1CC(...) asm("func_0015B1CC");
+extern "C" int X_func_0015B244(...) asm("func_0015B244");
+extern "C" int X_func_0015B2BC(...) asm("func_0015B2BC");
+extern "C" int X_func_0015B34C(...) asm("func_0015B34C");
+extern "C" int X_func_0015B3DC(...) asm("func_0015B3DC");
+extern "C" int X_func_0015B454(...) asm("func_0015B454");
+extern "C" int X_func_0015B4E4(...) asm("func_0015B4E4");
+extern "C" int X_func_0015B574(...) asm("func_0015B574");
+extern "C" int X_func_0015B5EC(...) asm("func_0015B5EC");
+extern "C" int X_func_0015B8B8(...) asm("func_0015B8B8");
+extern "C" int X_func_00165734(...) asm("func_00165734");
+extern "C" int X_func_00165794(...) asm("func_00165794");
+extern "C" int X_func_00165A68(...) asm("func_00165A68");
+extern "C" int X_func_00165AA8(...) asm("func_00165AA8");
+extern "C" int X_func_00165D38(...) asm("func_00165D38");
+extern "C" int X_func_00165D7C(...) asm("func_00165D7C");
+extern "C" int X_func_00166004(...) asm("func_00166004");
+extern "C" int X_func_00166048(...) asm("func_00166048");
+extern "C" int X_func_00166108(...) asm("func_00166108");
+extern "C" int X_func_00166128(...) asm("func_00166128");
+extern "C" int X_func_00166178(...) asm("func_00166178");
+extern "C" int X_func_00166198(...) asm("func_00166198");
+extern "C" int X_func_00166AD0(...) asm("func_00166AD0");
+extern "C" int X_func_00166EB4(...) asm("func_00166EB4");
+extern "C" int X_func_00166F50(...) asm("func_00166F50");
+extern "C" int X_func_001680A0(...) asm("func_001680A0");
+extern "C" int X_func_001694CC(...) asm("func_001694CC");
+extern "C" int X_func_0016968C(...) asm("func_0016968C");
+extern "C" int X_func_001696FC(...) asm("func_001696FC");
+extern "C" int X_func_00169F94(...) asm("func_00169F94");
+extern "C" int X_func_001D10D0(...) asm("func_001D10D0");
+extern "C" int X_func_001D1410(...) asm("func_001D1410");
+extern "C" int X_func_001D19A8(...) asm("func_001D19A8");
+extern "C" int X_func_001FAC60(...) asm("func_001FAC60");
+extern "C" int X_func_00202F10(...) asm("func_00202F10");
+extern int D_006E9840;
+extern int D_007812C0;
+extern int D_007A3208;
+extern int D_007A3350;
+extern int D_007A3354;
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015A17C);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", PigMain__vfunc_01);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", PigMain__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", PigMain__vfunc_05);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", PigMain__vfunc_06);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", PigMain__vfunc_02);
+
+extern "C" int func_0015AC8C()
+{
+    return X_func_00165734();
+}
+
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015ACA0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/PigMain", D_002F0D68);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/PigMain", D_002F0D78);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/PigMain", D_002F0D88);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015AD18);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015AE78);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015AEF0);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015AF68);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015AFE0);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B058);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B0DC);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B154);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B1CC);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B244);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B2BC);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B34C);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B3DC);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B454);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B4E4);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B574);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B5EC);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B8B8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", PigOutParts__vfunc_02);
+
+extern "C" int PigOutParts__vfunc_03()
+{
+    return -1;
+}
+
+
+extern "C" void PigOutParts__vfunc_04()
+{
+    X_func_00166AD0();
+}
+
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", PigOutTackle__vfunc_02);
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", PigOutTackle__vfunc_03);
+
+extern "C" void PigOutTackle__vfunc_04()
+{
+    X_func_00166AD0();
+}
+
+
+extern "C" void PigOutTest__vfunc_02(int arg0)
+{
+    (*(int *)(int *)((char *)(arg0) + 0x4)) = 0;
+}
+
+
+INCLUDE_ASM("asm/nonmatchings/unk/PigMain", PigOutTest__vfunc_03);

@@ -45,8 +45,11 @@ class GamMan {
 public:
     unsigned char m_unk00000[0x1DCC0];
     GamList<ObjStat *> m_vfchrList;     // +0x1DCC0
+    unsigned char m_unk1DCDC[0x43B8];
+    ObjStat *m_player;                  // +0x22094: the player's object, or 0
 
     GamList<ObjStat *> *getVFchrListPtr() { return &m_vfchrList; }
+    ObjStat *getPlayer() { return m_player; }
 };
 
 // The game manager, constructed by the main file's static initialiser.

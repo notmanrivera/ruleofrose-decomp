@@ -122,6 +122,35 @@ void func_00237678(float (*theOut)[4], float (*theIn)[4]);                 // Do
 void func_002377D0(float (*theOut)[4], float (*a)[4], float (*b)[4]);      // product
 void func_00237818(float (*theOut)[4], float (*theIn)[4], float theRot);   // rotated around X
 void func_00237830(float (*theOut)[4], float (*theIn)[4], float theRot);   // rotated around Y
+// Matching aliases for DogModel::vfunc11's fourth tail: same assembler
+// names, different C++ types so the compiler cannot merge the tails.
+void func_00237640_t4(void *theOut, void *theIn, const float *theVec) asm("func_00237640");
+// The game sets a0/a1/f12 in each predecessor and leaves nop in the shared
+// call's delay slot. Local register variables let the scheduler place the
+// moves normally; the calls then need no argument setup.
+void func_00237830_r(void *theOut, void *theIn, float theRot) asm("func_00237830");
+void func_00237830_t4_r(void *theOut, void *theIn, float theRot) asm("func_00237830");
+#define FUNC_00237830_T12(out, rot) \
+    do { \
+        register void *a0reg asm("$4") = (out); \
+        register float f12reg asm("$f12") = (rot); \
+        register void *a1reg asm("$5") = (out); \
+        func_00237830_r(a0reg, a1reg, f12reg); \
+    } while (0)
+#define FUNC_00237830_T3(out, rot) \
+    do { \
+        register void *a0reg asm("$4") = (out); \
+        register void *a1reg asm("$5") = (out); \
+        register float f12reg asm("$f12") = (rot); \
+        func_00237830_r(a0reg, a1reg, f12reg); \
+    } while (0)
+#define FUNC_00237830_T4(out, rot) \
+    do { \
+        register void *a0reg asm("$4") = (out); \
+        register void *a1reg asm("$5") = (out); \
+        register float f12reg asm("$f12") = (rot); \
+        func_00237830_t4_r(a0reg, a1reg, f12reg); \
+    } while (0)
 void func_00237848(float (*theOut)[4], float (*theIn)[4], float theRot);   // rotated around Z
 void func_00237A78(float (*theOut)[4], float (*theIn)[4], const float *theScale);  // scaled
 float func_0022E958(void *theRoot);                      // length in frames

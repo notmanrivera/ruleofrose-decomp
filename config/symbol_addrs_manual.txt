@@ -171,7 +171,7 @@ func_0010AE90__8DogActorii = 0x0010AE90; // type:func size:0x88
 func_0010D0E8__8DogActori = 0x0010D0E8; // type:func size:0xE8
 func_0010AF18__8DogActoriifii = 0x0010AF18; // type:func size:0x298
 func_0010EDEC__8DogActor = 0x0010EDEC; // type:func size:0xD0
-func_0010B1B0__8DogActorifiii = 0x0010B1B0; // type:func size:0x178
+func_0010B1B0__8DogActoriifii = 0x0010B1B0; // type:func size:0x178
 func_0010ED2C__8DogActorf = 0x0010ED2C; // type:func size:0x90
 func_0010B328__8DogActoriiPPCc = 0x0010B328; // type:func size:0x2F8
 func_0010B620__8DogActoriPCcPPCc = 0x0010B620; // type:func size:0x2F8
@@ -428,6 +428,22 @@ func_0013FE64__8MagSceneii = 0x0013FE64; // type:func
 // scene's player, +0x2ADC0 of MagScene, whose termWorld__9MagLifePC
 // mag/magscene2 calls on the same address).
 func_0011E080__9MagLifePC = 0x0011E080; // type:func
+// mag/maglifeman.cpp: MagLifeManager, the pool of the scene's life objects
+// (MagScene owns one at +0x2330). The class name is original
+// (MagLife0::attached takes a MagLifeManager); MagLifePod, m_life_buf and
+// MAX_LIFE come from the assert strings; the method names are ours.
+clearPod__14MagLifeManagerP10MagLifePod = 0x001194B4; // type:func size:0x14
+unlink__14MagLifeManagerP10MagLifePod = 0x001194C8; // type:func size:0x44
+insertBefore__14MagLifeManagerP10MagLifePodT1 = 0x0011950C; // type:func size:0xA0
+insertAfter__14MagLifeManagerP10MagLifePodT1 = 0x001195AC; // type:func size:0x84
+init__14MagLifeManager = 0x00119630; // type:func size:0x30
+term__14MagLifeManager = 0x00119660; // type:func size:0x74
+add__14MagLifeManagerP7MagLifei = 0x001196D4; // type:func size:0x13C
+remove__14MagLifeManagerP7MagLife = 0x00119810; // type:func size:0xC0
+indexOf__14MagLifeManagerP7MagLife = 0x001198D0; // type:func size:0x38
+removeAt__14MagLifeManageri = 0x00119908; // type:func size:0x60
+live__14MagLifeManageri = 0x00119968; // type:func size:0xD0
+render__14MagLifeManagerP20tag_I3dRenderStage_si = 0x00119A38; // type:func size:0xFC
 // mag/magsystem.cpp's static members (.data, still in asm): m_current_system
 // and m_v_sema are original (assert strings), the other names are ours.
 _9MagSystem$m_current_system = 0x00296190;
@@ -491,3 +507,25 @@ setActorPos__9MagSystemifff = 0x00119234; // type:func size:0x94
 setActorRot__9MagSystemifff = 0x001192C8; // type:func size:0xD4
 setActorRot__9MagSystemiPCf = 0x0011939C; // type:func size:0xF0
 func_0011948C__9MagSystem = 0x0011948C; // type:func size:0x28
+// mag/maglifepceff.cpp: MagLifePC methods (MagLifePC::message calls them
+// with this in $a0).
+func_0012CDB0__9MagLifePC = 0x0012CDB0; // type:func
+func_0012CDDC__9MagLifePC = 0x0012CDDC; // type:func
+func_0012CE08__9MagLifePC = 0x0012CE08; // type:func
+assertFail__FPCciT0 = 0x00216728; // type:func size:0x40 (naga_debug copy of the assert handler)
+nagaLoadFile__FPCc = 0x00216768; // type:func size:0xC0 (reads a whole file into the global heap)
+motNop__Fv = 0x0021614C; // type:func size:0x8
+lookupName__Fii = 0x00216154; // type:func size:0x30
+motConvert__FiP8MotEntryP6MotKey = 0x00216184; // type:func size:0x108
+motSetName__FPCc = 0x0021628C; // type:func size:0x54
+motFunc0__Fi = 0x002162E0; // type:func size:0x2C
+motFunc1__Fv = 0x0021630C; // type:func size:0x28
+motFunc2__Fv = 0x00216334; // type:func size:0x28
+motFunc3__Fv = 0x0021635C; // type:func size:0x28
+motFunc4__Fv = 0x00216384; // type:func size:0x28
+motGetName__Fii = 0x002163AC; // type:func size:0x70
+motFindName__FiPCc = 0x0021641C; // type:func size:0x80
+motGetName2__FiPciii = 0x0021649C; // type:func size:0xFC
+motFunc5__Fv = 0x00216598; // type:func size:0x28
+motGetName3__FiPciii = 0x002165C0; // type:func size:0xD0
+func_0013FF00__8MagScenei = 0x0013FF00; // type:func size:0x130

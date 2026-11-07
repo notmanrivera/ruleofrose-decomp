@@ -733,12 +733,12 @@ void DogModel::func_00114D8C(u_long128 *thePos)
 
 
 // 0x00114E38: a billboard's matrix, facing thePos or along theDir.
-// NON_MATCHING: the game computes &p and &r before ASSERT(thePos), in $s1
-// and $s5, and three of the four paths share the rotY + translate tail;
-// here they are computed after the assert. Tried: p and r declared before
-// the assert, do/for wrappers, reads of r through a pointer, an empty
-// ~DogVector, other forms of y.
-#ifdef NON_MATCHING
+// The game computes &p and &r before ASSERT(thePos), in $s1 and $s5, and
+// three of the four paths share the rotY + translate tail. The fourth tail
+// is kept separate with aliases; the local register variables put a0/a1/f12
+// in each predecessor, leaving the shared call's delay slot empty. The pPtr
+// local and the split y assignment match the original's allocation.
+
 int DogModel::vfunc11(DogVector *theDir, DogVector *thePos)
 {
     int mode = m_flag >> 1;
@@ -749,10 +749,11 @@ int DogModel::vfunc11(DogVector *theDir, DogVector *thePos)
             DogVector d(*thePos);
             DogVector p;
             DogVector r;
-            p.m_x = m_unk40.m_x;
-            p.m_y = m_unk40.m_y;
-            p.m_z = m_unk40.m_z;
-            subVec(&d.m_x, &d.m_x, &p.m_x);
+            DogVector *pPtr = &p;
+            pPtr->m_x = m_unk40.m_x;
+            pPtr->m_y = m_unk40.m_y;
+            pPtr->m_z = m_unk40.m_z;
+            subVec(&d.m_x, &d.m_x, &pPtr->m_x);
 
 
 
@@ -760,24 +761,24 @@ int DogModel::vfunc11(DogVector *theDir, DogVector *thePos)
             if (tilt) {
                 func_00237340(m_unk00);
                 func_00237818(m_unk00, m_unk00, r.m_x);
-                func_00237830(m_unk00, m_unk00, r.m_y);
+                FUNC_00237830_T12(m_unk00, r.m_y);
+                func_00237640(m_unk00, m_unk00, &m_unk40.m_x);
+                func_00237640(m_unk00, m_unk00, &m_unk70.m_x);
+                return 1;
             } else {
                 func_00237340(m_unk00);
-                func_00237830(m_unk00, m_unk00, r.m_y);
+                FUNC_00237830_T12(m_unk00, r.m_y);
+                func_00237640(m_unk00, m_unk00, &m_unk40.m_x);
+                func_00237640(m_unk00, m_unk00, &m_unk70.m_x);
+                return 1;
             }
-            func_00237640(m_unk00, m_unk00, &m_unk40.m_x);
-            func_00237640(m_unk00, m_unk00, &m_unk70.m_x);
-            return 1;
         }
 
 
 
-
-
-
-
         ASSERT(theDir);
-        float y = theDir->m_y + DOG_PI;
+        float y = theDir->m_y;
+        y += DOG_PI;
         if (y >= DOG_PI) {
             y -= DOG_PI2;
         }
@@ -787,20 +788,23 @@ int DogModel::vfunc11(DogVector *theDir, DogVector *thePos)
         if (tilt) {
             func_00237340(m_unk00);
             func_00237818(m_unk00, m_unk00, theDir->m_x);
-            func_00237830(m_unk00, m_unk00, y);
+            FUNC_00237830_T3(m_unk00, y);
+            func_00237640(m_unk00, m_unk00, &m_unk40.m_x);
+            func_00237640(m_unk00, m_unk00, &m_unk70.m_x);
+            return 1;
         } else {
             func_00237340(m_unk00);
-            func_00237830(m_unk00, m_unk00, y);
+            FUNC_00237830_T4(m_unk00, y);
+            func_00237640_t4(m_unk00, m_unk00, &m_unk40.m_x);
+            func_00237640_t4(m_unk00, m_unk00, &m_unk70.m_x);
+            return 1;
         }
-        func_00237640(m_unk00, m_unk00, &m_unk40.m_x);
-        func_00237640(m_unk00, m_unk00, &m_unk70.m_x);
-        return 1;
     }
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/dog/dogmodel", vfunc11__8DogModelP9DogVectorT1);
-#endif
+// The C body above is the matching implementation; the old INCLUDE_ASM
+// fallback is gone. These three lines are comments so the assert __LINE__
+// constants after this function stay aligned with the game.
 
 // 0x001150C0
 void DogModel::transform()
@@ -830,10 +834,6 @@ void DogModel::transform()
     }
     func_002372F0(m_unk00, m_local);
 }
-
-
-
-
 
 
 

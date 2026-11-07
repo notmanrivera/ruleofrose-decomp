@@ -137,7 +137,7 @@ public:
     void func_0010AE58();
     void func_0010AE90(int theN, int theUnused);
     int func_0010AF18(int theID, int theFlag, float theSpeed, int theLoop, int theInterp);
-    int func_0010B1B0(int theNo, float theSpeed, int theFlag, int theNext, int theInterp);
+    int func_0010B1B0(int theNo, int theFlag, float theSpeed, int theNext, int theInterp);
     int func_0010B328(int theSub, int theID, const char **theNodes);
     int func_0010B620(int theSub, const char *theName, const char **theNodes);
     void func_0010B918(int n, float theRatio);
@@ -384,5 +384,9 @@ public:
         func_0022EAB0(m_motion_data[m1].m_i3m_root, p, m_motion_data[m2].m_i3m_root, i, t1, t2, r);
     }
 };
+
+// Matching aid: call DogActor::func_0010DD30 with this in $a0 and the node
+// index in $a1, letting the loop schedule the argument setup like the game.
+extern "C" float func_0010DD30_onearg(DogActor *) asm("func_0010DD30__8DogActori");
 
 #endif

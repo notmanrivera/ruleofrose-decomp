@@ -128,27 +128,22 @@ int DogTexInfo::find(const char *theName)
 }
 
 // 0x0011646C: the first empty entry, or a new one, or -1.
-// NON_MATCHING: the game loads m_tex_info once before the loop and
-// branches to one return; here loop.c keeps the load in the loop and
-// if-conversion makes a movz.
-#ifdef NON_MATCHING
+// Two tests and `>=`: a `||` and `m_num_tex < m_max_tex` compile to a
+// movz and a second return.
 int DogTexInfo::findFree()
 {
     int i;
     for (i = 0; i < m_num_tex; i++) {
-        const char *name = m_tex_info[i].pszTexName;
-        if (!name || !name[0]) {
-            return i;
-        }
+        if (!m_tex_info[i].pszTexName) return i;
+        if (!m_tex_info[i].pszTexName[0]) return i;
     }
-    if (m_num_tex < m_max_tex) {
-        return m_num_tex;
-    }
-    return -1;
+    if (m_num_tex >= m_max_tex) return -1;
+    return m_num_tex;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/dog/dogtexinfo", findFree__10DogTexInfo);
-#endif
+
+
+
+
 
 // 0x001164D0
 void DogTexInfo::release()
@@ -183,6 +178,11 @@ void DogTexInfo::release()
     }
     clear();
 }
+
+
+
+
+
 
 
 
@@ -323,16 +323,16 @@ void DogTexInfo::releaseModel(DogModel *theModel)
 
 
 
+
 // 0x001169D0: releases the textures named in thePack (a pack header with
 // only file offsets, then the names).
-// NON_MATCHING: the game counts the first loop down (loop.c reverses it)
-// and allocates other registers.
-#ifdef NON_MATCHING
+// One `i` for both loops (the first one still counted down by loop.c);
+// `while (*name) name++; name++;` reads with lb like the game.
 void DogTexInfo::releasePack(void *thePack)
 {
     BedPfhHeader *h = (BedPfhHeader *)thePack;
     int n = h->m_num_file;
-    const char *name = (const char *)(h + 1) + n * sizeof(int);
+    const char *name = (const char *)((int)(h + 1) + n * sizeof(int));
     int i;
     for (i = 0; i < n; i++) {
         ASSERT(name);
@@ -343,8 +343,8 @@ void DogTexInfo::releasePack(void *thePack)
                 break;
             }
         }
-        while (*name++) {
-        }
+        while (*name) name++;
+        name++;
     }
     for (i = m_num_tex - 1; i >= 0; i--) {
         const char *s = m_tex_info[i].pszTexName;
@@ -357,9 +357,9 @@ void DogTexInfo::releasePack(void *thePack)
         m_num_tex = 0;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/dog/dogtexinfo", releasePack__10DogTexInfoPv);
-#endif
+
+
+
 
 
 
@@ -456,9 +456,9 @@ int DogTexInfo::func_00116B5C(void *theSrc, const char *theName)
 // 0x00116D14: loads theTM2 as texture theTexName (shared unless theFlags
 // & 2; copied if theFlags). theTcc < 0: from the name. Returns its
 // number, or -1 (full), -2 (no memory), 3 (bad TM2).
-// NON_MATCHING: one branch differs: after func_00219AB0 the game uses a
-// beql (predicted taken) where this compiles to a beqz.
-#ifdef NON_MATCHING
+// The bool `ok` leaves the branch after func_00219AB0 unpredicted, so
+// it is filled from its target (beql); `if (func_00219AB0(...) != 0)` is
+// predicted not taken (beqz).
 int DogTexInfo::loadTM2(const char *theTexName, void *theTM2, int theFlags, int theTcc)
 {
     ASSERT(theTM2);
@@ -568,7 +568,8 @@ int DogTexInfo::loadTM2(const char *theTexName, void *theTM2, int theFlags, int 
 
 
     ASSERT(result == I3D_OK);
-    if (func_00219AB0(clut, data, 0, 0) != 0) {
+    bool ok = func_00219AB0(clut, data, 0, 0) == I3D_OK;
+    if (!ok) {
         func_00219EF8(clut);
         clut = 0;
     }
@@ -603,15 +604,15 @@ int DogTexInfo::loadTM2(const char *theTexName, void *theTM2, int theFlags, int 
 
 
 
-
     ASSERT(place < m_num_tex);
     ASSERT(m_num_tex <= m_max_tex);
     m_dirty = 1;
     return place;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/dog/dogtexinfo", loadTM2__10DogTexInfoPCcPvii);
-#endif
+
+
+
+
 
 
 
@@ -637,9 +638,8 @@ INCLUDE_ASM("asm/nonmatchings/dog/dogtexinfo", loadTM2__10DogTexInfoPCcPvii);
 
 // 0x001170B8: loads a pack's TM2 files, as named: those theI3r uses, or
 // all of them. theTint: pass m_unk14..1C to func_0010559C first.
-// NON_MATCHING: loop.c moves the `return -2`/`return -1` blocks out of
-// the loops; the game keeps them in place.
-#ifdef NON_MATCHING
+// One `return 0` after an if/else: with a `return 0` ending the first
+// branch, loop.c moves the `return -2`/`return -1` blocks out of the loops.
 int DogTexInfo::loadPack(BedPfh *thePfh, tag_I3rRoot_s *theI3r, int theFlags, int theTint)
 {
     const char *names[256];
@@ -662,13 +662,13 @@ int DogTexInfo::loadPack(BedPfh *thePfh, tag_I3rRoot_s *theI3r, int theFlags, in
         ASSERT(ntex >= 0);
         for (int t = 0; t < ntex; t++) {
             name = func_0022B438(theI3r, t);
-            for (i = 0; ; i++) {
-                if (i >= numtex) {
-                    return -3;
-                }
+            for (i = 0; i < numtex; i++) {
                 if (strcmp(names[i], name) == 0) {
                     break;
                 }
+            }
+            if (i >= numtex) {
+                return -3;
             }
             void *tm2 = thePfh->getFileTop(i);
             if (theTint) {
@@ -678,23 +678,23 @@ int DogTexInfo::loadPack(BedPfh *thePfh, tag_I3rRoot_s *theI3r, int theFlags, in
                 return -2;
             }
         }
-        return 0;
-    }
-    for (i = 0; i < numtex; i++) {
-        name = names[i];
-        void *tm2 = thePfh->getFileTop(i);
-        if (theTint) {
-            func_0010559C(tm2, m_unk14, m_unk18, m_unk1C);
-        }
-        if (loadTM2(name, tm2, theFlags, -1) < 0) {
-            return -1;
+    } else {
+        for (i = 0; i < numtex; i++) {
+            name = names[i];
+            void *tm2 = thePfh->getFileTop(i);
+            if (theTint) {
+                func_0010559C(tm2, m_unk14, m_unk18, m_unk1C);
+            }
+            if (loadTM2(name, tm2, theFlags, -1) < 0) {
+                return -1;
+            }
         }
     }
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/dog/dogtexinfo", loadPack__10DogTexInfoP6BedPfhP13tag_I3rRoot_sii);
-#endif
+
+
+
 
 
 

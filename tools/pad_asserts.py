@@ -45,7 +45,7 @@ def main():
         elif i + 1 < want:
             lines[i:i] = [""] * (want - i - 1)
     tidy(lines)
-    open(path, "w").write("\n".join(lines))
+    open(path, "w", newline="\n").write("\n".join(lines))
     sys.exit(1 if late else 0)
 
 

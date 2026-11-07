@@ -12,6 +12,7 @@ the driver print its preprocessor command (-v), then run cpp, cc1/cc1plus and
 as ourselves, each directly under wibo, with the arguments the driver's specs
 would have passed.
 """
+import fcntl
 import os
 import shutil
 import subprocess
@@ -24,6 +25,48 @@ ROOT = "/compilers/ps2"
 def die(msg, code=2):
     print(f"ee-cc: {msg}", file=sys.stderr)
     sys.exit(code)
+
+
+MIRROR = "/tmp/ee-cc-mirror"
+
+
+def enter_mirror():
+    """With EE_CC_MIRROR=1, compile from a copy of the inputs kept on the
+    container's own filesystem.
+
+    The old EE compilers are 32-bit binaries: on a filesystem whose metadata
+    does not fit their stat() calls (the Windows drive bind-mounted over 9p in
+    Docker Desktop, "Value too large for defined data type") they cannot even
+    open their inputs. The copy keeps every relative path (src/, include/,
+    matching/, asm/nonmatchings/), so command lines and outputs are unchanged,
+    and build/ is a symlink into /work so artifacts still land on the mount.
+    """
+    if os.environ.get("EE_CC_MIRROR") != "1" or not os.path.isdir("/work/src"):
+        return
+    ready = f"{MIRROR}/.ready"
+    if not os.path.exists(ready):
+        os.makedirs(f"{MIRROR}/asm", exist_ok=True)
+        # ninja runs compiles in parallel: one process copies, the rest wait.
+        with open("/tmp/ee-cc-mirror.lock", "w") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            if not os.path.exists(ready):
+                for d in ("src", "include", "matching"):
+                    if os.path.isdir(f"/work/{d}"):
+                        os.makedirs(f"{MIRROR}/{d}", exist_ok=True)
+                        subprocess.check_call(["cp", "-a", f"/work/{d}/.", f"{MIRROR}/{d}"])
+                if os.path.isdir("/work/asm/nonmatchings"):
+                    os.makedirs(f"{MIRROR}/asm/nonmatchings", exist_ok=True)
+                    subprocess.check_call(
+                        ["cp", "-a", "/work/asm/nonmatchings/.", f"{MIRROR}/asm/nonmatchings"])
+                os.makedirs("/work/build", exist_ok=True)
+                if not os.path.lexists(f"{MIRROR}/build"):
+                    os.symlink("/work/build", f"{MIRROR}/build")
+                open(ready, "w").close()
+    cwd = os.getcwd()
+    if cwd == "/work" or cwd.startswith("/work/"):
+        target = MIRROR + cwd[len("/work"):]
+        if os.path.isdir(target):
+            os.chdir(target)
 
 
 def sn_compile(cdir, args):
@@ -104,6 +147,7 @@ def main():
     cdir = f"{ROOT}/{cid}"
     if not os.path.isdir(cdir):
         die(f"unknown compiler '{cid}' (see ee-cc --list)")
+    enter_mirror()
     if cid.startswith("ee-gcc2.95"):
         sn_compile(cdir, args)
     elif cid in ("ee-gcc2.9-990721", "ee-gcc2.96"):

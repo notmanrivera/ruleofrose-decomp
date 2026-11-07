@@ -14,7 +14,7 @@ text	rodata	data	bss	file	confidence
 00101AEC	002E56C8	-	00308280	bed/bedpad	likely
 00102490	002E5728	-	-	utl/utlgame	manual
 00103EDC	002E75F8	-	00308484	utl/utlbtl	likely
-00104970	002E76B0	-	00308488	utl/utltm2	likely
+00104E1C	002E76B0	-	00308488	utl/utltm2	manual
 00105650	002E7748	-	-	utl/utlmisc	certain
 001056E8	-	00295F00	-	unk/001056E8	manual
 00105E50	002E7760	-	-	utl/utlfile	manual
@@ -56,7 +56,7 @@ text	rodata	data	bss	file	confidence
 0013C29C	002EE300	-	-	mag/magsceneoption	likely
 0013C664	002EE5D0	-	-	mag/magscenecamera	certain
 0013E2EC	002EE870	-	-	unk/0013E2EC	likely
-0013F07C	002EE8A0	-	-	mag/magscenelight	likely
+0013F49C	002EE8A0	-	-	mag/magscenelight	manual
 0013FE64	002EEA90	-	-	mag/magscenetenkyu	likely
 00140030	002EEAB8	-	-	unk/00140030	certain
 00140390	002EEB10	-	-	mag/magscenefocus	likely

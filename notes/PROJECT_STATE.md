@@ -59,11 +59,11 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 | Ruta | Contenido |
 |---|---|
 | `MOVIE/*.PSS` | 41 videos MPEG-2 (convertibles a H.264 para la Vita) |
-| `DATA/BG/MAPUNIT.BIN` | 600 MB, escenarios; formato desconocido |
+| `DATA/BG/MAPUNIT.BIN` | 600 MB, escenarios: un `RTPK` con 263 salas (`docs/formats/mapunit.md`) |
 | `DATA/CH/CHARA.RPK` | 523 MB, personajes; contenedor RPK desconocido |
 | `DATA/EVT/*.RPK`, `DATA/MNURPK/*.RPK` | eventos, menús |
-| `DATA/SEQ/W###/A###/` | 1,134 `.ARA` + 844 `.STR` (secuencias/scripts por área) |
-| `DATA/SND/` | `XV`, `XWS` (audio) |
+| `DATA/SEQ/W###/A###/` | 1,134 `.ARA` (script y sonidos de cada área, `docs/formats/ara.md`); además `DATA/SEQ/G000.GRB` y 15 `W000.WRD` |
+| `DATA/SND/` | `XV` (bancos `.SE`), `XWS` (844 `.STR` de audio en streaming, `docs/formats/str.md`) |
 | `DATA/WRD/` | 15 `.WRD` (texto) |
 
 ## Hoja de ruta
@@ -89,11 +89,15 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
    - 🔄 **`dog/dogmodel`** (clase `DogModel`, nombre original: el modelo i3d de un objeto, con sus matrices de nodos y su colisión; es la base de `DogActor`): **25 de 26 funciones byte a byte** y su `.rodata` entero. Incluye las consultas de colisión (segmento, esfera, altura del suelo, paredes; dos funciones de retorno guardan el impacto más cercano pasando los ejes de i3d a los del juego), la carga desde un `.RPK` o desde datos en memoria, la copia de otro modelo, la liberación según cómo se cargó, las matrices de nodos (los nodos "ba_"/"by_" miran a la cámara), el dibujo, un temporizador y los valores de usuario de i3d. `vfunc11` (la matriz de billboard) sigue en asm con su C++ bajo `NON_MATCHING`: el original calcula dos direcciones antes de un assert y no se encontró por qué. El `.rodata` del archivo acaba en 0x2E8DC0 (no en 0x2E8DA0): después de `"8DogModel"` van los textos de las copias de sus métodos en línea, y faltaba uno en la cabecera. Lecciones nuevas en `docs/DECOMPILING.md`: el planificador adelanta la escritura que agota un registro, las asignaciones en cadena dejan los flotantes en registro, y otras.
    - 🔄 **`dog/dogtexinfo`** (clase `DogTexInfo`, nombre según el archivo: las texturas de un modelo, imágenes TM2 cargadas de un pack `.RPK` y compartidas por nombre con un contador de usos; para cada una guarda la imagen y la paleta de i3d, los datos TM2 (copiados o no), el nombre y las referencias; puede teñir cada TM2 con un color, por defecto 255, 220, 152): **14 de 18 funciones byte a byte** y su `.rodata` entero. `findFree`, `releasePack`, `loadTM2` y `loadPack` siguen en asm con su C++ bajo `NON_MATCHING`: el código es el mismo, pero el optimizador de bucles (y una predicción de salto) del original decide distinto y no se encontró qué forma del código lo provoca. Su última función (0x11764C, vacía) estaba asignada a `mag/magsystem`, que ahora empieza en 0x117654.
    - 🔄 **`mag/magsystem`** (clase `MagSystem`, nombre según el archivo: el objeto principal del juego; prepara la pantalla (doble búfer de 512×448 o 512×384), los dos mandos, el DMA y el contexto de dibujo de i3d, comprueba que la librería i3d enlazada sea la misma versión que la del juego, cuenta los vsync con un semáforo, ejecuta cada cuadro (mandos, escena, dibujo, espera del vsync, intercambio de búferes), guarda capturas en `.bmp` y hace de puente entre el juego y su escena `MagScene` y sus 128 actores): **53 de 55 funciones byte a byte** y su `.rodata`. `setPlayer` y `endFrame` siguen en asm con su C++ bajo `NON_MATCHING` (difieren en los huecos de retardo del `switch` de `setPlayer` y en dónde se guarda `$ra` en `endFrame`). Su última función (0x11948C) y las rutas de los 13 capítulos (`data/ch/NN/CHAPNN.RPK`) estaban asignadas a `mag/maglifeman`, que ahora empieza en 0x1194B4. Se añadieron cabeceras propias del SDK (`libgraph`, `libdma`, `eekernel`, `sifdev`) con lo que usa el juego, y se nombraron las llamadas al sistema de semáforos por su número.
+   - ✅ **`mag/maglifeman`** (clase `MagLifeManager`, nombre original: el fondo de las "life" de una escena, con `MagScene` en +0x2330. Es un array fijo de 64 entradas de 0x10 bytes — la vida (0x0), una prioridad (0x4, `0x8000 | tipo`) y los enlaces `prev`/`next` (0x8/0xC) — más la cabeza de la lista en +0x400: `add` (primera entrada libre, enlazada ordenada por prioridad, devuelve su número o -1), `remove`/`removeAt`/`indexOf`, `unlink`/`clearPod` (desenlazar y olvidar), `init`/`term` (vaciar el fondo / borrar todas las vidas), `live(mask)` (actualiza las que llevan el bit en +0x10 de la vida) y `render(stage, tipo)` (dibuja las visibles del tipo)): **las 12 funciones byte a byte** y su `.rodata`. El nombre de la clase es original (el mangle de `MagLife0::attached` recibe un `MagLifeManager`); `MagLifePod`, `m_life_buf` y `MAX_LIFE` salen de los asserts, y el resto de nombres son nuestros. Su `.h` declara `MagLife0`/`MagLife` solo para las llamadas virtuales (vptr en +0x14, huecos 2 `live`, 6 `render`, 8 `getHide`). Lección nueva: un tramo de stores al final de una función hoja sale **rotado** (el último primero y el penúltimo en el hueco de `jr $ra`), así que el orden de las sentencias se encuentra probando (`clearPod`).
    - `include/sdk/ctype.h`: las macros de newlib (`isdigit`, `isxdigit`) sobre su tabla `_ctype_`; `_end` y `_stack_size` (símbolos del enlazador) ya tienen nombre.
    - `match.py` ya comprueba las relocaciones: rellena cada dirección como lo haría el enlazador (los nombres importados salen del mapa de la última compilación, `build/SLUS_214.48.map`) y la compara con la del juego. Antes las enmascaraba y daba por buenos dos símbolos intercambiados (pasó en `heapInit`: solo lo detectaba la compilación completa); ahora eso, o una llamada a la función equivocada, sale como `N relocs differ`, con una línea por referencia (`reloc at +0x0: _end (0x00828E94), game 0x00081000`). Si el `.rodata`/`.data`/`.bss` del objeto tiene otro tamaño que el del juego, las referencias a él no se comprueban (todo lo que va detrás de la pieza equivocada se desplaza) y su línea lo indica. Comprobado contra el enlazador real: las 417 relocaciones de los 7 archivos decompilados salen idénticas. Tampoco da por buena una sección `.data`/`.rodata` vacía cuando el original tiene bytes.
    - Herramientas: `tools/match.py` compara cada función en su dirección real (una función de tamaño distinto ya no descuadra las demás); `tools/try_variants.py` prueba variantes de código en serie (órdenes de sentencias, formas de expresión) y dice cuáles coinciden.
    - `tools/asserts.py` lista los 1,475 asserts del juego (archivo, línea, expresión, función); con `--lines` resume las líneas de un `.h`.
-5. 🔄 Documentar los formatos. ✅ **RPK** (`docs/formats/rpk.md`): cabecera de 0x20 bytes con firma `RTPK`, tamaño total, banderas, alineación (0x800) y número de archivos; tablas opcionales de tamaños, posiciones, datos de usuario y nombres. Sacado del código de `bed/bedpfh` y comprobado contra los 49 `.RPK` del disco sin ninguna discrepancia. Falta el significado de la bandera `0x4000`. Pendientes: MAPUNIT / ARA / STR.
+5. 🔄 Documentar los formatos. ✅ **RPK** (`docs/formats/rpk.md`): cabecera de 0x20 bytes con firma `RTPK`, tamaño total, banderas, alineación (0x800) y número de archivos; tablas opcionales de tamaños, posiciones, datos de usuario y nombres. Sacado del código de `bed/bedpfh` y comprobado contra los 49 `.RPK` del disco sin ninguna discrepancia. Falta el significado de la bandera `0x4000`.
+   - ✅ **MAPUNIT** (`docs/formats/mapunit.md`): un `RTPK` de 263 salas, cada una otro `RTPK` con el modelo (`.mdl`: texturas TIM2 + dos `I3D_BIN`), las cámaras (`_c.bin`: posiciones fijas o caminos, con el campo de visión), la niebla y otros parámetros (`mapparam.bbb`), la colisión (`.i3r`/`.i3c`), las luces (`_l.bin`), el cielo (`tenkyu.rpk`) y los sectores (`sector.sec`, clase `SctLayer`). Comprobado contra las 263 salas sin discrepancias.
+   - ✅ **ARA** (`docs/formats/ara.md`): un `RTPK` por área con el script del área, compilado a código MIPS (`ELFR101`) que el juego ejecuta en un intérprete MIPS propio (`sequence/`), una tabla de nodos (probablemente para la navegación), datos del área (nombres en japonés y sus salas) y, en 666 áreas, sus bancos de sonido `XVAB`. Comprobado contra los 1,134 `.ARA` sin discrepancias.
+   - ✅ **STR** (`docs/formats/str.md`): están en `DATA/SND/XWS`, no en `DATA/SEQ`. PS-ADPCM sin cabecera a 48,000 Hz; los `S0xxxxx` son mono y los `S1xxxxx` estéreo, intercalados cada 0x10 bytes. Incluye los `.txth` para vgmstream y la tabla `STR_TBL.BIN`.
 6. Capa de port: reemplazar las libs `sce*` por equivalentes Vita; reescribir el render (VU1 + GS) sobre vitaGL.
 
 ## Pendientes de la división y pistas nuevas (2026-09-28)
@@ -106,7 +110,7 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 
 ## Formatos de audio
 
-- `DATA/SND/XWS/*.STR` (844): PS-ADPCM crudo sin cabecera; `vgmstream` lo lee con un `.txth` (falta la frecuencia).
+- `DATA/SND/XWS/*.STR` (844): PS-ADPCM crudo sin cabecera, 48,000 Hz; mono (`S0xxxxx`) o estéreo intercalado cada 0x10 (`S1xxxxx`); `vgmstream` lo lee con los `.txth` de `docs/formats/str.md`.
 - `DATA/SND/XV/*.SE` (36): bancos con firma `XVAB` y bloques `HEAD`/`TGIF`/`TGPG`/`TGSP`; formato sin documentar (no está en vgmstream). Se entenderá al decompilar `snd/`.
 
 ## Librerías del SDK
@@ -150,3 +154,21 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 | `Rinnegatamante/vitaGL` | Sí, en la etapa Vita: capa OpenGL sobre sceGxm, muy activa |
 | `TheOfficialFloW/gtasa_vita`, `bully_vita` | Referencia para la etapa Vita (audio, memoria, vitaGL); son ports de binarios Android, no de PS2 |
 | `vitasdk/vitasdk` (imagen Docker oficial) | Sí, en la etapa Vita, fijando una serie mensual |
+
+## Estado de la decompilación (2026-11-05)
+
+Ver `tools/progress.py`. Todo lo subido compila idéntico (SHA-1 del load image).
+Pendientes concretos y cercanos, todos con su C++ bajo `NON_MATCHING`:
+
+- `mag/maglife`: `func_0011A14C` (2 instrucciones) y `func_0011A320` (1). El
+  relleno de delay slots ve `$a0` vivo en el destino del salto; no se encontró
+  qué lo provoca en el fuente.
+- `mag/magloader`: `func_001420F8` ($s2/$s3 cambiados) y `func_00142908`
+  (6 instrucciones de orden).
+- `mag/magscene`: `func_00134944` y `func_00134A00` (registros de float).
+- `mag/maglifewindow`: `func_0012F7F4`, `func_0012F824`, `func_0012FE30` (orden
+  de stores; `build/perm.py`, local, prueba órdenes a fuerza bruta).
+
+Pistas: el RTTI de `mag/magscene2` nombra `MagSceneIF`, `MagSceneIFMap` y
+`MagSceneIFChara`; las clases `MagSceneIfList1/2` y `MagSceneIf` de
+`mag/magsceneif.h` deberían renombrarse cuando se vea cuál es cuál.

@@ -51,19 +51,27 @@ SYMBOL_LISTS = ("symbols/symbol_addrs.txt", "config/symbol_addrs_manual.txt",
 
 
 def docker():
-    for c in ("docker", str(Path.home() / ".docker/bin/docker")):
+    for c in ("docker", str(Path.home() / ".docker/bin/docker"),
+              r"C:\Program Files\Docker\Docker\resources\bin\docker.exe"):
         if shutil.which(c):
             return shutil.which(c)
     sys.exit("docker not found")
 
 
+def volume_path(path):
+    """Host path for `docker run -v`: docker.exe on Windows takes C:/..."""
+    return str(path).replace("\\", "/")
+
+
 def compile_file(name, source=None, extra=""):
     out = ROOT / f"build/match/{name}.o"
     out.parent.mkdir(parents=True, exist_ok=True)
-    src = f"{name}.cpp" if source is None else f"../{Path(source).resolve().relative_to(ROOT)}"
+    src = f"{name}.cpp" if source is None else f"../{Path(source).resolve().relative_to(ROOT).as_posix()}"
     cmd = (f"cd src && ee-cc {configure.COMPILER} {configure.CFLAGS.replace('-Isrc', '-I.').replace('-Iinclude', '-I../include')} "
-           f"{extra} -c {src} -o ../{out.relative_to(ROOT)}")
-    r = subprocess.run([docker(), "run", "--rm", "--platform", "linux/amd64", "-v", f"{ROOT}:/work",
+           f"{extra} -c {src} -o ../{out.relative_to(ROOT).as_posix()}")
+    mirror = ["-e", "EE_CC_MIRROR=1"] if sys.platform == "win32" else []
+    r = subprocess.run([docker(), "run", "--rm", "--platform", "linux/amd64", *mirror,
+                        "-v", f"{volume_path(ROOT)}:/work",
                         "-w", "/work", "ror-build", "sh", "-c", cmd], capture_output=True, text=True)
     if r.returncode:
         sys.exit(r.stdout + r.stderr)

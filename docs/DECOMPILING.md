@@ -187,7 +187,9 @@ Things that changed codegen so far:
   same goes for a load after such a store, so when the original reads a
   field before writing elsewhere, so must the source (`BedMemory::free`,
   `shrink`). Stores through one pointer to different fields can be
-  reordered, and a run of them often comes out with the last one first.
+  reordered: a run of them at the end of a leaf comes out rotated, the
+  last one first and the second-to-last in the `jr $ra` delay slot, so
+  its statement order has to be found by trial (`MagLifeManager::clearPod`).
 - Register choice follows priority: uses per instruction of lifetime. A
   local working copy of a parameter (`int size = theSize;`) starts later
   and can win a register the parameter lost (`BedMemory::init`).
@@ -385,6 +387,11 @@ Things that changed codegen so far:
 - A `switch` on 0, 1, 2 that tests `== 1`, `== 0`, `== 2` (no ordered
   compare) has an unsigned index: the left leaf (0) is bounded by the
   type's minimum, so `< 1` becomes `== 0` (`func_00117FC4`).
+- Cases that map to the same value must share one body (`case 'NORM':
+  case 'RMAL':`), not repeat it: sharing is what lets GCC drop the second
+  compare, and the delay slots of the whole tree follow. The game's dead
+  `ori` before the values that share a body is the tell
+  (`MagSystem::setPlayer`).
 - A function whose only work is a call and a dead `x / n` keeps the
   divide-by-zero trap (`beql $v0, $zero; break 7`) when `n` is a variable
   set to a constant; the trap register is `$v0` only in a `void` function
@@ -397,6 +404,64 @@ Things that changed codegen so far:
   (`s1 + 0x29120`) is an inline method on that member, or a local pointer;
   written `m_scene.m_x[r]` the offsets fold into one constant from `this`
   (`loadModel`).
+- A branch after a call compiled as a branch-likely (`beql`, filled from
+  its target) has no predicted direction: the result went through a flag,
+  `bool ok = f(...) == I3D_OK; if (!ok)`. Tested directly, `if (f(...) != 0)`
+  is predicted not taken (EQ is "unlikely") and fills from the fall-through
+  (`loadTM2`). `-fsched-verbose` and the `.28.mach` notes show it.
+- Two tests that each return (`if (!name) return i; if (!name[0]) return
+  i;`) branch to one shared `jr $ra`; a `||` gave a `movz` and a second
+  return, and with two tests the tail still has to be `if (n >= max)
+  return -1; return n;`, not `if (n < max) return n; return -1;`
+  (`findFree`).
+- loop.c moves a `return -N` block out of a loop when a barrier at the
+  same depth follows (a `return 0;` closing the branch); an `if`/`else` with
+  one `return 0;` after it leaves the blocks in place (`loadPack`).
+- A search loop with the bound in its condition and the failure test after
+  it (`for (i = 0; i < n; i++) if (!strcmp(...)) break; if (i >= n) return
+  -3;`) matched; the test inside the loop put the compare in another
+  register (`loadPack`).
+- `(const char *)((int)(h + 1) + n * sizeof(int))` adds the constant
+  first (`addiu` then `addu`); `(const char *)(h + 1) + n * sizeof(int)`
+  adds `n * 4` first (`releasePack`).
+- An early `if (rest < 64) return thePtr;` puts `$v0 = thePtr` in the
+  test's delay slot and keeps `$v0` out of the temporaries computed
+  before it (`shrink`).
+- Stores the game shares between branches (one copy, reached by a jump
+  from one branch and a fall-through from the other) can be one copy in
+  the source too, after the `if`, with a `goto` past them from the branch
+  that does not do them; separate copies were scheduled differently before
+  cross-jumping (`shrink`).
+- Interblock scheduling (sched1, inside a loop) appends insns that become
+  ready to the ready list without sorting, so one that is freed by the insn
+  just issued is issued next: `a1 = i` before a call frees the loop's `i++`
+  from the latch block (`func_0010DF54`, still not matching).
+- If-conversion (`.15.ce`, "IF-CASE-2") hoists `x = k` from a `case` body
+  above the compare that jumps to it when the body is one insn and `x` is
+  dead on the other path (`MagSystem::setPlayer`, still not matching).
+- The moves of a call's arguments come out in reverse declaration order, and
+  a float argument is one of them even though it has its own registers: the
+  game moving `$a2` before `$f12` means the int is declared before the float
+  (`DogActor::func_0010B1B0(int, int, float, int, int)`). Names ending in
+  our own `func_` signature can change for this.
+- A store of a constant loaded into a saved register (`addiu $s2, $zero, 5`
+  after a call) is a local set before the call: `int mode = 5; sub->push();
+  ...[0] = mode;` (`func_0013F210`, `func_00132744`).
+- A `.rodata` table referred to by file-scope data or by code in another
+  function follows all the strings: at file scope it goes after the jump
+  tables, inside a function right after its strings (`sOption`,
+  `mag/magsceneoption`).
+- `#line N` right before an assert saves padding a partial file with
+  thousands of blank lines (`mag/magscene`).
+- In a partial file a string used by asm stays `INCLUDE_RODATA`: `ASSERT_S`
+  with its `D_` symbol, `ASSERT_FILE` for the path. A literal of the same text
+  makes a second copy and `.rodata` comes out too big. Strings used only by
+  C++ can stay literals, and asm finds them through `build/cpp_syms.ld`.
+- Inline methods of a header that assert: if asm of the file uses their
+  strings too, write the assert out with the `D_` symbols
+  (`actorAlive` in `mag/magscene2`).
+- An empty function that `--new` writes for you is plain C++: when asm calls
+  it, it needs `extern "C"` or the link fails (`msg/msgman`).
 
 ## 4. Name it
 
