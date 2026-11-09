@@ -155,12 +155,13 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 | `TheOfficialFloW/gtasa_vita`, `bully_vita` | Referencia para la etapa Vita (audio, memoria, vitaGL); son ports de binarios Android, no de PS2 |
 | `vitasdk/vitasdk` (imagen Docker oficial) | Sí, en la etapa Vita, fijando una serie mensual |
 
-## Estado de la decompilación (2026-11-05)
+## Estado de la decompilación (2026-11-09)
 
 Ver `tools/progress.py`. Todo lo subido compila idéntico (SHA-1 del load image).
 Pendientes concretos y cercanos, todos con su C++ bajo `NON_MATCHING`:
 
-- `mag/maglife`: `func_0011A14C` (2 instrucciones) y `func_0011A320` (1). El
+- `mag/maglife`: `func_0011A14C` (2 instrucciones) y `func_0011A320` (1); el
+  2026-11-09 se probaron más formas de la condición sin éxito. El
   relleno de delay slots ve `$a0` vivo en el destino del salto; no se encontró
   qué lo provoca en el fuente.
 - `mag/magloader`: `func_001420F8` ($s2/$s3 cambiados) y `func_00142908`
@@ -172,3 +173,11 @@ Pendientes concretos y cercanos, todos con su C++ bajo `NON_MATCHING`:
 Pistas: el RTTI de `mag/magscene2` nombra `MagSceneIF`, `MagSceneIFMap` y
 `MagSceneIFChara`; las clases `MagSceneIfList1/2` y `MagSceneIf` de
 `mag/magsceneif.h` deberían renombrarse cuando se vea cuál es cuál.
+
+Traducción mecánica (2026-11-09): 13.42 % del `.text` del juego. Casi todos los
+archivos del juego tienen ya su `.cpp` con lo que el borrador de m2c iguala tal
+cual. Lo que queda necesita trabajo a mano o mejorar el traductor; los rechazos
+más comunes son funciones con `float`, variables en pila y acceso a campos de
+structs por valor. Familias repetidas sin resolver: en `unk/GotMain` y
+`unk/PigMain`, `func_001594D0` y sus cuatro hermanas (dos pruebas de bits tras
+la comprobación 0xB/0xC), y `mag/magloader` `func_001420F8` (`$s2`/`$s3`).
