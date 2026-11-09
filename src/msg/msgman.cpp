@@ -1,5 +1,7 @@
 #include "ror.h"
 #include "include_asm.h"
+extern "C" int X_func_001856FC(...) asm("func_001856FC");
+extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
 extern "C" int atoi(const char *);
 extern "C" int func_0027BBA8(const char *theStr, int theA, int theBase);
@@ -31,7 +33,16 @@ extern "C" int func_001831C4(MsgQueue *self);
 extern "C" int func_0018454C(MsgWin *self, const char *theStr);
 extern "C" int func_00184578(MsgWin *self, const char *theStr, int *theOut);
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001831A8);
+extern "C" int func_001831A8(int arg0)
+{
+    int temp_a0;
+    int temp_v0;
+
+    temp_a0 = (*(int *)(int *)((char *)(arg0) + 0x8));
+    temp_v0 = (*(int *)(int *)((char *)(arg0) + 0x10)) - (*(int *)(int *)((char *)(arg0) + 0x4));
+    return (temp_a0 < temp_v0) ? temp_a0 : temp_v0;
+}
+
 
 extern "C" int func_001831C4(MsgQueue *self)
 {
@@ -879,7 +890,13 @@ extern "C" int func_00185804()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_0018580C);
+extern "C" int func_0018580C(int arg0)
+{
+    (*(int *)(int *)((char *)(arg0) + 0x38)) = X_func_00185760();
+    (*(int *)(int *)((char *)(arg0) + 0x3C)) = (int) ((*(int *)(int *)((char *)(arg0) + 0x3C)) + (*(int *)(int *)((char *)(arg0) + 0x44)));
+    return 0;
+}
+
 
 extern "C" int func_00185848()
 {
@@ -919,7 +936,14 @@ INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185AA4);
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185B58);
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185BBC);
+extern "C" int func_00185BBC(int arg0)
+{
+    (*(int *)(int *)((char *)(arg0) + 0x34)) = 1;
+    (*(int *)(int *)((char *)(arg0) + 0x38)) = X_func_00185760();
+    X_func_001856FC(arg0);
+    return 0;
+}
+
 
 extern "C" int func_00185BF8(MsgWin *self, const char *theStr, int *theLen)
 {
@@ -946,7 +970,14 @@ extern "C" int func_00185CDC(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185CE8);
+extern "C" int func_00185CE8(int arg0)
+{
+    (*(int *)(int *)((char *)(arg0) + 0x34)) = 0;
+    (*(int *)(int *)((char *)(arg0) + 0x38)) = X_func_00185760();
+    X_func_001856FC(arg0);
+    return 0;
+}
+
 
 extern "C" int func_00185D20(MsgWin *self, const char *theStr, int *theLen)
 {

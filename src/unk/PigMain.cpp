@@ -1,4 +1,15 @@
 #include "include_asm.h"
+extern "C" int X_func_00165794(...) asm("func_00165794");
+extern "C" int X_func_00165A68(...) asm("func_00165A68");
+extern "C" int X_func_00165AA8(...) asm("func_00165AA8");
+extern "C" int X_func_00165D38(...) asm("func_00165D38");
+extern "C" int X_func_00165D7C(...) asm("func_00165D7C");
+extern "C" int X_func_00166048(...) asm("func_00166048");
+extern "C" int X_func_00166108(...) asm("func_00166108");
+extern "C" int X_func_00166128(...) asm("func_00166128");
+extern "C" int X_func_00166178(...) asm("func_00166178");
+extern "C" int X_func_00166198(...) asm("func_00166198");
+extern "C" int X_func_001696FC(...) asm("func_001696FC");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_0010423C(...) asm("func_0010423C");
 extern "C" int X_func_00118FEC__9MagSystem(...) asm("func_00118FEC__9MagSystem");
@@ -71,7 +82,21 @@ extern "C" int func_0015AC8C()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015ACA0);
+extern "C" int func_0015ACA0(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 1);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00165794(arg0);
+    }
+    return 0;
+}
+
 
 INCLUDE_RODATA("asm/nonmatchings/unk/PigMain", D_002F0D68);
 
@@ -81,23 +106,135 @@ INCLUDE_RODATA("asm/nonmatchings/unk/PigMain", D_002F0D88);
 
 INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015AD18);
 
-INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015AE78);
+extern "C" int func_0015AE78(int arg0)
+{
+    int temp_v0;
+    int var_a1;
 
-INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015AEF0);
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 7);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00165A68(arg0);
+    }
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015AF68);
 
-INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015AFE0);
+extern "C" int func_0015AEF0(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 8);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00165AA8(arg0);
+    }
+    return 0;
+}
+
+
+extern "C" int func_0015AF68(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 9);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00165D38(arg0);
+    }
+    return 0;
+}
+
+
+extern "C" int func_0015AFE0(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xA);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00165D7C(arg0);
+    }
+    return 0;
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B058);
 
-INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B0DC);
+extern "C" int func_0015B0DC(int arg0)
+{
+    int temp_v0;
+    int var_a1;
 
-INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B154);
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xC);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00166048(arg0);
+    }
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B1CC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B244);
+extern "C" int func_0015B154(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xD);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00166128(arg0);
+    }
+    return 0;
+}
+
+
+extern "C" int func_0015B1CC(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xE);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00166108(arg0);
+    }
+    return 0;
+}
+
+
+extern "C" int func_0015B244(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xF);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00166178(arg0);
+    }
+    return 0;
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B2BC);
 
@@ -109,7 +246,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B454);
 
 INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B4E4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B574);
+extern "C" int func_0015B574(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0x15);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00166198(arg0);
+    }
+    return 0;
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B5EC);
 

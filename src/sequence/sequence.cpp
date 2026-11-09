@@ -1,5 +1,8 @@
 #include "ror.h"
 #include "include_asm.h"
+extern "C" int X_func_0020E690(...) asm("func_0020E690");
+extern "C" int X_func_0020F37C(...) asm("func_0020F37C");
+extern int D_002D9910;
 
 extern "C" int func_0020D624() { return 0; }
 
@@ -527,7 +530,11 @@ INCLUDE_RODATA("asm/nonmatchings/sequence/sequence", D_003015E0);
 
 INCLUDE_ASM("asm/nonmatchings/sequence/sequence", func_0020E3D8);
 
-INCLUDE_ASM("asm/nonmatchings/sequence/sequence", func_0020E400);
+extern "C" int func_0020E400()
+{
+    return (int)&D_002D9910;
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/sequence/sequence", func_0020E40C);
 
@@ -535,6 +542,11 @@ INCLUDE_ASM("asm/nonmatchings/sequence/sequence", func_0020E454);
 
 INCLUDE_ASM("asm/nonmatchings/sequence/sequence", func_0020E63C);
 
-INCLUDE_ASM("asm/nonmatchings/sequence/sequence", func_0020E664);
+extern "C" void func_0020E664(int arg0)
+{
+    X_func_0020F37C();
+    X_func_0020E690(arg0);
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/sequence/sequence", func_0020E690);

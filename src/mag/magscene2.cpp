@@ -1,5 +1,6 @@
 #include "ror.h"
 #include "include_asm.h"
+extern "C" int X_func_0010C17C__8DogActorPCcii(...) asm("func_0010C17C__8DogActorPCcii");
 extern const char D_002EDD80[];
 extern const char D_002EDF50[];
 #undef ASSERT_FILE
@@ -417,7 +418,11 @@ extern "C" void func_00139010(MagScene *self, int theN)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene2", func_001390D4__8MagSceneiii);
+extern "C" int func_001390D4__8MagSceneiii(int arg0, int arg1, int arg2, int arg3)
+{
+    return X_func_0010C17C__8DogActorPCcii((arg1 * 0x4D0) + arg0 + 0x2920, "data/ch/pc/pc/MOTIONPK.RPK", arg3, arg2);
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene2", func_0013910C__8MagSceneiii);
 

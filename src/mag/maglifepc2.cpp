@@ -78,7 +78,11 @@ extern "C" void func_0011CBD0()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011CBEC);
+extern "C" int func_0011CBEC()
+{
+    return 1;
+}
+
 
 // NON_MATCHING: close, not identical yet.
 #ifdef NON_MATCHING

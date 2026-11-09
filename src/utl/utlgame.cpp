@@ -1,5 +1,10 @@
 #include "ror.h"
 #include "include_asm.h"
+extern "C" int X_ror_assert(...) asm("ror_assert");
+extern const char D_002E5728[];
+extern const char D_002E5878[];
+extern int D_007A329C;
+extern int D_007A32CC;
 extern const char D_002E5738[];
 extern const char D_002E57A8[];
 #undef ASSERT_FILE
@@ -308,9 +313,29 @@ INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103CCC);
 
 INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103DE4);
 
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103E4C);
+extern "C" int func_00103E4C()
+{
+    int temp_s0;
 
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103E94);
+    temp_s0 = D_007A32CC;
+    if (temp_s0 >= 0x80) {
+        X_ror_assert(D_002E5728, 0x4D9, D_002E5878);
+    }
+    return temp_s0;
+}
+
+
+extern "C" int func_00103E94()
+{
+    int temp_s0;
+
+    temp_s0 = D_007A329C;
+    if (temp_s0 >= 0x80) {
+        X_ror_assert(D_002E5728, 0x4E3, D_002E5878);
+    }
+    return temp_s0;
+}
+
 
 INCLUDE_RODATA("asm/nonmatchings/utl/utlgame", D_002E5890);
 

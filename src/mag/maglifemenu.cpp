@@ -1,5 +1,10 @@
 #include "ror.h"
 #include "include_asm.h"
+extern "C" int X_func_00139010(...) asm("func_00139010");
+extern "C" int X_func_0013CA10(...) asm("func_0013CA10");
+extern "C" int X_ror_assert(...) asm("ror_assert");
+extern const char D_002ECE90[];
+extern const char D_002ECEB8[];
 extern "C" void MnuMap__vfunc_02(char *theMenu);
 extern "C" void MnuMap__vfunc_05(char *theMenu);
 extern "C" void MnuMap__vfunc_06(char *theMenu);
@@ -267,9 +272,24 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifemenu", MagLifeMenuBoard3D__vfunc_01);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifemenu", MagLifeMenuBoard3D__vfunc_09);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifemenu", MagLifeMenuBoard3D__vfunc_10);
+extern "C" void MagLifeMenuBoard3D__vfunc_10(int arg0)
+{
+    if ((*(int *)(int *)((char *)(arg0) + 0x50)) >= 0) {
+        if ((*(int *)(int *)((char *)(arg0) + 0x30)) == 0) {
+            X_ror_assert(D_002ECE90, 0x300, D_002ECEB8);
+        }
+        X_func_00139010((*(int *)(int *)((char *)(arg0) + 0x30)), (*(int *)(int *)((char *)(arg0) + 0x50)));
+        X_func_0013CA10((*(int *)(int *)((char *)(arg0) + 0x30)));
+        (*(int *)(int *)((char *)(arg0) + 0x50)) = -1;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifemenu", MagLifeMenuBoard3D__vfunc_11);
+
+extern "C" int MagLifeMenuBoard3D__vfunc_11(int arg0)
+{
+    return (unsigned int) ~(*(int *)(int *)((char *)(arg0) + 0x50)) >> 0x1F;
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifemenu", MagLifeMenuBoard3D__vfunc_12);
 

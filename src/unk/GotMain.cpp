@@ -1,4 +1,15 @@
 #include "include_asm.h"
+extern "C" int X_func_00165794(...) asm("func_00165794");
+extern "C" int X_func_00165A68(...) asm("func_00165A68");
+extern "C" int X_func_00165AA8(...) asm("func_00165AA8");
+extern "C" int X_func_00165D38(...) asm("func_00165D38");
+extern "C" int X_func_00165D7C(...) asm("func_00165D7C");
+extern "C" int X_func_00166048(...) asm("func_00166048");
+extern "C" int X_func_00166108(...) asm("func_00166108");
+extern "C" int X_func_00166128(...) asm("func_00166128");
+extern "C" int X_func_00166178(...) asm("func_00166178");
+extern "C" int X_func_00166198(...) asm("func_00166198");
+extern "C" int X_func_001696FC(...) asm("func_001696FC");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00158EB4(...) asm("func_00158EB4");
 extern "C" int X_func_00158F2C(...) asm("func_00158F2C");
@@ -57,7 +68,21 @@ extern "C" int func_00158EA0()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00158EB4);
+extern "C" int func_00158EB4(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 1);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00165794(arg0);
+    }
+    return 0;
+}
+
 
 INCLUDE_RODATA("asm/nonmatchings/unk/GotMain", D_002F0D08);
 
@@ -65,23 +90,135 @@ INCLUDE_RODATA("asm/nonmatchings/unk/GotMain", D_002F0D18);
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00158F2C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_0015908C);
+extern "C" int func_0015908C(int arg0)
+{
+    int temp_v0;
+    int var_a1;
 
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00159104);
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 7);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00165A68(arg0);
+    }
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_0015917C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_001591F4);
+extern "C" int func_00159104(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 8);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00165AA8(arg0);
+    }
+    return 0;
+}
+
+
+extern "C" int func_0015917C(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 9);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00165D38(arg0);
+    }
+    return 0;
+}
+
+
+extern "C" int func_001591F4(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xA);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00165D7C(arg0);
+    }
+    return 0;
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_0015926C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_001592F0);
+extern "C" int func_001592F0(int arg0)
+{
+    int temp_v0;
+    int var_a1;
 
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00159368);
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xC);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00166048(arg0);
+    }
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_001593E0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00159458);
+extern "C" int func_00159368(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xD);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00166128(arg0);
+    }
+    return 0;
+}
+
+
+extern "C" int func_001593E0(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xE);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00166108(arg0);
+    }
+    return 0;
+}
+
+
+extern "C" int func_00159458(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xF);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00166178(arg0);
+    }
+    return 0;
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_001594D0);
 
@@ -93,7 +230,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00159668);
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_001596F8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00159788);
+extern "C" int func_00159788(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0x15);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
+    else var_a1 = 0;
+    if (var_a1 == 0) {
+        return X_func_00166198(arg0);
+    }
+    return 0;
+}
+
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00159800);
 
