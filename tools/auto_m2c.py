@@ -315,9 +315,10 @@ def ctx_type(t):
 
 
 def definitions(draft):
-    """{function: (return type, {int register: type}, float registers used,
-    registers it reads that nothing set)} from a draft's function headers."""
-    out = {}
+    """({function: (return type, {int register: type}, float registers
+    used, registers it reads that nothing set)}, {functions called for a
+    result the draft could not find}) from a draft."""
+    out, returns = {}, set()
     for hdr, body in FUNC_RE.findall(draft):
         m = re.match(r"^(.*?)\b(\w+)\((.*)\) \{$", hdr)
         ints, floats = {}, 0
@@ -333,9 +334,17 @@ def definitions(draft):
             else:
                 ints[int(g.group(3))] = ctx_type(g.group(1))
         unset = set(re.findall(r"Read from unset register \$(a0)", body))
+        # a call whose result is read, to a function the context calls void
+        last = None
+        for line in body.split("\n"):
+            if "Read from unset register $v0" in line and last:
+                returns.add(last)
+            g = re.match(r"^\s*(\w+)\(.*\);$", line)
+            if g:
+                last = g.group(1)
         if ok:
             out[m.group(2)] = (m.group(1).strip(), ints, floats, unset)
-    return out
+    return out, returns
 
 
 def write_context(sigs):
@@ -360,8 +369,13 @@ def signatures(jobs, rebuild=False):
         sigs[name] = [ret, [q for q in params if q != "f32"], params.count("f32")]
         frozen.add(name)
 
-    def merge(defs):
+    def merge(found):
+        defs, returns = found
         changed = 0
+        for fn in returns:
+            if fn in sigs and sigs[fn][0] == "void" and fn not in LIB:
+                sigs[fn][0] = "s32"
+                changed += 1
         for fn, (ret, ints, floats, unset) in defs.items():
             need_i = max([max(ints) + 1 if ints else 0] + [int(r[1]) + 1 for r in unset if r[0] == "a"])
             need_f = max([floats] + [int(r[1:]) - 11 for r in unset if r[0] == "f"])
@@ -662,6 +676,23 @@ def tail_call(b):
 TYPED_BAD = re.compile(r"M2C_(?!FIELD\b|UNK\b)\w+|\bf64\b|s128|u128|saved_reg|\bnanf?\b"
                        r"|subroutine_arg|unksp|\\0")
 FLOAT = re.compile(r"(?<![\w.])(\d+\.\d+(?:e[-+]?\d+)?)f\b")
+
+
+def float_literal(mm):
+    """A float constant that this compiler turns into the same bits. It
+    cuts decimals off instead of rounding them (0.1f is 0x3DCCCCCC in the
+    game), and m2c prints the shortest decimal that rounds to the bits,
+    which can then come out one lower: so unless the text is exact, write
+    a value a quarter of a step above the float."""
+    v = float(mm.group(1))
+    bits = struct.unpack("<I", struct.pack("<f", v))[0]
+    f = struct.unpack("<f", struct.pack("<I", bits))[0]
+    if f == v:
+        return mm.group(0)
+    up = struct.unpack("<f", struct.pack("<I", bits + 1))[0]
+    return repr(f + (up - f) / 4) + "f"
+
+
 SIZEOF = {"int": 4, "unsigned int": 4, "short": 2, "unsigned short": 2, "signed char": 1,
           "unsigned char": 1, "float": 4, "long": 8, "unsigned long": 8}
 
@@ -882,10 +913,8 @@ def typed(ctx, fn, hdr, body):
     if stack or re.search(r"\bsp\b", b):
         decl.insert(0, stack_frame(stack, ctx.funcs.get(fn, (0, False, None))[2]))
 
-    # Constants. A float goes by the exact value of its bits (m2c prints the
-    # shortest decimal that gives them, which this compiler can round to
-    # the next one); a shift into the high word needs a 64-bit operand.
-    b = FLOAT.sub(lambda mm: repr(struct.unpack("f", struct.pack("f", float(mm.group(1))))[0]) + "f", b)
+    # Constants; a shift into the high word needs a 64-bit operand.
+    b = FLOAT.sub(float_literal, b)
     b = re.sub(r"\((0x[0-9A-F]+|\d+) << (0x[23][0-9A-F])\)", r"((long) \1 << \2)", b)
 
     # fields
