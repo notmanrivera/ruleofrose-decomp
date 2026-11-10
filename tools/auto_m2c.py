@@ -503,6 +503,10 @@ def operand_start(s, i):
         return k
 
 
+VALUE_CAST = re.compile("[(](?:unsigned |signed )?(?:int|char|short|long|float)[)]$")
+CAST = re.compile("[(](?:unsigned |signed )?(?:int|char|short|long|float|u_long128) [*][)]")
+
+
 def deref(s, ptype):
     """`*p` for the pointers we turned into ints."""
     out, i = [], 0
@@ -513,14 +517,15 @@ def deref(s, ptype):
             while k >= 0 and s[k] == " ":
                 k -= 1
             prev = s[k] if k >= 0 else ""
-            if not (prev.isalnum() or prev in "_)]") and s[i + 1:i + 2] != "=":
+            after_cast = prev == ")" and VALUE_CAST.search(s[:k + 1])  # `(int) *p` is no product
+            if (after_cast or not (prev.isalnum() or prev in "_)]")) and s[i + 1:i + 2] != "=":
                 m = re.match(r"\*([A-Za-z_]\w*)", s[i:])
                 if m:
                     ty = ptype.get(m.group(1), "int")
                     out.append(f"(*({ty} *)({m.group(1)}))")
                     i += len(m.group(0))
                     continue
-                if s[i + 1] == "(":
+                if s[i + 1] == "(" and not CAST.match(s, i + 1):  # not one we already typed
                     out.append("*(int *)")
                     i += 1
                     continue
@@ -589,6 +594,47 @@ OR_RETURN = re.compile(r"""^( +)if \((.+)\) \{
 \1\}
 \5:
 \1return (.+);""", re.M)
+
+
+# The three-case flag chain (DwfMain and the like): two cases as in
+# FLAG_CHAIN and a third with a body of its own.
+FLAG_CHAIN3 = re.compile(r"""^    if \((?P<t>\w+) == (?P<a>\w+)\) \{
+        (?P<v>\w+) = 1;
+        if \((?P<x>.+) != 0\) \{
+            goto (?P<p>block_\d+);
+        \}
+    \} else \{
+(?P=p):
+        if \((?P=t) == (?P<b>\w+)\) \{
+            (?P=v) = 1;
+            if \((?P<y>.+) != 0\) \{
+                goto (?P<q>block_\d+);
+            \}
+        \} else \{
+(?P=q):
+            (?P=v) = 0;
+            if \((?P=t) == (?P<c>\w+)\) \{
+(?P<body>(?:                .*\n)+)            \}
+        \}
+    \}
+(?P<tail>    if \((?P=v) == 0\) \{
+        return (?P<e>.+);
+    \}
+    return 0;
+)?""", re.M)
+
+
+def flag_chain3(body):
+    def r(m):
+        d = m.groupdict()
+        inner = "".join(ln[8:] + "\n" for ln in d["body"].rstrip("\n").split("\n"))
+        out = (f"    if ({d['t']} == {d['a']} && {d['x']} == 0) {d['v']} = 1;\n"
+               f"    else if ({d['t']} == {d['b']} && {d['y']} == 0) {d['v']} = 1;\n"
+               f"    else if ({d['t']} == {d['c']}) {{\n        {d['v']} = 0;\n{inner}    }} else {d['v']} = 0;\n")
+        if d["tail"]:
+            out += f"    if ({d['v']}) return 0;\n    return {d['e']};\n"
+        return out
+    return FLAG_CHAIN3.sub(r, body)
 
 
 class Candidate:
@@ -879,6 +925,7 @@ def callee(ctx, name, counts):
 def typed(ctx, fn, hdr, body):
     body = flag_chain(body)
     body = re.sub(r"/\*.*?\*/", "", body)
+    body = flag_chain3(body)
     body = OR_RETURN.sub(r"\1if (!(\2) || !(\3)) return \6;\n\1return \4;", body)
     body = re.sub(r"^(\s*\w+:)\n(\s*\})", r"\1;\n\2", body, flags=re.M)  # a label needs a statement
     m = re.match(r"^(.*?)\b(\w+)\((.*)\) \{$", hdr)
@@ -1068,7 +1115,52 @@ def typed(ctx, fn, hdr, body):
     if "u_long128" in text:
         pre.add(U128)
     text = block_moves(text, pre)
+    text = virtual_calls(text, pre)
     return Candidate(text, pre)
+
+
+VCALL = re.compile(r"\(\((\w+) \(\*\)\(([^()]*)\)\)M2C_FIELD\(\((\w+) \+ (0x[0-9A-F]+|\d+)\), int \*, 4\)\)\(")
+
+
+def virtual_calls(text, pre):
+    """A call through g++ 2.x's vtable (8-byte entries: the adjustment of
+    `this` and the function) as a real virtual call, on a class made up
+    for it with its vtable pointer at the same offset and the function in
+    the same slot: only that makes the compiler address the entry first
+    and read its two halves from there, as the game does."""
+    pos = 0
+    while True:
+        m = VCALL.search(text, pos)
+        if not m:
+            return text
+        pos = m.end()
+        ret, params, vt, entry = m.group(1), split_args(m.group(2)), m.group(3), int(m.group(4), 0)
+        end = close_paren(text, m.end() - 1)
+        args = split_args(text[m.end():end])
+        tail = f" + M2C_FIELD({vt}, short *, {m.group(4)})"
+        if not args or not args[0].endswith(tail) or not params or entry % 8:
+            continue
+        obj = args[0][:-len(tail)]
+        d = re.search(r"^ +" + vt + r" = M2C_FIELD\((.+), int \*, (0x[0-9A-F]+|\d+)\);\n", text[:m.start()], re.M)
+        defs = list(re.finditer(r"^ +" + vt + r" = M2C_FIELD\((.+), int \*, (0x[0-9A-F]+|\d+)\);\n", text[:m.start()], re.M))
+        if not defs or defs[-1].group(1) != obj:
+            continue
+        d = defs[-1]
+        at = int(d.group(2), 0)
+        try:
+            code = SIG_LETTER[ret] if ret != "void" else "v"
+            code += "".join(SIG_LETTER[q] for q in params[1:])
+        except KeyError:
+            continue
+        name = f"m2c_v{at:X}_{entry:X}_{code}"
+        slots = "".join(f"virtual void v{n}(); " for n in range(1, entry // 8))
+        pad = f"char pad[{at}]; " if at else ""
+        pre.add(f"struct {name} {{ {pad}{slots}virtual {ret} call({', '.join(params[1:])}); }};")
+        call = f"(({name} *)({obj}))->call({', '.join(args[1:])})"
+        text = text[:m.start()] + call + text[end + 1:]
+        if len(re.findall(r"\b" + vt + r"\b", text)) == 2:  # its declaration and this assignment
+            text = text[:d.start()] + text[d.end():]
+        pos = 0
 
 
 ULONG_COPY = re.compile(r"^( +)M2C_ULONG\((.+), (-?0x[0-9A-F]+|-?\d+)\) = \(long\) M2C_ULONG\((.+), (-?0x[0-9A-F]+|-?\d+)\);$")
@@ -1139,10 +1231,57 @@ def swapped(ctx, fn, hdr, body, mask=7):
     return Candidate(text, c.pre)
 
 
+HOISTED = re.compile(r"^( +)(\w+) = (M2C_FIELD\(.+\));\n(\1if \(.*\) \{\n\1    )(.*)\n", re.M)
+
+
+def inlined(ctx, fn, hdr, body):
+    """typed, without the temporaries m2c makes for a load in the delay
+    slot of a branch: `t = p->x; if (c) { use(t); }` back to
+    `if (c) { use(p->x); }` when that is the only use. The compiler puts
+    the load in the delay slot again, and can then also skip a second copy
+    of it at the branch's target, which it does not do for a variable."""
+    c = typed(ctx, fn, hdr, body)
+    text = c.text
+    while True:
+        for m in HOISTED.finditer(text):
+            t = m.group(2)
+            if len(re.findall(r"\b" + t + r"\b", text)) == 3 and len(re.findall(r"\b" + t + r"\b", m.group(5))) == 1:
+                use = re.sub(r"\b" + t + r"\b", lambda _: m.group(3), m.group(5))
+                text = text[:m.start()] + m.group(4) + use + "\n" + text[m.end():]
+                text = re.sub(r"^    \w[\w ]* " + t + r";\n", "", text, count=1, flags=re.M)
+                break
+        else:
+            break
+    if text == c.text:
+        raise Reject("nothing to reorder")
+    return Candidate(text, c.pre)
+
+
+def redeclared(ctx, fn, hdr, body, order):
+    """typed, with the locals declared in another order: the order decides
+    which register each one gets. order: "reverse", or "vars" for the
+    variables (var_*) before the temporaries."""
+    c = typed(ctx, fn, hdr, body)
+    m = re.match(r"^([^\n]*\n\{\n)((?:    (?!struct )[\w ]+ \w+;\n)+)", c.text)
+    if not m:
+        raise Reject("nothing to reorder")
+    decls = m.group(2).splitlines(keepends=True)
+    if order == "reverse":
+        new = decls[::-1]
+    else:
+        new = sorted(decls, key=lambda d: " var_" not in d)
+    if new == decls:
+        raise Reject("nothing to reorder")
+    return Candidate(m.group(1) + "".join(new) + c.text[m.end():], c.pre)
+
+
 # name: (translator, m2c flags, whether m2c gets the game's prototypes)
 STRATEGIES = {
     "plain": (plain, ["-t", "mips-gcc-c"], False),
     "typed": (typed, EE_FLAGS, True),
+    "reversed": (lambda ctx, fn, hdr, body: redeclared(ctx, fn, hdr, body, "reverse"), EE_FLAGS, True),
+    "varsfirst": (lambda ctx, fn, hdr, body: redeclared(ctx, fn, hdr, body, "vars"), EE_FLAGS, True),
+    "inlined": (inlined, EE_FLAGS, True),
     "swapped": (swapped, EE_FLAGS, True),
     **{f"swapped{n}": (lambda ctx, fn, hdr, body, n=n: swapped(ctx, fn, hdr, body, n), EE_FLAGS, True)
        for n in range(1, 7)},
@@ -1416,7 +1555,7 @@ def report():
     best = {}   # (file, fn) -> row: a match wins, else the last attempt
     for line in LOG.read_text(encoding="utf8").splitlines():
         r = json.loads(line)
-        if r["detail"] == "nothing to swap":
+        if r["detail"] in ("nothing to swap", "nothing to reorder"):
             continue
         k = (r["file"], r["fn"])
         if k not in best or best[k]["status"] != "match":
@@ -1486,7 +1625,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("names", nargs="*", help="files as in config/splits.tsv (default: every game file)")
     ap.add_argument("-j", "--jobs", type=int, default=6)
-    ap.add_argument("--strategies", default=",".join(STRATEGIES))
+    ap.add_argument("--strategies", default=",".join(k for k in STRATEGIES if k not in ("reversed", "varsfirst")),
+                    help="default: all but reversed and varsfirst (declaration order: found nothing)")
     ap.add_argument("--prepare", action="store_true", help="skeletons for the files without a .cpp")
     ap.add_argument("--apply", action="store_true", help="copy the results that match into src/")
     ap.add_argument("--report", action="store_true", help="why what is left did not match")
