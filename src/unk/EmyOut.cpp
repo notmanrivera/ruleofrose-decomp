@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xi_func_001442D4() asm("func_001442D4");
+extern "C" int Xii_func_00118FEC__9MagSystem(int) asm("func_00118FEC__9MagSystem");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xii_func_00165570(int) asm("func_00165570");
 extern "C" int Xii_func_0016A6B4(int) asm("func_0016A6B4");
@@ -91,11 +93,19 @@ INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165734);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165794);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165A68);
+extern "C" int func_00165A68()
+{
+    if (!(Xii_func_00118FEC__9MagSystem((int) (int)&D_006E9840) != 1) || !(Xi_func_001442D4() != 0)) return 1;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165AA8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165D38);
+extern "C" int func_00165D38()
+{
+    if (!(Xii_func_00118FEC__9MagSystem((int) (int)&D_006E9840) != 2) || !(Xi_func_001442D4() != 1)) return 1;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165D7C);
 
@@ -116,7 +126,11 @@ INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166128);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166178);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166198);
+extern "C" int func_00166198()
+{
+    if (!(Xii_func_00118FEC__9MagSystem((int) (int)&D_006E9840) != 4) || !(Xi_func_001442D4() != 2)) return 1;
+    return 0;
+}
 
 extern "C" void func_001661DC(int arg0, int arg1)
 {
