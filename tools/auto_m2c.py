@@ -81,7 +81,7 @@ def flat(name):
     return name.replace("/", "_")
 
 
-UNALIGNED = re.compile(r"^(\s+/\*[^*]*\*/\s+)(l|s)dl(\s+)(\$\w+), (0x[0-9A-Fa-f]+|\d+)\((\$\w+)\)$")
+UNALIGNED = re.compile(r"^(\s+/\*[^*]*\*/\s+)(l|s)dl(\s+)(\$\w+), (-?0x[0-9A-Fa-f]+|-?\d+)\((\$\w+)\)$")
 
 
 def join_unaligned(text):
@@ -95,10 +95,10 @@ def join_unaligned(text):
             continue
         pre, ls, gap, reg, off, base = m.groups()
         low = int(off, 0) - 7
-        n = re.match(r"^(\s+/\*[^*]*\*/\s+)" + ls + r"dr\s+" + re.escape(reg) + r", (?:(0x[0-9A-Fa-f]+|\d+))?\("
+        n = re.match(r"^(\s+/\*[^*]*\*/\s+)" + ls + r"dr\s+" + re.escape(reg) + r", (?:(-?0x[0-9A-Fa-f]+|-?\d+))?\("
                      + re.escape(base) + r"\)$", lines[i + 1])
         if n and int(n.group(2) or "0", 0) == low:
-            lines[i] = f"{pre}{ls}d{gap} {reg}, {low:#x}({base})"
+            lines[i] = f"{pre}{ls}d{gap} {reg}, {'-' if low < 0 else ''}{abs(low):#x}({base})"
             lines[i + 1] = n.group(1) + "nop"
     return "\n".join(lines)
 
@@ -1058,7 +1058,7 @@ def typed(ctx, fn, hdr, body):
     return Candidate(text, pre)
 
 
-ULONG_COPY = re.compile(r"^( +)M2C_ULONG\((.+), (0x[0-9A-F]+|\d+)\) = \(long\) M2C_ULONG\((.+), (0x[0-9A-F]+|\d+)\);$")
+ULONG_COPY = re.compile(r"^( +)M2C_ULONG\((.+), (-?0x[0-9A-F]+|-?\d+)\) = \(long\) M2C_ULONG\((.+), (-?0x[0-9A-F]+|-?\d+)\);$")
 TAIL_COPY = re.compile(r"^( +)M2C_FIELD\((.+), (int|short|signed char|unsigned char|unsigned short|unsigned int) \*, "
                        r"(0x[0-9A-F]+|\d+)\) = \((?:int|short|signed char|unsigned char|unsigned short|unsigned int)\) "
                        r"M2C_FIELD\((.+), (?:int|short|signed char|unsigned char|unsigned short|unsigned int) \*, "
@@ -1092,7 +1092,7 @@ def block_moves(text, pre):
             if g and SIZEOF[g.group(3)] == 4 and (g.group(2), int(g.group(4), 0), g.group(5), int(g.group(6), 0)) == (dst, d0 + n, src, s0 + n):
                 n, j = n + 4, j + 1
         pre.add(f"struct m2c_block{n} {{ int w[{n // 4}]; }};")
-        out.append(f"{ind}*(m2c_block{n} *)((char *)({dst}) + {d0:#x}) = *(m2c_block{n} *)((char *)({src}) + {s0:#x});")
+        out.append(f"{ind}*(m2c_block{n} *)((char *)({dst}) + {d0}) = *(m2c_block{n} *)((char *)({src}) + {s0});")
         i = j
     return "\n".join(out)
 
