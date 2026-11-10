@@ -26,10 +26,13 @@ relative path (e.g. "bed/bedsubmode.cpp") that the game's asserts contain.
 """
 import argparse
 import bisect
+import functools
+import os
 import re
 import shutil
 import subprocess
 import sys
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -45,6 +48,18 @@ R_MIPS_32, R_MIPS_26, R_MIPS_HI16, R_MIPS_LO16 = 2, 4, 5, 6
 # The bits of the word each relocation type fills in.
 FIELD = {R_MIPS_32: 0xFFFFFFFF, R_MIPS_26: 0x03FFFFFF, R_MIPS_HI16: 0xFFFF, R_MIPS_LO16: 0xFFFF}
 LINK_MAP = ROOT / "build/SLUS_214.48.map"
+# The map of the last link that ended well: a build that is running or failed
+# leaves LINK_MAP empty or half written.
+GOOD_MAP = ROOT / "build/match/link.map"
+SERVER = "ror-match"            # see server()
+# Bring the mirror up to date with the host: headers, and one file's asm.
+SYNC = """  cp -au /work/src/. $B/src/
+  cp -au /work/include/. $B/include/
+  if [ -d /work/asm/nonmatchings/NAME ]; then
+    mkdir -p $B/asm/nonmatchings/NAME
+    cp -au /work/asm/nonmatchings/NAME/. $B/asm/nonmatchings/NAME/
+  fi"""
+MIRROR = "/tmp/ee-cc-mirror"    # docker/ee-cc's copy of the tree
 # What the next link takes its names from, for names added since the last one.
 SYMBOL_LISTS = ("symbols/symbol_addrs.txt", "config/symbol_addrs_manual.txt",
                 "build/undefined_funcs_auto.txt", "build/undefined_syms_auto.txt")
@@ -63,21 +78,91 @@ def volume_path(path):
     return str(path).replace("\\", "/")
 
 
-def compile_file(name, source=None, extra=""):
-    out = ROOT / f"build/match/{name}.o"
-    out.parent.mkdir(parents=True, exist_ok=True)
-    src = f"{name}.cpp" if source is None else f"../{Path(source).resolve().relative_to(ROOT).as_posix()}"
-    cmd = (f"cd src && ee-cc {configure.COMPILER} {configure.CFLAGS.replace('-Isrc', '-I.').replace('-Iinclude', '-I../include')} "
-           f"{extra} -c {src} -o ../{out.relative_to(ROOT).as_posix()}")
+class CompileError(Exception):
+    pass
+
+
+def image_args():
     mirror = ["-e", "EE_CC_MIRROR=1"] if sys.platform == "win32" else []
-    r = subprocess.run([docker(), "run", "--rm", "--platform", "linux/amd64", *mirror,
-                        "-v", f"{volume_path(ROOT)}:/work",
-                        "-w", "/work", "ror-build", "sh", "-c", cmd], capture_output=True, text=True)
+    return ["--platform", "linux/amd64", *mirror, "-v", f"{volume_path(ROOT)}:/work",
+            "-w", "/work", "ror-build"]
+
+
+def server_up():
+    r = subprocess.run([docker(), "inspect", "-f", "{{.State.Running}}", SERVER],
+                       capture_output=True, text=True)
+    return r.stdout.strip() == "true"
+
+
+def server(action):
+    """start / stop / status of the compile server: a container that stays
+    up, so a compile is a `docker exec` instead of a `docker run`. On Windows
+    that saves the minute ee-cc takes to mirror the tree on every run (see
+    docker/ee-cc); the mirror is made once here and kept current per compile."""
+    d = docker()
+    if action == "stop":
+        subprocess.run([d, "rm", "-f", SERVER], capture_output=True)
+    elif action == "start" and not server_up():
+        subprocess.run([d, "rm", "-f", SERVER], capture_output=True)
+        r = subprocess.run([d, "run", "-d", "--name", SERVER, *image_args(), "sleep", "infinity"],
+                           capture_output=True, text=True)
+        if r.returncode:
+            sys.exit(r.stdout + r.stderr)
+        # Any ee-cc call from under /work makes the mirror when it is wanted.
+        subprocess.run([d, "exec", "-w", "/work/src", SERVER, "ee-cc", configure.COMPILER, "--version"],
+                       capture_output=True)
+    print(f"{SERVER}: {'up' if server_up() else 'down'}")
+
+
+def compile_file(name, source=None, extra="", sync=True):
+    """build/match/<name>.o from src/<name>.cpp, or build/match/<name>.<stem>.o
+    from another source (so variants of one file can compile at once).
+    With the server, sync=False skips bringing its copy of the headers and of
+    the file's asm up to date (for many compiles in a row). Returns the
+    object's path and the compiler's warnings."""
+    src_path = (ROOT / "src" / f"{name}.cpp" if source is None else Path(source).resolve())
+    tag = "" if source is None else "." + re.sub(r"\W", "_", src_path.stem)
+    out = ROOT / f"build/match/{name}{tag}.o"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    rel, out_rel = src_path.relative_to(ROOT).as_posix(), out.relative_to(ROOT).as_posix()
+    if server_up():
+        # The source is compiled in a tree of its own that is all symbolic
+        # links to the real one except for the file itself, under its real
+        # relative path: same command line and same __FILE__ (in headers
+        # too) as the build, whatever the file is called on the host.
+        parts = name.split("/")
+        sync = SYNC.replace("NAME", name) if sync else ""
+        v = f"/tmp/ror-match/{os.getpid()}_{time.time_ns()}"
+        cmd = f"""set -e
+B=/work
+if [ -e {MIRROR}/.ready ]; then
+  B={MIRROR}
+{sync}
+fi
+trap 'rm -rf {v}' EXIT
+mkdir -p {v}/src
+for d in include asm matching; do [ -e $B/$d ] && ln -s $B/$d {v}/$d; done
+cur=
+for part in {" ".join(parts[:-1])} {parts[-1]}.cpp; do
+  for e in $B/src/$cur*; do
+    [ -e "$e" ] && [ "${{e##*/}}" != "$part" ] && ln -s "$e" {v}/src/$cur
+  done
+  case $part in *.cpp) ;; *) mkdir {v}/src/$cur$part; cur=$cur$part/ ;; esac
+done
+cp /work/{rel} {v}/src/{name}.cpp
+cd {v}/src
+ee-cc {configure.COMPILER} {configure.CFLAGS} {extra} -c {name}.cpp -o {v}/out.o
+cp {v}/out.o /work/{out_rel}
+"""
+        r = subprocess.run([docker(), "exec", SERVER, "sh", "-c", cmd], capture_output=True, text=True)
+    else:
+        src = f"{name}.cpp" if source is None else f"../{rel}"
+        cmd = f"cd src && ee-cc {configure.COMPILER} {configure.CFLAGS} {extra} -c {src} -o ../{out_rel}"
+        r = subprocess.run([docker(), "run", "--rm", *image_args(), "sh", "-c", cmd],
+                           capture_output=True, text=True)
     if r.returncode:
-        sys.exit(r.stdout + r.stderr)
-    if r.stderr.strip():
-        print(r.stderr.strip())
-    return out
+        raise CompileError(r.stdout + r.stderr)
+    return out, r.stderr.strip()
 
 
 def ranges(name):
@@ -112,26 +197,52 @@ def pair(hi, lo):
     return (((hi & 0xFFFF) << 16) + sext(lo, 16)) & 0xFFFFFFFF
 
 
+def stamp(path):
+    return path.stat().st_mtime_ns if path.exists() else 0
+
+
 def link_symbols():
-    """{name: address} for the names an object imports: the last link map,
-    or the symbol lists for a name added since."""
+    """({name: address}, name_of) for the names an object imports: the last
+    link map, or the symbol lists for a name added since."""
+    ok = ROOT / "build/ok"
+    return _link_symbols(tuple(stamp(ROOT / p) for p in SYMBOL_LISTS), stamp(LINK_MAP), stamp(ok))
+
+
+@functools.lru_cache(maxsize=2)
+def _link_symbols(*stamps):
     syms = {}
     for path in SYMBOL_LISTS:
         if (ROOT / path).exists():
             for m in re.finditer(r"^\s*([A-Za-z_.$][\w.$]*)\s*=\s*(0x[0-9A-Fa-f]+)\s*;",
                                  (ROOT / path).read_text(), re.M):
                 syms[m.group(1)] = int(m.group(2), 16)
-    if LINK_MAP.exists():
+    ok = ROOT / "build/ok"
+    map_path = LINK_MAP
+    if (LINK_MAP.exists() and LINK_MAP.stat().st_size and ok.exists()
+            and ok.stat().st_mtime >= LINK_MAP.stat().st_mtime):
+        if not GOOD_MAP.exists() or GOOD_MAP.stat().st_mtime < LINK_MAP.stat().st_mtime:
+            GOOD_MAP.parent.mkdir(parents=True, exist_ok=True)
+            tmp = GOOD_MAP.with_name(f"link.{os.getpid()}.tmp")
+            shutil.copyfile(LINK_MAP, tmp)
+            os.replace(tmp, GOOD_MAP)
+    elif GOOD_MAP.exists():
+        map_path = GOOD_MAP
+    if map_path.exists():
         # "0x00105650  utlIsTcc__FPCc", and linker script assignments
         # "0x00080000  _stack_size = 0x80000"
         for m in re.finditer(r"^[ \t]+0x([0-9a-f]{8,16})[ \t]+([A-Za-z_.$][\w.$]*)[ \t]*(?:=|$)",
-                             LINK_MAP.read_text(errors="replace"), re.M):
+                             map_path.read_text(errors="replace"), re.M):
             syms[m.group(2)] = int(m.group(1), 16)
     else:
         print(f"({LINK_MAP.relative_to(ROOT)} missing, run tools/dock ninja: "
               "only names in the symbol lists resolve)")
     syms.pop(".", None)  # the location counter
-    return syms
+    return syms, namer(syms)
+
+
+@functools.lru_cache(maxsize=1)
+def rom_bytes(stamp_):
+    return (ROOT / "build/SLUS_214.48.rom").read_bytes()
 
 
 def namer(syms):
@@ -325,24 +436,22 @@ def disasm(word, pc):
     return rabbitizer.Instruction(word, vram=pc, category=rabbitizer.InstrCategory.R5900).disassemble()
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("name", help="file name as in config/splits.tsv, e.g. bed/bedsubmode")
-    ap.add_argument("--diff", action="store_true", help="show mismatching functions side by side")
-    ap.add_argument("--src", help="compile this file instead of src/<name>.cpp (variant testing)")
-    ap.add_argument("--extra", default="", help="extra compiler flags (flag experiments)")
-    a = ap.parse_args()
-    name = a.name.removeprefix("src/").removesuffix(".cpp")
-
-    rom = (ROOT / "build/SLUS_214.48.rom").read_bytes()
-    obj = compile_file(name, a.src, a.extra)
+def compare(name, source=None, extra="", diff=False, sync=True):
+    """(whether the whole object matches, the report's lines) for one file.
+    Raises CompileError with the compiler's output. Safe to call from
+    several threads."""
+    report = []
+    emit = report.append
+    rom = rom_bytes(stamp(ROOT / "build/SLUS_214.48.rom"))
+    obj, warnings = compile_file(name, source, extra, sync)
+    if warnings:
+        emit(warnings)
     rng = ranges(name)
-    partial = configure.is_partial(Path(a.src) if a.src else ROOT / "src" / f"{name}.cpp")
+    partial = configure.is_partial(Path(source) if source else ROOT / "src" / f"{name}.cpp")
     if partial:
         # .data/.bss stay in asm until the file has no INCLUDE_ASM left
         rng = {k: v for k, v in rng.items() if k not in (".data", ".bss")}
-    syms = link_symbols()
-    name_of = namer(syms)
+    syms, name_of = link_symbols()
     ok = True
     n_asm = 0
     with open(obj, "rb") as f:
@@ -384,7 +493,7 @@ def main():
         text = elf.get_section_by_name(".text")
         data = text.data() if text else b""
         start = rng[".text"][0]
-        print(f"{name}  (.text at 0x{start:08X})")
+        emit(f"{name}  (.text at 0x{start:08X})")
         fns = functions(elf)
         # Compare the Nth function with the game's Nth (at its real address),
         # so one function of the wrong size does not shift all the others.
@@ -423,13 +532,13 @@ def main():
             if not size_ok:
                 status += f" (size 0x{size:X}, game 0x{osize:X})"
             ok &= not bad and not rbad and size_ok
-            print(f"  0x{addr:08X} {fname:40} {size:#6x}  {status}")
+            emit(f"  0x{addr:08X} {fname:40} {size:#6x}  {status}")
             # Wrong references are worth reading when the code matches;
             # otherwise --diff shows them with everything else.
-            if lines and (a.diff or not bad):
+            if lines and (diff or not bad):
                 for line in lines:
-                    print(f"      {line}")
-            if (bad or rbad or not size_ok) and a.diff:
+                    emit(f"      {line}")
+            if (bad or rbad or not size_ok) and diff:
                 for o in range(off, off + max(size, osize or 0), 4):
                     pc = o + delta
                     r = relocs.get(o) if o < off + size else None
@@ -437,12 +546,12 @@ def main():
                             else word(data, o))
                     mark = "*" if o in bad or o in rbad or mine is None else " "
                     note = f"  # {r.label}" + (f" ({r.note})" if r.note else "") if r else ""
-                    print(f"    {mark} {disasm(game(o), pc):38} | "
+                    emit(f"    {mark} {disasm(game(o), pc):38} | "
                           f"{disasm(mine, pc) if mine is not None else ''}{note}")
         end = rng[".text"][1]
         if end is not None and len(data) != end - start:
             ok = False
-            print(f"  .text size 0x{len(data):X}, original file spans 0x{end - start:X}")
+            emit(f"  .text size 0x{len(data):X}, original file spans 0x{end - start:X}")
 
         # .rodata / .data: words, relocations linked; .bss: size
         unchecked = ", references to it not checked"
@@ -451,7 +560,7 @@ def main():
                 sec = elf.get_section_by_name(sec_name)
                 if sec is not None and sec.data_size:
                     ok = False
-                    print(f"  {sec_name}: object has 0x{sec.data_size:X} bytes, "
+                    emit(f"  {sec_name}: object has 0x{sec.data_size:X} bytes, "
                           f"{'still in asm (partial file)' if partial else 'original file has none'}")
                 continue
             mine, want, size_ok = chunks[sec_name]
@@ -466,28 +575,53 @@ def main():
             if lines:
                 status.append(f"{len(lines)} relocs differ" if len(lines) > 1 else "1 reloc differs")
             status = ", ".join(status) or ("MATCH" if size_ok else "0 words differ")
-            print(f"  {sec_name}: 0x{len(mine):X} bytes vs 0x{len(want):X}, {status}"
+            emit(f"  {sec_name}: 0x{len(mine):X} bytes vs 0x{len(want):X}, {status}"
                   f"{unchecked if sec_name in moved else ''}")
-            if lines and (a.diff or not bad):
+            if lines and (diff or not bad):
                 for line in lines:
-                    print(f"      {line}")
+                    emit(f"      {line}")
         if bss_size and ".bss" not in rng:
             ok = False
-            print(f"  .bss: object has 0x{bss_size:X} bytes, "
+            emit(f"  .bss: object has 0x{bss_size:X} bytes, "
                   f"{'still in asm (partial file)' if partial else 'original file has none'}")
         elif ".bss" in rng:
             lo, hi = rng[".bss"]
-            print(f"  .bss: 0x{bss_size:X} bytes vs 0x{(hi or lo) - lo:X}{unchecked if not bss_ok else ''}")
+            emit(f"  .bss: 0x{bss_size:X} bytes vs 0x{(hi or lo) - lo:X}{unchecked if not bss_ok else ''}")
             ok &= bss_ok
 
     if not ok:
-        print("NOT MATCHING")
+        emit("NOT MATCHING")
     elif n_asm:
-        print(f"OK: object matches ({n_asm} functions still INCLUDE_ASM)")
+        emit(f"OK: object matches ({n_asm} functions still INCLUDE_ASM)")
     elif partial:
-        print("OK: object matches (INCLUDE_RODATA and .data/.bss still asm)")
+        emit("OK: object matches (INCLUDE_RODATA and .data/.bss still asm)")
     else:
-        print("OK: whole object matches")
+        emit("OK: whole object matches")
+    return ok, report
+
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("name", nargs="?", help="file name as in config/splits.tsv, e.g. bed/bedsubmode")
+    ap.add_argument("--diff", action="store_true", help="show mismatching functions side by side")
+    ap.add_argument("--src", help="compile this file (anywhere in the repo, e.g. under build/) "
+                    "instead of src/<name>.cpp (variant testing)")
+    ap.add_argument("--extra", default="", help="extra compiler flags (flag experiments)")
+    ap.add_argument("--server", choices=("start", "stop", "status"),
+                    help="compile server: about a second per compile instead of a minute on Windows")
+    a = ap.parse_args()
+    if a.server:
+        return server(a.server)
+    if not a.name:
+        ap.error("name is required")
+    name = a.name.removeprefix("src/").removesuffix(".cpp")
+
+    try:
+        ok, lines = compare(name, a.src, a.extra, a.diff)
+    except CompileError as e:
+        sys.exit(str(e))
+    print("\n".join(lines))
     sys.exit(0 if ok else 1)
 
 
