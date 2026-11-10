@@ -1022,10 +1022,42 @@ def typed(ctx, fn, hdr, body):
     return Candidate(text, pre)
 
 
+STORE_RUN = re.compile(r"^( +)(\S.*) = ([^=;]+);\n(?:\1\S.* = \3;\n)+", re.M)
+
+
+def swapped(ctx, fn, hdr, body, mask=7):
+    """typed, with runs of statements that store the same value in the
+    opposite order: this compiler can emit such stores last to first (the
+    source probably had `a = b = 0;`), so the draft, which follows the
+    code, has them backwards. Not every run is: bit n of mask says whether
+    to turn the runs number n, n+3, n+6... of the function, and the
+    strategies swapped1 to swapped6 try the other combinations."""
+    c = typed(ctx, fn, hdr, body)
+    seen = [0]
+
+    def chain(m):
+        seen[0] += 1
+        if not mask >> ((seen[0] - 1) % 3) & 1:
+            return m.group(0)
+        lines = m.group(0).rstrip("\n").split("\n")
+        targets = [ln.strip()[:-len(" = " + m.group(3) + ";")] for ln in lines]
+        if any(" = " in t or not t.startswith(("M2C_FIELD(", "(*(")) for t in targets):
+            return m.group(0)
+        return "".join(ln + "\n" for ln in reversed(lines))
+
+    text = STORE_RUN.sub(chain, c.text)
+    if text == c.text:
+        raise Reject("nothing to swap")
+    return Candidate(text, c.pre)
+
+
 # name: (translator, m2c flags, whether m2c gets the game's prototypes)
 STRATEGIES = {
     "plain": (plain, ["-t", "mips-gcc-c"], False),
     "typed": (typed, EE_FLAGS, True),
+    "swapped": (swapped, EE_FLAGS, True),
+    **{f"swapped{n}": (lambda ctx, fn, hdr, body, n=n: swapped(ctx, fn, hdr, body, n), EE_FLAGS, True)
+       for n in range(1, 7)},
 }
 
 
@@ -1296,6 +1328,8 @@ def report():
     best = {}   # (file, fn) -> row: a match wins, else the last attempt
     for line in LOG.read_text(encoding="utf8").splitlines():
         r = json.loads(line)
+        if r["detail"] == "nothing to swap":
+            continue
         k = (r["file"], r["fn"])
         if k not in best or best[k]["status"] != "match":
             best[k] = r
