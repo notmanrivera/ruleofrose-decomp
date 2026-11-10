@@ -81,11 +81,15 @@ def flat(name):
 N32 = {"t0": "a4", "t1": "a5", "t2": "a6", "t3": "a7", "t4": "t0", "t5": "t1", "t6": "t2", "t7": "t3"}
 
 
-def m2c(name, key, flags):
-    """m2c's output for a whole file, cached by the asm's date."""
+def m2c(name, key, flags, context=None, force=False):
+    """m2c's output for a whole file, cached by the dates of the asm and of
+    the context (prototypes) it was given."""
     asm = ROOT / f"asm/{name}.s"
     out = WORK / "m2c" / f"{flat(name)}.{key}.c"
-    if not out.exists() or out.stat().st_mtime < asm.stat().st_mtime:
+    if context:
+        flags = [*flags, "--context", str(context)]
+    if (force or not out.exists() or out.stat().st_mtime < asm.stat().st_mtime
+            or (context and out.stat().st_mtime < context.stat().st_mtime)):
         out.parent.mkdir(parents=True, exist_ok=True)
         if "mipsee-gcc-c" in flags:
             # splat names registers 8-15 $t0-$t7; m2c's EE target calls them
@@ -260,6 +264,138 @@ def demangle_params(sym):
 SIG_LETTER = {"int": "i", "unsigned int": "u", "float": "f", "char": "c", "unsigned char": "h",
               "signed char": "a", "short": "s", "unsigned short": "t", "long": "l",
               "unsigned long": "m", "long long": "x", "unsigned long long": "y", "bool": "b"}
+
+
+# ------------------------------------------------------- signatures
+# m2c only shows the arguments a call sets: one that passes its own first
+# parameter along (`this`, in most methods) comes out without it. Given the
+# callee's prototype it writes the whole call, so we work out a prototype
+# for every function of the game and hand m2c all of them as its context:
+#   - parameter types from the mangled name, where there is one;
+#   - else as many parameters as the function's own draft reads, grown when
+#     a draft made with the context reads $a0 without it being set (it
+#     passes `this` along and nothing in it reads it). Only $a0: growing on
+#     the other registers spreads one wrong guess to every caller.
+
+EE_FLAGS = ["-t", "mipsee-gcc-c", "--valid-syntax"]
+SIGS = WORK / "sigs.json"
+CONTEXT = WORK / "context.c"
+TYPEDEFS = ("typedef signed char s8; typedef unsigned char u8; typedef short s16; typedef unsigned short u16;\n"
+            "typedef int s32; typedef unsigned int u32; typedef long long s64; typedef unsigned long long u64;\n"
+            "typedef float f32; typedef double f64;\n")
+M2C_OF = {v: k for k, v in {"s32": "int", "u32": "unsigned int", "s16": "short", "u16": "unsigned short",
+                            "s8": "char", "u8": "unsigned char", "f32": "float", "s64": "long long",
+                            "u64": "unsigned long long"}.items()}
+M2C_OF.update({"signed char": "s8", "long": "s64", "unsigned long": "u64", "bool": "u8"})
+# (return type, parameters) of what the game calls from the C library, the
+# C++ runtime and the compiler's own double arithmetic.
+LIB = {
+    "memset": ("void *", ["void *", "s32", "s32"]), "memcpy": ("void *", ["void *", "void *", "s32"]),
+    "memmove": ("void *", ["void *", "void *", "s32"]), "memcmp": ("s32", ["void *", "void *", "s32"]),
+    "strlen": ("s32", ["void *"]), "strcpy": ("void *", ["void *", "void *"]),
+    "strncpy": ("void *", ["void *", "void *", "s32"]), "strcmp": ("s32", ["void *", "void *"]),
+    "strncmp": ("s32", ["void *", "void *", "s32"]), "strcasecmp": ("s32", ["void *", "void *"]),
+    "strstr": ("void *", ["void *", "void *"]), "strchr": ("void *", ["void *", "s32"]),
+    "strrchr": ("void *", ["void *", "s32"]), "strcat": ("void *", ["void *", "void *"]),
+    "atoi": ("s32", ["void *"]), "rand": ("s32", []),
+    "sinf": ("f32", ["f32"]), "cosf": ("f32", ["f32"]), "sqrtf": ("f32", ["f32"]), "fabsf": ("f32", ["f32"]),
+    "__builtin_new": ("void *", ["s32"]), "__builtin_vec_new": ("void *", ["s32"]),
+    "__builtin_delete": ("void", ["void *"]), "__builtin_vec_delete": ("void", ["void *"]),
+    "ror_assert": ("void", ["void *", "s32", "void *"]),
+}
+
+
+def ctx_type(t):
+    """One of m2c's types as something its context parser takes."""
+    t = t.strip()
+    base = t.replace("*", "").replace("const", "").strip()
+    if "*" in t:
+        return ("void" if base not in CTYPE and base != "f64" else base) + " " + "*" * t.count("*")
+    return t if t in CTYPE or t in ("void", "f64") else "s32"
+
+
+def definitions(draft):
+    """{function: (return type, {int register: type}, float registers used,
+    registers it reads that nothing set)} from a draft's function headers."""
+    out = {}
+    for hdr, body in FUNC_RE.findall(draft):
+        m = re.match(r"^(.*?)\b(\w+)\((.*)\) \{$", hdr)
+        ints, floats = {}, 0
+        ok = True
+        for q in split_args(m.group(3)):
+            g = re.match(r"^(.*?)\b(fp)?arg(\d+)$", q)
+            if q.strip() == "void":
+                continue
+            if not g or "s128" in q:
+                ok = False
+            elif g.group(2):
+                floats = max(floats, int(g.group(3)) + 1)
+            else:
+                ints[int(g.group(3))] = ctx_type(g.group(1))
+        unset = set(re.findall(r"Read from unset register \$(a0)", body))
+        if ok:
+            out[m.group(2)] = (m.group(1).strip(), ints, floats, unset)
+    return out
+
+
+def write_context(sigs):
+    lines = [TYPEDEFS]
+    for name, (ret, ints, floats) in sorted(sigs.items()):
+        if re.fullmatch(r"[A-Za-z_]\w*", name):
+            lines.append(f"{ret} {name}({', '.join(ints + ['f32'] * floats) or 'void'});\n")
+    text = "".join(lines)
+    if not CONTEXT.exists() or CONTEXT.read_text(encoding="utf8") != text:
+        CONTEXT.write_text(text, encoding="utf8", newline="\n")
+
+
+def signatures(jobs, rebuild=False):
+    """{function: [return type, [int parameter types], float parameters]}
+    for the whole game, in m2c's types; made once and kept in
+    build/auto/sigs.json with the context file for m2c beside it."""
+    if SIGS.exists() and CONTEXT.exists() and not rebuild:
+        return json.loads(SIGS.read_text(encoding="utf8"))
+    names = game_files()
+    sigs, frozen = {}, set()
+    for name, (ret, params) in LIB.items():
+        sigs[name] = [ret, [q for q in params if q != "f32"], params.count("f32")]
+        frozen.add(name)
+
+    def merge(defs):
+        changed = 0
+        for fn, (ret, ints, floats, unset) in defs.items():
+            need_i = max([max(ints) + 1 if ints else 0] + [int(r[1]) + 1 for r in unset if r[0] == "a"])
+            need_f = max([floats] + [int(r[1:]) - 11 for r in unset if r[0] == "f"])
+            if fn not in sigs:
+                dm = demangle_params(fn)
+                if dm is not None and all(t in M2C_OF or t == "int" for t in dm):
+                    sigs[fn] = [ctx_type(ret), [M2C_OF.get(t, "s32") for t in dm if t != "float"],
+                                dm.count("float")]
+                    frozen.add(fn)
+                else:
+                    sigs[fn] = [ctx_type(ret), [], 0]
+                changed += 1
+            if fn in frozen:
+                continue
+            cur = sigs[fn]
+            types = [ints.get(i, cur[1][i] if i < len(cur[1]) else "s32") for i in range(max(need_i, len(cur[1])))]
+            if types != cur[1] and len(types) > len(cur[1]) or need_f > cur[2]:
+                changed += 1
+            cur[1], cur[2] = types, max(cur[2], need_f)
+        return changed
+
+    with ThreadPoolExecutor(jobs) as ex:
+        for it in range(5):
+            if it:
+                write_context(sigs)
+                m2c(names[0], "sig", EE_FLAGS, CONTEXT, force=True)  # one alone: it caches the parsed context
+            drafts = list(ex.map(lambda n: m2c(n, "sig", EE_FLAGS, CONTEXT if it else None, force=True), names))
+            changed = sum(merge(definitions(d)) for d in drafts)
+            print(f"signatures, pass {it}: {changed} changed", flush=True)
+            if not changed:
+                break
+    write_context(sigs)
+    SIGS.write_text(json.dumps(sigs, indent=0, sort_keys=True), encoding="utf8")
+    return sigs
 
 
 # ----------------------------------------------------- text helpers
@@ -642,11 +778,15 @@ def callee(ctx, name, counts):
     """(alias, declaration) to call the function `name` with. counts: how
     many arguments each call in the function passes."""
     ret, mparams = ctx.protos.get(name, ("M2C_UNK", []))
+    params = None
+    if name in ctx.sigs:
+        ret, ints, floats = ctx.sigs[name]
+        mparams = ints + ["f32"] * floats
+        params = [ctype(q)[0] for q in mparams]
     rt = "float" if ret == "f32" else "int"
-    params = demangle_params(name)
     if params is None and "f32" in mparams:
         try:
-            params = [ctype(p)[0] for p in mparams]
+            params = [ctype(q)[0] for q in mparams]
         except Reject:
             params = None
     if params is not None and counts != {len(params)}:
@@ -853,9 +993,10 @@ def typed(ctx, fn, hdr, body):
     return Candidate(text, pre)
 
 
+# name: (translator, m2c flags, whether m2c gets the game's prototypes)
 STRATEGIES = {
-    "plain": (plain, ["-t", "mips-gcc-c"]),
-    "typed": (typed, ["-t", "mipsee-gcc-c", "--valid-syntax"]),
+    "plain": (plain, ["-t", "mips-gcc-c"], False),
+    "typed": (typed, EE_FLAGS, True),
 }
 
 
@@ -974,7 +1115,7 @@ def settle(name, text, cand, strategy, sizes, sync):
     return result, [r["fn"] for r in rows if r["status"] == "match"]
 
 
-def run_file(name, strategies):
+def run_file(name, strategies, sigs):
     src = ROOT / f"src/{name}.cpp"
     out = WORK / "out" / f"{name}.cpp"
     skel = WORK / "skel" / f"{name}.cpp"
@@ -994,15 +1135,16 @@ def run_file(name, strategies):
     ctx = Context()
     ctx.funcs = asm_functions(name)
     ctx.labels = string_labels(name)
+    ctx.sigs = sigs
     start = text
     got = []
     sync = True
     for s in strategies:
-        fn_translate, flags = STRATEGIES[s]
+        fn_translate, flags, context = STRATEGIES[s]
         todo = pending(text, name)
         if not todo:
             break
-        draft = m2c(name, s, flags)
+        draft = m2c(name, "sig" if context else s, flags, CONTEXT if context else None)
         ctx.protos, ctx.globals, ctx.text = prototypes(draft), global_types(draft), text
         cand, rows = {}, []
         for hdr, body in FUNC_RE.findall(draft):
@@ -1031,16 +1173,16 @@ def run_file(name, strategies):
     return name, sum(ctx.funcs.get(f, (0,))[0] for f in got), f"{len(got)} functions" if got else ""
 
 
-def show(name, fn, strategies):
+def show(name, fn, strategies, sigs):
     """One function alone: each strategy's candidate and how it compares."""
     src = next(q for q in (WORK / "out" / f"{name}.cpp", ROOT / f"src/{name}.cpp", WORK / "skel" / f"{name}.cpp")
                if q.exists())
     text = src.read_text(encoding="utf8")
     ctx = Context()
-    ctx.funcs, ctx.labels = asm_functions(name), string_labels(name)
+    ctx.funcs, ctx.labels, ctx.sigs = asm_functions(name), string_labels(name), sigs
     for s in strategies:
-        fn_translate, flags = STRATEGIES[s]
-        draft = m2c(name, s, flags)
+        fn_translate, flags, context = STRATEGIES[s]
+        draft = m2c(name, "sig" if context else s, flags, CONTEXT if context else None)
         ctx.protos, ctx.globals, ctx.text = prototypes(draft), global_types(draft), text
         hdr, body = next((h, b) for h, b in FUNC_RE.findall(draft) if re.match(r"^.*?\b(\w+)\(", h).group(1) == fn)
         print(f"==== {s}: m2c\n{hdr}\n{body}}}")
@@ -1197,13 +1339,14 @@ def main():
     ap.add_argument("--prepare", action="store_true", help="skeletons for the files without a .cpp")
     ap.add_argument("--apply", action="store_true", help="copy the results that match into src/")
     ap.add_argument("--report", action="store_true", help="why what is left did not match")
+    ap.add_argument("--signatures", action="store_true", help="work the game's prototypes out again")
     ap.add_argument("--show", metavar="FUNCTION", help="one function of the file given: candidates and diffs")
     a = ap.parse_args()
     WORK.mkdir(parents=True, exist_ok=True)
     if a.report:
         return report()
     if a.show:
-        return show(a.names[0], a.show, a.strategies.split(","))
+        return show(a.names[0], a.show, a.strategies.split(","), signatures(a.jobs))
     lock = WORK / "lock"
     if lock.exists() and not alive(lock.read_text().strip()):
         lock.unlink()  # left by a run that was killed
@@ -1222,9 +1365,10 @@ def main():
             print("compile server down (tools/match.py --server start): this will be slow")
         names = a.names or game_files()
         strategies = a.strategies.split(",")
+        sigs = signatures(a.jobs, a.signatures)
         total = 0
         with ThreadPoolExecutor(a.jobs) as ex:
-            for name, size, note in ex.map(lambda n: run_file(n, strategies), names):
+            for name, size, note in ex.map(lambda n: run_file(n, strategies, sigs), names):
                 total += size
                 if note:
                     print(f"{name}: {note}" + (f", {size:,} bytes" if size else ""), flush=True)
