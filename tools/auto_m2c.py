@@ -55,8 +55,11 @@ HEADER = "// Translated mechanically from m2c drafts: only what matches byte for
 FIELD_MACRO = "#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))\n"
 FUNC_RE = re.compile(r"^(\S[^\n]*\b\w+\([^\n]*\) \{)\n(.*?)^\}\n", re.S | re.M)
 KEYWORDS = {"if", "for", "while", "switch", "return", "sizeof", "do", "else", "case",
-            "int", "char", "unsigned", "short", "signed", "long", "float", "M2C_FIELD"}
-CTYPE = {"s32": "int", "u32": "unsigned int", "s16": "short", "u16": "unsigned short",
+            "int", "char", "unsigned", "short", "signed", "long", "float", "M2C_FIELD", "M2C_ULONG"}
+U128 = "typedef unsigned int u_long128 __attribute__((mode(TI)));"  # as in ror.h
+ULONG = ("struct m2c_ulong { long v; } __attribute__((packed));\n"
+         "#define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)")
+CTYPE = {"s128": "u_long128", "u128": "u_long128", "s32": "int", "u32": "unsigned int", "s16": "short", "u16": "unsigned short",
          "s8": "signed char", "u8": "unsigned char", "f32": "float",
          "s64": "long", "u64": "unsigned long"}
 log_lock = threading.Lock()
@@ -78,6 +81,28 @@ def flat(name):
     return name.replace("/", "_")
 
 
+UNALIGNED = re.compile(r"^(\s+/\*[^*]*\*/\s+)(l|s)dl(\s+)(\$\w+), (0x[0-9A-Fa-f]+|\d+)\((\$\w+)\)$")
+
+
+def join_unaligned(text):
+    """ldl/ldr and sdl/sdr pairs (a 64-bit access to memory that may not be
+    aligned: struct copies) as ld and sd, which m2c knows; the second
+    instruction of each pair becomes a nop."""
+    lines = text.split("\n")
+    for i, line in enumerate(lines[:-1]):
+        m = UNALIGNED.match(line)
+        if not m:
+            continue
+        pre, ls, gap, reg, off, base = m.groups()
+        low = int(off, 0) - 7
+        n = re.match(r"^(\s+/\*[^*]*\*/\s+)" + ls + r"dr\s+" + re.escape(reg) + r", (?:(0x[0-9A-Fa-f]+|\d+))?\("
+                     + re.escape(base) + r"\)$", lines[i + 1])
+        if n and int(n.group(2) or "0", 0) == low:
+            lines[i] = f"{pre}{ls}d{gap} {reg}, {low:#x}({base})"
+            lines[i + 1] = n.group(1) + "nop"
+    return "\n".join(lines)
+
+
 N32 = {"t0": "a4", "t1": "a5", "t2": "a6", "t3": "a7", "t4": "t0", "t5": "t1", "t6": "t2", "t7": "t3"}
 
 
@@ -95,8 +120,9 @@ def m2c(name, key, flags, context=None, force=False):
             # splat names registers 8-15 $t0-$t7; m2c's EE target calls them
             # $a4-$a7 (the fifth to eighth arguments) and $t0-$t3.
             n32 = WORK / "m2c" / f"{flat(name)}.s"
-            n32.write_text(re.sub(r"\$(t[0-7])\b", lambda m: "$" + N32[m.group(1)],
-                                  asm.read_text(encoding="utf8", errors="replace")), encoding="utf8")
+            text = re.sub(r"\$(t[0-7])\b", lambda m: "$" + N32[m.group(1)],
+                          asm.read_text(encoding="utf8", errors="replace"))
+            n32.write_text(join_unaligned(text), encoding="utf8")
             asm = n32
         r = subprocess.run([sys.executable, "-m", "m2c.main", *flags, str(asm)],
                            capture_output=True, text=True, encoding="utf8", errors="replace")
@@ -109,7 +135,8 @@ SAVED = re.compile(r"\$(s[0-7]|fp|ra|gp|f2[0-9]|f3[01]), (0x[0-9A-Fa-f]+|\d+)\(\
 
 def asm_functions(name):
     """{function: (size, ends in a jump to another function, where its
-    locals end)} from splat's disassembly of the whole file. The locals of
+    locals end, has unaligned 64-bit accesses)} from splat's disassembly
+    of the whole file. The locals of
     a frame lie below the registers the prologue saves (or fill the frame,
     if it saves none); None when the function has no frame."""
     out, fn = {}, None
@@ -127,7 +154,9 @@ def asm_functions(name):
             fn = None  # data
             continue
         if fn not in out:
-            out[fn] = [size, False, None]
+            out[fn] = [size, False, None, False]
+        if op in ("ldl", "sdl"):
+            out[fn][3] = True
         if op == "j" and re.match(r"[A-Za-z_]", args):
             out[fn][1] = True
         if prologue:
@@ -310,8 +339,8 @@ def ctx_type(t):
     t = t.strip()
     base = t.replace("*", "").replace("const", "").strip()
     if "*" in t:
-        return ("void" if base not in CTYPE and base != "f64" else base) + " " + "*" * t.count("*")
-    return t if t in CTYPE or t in ("void", "f64") else "s32"
+        return ("void" if base not in CTYPE and base != "f64" or "128" in base else base) + " " + "*" * t.count("*")
+    return t if (t in CTYPE or t in ("void", "f64")) and "128" not in t else "s32"
 
 
 def definitions(draft):
@@ -673,7 +702,7 @@ def tail_call(b):
 # (M2C_FIELD), so floats and narrow stores come out right; callees and the
 # function itself take their parameter types from the mangled name.
 
-TYPED_BAD = re.compile(r"M2C_(?!FIELD\b|UNK\b)\w+|\bf64\b|s128|u128|saved_reg|\bnanf?\b"
+TYPED_BAD = re.compile(r"M2C_(?!FIELD\b|UNK\b)\w+|\bf64\b|saved_reg|\bnanf?\b"
                        r"|subroutine_arg|unksp|\\0")
 FLOAT = re.compile(r"(?<![\w.])(\d+\.\d+(?:e[-+]?\d+)?)f\b")
 
@@ -693,7 +722,7 @@ def float_literal(mm):
     return repr(f + (up - f) / 4) + "f"
 
 
-SIZEOF = {"int": 4, "unsigned int": 4, "short": 2, "unsigned short": 2, "signed char": 1,
+SIZEOF = {"u_long128": 16, "int": 4, "unsigned int": 4, "short": 2, "unsigned short": 2, "signed char": 1,
           "unsigned char": 1, "float": 4, "long": 8, "unsigned long": 8}
 
 
@@ -725,7 +754,7 @@ def fn_type(t):
     return f"{rt} (*)({', '.join(params)})"
 
 
-def typed_fields(b, calls):
+def typed_fields(b, calls, unaligned=False):
     """M2C_FIELD(p, T *, off) with T as a C type, inner accesses first. A
     field that is a pointer to a function is cast to it: the cast goes to
     `calls` and a mark @F<n>@ stands for it until the text is done."""
@@ -738,7 +767,7 @@ def typed_fields(b, calls):
         args = split_args(b[k + 10:e])
         if len(args) != 3:
             raise Reject("field")
-        inner = f"{typed_fields(args[0], calls)}"
+        inner = f"{typed_fields(args[0], calls, unaligned)}"
         ft = fn_type(args[1].replace("(**", "(*", 1)) if "(**" in args[1] else None
         before = b[i:k]
         if ft:
@@ -748,7 +777,9 @@ def typed_fields(b, calls):
             if not args[1].endswith("*"):
                 raise Reject("field")
             fty, pointee = ctype(args[1][:-1])
-            field = f"M2C_FIELD({inner}, {fty} *, {typed_fields(args[2], calls)})"
+            field = f"M2C_FIELD({inner}, {fty} *, {typed_fields(args[2], calls, unaligned)})"
+            if unaligned and fty in ("long", "unsigned long"):
+                field = f"M2C_ULONG({inner}, {args[2]})"
             # a field that is a pointer, dereferenced or indexed
             if before.endswith("*") and args[1].count("*") > 1:
                 before, field = before[:-1], f"(*({pointee or 'int'} *){field})"
@@ -800,7 +831,7 @@ def prototypes(text):
 
 def global_types(text):
     out = {}
-    for m in re.finditer(r"^(?:extern|static) ([\w? ]+?\**)\s*\b(\w+)(\[[^\]]*\])?(?: = [^;]*)?;", text, re.M):
+    for m in re.finditer(r"^(?:extern|static) ([\w? ]+?\**)\s*(?<![\w$])([\w$]+)(\[[^\]]*\])?(?: = [^;]*)?;", text, re.M):
         out[m.group(2)] = (m.group(1).strip(), bool(m.group(3)))
     return out
 
@@ -918,9 +949,11 @@ def typed(ctx, fn, hdr, body):
     b = re.sub(r"\((0x[0-9A-F]+|\d+) << (0x[23][0-9A-F])\)", r"((long) \1 << \2)", b)
 
     # fields
-    b = typed_fields(b, calls)
+    b = typed_fields(b, calls, ctx.funcs.get(fn, (0, False, None, False))[3])
     if "M2C_FIELD(" in b or any("M2C_FIELD(" in c for c in calls):
         pre.add(FIELD_MACRO.rstrip("\n"))
+    if "M2C_ULONG(" in b:
+        pre.update(ULONG.split("\n"))
 
     # casts, indexing, dereferences
     b = re.sub(r"\((?:const )?(?:void|\?|M2C_UNK|s32|u32|s16|u16|s8|u8|f32|s64|u64|struct \w+) \*+\) ?", "(int) ", b)
@@ -1019,7 +1052,49 @@ def typed(ctx, fn, hdr, body):
         b = tail_call(b)
     text = (f'extern "C" {rt} {fn}({", ".join(plist)})\n{{\n' + "\n".join(decl) + ("\n" if decl else "")
             + b + "}\n")
+    if "u_long128" in text:
+        pre.add(U128)
+    text = block_moves(text, pre)
     return Candidate(text, pre)
+
+
+ULONG_COPY = re.compile(r"^( +)M2C_ULONG\((.+), (0x[0-9A-F]+|\d+)\) = \(long\) M2C_ULONG\((.+), (0x[0-9A-F]+|\d+)\);$")
+TAIL_COPY = re.compile(r"^( +)M2C_FIELD\((.+), (int|short|signed char|unsigned char|unsigned short|unsigned int) \*, "
+                       r"(0x[0-9A-F]+|\d+)\) = \((?:int|short|signed char|unsigned char|unsigned short|unsigned int)\) "
+                       r"M2C_FIELD\((.+), (?:int|short|signed char|unsigned char|unsigned short|unsigned int) \*, "
+                       r"(0x[0-9A-F]+|\d+)\);$")
+
+
+def block_moves(text, pre):
+    """A run of unaligned 64-bit copies at consecutive offsets (and the
+    word that may follow them) is the assignment of a struct of that size
+    whose alignment is 4: written as one, the compiler loads up to four
+    pieces before it stores them, as in the game."""
+    if "M2C_ULONG(" in text:  # a global on the other side is one too
+        text = re.sub(r"\(\*\((?:unsigned )?long \*\)&([\w$]+)\)", r"M2C_ULONG(&\1, 0)", text)
+    lines = text.split("\n")
+    out, i = [], 0
+    while i < len(lines):
+        m = ULONG_COPY.match(lines[i])
+        if not m:
+            out.append(lines[i])
+            i += 1
+            continue
+        ind, dst, d0, src, s0 = m.group(1), m.group(2), int(m.group(3), 0), m.group(4), int(m.group(5), 0)
+        n, j = 8, i + 1
+        while j < len(lines):
+            g = ULONG_COPY.match(lines[j])
+            if not g or (g.group(2), int(g.group(3), 0), g.group(4), int(g.group(5), 0)) != (dst, d0 + n, src, s0 + n):
+                break
+            n, j = n + 8, j + 1
+        if j < len(lines):
+            g = TAIL_COPY.match(lines[j])
+            if g and SIZEOF[g.group(3)] == 4 and (g.group(2), int(g.group(4), 0), g.group(5), int(g.group(6), 0)) == (dst, d0 + n, src, s0 + n):
+                n, j = n + 4, j + 1
+        pre.add(f"struct m2c_block{n} {{ int w[{n // 4}]; }};")
+        out.append(f"{ind}*(m2c_block{n} *)((char *)({dst}) + {d0:#x}) = *(m2c_block{n} *)((char *)({src}) + {s0:#x});")
+        i = j
+    return "\n".join(out)
 
 
 STORE_RUN = re.compile(r"^( +)(\S.*) = ([^=;]+);\n(?:\1\S.* = \3;\n)+", re.M)
@@ -1089,7 +1164,7 @@ def assemble(text, name, cand):
     have = set(text.split("\n"))
     pre = sorted({d for c in cand.values() for d in c.pre} - have)
     # macros first, so the order of what is already there never matters
-    pre.sort(key=lambda d: not d.startswith("#define"))
+    pre.sort(key=lambda d: not d.startswith(("struct m2c_", "typedef ")))
     block = "".join(d + "\n" for d in pre)
     if '#include "include_asm.h"\n' in text:
         text = text.replace('#include "include_asm.h"\n', '#include "include_asm.h"\n' + block, 1)
