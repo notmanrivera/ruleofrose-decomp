@@ -30,7 +30,19 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot1Prim__vfunc_08);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", updateZDepth__12EffFoot1Prim);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00173380);
+extern "C" int func_00173380(int arg0)
+{
+    int temp_v0;
+    int var_v1;
+
+    var_v1 = 1;
+    temp_v0 = M2C_FIELD(arg0, int *, 0x48) + 1;
+    M2C_FIELD(arg0, int *, 0x48) = temp_v0;
+    if (!((((float) temp_v0 * -0.049999997951090336f) + 1.0f) > 0.0f)) {
+        var_v1 = 0;
+    }
+    return var_v1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_001733CC);
 

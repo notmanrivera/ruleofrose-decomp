@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiiiiii_alloc__9BedMemoryiPCciii(int, int, int, int, int, int) asm("alloc__9BedMemoryiPCciii");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiii_func_001A1684(int, int) asm("func_001A1684");
 extern "C" int Xiii_strcpy(int, int) asm("strcpy");
@@ -303,7 +304,23 @@ INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A4CDC);
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A4D38);
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A4DB8);
+extern "C" void func_001A4DB8(int arg0, int arg1, int arg2, int arg3)
+{
+    int var_s0;
+    int var_s1;
+
+    if (arg2 > 0) {
+        var_s0 = arg1;
+        var_s1 = arg2;
+        do {
+            if ((*(int *)(var_s0)) == 0) {
+                (*(int *)(var_s0)) = Xiiiiiii_alloc__9BedMemoryiPCciii((int) (int)&D_006E9800, arg3, (int) (int) "mnu/mnudlg.cpp", 0x78, 0, 2);
+            }
+            var_s1 -= 1;
+            var_s0 += 4;
+        } while (var_s1 != 0);
+    }
+}
 
 extern "C" void func_001A4E34(int arg0, int arg1, int arg2)
 {

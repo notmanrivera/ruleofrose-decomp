@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00180EA8(...) asm("func_00180EA8");
 extern int D_007B2580;
@@ -39,7 +40,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyTurn", func_00203684);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyTurn", func_00203828);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyTurn", TskEnemyTurn__vfunc_02);
+extern "C" void TskEnemyTurn__vfunc_02(int arg0, int arg1)
+{
+    int temp_v0;
+
+    if (M2C_FIELD(arg0, int *, 4) != 0) {
+        temp_v0 = M2C_FIELD(arg0, int *, 0x10);
+        if (arg1 != 0) {
+            if (temp_v0 != 0) {
+                M2C_FIELD(temp_v0, float *, 0x1E8) = 9.999999583953922e-08f;
+            }
+        } else if (temp_v0 != 0) {
+            M2C_FIELD(temp_v0, float *, 0x1E8) = (float) M2C_FIELD(arg0, float *, 0x1C);
+        }
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyTurn", D_002FF5B0);
 

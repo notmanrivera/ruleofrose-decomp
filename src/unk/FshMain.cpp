@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_001694CC(int, int) asm("func_001694CC");
+extern "C" int Xiiii_func_001680A0(int, int, int) asm("func_001680A0");
+extern "C" int Xiiii_func_00180EEC(int, int, int) asm("func_00180EEC");
+extern "C" int Xiiiiff_func_001679B4(int, int, int, float, float) asm("func_001679B4");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfff_func_001044B8(float, float) asm("func_001044B8");
 extern "C" int Xii_func_00166AD0(int) asm("func_00166AD0");
@@ -301,7 +305,19 @@ extern "C" void FshOutWin__vfunc_02(int arg0)
     M2C_FIELD(arg0, int *, 4) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutWin__vfunc_03);
+extern "C" int FshOutWin__vfunc_03(int arg0)
+{
+    int temp_v0;
+
+    if ((M2C_FIELD(arg0, int *, 4) == 0) && (Xiiiiff_func_001679B4(arg0, M2C_FIELD(arg0, int *, 0x14), 1, M2C_FIELD(arg0, float *, 0x38), 0.7853981405496597f) != 0)) {
+        Xiiii_func_001680A0(arg0, 1, 0x100);
+        temp_v0 = Xiii_func_001694CC(arg0, 0xD);
+        M2C_FIELD(arg0, int *, 0x2C) = temp_v0;
+        Xiiii_func_00180EEC((int) (int)&D_007B2580, temp_v0, 1);
+        M2C_FIELD(arg0, int *, 4) = 1;
+    }
+    return -1;
+}
 
 extern "C" void FshOutWin__vfunc_04()
 {

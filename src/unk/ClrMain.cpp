@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" int Xii_func_00202F10(int) asm("func_00202F10");
+extern "C" int Xiiii_func_001680A0(int, int, int) asm("func_001680A0");
+extern "C" int Xiiiiff_func_001679B4(int, int, int, float, float) asm("func_001679B4");
+extern "C" int Xiiiiff_func_00169BAC(int, int, int, float, float) asm("func_00169BAC");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfff_func_001044B8(float, float) asm("func_001044B8");
 extern "C" int Xiiif_func_00166F50(int, int, float) asm("func_00166F50");
@@ -109,7 +113,16 @@ extern "C" int func_0014E384()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014E38C);
+extern "C" int func_0014E38C(int arg0)
+{
+    int var_a1;
+
+    var_a1 = 0;
+    if ((*(int *)&D_007A3350) != 0) {
+        var_a1 = M2C_FIELD((*(int *)&D_007A3350), int *, 0x100);
+    }
+    return Xiiiiff_func_00169BAC(1, var_a1, M2C_FIELD(arg0, int *, 0x20), 0.0f, 2.356194317340851f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014E3D0);
 
@@ -261,7 +274,15 @@ extern "C" void ClrOutWin__vfunc_02(int arg0)
     M2C_FIELD(arg0, int *, 4) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrOutWin__vfunc_03);
+extern "C" int ClrOutWin__vfunc_03(int arg0)
+{
+    if ((M2C_FIELD(arg0, int *, 4) == 0) && (Xiiiiff_func_001679B4(arg0, M2C_FIELD(arg0, int *, 0x14), 1, M2C_FIELD(arg0, float *, 0x38), 0.7853981405496597f) != 0)) {
+        Xii_func_00202F10(M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1F0));
+        Xiiii_func_001680A0(arg0, 0x15, 0x100);
+        M2C_FIELD(arg0, int *, 4) = 1;
+    }
+    return -1;
+}
 
 extern "C" void ClrOutWin__vfunc_04()
 {

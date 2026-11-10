@@ -573,7 +573,15 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C43F0);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C4610);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C46C8);
+extern "C" void func_001C46C8(int arg0)
+{
+    int temp_v0;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x21FE0);
+    if (temp_v0 != 0) {
+        M2C_FIELD(temp_v0, float *, 0x1E8) = 9.999999583953922e-08f;
+    }
+}
 
 extern "C" void func_001C46F4(void) {
 }

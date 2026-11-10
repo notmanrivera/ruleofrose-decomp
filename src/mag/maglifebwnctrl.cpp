@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xii_func_00103428(int) asm("func_00103428");
+extern "C" int Xii_func_0010344C(int) asm("func_0010344C");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiiiii_func_0012A56C(int, int, int, int) asm("func_0012A56C");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
@@ -125,7 +127,18 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_00128724);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_00128854);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeFindEnd__vfunc_01);
+extern "C" void MagLifeBwnCtrlModeFindEnd__vfunc_01(int arg0, int arg1)
+{
+    M2C_FIELD(arg1, int *, 0x78) = 0;
+    if (Xii_func_0010344C(M2C_FIELD(arg1, int *, 0x64)) != 0) {
+        M2C_FIELD(arg1, int *, 0x7C) = 1;
+        Xii_func_00103428(M2C_FIELD(arg1, int *, 0x64));
+        M2C_FIELD(arg1, int *, 8) = 0;
+        return;
+    }
+    M2C_FIELD(arg1, int *, 0x7C) = -1;
+    Xiiiii_func_0012A56C(arg1, 1, 0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeFindEnd__vfunc_02);
 

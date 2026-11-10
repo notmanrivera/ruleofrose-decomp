@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" float Xfi_func_0010A650__8DogActor(int) asm("func_0010A650__8DogActor");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiii_func_001C5D08(int, int) asm("func_001C5D08");
 extern "C" int Xiii_func_001CB57C(int, int) asm("func_001CB57C");
@@ -391,7 +392,10 @@ extern "C" int func_001EEC44()
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EEC4C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF0D8);
+extern "C" float func_001EF0D8(float fparg0)
+{
+    return (fparg0 * 16.0f) - (fparg0 * 29.3999981880188f * fparg0);
+}
 
 extern "C" float func_001EF100(float fparg0)
 {
@@ -457,7 +461,25 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F090C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0B50);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0E14);
+extern "C" int func_001F0E14(int arg0)
+{
+    float temp_f1;
+    int var_v0;
+
+    temp_f1 = Xfi_func_0010A650__8DogActor(M2C_FIELD(arg0, int *, 0x50)) - M2C_FIELD(arg0, float *, 0x30);
+    var_v0 = 0;
+    if (temp_f1 < 0.0f) {
+        if (!(temp_f1 >= -0.09999999590218067f)) {
+
+        } else {
+            goto block_4;
+        }
+    } else if (temp_f1 <= 0.09999999590218067f) {
+block_4:
+        var_v0 = 1;
+    }
+    return var_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0E90);
 

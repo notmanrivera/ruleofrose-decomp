@@ -178,7 +178,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202900);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202E20);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", TskEnemyMove__vfunc_02);
+extern "C" void TskEnemyMove__vfunc_02(int arg0, int arg1)
+{
+    int temp_v0;
+
+    if (M2C_FIELD(arg0, int *, 4) != 0) {
+        temp_v0 = M2C_FIELD(arg0, int *, 0x28);
+        if (arg1 != 0) {
+            if (temp_v0 != 0) {
+                M2C_FIELD(temp_v0, float *, 0x1E8) = 9.999999583953922e-08f;
+            }
+        } else if (temp_v0 != 0) {
+            M2C_FIELD(temp_v0, float *, 0x1E8) = (float) M2C_FIELD(arg0, float *, 0x4C);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202F10);
 

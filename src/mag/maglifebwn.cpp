@@ -1,5 +1,7 @@
 #include "ror.h"
 #include "include_asm.h"
+extern "C" int Xi_func_00103F08() asm("func_00103F08");
+extern "C" int Xi_func_00103F38() asm("func_00103F38");
 #include "mag/maglifeman.h"
 #include "dog/dogactor.h"
 class MagBwn : public MagLife {
@@ -388,7 +390,29 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00125014);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00125104);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_001252C4);
+extern "C" int func_001252C4()
+{
+    float temp_f1;
+    int temp_s0;
+    int var_v0;
+
+    temp_s0 = Xi_func_00103F08();
+    temp_f1 = (float) temp_s0 / (float) Xi_func_00103F38();
+    var_v0 = 4;
+    if (!(temp_f1 <= 0.0f)) {
+        var_v0 = 3;
+        if (!(temp_f1 < 0.19999999180436134f)) {
+            var_v0 = 2;
+            if (!(temp_f1 < 0.3999999836087227f)) {
+                var_v0 = 1;
+                if (!(temp_f1 < 0.7999999672174454f)) {
+                    var_v0 = 0;
+                }
+            }
+        }
+    }
+    return var_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00125368);
 

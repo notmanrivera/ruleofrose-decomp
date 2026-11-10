@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_001636A4(int, int) asm("func_001636A4");
+extern "C" int Xiii_func_001665B8(int, int) asm("func_001665B8");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiiii_memset(int, int, int) asm("memset");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
@@ -272,7 +274,16 @@ extern "C" void func_00163E74()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163EA0);
+extern "C" int func_00163EA0(int arg0, int arg1, int arg2)
+{
+    int temp_v0;
+
+    temp_v0 = Xiii_func_001636A4(arg0, arg1);
+    if (temp_v0 != 0) {
+        return Xiii_func_001665B8(temp_v0, arg2);
+    }
+    return (int) temp_v0;
+}
 
 extern "C" void func_00163EE4(int arg0, int arg1, int arg2)
 {

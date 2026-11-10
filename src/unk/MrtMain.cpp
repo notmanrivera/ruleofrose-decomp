@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xiiii_func_001680A0(int, int, int) asm("func_001680A0");
+extern "C" int Xiiiiff_func_001679B4(int, int, int, float, float) asm("func_001679B4");
+extern "C" int Xiiiiff_func_00169BAC(int, int, int, float, float) asm("func_00169BAC");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfff_func_001044B8(float, float) asm("func_001044B8");
 extern "C" int Xii_func_0014D51C(int) asm("func_0014D51C");
@@ -90,7 +93,16 @@ extern "C" int func_0014D37C()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/MrtMain", func_0014D384);
+extern "C" int func_0014D384(int arg0)
+{
+    int var_a1;
+
+    var_a1 = 0;
+    if ((*(int *)&D_007A3350) != 0) {
+        var_a1 = M2C_FIELD((*(int *)&D_007A3350), int *, 0x100);
+    }
+    return Xiiiiff_func_00169BAC(1, var_a1, M2C_FIELD(arg0, int *, 0x20), 10.0f, 6.283185124397278f);
+}
 
 extern "C" void MrtOutYyy__vfunc_02(int arg0)
 {
@@ -192,7 +204,14 @@ extern "C" void MrtOutWin__vfunc_02(int arg0)
     M2C_FIELD(arg0, int *, 4) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/MrtMain", MrtOutWin__vfunc_03);
+extern "C" int MrtOutWin__vfunc_03(int arg0)
+{
+    if ((M2C_FIELD(arg0, int *, 4) == 0) && (Xiiiiff_func_001679B4(arg0, M2C_FIELD(arg0, int *, 0x14), 1, M2C_FIELD(arg0, float *, 0x38), 0.7853981405496597f) != 0)) {
+        Xiiii_func_001680A0(arg0, 0x15, 0x100);
+        M2C_FIELD(arg0, int *, 4) = 1;
+    }
+    return -1;
+}
 
 extern "C" void MrtOutWin__vfunc_04()
 {

@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xii_func_001E4D04(int) asm("func_001E4D04");
+extern "C" int Xiiiiii_func_001E4EBC(int, int, int, int, int) asm("func_001E4EBC");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiii_func_001E7DE8(int, int) asm("func_001E7DE8");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
@@ -87,7 +89,16 @@ extern "C" int func_001E4D04()
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4D18);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4DB0);
+extern "C" int func_001E4DB0(int arg0, int arg1, int arg2, int arg3)
+{
+    int temp_v0;
+
+    temp_v0 = Xii_func_001E4D04((int) arg0);
+    if (temp_v0 != 0) {
+        return Xiiiiii_func_001E4EBC(arg0, temp_v0, arg2, arg3, 0);
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4E20);
 

@@ -47,7 +47,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_00170624);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffDust2Prim__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffDust2Prim__vfunc_05);
+extern "C" int EffDust2Prim__vfunc_05(int arg0)
+{
+    int temp_v0;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x60) + 1;
+    M2C_FIELD(arg0, int *, 0x60) = temp_v0;
+    M2C_FIELD(arg0, float *, 0x34) = (float) (M2C_FIELD(arg0, float *, 0x34) + -0.024999998975545168f);
+    return temp_v0 < 0x96;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffDust2Prim__vfunc_08);
 

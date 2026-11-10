@@ -76,7 +76,16 @@ INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6B8C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6BD0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6C14);
+extern "C" float func_001F6C14(int arg0, float fparg0)
+{
+    float var_f0;
+
+    var_f0 = 0.0f;
+    if (arg0 != 0) {
+        var_f0 = (fparg0 / (float) arg0) / 0.02777999872341752f;
+    }
+    return var_f0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6C54);
 

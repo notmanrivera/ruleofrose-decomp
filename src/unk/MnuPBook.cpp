@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" float Xff_cosf(float) asm("cosf");
+extern "C" int Xii_func_0019381C(int) asm("func_0019381C");
+extern "C" int Xiiff_func_00192E94(int, float, float) asm("func_00192E94");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xii_func_00194688(int) asm("func_00194688");
 extern "C" int Xiii_func_00193F74(int, int) asm("func_00193F74");
@@ -215,7 +218,11 @@ extern "C" void MnuMap__vfunc_03(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001949BC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00194FA4);
+extern "C" void func_00194FA4(int arg0)
+{
+    Xiiff_func_00192E94(arg0, 256.0f, 1.57079616189003f);
+    Xii_func_0019381C(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuMap__vfunc_05);
 
@@ -235,9 +242,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuMap__vfunc_06);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196760);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196790);
+extern "C" float func_00196790(int arg0)
+{
+    return (-Xff_cosf(((((float) M2C_FIELD(arg0, int *, 0x12C) * 180.0f) / (float) M2C_FIELD(arg0, int *, 0x130)) * 3.141592562198639f) / 180.0f) * 0.5f) + 0.5f;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196804);
+extern "C" float func_00196804(int arg0)
+{
+    return (-Xff_cosf(((((float) M2C_FIELD(arg0, int *, 0x12C) * 180.0f) / (float) M2C_FIELD(arg0, int *, 0x130)) * 3.141592562198639f) / 180.0f) * 0.5f) + 0.5f;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F7DC0);
 
