@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xii_func_001308BC(int) asm("func_001308BC");
+extern int _vt$18MagLifeWindowDebug;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfff_func_001044B8(float, float) asm("func_001044B8");
 extern "C" int Xii_func_00146AE4(int) asm("func_00146AE4");
@@ -80,7 +82,11 @@ INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00143EEC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00143FD0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144214);
+extern "C" void func_00144214(int arg0)
+{
+    Xii_func_001308BC(arg0);
+    M2C_FIELD(arg0, int *, 0x14) = (int)&_vt$18MagLifeWindowDebug;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144244);
 

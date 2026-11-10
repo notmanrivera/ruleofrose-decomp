@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int Xii___builtin_new(int) asm("__builtin_new");
+extern "C" int Xiiiii_func_00166A1C(int, int, int, int) asm("func_00166A1C");
+extern int _vt$11MrtOutSerch;
+extern int _vt$9MrtOutAtk;
+extern int _vt$9MrtOutWin;
 extern "C" int Xiiii_func_001680A0(int, int, int) asm("func_001680A0");
 extern "C" int Xiiiiff_func_001679B4(int, int, int, float, float) asm("func_001679B4");
 extern "C" int Xiiiiff_func_00169BAC(int, int, int, float, float) asm("func_00169BAC");
@@ -31,7 +36,38 @@ extern "C" int X_func_00169BAC(...) asm("func_00169BAC");
 extern int D_006E98FA;
 extern int D_007A3350;
 
-INCLUDE_ASM("asm/nonmatchings/unk/MrtMain", func_0014CDE4);
+extern "C" void func_0014CDE4(int arg0)
+{
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+    int temp_v0_4;
+
+    M2C_FIELD(arg0, int *, 0xEC) = 1;
+    M2C_FIELD(arg0, int *, 0xF0) = 1;
+    M2C_FIELD(arg0, int *, 0xF8) = 7;
+    M2C_FIELD(arg0, int *, 0x108) = 7;
+    M2C_FIELD(arg0, int *, 0xF4) = 3;
+    M2C_FIELD(arg0, signed char *, 0x204) = 0;
+    temp_v0 = Xii___builtin_new(0x3C);
+    Xiiiii_func_00166A1C(temp_v0, M2C_FIELD(arg0, int *, 0), M2C_FIELD(arg0, int *, 0x20), (int) arg0);
+    M2C_FIELD(temp_v0, int *, 0x34) = (int)&_vt$11MrtOutSerch;
+    M2C_FIELD(arg0, int *, 0x50) = temp_v0;
+    temp_v0_2 = Xii___builtin_new(0x3C);
+    Xiiiii_func_00166A1C(temp_v0_2, M2C_FIELD(arg0, int *, 0), M2C_FIELD(arg0, int *, 0x20), (int) arg0);
+    M2C_FIELD(temp_v0_2, int *, 0x34) = (int)&_vt$11MrtOutSerch;
+    M2C_FIELD(arg0, int *, 0x54) = temp_v0_2;
+    temp_v0_3 = Xii___builtin_new(0x50);
+    Xiiiii_func_00166A1C(temp_v0_3, M2C_FIELD(arg0, int *, 0), M2C_FIELD(arg0, int *, 0x20), (int) arg0);
+    M2C_FIELD(temp_v0_3, int *, 0x34) = (int)&_vt$9MrtOutAtk;
+    M2C_FIELD(arg0, int *, 0x58) = temp_v0_3;
+    temp_v0_4 = Xii___builtin_new(0x3C);
+    Xiiiii_func_00166A1C(temp_v0_4, M2C_FIELD(arg0, int *, 0), M2C_FIELD(arg0, int *, 0x20), (int) arg0);
+    M2C_FIELD(temp_v0_4, int *, 0x34) = (int)&_vt$9MrtOutWin;
+    M2C_FIELD(arg0, int *, 0x4C) = temp_v0_4;
+    M2C_FIELD(arg0, signed char *, 0x204) = 0;
+    M2C_FIELD(arg0, signed char *, 0x238) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MrtMain", MrtMain__vfunc_01);
 

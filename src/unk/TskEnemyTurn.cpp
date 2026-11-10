@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern int _vt$12TskEnemyTurn;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00180EA8(...) asm("func_00180EA8");
@@ -28,7 +29,12 @@ extern "C" void TskEnemyTurn__vfunc_03(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyTurn", func_002034C0);
+extern "C" void func_002034C0(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0x10) = 0;
+    M2C_FIELD(arg0, int *, 4) = 0;
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$12TskEnemyTurn;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyTurn", TskEnemyTurn__vfunc_06);
 

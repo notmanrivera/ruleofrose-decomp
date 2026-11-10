@@ -1,4 +1,10 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0016A914(int) asm("func_0016A914");
+extern "C" int Xii_func_00173DF8(int) asm("func_00173DF8");
+extern "C" int Xiiii_memset(int, int, int) asm("memset");
+extern int _vt$14EffBloodSpray1;
+extern int _vt$14EffBloodSpray2;
+extern int _vt$6EffBg1;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xi_func_0016AD94() asm("func_0016AD94");
 extern "C" int Xii_func_0016BEDC(int) asm("func_0016BEDC");
@@ -103,7 +109,11 @@ INCLUDE_RODATA("asm/nonmatchings/unk/Eff0", D_002F1ED0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016AF20);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016AFCC);
+extern "C" void func_0016AFCC(int arg0)
+{
+    Xii_func_00173DF8(arg0);
+    M2C_FIELD(arg0, int *, 0x20) = (int)&_vt$6EffBg1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", _$_6EffBg1);
 
@@ -147,7 +157,12 @@ extern "C" void renderPreMain__6EffBg1PQ24Eff011RENDERPARAM(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016B50C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016B62C);
+extern "C" int func_0016B62C(int arg0)
+{
+    Xii_func_0016A914(arg0);
+    M2C_FIELD(arg0, int *, 0x20) = (int)&_vt$14EffBloodSpray1;
+    return Xiiii_memset(arg0 + 0x40, 0, 0x240);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodSpray1__vfunc_02);
 
@@ -157,7 +172,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodSpray1__vfunc_08);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", updateZDepth__14EffBloodSpray1);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016BE14);
+extern "C" int func_0016BE14(int arg0)
+{
+    Xii_func_0016A914(arg0);
+    M2C_FIELD(arg0, int *, 0x24) = 0;
+    M2C_FIELD(arg0, int *, 0x20) = (int)&_vt$14EffBloodSpray2;
+    M2C_FIELD(arg0, float *, 0x38) = 1.0f;
+    M2C_FIELD(arg0, int *, 0x28) = 0;
+    M2C_FIELD(arg0, int *, 0x2C) = 0;
+    M2C_FIELD(arg0, int *, 0x30) = 0;
+    M2C_FIELD(arg0, int *, 0x34) = 0;
+    return Xiiii_memset(arg0 + 0x40, 0, 0x550);
+}
 
 extern "C" int EffBloodSpray2__vfunc_02(int arg0, int arg1)
 {

@@ -1,4 +1,16 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xii_func_001A97F4(int) asm("func_001A97F4");
+extern "C" int Xiii_func_0018BCC0(int, int) asm("func_0018BCC0");
+extern "C" int Xiii_func_0018C190(int, int) asm("func_0018C190");
+extern int D_002A7858;
+extern int D_002A80C0;
+extern int D_002ABB08;
+extern int D_002ABCE8;
+extern int D_002AC7B8;
+extern int D_002AC980;
+extern int D_006FE04C;
+extern int _9MagSystem$m_current_system;
 extern "C" int Xii_func_0018FEBC(int) asm("func_0018FEBC");
 extern "C" int Xiiii_func_0018F744(int, int, int) asm("func_0018F744");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
@@ -342,7 +354,16 @@ extern "C" void func_001A90EC(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A9150);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A91F4);
+extern "C" void func_001A91F4(int arg0, int arg1)
+{
+    (*(int *)&D_006FE04C) = 0;
+    Xiii_func_0018BCC0(arg0 + 0x4DF0, 0xF);
+    M2C_FIELD(arg0, int *, 0x520C) = arg1;
+    M2C_FIELD(arg0, int *, 0x56E4) = arg1;
+    M2C_FIELD(arg0, int *, 0x56DC) = (int) (*(int *)&_9MagSystem$m_current_system);
+    Xii_func_001A97F4(arg0);
+    M2C_FIELD(arg0, int *, 0x56F4) = 1;
+}
 
 extern "C" void func_001A9258(int arg0)
 {
@@ -485,7 +506,16 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A9828);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A9844);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A988C);
+extern "C" void func_001A988C(int arg0)
+{
+    int temp_s0;
+
+    temp_s0 = arg0 + 0x4DF0;
+    M2C_FIELD(arg0, int *, 0x56DC) = (int) (*(int *)&_9MagSystem$m_current_system);
+    M2C_FIELD(temp_s0, int *, 0x4B0) = (int)&D_002A7858;
+    Xiii_func_0018C190(temp_s0, (int)&D_002A80C0);
+    M2C_FIELD(temp_s0, int *, 4) = 1;
+}
 
 extern "C" int func_001A98DC(int arg0)
 {
@@ -1265,7 +1295,17 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AD96C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001ADBD8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001ADC0C);
+extern "C" void func_001ADC0C(int arg0)
+{
+    int temp_s0;
+
+    temp_s0 = arg0 + 0x7A4;
+    M2C_FIELD(arg0, int *, 0x1090) = (int) (*(int *)&_9MagSystem$m_current_system);
+    M2C_FIELD(temp_s0, int *, 0x4B0) = (int)&D_002ABB08;
+    Xiii_func_0018C190(temp_s0, (int)&D_002ABCE8);
+    M2C_FIELD(arg0, int *, 0x77C) = 0;
+    M2C_FIELD(temp_s0, int *, 4) = 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001ADC6C);
 
@@ -1342,7 +1382,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE1E8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE2D8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE318);
+extern "C" void func_001AE318(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0x940) = (int) (*(int *)&_9MagSystem$m_current_system);
+}
 
 extern "C" int func_001AE328()
 {
@@ -1451,7 +1494,16 @@ extern "C" int func_001AE7F0()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE7F8);
+extern "C" void func_001AE7F8(int arg0)
+{
+    int temp_s0;
+
+    temp_s0 = arg0 + 0x14;
+    M2C_FIELD(arg0, int *, 0x900) = (int) (*(int *)&_9MagSystem$m_current_system);
+    M2C_FIELD(temp_s0, int *, 0x4B0) = (int)&D_002AC7B8;
+    Xiii_func_0018C190(temp_s0, (int)&D_002AC980);
+    M2C_FIELD(temp_s0, int *, 4) = 1;
+}
 
 extern "C" int func_001AE848(int arg0)
 {

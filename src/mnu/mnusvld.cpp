@@ -1,4 +1,10 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiii_func_0018C190(int, int) asm("func_0018C190");
+extern "C" int Xiiii_func_0018C4D8(int, int, int) asm("func_0018C4D8");
+extern int D_002A45C0;
+extern int D_002A64E0;
+extern int _9MagSystem$m_current_system;
 extern "C" int Xiiii_func_001A4E34(int, int, int) asm("func_001A4E34");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_alloc__9BedMemoryiPCciii(...) asm("alloc__9BedMemoryiPCciii");
@@ -178,7 +184,25 @@ INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A5ED0);
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A65F0);
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A665C);
+extern "C" void func_001A665C(int arg0)
+{
+    int temp_v0;
+    int temp_s1;
+
+    temp_s1 = arg0 + 0x1474;
+    M2C_FIELD(arg0, int *, 0x1D60) = (int) (*(int *)&_9MagSystem$m_current_system);
+    M2C_FIELD(temp_s1, int *, 0x4B0) = (int)&D_002A45C0;
+    Xiii_func_0018C190(temp_s1, (int)&D_002A64E0);
+    temp_v0 = M2C_FIELD(arg0, int *, 0x24E8);
+    if (temp_v0 != 0) {
+        if (temp_v0 == 1) {
+            Xiiii_func_0018C4D8(temp_s1, 0x3E, 1);
+        }
+    } else {
+        Xiiii_func_0018C4D8(temp_s1, 0x3E, 3);
+    }
+    M2C_FIELD(temp_s1, int *, 4) = 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A66F0);
 

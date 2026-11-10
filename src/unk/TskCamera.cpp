@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xiiii_func_001F98C0(int, int, int) asm("func_001F98C0");
+extern int _vt$9TskAttack;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiiii_memset(int, int, int) asm("memset");
 extern "C" int Xiiii_strncpy(int, int, int) asm("strncpy");
@@ -123,7 +125,13 @@ extern "C" int func_001F97C0()
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001F97C8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001F985C);
+extern "C" int func_001F985C(int arg0, int arg1, int arg2)
+{
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$9TskAttack;
+    Xiiii_memset(arg0 + 4, 0, 8);
+    M2C_FIELD(arg0, int *, 0x10) = arg1;
+    return Xiiii_func_001F98C0(arg0, (int) arg1, (int) arg2);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskCamera", D_002FEA70);
 

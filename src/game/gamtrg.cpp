@@ -1,4 +1,40 @@
 #include "include_asm.h"
+struct m2c_block8 { int w[2]; };
+struct m2c_ulong { long v; } __attribute__((packed));
+#define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
+extern "C" int Xiiii_memset(int, int, int) asm("memset");
+extern int D_002FC418;
+extern int D_002FC420;
+extern int D_002FC428;
+extern int D_002FC430;
+extern int D_002FC438;
+extern int D_002FC440;
+extern int D_002FC448;
+extern int D_002FC450;
+extern int D_002FC458;
+extern int D_002FC460;
+extern int D_002FC468;
+extern int D_002FC470;
+extern int D_002FC478;
+extern int D_002FC480;
+extern int D_002FC488;
+extern int D_002FC490;
+extern int D_002FC498;
+extern int D_002FC4A0;
+extern int D_002FC4A8;
+extern int D_002FC4B0;
+extern int D_002FC4B8;
+extern int D_002FC4C0;
+extern int D_002FC4C8;
+extern int D_002FC4D0;
+extern int D_002FC4D8;
+extern int D_002FC4E0;
+extern int D_002FC4E8;
+extern int D_002FC4F0;
+extern int D_002FC4F8;
+extern int D_002FC500;
+extern int D_002FC508;
+extern int D_002FC510;
 extern "C" int Xiii_func_001E7724(int, int) asm("func_001E7724");
 extern "C" int Xiii_func_001E7D7C(int, int) asm("func_001E7D7C");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -148,7 +184,42 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D9830);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D9908);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D9B2C);
+extern "C" void func_001D9B2C(int arg0)
+{
+    Xiiii_memset(arg0 + 0x280, 0, 0x109);
+    *(m2c_block8 *)((char *)(arg0) + 0x288) = *(m2c_block8 *)((char *)(&D_002FC418) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x290) = *(m2c_block8 *)((char *)(&D_002FC420) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x298) = *(m2c_block8 *)((char *)(&D_002FC428) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x2a0) = *(m2c_block8 *)((char *)(&D_002FC430) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x2a8) = *(m2c_block8 *)((char *)(&D_002FC438) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x2b0) = *(m2c_block8 *)((char *)(&D_002FC440) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x2b8) = *(m2c_block8 *)((char *)(&D_002FC448) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x2c0) = *(m2c_block8 *)((char *)(&D_002FC450) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x2d0) = *(m2c_block8 *)((char *)(&D_002FC458) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x340) = *(m2c_block8 *)((char *)(&D_002FC460) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x2d8) = *(m2c_block8 *)((char *)(&D_002FC468) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x2e0) = *(m2c_block8 *)((char *)(&D_002FC470) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x2e8) = *(m2c_block8 *)((char *)(&D_002FC478) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x2f0) = *(m2c_block8 *)((char *)(&D_002FC480) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x2f8) = *(m2c_block8 *)((char *)(&D_002FC488) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x300) = *(m2c_block8 *)((char *)(&D_002FC490) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x308) = *(m2c_block8 *)((char *)(&D_002FC498) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x310) = *(m2c_block8 *)((char *)(&D_002FC4A0) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x318) = *(m2c_block8 *)((char *)(&D_002FC4A8) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x320) = *(m2c_block8 *)((char *)(&D_002FC4B0) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x328) = *(m2c_block8 *)((char *)(&D_002FC4B8) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x330) = *(m2c_block8 *)((char *)(&D_002FC4C0) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x338) = *(m2c_block8 *)((char *)(&D_002FC4C8) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x348) = *(m2c_block8 *)((char *)(&D_002FC4D0) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x350) = *(m2c_block8 *)((char *)(&D_002FC4D8) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x358) = *(m2c_block8 *)((char *)(&D_002FC4E0) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x360) = *(m2c_block8 *)((char *)(&D_002FC4E8) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x368) = *(m2c_block8 *)((char *)(&D_002FC4F0) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x370) = *(m2c_block8 *)((char *)(&D_002FC4F8) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x378) = *(m2c_block8 *)((char *)(&D_002FC500) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x380) = *(m2c_block8 *)((char *)(&D_002FC508) + 0x0);
+    *(m2c_block8 *)((char *)(arg0) + 0x388) = *(m2c_block8 *)((char *)(&D_002FC510) + 0x0);
+}
 
 extern "C" void func_001D9E9C(int arg0)
 {

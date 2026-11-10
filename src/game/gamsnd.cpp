@@ -1,4 +1,7 @@
 #include "include_asm.h"
+struct m2c_block36 { int w[9]; };
+struct m2c_ulong { long v; } __attribute__((packed));
+#define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiiiii_func_001809D8(int, int, int, int) asm("func_001809D8");
 extern "C" int Xiiiiiii_func_001E6734(int, int, int, int, int, int) asm("func_001E6734");
@@ -23,7 +26,11 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E107C);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E111C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E15D0);
+extern "C" void func_001E15D0(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x1684) = 0;
+    *(m2c_block36 *)((char *)(arg0) + 0x15a0) = *(m2c_block36 *)((char *)(arg1) + 0x0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E1620);
 

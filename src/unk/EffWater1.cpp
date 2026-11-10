@@ -1,0 +1,132 @@
+#include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xii_func_0016A914(int) asm("func_0016A914");
+extern int _vt$9EffWater1;
+// Translated mechanically from m2c drafts: only what matches byte for byte.
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_001787B0);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_00178894);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffMuzzleFlash1__vfunc_02);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffMuzzleFlash1__vfunc_05);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_00178C54);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffMuzzleFlash1__vfunc_08);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_00178DD8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_00178E68);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_00178EEC);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", updateZDepth__15EffMuzzleFlash1);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_001790E4);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", _$_10EffReload1);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffReload1__vfunc_02);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffReload1__vfunc_05);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", renderPreMain__10EffReload1PQ24Eff011RENDERPARAM);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1__vfunc_02);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1__vfunc_05);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1Prim__vfunc_02);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1Prim__vfunc_05);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1Prim__vfunc_08);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", updateZDepth__13EffSteam1Prim);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam2__vfunc_02);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam2__vfunc_05);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam2Prim__vfunc_02);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam2Prim__vfunc_05);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam2Prim__vfunc_08);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", updateZDepth__13EffSteam2Prim);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffCloud1__vfunc_02);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_0017A410);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffCloud1__vfunc_05);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffCloud1__vfunc_08);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", updateZDepth__9EffCloud1);
+
+extern "C" void func_0017A918(int arg0)
+{
+    Xii_func_0016A914(arg0);
+    M2C_FIELD(arg0, int *, 0x60) = 0;
+    M2C_FIELD(arg0, int *, 0x20) = (int)&_vt$9EffWater1;
+}
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", _$_9EffWater1);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2E10);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2E28);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2E50);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2E70);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2E80);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2E98);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2EB0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2EC0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2ED0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2F10);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2F30);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2F70);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2FB0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2FB8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2FC8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2FD8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2FE8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2FF8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffWater1__vfunc_02);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffWater1__vfunc_05);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", liveActivateExec__9EffWater1);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", renderPreMain__9EffWater1PQ24Eff011RENDERPARAM);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_0017AFD8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", _$_9EffWater3);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffWater3__vfunc_02);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffWater3__vfunc_05);
+
+INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffWater3__vfunc_08);

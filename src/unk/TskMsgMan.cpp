@@ -1,4 +1,13 @@
 #include "include_asm.h"
+struct m2c_block8 { int w[2]; };
+struct m2c_ulong { long v; } __attribute__((packed));
+#define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
+extern "C" int Xiiu_func_001D2B8C(int, unsigned int) asm("func_001D2B8C");
+extern int D_002FE588;
+extern int D_002FE5E0;
+extern int D_002FE5E8;
+extern int _vt$11TskSeqEvent;
+extern int _vt$15TskGenFrameFunc;
 extern "C" float Xfi_func_0010A650__8DogActor(int) asm("func_0010A650__8DogActor");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiii_func_001C5D08(int, int) asm("func_001C5D08");
@@ -890,7 +899,14 @@ extern "C" int func_001F3D90()
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3D98);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F4088);
+extern "C" void func_001F4088(int arg0, int arg1, int arg2)
+{
+    M2C_FIELD(arg0, int *, 0x10) = arg2;
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$15TskGenFrameFunc;
+    if (arg1 == 1) {
+        *(m2c_block8 *)((char *)(arg0) + 0x8) = *(m2c_block8 *)((char *)(&D_002FE588) + 0x0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskGenFrameFunc__vfunc_06);
 
@@ -925,7 +941,22 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE590);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovie__vfunc_04);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F47F0);
+extern "C" void func_001F47F0(int arg0, int arg1, int arg2, int arg3)
+{
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$11TskSeqEvent;
+    M2C_FIELD(arg0, int *, 0xC) = arg2;
+    if (arg2 == 0) {
+        M2C_FIELD(arg0, int *, 0x3C) = 0;
+        M2C_FIELD(arg0, int *, 0x20) = (int) M2C_FIELD(arg3, int *, 0);
+        M2C_FIELD(arg0, float *, 0x48) = (float) M2C_FIELD(arg3, float *, 4);
+        M2C_FIELD(arg0, int *, 0x1C) = Xiiu_func_001D2B8C((int) (int)&D_007812C0, (unsigned int) arg1);
+        if (!(M2C_FIELD(arg0, float *, 0x48) <= 1.0f)) {
+            *(m2c_block8 *)((char *)(arg0) + 0x4) = *(m2c_block8 *)((char *)(&D_002FE5E8) + 0x0);
+            return;
+        }
+    }
+    *(m2c_block8 *)((char *)(arg0) + 0x4) = *(m2c_block8 *)((char *)(&D_002FE5E0) + 0x0);
+}
 
 extern "C" void TskSeqEvent__vfunc_05(void) {
 }

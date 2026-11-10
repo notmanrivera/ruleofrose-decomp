@@ -1,4 +1,10 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_0018C190(int, int) asm("func_0018C190");
+extern int D_0029A388;
+extern int D_0029B7F8;
+extern int D_0029BD28;
+extern int D_0029BF10;
+extern int _9MagSystem$m_current_system;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xii_func_001C621C(int) asm("func_001C621C");
 extern "C" int Xiif_func_00131618(int, float) asm("func_00131618");
@@ -86,7 +92,17 @@ extern "C" int func_0019183C()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00191844);
+extern "C" void func_00191844(int arg0)
+{
+    int temp_s0;
+
+    temp_s0 = arg0 + 0x48;
+    M2C_FIELD(arg0, int *, 0x934) = (int) (*(int *)&_9MagSystem$m_current_system);
+    M2C_FIELD(temp_s0, int *, 0x4B0) = (int)&D_0029A388;
+    Xiii_func_0018C190(temp_s0, (int)&D_0029B7F8);
+    M2C_FIELD(temp_s0, int *, 4) = 1;
+    M2C_FIELD(arg0, int *, 0x94C) = 0x1E;
+}
 
 extern "C" int func_001918A8(int arg0)
 {
@@ -224,7 +240,16 @@ extern "C" int func_00192794()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_0019279C);
+extern "C" void func_0019279C(int arg0)
+{
+    int temp_s0;
+
+    temp_s0 = arg0 + 0x18;
+    M2C_FIELD(arg0, int *, 0x904) = (int) (*(int *)&_9MagSystem$m_current_system);
+    M2C_FIELD(temp_s0, int *, 0x4B0) = (int)&D_0029BD28;
+    Xiii_func_0018C190(temp_s0, (int)&D_0029BF10);
+    M2C_FIELD(temp_s0, int *, 4) = 1;
+}
 
 extern "C" int func_001927EC(int arg0)
 {

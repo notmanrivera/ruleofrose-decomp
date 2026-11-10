@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern int _vt$9SeManager;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xii_func_001CF95C(int) asm("func_001CF95C");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
@@ -58,6 +59,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/SeManager", func_001F6D8C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/SeManager", func_001F6DFC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/SeManager", func_001F6EDC);
+extern "C" void func_001F6EDC(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0x300) = 0;
+    M2C_FIELD(arg0, int *, 0x304) = (int)&_vt$9SeManager;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/SeManager", SeManager__vfunc_01);
