@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiii_memset(int, int, int) asm("memset");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfii_func_00140D40(int, int) asm("func_00140D40");
 extern "C" int Xii_func_0014186C(int) asm("func_0014186C");
@@ -12,7 +13,16 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_001406B8);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140990);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140A84);
+extern "C" void func_00140A84(int arg0)
+{
+    Xiiii_memset(arg0 + 0x853BC, 0, 0x70);
+    M2C_FIELD(arg0, int *, 0x853C0) = -1;
+    M2C_FIELD(arg0, float *, 0x853C8) = 1.0f;
+    M2C_FIELD(arg0, float *, 0x853CC) = 300.0f;
+    M2C_FIELD(arg0, float *, 0x853D0) = 600.0f;
+    M2C_FIELD(arg0, int *, 0x853D4) = 0;
+    M2C_FIELD(arg0, int *, 0x853DC) = 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/magscenefocus", D_002EEB10);
 

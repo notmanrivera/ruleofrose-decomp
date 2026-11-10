@@ -1,4 +1,7 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xii_func_001442DC(int) asm("func_001442DC");
+extern "C" int Xiiii_func_001680A0(int, int, int) asm("func_001680A0");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_001442DC(...) asm("func_001442DC");
 extern "C" int X_func_00162B14(...) asm("func_00162B14");
@@ -73,7 +76,27 @@ INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_0016834C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001683E8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00168478);
+extern "C" void func_00168478(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+    int temp_v1;
+
+    if (M2C_FIELD(arg0, int *, 0x18) == 0) {
+        if (!(M2C_FIELD(M2C_FIELD(arg0, int *, 8), int *, 0x120) & 0x400)) {
+            temp_v0 = Xii_func_001442DC(M2C_FIELD(arg0, int *, 0));
+            var_a1 = 9;
+            if ((temp_v0 != 1) && ((temp_v0 >= 2) || (var_a1 = 8, (temp_v0 != 0)))) {
+                var_a1 = 0xA;
+            }
+            Xiiii_func_001680A0(arg0, M2C_FIELD(((var_a1 * 4) + M2C_FIELD(arg0, int *, 0xC)), int *, 0xEC), 0x100);
+            temp_v1 = M2C_FIELD(arg0, int *, 8);
+            M2C_FIELD(temp_v1, int *, 0x120) = (int) (M2C_FIELD(temp_v1, int *, 0x120) | 0x400);
+        }
+        M2C_FIELD(arg0, int *, 0x18) = 1;
+        M2C_FIELD(arg0, int *, 0x1C) = 1;
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F19E0);
 

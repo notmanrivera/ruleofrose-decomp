@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_001E7724(int, int) asm("func_001E7724");
+extern "C" int Xiii_func_001E7D7C(int, int) asm("func_001E7D7C");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfiiii_func_001D817C(int, int, int, int) asm("func_001D817C");
 extern "C" int Xii_func_001C6C28(int) asm("func_001C6C28");
@@ -134,7 +136,11 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D95C4);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D966C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D96E0);
+extern "C" void func_001D96E0(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0x114) = 0;
+    M2C_FIELD(arg0, int *, 0x110) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D96EC);
 
@@ -198,7 +204,17 @@ extern "C" void func_001DA130(int arg0, int arg1, int arg2)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DA1B4);
+extern "C" void func_001DA1B4(int arg0)
+{
+    if (Xiii_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x3D4)) != 0) {
+        Xiii_func_001E7724((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x3D4));
+    }
+    if (Xiii_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x3E0)) != 0) {
+        Xiii_func_001E7724((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x3E0));
+    }
+    M2C_FIELD(arg0, int *, 0x3D4) = -1;
+    M2C_FIELD(arg0, int *, 0x3E0) = -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DA228);
 

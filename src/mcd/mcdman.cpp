@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00185268(...) asm("func_00185268");
 extern "C" int X_func_001853CC(...) asm("func_001853CC");
@@ -103,7 +104,26 @@ extern "C" void func_001876B0(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_001876E8);
+extern "C" void func_001876E8(int arg0, int arg1, int arg2)
+{
+    int var_v1;
+    int var_a0;
+
+    var_a0 = arg0;
+    if (arg1 >= 0) {
+        var_v1 = 1;
+        do {
+            var_v1 -= 1;
+            if (arg1 == M2C_FIELD(var_a0, int *, 0)) {
+                M2C_FIELD(var_a0, int *, 0xBC) = arg2;
+                M2C_FIELD(var_a0, int *, 0xB8) = arg2;
+                M2C_FIELD(var_a0, int *, 0xB4) = 1;
+                M2C_FIELD(var_a0, int *, 0xAC) = 1;
+            }
+            var_a0 += 0x3BC;
+        } while (var_v1 >= 0);
+    }
+}
 
 extern "C" int func_00187724()
 {

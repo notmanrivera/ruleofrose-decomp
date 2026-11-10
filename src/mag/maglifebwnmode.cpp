@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" float Xfi_func_00119FB0(int) asm("func_00119FB0");
+extern "C" int Xii_func_00124D7C(int) asm("func_00124D7C");
+extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
+extern "C" int Xiiis_func_0011A320(int, int, short) asm("func_0011A320");
+extern const char D_002EBC70[];
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiii_func_001264F8(int, int) asm("func_001264F8");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
@@ -57,6 +62,49 @@ extern "C" void init__20MagLifeBwnModeRotateR10MagLifeBwn(int arg0, int arg1)
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnmode", D_002EBCB8);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnmode", func_001264F8);
+extern "C" void func_001264F8(int arg0, int arg1)
+{
+    float temp_f1;
+    float var_f1;
+    int var_a1;
+
+    temp_f1 = M2C_FIELD(arg0, float *, 4);
+    if (!(temp_f1 >= -3.141593039035797f) || !(temp_f1 < 3.141593039035797f)) {
+        Xiiii_ror_assert((int) D_002EBC70, 0x278, (int) "(m_target_rot >= -DOG_PI) && (m_target_rot < DOG_PI)");
+    }
+    M2C_FIELD(arg1, int *, 0xCC0) = 0;
+    var_f1 = M2C_FIELD(arg0, float *, 4) - Xfi_func_00119FB0(arg1);
+    if (var_f1 < -3.141593039035797f) {
+        var_f1 += 6.283186078071594f;
+    } else if (var_f1 >= 3.141593039035797f) {
+        var_f1 -= 6.283186078071594f;
+    }
+    var_a1 = 0x39;
+    M2C_FIELD(arg0, float *, 8) = var_f1;
+    if (!(var_f1 < -1.5707962810993195f)) {
+        var_a1 = 0x2C;
+        if (!(var_f1 < -0.7853981405496597f)) {
+            var_a1 = 0x2B;
+            if (!(var_f1 < -0.034906589426100254f)) {
+                var_a1 = 0x3A;
+                if (!(var_f1 > 1.5707962810993195f)) {
+                    var_a1 = 0x2F;
+                    if (!(var_f1 > 0.7853981405496597f)) {
+                        if (var_f1 > 0.034906589426100254f) {
+                            var_a1 = 0x2E;
+                            goto block_16;
+                        }
+                        M2C_FIELD(arg1, int *, 0xCC0) = 1;
+                        M2C_FIELD(arg1, int *, 8) = 1;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+block_16:
+    Xiiis_func_0011A320(arg1, var_a1, -1);
+    Xii_func_00124D7C(arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnmode", live__20MagLifeBwnModeRotateR10MagLifeBwn);

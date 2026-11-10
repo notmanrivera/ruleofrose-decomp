@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_001F6CB8(...) asm("func_001F6CB8");
 extern "C" int X_func_001F71B8(...) asm("func_001F71B8");
@@ -59,7 +60,11 @@ INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", ScenePlay__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F7F68);
 
-INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F8028);
+extern "C" void func_001F8028(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x38) = arg1;
+    M2C_FIELD(arg0, int *, 0x34) = arg1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F8034);
 

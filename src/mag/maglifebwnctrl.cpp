@@ -168,7 +168,11 @@ extern "C" void MagLifeBwnCtrlModeMoveEnd__vfunc_01(int arg0, int arg1)
 extern "C" void MagLifeBwnCtrlModeMoveEnd__vfunc_02(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeRot__vfunc_01);
+extern "C" void MagLifeBwnCtrlModeRot__vfunc_01(int arg0, int arg1)
+{
+    M2C_FIELD(arg1, int *, 0x80) = 0;
+    M2C_FIELD(arg1, int *, 8) = 0;
+}
 
 extern "C" void MagLifeBwnCtrlModeRot__vfunc_02()
 {

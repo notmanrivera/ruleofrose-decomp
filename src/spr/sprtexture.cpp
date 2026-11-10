@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_alloc__9BedMemoryiPCciii(...) asm("alloc__9BedMemoryiPCciii");
 extern "C" int X_func_0018BCC0(...) asm("func_0018BCC0");
@@ -98,7 +99,12 @@ INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190A78);
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", S2dCineSco__vfunc_01);
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190B60);
+extern "C" int func_00190B60(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0x30) = 0;
+    M2C_FIELD(arg0, int *, 0x34) = 0;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190B70);
 

@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00119B60(...) asm("func_00119B60");
 extern "C" int X_func_0011A028(...) asm("func_0011A028");
@@ -21,7 +22,12 @@ extern "C" void func_00125A20(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", func_00125A3C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", func_00125A90);
+extern "C" void func_00125A90(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0xCEC) = 0;
+    M2C_FIELD(arg0, int *, 4) = -1;
+    M2C_FIELD(arg0, int *, 0) = -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", func_00125AA4);
 

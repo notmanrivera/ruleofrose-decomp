@@ -49,7 +49,17 @@ extern "C" int Eff0__vfunc_02(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", Eff0__vfunc_03);
+extern "C" void Eff0__vfunc_03(int arg0)
+{
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x14);
+    M2C_FIELD(arg0, short *, 0) = 0;
+    M2C_FIELD(arg0, int *, 0x18) = 0;
+    if (temp_v1 != 0) {
+        M2C_FIELD(temp_v1, int *, 0x2C) = (int) (M2C_FIELD(temp_v1, int *, 0x2C) - 1);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", Eff0__vfunc_10);
 
