@@ -181,3 +181,16 @@ más comunes son funciones con `float`, variables en pila y acceso a campos de
 structs por valor. Familias repetidas sin resolver: en `unk/GotMain` y
 `unk/PigMain`, `func_001594D0` y sus cuatro hermanas (dos pruebas de bits tras
 la comprobación 0xB/0xC), y `mag/magloader` `func_001420F8` (`$s2`/`$s3`).
+
+Traductor nuevo (2026-11-10): 15.41 % del `.text` del juego. `tools/match.py
+--server start` deja un contenedor encendido (1.5 s por prueba en vez de un
+minuto en Windows) y `tools/auto_m2c.py` sustituye a los scripts locales:
+traduce con tipos explícitos, `float`, variables en pila, llamadas por puntero
+y prototipos deducidos para m2c; `--report` dice por qué falló cada función.
+Quedan 957,672 bytes en ensamblador. Lo que más pesa, por orden: funciones que
+compilan pero difieren (339 KB; registros y orden de instrucciones), copias de
+structs que m2c no entiende (`ldl/ldr/sdl/sdr`, 200 KB), copias de 128 bits
+(82 KB), reinterpretaciones `float`/entero (79 KB) y aritmética `double`
+(llamadas a `fptodp`, `dpadd`...). Hallazgos del compilador: recorta los
+decimales de las constantes `float` (0.1f es 0x3DCCCCCC) y emite del último al
+primero algunas asignaciones consecutivas del mismo valor.
