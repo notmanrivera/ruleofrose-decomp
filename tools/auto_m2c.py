@@ -579,6 +579,18 @@ def flag_chain(body):
     return body
 
 
+# `if (a || b) return X; return Y;` comes back from m2c as two nested ifs and
+# a goto, which compile to a plain branch where the game has a likely one.
+OR_RETURN = re.compile(r"""^( +)if \((.+)\) \{
+\1    if \((.+)\) \{
+\1        return (.+);
+\1    \}
+\1    goto (block_\d+);
+\1\}
+\5:
+\1return (.+);""", re.M)
+
+
 class Candidate:
     def __init__(self, text, pre):
         self.text = text  # the function
@@ -867,6 +879,7 @@ def callee(ctx, name, counts):
 def typed(ctx, fn, hdr, body):
     body = flag_chain(body)
     body = re.sub(r"/\*.*?\*/", "", body)
+    body = OR_RETURN.sub(r"\1if (!(\2) || !(\3)) return \6;\n\1return \4;", body)
     body = re.sub(r"^(\s*\w+:)\n(\s*\})", r"\1;\n\2", body, flags=re.M)  # a label needs a statement
     m = re.match(r"^(.*?)\b(\w+)\((.*)\) \{$", hdr)
     ret, params = m.group(1).strip(), m.group(3).strip()
