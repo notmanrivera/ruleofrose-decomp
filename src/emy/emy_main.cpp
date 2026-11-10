@@ -1,4 +1,6 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiiii_memset(int, int, int) asm("memset");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_0014582C(...) asm("func_0014582C");
 extern "C" int X_func_00154734(...) asm("func_00154734");
@@ -21,7 +23,18 @@ extern "C" int X_memset(...) asm("memset");
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_0016265C);
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00162698);
+extern "C" void func_00162698(int arg0)
+{
+    Xiiii_memset(arg0 + 4, 0, 0x100);
+    Xiiii_memset(arg0 + 0x330, 0, 0x100);
+    M2C_FIELD(arg0, signed char *, 0x134) = 0;
+    M2C_FIELD(arg0, signed char *, 0x135) = 0;
+    M2C_FIELD(arg0, int *, 0x138) = 0;
+    M2C_FIELD(arg0, int *, 0x13C) = 0;
+    Xiiii_memset(arg0 + 0x148, 0, 0x1E0);
+    M2C_FIELD(arg0, int *, 0x144) = 0;
+    M2C_FIELD(arg0, int *, 0x140) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", EmyManager__vfunc_06);
 
@@ -63,7 +76,15 @@ INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001634D4);
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163570);
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001635E0);
+extern "C" void func_001635E0(int arg0)
+{
+    M2C_FIELD(arg0, signed char *, 0x134) = 0;
+    M2C_FIELD(arg0, signed char *, 0x135) = 0;
+    M2C_FIELD(arg0, int *, 0x138) = 0;
+    M2C_FIELD(arg0, int *, 0x13C) = 0;
+    Xiiii_memset(arg0 + 0x148, 0, 0x1E0);
+    M2C_FIELD(arg0, int *, 0x144) = 0;
+}
 
 extern "C" void func_00163624(int arg0, int arg1, int arg2)
 {
@@ -97,7 +118,16 @@ INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001636A4);
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001636E4);
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163700);
+extern "C" void func_00163700(int arg0, int arg1, int arg2)
+{
+    if (arg1 == 0) {
+        M2C_FIELD(arg0, int *, 0x138) = arg2;
+        M2C_FIELD(arg0, signed char *, 0x134) = 1;
+        return;
+    }
+    M2C_FIELD(arg0, int *, 0x13C) = arg2;
+    M2C_FIELD(arg0, signed char *, 0x135) = 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163720);
 
@@ -130,7 +160,10 @@ extern "C" void func_00163A44()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163A78);
+extern "C" int func_00163A78(int arg0)
+{
+    return (M2C_FIELD(arg0, unsigned char *, 0x134) | M2C_FIELD(arg0, unsigned char *, 0x135)) != 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163A8C);
 

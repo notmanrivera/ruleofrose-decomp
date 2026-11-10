@@ -1,4 +1,10 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiiii_memset(int, int, int) asm("memset");
+extern int D_002D9950;
+extern int D_007B4790;
+extern int D_007B4D20;
+extern int D_007B4D30;
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_002155A8(...) asm("func_002155A8");
 extern "C" int X_memset(...) asm("memset");
@@ -58,15 +64,32 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020F98C);
 extern "C" void func_0020FF34(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020FF3C);
+extern "C" void func_0020FF3C(int arg0, int arg1, int arg2)
+{
+    if (arg1 == 0) {
+        ((int *)&D_007B4700)[arg2] = ((int *)&D_007B4700)[arg0];
+        return;
+    }
+    ((int *)&D_007B4700)[arg2] = ((int *)&D_007B4700)[arg0] + ((int *)&D_007B4700)[arg1];
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020FF8C);
+extern "C" void func_0020FF8C(int arg0, int arg1, int arg2)
+{
+    if (arg1 == 0) {
+        ((int *)&D_007B4700)[arg2] = ((int *)&D_007B4700)[arg0];
+        return;
+    }
+    ((int *)&D_007B4700)[arg2] = ((int *)&D_007B4700)[arg0] + ((int *)&D_007B4700)[arg1];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020FFDC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210024);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0021006C);
+extern "C" void func_0021006C(int arg0, int arg1, int arg2)
+{
+    ((int *)&D_007B4700)[arg2] = ((int *)&D_007B4700)[arg0] & ((int *)&D_007B4700)[arg1];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002100A0);
 
@@ -78,29 +101,62 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210158);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002101B4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210210);
+extern "C" void func_00210210(int arg0, int arg1, int arg2)
+{
+    ((int *)&D_007B4700)[arg2] = ~(((int *)&D_007B4700)[arg0] | ((int *)&D_007B4700)[arg1]);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210244);
+extern "C" void func_00210244(int arg0, int arg1, int arg2)
+{
+    ((int *)&D_007B4700)[arg2] = ((int *)&D_007B4700)[arg0] | ((int *)&D_007B4700)[arg1];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210278);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002102A0);
+extern "C" void func_002102A0(int arg0, int arg1, int arg2, int arg3)
+{
+    ((int *)&D_007B4700)[arg2] = ((int *)&D_007B4700)[arg1] << arg3;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002102C8);
+extern "C" void func_002102C8(int arg0, int arg1, int arg2)
+{
+    ((int *)&D_007B4700)[arg2] = ((int *)&D_007B4700)[arg1] << ((int *)&D_007B4700)[arg0];
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002102FC);
+extern "C" void func_002102FC(int arg0, int arg1, int arg2, int arg3)
+{
+    ((int *)&D_007B4700)[arg2] = (int) ((int *)&D_007B4700)[arg1] >> arg3;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210324);
+extern "C" void func_00210324(int arg0, int arg1, int arg2)
+{
+    ((int *)&D_007B4700)[arg2] = (int) ((int *)&D_007B4700)[arg1] >> ((int *)&D_007B4700)[arg0];
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210358);
+extern "C" void func_00210358(int arg0, int arg1, int arg2, int arg3)
+{
+    ((int *)&D_007B4700)[arg2] = (int) ((unsigned int) ((int *)&D_007B4700)[arg1] >> arg3);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210380);
+extern "C" void func_00210380(int arg0, int arg1, int arg2)
+{
+    ((int *)&D_007B4700)[arg2] = (int) ((unsigned int) ((int *)&D_007B4700)[arg1] >> ((int *)&D_007B4700)[arg0]);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002103B4);
+extern "C" void func_002103B4(int arg0, int arg1, int arg2)
+{
+    ((int *)&D_007B4700)[arg2] = ((int *)&D_007B4700)[arg0] - ((int *)&D_007B4700)[arg1];
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002103E8);
+extern "C" void func_002103E8(int arg0, int arg1, int arg2)
+{
+    ((int *)&D_007B4700)[arg2] = ((int *)&D_007B4700)[arg0] - ((int *)&D_007B4700)[arg1];
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0021041C);
+extern "C" void func_0021041C(int arg0, int arg1, int arg2)
+{
+    ((int *)&D_007B4700)[arg2] = ((int *)&D_007B4700)[arg0] ^ ((int *)&D_007B4700)[arg1];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210450);
 
@@ -116,9 +172,19 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002105C0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002105FC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002106A0);
+extern "C" void func_002106A0(unsigned int arg0, int arg1, unsigned int arg2)
+{
+    if (((int *)&D_007B4700)[arg0] > 0) {
+        (*(int *)&D_007B47C0) = ((short) (arg2 * 4) + ((*(int *)&D_007B4780) - (*(int *)&D_007B47D0)) + 0x8164) | 0x80000000;
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002106F4);
+extern "C" void func_002106F4(unsigned int arg0, int arg1, unsigned int arg2)
+{
+    if (((int *)&D_007B4700)[arg0] <= 0) {
+        (*(int *)&D_007B47C0) = ((short) (arg2 * 4) + ((*(int *)&D_007B4780) - (*(int *)&D_007B47D0)) + 0x8164) | 0x80000000;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210748);
 
@@ -132,41 +198,90 @@ extern "C" void func_0021082C(int arg0, int arg1, int arg2, int arg3)
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210864);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002108B8);
+extern "C" void func_002108B8(int arg0, int arg1, int arg2)
+{
+    ((int *)&D_007B4700)[arg2] = ((*(int *)&D_007B4780) - (*(int *)&D_007B47D0)) + 0x8168;
+    (*(int *)&D_007B47C0) = ((int *)&D_007B4700)[arg0] | 0x80000000;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210908);
+extern "C" void func_00210908(int arg0)
+{
+    (*(int *)&D_007B47C0) = ((int *)&D_007B4700)[arg0] | 0x80000000;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0021092C);
+extern "C" void func_0021092C(unsigned int arg0, unsigned int arg1, short arg2)
+{
+    ((int *)&D_007B4700)[arg1] = *(int *)(((int *)&D_007B4700)[arg0] + ((int) (arg2 << 0x10) >> 0xE));
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210960);
+extern "C" void func_00210960(unsigned int arg0, unsigned int arg1, short arg2)
+{
+    int temp_v1;
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002109A0);
+    temp_v1 = ((int *)&D_007B4700)[arg0];
+    ((int *)&D_007B4700)[arg1] = (*(int *)(temp_v1 + arg2) << 8) | (temp_v1 & 0xFF);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002109D4);
+extern "C" void func_002109A0(unsigned int arg0, unsigned int arg1, short arg2)
+{
+    ((int *)&D_007B4700)[arg1] = *(int *)(((int *)&D_007B4700)[arg0] + arg2);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210A08);
+extern "C" void func_002109D4(unsigned int arg0, unsigned int arg1, short arg2)
+{
+    ((int *)&D_007B4700)[arg1] = *(int *)(((int *)&D_007B4700)[arg0] + ((int) (arg2 << 0x10) >> 0xE));
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210A3C);
+extern "C" void func_00210A08(unsigned int arg0, unsigned int arg1, short arg2)
+{
+    ((int *)&D_007B4700)[arg1] = *(int *)(((int *)&D_007B4700)[arg0] + arg2);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210A70);
+extern "C" void func_00210A3C(unsigned int arg0, unsigned int arg1, short arg2)
+{
+    ((int *)&D_007B4700)[arg1] = *(int *)(((int *)&D_007B4700)[arg0] + arg2);
+}
+
+extern "C" void func_00210A70(unsigned int arg0, unsigned int arg1, short arg2)
+{
+    ((int *)&D_007B4700)[arg1] = *(int *)(((int *)&D_007B4700)[arg0] + arg2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210AA4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210AD8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210B0C);
+extern "C" void func_00210B0C(unsigned int arg0, unsigned int arg1, short arg2)
+{
+    int temp_a0;
+
+    temp_a0 = ((int *)&D_007B4700)[arg0] + arg2;
+    (*(int *)(temp_a0)) = ((unsigned int) ((int *)&D_007B4700)[arg1] >> 8) | ((*(int *)(temp_a0)) & 0xFF000000);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210B54);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210BA4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210BD8);
+extern "C" void func_00210BD8(int arg0, int arg1, int arg2)
+{
+    ((int *)&D_007B4700)[arg2] = (*(int *)&D_007B4790);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210BF8);
+extern "C" void func_00210BF8(int arg0, int arg1, int arg2)
+{
+    ((int *)&D_007B4700)[arg2] = (*(int *)&D_007B47A0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210C18);
+extern "C" void func_00210C18(int arg0, int arg1, int arg2)
+{
+    (*(int *)&D_007B4790) = ((int *)&D_007B4700)[arg2];
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210C34);
+extern "C" void func_00210C34(int arg0, int arg1, int arg2)
+{
+    (*(int *)&D_007B47A0) = ((int *)&D_007B4700)[arg2];
+}
 
 extern "C" void func_00210C50(void) {
 }
@@ -209,13 +324,25 @@ extern "C" void func_00210EBC(void) {
 extern "C" void func_00210EC4(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210ECC);
+extern "C" void func_00210ECC(int arg0, int arg1, int arg2)
+{
+    ((float *)&D_007B4680)[arg2] = ((float *)&D_007B4680)[arg0] + ((float *)&D_007B4680)[arg1];
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210F00);
+extern "C" void func_00210F00(int arg0, int arg1, int arg2)
+{
+    ((float *)&D_007B4680)[arg2] = ((float *)&D_007B4680)[arg0] - ((float *)&D_007B4680)[arg1];
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210F34);
+extern "C" void func_00210F34(int arg0, int arg1, int arg2)
+{
+    ((float *)&D_007B4680)[arg2] = ((float *)&D_007B4680)[arg0] * ((float *)&D_007B4680)[arg1];
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210F68);
+extern "C" void func_00210F68(int arg0, int arg1, int arg2)
+{
+    ((float *)&D_007B4680)[arg2] = ((float *)&D_007B4680)[arg0] / ((float *)&D_007B4680)[arg1];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210FA4);
 
@@ -225,9 +352,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00211024);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00211064);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002110E4);
+extern "C" void func_002110E4(int arg0, int arg1, int arg2)
+{
+    ((float *)&D_007B4680)[arg2] = ((float *)&D_007B4680)[arg1];
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00211108);
+extern "C" void func_00211108(int arg0, int arg1, int arg2)
+{
+    ((float *)&D_007B4680)[arg2] = -((float *)&D_007B4680)[arg1];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00211130);
 
@@ -297,7 +430,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002112D8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00211318);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002113A4);
+extern "C" void func_002113A4(int arg0, int arg1)
+{
+    (*(unsigned int *)&D_007B47B0) = (arg1 + (*(int *)&D_007B47D0)) - M2C_FIELD((((*(int *)((int)&D_007B4DD0)) * 4) + arg0), int *, 0xDC08);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002113DC);
 
@@ -365,9 +501,40 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00214664);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002147E0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002149A8);
+extern "C" int func_002149A8()
+{
+    int temp_v0;
+    int temp_v0_2;
+    int temp_s1;
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00214A94);
+    temp_s1 = (*(int *)&D_007B4D20) + ((*(int *)&D_002D9950) << 0xB);
+    ((int *)&D_007B4D30)[(*(int *)&D_002D9950)] = 1;
+    Xiiii_memset(temp_s1, 0, 0x800);
+    temp_v0 = (*(int *)&D_002D9950) + 1;
+    (*(int *)&D_002D9950) = temp_v0;
+    if (temp_v0 >= 0x20) {
+        (*(int *)&D_002D9950) = 0;
+    }
+    if (((int *)&D_007B4D30)[(*(int *)&D_002D9950)] != 0) {
+        do {
+            temp_v0_2 = (*(int *)&D_002D9950) + 1;
+            (*(int *)&D_002D9950) = temp_v0_2;
+            if (temp_v0_2 >= 0x20) {
+                (*(int *)&D_002D9950) = 0;
+            }
+        } while (((int *)&D_007B4D30)[(*(int *)&D_002D9950)] != 0);
+    }
+    return (int) temp_s1;
+}
+
+extern "C" void func_00214A94(int arg0)
+{
+    unsigned int temp_a0;
+
+    temp_a0 = (unsigned int) (arg0 - (*(int *)&D_007B4D20)) >> 0xB;
+    (*(int *)&D_002D9950) = (int) temp_a0;
+    ((int *)&D_007B4D30)[temp_a0] = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00214AC4);
 

@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern int D_006E9204;
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_DIntr(...) asm("DIntr");
 extern "C" int X_D_002DBE98(...) asm("D_002DBE98");
@@ -510,7 +511,10 @@ extern "C" void func_00182BB4()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00182BE8);
+extern "C" int func_00182BE8()
+{
+    return ((*(int *)((int)&D_006E9208)) < 0) ? 0 : (*(int *)((int)&D_006E9208));
+}
 
 extern "C" int func_00182BFC()
 {
@@ -560,7 +564,10 @@ extern "C" int func_00182F4C()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00182F58);
+extern "C" int func_00182F58()
+{
+    return (long) (*(int *)&D_006E9204);
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00182F64);
 
@@ -623,7 +630,16 @@ extern "C" int func_00183048(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00183060);
+extern "C" int func_00183060(int arg0)
+{
+    int var_v0;
+
+    var_v0 = 0;
+    if (arg0 == 0) {
+        var_v0 = (*(int *)((int)&D_006E92B0));
+    }
+    return var_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00183078);
 
@@ -639,7 +655,16 @@ extern "C" int func_00183094(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_001830AC);
+extern "C" int func_001830AC(int arg0)
+{
+    int var_v0;
+
+    var_v0 = 0;
+    if (arg0 == 0) {
+        var_v0 = (*(int *)((int)&D_006E9298));
+    }
+    return var_v0;
+}
 
 extern "C" int func_001830C4()
 {

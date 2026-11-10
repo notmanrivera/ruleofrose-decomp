@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0018FEBC(int) asm("func_0018FEBC");
+extern "C" int Xiiii_func_0018F744(int, int, int) asm("func_0018F744");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00118980__9MagSystemiiiiii(...) asm("func_00118980__9MagSystemiiiiii");
 extern "C" int X_func_00131184(...) asm("func_00131184");
@@ -265,7 +267,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A6C90);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A6FE8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A7040);
+extern "C" int func_001A7040(unsigned char arg0)
+{
+    unsigned int temp_v0;
+
+    temp_v0 = arg0 & 0xFF;
+    return ((temp_v0 >> 4) * 0xA) + (temp_v0 & 0xF);
+}
 
 extern "C" int func_001A7060(int arg0)
 {
@@ -460,7 +468,16 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A92A0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A972C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A97B0);
+extern "C" void func_001A97B0(int arg0)
+{
+    int temp_s0;
+
+    temp_s0 = arg0 + 0x4DF8;
+    Xiiii_func_0018F744(temp_s0, (int)&D_002A7798, (int) "data/mnurpk/mnutitle.rpk");
+    do {
+
+    } while (Xii_func_0018FEBC(temp_s0) == 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A97F4);
 
@@ -1380,7 +1397,16 @@ INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002FACB0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002FACB8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE5BC);
+extern "C" void func_001AE5BC(int arg0)
+{
+    int temp_s0;
+
+    temp_s0 = arg0 + 0x1C;
+    Xiiii_func_0018F744(temp_s0, (int)&D_002AC788, (int) "data/mnurpk/mnunow.rpk");
+    do {
+
+    } while (Xii_func_0018FEBC(temp_s0) == 0);
+}
 
 extern "C" int func_001AE600()
 {

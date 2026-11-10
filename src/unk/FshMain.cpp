@@ -1,4 +1,10 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" float Xfff_func_001044B8(float, float) asm("func_001044B8");
+extern "C" int Xii_func_00166AD0(int) asm("func_00166AD0");
+extern "C" int Xiii_func_00166DA4(int, int) asm("func_00166DA4");
+extern "C" int Xiiif_func_00166F50(int, int, float) asm("func_00166F50");
+extern "C" int Xiiiii_func_00165398(int, int, int, int) asm("func_00165398");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_0010423C(...) asm("func_0010423C");
 extern "C" int X_func_001044B8(...) asm("func_001044B8");
@@ -241,7 +247,12 @@ extern "C" void func_001577F8(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutSerch__vfunc_02);
+extern "C" void FshOutSerch__vfunc_02(int arg0)
+{
+    Xiii_func_00166DA4(arg0, 0x64);
+    Xiiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), 10.0f);
+    Xiiiii_func_00165398(M2C_FIELD(arg0, int *, 0xC), 1, 2, 0x5A);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutSerch__vfunc_03);
 
@@ -251,7 +262,12 @@ extern "C" void FshOutSerch__vfunc_04()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutRound__vfunc_02);
+extern "C" void FshOutRound__vfunc_02(int arg0)
+{
+    Xiiiii_func_00165398(M2C_FIELD(arg0, int *, 0xC), 1, 2, 0x5A);
+    Xiii_func_00166DA4(arg0, 0x64);
+    Xiiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), 10.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutRound__vfunc_03);
 
@@ -275,7 +291,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutCollision__vfunc_02);
 
 INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutCollision__vfunc_03);
 
-INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutWin__vfunc_02);
+extern "C" void FshOutWin__vfunc_02(int arg0)
+{
+    if ((unsigned int) M2C_FIELD(arg0, unsigned int *, 0x10) >= 2U) {
+        Xiii_func_00166DA4(arg0, 0x64);
+    }
+    M2C_FIELD(arg0, float *, 0x38) = Xfff_func_001044B8(100.0f, 200.0f);
+    Xiiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), 10.0f);
+    M2C_FIELD(arg0, int *, 4) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutWin__vfunc_03);
 
@@ -337,6 +361,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutTest__vfunc_03);
 
 INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutDead__vfunc_03);
 
-INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutDead__vfunc_04);
+extern "C" void FshOutDead__vfunc_04(int arg0)
+{
+    int temp_a1;
+
+    temp_a1 = M2C_FIELD(arg0, int *, 8);
+    M2C_FIELD(temp_a1, int *, 0x120) = (int) (M2C_FIELD(temp_a1, int *, 0x120) & ~0x400);
+    Xii_func_00166AD0(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutDead__vfunc_02);

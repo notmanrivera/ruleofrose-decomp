@@ -1,4 +1,9 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int X_func_0011EE00(...) asm("func_0011EE00");
+extern "C" int Xii_func_0011A054(int) asm("func_0011A054");
+extern "C" int Xiiis_func_0011A320(int, int, short) asm("func_0011A320");
+extern "C" int Xiiiui_func_0011C1E8(int, int, unsigned int, int) asm("func_0011C1E8");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_001026B0(...) asm("func_001026B0");
 extern "C" int X_func_0010AA5C__8DogActorPCc(...) asm("func_0010AA5C__8DogActorPCc");
@@ -27,7 +32,10 @@ extern const char D_002EAD28[];
 extern const char D_002EAD60[];
 extern int D_006E9840;
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", func_00120788);
+extern "C" void func_00120788(int arg0, int arg1, int arg2)
+{
+    X_func_0011EE00(arg1, arg2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", func_001207A8);
 
@@ -195,7 +203,33 @@ extern "C" void init__17MagLifePCModeHoldR9MagLifePC(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", pad__17MagLifePCModeHoldR9MagLifePCRC6BedPad);
+extern "C" int pad__17MagLifePCModeHoldR9MagLifePCRC6BedPad(int arg0, int arg1, int arg2)
+{
+    int temp_s2;
+    int temp_v1;
+
+    temp_s2 = M2C_FIELD(arg1, int *, 8);
+    temp_v1 = Xii_func_0011A054((int) arg1);
+    if (M2C_FIELD(arg2, int *, 0x64) >= 0x10) {
+        Xiiiui_func_0011C1E8((int) arg1, 0xC, 0U, 0);
+        return 2;
+    }
+    if (temp_s2 == 0) {
+        if (!(M2C_FIELD(arg1, float *, 0x104) > 0.0f)) {
+            Xiiis_func_0011A320((int) arg1, 0xA, -1);
+            goto block_8;
+        }
+        Xiiis_func_0011A320((int) arg1, 0xC, -1);
+        M2C_FIELD(arg1, int *, 8) = 1;
+        return 1;
+    }
+    if (temp_v1 != 0) {
+        Xiiis_func_0011A320((int) arg1, 0xA, -1);
+        M2C_FIELD(arg1, int *, 8) = 0;
+    }
+block_8:
+    return 1;
+}
 
 extern "C" void init__23MagLifePCModeHoldAttackR9MagLifePC(int arg0, int arg1)
 {

@@ -1,4 +1,12 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xii_func_0011DFD0(int) asm("func_0011DFD0");
+extern "C" int Xiiii_func_001026B0(int, int, int) asm("func_001026B0");
+extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
+extern "C" int Xiiiiiif_func_0011D7C0(int, int, int, int, int, float) asm("func_0011D7C0");
+extern "C" int Xiiiui_func_0011C1E8(int, int, unsigned int, int) asm("func_0011C1E8");
+extern "C" int Xiiuui_func_0011D1CC(int, unsigned int, unsigned int, int) asm("func_0011D1CC");
+extern "C" int Xiiuuu_func_0012C104(int, unsigned int, unsigned int, unsigned int) asm("func_0012C104");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_001026B0(...) asm("func_001026B0");
 extern "C" int X_func_00119F88(...) asm("func_00119F88");
@@ -228,11 +236,34 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcbtl", D_002ECD28);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcbtl", D_002ECD38);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012C1FC);
+extern "C" void func_0012C1FC(int arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3)
+{
+    if ((unsigned int) (arg3 + 1) >= 4U) {
+        Xiiii_ror_assert((int) D_002EC8B0, 0x291, (int) "theCombo >= -1 && theCombo < 3");
+    }
+    if (arg1 >= 4U) {
+        Xiiii_ror_assert((int) D_002EC8B0, 0x292, (int) D_002ECAD8);
+    }
+    if (arg2 >= 5U) {
+        Xiiii_ror_assert((int) D_002EC8B0, 0x293, (int) D_002ECAF8);
+    }
+    M2C_FIELD(arg0, unsigned int *, 0x124) = arg1;
+    M2C_FIELD(arg0, unsigned int *, 0x128) = arg2;
+    M2C_FIELD(arg0, unsigned int *, 0x12C) = arg3;
+    Xiiiiiif_func_0011D7C0(arg0, Xiiuuu_func_0012C104(arg0, arg1, arg2, arg3), 0, 0, -1, 0.01666669361293316f);
+    Xii_func_0011DFD0(arg0);
+    Xiiii_func_001026B0(Xiiuui_func_0011D1CC((int) arg0, arg2, arg3, 0), 0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012C31C);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012C9C0);
+extern "C" void func_0012C9C0(int arg0, int arg1, int arg2)
+{
+    if ((M2C_FIELD(arg0, int *, 0x58) != 0) && ((M2C_FIELD(arg0, int *, 0) != 0xE) || (M2C_FIELD(arg0, int *, 8) >= 8))) {
+        Xiiiui_func_0011C1E8(arg0, 0xE, (unsigned int) arg1, 1);
+        M2C_FIELD(arg0, int *, 0xC) = arg2;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012CA28);
 

@@ -1,4 +1,6 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiii_func_001264F8(int, int) asm("func_001264F8");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00119B60(...) asm("func_00119B60");
 extern "C" int X_func_0011A028(...) asm("func_0011A028");
@@ -47,7 +49,11 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnmode", live__17MagLifeBwnModeOneR10M
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnmode", init__18MagLifeBwnModeWallR10MagLifeBwn);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnmode", init__20MagLifeBwnModeRotateR10MagLifeBwn);
+extern "C" void init__20MagLifeBwnModeRotateR10MagLifeBwn(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, float *, 4) = (float) M2C_FIELD(arg1, float *, 8);
+    Xiii_func_001264F8((int) arg0, (int) arg1);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnmode", D_002EBCB8);
 

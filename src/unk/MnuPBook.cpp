@@ -1,4 +1,9 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xii_func_00194688(int) asm("func_00194688");
+extern "C" int Xiii_func_00193F74(int, int) asm("func_00193F74");
+extern "C" int Xiiii_memset(int, int, int) asm("memset");
+extern "C" int Xiiiii_func_0019397C(int, int, int, int) asm("func_0019397C");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_alloc__9BedMemoryii(...) asm("alloc__9BedMemoryii");
 extern "C" int X_free__9BedMemoryPv(...) asm("free__9BedMemoryPv");
@@ -64,7 +69,22 @@ extern "C" void func_00193DFC(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00193E20);
+extern "C" void func_00193E20(int arg0, int arg1)
+{
+    int temp_s0;
+    int temp_v0;
+
+    temp_s0 = M2C_FIELD(arg0, int *, 0x18) + (arg1 * 0x30);
+    temp_v0 = M2C_FIELD(temp_s0, int *, 0);
+    if (temp_v0 != 0) {
+        Xii_func_00194688(temp_v0);
+        M2C_FIELD(temp_s0, int *, 0) = 0;
+    }
+    M2C_FIELD(temp_s0, int *, 4) = 0;
+    M2C_FIELD(temp_s0, signed char *, 0x10) = 0;
+    M2C_FIELD(temp_s0, int *, 8) = 0;
+    M2C_FIELD(temp_s0, int *, 0xC) = -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00193E7C);
 
@@ -76,7 +96,19 @@ extern "C" void func_00193F74(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00193F98);
+extern "C" void func_00193F98(int arg0, int arg1)
+{
+    int temp_s0;
+    int temp_v0;
+
+    temp_s0 = (arg1 << 5) + M2C_FIELD(arg0, int *, 0x94);
+    temp_v0 = M2C_FIELD(temp_s0, int *, 0);
+    if (temp_v0 != 0) {
+        Xiii_func_00193F74((int) arg0, temp_v0);
+        Xii_func_00194688(M2C_FIELD(temp_s0, int *, 4));
+        Xiiii_memset(temp_s0, 0, 0x20);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00193FEC);
 
@@ -84,7 +116,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001940A4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00194148);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00194280);
+extern "C" void func_00194280(int arg0, int arg1)
+{
+    int temp_s0;
+    int temp_v0;
+
+    temp_s0 = (arg1 * 0x10) + M2C_FIELD(arg0, int *, 0x9C);
+    temp_v0 = (*(int *)(temp_s0));
+    if (temp_v0 != 0) {
+        Xiii_func_00193F74((int) arg0, temp_v0);
+        Xiiii_memset(temp_s0, 0, 0x10);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001942CC);
 
@@ -212,7 +255,12 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_03);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196E54);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196EA4);
+extern "C" void func_00196EA4(int arg0)
+{
+    M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 2);
+    Xiiiii_func_0019397C(arg0, (int) (int) "ehonbg", 4, 1);
+    Xiiiii_func_0019397C(arg0, (int) (int) "ehontex01_tcc", 4, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196EFC);
 

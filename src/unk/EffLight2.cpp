@@ -1,4 +1,9 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" float Xfi_func_0010DA4C__8DogActor(int) asm("func_0010DA4C__8DogActor");
+extern "C" float Xfii_func_00174D14(int, int) asm("func_00174D14");
+extern "C" int Xiiiff_func_0010BCC8__8DogActoriff(int, int, float, float) asm("func_0010BCC8__8DogActoriff");
+extern "C" int Xiiiii_func_00173948(int, int, int, int) asm("func_00173948");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_0013FE64__8MagSceneii(...) asm("func_0013FE64__8MagSceneii");
 extern "C" int X_func_0016FF18(...) asm("func_0016FF18");
@@ -81,13 +86,44 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F2760);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F2770);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00173840);
+extern "C" void func_00173840(int arg0, int arg1, int arg2)
+{
+    float temp_f0;
+    int temp_v0;
+
+    temp_f0 = Xfi_func_0010DA4C__8DogActor((int) arg1);
+    if (temp_f0 >= 0.0f) {
+        temp_v0 = Xiiiff_func_0010BCC8__8DogActoriff((int) arg1, -1, temp_f0, temp_f0 + 1.0f);
+        if (temp_v0 & 0x10000000) {
+            Xiiiii_func_00173948((int) arg0, arg1, (int) "Bip01 L Toe0", arg2);
+        }
+        if (temp_v0 & 0x20000000) {
+            Xiiiii_func_00173948((int) arg0, arg1, (int) "Bip01 R Toe0", arg2);
+        }
+        if (temp_v0 & 0x04000000) {
+            Xiiiii_func_00173948((int) arg0, arg1, (int) "Bip01 L Finger0", arg2);
+        }
+        if (temp_v0 & 0x08000000) {
+            Xiiiii_func_00173948((int) arg0, arg1, (int) "Bip01 R Finger0", arg2);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00173948);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot2Prim__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot2Prim__vfunc_05);
+extern "C" int EffFoot2Prim__vfunc_05(int arg0)
+{
+    int temp_v1;
+
+    if ((M2C_FIELD(arg0, unsigned short *, 0) & 2) && (M2C_FIELD(arg0, int *, 0x48) < 0xA5)) {
+        M2C_FIELD(arg0, int *, 0x48) = 0xA5;
+    }
+    temp_v1 = M2C_FIELD(arg0, int *, 0x48) + 1;
+    M2C_FIELD(arg0, int *, 0x48) = temp_v1;
+    return temp_v1 < 0xB4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot2Prim__vfunc_08);
 
@@ -115,13 +151,58 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F2880);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", renderPreMain__11EffGeneric1PQ24Eff011RENDERPARAM);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_001749FC);
+extern "C" void func_001749FC(int arg0, int arg1, int arg2)
+{
+    float temp_f0;
+
+    temp_f0 = Xfii_func_00174D14((int) arg0, arg1);
+    if (M2C_FIELD(arg1, unsigned short *, 6) & 1 & 0xFFFF) {
+        M2C_FIELD(arg2, float *, 0) = temp_f0;
+    }
+    if (M2C_FIELD(arg1, unsigned short *, 6) & 2) {
+        M2C_FIELD(arg2, float *, 4) = temp_f0;
+    }
+    if (M2C_FIELD(arg1, unsigned short *, 6) & 4) {
+        M2C_FIELD(arg2, float *, 8) = temp_f0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00174A60);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00174AD8);
+extern "C" void func_00174AD8(int arg0, int arg1, int arg2)
+{
+    float temp_f0;
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00174B3C);
+    temp_f0 = Xfii_func_00174D14((int) arg0, arg1);
+    if (M2C_FIELD(arg1, unsigned short *, 6) & 1 & 0xFFFF) {
+        M2C_FIELD(arg2, float *, 0) = temp_f0;
+    }
+    if (M2C_FIELD(arg1, unsigned short *, 6) & 2) {
+        M2C_FIELD(arg2, float *, 4) = temp_f0;
+    }
+    if (M2C_FIELD(arg1, unsigned short *, 6) & 4) {
+        M2C_FIELD(arg2, float *, 8) = temp_f0;
+    }
+}
+
+extern "C" void func_00174B3C(int arg0, int arg1, int arg2)
+{
+    float temp_f0;
+
+    temp_f0 = Xfii_func_00174D14((int) arg0, arg1);
+    if (M2C_FIELD(arg1, unsigned short *, 6) & 1 & 0xFFFF) {
+        M2C_FIELD(arg2, float *, 0) = temp_f0;
+    }
+    if (M2C_FIELD(arg1, unsigned short *, 6) & 2) {
+        M2C_FIELD(arg2, float *, 4) = temp_f0;
+    }
+    if (M2C_FIELD(arg1, unsigned short *, 6) & 4) {
+        M2C_FIELD(arg2, float *, 8) = temp_f0;
+    }
+    if (M2C_FIELD(arg1, unsigned short *, 6) & 8) {
+        M2C_FIELD(arg2, float *, 0xC) = temp_f0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00174BB0);
 

@@ -1,4 +1,10 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xii_func_00165570(int) asm("func_00165570");
+extern "C" int Xii_func_0016A6B4(int) asm("func_0016A6B4");
+extern "C" int Xiii_func_00165280(int, int) asm("func_00165280");
+extern "C" int Xiiif_func_00169A98(int, int, float) asm("func_00169A98");
+extern "C" int Xiiii_func_00104394(int, int, int) asm("func_00104394");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_0010423C(...) asm("func_0010423C");
 extern "C" int X_func_00104394(...) asm("func_00104394");
@@ -59,7 +65,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165074);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165280);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165398);
+extern "C" void func_00165398(int arg0, int arg1, int arg2, int arg3)
+{
+    Xii_func_00165570((int) arg0);
+    M2C_FIELD(arg0, int *, 0x154) = arg1;
+    M2C_FIELD(arg0, int *, 0x160) = arg2;
+    M2C_FIELD(arg0, int *, 0x164) = 0;
+    M2C_FIELD(arg0, int *, 0x168) = 0;
+    M2C_FIELD(arg0, int *, 0x16C) = Xiiii_func_00104394(1, arg3, 4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165404);
 
@@ -85,7 +99,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165D38);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165D7C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166004);
+extern "C" void func_00166004(int arg0)
+{
+    struct { char pad0[16]; float sp10; } stack;
+
+    Xiii_func_00165280((int) arg0, (int)&stack);
+    Xii_func_0016A6B4((int)&stack.sp10);
+    Xiiif_func_00169A98((int)&stack, (int)&stack.sp10, 60.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166048);
 

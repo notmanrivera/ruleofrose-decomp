@@ -1,4 +1,10 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" float Xfi_func_0010DAD8__8DogActor(int) asm("func_0010DAD8__8DogActor");
+extern "C" int Xiii_func_0010AA9C__8DogActorPCc(int, int) asm("func_0010AA9C__8DogActorPCc");
+extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
+extern "C" int Xiiiiiif_func_0011D7C0(int, int, int, int, int, float) asm("func_0011D7C0");
+extern int D_002EA740;
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00109B88__8DogActori(...) asm("func_00109B88__8DogActori");
 extern "C" int X_func_0010A834__8DogActor(...) asm("func_0010A834__8DogActor");
@@ -56,7 +62,16 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc3", D_002EA740);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc3", D_002EA758);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011D720);
+extern "C" float func_0011D720(int arg0)
+{
+    float temp_f20;
+
+    if ((unsigned int) M2C_FIELD(arg0, unsigned int *, 0xE4) >= 5U) {
+        Xiiii_ror_assert((int) D_002EA758, 0x69, (int) "0 <= m_health_stat && m_health_stat < HEALTH_END");
+    }
+    temp_f20 = ((float *)&D_002EA740)[M2C_FIELD(arg0, unsigned int *, 0xE4)];
+    return temp_f20 * Xfi_func_0010DAD8__8DogActor(M2C_FIELD(arg0, int *, 0x58));
+}
 
 extern "C" int func_0011D790()
 {
@@ -79,6 +94,19 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011DD40);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011DDF4);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011DE78);
+extern "C" int func_0011DE78(int arg0, int arg1, float fparg0)
+{
+    int temp_s2;
+
+    if (arg1 == 0) {
+        Xiiii_ror_assert((int) D_002EA758, 0x1F6, (int) "theMotion != __null");
+    }
+    temp_s2 = Xiii_func_0010AA9C__8DogActorPCc(M2C_FIELD(arg0, int *, 0x58), (int) arg1);
+    if (M2C_FIELD(arg0, int *, 0xF4) < 0) {
+        Xiiiiiif_func_0011D7C0(arg0, arg1, 0, 0, -1, fparg0);
+        M2C_FIELD(arg0, int *, 0xF4) = temp_s2;
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011DF14);

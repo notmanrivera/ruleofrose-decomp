@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 
 INCLUDE_RODATA("asm/nonmatchings/mag/magscenecamera", D_002EE5D0);
@@ -22,7 +23,13 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magscenecamera", D_002EE778);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenecamera", func_0013D240);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscenecamera", func_0013D4D0);
+extern "C" float func_0013D4D0(int arg0)
+{
+    int temp_v0;
+
+    temp_v0 = *(int *)((M2C_FIELD(arg0, int *, 0x2AD64) * 4) + M2C_FIELD(((M2C_FIELD(arg0, int *, 0x2AD68) * 0x520) + arg0), int *, 0x29A3C));
+    return (float) M2C_FIELD(temp_v0, int *, 0x20) + M2C_FIELD(temp_v0, float *, 0x28);
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenecamera", func_0013D52C);
 

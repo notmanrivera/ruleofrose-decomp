@@ -1,4 +1,11 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xi_func_0016AD94() asm("func_0016AD94");
+extern "C" int Xii_func_0016BEDC(int) asm("func_0016BEDC");
+extern "C" int Xiii_Eff0__vfunc_02(int, int) asm("Eff0__vfunc_02");
+extern "C" int Xiii_func_0016B50C(int, int) asm("func_0016B50C");
+extern "C" int Xiii_func_00174BB0(int, int) asm("func_00174BB0");
+extern "C" int Xiii_func_00174BD8(int, int) asm("func_00174BD8");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_Eff0__vfunc_02(...) asm("Eff0__vfunc_02");
 extern "C" int X_I3rRoot__CheckIdString(...) asm("I3rRoot__CheckIdString");
@@ -98,7 +105,35 @@ INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBg1__vfunc_02);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBg1__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", renderPreMain__6EffBg1PQ24Eff011RENDERPARAM);
+extern "C" void renderPreMain__6EffBg1PQ24Eff011RENDERPARAM(int arg0, int arg1)
+{
+    int var_s2;
+    unsigned short temp_v1;
+    int temp_v0;
+    int var_s0;
+
+    var_s2 = 0;
+    temp_v0 = M2C_FIELD(arg0, int *, 0x40);
+    var_s0 = temp_v0 + 0x10;
+    if (M2C_FIELD(temp_v0, unsigned short *, 2) != 0) {
+        do {
+            temp_v1 = M2C_FIELD(var_s0, unsigned short *, 0);
+            switch (temp_v1) {                      
+            case 4:
+                Xiii_func_00174BB0(arg0, var_s0);
+                break;
+            case 5:
+                Xiii_func_00174BD8((int) arg0, var_s0);
+                break;
+            case 6:
+                Xiii_func_0016B50C((int) arg0, var_s0);
+                break;
+            }
+            var_s2 += 1;
+            var_s0 += M2C_FIELD(var_s0, unsigned short *, 2);
+        } while (var_s2 < (int) M2C_FIELD(M2C_FIELD(arg0, int *, 0x40), unsigned short *, 2));
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016B50C);
 
@@ -114,7 +149,22 @@ INCLUDE_ASM("asm/nonmatchings/unk/Eff0", updateZDepth__14EffBloodSpray1);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016BE14);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodSpray2__vfunc_02);
+extern "C" int EffBloodSpray2__vfunc_02(int arg0, int arg1)
+{
+    int var_v0;
+
+    var_v0 = Xiii_Eff0__vfunc_02(arg0, arg1);
+    if (var_v0 != 0) {
+        M2C_FIELD(arg0, int *, 0x30) = (int) M2C_FIELD(arg1, int *, 0x10);
+        M2C_FIELD(arg0, int *, 0x34) = (int) M2C_FIELD(arg1, int *, 0x14);
+        M2C_FIELD(arg0, float *, 0x38) = (float) M2C_FIELD(arg1, float *, 0x18);
+        M2C_FIELD(arg0, int *, 0x28) = (int) M2C_FIELD(arg1, int *, 0x1C);
+        M2C_FIELD(arg0, int *, 0x2C) = Xi_func_0016AD94();
+        Xii_func_0016BEDC(arg0);
+        var_v0 = 1;
+    }
+    return var_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016BEDC);
 

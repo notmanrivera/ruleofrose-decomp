@@ -1,5 +1,11 @@
 #include "ror.h"
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xii_func_00185760(int) asm("func_00185760");
+extern "C" int Xiii_func_001850FC(int, int) asm("func_001850FC");
+extern "C" int Xiiiiu_func_001857C8(int, int, int, unsigned int) asm("func_001857C8");
+extern "C" int Xiiu_func_00135594(int, unsigned int) asm("func_00135594");
+extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func_00134A00");
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
@@ -876,7 +882,13 @@ extern "C" void func_00185704(MsgWin *self)
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185760);
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001857C8);
+extern "C" int func_001857C8(int arg0, int arg1, int arg2, unsigned int arg3)
+{
+    int temp_v1;
+
+    temp_v1 = ((int) ((arg3 >> 0x1F) + arg3) >> 1) - ((int) (arg1 * arg2) / 2);
+    return ((M2C_FIELD(arg0, int *, 0x44) ^ 0x26) != 0) ? temp_v1 : (temp_v1 + 0xA);
+}
 
 extern "C" int func_001857FC()
 {
@@ -904,7 +916,33 @@ extern "C" int func_00185848()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185850);
+extern "C" int func_00185850(int arg0)
+{
+    int temp_a3;
+    int temp_v0;
+    int temp_v0_2;
+
+    if (M2C_FIELD(arg0, int *, 0x2C) == 1) {
+        Xiiu_func_00135594(M2C_FIELD(arg0, int *, 0x10) + 0x12540, M2C_FIELD(arg0, unsigned int *, 0));
+    }
+    M2C_FIELD(arg0, int *, 0x38) = Xii_func_00185760(arg0);
+    M2C_FIELD(arg0, int *, 0x3C) = 0;
+    M2C_FIELD(arg0, int *, 0xB4) = 0;
+    M2C_FIELD(arg0, int *, 0xA4) = 0;
+    M2C_FIELD(arg0, int *, 0xA8) = 0;
+    if (M2C_FIELD(arg0, int *, 0x84) == 1) {
+        temp_v0 = Xiii_func_001850FC(arg0, M2C_FIELD(arg0, int *, 0x18) + M2C_FIELD(arg0, int *, 0x1C));
+        M2C_FIELD(arg0, int *, 0x80) = temp_v0;
+        temp_a3 = M2C_FIELD(arg0, int *, 0x54) + Xiiiiu_func_001857C8(arg0, M2C_FIELD(arg0, int *, 0x44), temp_v0, M2C_FIELD(arg0, unsigned int *, 0x6C));
+        M2C_FIELD(arg0, int *, 0x60) = temp_a3;
+        Xiiuiii_func_00134A00(M2C_FIELD(arg0, int *, 0x10) + 0x12540, M2C_FIELD(arg0, unsigned int *, 0), M2C_FIELD(arg0, int *, 0x5C), temp_a3, M2C_FIELD(arg0, int *, 0x64));
+    } else {
+        temp_v0_2 = M2C_FIELD(arg0, int *, 0x54);
+        M2C_FIELD(arg0, int *, 0x60) = temp_v0_2;
+        Xiiuiii_func_00134A00(M2C_FIELD(arg0, int *, 0x10) + 0x12540, M2C_FIELD(arg0, unsigned int *, 0), M2C_FIELD(arg0, int *, 0x5C), temp_v0_2, M2C_FIELD(arg0, int *, 0x64));
+    }
+    return 1;
+}
 
 extern "C" int func_00185954()
 {
@@ -952,7 +990,19 @@ extern "C" int func_00185BF8(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185C04);
+extern "C" int func_00185C04(int arg0)
+{
+    int temp_a3;
+    int temp_v0;
+
+    M2C_FIELD(arg0, int *, 0x84) = 1;
+    temp_v0 = Xiii_func_001850FC(arg0, M2C_FIELD(arg0, int *, 0x18) + M2C_FIELD(arg0, int *, 0x1C));
+    M2C_FIELD(arg0, int *, 0x80) = temp_v0;
+    temp_a3 = M2C_FIELD(arg0, int *, 0x54) + Xiiiiu_func_001857C8(arg0, M2C_FIELD(arg0, int *, 0x44), temp_v0, M2C_FIELD(arg0, unsigned int *, 0x6C));
+    M2C_FIELD(arg0, int *, 0x60) = temp_a3;
+    Xiiuiii_func_00134A00(M2C_FIELD(arg0, int *, 0x10) + 0x12540, M2C_FIELD(arg0, unsigned int *, 0), M2C_FIELD(arg0, int *, 0x5C), temp_a3, M2C_FIELD(arg0, int *, 0x64));
+    return 0;
+}
 
 extern "C" int func_00185C84(MsgWin *self, const char *theStr, int *theLen)
 {
@@ -961,7 +1011,16 @@ extern "C" int func_00185C84(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185C90);
+extern "C" int func_00185C90(int arg0)
+{
+    int temp_v1;
+
+    M2C_FIELD(arg0, int *, 0x84) = 0;
+    temp_v1 = M2C_FIELD(arg0, int *, 0x54);
+    M2C_FIELD(arg0, int *, 0x60) = temp_v1;
+    Xiiuiii_func_00134A00(M2C_FIELD(arg0, int *, 0x10) + 0x12540, M2C_FIELD(arg0, unsigned int *, 0), M2C_FIELD(arg0, int *, 0x5C), temp_v1, M2C_FIELD(arg0, int *, 0x64));
+    return 0;
+}
 
 extern "C" int func_00185CDC(MsgWin *self, const char *theStr, int *theLen)
 {

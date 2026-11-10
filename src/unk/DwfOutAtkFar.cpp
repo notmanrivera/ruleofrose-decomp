@@ -1,4 +1,12 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" float Xfff_func_001044B8(float, float) asm("func_001044B8");
+extern "C" int Xii_func_00166AD0(int) asm("func_00166AD0");
+extern "C" int Xiii_func_00166DA4(int, int) asm("func_00166DA4");
+extern "C" int Xiii_func_00166EB4(int, int) asm("func_00166EB4");
+extern "C" int Xiiif_func_00166F50(int, int, float) asm("func_00166F50");
+extern "C" int Xiiii_func_001680A0(int, int, int) asm("func_001680A0");
+extern "C" int Xiiii_func_001687BC(int, int, int) asm("func_001687BC");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00160D94(...) asm("func_00160D94");
 extern "C" int X_func_00160E44(...) asm("func_00160E44");
@@ -33,7 +41,24 @@ extern "C" void DwfOutStared__vfunc_04()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", DwfOutWin__vfunc_02);
+extern "C" void DwfOutWin__vfunc_02(int arg0)
+{
+    float temp_f0;
+
+    if (M2C_FIELD((*(int *)&D_007B205C), int *, 0x5CC) != 0) {
+        Xiiii_func_001687BC(arg0, 0x44, 0);
+        Xiii_func_00166EB4(arg0, 0x64);
+        M2C_FIELD(arg0, int *, 0x38) = 0;
+        return;
+    }
+    if ((unsigned int) M2C_FIELD(arg0, unsigned int *, 0x10) >= 2U) {
+        Xiii_func_00166DA4(arg0, 0x64);
+    }
+    temp_f0 = Xfff_func_001044B8(100.0f, 200.0f);
+    M2C_FIELD(arg0, float *, 0x3C) = temp_f0;
+    Xiiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), temp_f0);
+    M2C_FIELD(arg0, int *, 4) = 0;
+}
 
 extern "C" int DwfOutWin__vfunc_03()
 {
@@ -70,7 +95,11 @@ extern "C" void DwfOutParts__vfunc_04()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", DwfOutTest__vfunc_02);
+extern "C" void DwfOutTest__vfunc_02(int arg0)
+{
+    M2C_FIELD(arg0, int *, 4) = 0;
+    Xiiii_func_001680A0(arg0, 6, 0);
+}
 
 extern "C" int DwfOutTest__vfunc_03()
 {
@@ -148,7 +177,14 @@ INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F11B8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", DwfOutDead__vfunc_03);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", DwfOutDead__vfunc_04);
+extern "C" void DwfOutDead__vfunc_04(int arg0)
+{
+    int temp_a1;
+
+    temp_a1 = M2C_FIELD(arg0, int *, 8);
+    M2C_FIELD(temp_a1, int *, 0x120) = (int) (M2C_FIELD(temp_a1, int *, 0x120) & ~0x400);
+    Xii_func_00166AD0(arg0);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F11E8);
 

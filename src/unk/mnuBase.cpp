@@ -1,4 +1,11 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xii_func_001C621C(int) asm("func_001C621C");
+extern "C" int Xiif_func_00131618(int, float) asm("func_00131618");
+extern "C" int Xiii_func_001D3AC8(int, int) asm("func_001D3AC8");
+extern "C" int Xiiiiiii_func_0018D7EC(int, int, int, int, int, int) asm("func_0018D7EC");
+extern int D_00299990;
+extern int D_0029BB70;
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X___11FileReadReq(...) asm("__11FileReadReq");
 extern "C" int X_func_00118980__9MagSystemiiiiii(...) asm("func_00118980__9MagSystemiiiiii");
@@ -106,7 +113,17 @@ INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00191D74);
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00191DC8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00191E04);
+extern "C" int func_00191E04(int arg0, int arg1, int arg2)
+{
+    int var_v0;
+
+    var_v0 = 0;
+    if (arg1 < 0xE) {
+        Xiiiiiii_func_0018D7EC(arg0 + 0x48, ((int *)&D_0029BB70)[arg1], 1, arg2, (int)&D_002999B0, (int)&D_00299990);
+        var_v0 = 1;
+    }
+    return var_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00191E58);
 
@@ -271,7 +288,11 @@ INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", mnuBase__vfunc_03);
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192E94);
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192F3C);
+extern "C" void func_00192F3C(int arg0)
+{
+    Xiif_func_00131618(M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, float *, 0x108));
+    Xii_func_001C621C((int)&D_007812C0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192F68);
 
@@ -297,11 +318,24 @@ INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001935C4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_0019368C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001937C0);
+extern "C" void func_001937C0(int arg0, int arg1, int arg2)
+{
+    M2C_FIELD(arg1, float *, 0) = M2C_FIELD(arg0, float *, 0x100) * (M2C_FIELD(arg2, float *, 0) - 256.0f) * 0.001953125f;
+    M2C_FIELD(arg1, float *, 4) = (float) ((M2C_FIELD(arg0, float *, 0x104) * (M2C_FIELD(arg2, float *, 4) - 224.0f)) / 448.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_0019381C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00193868);
+extern "C" void func_00193868(int arg0)
+{
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 4);
+    if (temp_v1 & 0x10) {
+        M2C_FIELD(arg0, int *, 4) = (int) (temp_v1 & ~0x10);
+        Xiii_func_001D3AC8((int)&D_007812C0, 1);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", mnuBase__vfunc_10);
 

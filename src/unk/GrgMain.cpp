@@ -1,4 +1,13 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xii_func_0015558C(int) asm("func_0015558C");
+extern "C" int Xii_func_00155648(int) asm("func_00155648");
+extern "C" int Xiii_func_0010423C(int, int) asm("func_0010423C");
+extern "C" int Xiii_func_00166DA4(int, int) asm("func_00166DA4");
+extern "C" int Xiii_func_0016968C(int, int) asm("func_0016968C");
+extern "C" int Xiiif_func_00166F50(int, int, float) asm("func_00166F50");
+extern "C" int Xiiii_func_001680A0(int, int, int) asm("func_001680A0");
+extern "C" int Xiiii_func_001D23F8(int, int, int) asm("func_001D23F8");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_0010423C(...) asm("func_0010423C");
 extern "C" int X_func_00154474(...) asm("func_00154474");
@@ -26,7 +35,25 @@ INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgMain__vfunc_01);
 
 INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgMain__vfunc_04);
 
-INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgMain__vfunc_05);
+extern "C" void GrgMain__vfunc_05(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
+
+    M2C_FIELD(arg0, int *, 0x40) = 0;
+    temp_v0 = M2C_FIELD(arg0, int *, 0x24);
+    if (temp_v0 != -1) {
+        M2C_FIELD(arg0, int *, 0x30) = 0;
+        temp_v1 = Xiii_func_0016968C(M2C_FIELD(arg0, int *, 0x1C), temp_v0);
+        M2C_FIELD(arg0, signed char *, 0x236) = 0;
+        if (temp_v1 != 0) {
+            M2C_FIELD(arg0, int *, 0x3C) = temp_v1;
+            M2C_FIELD(arg0, int *, 0x40) = 1;
+            return;
+        }
+        M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = (int) M2C_FIELD(arg0, int *, 0x3C);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgMain__vfunc_06);
 
@@ -67,7 +94,14 @@ extern "C" void func_00154748(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgOutCatch__vfunc_02);
+extern "C" void GrgOutCatch__vfunc_02(int arg0)
+{
+    M2C_FIELD((*(int *)&D_007B205C), int *, 0x14C) = 1;
+    Xiiii_func_001D23F8((int) (int)&D_007812C0, M2C_FIELD(arg0, int *, 0), 0);
+    Xiii_func_00166DA4(arg0, 0x64);
+    Xiiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), 10.0f);
+    M2C_FIELD(arg0, int *, 4) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgOutCatch__vfunc_03);
 
@@ -77,7 +111,17 @@ extern "C" void GrgOutCatch__vfunc_04()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgOutBitten__vfunc_02);
+extern "C" void GrgOutBitten__vfunc_02(int arg0)
+{
+    int temp_v0;
+
+    M2C_FIELD((*(int *)&D_007B205C), int *, 0x14C) = 1;
+    temp_v0 = Xiii_func_0010423C(0x3C, 0xB4);
+    M2C_FIELD(arg0, int *, 0x38) = 1;
+    M2C_FIELD(arg0, int *, 0x3C) = temp_v0;
+    Xiiii_func_001680A0(arg0, 0x13, 0x100);
+    M2C_FIELD(arg0, int *, 4) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgOutBitten__vfunc_03);
 
@@ -146,7 +190,17 @@ extern "C" int GrgOutEvent__vfunc_03()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgOutWalk__vfunc_02);
+extern "C" void GrgOutWalk__vfunc_02(int arg0)
+{
+    short temp_v0;
+
+    M2C_FIELD((*(int *)&D_007B205C), int *, 0x14C) = 1;
+    temp_v0 = Xii_func_0015558C(arg0);
+    M2C_FIELD(arg0, signed char *, 0x38) = 0;
+    M2C_FIELD(arg0, short *, 0x3A) = temp_v0;
+    Xii_func_00155648(arg0);
+    M2C_FIELD(arg0, int *, 4) = 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/GrgMain", D_002EFC80);
 
@@ -184,7 +238,12 @@ INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", func_00155648);
 
 INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", func_0015582C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", func_00155BB4);
+extern "C" int func_00155BB4(int arg0)
+{
+    M2C_FIELD(arg0, signed char *, 0x39) = Xiii_func_0010423C(2, 6);
+    Xiiii_func_001680A0(arg0, 0x28, 0);
+    return 4U;
+}
 
 extern "C" void GrgOutWalk__vfunc_04()
 {

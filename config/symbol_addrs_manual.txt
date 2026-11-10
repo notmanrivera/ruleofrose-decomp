@@ -529,3 +529,8 @@ motGetName2__FiPciii = 0x0021649C; // type:func size:0xFC
 motFunc5__Fv = 0x00216598; // type:func size:0x28
 motGetName3__FiPciii = 0x002165C0; // type:func size:0xD0
 func_0013FF00__8MagScenei = 0x0013FF00; // type:func size:0x130
+// game/gamman: a switch whose cases each end in a return, so splat took every
+// case for a function, and named them from the jump table as labels, which
+// the old assembler rejects in an INCLUDE_ASM (.end without .ent). The last
+// case ends at 0x001C6FE0.
+func_001C6F08 = 0x001C6F08; // type:func size:0xD8

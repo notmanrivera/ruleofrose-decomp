@@ -1,4 +1,6 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiii_func_0017EA44(int, int) asm("func_0017EA44");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_WrdSrv__vfunc_01(...) asm("WrdSrv__vfunc_01");
 extern "C" int X_func_0017E3D8(...) asm("func_0017E3D8");
@@ -138,9 +140,29 @@ INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017EA44);
 
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017EA84);
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017EB3C);
+extern "C" void func_0017EB3C(int arg0, int arg1, int arg2, int arg3)
+{
+    int temp_v0;
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017EBAC);
+    if (M2C_FIELD(arg0, int *, 4) != 0) {
+        temp_v0 = Xiii_func_0017EA44(arg0, (int) arg2);
+        M2C_FIELD(arg1, float *, 0) = (float) (M2C_FIELD(temp_v0, float *, 0x20) + M2C_FIELD(arg3, float *, 0));
+        M2C_FIELD(arg1, float *, 4) = (float) (M2C_FIELD(temp_v0, float *, 0x24) + M2C_FIELD(arg3, float *, 4));
+        M2C_FIELD(arg1, float *, 8) = (float) (M2C_FIELD(temp_v0, float *, 0x28) + M2C_FIELD(arg3, float *, 8));
+    }
+}
+
+extern "C" void func_0017EBAC(int arg0, int arg1, int arg2, int arg3)
+{
+    int temp_v0;
+
+    if (M2C_FIELD(arg0, int *, 4) != 0) {
+        temp_v0 = Xiii_func_0017EA44(arg0, (int) arg3);
+        M2C_FIELD(arg1, float *, 0) = (float) (M2C_FIELD(arg2, float *, 0) - M2C_FIELD(temp_v0, float *, 0x20));
+        M2C_FIELD(arg1, float *, 4) = (float) (M2C_FIELD(arg2, float *, 4) - M2C_FIELD(temp_v0, float *, 0x24));
+        M2C_FIELD(arg1, float *, 8) = (float) (M2C_FIELD(arg2, float *, 8) - M2C_FIELD(temp_v0, float *, 0x28));
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017EC1C);
 

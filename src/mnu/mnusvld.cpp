@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiii_func_001A4E34(int, int, int) asm("func_001A4E34");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_alloc__9BedMemoryiPCciii(...) asm("alloc__9BedMemoryiPCciii");
 extern "C" int X_func_00118980__9MagSystemiiiiii(...) asm("func_00118980__9MagSystemiiiiii");
@@ -52,7 +53,11 @@ extern int D_006E9840;
 extern int D_007812C0;
 extern int D_007B2060;
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A5034);
+extern "C" void func_001A5034(int arg0)
+{
+    Xiiii_func_001A4E34(arg0, arg0 + 0x7F4, 0x10);
+    Xiiii_func_001A4E34(arg0, arg0 + 0x834, 0x10);
+}
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A5070);
 

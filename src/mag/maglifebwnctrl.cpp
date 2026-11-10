@@ -1,4 +1,6 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiiiii_func_0012A56C(int, int, int, int) asm("func_0012A56C");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00103428(...) asm("func_00103428");
 extern "C" int X_func_0010344C(...) asm("func_0010344C");
@@ -281,7 +283,10 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrl__vfunc_02);
 extern "C" void MagLifeBwnCtrl__vfunc_09(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A6A8);
+extern "C" void func_0012A6A8(int arg0, int arg1)
+{
+    Xiiiii_func_0012A56C((int) arg0, 0xA, arg1, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A6CC);
 
@@ -298,7 +303,13 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A71C);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A758);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A7CC);
+extern "C" void func_0012A7CC(int arg0)
+{
+    if ((unsigned int) (M2C_FIELD(arg0, int *, 0) - 4) < 2U) {
+        M2C_FIELD(arg0, int *, 0x78) = 0;
+        Xiiiii_func_0012A56C(arg0, 1, 0, 1);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A808);
 
@@ -310,9 +321,17 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A9EC);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012AA70);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012AAC0);
+extern "C" void func_0012AAC0(int arg0, float fparg0)
+{
+    M2C_FIELD(arg0, float *, 0x40) = fparg0;
+    Xiiiii_func_0012A56C(arg0, 0, 0, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012AAE8);
+extern "C" void func_0012AAE8(int arg0, float fparg0)
+{
+    M2C_FIELD(arg0, float *, 0x40) = fparg0;
+    Xiiiii_func_0012A56C(arg0, 8, 0, 0);
+}
 
 extern "C" int func_0012AB10(int arg0)
 {
@@ -343,7 +362,13 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012B5F8);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012B65C);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012B788);
+extern "C" void func_0012B788(int arg0, int arg1)
+{
+    Xiiiii_func_0012A56C(arg0, 0xC, arg1, 1);
+    if (arg1 >= 0) {
+        M2C_FIELD(arg0, int *, 0x124) = arg1;
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnctrl", D_002EC448);
 

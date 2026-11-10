@@ -1,4 +1,14 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiii_func_001C5D08(int, int) asm("func_001C5D08");
+extern "C" int Xiii_func_001CB57C(int, int) asm("func_001CB57C");
+extern "C" int Xiiii_memset(int, int, int) asm("memset");
+extern "C" int Xiiiii_getActorNodeMatrix__9MagSystemiP19tag_I3dMatrixF4x4_sPCc(int, int, int, int) asm("getActorNodeMatrix__9MagSystemiP19tag_I3dMatrixF4x4_sPCc");
+extern "C" int Xiiiiiii_func_0013F980__8MagSceneiiiPfi(int, int, int, int, int, int) asm("func_0013F980__8MagSceneiiiPfi");
+extern "C" int Xiiiiiii_func_001CD044(int, int, int, int, int, int) asm("func_001CD044");
+extern "C" int Xiiu_func_001D046C(int, unsigned int) asm("func_001D046C");
+extern "C" int Xiiui_func_00213D00(int, unsigned int, int) asm("func_00213D00");
+extern "C" int Xiiuiii_func_00211BE4(int, unsigned int, int, int, int) asm("func_00211BE4");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00131184(...) asm("func_00131184");
 extern "C" int X_func_001348B0(...) asm("func_001348B0");
@@ -383,7 +393,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EEC4C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF0D8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF100);
+extern "C" float func_001EF100(float fparg0)
+{
+    return 24.0f - (fparg0 * 16.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovePhysic__vfunc_04);
 
@@ -391,7 +404,17 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF184);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskAvoidMove__vfunc_06);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskAvoidMove__vfunc_05);
+extern "C" void TskAvoidMove__vfunc_05(int arg0)
+{
+    int temp_a0;
+
+    if (Xiiu_func_001D046C((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0xC)) != 0) {
+        temp_a0 = M2C_FIELD(arg0, int *, 4);
+        if (temp_a0 != 0) {
+            M2C_FIELD(temp_a0, int *, 0x120) = (int) (M2C_FIELD(temp_a0, int *, 0x120) & ~0x4000);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF498);
 
@@ -783,7 +806,11 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F34C8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F370C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3760);
+extern "C" int func_001F3760()
+{
+    Xiii_func_001C5D08((int)&D_007812C0, 1);
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3788);
 
@@ -799,9 +826,37 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE560);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3824);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3B3C);
+extern "C" int func_001F3B3C()
+{
+    struct { char pad0[16]; } stack;
+    Xiiii_memset((int)&stack, 0, 0x10);
+    Xiii_func_001CB57C((int)&D_007812C0, (int)&stack);
+    return 1;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3B74);
+extern "C" int func_001F3B74(int arg0)
+{
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x10);
+    switch (temp_v1) {                              
+    case 0:
+        Xiiuiii_func_00211BE4((int)&D_007A4440, M2C_FIELD(arg0, unsigned int *, 0x20), M2C_FIELD(arg0, int *, 0x24), 0, 0);
+        M2C_FIELD(arg0, int *, 0x10) = (int) (M2C_FIELD(arg0, int *, 0x10) + 1);
+block_6:
+        return 0;
+    case 1:
+        if (Xiiui_func_00213D00((int)&D_007A4440, M2C_FIELD(arg0, unsigned int *, 0x20), 0) == 0) {
+            Xiiiiiii_func_001CD044((int)&D_007812C0, 2, M2C_FIELD(arg0, int *, 0x28), 0, -1, M2C_FIELD(arg0, int *, 0x2C));
+            M2C_FIELD((int)&D_007812C0, int *, 0x222E0) = 0;
+            M2C_FIELD((int)&D_007812C0, int *, 0x222DC) = 0;
+            return 1;
+        }
+        goto block_6;
+    default:
+        return 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3C44);
 
@@ -886,7 +941,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskAttach__vfunc_06);
 extern "C" void TskAttach__vfunc_05(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskAttach__vfunc_04);
+extern "C" int TskAttach__vfunc_04(int arg0)
+{
+    struct { char pad0[48]; int sp30; } stack;
+
+    Xiiiii_getActorNodeMatrix__9MagSystemiP19tag_I3dMatrixF4x4_sPCc((int) (int)&D_006E9840, M2C_FIELD(arg0, int *, 8), (int) (int)&stack, M2C_FIELD(arg0, int *, 0xC));
+    Xiiiiiii_func_0013F980__8MagSceneiiiPfi((int) ((int)&D_006E9840 + 0x12540), 2, M2C_FIELD(arg0, int *, 0x10), 0, (int) (int)&stack.sp30, 0);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F5350);
 

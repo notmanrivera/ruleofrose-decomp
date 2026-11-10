@@ -1,4 +1,8 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiii_func_00166DA4(int, int) asm("func_00166DA4");
+extern "C" int Xiii_func_001694CC(int, int) asm("func_001694CC");
+extern "C" int Xiiif_func_00166F50(int, int, float) asm("func_00166F50");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_0010423C(...) asm("func_0010423C");
 extern "C" int X_func_00118FEC__9MagSystem(...) asm("func_00118FEC__9MagSystem");
@@ -86,7 +90,11 @@ extern "C" void BdsOutStared__vfunc_04()
 
 INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", func_0014A9E8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsOutSearch__vfunc_02);
+extern "C" void BdsOutSearch__vfunc_02(int arg0)
+{
+    Xiii_func_00166DA4(arg0, 0x64);
+    Xiiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), 10.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsOutSearch__vfunc_03);
 
@@ -96,7 +104,16 @@ extern "C" void BdsOutSearch__vfunc_04()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsOutAtk__vfunc_02);
+extern "C" void BdsOutAtk__vfunc_02(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0x40) = 0;
+    M2C_FIELD(arg0, int *, 0x3C) = 0;
+    Xiii_func_00166DA4(arg0, 0x64);
+    M2C_FIELD(arg0, int *, 4) = 0;
+    Xiiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), 75.0f);
+    M2C_FIELD(arg0, int *, 0x38) = 0;
+    Xiii_func_001694CC(arg0, 0xB);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsOutAtk__vfunc_03);
 

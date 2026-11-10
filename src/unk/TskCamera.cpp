@@ -1,4 +1,9 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiiii_memset(int, int, int) asm("memset");
+extern "C" int Xiiii_strncpy(int, int, int) asm("strncpy");
+extern "C" int Xiiiii_func_001FC4F0(int, int, int, int) asm("func_001FC4F0");
+extern "C" int Xiiiii_func_001FC600(int, int, int, int) asm("func_001FC600");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_alloc__9BedMemoryiPCciii(...) asm("alloc__9BedMemoryiPCciii");
 extern "C" int X_func_00163624(...) asm("func_00163624");
@@ -77,7 +82,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", TskSnd__vfunc_04);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", TskSnd__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001F9294);
+extern "C" float func_001F9294(int arg0)
+{
+    float var_f0;
+    int temp_v0;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x38);
+    var_f0 = 0.0f;
+    if (temp_v0 > 0) {
+        var_f0 = (float) M2C_FIELD(arg0, int *, 0x3C) / (float) temp_v0;
+    }
+    return var_f0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001F92C8);
 
@@ -295,7 +311,13 @@ extern "C" void func_001FC5E4()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FC600);
+extern "C" void func_001FC600(int arg0, int arg1, int arg2, int arg3)
+{
+    struct { char pad0[16]; } stack;
+    Xiiii_memset((int)&stack, 0, 8);
+    Xiiii_strncpy((int)&stack, (int) arg1, 8);
+    Xiiiii_func_001FC4F0(arg0, (int)&stack, arg2, arg3);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FC678);
 
@@ -307,7 +329,11 @@ extern "C" void func_001FC6F0(int arg0, int arg1, int arg2)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FC744);
+extern "C" void func_001FC744(int arg0, int arg1, int arg2)
+{
+    M2C_FIELD(arg0, int *, 0x50C) = (int) ((M2C_FIELD(arg0, int *, 0x50C) + 3) & ~3);
+    Xiiiii_func_001FC600(arg0, arg1, M2C_FIELD(arg2, int *, 0x504), M2C_FIELD(arg2, int *, 0x508));
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FC77C);
 

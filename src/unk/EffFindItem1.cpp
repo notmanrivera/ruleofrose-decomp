@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X___10FileReader(...) asm("__10FileReader");
 extern "C" int X___11FileReadReq(...) asm("__11FileReadReq");
@@ -34,7 +35,11 @@ extern int D_006E9800;
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFindItem1", EffFindItem1__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFindItem1", EffFindItem1__vfunc_05);
+extern "C" int EffFindItem1__vfunc_05(int arg0)
+{
+    M2C_FIELD(arg0, unsigned char *, 0x44) = (unsigned char) ((int) (M2C_FIELD(arg0, unsigned char *, 0x44) + 1) % 45);
+    return 1;
+}
 
 extern "C" void render__12EffFindItem1PQ24Eff011RENDERPARAM(int arg0)
 {

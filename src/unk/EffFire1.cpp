@@ -1,4 +1,9 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" float Xfi_func_0010DA4C__8DogActor(int) asm("func_0010DA4C__8DogActor");
+extern "C" int Xiii_func_00172934(int, int) asm("func_00172934");
+extern "C" int Xiiiff_func_0010BCC8__8DogActoriff(int, int, float, float) asm("func_0010BCC8__8DogActoriff");
+extern "C" int Xiiii_func_00170158(int, int, int) asm("func_00170158");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_Eff0__vfunc_02(...) asm("Eff0__vfunc_02");
 extern "C" int X_func_0016FF18(...) asm("func_0016FF18");
@@ -9,7 +14,30 @@ extern int D_00298E14;
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_001702E4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_001703C0);
+extern "C" void func_001703C0(int arg0)
+{
+    float temp_f0;
+    int temp_s0;
+    int temp_v0;
+
+    temp_s0 = M2C_FIELD(arg0, int *, 4);
+    temp_f0 = Xfi_func_0010DA4C__8DogActor(temp_s0);
+    if (temp_f0 >= 0.0f) {
+        temp_v0 = Xiiiff_func_0010BCC8__8DogActoriff(temp_s0, -1, temp_f0, temp_f0 + 1.0f);
+        if (temp_v0 & 0x10000000) {
+            Xiiii_func_00170158(arg0, 0, (int) (int) "Bip01 L Toe0");
+        }
+        if (temp_v0 & 0x20000000) {
+            Xiiii_func_00170158(arg0, 1, (int) (int) "Bip01 R Toe0");
+        }
+        if (temp_v0 & 0x04000000) {
+            Xiiii_func_00170158(arg0, 2, (int) (int) "Bip01 L Finger0");
+        }
+        if (temp_v0 & 0x08000000) {
+            Xiiii_func_00170158(arg0, 3, (int) (int) "Bip01 R Finger0");
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffDust2__vfunc_02);
 
@@ -68,7 +96,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", updateZDepth__8EffFire2);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog1__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog1__vfunc_05);
+extern "C" int EffFog1__vfunc_05(int arg0)
+{
+    int temp_hi;
+
+    temp_hi = (int) (M2C_FIELD(arg0, int *, 0x68) + 1) % 540;
+    M2C_FIELD(arg0, int *, 0x68) = temp_hi;
+    if (temp_hi == 0) {
+        M2C_FIELD(arg0, long *, 0x30) = (long) M2C_FIELD(arg0, long *, 0x40);
+        M2C_FIELD(arg0, long *, 0x38) = (long) M2C_FIELD(arg0, long *, 0x48);
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog1__vfunc_08);
 
@@ -128,4 +167,11 @@ extern "C" int EffFog3WeakUp__vfunc_02()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog3WeakUp__vfunc_05);
+extern "C" int EffFog3WeakUp__vfunc_05()
+{
+    if ((*(int *)&D_00298E14) & 1) {
+        (*(int *)&D_00298E14) &= ~1;
+        Xiii_func_00172934(0, 0x5A);
+    }
+    return 0;
+}

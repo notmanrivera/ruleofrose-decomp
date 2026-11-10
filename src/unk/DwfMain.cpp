@@ -1,4 +1,7 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiii_func_00166DA4(int, int) asm("func_00166DA4");
+extern "C" int Xiiif_func_00166F50(int, int, float) asm("func_00166F50");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_0015CE88(...) asm("func_0015CE88");
 extern "C" int X_func_0015CF30(...) asm("func_0015CF30");
@@ -182,7 +185,11 @@ extern "C" void func_0015EAA8(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfOutSerch__vfunc_02);
+extern "C" void DwfOutSerch__vfunc_02(int arg0)
+{
+    Xiii_func_00166DA4(arg0, 0x64);
+    Xiiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), 10.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfOutSerch__vfunc_03);
 

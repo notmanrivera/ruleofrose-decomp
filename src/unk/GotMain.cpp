@@ -1,4 +1,6 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiii_func_0016968C(int, int) asm("func_0016968C");
 extern "C" int X_func_00165794(...) asm("func_00165794");
 extern "C" int X_func_00165A68(...) asm("func_00165A68");
 extern "C" int X_func_00165AA8(...) asm("func_00165AA8");
@@ -56,7 +58,39 @@ INCLUDE_ASM("asm/nonmatchings/unk/GotMain", GotMain__vfunc_01);
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", GotMain__vfunc_04);
 
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", GotMain__vfunc_05);
+extern "C" void GotMain__vfunc_05(int arg0)
+{
+    int temp_a0;
+    int temp_v0;
+    int temp_v0_2;
+
+    M2C_FIELD(arg0, int *, 0x40) = 0;
+    temp_a0 = M2C_FIELD(arg0, int *, 0x30);
+    if (temp_a0 & 2) {
+        M2C_FIELD(arg0, int *, 0x3C) = 4;
+        M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = 4;
+        M2C_FIELD(arg0, int *, 0x40) = 1;
+        M2C_FIELD(arg0, int *, 0x30) = 0;
+    } else {
+        temp_v0 = M2C_FIELD(arg0, int *, 0x24);
+        if (temp_v0 != -1) {
+            M2C_FIELD(arg0, int *, 0x30) = 0;
+            temp_v0_2 = Xiii_func_0016968C(M2C_FIELD(arg0, int *, 0x1C), temp_v0);
+            M2C_FIELD(arg0, signed char *, 0x264) = 0;
+            M2C_FIELD(arg0, signed char *, 0x265) = 0;
+            if (temp_v0_2 != 0) {
+                M2C_FIELD(arg0, int *, 0x3C) = temp_v0_2;
+                M2C_FIELD(arg0, int *, 0x40) = 1;
+            } else {
+                M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = (int) M2C_FIELD(arg0, int *, 0x3C);
+            }
+        } else if (temp_a0 & 1) {
+            M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = (int) M2C_FIELD(arg0, int *, 0x3C);
+            M2C_FIELD(arg0, int *, 0x40) = 1;
+        }
+    }
+    M2C_FIELD(arg0, int *, 0x30) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", GotMain__vfunc_06);
 
@@ -224,7 +258,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_001594D0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00159560);
 
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_001595F0);
+extern "C" int func_001595F0(int arg0)
+{
+    int var_a0;
+    int temp_v0;
+    int var_v0;
+
+    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0x12);
+    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a0 = 1;
+    else var_a0 = 0;
+    if (var_a0 != 0) return 0;
+    {
+        return (*(int *)(int *)((char *)((*(int *)(int *)((char *)(arg0) + 0x20))) + 0x3EC)) & 1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00159668);
 

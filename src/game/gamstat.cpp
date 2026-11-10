@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiiiii_func_001D81F0(int, int, int, int, int) asm("func_001D81F0");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_alloc__9BedMemoryiPCciii(...) asm("alloc__9BedMemoryiPCciii");
 extern "C" int X_func_001D83C0(...) asm("func_001D83C0");
@@ -54,7 +55,11 @@ INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D811C);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D817C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D81C4);
+extern "C" void func_001D81C4(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+{
+    struct { char pad0[512]; } stack;
+    Xiiiiii_func_001D81F0(arg0, arg6, arg1, arg2, (int)&stack);
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D81F0);
 

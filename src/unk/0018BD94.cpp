@@ -1,4 +1,8 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiiiiiii_func_0018D7EC(int, int, int, int, int, int) asm("func_0018D7EC");
+extern int D_00299990;
+extern int D_002999B0;
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_clear__6BedPfh(...) asm("clear__6BedPfh");
 extern "C" int X_func_0018BEF8(...) asm("func_0018BEF8");
@@ -97,7 +101,19 @@ INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018DF20);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018DFDC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018E028);
+extern "C" int func_0018E028(int arg0, int arg1, int arg2, int arg3, int arg4)
+{
+    int var_v0;
+
+    var_v0 = 1;
+    if ((arg3 < 0) || (arg4 < 0)) {
+        var_v0 = 0;
+    }
+    if ((arg1 >= 0x2801) || (arg2 >= 0x1E01)) {
+        var_v0 = 0;
+    }
+    return var_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018E05C);
 
@@ -167,11 +183,37 @@ extern "C" void func_0018F3E0(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018F41C);
+extern "C" void func_0018F41C(int arg0, int arg1, int arg2)
+{
+    int temp_v0;
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018F4A0);
+    Xiiiiiii_func_0018D7EC(arg0, arg1, 3, arg2, (int)&D_002999B0, (int)&D_00299990);
+    temp_v0 = arg1 * 0x154;
+    M2C_FIELD((temp_v0 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x10) = 4;
+    M2C_FIELD((temp_v0 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x100) = arg2;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018F520);
+extern "C" void func_0018F4A0(int arg0, int arg1, int arg2, int arg3, int arg4)
+{
+    int temp_v0;
+
+    Xiiiiiii_func_0018D7EC(arg0, arg1, 3, arg2, (int) arg3, (int) arg4);
+    temp_v0 = arg1 * 0x154;
+    M2C_FIELD((temp_v0 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x10) = 4;
+    M2C_FIELD((temp_v0 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x100) = arg2;
+}
+
+extern "C" void func_0018F520(int arg0, int arg1, int arg2, int arg3, int arg4)
+{
+    int temp_s0;
+
+    temp_s0 = arg1 * 0x154;
+    if (M2C_FIELD((temp_s0 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x10) != 0) {
+        Xiiiiiii_func_0018D7EC(arg0, arg1, 3, arg2, (int) arg3, (int) arg4);
+        M2C_FIELD((temp_s0 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x10) = 4;
+        M2C_FIELD((temp_s0 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x100) = arg2;
+    }
+}
 
 extern "C" void func_0018F5B0(int arg0)
 {

@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int X_func_0025B890(...) asm("func_0025B890");
+extern "C" int Xii_func_00169A14(int) asm("func_00169A14");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_0010423C(...) asm("func_0010423C");
 extern "C" int X_func_001694CC(...) asm("func_001694CC");
@@ -85,7 +87,12 @@ INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_00169810);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_00169A14);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_00169A68);
+extern "C" void func_00169A68(int arg0, int arg1)
+{
+    struct { char pad0[16]; } stack;
+    X_func_0025B890((int)&stack, arg0, arg1);
+    Xii_func_00169A14((int)&stack);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_00169A98);
 

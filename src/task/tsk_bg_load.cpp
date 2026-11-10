@@ -1,5 +1,8 @@
 #include "ror.h"
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xii___11FileReadReq(int) asm("__11FileReadReq");
+extern "C" int Xiiii_func_001BE524__10FileReaderP11FileReadReqi(int, int, int) asm("func_001BE524__10FileReaderP11FileReadReqi");
 #include "sdk/string.h"
 struct BgIter {
     char *m_top;                    // +0x00
@@ -145,7 +148,27 @@ extern "C" int TskBGLoad__vfunc_04(char *self)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/task/tsk_bg_load", func_001FCE40);
+extern "C" int func_001FCE40(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
+{
+    int temp_s0;
+
+    temp_s0 = arg0 + 0xC;
+    M2C_FIELD(arg0, int *, 0x30) = 0;
+    Xii___11FileReadReq(temp_s0);
+    if (arg5 != 0) {
+        M2C_FIELD(arg0, int *, 0x18) = arg1;
+        M2C_FIELD(arg0, int *, 0x14) = 1;
+    } else {
+        M2C_FIELD(arg0, int *, 0x14) = 0;
+    }
+    M2C_FIELD(arg0, int *, 0x1C) = arg4;
+    M2C_FIELD(arg0, int *, 0x28) = arg3;
+    M2C_FIELD(arg0, int *, 0x24) = arg2;
+    M2C_FIELD(arg0, int *, 0x2C) = 1;
+    M2C_FIELD(arg0, int *, 0x20) = 0;
+    Xiiii_func_001BE524__10FileReaderP11FileReadReqi((int) (arg0 + 4), (int) temp_s0, 1);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/task/tsk_bg_load", func_001FCEF8);
 

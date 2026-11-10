@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_FlushCache(...) asm("FlushCache");
 extern "C" int X_SetDebugHandler(...) asm("SetDebugHandler");
@@ -53,7 +54,16 @@ INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00204E68);
 
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00204E98);
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00205078);
+extern "C" void func_00205078(int arg0)
+{
+    int temp_s0;
+
+    temp_s0 = arg0 + 0x230;
+    X_sceGsSetDefLoadImage(temp_s0, 0x1A40, 4, 0x13, 0, 0, 0x100, 0x100);
+    X_FlushCache(0);
+    X_sceGsExecLoadImage(temp_s0, M2C_FIELD(arg0, int *, 0x290));
+    X_sceGsSyncPath(0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_002050E8);
 

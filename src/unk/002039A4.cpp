@@ -1,4 +1,10 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int X_LoadExecPS2(...) asm("LoadExecPS2");
+extern "C" int X_func_0024B3F8(...) asm("func_0024B3F8");
+extern "C" int X_func_00279C98(...) asm("func_00279C98");
+extern "C" int X_sceClose(...) asm("sceClose");
+extern "C" int X_sceOpen(...) asm("sceOpen");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_0010423C(...) asm("func_0010423C");
 extern "C" int X_func_00169A98(...) asm("func_00169A98");
@@ -19,7 +25,18 @@ extern int D_007B2580;
 
 INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_002039A4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_00203A00);
+extern "C" void func_00203A00(int arg0)
+{
+    int temp_v0;
+
+    M2C_FIELD(arg0, int *, 0x48) = 0;
+    if (M2C_FIELD(arg0, int *, 4) != 0) {
+        temp_v0 = M2C_FIELD(arg0, int *, 0x10);
+        if (temp_v0 != 0) {
+            M2C_FIELD(temp_v0, float *, 0x1E8) = (float) M2C_FIELD(arg0, float *, 0x1C);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_00203A28);
 
@@ -97,7 +114,19 @@ INCLUDE_RODATA("asm/nonmatchings/unk/002039A4", D_002FF6A8);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/002039A4", D_002FF6E8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_002041A0);
+extern "C" void func_002041A0()
+{
+    struct { char pad0[256]; } stack;
+    int temp_v0;
+
+    X_func_00279C98((int)&stack, (int) "host0:main.ee.elf");
+    do {
+        temp_v0 = X_sceOpen((int)&stack, 1);
+    } while (temp_v0 < 0);
+    X_sceClose(temp_v0);
+    X_func_0024B3F8(0);
+    X_LoadExecPS2((int)&stack, 0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_002041F8);
 

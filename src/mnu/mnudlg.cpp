@@ -1,4 +1,8 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiii_func_001A1684(int, int) asm("func_001A1684");
+extern "C" int Xiii_strcpy(int, int) asm("strcpy");
+extern "C" int Xiiiii_func_001A4DB8(int, int, int, int) asm("func_001A4DB8");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_alloc__9BedMemoryiPCciii(...) asm("alloc__9BedMemoryiPCciii");
 extern "C" int X_func_00118980__9MagSystemiiiiii(...) asm("func_00118980__9MagSystemiiiiii");
@@ -166,7 +170,10 @@ extern "C" void func_001A17B0(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A17DC);
+extern "C" int func_001A17DC(int arg0)
+{
+    return Xiii_func_001A1684(arg0, M2C_FIELD(arg0, int *, 0x74)) != 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A17FC);
 
@@ -183,9 +190,26 @@ extern "C" int func_001A1B54(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1B8C);
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1C08);
+extern "C" void func_001A1C08(int arg0, int arg1, int arg2, int arg3)
+{
+    if (arg1 == 0) {
+        M2C_FIELD(arg0, signed char *, 0x1310) = 0;
+    } else {
+        Xiii_strcpy(arg0 + 0x1310, (int) arg1);
+    }
+    M2C_FIELD(arg0, int *, 0x130C) = arg3;
+    M2C_FIELD(arg0, int *, 0x1308) = arg2;
+    M2C_FIELD(arg0, signed char *, 0x1350) = 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1C64);
+extern "C" void func_001A1C64(int arg0, int arg1)
+{
+    if (arg1 == 0) {
+        M2C_FIELD(arg0, signed char *, 0x1350) = 0;
+        return;
+    }
+    Xiii_strcpy(arg0 + 0x1350, (int) arg1);
+}
 
 extern "C" int func_001A1C8C(int arg0)
 {
@@ -307,4 +331,8 @@ INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A4E88);
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A4F60);
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A4FF0);
+extern "C" void func_001A4FF0(int arg0)
+{
+    Xiiiii_func_001A4DB8((int) arg0, arg0 + 0x7F4, 0x10, 0x100);
+    Xiiiii_func_001A4DB8((int) arg0, arg0 + 0x834, 0x10, 0x100);
+}

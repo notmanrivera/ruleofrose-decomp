@@ -1,4 +1,14 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" float Xfiiii_func_001D817C(int, int, int, int) asm("func_001D817C");
+extern "C" int Xii_func_001C6C28(int) asm("func_001C6C28");
+extern "C" int Xii_func_001DA07C(int) asm("func_001DA07C");
+extern "C" int Xiii_func_0017EA44(int, int) asm("func_0017EA44");
+extern "C" int Xiii_func_001D89C4(int, int) asm("func_001D89C4");
+extern "C" int Xiii_func_001D8D28(int, int) asm("func_001D8D28");
+extern "C" int Xiiii_setActorRot__9MagSystemiPCf(int, int, int) asm("setActorRot__9MagSystemiPCf");
+extern "C" int Xiiiii_func_001D8064(int, int, int, int) asm("func_001D8064");
+extern int D_006FE6A0;
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_001333C0(...) asm("func_001333C0");
 extern "C" int X_func_00139010(...) asm("func_00139010");
@@ -46,21 +56,71 @@ extern "C" int func_001D89BC()
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D89C4);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8A8C);
+extern "C" void func_001D8A8C(int arg0, int arg1)
+{
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x108);
+    M2C_FIELD(arg0, float *, 0x1A0) = (float) M2C_FIELD(arg1, float *, 0);
+    M2C_FIELD(arg0, float *, 0x1A4) = (float) M2C_FIELD(arg1, float *, 4);
+    M2C_FIELD(arg0, float *, 0x1A8) = (float) M2C_FIELD(arg1, float *, 8);
+    if (temp_v1 != -1) {
+        Xiiii_setActorRot__9MagSystemiPCf((int) (int)&D_006E9840, temp_v1, (int) (arg0 + 0x1A0));
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8ADC);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8B5C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8B9C);
+extern "C" void func_001D8B9C(int arg0, int arg1)
+{
+    float temp_f0;
+    int temp_v0;
+
+    temp_v0 = Xiiiii_func_001D8064((int) (int)&D_007812C0, (int) arg1, M2C_FIELD(arg0, int *, 0x114), (((unsigned int) M2C_FIELD(arg0, unsigned int *, 0x100) >> 0x17) & 0x1F) == 2);
+    Xiii_func_001D8D28(arg0, temp_v0);
+    temp_f0 = Xfiiii_func_001D817C((int) (int)&D_007812C0, (int) temp_v0, (int) arg1, 0);
+    if (temp_f0 != 100000.0f) {
+        M2C_FIELD(arg1, float *, 4) = temp_f0;
+    }
+    Xiii_func_001D89C4(arg0, arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8C50);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8D28);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8DC4);
+extern "C" void func_001D8DC4(int arg0)
+{
+    int temp_v1;
+    float temp_f1;
+    float temp_f1_2;
+    int temp_v0_3;
+    int temp_a0;
+    int temp_v0;
+    int temp_v0_2;
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8EA8);
+    temp_v1 = arg0 + 0x190;
+    temp_a0 = M2C_FIELD(arg0, int *, 0x108);
+    if ((temp_a0 != -1) && ((temp_v0 = (int)&D_006FE6A0 + (temp_a0 * 0x4D0), temp_f1 = M2C_FIELD(temp_v0, float *, 0x40), M2C_FIELD(arg0, float *, 0x190) = temp_f1, M2C_FIELD(temp_v1, float *, 4) = (float) M2C_FIELD(temp_v0, float *, 0x44), M2C_FIELD(temp_v1, float *, 8) = (float) M2C_FIELD(temp_v0, float *, 0x48), temp_v0_2 = M2C_FIELD(arg0, int *, 0x114), (temp_v0_2 == 0)) || !(M2C_FIELD(temp_v0_2, float *, 0x1C) <= temp_f1) || !(temp_f1 <= M2C_FIELD(temp_v0_2, float *, 0x24)) || (temp_f1_2 = M2C_FIELD(arg0, float *, 0x198), !(M2C_FIELD(temp_v0_2, float *, 0x20) <= temp_f1_2)) || !(temp_f1_2 <= M2C_FIELD(temp_v0_2, float *, 0x28)))) {
+        temp_v0_3 = Xiiiii_func_001D8064((int) (int)&D_007812C0, (int) temp_v1, (int) temp_v0_2, (((unsigned int) M2C_FIELD(arg0, unsigned int *, 0x100) >> 0x17) & 0x1F) == 2);
+        if (temp_v0_3 != 0) {
+            Xiii_func_001D8D28(arg0, (int) temp_v0_3);
+        }
+    }
+}
+
+extern "C" void func_001D8EA8(int arg0)
+{
+    int temp_v0;
+
+    temp_v0 = Xiiiii_func_001D8064((int) (int)&D_007812C0, (int) (arg0 + 0x190), M2C_FIELD(arg0, int *, 0x114), (((unsigned int) M2C_FIELD(arg0, unsigned int *, 0x100) >> 0x17) & 0x1F) == 2);
+    if (temp_v0 != 0) {
+        M2C_FIELD(arg0, int *, 0x110) = 0;
+        Xiii_func_001D8D28(arg0, (int) temp_v0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8F04);
 
@@ -99,7 +159,15 @@ extern "C" void func_001D9E9C(int arg0)
 extern "C" void func_001D9F08(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D9F10);
+extern "C" void func_001D9F10(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x114) = 0;
+    M2C_FIELD(arg0, int *, 0x110) = 0;
+    if (arg1 != 0) {
+        M2C_FIELD(arg0, int *, 0x10C) = 0;
+    }
+    Xii_func_001DA07C(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D9F40);
 
@@ -230,7 +298,18 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB774);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB7CC);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB898);
+extern "C" void func_001DB898(int arg0, int arg1)
+{
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x108);
+    M2C_FIELD(arg0, float *, 0x1A0) = (float) M2C_FIELD(arg1, float *, 0);
+    M2C_FIELD(arg0, float *, 0x1A4) = (float) M2C_FIELD(arg1, float *, 4);
+    M2C_FIELD(arg0, float *, 0x1A8) = (float) M2C_FIELD(arg1, float *, 8);
+    if (temp_v1 != -1) {
+        Xiiii_setActorRot__9MagSystemiPCf((int) (int)&D_006E9840, temp_v1, (int) (arg0 + 0x1A0));
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamtrg", D_002FC6E8);
 
@@ -238,9 +317,31 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamtrg", D_002FC700);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB8E8);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB9C4);
+extern "C" float func_001DB9C4()
+{
+    float var_f0;
+    int temp_v0;
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBA00);
+    temp_v0 = Xiii_func_0017EA44((int)&D_00298EE0, Xii_func_001C6C28((int)&D_007812C0));
+    var_f0 = 0.0f;
+    if (temp_v0 != 0) {
+        var_f0 = M2C_FIELD(temp_v0, float *, 0x20);
+    }
+    return var_f0;
+}
+
+extern "C" float func_001DBA00()
+{
+    float var_f0;
+    int temp_v0;
+
+    temp_v0 = Xiii_func_0017EA44((int)&D_00298EE0, Xii_func_001C6C28((int)&D_007812C0));
+    var_f0 = 0.0f;
+    if (temp_v0 != 0) {
+        var_f0 = M2C_FIELD(temp_v0, float *, 0x28);
+    }
+    return var_f0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBA3C);
 
