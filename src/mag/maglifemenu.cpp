@@ -1,5 +1,8 @@
 #include "ror.h"
 #include "include_asm.h"
+struct m2c_v10C_28_i { char pad[268]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual int call(); };
+struct m2c_v10C_30_i { char pad[268]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual int call(); };
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int X_func_00139010(...) asm("func_00139010");
 extern "C" int X_func_0013CA10(...) asm("func_0013CA10");
 extern "C" int X_ror_assert(...) asm("ror_assert");
@@ -242,9 +245,23 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifemenu", func_0012D398);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifemenu", MagLifeMenuPBook__vfunc_09);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifemenu", MagLifeMenuPBook__vfunc_12);
+extern "C" void MagLifeMenuPBook__vfunc_12(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifemenu", MagLifeMenuPBook__vfunc_06);
+    temp_v1 = M2C_FIELD(arg0, int *, 0x40);
+    ((m2c_v10C_28_i *)(temp_v1))->call();
+}
+
+extern "C" void MagLifeMenuPBook__vfunc_06(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x40);
+    ((m2c_v10C_30_i *)(temp_v1))->call();
+}
 
 extern "C" void MagLifeMenuNow__vfunc_09(char *self)
 {

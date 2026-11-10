@@ -179,7 +179,23 @@ extern "C" void func_001749FC(int arg0, int arg1, int arg2)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00174A60);
+extern "C" void func_00174A60(int arg0, int arg1, int arg2)
+{
+    float temp_f0;
+
+    if (!((*(unsigned short *)M2C_FIELD(arg0, int *, 0x40)) & 4)) {
+        temp_f0 = Xfii_func_00174D14(arg0, arg1);
+        if (M2C_FIELD(arg1, unsigned short *, 6) & 1 & 0xFFFF) {
+            M2C_FIELD(arg2, float *, 0) = temp_f0;
+        }
+        if (M2C_FIELD(arg1, unsigned short *, 6) & 2) {
+            M2C_FIELD(arg2, float *, 4) = temp_f0;
+        }
+        if (M2C_FIELD(arg1, unsigned short *, 6) & 4) {
+            M2C_FIELD(arg2, float *, 8) = temp_f0;
+        }
+    }
+}
 
 extern "C" void func_00174AD8(int arg0, int arg1, int arg2)
 {

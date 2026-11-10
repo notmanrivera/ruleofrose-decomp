@@ -1,4 +1,7 @@
 #include "include_asm.h"
+struct m2c_v200_10_i { char pad[512]; virtual void v1(); virtual int call(); };
+struct m2c_v34_18_i { char pad[52]; virtual void v1(); virtual void v2(); virtual int call(); };
+struct m2c_v34_20_i { char pad[52]; virtual void v1(); virtual void v2(); virtual void v3(); virtual int call(); };
 extern "C" int Xii___builtin_new(int) asm("__builtin_new");
 extern "C" int Xiiiii_func_00166A1C(int, int, int, int) asm("func_00166A1C");
 extern int _vt$11MrtOutSerch;
@@ -75,7 +78,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/MrtMain", MrtMain__vfunc_04);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MrtMain", MrtMain__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MrtMain", MrtMain__vfunc_06);
+extern "C" void MrtMain__vfunc_06(int arg0)
+{
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+
+    if (M2C_FIELD(arg0, int *, 0x40) != 0) {
+        ((m2c_v34_20_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
+        ((m2c_v200_10_i *)(arg0))->call();
+    }
+    M2C_FIELD(arg0, int *, 0x24) = ((m2c_v34_18_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MrtMain", MrtMain__vfunc_02);
 

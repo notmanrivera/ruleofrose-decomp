@@ -1,4 +1,8 @@
 #include "include_asm.h"
+struct m2c_v200_18_i { char pad[512]; virtual void v1(); virtual void v2(); virtual int call(); };
+extern "C" int Xii_func_001682B0(int) asm("func_001682B0");
+extern "C" int Xii_func_0016834C(int) asm("func_0016834C");
+extern "C" int Xii_func_00168844(int) asm("func_00168844");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xii_func_001442DC(int) asm("func_001442DC");
 extern "C" int Xiiii_func_001680A0(int, int, int) asm("func_001680A0");
@@ -146,7 +150,38 @@ INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1AA8);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1AB0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00168520);
+extern "C" void func_00168520(int arg0)
+{
+    unsigned int temp_v0_2;
+    int temp_v0;
+    int temp_v1;
+
+    if (M2C_FIELD(arg0, int *, 0x1C) != 0) {
+        M2C_FIELD(arg0, int *, 0x1C) = 0;
+        temp_v1 = M2C_FIELD(arg0, int *, 0xC);
+        temp_v0_2 = ((m2c_v200_18_i *)(temp_v1))->call();
+        switch (temp_v0_2) {
+        case 0:
+        case 1:
+        case 3:
+            Xii_func_0016834C(arg0);
+            break;
+        case 2:
+            Xii_func_00168844(arg0);
+            break;
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+            Xii_func_001682B0(arg0);
+            break;
+        }
+    }
+    M2C_FIELD(arg0, int *, 0x18) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001685C0);
 

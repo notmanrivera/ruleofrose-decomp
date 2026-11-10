@@ -1,4 +1,13 @@
 #include "include_asm.h"
+extern "C" int Xii_getMainMotionNo__C14DogMotionBlend(int) asm("getMainMotionNo__C14DogMotionBlend");
+extern "C" int Xiii_func_0010AA5C__8DogActorPCc(int, int) asm("func_0010AA5C__8DogActorPCc");
+extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
+extern const char D_002EBE40[];
+struct m2c_v14_58_i { char pad[20]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual int call(); };
+struct m2c_v14_70_iiii { char pad[20]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual int call(int, int, int); };
+typedef unsigned int u_long128 __attribute__((mode(TI)));
+extern "C" float Xfi_func_0010A650__8DogActor(int) asm("func_0010A650__8DogActor");
+extern "C" int Xiii_func_0012349C(int, int) asm("func_0012349C");
 extern "C" int Xii_func_00103428(int) asm("func_00103428");
 extern "C" int Xii_func_0010344C(int) asm("func_0010344C");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -142,7 +151,19 @@ extern "C" void MagLifeBwnCtrlModeFindEnd__vfunc_01(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeFindEnd__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeMove__vfunc_01);
+extern "C" void MagLifeBwnCtrlModeMove__vfunc_01(int arg0, int arg1)
+{
+    int temp_v0;
+    int temp_v1;
+
+    M2C_FIELD(arg1, int *, 0x80) = 0;
+    if (Xiii_func_0012349C(M2C_FIELD(arg1, int *, 0x70), arg1 + 0x30) >= 0) {
+        temp_v1 = M2C_FIELD(arg1, int *, 0x70);
+        ((m2c_v14_70_iiii *)(temp_v1))->call(6, 0, 0);
+        M2C_FIELD(arg1, int *, 8) = 0;
+        M2C_FIELD(arg1, int *, 0xC) = 0;
+    }
+}
 
 extern "C" int MagLifeBwnCtrlModeMove__vfunc_02(int arg0, int arg1)
 {
@@ -190,7 +211,39 @@ extern "C" void MagLifeBwnCtrlModeRotEnd__vfunc_01(int arg0, int arg1)
 extern "C" void MagLifeBwnCtrlModeRotEnd__vfunc_02(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeDamage__vfunc_01);
+extern "C" void MagLifeBwnCtrlModeDamage__vfunc_01(int arg0, int arg1)
+{
+    int var_s1;
+    unsigned int temp_v1;
+    int temp_v0;
+    int temp_v1_2;
+    int temp_v1_3;
+
+    temp_v1 = M2C_FIELD(arg1, unsigned int *, 8);
+    var_s1 = 0;
+    switch (temp_v1) {
+    case 3:
+    case 4:
+        break;
+    case 0:
+        var_s1 = 0x6D;
+        break;
+    case 1:
+        var_s1 = 0x6E;
+        break;
+    case 2:
+        Xiiii_ror_assert((int) D_002EBE28, 0x7F6, (int) D_002EBE40);
+        break;
+    default:
+        Xiiii_ror_assert((int) D_002EBE28, 0x800, (int) D_002EBE40);
+        break;
+    }
+    temp_v1_2 = M2C_FIELD(arg1, int *, 0x70);
+    M2C_FIELD(temp_v1_2, int *, 4) = -1;
+    M2C_FIELD(temp_v1_2, int *, 0) = -1;
+    temp_v1_3 = M2C_FIELD(arg1, int *, 0x70);
+    ((m2c_v14_70_iiii *)(temp_v1_3))->call(1, var_s1, 1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeDamage__vfunc_02);
 
@@ -257,7 +310,31 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeHug__vfunc_
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeHug__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeWound__vfunc_01);
+extern "C" void MagLifeBwnCtrlModeWound__vfunc_01(int arg0, int arg1)
+{
+    int temp_s0;
+    int temp_v0_2;
+    int temp_v0;
+    int temp_v0_3;
+    int temp_v0_4;
+    int temp_v1;
+    int temp_v1_2;
+
+    temp_v1 = M2C_FIELD(arg1, int *, 0x70);
+    temp_v0_2 = ((m2c_v14_58_i *)(temp_v1))->call();
+    if (temp_v0_2 == 0) {
+        Xiiii_ror_assert((int) D_002EBE28, 0xB73, (int) "actor");
+    }
+    temp_s0 = Xiii_func_0010AA5C__8DogActorPCc(temp_v0_2, (int) (int) "dmgl_wait");
+    if (temp_s0 != Xii_getMainMotionNo__C14DogMotionBlend(temp_v0_2 + 0x1E4)) {
+        temp_v0_3 = M2C_FIELD(arg1, int *, 0x70);
+        M2C_FIELD(temp_v0_3, int *, 4) = -1;
+        M2C_FIELD(temp_v0_3, int *, 0) = -1;
+        temp_v1_2 = M2C_FIELD(arg1, int *, 0x70);
+        ((m2c_v14_70_iiii *)(temp_v1_2))->call(1, 0x82, 0);
+    }
+    M2C_FIELD(arg1, int *, 8) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeWound__vfunc_02);
 
@@ -334,7 +411,24 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A89C);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A974);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A9EC);
+extern "C" void func_0012A9EC(int arg0, int arg1)
+{
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+    int temp_v1;
+    int temp_v1_2;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x70);
+    if (temp_v1 != 0) {
+        if (((m2c_v14_58_i *)(temp_v1))->call() != 0) {
+            temp_v1_2 = M2C_FIELD(arg0, int *, 0x70);
+            temp_v0_3 = ((m2c_v14_58_i *)(temp_v1_2))->call();
+            M2C_FIELD(arg1, u_long128 *, 0) = (u_long128) M2C_FIELD(temp_v0_3, u_long128 *, 0x50);
+            M2C_FIELD(arg1, float *, 4) = Xfi_func_0010A650__8DogActor((int) temp_v0_3);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012AA70);
 

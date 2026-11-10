@@ -1,4 +1,7 @@
 #include "include_asm.h"
+struct m2c_v200_10_i { char pad[512]; virtual void v1(); virtual int call(); };
+struct m2c_v34_20_i { char pad[52]; virtual void v1(); virtual void v2(); virtual void v3(); virtual int call(); };
+struct m2c_v34_18_i { char pad[52]; virtual void v1(); virtual void v2(); virtual int call(); };
 extern "C" int Xii_func_00202F10(int) asm("func_00202F10");
 extern "C" int Xiiii_func_001680A0(int, int, int) asm("func_001680A0");
 extern "C" int Xiiii_func_00180EEC(int, int, int) asm("func_00180EEC");
@@ -37,7 +40,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsMain__vfunc_04);
 
 INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsMain__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsMain__vfunc_06);
+extern "C" void BdsMain__vfunc_06(int arg0)
+{
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+
+    if (M2C_FIELD(arg0, int *, 0x40) != 0) {
+        ((m2c_v34_20_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
+        ((m2c_v200_10_i *)(arg0))->call();
+    }
+    M2C_FIELD(arg0, int *, 0x24) = ((m2c_v34_18_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsMain__vfunc_02);
 
@@ -82,7 +96,13 @@ extern "C" void func_0014A814(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsOutStared__vfunc_02);
+extern "C" void BdsOutStared__vfunc_02(int arg0)
+{
+    int temp_v0;
+
+    M2C_FIELD(arg0, int *, 4) = 0;
+    ((m2c_v34_18_i *)(arg0))->call();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsOutStared__vfunc_03);
 

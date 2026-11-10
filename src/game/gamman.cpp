@@ -735,7 +735,21 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C7D04);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C7DA8);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C7DEC);
+extern "C" void func_001C7DEC(int arg0)
+{
+    int var_a0;
+    int var_v1;
+
+    var_v1 = M2C_FIELD(arg0, int *, 0x1F240);
+    var_a0 = 0x168;
+    do {
+        if (((unsigned int) (*(unsigned int *)(var_v1)) >> 0x1E) != 0) {
+            (*(unsigned int *)(var_v1)) = 0;
+        }
+        var_a0 -= 1;
+        var_v1 += 4;
+    } while (var_a0 >= 0);
+}
 
 extern "C" int func_001C7E28(int arg0, int arg1)
 {

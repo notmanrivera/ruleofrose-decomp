@@ -1,4 +1,17 @@
 #include "include_asm.h"
+struct m2c_v200_10_i { char pad[512]; virtual void v1(); virtual int call(); };
+struct m2c_v34_18_i { char pad[52]; virtual void v1(); virtual void v2(); virtual int call(); };
+struct m2c_v34_20_i { char pad[52]; virtual void v1(); virtual void v2(); virtual void v3(); virtual int call(); };
+struct m2c_v200_18_i { char pad[512]; virtual void v1(); virtual void v2(); virtual int call(); };
+extern "C" int Xii_func_001682B0(int) asm("func_001682B0");
+extern "C" int Xii_func_00168844(int) asm("func_00168844");
+extern "C" int Xii_func_00165794(int) asm("func_00165794");
+extern "C" int Xii_func_00165AA8(int) asm("func_00165AA8");
+extern "C" int Xii_func_00165D7C(int) asm("func_00165D7C");
+extern "C" int Xii_func_00166048(int) asm("func_00166048");
+extern "C" int Xii_func_00166108(int) asm("func_00166108");
+extern "C" int Xii_func_00166178(int) asm("func_00166178");
+extern "C" int Xiii_func_001696FC(int, int) asm("func_001696FC");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiii_func_00166DA4(int, int) asm("func_00166DA4");
 extern "C" int Xiiif_func_00166F50(int, int, float) asm("func_00166F50");
@@ -58,7 +71,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfMain__vfunc_04);
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfMain__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfMain__vfunc_06);
+extern "C" void DwfMain__vfunc_06(int arg0)
+{
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+
+    if (M2C_FIELD(arg0, int *, 0x40) != 0) {
+        ((m2c_v34_20_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
+        ((m2c_v200_10_i *)(arg0))->call();
+    }
+    M2C_FIELD(arg0, int *, 0x24) = ((m2c_v34_18_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfMain__vfunc_02);
 
@@ -68,7 +92,28 @@ extern "C" int func_0015CE74()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015CE88);
+extern "C" int func_0015CE88(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
+    int var_a0;
+
+    temp_v0 = Xiii_func_001696FC(M2C_FIELD(arg0, int *, 0x1C), 1);
+    if (temp_v0 == 0xB && M2C_FIELD(arg0, int *, 0x26C) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xC && M2C_FIELD(arg0, int *, 0x270) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xE) {
+        var_a0 = 0;
+        temp_v1 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC);
+        if (temp_v1 & 8) {
+            var_a0 = 1;
+            if (!(temp_v1 & 0x10)) {
+                var_a0 = 0;
+            }
+        }
+    } else var_a0 = 0;
+    if (var_a0) return 0;
+    return Xii_func_00165794((int) arg0);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/DwfMain", D_002F0DD8);
 
@@ -82,27 +127,157 @@ INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015CF30);
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D08C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D134);
+extern "C" int func_0015D134(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
+    int var_a0;
+
+    temp_v0 = Xiii_func_001696FC(M2C_FIELD(arg0, int *, 0x1C), 8);
+    if (temp_v0 == 0xB && M2C_FIELD(arg0, int *, 0x26C) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xC && M2C_FIELD(arg0, int *, 0x270) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xE) {
+        var_a0 = 0;
+        temp_v1 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC);
+        if (temp_v1 & 8) {
+            var_a0 = 1;
+            if (!(temp_v1 & 0x10)) {
+                var_a0 = 0;
+            }
+        }
+    } else var_a0 = 0;
+    if (var_a0) return 0;
+    return Xii_func_00165AA8((int) arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D1DC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D284);
+extern "C" int func_0015D284(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
+    int var_a0;
+
+    temp_v0 = Xiii_func_001696FC(M2C_FIELD(arg0, int *, 0x1C), 0xA);
+    if (temp_v0 == 0xB && M2C_FIELD(arg0, int *, 0x26C) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xC && M2C_FIELD(arg0, int *, 0x270) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xE) {
+        var_a0 = 0;
+        temp_v1 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC);
+        if (temp_v1 & 8) {
+            var_a0 = 1;
+            if (!(temp_v1 & 0x10)) {
+                var_a0 = 0;
+            }
+        }
+    } else var_a0 = 0;
+    if (var_a0) return 0;
+    return Xii_func_00165D7C((int) arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D32C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D3E0);
+extern "C" int func_0015D3E0(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
+    int var_a0;
+
+    temp_v0 = Xiii_func_001696FC(M2C_FIELD(arg0, int *, 0x1C), 0xC);
+    if (temp_v0 == 0xB && M2C_FIELD(arg0, int *, 0x26C) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xC && M2C_FIELD(arg0, int *, 0x270) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xE) {
+        var_a0 = 0;
+        temp_v1 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC);
+        if (temp_v1 & 8) {
+            var_a0 = 1;
+            if (!(temp_v1 & 0x10)) {
+                var_a0 = 0;
+            }
+        }
+    } else var_a0 = 0;
+    if (var_a0) return 0;
+    return Xii_func_00166048(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D488);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D530);
+extern "C" int func_0015D530(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
+    int var_a0;
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D5D8);
+    temp_v0 = Xiii_func_001696FC(M2C_FIELD(arg0, int *, 0x1C), 0xE);
+    if (temp_v0 == 0xB && M2C_FIELD(arg0, int *, 0x26C) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xC && M2C_FIELD(arg0, int *, 0x270) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xE) {
+        var_a0 = 0;
+        temp_v1 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC);
+        if (temp_v1 & 8) {
+            var_a0 = 1;
+            if (!(temp_v1 & 0x10)) {
+                var_a0 = 0;
+            }
+        }
+    } else var_a0 = 0;
+    if (var_a0) return 0;
+    return Xii_func_00166108(arg0);
+}
+
+extern "C" int func_0015D5D8(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
+    int var_a0;
+
+    temp_v0 = Xiii_func_001696FC(M2C_FIELD(arg0, int *, 0x1C), 0xF);
+    if (temp_v0 == 0xB && M2C_FIELD(arg0, int *, 0x26C) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xC && M2C_FIELD(arg0, int *, 0x270) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xE) {
+        var_a0 = 0;
+        temp_v1 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC);
+        if (temp_v1 & 8) {
+            var_a0 = 1;
+            if (!(temp_v1 & 0x10)) {
+                var_a0 = 0;
+            }
+        }
+    } else var_a0 = 0;
+    if (var_a0) return 0;
+    return Xii_func_00166178(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D680);
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D738);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D7F0);
+extern "C" int func_0015D7F0(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
+    int var_a0;
+    int var_v0;
+
+    temp_v0 = Xiii_func_001696FC(M2C_FIELD(arg0, int *, 0x1C), 0x12);
+    if (temp_v0 == 0xB && M2C_FIELD(arg0, int *, 0x26C) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xC && M2C_FIELD(arg0, int *, 0x270) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xE) {
+        var_a0 = 0;
+        temp_v1 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC);
+        if (temp_v1 & 8) {
+            var_a0 = 1;
+            if (!(temp_v1 & 0x10)) {
+                var_a0 = 0;
+            }
+        }
+    } else var_a0 = 0;
+    var_v0 = 0;
+    if (var_a0 == 0) {
+        var_v0 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC) & 1;
+    }
+    return var_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D890);
 
@@ -150,7 +325,19 @@ extern "C" void DwfOutAppear__vfunc_02(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfOutAppear__vfunc_03);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfOutWait__vfunc_02);
+extern "C" void DwfOutWait__vfunc_02(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0xC);
+    if (((m2c_v200_18_i *)(temp_v1))->call() == 2) {
+        Xii_func_00168844(arg0);
+    } else {
+        Xii_func_001682B0(arg0);
+    }
+    M2C_FIELD(arg0, int *, 4) = 0;
+}
 
 extern "C" int DwfOutWait__vfunc_03()
 {

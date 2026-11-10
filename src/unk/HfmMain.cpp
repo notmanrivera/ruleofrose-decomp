@@ -1,4 +1,7 @@
 #include "include_asm.h"
+struct m2c_v200_10_i { char pad[512]; virtual void v1(); virtual int call(); };
+struct m2c_v34_18_i { char pad[52]; virtual void v1(); virtual void v2(); virtual int call(); };
+struct m2c_v34_20_i { char pad[52]; virtual void v1(); virtual void v2(); virtual void v3(); virtual int call(); };
 extern "C" int Xii_func_001308BC(int) asm("func_001308BC");
 extern int _vt$18MagLifeWindowDebug;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -199,7 +202,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmMain__vfunc_04);
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmMain__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmMain__vfunc_06);
+extern "C" void HfmMain__vfunc_06(int arg0)
+{
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+
+    if (M2C_FIELD(arg0, int *, 0x40) != 0) {
+        ((m2c_v34_20_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
+        ((m2c_v200_10_i *)(arg0))->call();
+    }
+    M2C_FIELD(arg0, int *, 0x24) = ((m2c_v34_18_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmMain__vfunc_02);
 

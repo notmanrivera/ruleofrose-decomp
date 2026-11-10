@@ -1,5 +1,10 @@
 #include "ror.h"
 #include "include_asm.h"
+struct m2c_v14_80_iiii { char pad[20]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual int call(int, int, int); };
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiii_func_00125704(int, int) asm("func_00125704");
+extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
+extern const char D_002EB870[];
 extern "C" int Xi_func_00103F08() asm("func_00103F08");
 extern "C" int Xi_func_00103F38() asm("func_00103F38");
 #include "mag/maglifeman.h"
@@ -313,7 +318,21 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EB860);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EB870);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_001233F4);
+extern "C" int func_001233F4(int arg0, int arg1, int arg2, int arg3)
+{
+    int var_v0;
+    int temp_v0;
+
+    if (arg1 < 0) {
+        Xiiii_ror_assert((int) D_002EB870, 0x10E, (int) "theMode >= 0");
+    }
+    if ((M2C_FIELD(arg0, int *, 0) != arg1) || (var_v0 = 0, (arg1 == 0))) {
+        ((m2c_v14_80_iiii *)(arg0))->call(arg1, arg2, arg3);
+        Xiii_func_00125704(arg0, 0);
+        var_v0 = 1;
+    }
+    return var_v0;
+}
 
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_0012349C);
