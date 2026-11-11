@@ -3,6 +3,7 @@
 #include "game/gamman.h"
 #include "dog/dogentity.h"
 #include "dog/dogactor.h"
+extern "C" int func_0011C520(void *self);
 extern "C" void func_001C870C(void *theGamMan, int theA);
 extern "C" void func_00176CC8(void *theObj, void *theParam);
 struct PcEffParam { int m_kind; int m_unk04; int m_unk08; int m_unk0C; float m_pos[3]; float m_rot[3]; int m_num; int m_pad[21]; };
@@ -74,7 +75,24 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc2", D_002EA208);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011C64C);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011C974);
+extern "C" void func_0011C974(void *self, int theA, int theB, int theC)
+{
+    int type = 7;
+    DogVector pos;
+    char *actor = *(char **)((char *)self + 0x58);
+    pos.m_x = *(float *)(actor + 0x40);
+    pos.m_y = *(float *)(actor + 0x44);
+    pos.m_z = *(float *)(actor + 0x48);
+    if (theC == 0) {
+        int weapon = func_0011C520(self);
+        if (weapon < 0 || weapon == 0xA00) {
+            theB = 0;
+        }
+        type = func_0011CAF8(self, weapon);
+    }
+    int b = func_001FB5D4(theA, type);
+    func_001FAC60(0xB, D_007A3350 ? *(int *)(D_007A3350 + 0x100) : 0, b, &pos, type, theA, theB);
+}
 
 extern "C" void func_0011CA60(void *self, int theA)
 {
