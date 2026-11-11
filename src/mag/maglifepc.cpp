@@ -8,6 +8,11 @@ public:
 };
 #define I(p, off) (*(int *)((char *)(p) + (off)))
 #include "bed/bedpad.h"
+#include "dog/dogcamera.h"
+struct MagPCModeA { virtual void vfunc01(MagPC *thePC); };
+float vecYaw(const float *v);
+#define F(p, off) (*(float *)((char *)(p) + (off)))
+struct YawPoint { float x, y, z, w; };
 extern "C" void func_00119B34_c(MagPC *self) asm("func_00119B34");
 extern "C" unsigned int func_0011CE50(MagPC *self);
 extern const char D_002E9F28[];
@@ -467,7 +472,29 @@ extern "C" void func_0011B07C(MagPC *self)
 // most likely a constant of a function below that is still asm.
 __asm__(".section .rodata\n    .align 3\n    .word 0, 0\n.section .text");
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011B128);
+extern "C" float func_0011B128(MagPC *self)
+{
+    if (F(self, 0x114) > F(self, 0x20C)) {
+        YawPoint v;
+        v.x = F(self, 0x108);
+        v.y = 0.0f;
+        v.z = -F(self, 0x10C);
+        v.w = 1.0f;
+        float yaw = vecYaw(&v.x);
+        yaw += ((DogCamera *)(I(self, 0x20) + 0x2AB70))->getYaw();
+        float r;
+        if (yaw < -DOG_PI) {
+            r = yaw + DOG_PI2;
+        } else {
+            r = yaw;
+            if (r >= DOG_PI) {
+                r -= DOG_PI2;
+            }
+        }
+        F(self, 0x110) = r;
+    }
+    return F(self, 0x110);
+}
 
 // NON_MATCHING: close, not identical yet.
 #ifdef NON_MATCHING
@@ -626,7 +653,82 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011C1E8);
 #endif
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011C2AC);
+extern "C" void func_0011C2AC(MagPC *self, int theA)
+{
+    *(float *)((char *)self + 0x114) = 9999.0f;
+    I(self, 0x130) = 0;
+    switch (I(self, 0)) {
+    case 0:
+        I(self, 0x134) = (int)((char *)self + 0x138);
+        break;
+    case 1:
+        I(self, 0x134) = (int)((char *)self + 0x13C);
+        break;
+    case 2:
+        I(self, 0x134) = (int)((char *)self + 0x140);
+        break;
+    case 3:
+        I(self, 0x134) = (int)((char *)self + 0x144);
+        break;
+    case 4:
+        I(self, 0x134) = (int)((char *)self + 0x148);
+        break;
+    case 5:
+        I(self, 0x134) = (int)((char *)self + 0x150);
+        break;
+    case 6:
+        I(self, 0x134) = (int)((char *)self + 0x154);
+        break;
+    case 10:
+        I(self, 0x134) = (int)((char *)self + 0x158);
+        break;
+    case 14:
+        I(self, 0x134) = (int)((char *)self + 0x168);
+        break;
+    case 19:
+        I(self, 0x134) = (int)((char *)self + 0x174);
+        break;
+    case 15:
+        I(self, 0x134) = (int)((char *)self + 0x178);
+        break;
+    case 16:
+        I(self, 0x134) = (int)((char *)self + 0x17C);
+        break;
+    case 17:
+        I(self, 0x134) = (int)((char *)self + 0x180);
+        break;
+    case 8:
+        I(self, 0x134) = (int)((char *)self + 0x184);
+        break;
+    case 12:
+        I(self, 0x134) = (int)((char *)self + 0x18C);
+        break;
+    case 13:
+        I(self, 0x134) = (int)((char *)self + 0x190);
+        break;
+    case 9:
+        I(self, 0x134) = (int)((char *)self + 0x194);
+        break;
+    case 7:
+        I(self, 0x134) = (int)((char *)self + 0x1A0);
+        break;
+    case 20:
+        I(self, 0x134) = (int)((char *)self + 0x1A4);
+        break;
+    case 18:
+        I(self, 0x134) = (int)((char *)self + 0x1A8);
+        break;
+    default:
+        I(self, 0x134) = 0;
+        break;
+    }
+    if (theA != 0) {
+        MagPCModeA *mode = (MagPCModeA *)I(self, 0x134);
+        if (mode != 0) {
+            mode->vfunc01(self);
+        }
+    }
+}
 
 extern "C" void termWorld__9MagLifePC(MagPC *self)
 {
