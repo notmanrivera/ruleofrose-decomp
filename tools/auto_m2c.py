@@ -1388,6 +1388,7 @@ def settle(name, text, cand, strategy, sizes, sync):
                      "status": status, "detail": detail})
 
     result = text
+    redeclared, gone = set(), set()
     while cand:
         trial, spans, decls = assemble(text, name, cand)
         scratch.write_text(trial, encoding="utf8", newline="\n")
@@ -1402,9 +1403,19 @@ def settle(name, text, cand, strategy, sizes, sync):
                     if a <= ln <= b:
                         bad.setdefault(fn, msg)
                 if ln in decls:
+                    if "previous declaration" in msg or "conflicting types" in msg:
+                        # a header of the file declares it already, as something
+                        # else: our uses go through the address, so do without ours
+                        redeclared.add(decls[ln])
+                        continue
                     for fn, c in cand.items():
                         if decls[ln] in c.pre:
                             bad.setdefault(fn, "declaration: " + msg)
+            if not bad and redeclared - gone:
+                gone.update(redeclared)
+                for c in cand.values():
+                    c.pre -= redeclared
+                continue
             if not bad:
                 for fn in list(cand):
                     drop(fn, "compile", "unattributed: " + str(e).strip().split("\n")[-1][:120])
