@@ -1254,6 +1254,20 @@ def swapped(ctx, fn, hdr, body, mask=7):
     return Candidate(text, c.pre)
 
 
+TAIL_STORES = re.compile(r"^( +)(M2C_FIELD\(.*\) = [\w.+-]+;)\n\1(M2C_FIELD\(.*\) = [\w.+-]+;)\n(?=( *)(?:\}|return\b))", re.M)
+
+
+def swaptail(ctx, fn, hdr, body):
+    """typed, with the last two stores of each block the other way round
+    when they store constants or variables: like the stores of one value
+    (see swapped), these can come out of the compiler exchanged."""
+    c = typed(ctx, fn, hdr, body)
+    text = TAIL_STORES.sub(lambda m: f"{m.group(1)}{m.group(3)}\n{m.group(1)}{m.group(2)}\n", c.text)
+    if text == c.text:
+        raise Reject("nothing to swap")
+    return Candidate(text, c.pre)
+
+
 HOISTED = re.compile(r"^( +)(\w+) = (M2C_FIELD\(.+\));\n(\1if \(.*\) \{\n\1    )(.*)\n", re.M)
 
 
@@ -1305,6 +1319,7 @@ STRATEGIES = {
     "reversed": (lambda ctx, fn, hdr, body: redeclared(ctx, fn, hdr, body, "reverse"), EE_FLAGS, True),
     "varsfirst": (lambda ctx, fn, hdr, body: redeclared(ctx, fn, hdr, body, "vars"), EE_FLAGS, True),
     "inlined": (inlined, EE_FLAGS, True),
+    "swaptail": (swaptail, EE_FLAGS, True),
     "swapped": (swapped, EE_FLAGS, True),
     **{f"swapped{n}": (lambda ctx, fn, hdr, body, n=n: swapped(ctx, fn, hdr, body, n), EE_FLAGS, True)
        for n in range(1, 7)},
