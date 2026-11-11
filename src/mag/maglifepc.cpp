@@ -9,6 +9,18 @@ public:
 #define I(p, off) (*(int *)((char *)(p) + (off)))
 #include "bed/bedpad.h"
 #include "dog/dogcamera.h"
+struct MagPCModeB { virtual void vfunc01(MagPC *thePC); virtual void vfunc02(MagPC *thePC); };
+extern "C" void func_0011A738_c(MagPC *self, void *theTable) asm("func_0011A738");
+extern "C" void func_0012CB50(MagPC *self);
+extern "C" int func_0011E0AC(MagPC *self);
+extern "C" void func_00120668(MagPC *self);
+extern int D_002E9EF8;
+extern "C" void func_0012B4A0(void *theObj, int theA);
+extern "C" void func_0012B5F8(void *theObj, int theA);
+extern "C" void func_0012B65C(void *theObj, int theA);
+extern "C" void func_00102918(int theA, int theB, int theC);
+extern "C" void func_001029C4(int theA, int theB, int theC, int theD);
+extern const char D_002E9F40[];
 struct MagPCModeA { virtual void vfunc01(MagPC *thePC); };
 float vecYaw(const float *v);
 #define F(p, off) (*(float *)((char *)(p) + (off)))
@@ -134,7 +146,36 @@ extern "C" void func_0011AD6C(MagPC *self, void *thePad)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", live__9MagLifePC);
+extern "C" void live__9MagLifePC(MagPC *self)
+{
+    if (I(self, 0x58) != 0) {
+        char *scene = (char *)I(self, 0x20);
+        if (I(self, 0x54) == 3) {
+            F(scene, 0x22B0) = 0.1f;
+        } else if (F(scene, 0x22B0) > 1.0f) {
+            F(scene, 0x22B0) = 1.0f;
+        } else if (F(scene, 0x22B0) < 1.0f) {
+            F(scene, 0x22B0) += 0.05f;
+        }
+        I(self, 4)++;
+        func_0011A738_c(self, &D_002E9EF8);
+        if (I(self, 0) == 0xB) {
+            func_0012CB50(self);
+        } else {
+            MagPCModeB *mode = (MagPCModeB *)I(self, 0x134);
+            if (mode != 0) {
+                mode->vfunc02(self);
+            } else {
+                func_0011C1E8(self, I(self, 0), 0, 0);
+            }
+        }
+        I(self, 0x130)++;
+        if (func_0011E0AC(self) == 0) {
+            func_00120668(self);
+        }
+        I(self, 0xF8) = 0;
+    }
+}
 
 extern "C" int func_0011AF04(MagPC *self)
 {
@@ -157,7 +198,38 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011AF10);
 #endif
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011AF30);
+extern "C" void func_0011AF30(MagPC *self, int theType, int theFlag)
+{
+    switch (theType) {
+    case 15:
+        if (theFlag & 1) {
+            func_00102918(0x26, 0x27, 0x28);
+        }
+        if (theFlag & 2) {
+            func_0012B65C((char *)I(self, 0x20) + 0x2BD20, 0);
+        }
+        break;
+    case 16:
+        if (theFlag & 1) {
+            func_001029C4(0x25, 0x38, 0x23, 0x24);
+        }
+        if (theFlag & 2) {
+            func_0012B4A0((char *)I(self, 0x20) + 0x2BD20, 0);
+        }
+        break;
+    case 17:
+        if (theFlag & 1) {
+            func_00102918(0x29, 0x2A, 0x37);
+        }
+        if (theFlag & 2) {
+            func_0012B5F8((char *)I(self, 0x20) + 0x2BD20, 0);
+        }
+        break;
+    default:
+        ror_assert(D_002E9F28, 0x416, D_002E9F40);
+        break;
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc", D_002E9660);
 
