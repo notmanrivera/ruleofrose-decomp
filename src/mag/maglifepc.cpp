@@ -8,6 +8,15 @@ public:
 };
 #define I(p, off) (*(int *)((char *)(p) + (off)))
 #include "bed/bedpad.h"
+extern "C" void func_00119B34_c(MagPC *self) asm("func_00119B34");
+extern "C" unsigned int func_0011CE50(MagPC *self);
+extern const char D_002E9F28[];
+struct ItemVec { float x, y, z, w; ItemVec() { x = y = z = 0.0f; w = 1.0f; } };
+struct ItemData { ItemVec m_pos; int m_obj_id; int m_pad[3]; };
+extern "C" int func_0011C64C(MagPC *self, ItemData *theData, int theNum, float theRange);
+struct Pair64 { long a; long b; };
+struct PadBits { unsigned short b0 : 11; unsigned short b11 : 1; };
+static inline unsigned short padBit(void *p) { return ((PadBits *)((char *)p + 0x78))->b11; }
 class MagPCMode {
 public:
     virtual void vfunc01();
@@ -27,7 +36,13 @@ extern "C" void func_0011C1E8(MagPC *self, int theMode, int theA, int theForce);
 extern "C" void func_0011A130(MagPC *self);
 extern "C" void func_0011C2AC(MagPC *self, int theA);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011AB40);
+extern "C" void func_0011AB40(MagPC *self)
+{
+    func_0011A130(self);
+    *(Pair64 *)self = *(Pair64 *)((char *)self + 0x30);
+    *(u_long128 *)((char *)self + 0x30) = 0;
+    func_0011C2AC(self, 0);
+}
 
 // NON_MATCHING: close, not identical yet.
 #ifdef NON_MATCHING
@@ -78,7 +93,27 @@ extern "C" int func_0011AC24(MagPC *self, BedPad *thePad)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011ACF4);
+extern "C" int func_0011ACF4(MagPC *self, void *thePad)
+{
+    if (I(self, 0x54) == 2) {
+        return 0;
+    }
+    if (I(self, 0xE4) >= 3) {
+        return 0;
+    }
+    int k = I(self, 0);
+    if (k < 7 || (k >= 0xA && k <= 0xB)) {
+        if (k == 0xA) {
+            return -1;
+        }
+        int r = 0;
+        if (padBit(thePad)) {
+            r = I(self, 0x21C) + 1;
+        }
+        return r;
+    }
+    return 0;
+}
 
 extern "C" void func_0011AD6C(MagPC *self, void *thePad)
 {
@@ -419,7 +454,18 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc", D_002E9F28);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc", D_002E9F40);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011B07C);
+extern "C" void func_0011B07C(MagPC *self)
+{
+    ItemData itemdata[10];
+    if (func_0011C64C(self, itemdata, 10, 50.0f) > 0) {
+        if (!(itemdata[0].m_obj_id != 0)) ror_assert(D_002E9F28, 0x429, "itemdata[0].m_obj_id != 0");
+        func_0011C1E8(self, 0x13, itemdata[0].m_obj_id, 0);
+    }
+}
+
+// Eight zero bytes follow this function's string in the game, aligned to 8:
+// most likely a constant of a function below that is still asm.
+__asm__(".section .rodata\n    .align 3\n    .word 0, 0\n.section .text");
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011B128);
 
@@ -543,7 +589,22 @@ extern "C" int func_0011BE30(MagPC *self)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", reset4MapJump__9MagLifePC);
+extern "C" void reset4MapJump__9MagLifePC(MagPC *self)
+{
+    *(u_long128 *)((char *)self + 0x30) = 0;
+    func_00119B34_c(self);
+    func_0011C1E8(self, 0, 0, 0);
+    I(self, 0x188) = 0;
+    I(self, 0x198) = 0;
+    I(self, 0xE8) = 0;
+    I(self, 0xEC) = 0;
+    I(self, 0xF0) = 0;
+    unsigned int id = func_0011CE50(self);
+    if (id < 0x80) {
+        DogActor *actor = (DogActor *)(I(self, 0x20) + id * 0x4D0 + 0x2920);
+        actor->func_0010B1B0(actor->func_0010AA5C("wait2"), 1, 0.016666694f, -1, -1);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011BF0C);
 
