@@ -463,6 +463,68 @@ Things that changed codegen so far:
 - An empty function that `--new` writes for you is plain C++: when asm calls
   it, it needs `extern "C"` or the link fails (`msg/msgman`).
 
+### The fast loop
+
+```bash
+tools/.venv/bin/python tools/match.py --server start     # once per session
+tools/.venv/bin/python tools/work.py mag/maglifepc func_0011ACF4 --watch
+```
+
+`match.py --server start` keeps a container up, so a compile is a `docker
+exec` (about 1.5 s, against a minute on Windows, where every `docker run`
+copies the tree first). `--src` then takes a file from anywhere in the repo,
+so variants live under `build/`, never in `src/` (`configure.py` takes every
+`.cpp` there for a file of the game). `match.compare()` is the same check
+from Python, safe to call from several threads.
+
+`tools/work.py <file> <function>` writes `build/work/<file>/<function>.cpp`
+with m2c's draft as a comment and a first version under it, and prints the
+function's diff with the game; `--watch` does it again on every save,
+`--done` writes the function into `src/` once the object matches.
+
+`tools/auto_m2c.py` does the mechanical part for whole files (see its
+docstring): `--show <function>` prints its candidate for one function and
+the diff, a good starting point; `--report` says why each function it tried
+did not match.
+
+### What this compiler does
+
+Found while matching; each one cost a function at least once.
+
+- **Float constants are cut off, not rounded.** `0.1f` is `0x3DCCCCCC` in the
+  game (rounded it would end in `CD`), pi is `0x40490FDA`. Write the constant
+  the source most likely had (`0.1f`, `3.14159265f`); m2c prints the
+  shortest decimal that *rounds* to the bits, and that one can compile to
+  one less. `auto_m2c.py` writes a value a quarter of a step above instead.
+- **Consecutive stores can come out last to first.** `a = 1; b = 1;` at the
+  end of a block compiles to the store of `b` first, and so do some pairs of
+  different constants. The draft follows the code, so try the statements in
+  the other order (`build/climb.py`, local, searches these swaps).
+- **A load repeated at a branch's target is skipped only for an expression.**
+  `if (c) { p->m->f(); } x = p->m->g();` puts the load of `p->m` in the
+  branch's delay slot and jumps past the second copy. With `T *t = p->m;`
+  before the `if`, the same instructions come out but the branch lands one
+  earlier. m2c always writes the temporary.
+- **Virtual calls address the vtable entry first.** `addiu $v0, $v0, 0x20;
+  lh $a0, 0($v0); lw $v0, 4($v0); jalr $v0` is a call of the fourth virtual
+  function (8-byte entries: `this` adjustment, function; entry 0 is the
+  type). Reading the two halves with casts compiles to `lh 0x20` / `lw
+  0x24` instead: only a real virtual call on a class with its vtable pointer
+  at that offset gives the game's code.
+- **Struct assignment of a type aligned to 4 is `ldl/ldr/sdl/sdr`**, up to
+  four 8-byte pieces loaded before they are stored, then the last word.
+  Field by field it compiles to something else: assign the struct.
+- **`if (a || b) return X; return Y;`** gives a likely branch (`bnel`) where
+  the same logic as nested ifs gives a plain one.
+- **Flags decided by a chain** (`if (k == A && !p) f = 1; else if (k == B &&
+  !q) f = 1; else f = 0;`) only match in that shape, with `if (f) return 0;`
+  after it; the enemies (`unk/*Main`) are full of them.
+- **Arguments are evaluated in the order of the prototype.** With ints and
+  floats mixed, a wrong order in the declaration moves the `mov.s` among
+  the `daddu`s. A mangled name gives the real order.
+- **Declaration order of locals does not choose registers** (tried on 813
+  functions): look at how the values are used instead.
+
 ## 4. Name it
 
 Functions in the binary are referenced by other (asm) files, so the C++ name
