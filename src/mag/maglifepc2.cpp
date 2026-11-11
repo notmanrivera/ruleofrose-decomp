@@ -2,6 +2,16 @@
 #include "include_asm.h"
 #include "game/gamman.h"
 #include "dog/dogentity.h"
+extern "C" int func_001FB5D4(int theA, int theB);
+extern "C" void func_001FAC60(int theKind, int theOwner, int theB, DogVector *thePos, int theC, int theD, int theE);
+extern char *D_007A3350;
+extern const char D_002EA208[];
+extern "C" void func_001DC48C(void *theObj, int theId, int theA, int *theOut);
+// The object at +0x22220 of the game manager. Through a pointer, as an inline
+// method of GamMan would reach it: the game adds the offset at run time,
+// where `(char *)&D_007812C0 + 0x22220` folds into the symbol's address.
+static inline void *gamSub22220() { GamMan *g = &D_007812C0; return (char *)g + 0x22220; }
+extern "C" int func_0011CAF8(void *self, int theA);
 extern char D_007B2140;
 extern unsigned short D_007A34CC;
 extern short D_007A32CC;
@@ -62,11 +72,51 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011C64C);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011C974);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011CA60);
+extern "C" void func_0011CA60(void *self, int theA)
+{
+    DogVector pos;
+    char *actor = *(char **)((char *)self + 0x58);
+    pos.m_x = *(float *)(actor + 0x40);
+    pos.m_y = *(float *)(actor + 0x44);
+    pos.m_z = *(float *)(actor + 0x48);
+    int b = func_001FB5D4(theA, 2);
+    func_001FAC60(0xB, D_007A3350 ? *(int *)(D_007A3350 + 0x100) : 0, b, &pos, 2, theA, 0);
+}
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011CAF8);
+extern "C" int func_0011CAF8(void *self, int theId)
+{
+    if (theId <= 0) {
+        return 2;
+    }
+    int attack_type = 0;
+    func_001DC48C(gamSub22220(), theId & 0xFFFF, 0x27, &attack_type);
+    if (!(attack_type >= 0 && attack_type < 0x10000)) ror_assert(D_002EA208, 0x14E, "attack_type >= 0 && attack_type < 0x10000");
+    return attack_type;
+}
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011CB70);
+extern "C" int func_0011CB70(void *self, int theA)
+{
+    int no = *(int *)((char *)self + 0x1AC);
+    if (no >= 0) {
+        return no;
+    }
+    int r;
+    switch (func_0011CAF8(self, theA)) {
+    case 5:
+        r = 3;
+        break;
+    case 4:
+        r = 2;
+        break;
+    case 6:
+        r = 1;
+        break;
+    default:
+        r = 0;
+        break;
+    }
+    return r;
+}
 
 extern "C" void func_0011CBD0()
 {
