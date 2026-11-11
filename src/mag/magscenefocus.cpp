@@ -48,7 +48,18 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140D40);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140D94);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140E60);
+extern "C" float func_00140E60(int arg0, int arg1, int arg2, float fparg0, float fparg1)
+{
+    if (arg2 == 0) {
+        M2C_FIELD(arg1, int *, 0xC) = 0;
+        return fparg1;
+    }
+    M2C_FIELD(arg1, int *, 0xC) = arg2;
+    M2C_FIELD(arg1, float *, 4) = fparg1;
+    M2C_FIELD(arg1, int *, 8) = 0;
+    M2C_FIELD(arg1, float *, 0) = fparg0;
+    return fparg0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140E88);
 

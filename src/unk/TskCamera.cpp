@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xii_func_001FCBF8(int) asm("func_001FCBF8");
 extern "C" int Xiiii_func_001F98C0(int, int, int) asm("func_001F98C0");
 extern int _vt$9TskAttack;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -307,7 +308,13 @@ extern "C" int func_001FC474()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FC47C);
+extern "C" void func_001FC47C(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0x400) = 0;
+    M2C_FIELD(arg0, int *, 0x50C) = 0;
+    M2C_FIELD(arg0, int *, 0x504) = 0;
+    M2C_FIELD(arg0, int *, 0x508) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FC490);
 
@@ -368,9 +375,22 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FC89C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FC9E8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FCA70);
+extern "C" void func_001FCA70(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0) = 0;
+    M2C_FIELD(arg0, int *, 0xC) = 0;
+    M2C_FIELD(arg0, int *, 8) = 0;
+    M2C_FIELD(arg0, int *, 4) = 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FCA84);
+extern "C" int func_001FCA84(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0) = arg1;
+    M2C_FIELD(arg0, int *, 0xC) = 0;
+    M2C_FIELD(arg0, int *, 8) = 0;
+    M2C_FIELD(arg0, int *, 4) = 0;
+    return Xii_func_001FCBF8(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FCAAC);
 

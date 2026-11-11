@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0018330C(int) asm("func_0018330C");
+extern "C" int Xii_func_0018BB8C(int) asm("func_0018BB8C");
+extern "C" int Xii_func_001A066C(int) asm("func_001A066C");
+extern "C" int Xii_func_001AEB7C(int) asm("func_001AEB7C");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xii_func_001A97F4(int) asm("func_001A97F4");
 extern "C" int Xiii_func_0018BCC0(int, int) asm("func_0018BCC0");
@@ -504,7 +508,23 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A97F4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A9828);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A9844);
+extern "C" int func_001A9844(int arg0)
+{
+    int var_v0;
+    int var_v1;
+
+    var_v1 = 8;
+    var_v0 = arg0 + 0x4D90;
+    do {
+        var_v1 -= 1;
+        (*(int *)(var_v0)) = 0;
+        var_v0 -= 4;
+    } while (var_v1 >= 0);
+    M2C_FIELD(arg0, int *, 0x4D98) = 5;
+    M2C_FIELD(arg0, int *, 0x4D94) = 3;
+    M2C_FIELD(arg0, int *, 0x4D9C) = 2;
+    return 0;
+}
 
 extern "C" void func_001A988C(int arg0)
 {
@@ -1514,7 +1534,33 @@ extern "C" int func_001AE848(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE868);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE954);
+extern "C" void func_001AE954(int arg0)
+{
+    int var_s2;
+    int temp_a0;
+    int var_s1;
+
+    var_s2 = 1;
+    Xii_func_0018BB8C(arg0 + 0x98);
+    var_s1 = arg0 + 0x1C68;
+    Xii_func_0018BB8C(arg0 + 0x984);
+    Xii_func_0018BB8C(arg0 + 0x1270);
+    Xii_func_001A066C(arg0 + 0x1B64);
+    do {
+        temp_a0 = var_s1;
+        var_s1 += 0x3BC;
+        Xii_func_0018330C(temp_a0);
+        var_s2 -= 1;
+    } while (var_s2 != -1);
+    M2C_FIELD(arg0, int *, 0) = 0;
+    Xii_func_001AEB7C(arg0);
+    M2C_FIELD(arg0, int *, 0x2480) = 0;
+    M2C_FIELD(arg0, int *, 0x242C) = 0xA00;
+    M2C_FIELD(arg0, int *, 0x2430) = 0xA23;
+    M2C_FIELD(arg0, int *, 0x2490) = 0;
+    M2C_FIELD(arg0, int *, 0x249C) = 0;
+    M2C_FIELD(arg0, int *, 0x24A0) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE9F4);
 

@@ -148,7 +148,13 @@ block_4:
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_0016621C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166364);
+extern "C" void func_00166364(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x1C8) = arg1;
+    M2C_FIELD(arg0, int *, 0x1D4) = 0;
+    M2C_FIELD(arg0, short *, 0x1D0) = 0;
+    M2C_FIELD(arg0, int *, 0x1CC) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166378);
 

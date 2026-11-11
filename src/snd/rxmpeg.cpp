@@ -1,4 +1,7 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiii_func_001814CC(int, int) asm("func_001814CC");
+extern "C" int Xiii_func_0018156C(int, int) asm("func_0018156C");
 extern int D_006E9204;
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_DIntr(...) asm("DIntr");
@@ -233,11 +236,21 @@ extern "C" int func_001814A4()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_001814AC);
+extern "C" int func_001814AC(int arg0, int arg1, int arg2, int arg3)
+{
+    M2C_FIELD(arg0, int *, 0x2C) = arg2;
+    M2C_FIELD(arg0, int *, 0x30) = arg3;
+    return Xiii_func_001814CC(arg0, arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_001814CC);
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_0018154C);
+extern "C" int func_0018154C(int arg0, int arg1, int arg2, int arg3)
+{
+    M2C_FIELD(arg0, int *, 0x2C) = arg2;
+    M2C_FIELD(arg0, int *, 0x30) = arg3;
+    return Xiii_func_0018156C(arg0, arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_0018156C);
 

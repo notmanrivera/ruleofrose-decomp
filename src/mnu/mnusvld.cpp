@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xii_func_001A6BF8(int) asm("func_001A6BF8");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiii_func_0018C190(int, int) asm("func_0018C190");
 extern "C" int Xiiii_func_0018C4D8(int, int, int) asm("func_0018C4D8");
@@ -182,7 +183,27 @@ INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A5DA0);
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A5ED0);
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A65F0);
+extern "C" int func_001A65F0(int arg0)
+{
+    int var_a0;
+    int var_v1;
+    int temp_v0;
+
+    var_a0 = 0x1400;
+    var_v1 = 8;
+    do {
+        temp_v0 = arg0 + var_a0;
+        var_a0 += 4;
+        var_v1 -= 1;
+        M2C_FIELD(temp_v0, int *, 4) = 0;
+    } while (var_v1 >= 0);
+    Xii_func_001A6BF8(arg0);
+    M2C_FIELD(arg0, int *, 0x142C) = 0xC;
+    M2C_FIELD(arg0, int *, 0x1430) = 5;
+    M2C_FIELD(arg0, int *, 0x1448) = 0x24;
+    M2C_FIELD(arg0, int *, 0x24F0) = 0;
+    return 0;
+}
 
 extern "C" void func_001A665C(int arg0)
 {

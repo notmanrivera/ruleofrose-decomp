@@ -232,7 +232,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_0019586C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00195958);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001959EC);
+extern "C" void func_001959EC(int arg0, int arg1)
+{
+    float var_f0;
+    float var_f1;
+
+    if (!(M2C_FIELD(arg0, int *, 4) & 0x10000)) {
+        var_f1 = 768.0f;
+        var_f0 = 512.0f;
+    } else {
+        var_f1 = 384.0f;
+        var_f0 = 256.0f;
+    }
+    M2C_FIELD(arg1, float *, 4) = var_f0;
+    M2C_FIELD(arg1, float *, 0) = var_f1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00195A34);
 
@@ -240,7 +254,20 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00195B78);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuMap__vfunc_06);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196760);
+extern "C" int func_00196760(int arg0)
+{
+    int var_a2;
+    int temp_a0;
+    int temp_a1;
+
+    temp_a0 = M2C_FIELD(arg0, int *, 0x8C8);
+    temp_a1 = M2C_FIELD(arg0, int *, 0x110);
+    var_a2 = 0;
+    if (M2C_FIELD(temp_a0, int *, 0) == M2C_FIELD(temp_a1, int *, 0)) {
+        var_a2 = M2C_FIELD(temp_a0, int *, 4) == M2C_FIELD(temp_a1, int *, 4);
+    }
+    return var_a2;
+}
 
 extern "C" float func_00196790(int arg0)
 {

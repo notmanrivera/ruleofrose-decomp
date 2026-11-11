@@ -155,7 +155,19 @@ extern "C" int func_001A171C(int arg0, int arg1, int arg2)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A177C);
+extern "C" void func_001A177C(int arg0, int arg1)
+{
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x13AC);
+    if (arg1 == M2C_FIELD(arg0, int *, 0x13B0)) {
+        M2C_FIELD(arg0, int *, 0x13AC) = (int) (temp_v1 & ~0x10);
+        return;
+    }
+    M2C_FIELD(arg0, int *, 0x13B0) = arg1;
+    M2C_FIELD(arg0, int *, 0x13B4) = 0xA;
+    M2C_FIELD(arg0, int *, 0x13AC) = (int) (temp_v1 | 0x14);
+}
 
 extern "C" void func_001A17B0(int arg0, int arg1)
 {
@@ -189,7 +201,21 @@ extern "C" int func_001A1B54(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1B8C);
+extern "C" void func_001A1B8C(int arg0, int arg1, int arg2, int arg3, int arg4)
+{
+    if (arg1 == 0) {
+        M2C_FIELD(arg0, signed char *, 0x1310) = 0;
+    } else {
+        Xiii_strcpy(arg0 + 0x1310, (int) arg1);
+    }
+    if (arg2 == 0) {
+        M2C_FIELD(arg0, signed char *, 0x1350) = 0;
+    } else {
+        Xiii_strcpy(arg0 + 0x1350, arg2);
+    }
+    M2C_FIELD(arg0, int *, 0x1308) = arg3;
+    M2C_FIELD(arg0, int *, 0x130C) = arg4;
+}
 
 extern "C" void func_001A1C08(int arg0, int arg1, int arg2, int arg3)
 {

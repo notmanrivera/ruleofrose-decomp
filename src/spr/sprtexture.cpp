@@ -155,7 +155,13 @@ INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190F6C);
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", S2dBg__vfunc_01);
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00191054);
+extern "C" int func_00191054(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0x30) = 0;
+    M2C_FIELD(arg0, int *, 0x34) = 0;
+    M2C_FIELD(arg0, int *, 0x93C) = 0;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00191068);
 

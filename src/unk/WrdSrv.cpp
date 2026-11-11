@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xiii_free__9BedMemoryPv(int, int) asm("free__9BedMemoryPv");
+extern int D_006E9800;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiii_func_0017EA44(int, int) asm("func_0017EA44");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
@@ -13,7 +15,22 @@ extern int D_00298EE0;
 
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017C60C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017C754);
+extern "C" void func_0017C754(int arg0)
+{
+    int temp_v0;
+
+    if (M2C_FIELD(arg0, int *, 0) & 2) {
+        temp_v0 = M2C_FIELD(arg0, int *, 4);
+        if (temp_v0 != 0) {
+            Xiii_free__9BedMemoryPv((int) (int)&D_006E9800, temp_v0);
+        }
+    }
+    M2C_FIELD(arg0, int *, 4) = 0;
+    M2C_FIELD(arg0, int *, 8) = 0;
+    M2C_FIELD(arg0, int *, 0xC) = 0;
+    M2C_FIELD(arg0, int *, 0x10) = 0;
+    M2C_FIELD(arg0, int *, 0) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017C7B0);
 
@@ -134,7 +151,27 @@ INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017E5C0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017E798);
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017E9D0);
+extern "C" void func_0017E9D0(int arg0)
+{
+    int temp_a1;
+    int temp_v0;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x10);
+    if (temp_v0 != 0) {
+        Xiii_free__9BedMemoryPv((int) (int)&D_006E9800, temp_v0);
+        M2C_FIELD(arg0, int *, 0x10) = 0;
+    }
+    if (M2C_FIELD(arg0, int *, 0) & 2) {
+        temp_a1 = M2C_FIELD(arg0, int *, 4);
+        if (temp_a1 != 0) {
+            Xiii_free__9BedMemoryPv((int) (int)&D_006E9800, temp_a1);
+        }
+    }
+    M2C_FIELD(arg0, int *, 4) = 0;
+    M2C_FIELD(arg0, int *, 0xC) = 0;
+    M2C_FIELD(arg0, int *, 8) = 0;
+    M2C_FIELD(arg0, int *, 0) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017EA44);
 

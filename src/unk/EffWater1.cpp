@@ -1,4 +1,8 @@
 #include "include_asm.h"
+struct m2c_block12 { int w[3]; };
+struct m2c_ulong { long v; } __attribute__((packed));
+#define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
+extern "C" int Xiii_Eff0__vfunc_02(int, int) asm("Eff0__vfunc_02");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xii_func_0016A914(int) asm("func_0016A914");
 extern int _vt$9EffWater1;
@@ -50,7 +54,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam2__vfunc_02);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam2__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam2Prim__vfunc_02);
+extern "C" int EffSteam2Prim__vfunc_02(int arg0, int arg1)
+{
+    int var_v0;
+
+    var_v0 = Xiii_Eff0__vfunc_02(arg0, arg1);
+    if (var_v0 != 0) {
+        *(m2c_block12 *)((char *)(arg0) + 48) = *(m2c_block12 *)((char *)(arg1) + 16);
+        var_v0 = 1;
+        M2C_FIELD(arg0, float *, 0x3C) = 1.0f;
+        M2C_FIELD(arg0, float *, 0x44) = (float) M2C_FIELD(arg1, float *, 0x20);
+        M2C_FIELD(arg0, float *, 0x40) = (float) M2C_FIELD(arg1, float *, 0x1C);
+        M2C_FIELD(arg0, signed char *, 0x48) = 0;
+    }
+    return var_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam2Prim__vfunc_05);
 

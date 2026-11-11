@@ -64,7 +64,14 @@ INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F308);
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F3B8);
 
-INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F514);
+extern "C" void func_0017F514(int arg0, int arg1)
+{
+    M2C_FIELD(arg1, int *, 0) = -1;
+    M2C_FIELD(arg1, int *, 4) = -1;
+    M2C_FIELD(arg1, int *, 8) = -1;
+    M2C_FIELD(arg1, int *, 0xC) = -1;
+    M2C_FIELD(arg1, int *, 0x10) = -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F530);
 

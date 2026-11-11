@@ -63,7 +63,18 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeWait__vfunc
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeWait__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeFollow__vfunc_01);
+extern "C" void MagLifeBwnCtrlModeFollow__vfunc_01(int arg0, int arg1)
+{
+    int temp_v0;
+
+    temp_v0 = M2C_FIELD(arg1, int *, 0x70);
+    if (temp_v0 != 0) {
+        M2C_FIELD(temp_v0, int *, 0xCC4) = 0;
+        M2C_FIELD(arg1, int *, 0x60) = 0;
+        M2C_FIELD(arg1, int *, 8) = 0;
+        M2C_FIELD(arg0, int *, 4) = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeFollow__vfunc_02);
 

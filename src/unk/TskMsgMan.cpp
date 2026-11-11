@@ -453,7 +453,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EFEB8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0288);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0358);
+extern "C" void func_001F0358(int arg0, int arg1, int arg2, int arg3)
+{
+    float temp_f1;
+
+    temp_f1 = (float) arg3;
+    M2C_FIELD(arg0, float *, 0x30) = (float) (-M2C_FIELD(arg2, float *, 0) / temp_f1);
+    M2C_FIELD(arg0, int *, 0x34) = 0;
+    M2C_FIELD(arg0, float *, 0x38) = (float) (-M2C_FIELD(arg2, float *, 8) / temp_f1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskAvoidMove__vfunc_04);
 

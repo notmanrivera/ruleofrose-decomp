@@ -93,7 +93,16 @@ extern "C" void func_0021006C(int arg0, int arg1, int arg2)
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002100A0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002100C8);
+extern "C" void func_002100C8(int arg0, int arg1)
+{
+    int temp_v0;
+    int temp_v1;
+
+    temp_v0 = ((int *)&D_007B4700)[arg0];
+    temp_v1 = ((int *)&D_007B4700)[arg1];
+    (*(int *)&D_007B47A0) = temp_v0 / temp_v1;
+    (*(int *)&D_007B4790) = temp_v0 % temp_v1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210110);
 

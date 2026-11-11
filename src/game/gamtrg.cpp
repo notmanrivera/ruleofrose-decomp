@@ -80,7 +80,12 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D87F4);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", _$_7ObjStat);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D88FC);
+extern "C" void func_001D88FC(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0x114) = 0;
+    M2C_FIELD(arg0, int *, 0x110) = 0;
+    M2C_FIELD(arg0, int *, 0x10C) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D890C);
 
@@ -262,7 +267,25 @@ extern "C" void func_001DA06C(void) {
 extern "C" void func_001DA074(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DA07C);
+extern "C" void func_001DA07C(int arg0)
+{
+    if (Xiii_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x3DC)) != 0) {
+        Xiii_func_001E7724((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x3DC));
+    }
+    if (Xiii_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x3D4)) != 0) {
+        Xiii_func_001E7724((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x3D4));
+    }
+    if (Xiii_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x3E0)) != 0) {
+        Xiii_func_001E7724((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x3E0));
+    }
+    if (Xiii_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x3D8)) != 0) {
+        Xiii_func_001E7724((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x3D8));
+    }
+    M2C_FIELD(arg0, int *, 0x3DC) = -1;
+    M2C_FIELD(arg0, int *, 0x3D4) = -1;
+    M2C_FIELD(arg0, int *, 0x3E0) = -1;
+    M2C_FIELD(arg0, int *, 0x3D8) = -1;
+}
 
 extern "C" void func_001DA130(int arg0, int arg1, int arg2)
 {

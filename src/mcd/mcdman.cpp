@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xii_heapFree__FPv(int) asm("heapFree__FPv");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00185268(...) asm("func_00185268");
@@ -187,7 +188,20 @@ extern "C" void func_001879C4()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_001879E0);
+extern "C" int func_001879E0(int arg0)
+{
+    int temp_v0;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x6E0);
+    if (temp_v0 != 0) {
+        Xii_heapFree__FPv(temp_v0);
+        M2C_FIELD(arg0, int *, 0x6E0) = 0;
+        M2C_FIELD(arg0, int *, 0x6E4) = 0;
+        M2C_FIELD(arg0, int *, 0x6DC) = 0;
+        M2C_FIELD(arg0, int *, 0x6D8) = 0;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00187A28);
 

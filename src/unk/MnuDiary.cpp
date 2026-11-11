@@ -1,4 +1,9 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int X_func_00279C98(...) asm("func_00279C98");
+extern "C" int Xii_func_00194588(int) asm("func_00194588");
+extern "C" int Xiii_func_0019A290(int, int) asm("func_0019A290");
+extern "C" int Xiiiii_func_0019397C(int, int, int, int) asm("func_0019397C");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00131550(...) asm("func_00131550");
 extern "C" int X_func_001348B0(...) asm("func_001348B0");
@@ -74,7 +79,40 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", MnuDiary__vfunc_03);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00198B04);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00198B54);
+extern "C" void func_00198B54(int arg0)
+{
+    struct { char pad0[32]; } stack;
+    int temp_v0;
+    int var_v1;
+    int temp_s0;
+    int var_a0;
+
+    temp_v0 = Xii_func_00194588(0xA0);
+    M2C_FIELD(arg0, int *, 0x128) = temp_v0;
+    var_v1 = temp_v0;
+    var_a0 = 4;
+    do {
+        var_a0 -= 1;
+        M2C_FIELD(var_v1, int *, 0) = 0;
+        M2C_FIELD(var_v1, int *, 8) = -1;
+        M2C_FIELD(var_v1, int *, 4) = -1;
+        M2C_FIELD(var_v1, int *, 0xC) = -1;
+        M2C_FIELD(var_v1, int *, 0x10) = 0;
+        var_v1 += 0x20;
+    } while (var_a0 >= 0);
+    Xiiiii_func_0019397C(arg0, (int) (int) "a_diary", 4, 2);
+    X_func_00279C98((int)&stack, (int) "%s_base.i3s", M2C_FIELD(arg0, int *, 0x110) + 0xC);
+    Xiiiii_func_0019397C(arg0, (int) (int)&stack, 1, 5);
+    temp_s0 = (int) (M2C_FIELD(arg0, int *, 0x124) + 1) / 2;
+    Xiii_func_0019A290(arg0, temp_s0 - 1);
+    Xiii_func_0019A290(arg0, temp_s0);
+    X_func_00279C98((int)&stack, (int) "%s01_base.i3s", M2C_FIELD(arg0, int *, 0x110) + 0xC);
+    Xiiiii_func_0019397C(arg0, (int) (int)&stack, 1, 0);
+    X_func_00279C98((int)&stack, (int) "%s01_turn_r.i3s", M2C_FIELD(arg0, int *, 0x110) + 0xC);
+    Xiiiii_func_0019397C(arg0, (int) (int)&stack, 2, 0);
+    X_func_00279C98((int)&stack, (int) "%s01_turn_l.i3s", M2C_FIELD(arg0, int *, 0x110) + 0xC);
+    Xiiiii_func_0019397C(arg0, (int) (int)&stack, 2, 1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00198CA8);
 
