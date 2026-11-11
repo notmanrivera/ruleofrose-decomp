@@ -1,8 +1,8 @@
 // Layout of MagLifePC and its modes, deduced from asm/mag/maglifepc.s by
 // Gemini 4 Argon (2026-11-11) and checked here: with ee-gcc 2.96 every field
 // below lands on the offset in its comment and sizeof(MagLifePC) is 0x220.
-// Not included by maglifepc.cpp yet: that file still uses its own stand-ins
-// (MagPC, MagPCMode, the I() and F() macros); move functions over one by one.
+// maglifepc.cpp includes it; its functions still reach most fields through
+// the I() and F() macros: move them to the member names one by one.
 // Names marked "Proposed" are guesses from use; "DOUBTFUL" ones are unverified.
 #ifndef MAG_MAGLIFEPC_H
 #define MAG_MAGLIFEPC_H

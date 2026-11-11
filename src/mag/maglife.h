@@ -11,6 +11,7 @@
 
 #include "ror.h"
 #include "dog/dogactor.h"
+#include "mag/maglifeman.h"
 
 class MagScene;
 
@@ -29,12 +30,13 @@ struct MagLifeMotionState {
     int m_sound;                    // +0x14
 };
 
-// The vptr is at +0x14 because this compiler puts it after the data (the
-// same layout as MagLife0/MagLife in maglifeman.h).
-struct MagLifeControlChara {
-    int m_unk00[4];                 // +0x00
-    int m_unk10;                    // +0x10
-    void *m_vptr;                   // +0x14
+// A MagLife (maglifeman.h): the first 0x18 bytes, with the vptr at +0x14, are
+// the base's (other MagLife classes, such as MagLifeWindow, put their own
+// fields at +0x18). Virtual slots 1 to 8 are MagLife's; this class adds vfunc09 and
+// the ones after it, of which only number 16 is known so far (the pad
+// handler MagLifePC overrides). The hierarchy and the offsets were worked out
+// from the asm with Gemini 4 Argon and checked against the compiler.
+struct MagLifeControlChara : public MagLife {
     int m_unk18;                    // +0x18
     int m_unk1C;                    // +0x1C
     MagScene *m_scene;              // +0x20
@@ -66,7 +68,16 @@ struct MagLifeControlChara {
     void func_00119F88(DogVector *theOut) asm("func_00119F88");
     DogVector *func_00119FA4() asm("func_00119FA4");
     float func_00119FB0() asm("func_00119FB0");
-    void vfunc09(int theA, int theB) asm("MagLifeControlChara__vfunc_09");
+    virtual void vfunc09(int theA, int theB) asm("MagLifeControlChara__vfunc_09");
+    // Slots 10 to 15 are not identified yet (message, setActor, reset4MapJump
+    // and termWorld of MagLifePC are among them); 16 is the pad handler.
+    virtual void vfunc10();
+    virtual void vfunc11();
+    virtual void vfunc12();
+    virtual void vfunc13();
+    virtual void vfunc14();
+    virtual void vfunc15();
+    virtual void vfunc16(void *thePad);
     void func_0011A010(int theState) asm("func_0011A010");
     int func_0011A028() asm("func_0011A028");
     void func_0011A030() asm("func_0011A030");
@@ -91,7 +102,11 @@ struct MagLifeControlChara {
 struct MagLifeBillboard : MagLifeControlChara {
     float m_distance;               // +0x80
 
-    void live() asm("live__16MagLifeBillboard");
+    // The override of MagLife0::live. Under another name while the class's
+    // vtable is still asm: as `live` it would be the class's first virtual
+    // defined out of line, and the compiler would emit the vtable and the
+    // type name with it.
+    void liveBillboard() asm("live__16MagLifeBillboard");
 };
 
 #endif

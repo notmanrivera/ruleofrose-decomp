@@ -173,13 +173,13 @@ extern "C" float func_00119FB0(MagLifeControlChara *self)
 
 extern "C" void MagLifeControlChara__vfunc_09(MagLifeControlChara *self, int theA, int theB)
 {
-    if (self->m_unk00[0]) {
-        *(long long *)&self->m_last0 = *(long long *)&self->m_unk00[0];
-        *(long long *)&self->m_last2 = *(long long *)&self->m_unk00[2];
+    if (self->m_unk00) {
+        *(long long *)&self->m_last0 = *(long long *)&self->m_unk00;
+        *(long long *)&self->m_last2 = *(long long *)&self->m_unk08;
     }
-    self->m_unk00[2] = theB;
-    self->m_unk00[0] = theA;
-    self->m_unk00[1] = -1;
+    self->m_unk08 = theB;
+    self->m_unk00 = theA;
+    self->m_unk04 = -1;
 }
 
 extern "C" void func_0011A010(MagLifeControlChara *self, int theState)
@@ -616,7 +616,7 @@ void MagLifeControlChara::func_0011A738(int *theSounds)
             return;
     }
     ASSERT(sndid < 12);
-    int sound = theSounds[sndid] + ((m_unk00[1] / 13) & 1);
+    int sound = theSounds[sndid] + ((m_unk04 / 13) & 1);
     if (sound < 0)
         return;
     func_0011A704(sound);
@@ -626,11 +626,11 @@ void MagLifeControlChara::func_0011A888()
 {
     volatile u_long128 *state = (volatile u_long128 *)&m_state;
     m_unk10 = 1;
-    *(u_long128 *)&m_unk00[0] = 0;
-    m_vptr = vtbl_MagLifeControlChara;
+    *(u_long128 *)&m_unk00 = 0;
+    *(void **)((char *)this + 0x14) = vtbl_MagLifeControlChara;
     *(u_long128 *)&m_last0 = 0;
-    m_unk00[1] = -1;
-    m_unk00[0] = 0;
+    m_unk04 = -1;
+    m_unk00 = 0;
     m_unk24 = 0;
     m_scene = 0;
     *state = 0;
@@ -651,9 +651,9 @@ void MagLifeControlChara::func_0011A888()
 
 
 
-void MagLifeBillboard::live()
+void MagLifeBillboard::liveBillboard()
 {
-    m_unk00[1]++;
+    m_unk04++;
     ASSERT(m_scene);
 
     MagScene *scene = m_scene;

@@ -1,17 +1,11 @@
 #include "ror.h"
 #include "include_asm.h"
-#include "mag/maglifeman.h"
-#include "dog/dogactor.h"
-class MagPC : public MagLife {
-public:
-    virtual void vfunc09(int theMode, int theA);
-};
+#include "mag/maglifepc.h"
 #define I(p, off) (*(int *)((char *)(p) + (off)))
 #include "bed/bedpad.h"
 #include "dog/dogcamera.h"
 extern "C" float cosf(float);
 #define PC_ASSERT(e, line) ((e) ? (void)0 : ror_assert(D_002E9F28, line, #e))
-struct MagPCModeB { virtual void vfunc01(MagPC *thePC); virtual void vfunc02(MagPC *thePC); };
 extern "C" void func_0011A738_c(MagPC *self, void *theTable) asm("func_0011A738");
 extern "C" void func_0012CB50(MagPC *self);
 extern "C" int func_0011E0AC(MagPC *self);
@@ -23,7 +17,6 @@ extern "C" void func_0012B65C(void *theObj, int theA);
 extern "C" void func_00102918(int theA, int theB, int theC);
 extern "C" void func_001029C4(int theA, int theB, int theC, int theD);
 extern const char D_002E9F40[];
-struct MagPCModeA { virtual void vfunc01(MagPC *thePC); };
 float vecYaw(const float *v);
 #define F(p, off) (*(float *)((char *)(p) + (off)))
 struct YawPoint { float x, y, z, w; };
@@ -36,12 +29,6 @@ extern "C" int func_0011C64C(MagPC *self, ItemData *theData, int theNum, float t
 struct Pair64 { long a; long b; };
 struct PadBits { unsigned short b0 : 11; unsigned short b11 : 1; };
 static inline unsigned short padBit(void *p) { return ((PadBits *)((char *)p + 0x78))->b11; }
-class MagPCMode {
-public:
-    virtual void vfunc01();
-    virtual void vfunc02();
-    virtual int vfunc03(MagPC *thePC, void *theA);
-};
 extern int D_00297140;
 extern int D_006E9840;
 extern "C" int func_0011C464(MagPC *self, int theA);
@@ -164,7 +151,7 @@ extern "C" void live__9MagLifePC(MagPC *self)
         if (I(self, 0) == 0xB) {
             func_0012CB50(self);
         } else {
-            MagPCModeB *mode = (MagPCModeB *)I(self, 0x134);
+            MagPCMode *mode = (MagPCMode *)I(self, 0x134);
             if (mode != 0) {
                 mode->vfunc02(self);
             } else {
@@ -608,7 +595,6 @@ extern "C" int func_0011B2C4(MagPC *self, void *theA)
 // (bits 12, 13 and 15) is two conditional moves in the game, with an
 // `xori $v1, $v1, 0` before the second: probably accessors of BedPad.
 #ifdef NON_MATCHING
-struct MagPCModeC { virtual void vfunc01(MagPC *thePC); virtual void vfunc02(MagPC *thePC); virtual void vfunc03(MagPC *thePC, void *thePad); };
 struct PadBits7A { unsigned short b0 : 10; unsigned short b10 : 1; unsigned short b11 : 1; unsigned short b12 : 1; unsigned short b13 : 1; unsigned short b14 : 1; unsigned short b15 : 1; };
 static inline int padB14(void *p) { return ((PadBits7A *)((char *)p + 0x7A))->b14; }
 static inline int padB10(void *p) { return ((PadBits7A *)((char *)p + 0x7A))->b10; }
@@ -657,7 +643,7 @@ extern "C" void MagLifePC__vfunc_16(MagPC *self, void *thePad)
             return;
         }
         if (mode == 0xA) {
-            MagPCModeC *m = (MagPCModeC *)I(self, 0x134);
+            MagPCMode *m = (MagPCMode *)I(self, 0x134);
             if (m != 0) {
                 m->vfunc03(self, thePad);
             }
@@ -930,7 +916,7 @@ extern "C" void func_0011C2AC(MagPC *self, int theA)
         break;
     }
     if (theA != 0) {
-        MagPCModeA *mode = (MagPCModeA *)I(self, 0x134);
+        MagPCMode *mode = (MagPCMode *)I(self, 0x134);
         if (mode != 0) {
             mode->vfunc01(self);
         }
