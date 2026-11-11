@@ -76,7 +76,10 @@ def assemble(name, fn, path):
     func = work[work.index(FUNC) + len(FUNC):].strip("\n")
     text = (ROOT / f"src/{name}.cpp").read_text(encoding="utf8")
     have = set(text.split("\n"))
-    block = "".join(d + "\n" for d in decls.split("\n") if d.strip() and d not in have)
+    # one-line declarations the file already has are not repeated; anything
+    # else (a class, an inline function) goes in whole
+    block = "".join(d + "\n" for d in decls.split("\n")
+                    if d.strip() and not (d in have and d.startswith(("#include", "#define", "extern "))))
     ends = [m.end() for m in re.finditer(r"^#include [^\n]*\n", text, re.M)]
     at = ends[-1] if ends else 0
     text = text[:at] + block + text[at:]
