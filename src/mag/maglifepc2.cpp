@@ -2,6 +2,10 @@
 #include "include_asm.h"
 #include "game/gamman.h"
 #include "dog/dogentity.h"
+#include "dog/dogactor.h"
+extern "C" void func_001C870C(void *theGamMan, int theA);
+extern "C" void func_00176CC8(void *theObj, void *theParam);
+struct PcEffParam { int m_kind; int m_unk04; int m_unk08; int m_unk0C; float m_pos[3]; float m_rot[3]; int m_num; int m_pad[21]; };
 extern "C" int func_001FB5D4(int theA, int theB);
 extern "C" void func_001FAC60(int theKind, int theOwner, int theB, DogVector *thePos, int theC, int theD, int theE);
 extern char *D_007A3350;
@@ -136,7 +140,38 @@ extern "C" void func_0011CBF4(void *self, int theA)
 }
 
 
+// NON_MATCHING: 7 of 48 instructions, all in the order of independent ones
+// around the three stores (the constant 0x13 is loaded before the address).
+#ifdef NON_MATCHING
+extern "C" int func_0011CBF4_i(void *self, int theA) asm("func_0011CBF4");
+extern "C" void func_001D1C80(GamMan *theGamMan, int theA, int theB, int *theOut);
+extern "C" void func_001C7E40(GamMan *theGamMan, int theA, int theB);
+extern "C" void func_001D4540(GamMan *theGamMan);
+extern "C" void func_001CCC30(GamMan *theGamMan, int theA);
+extern char D_007A4440[];
+// The pointer at +0xDC1C of the object at D_007A4440, reached the way an
+// inline method would (see gamSub22220).
+static inline int *sysWork() { char *p = D_007A4440; return *(int **)(p + 0xDC1C); }
+
+extern "C" int func_0011CC14(void *self, int theA)
+{
+    if (func_0011CBF4_i(self, theA) == 0) {
+        return -1;
+    }
+    GamMan *g = &D_007812C0;
+    int v = 0;
+    func_001D1C80(g, theA, 2, &v);
+    func_001C7E40(g, (unsigned short)v, 0);
+    sysWork()[0xA0 / 4] = 0x13;
+    sysWork()[0xA4 / 4] = v;
+    sysWork()[0xA8 / 4] = theA;
+    func_001D4540(g);
+    func_001CCC30(g, theA);
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011CC14);
+#endif
 
 extern "C" int func_0011CCD4(void *self, const u_long128 *thePos, int *theOut)
 {
@@ -184,7 +219,30 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc2", D_002EA2C0);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc2", D_002EA2D0);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011D06C);
+extern "C" void func_0011D06C(void *self)
+{
+    func_001C870C(&D_007812C0, -1);
+    if (*(int *)((char *)self + 0x118) > 0) {
+        PcEffParam param;
+        param.m_kind = 0x27;
+        param.m_unk04 = param.m_unk08 = 0;
+        char *actor = *(char **)((char *)self + 0x58);
+        param.m_pos[0] = *(float *)(actor + 0x40);
+        param.m_pos[1] = *(float *)(actor + 0x44);
+        param.m_pos[2] = *(float *)(actor + 0x48);
+        param.m_rot[0] = *(float *)(actor + 0x50);
+        param.m_rot[1] = *(float *)(actor + 0x54);
+        param.m_rot[2] = *(float *)(actor + 0x58);
+        param.m_num = *(int *)((char *)self + 0x118);
+        func_00176CC8(*(char **)((char *)self + 0x20) + 0x837E0, &param);
+    }
+    *(int *)((char *)self + 0x118) = 0;
+    int id = func_0011CE50(self);
+    if (id >= 0) {
+        DogActor *actor = (DogActor *)(*(char **)((char *)self + 0x20) + id * 0x4D0 + 0x2920);
+        actor->func_0010B1B0(actor->func_0010AA5C("reload"), 0, 0.016666694f, -1, -1);
+    }
+}
 
 extern "C" void func_0011D15C()
 {
