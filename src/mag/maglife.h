@@ -32,9 +32,8 @@ struct MagLifeMotionState {
 
 // A MagLife (maglifeman.h): the first 0x18 bytes, with the vptr at +0x14, are
 // the base's (other MagLife classes, such as MagLifeWindow, put their own
-// fields at +0x18). Virtual slots 1 to 8 are MagLife's; this class adds vfunc09 and
-// the ones after it, of which only number 16 is known so far (the pad
-// handler MagLifePC overrides). The hierarchy and the offsets were worked out
+// fields at +0x18). Virtual slots 1 to 8 are MagLife's; this class adds 9 to
+// 16. The hierarchy and the offsets were worked out
 // from the asm with Gemini 4 Argon and checked against the compiler.
 struct MagLifeControlChara : public MagLife {
     int m_unk18;                    // +0x18
@@ -69,14 +68,14 @@ struct MagLifeControlChara : public MagLife {
     DogVector *func_00119FA4() asm("func_00119FA4");
     float func_00119FB0() asm("func_00119FB0");
     virtual void vfunc09(int theA, int theB) asm("MagLifeControlChara__vfunc_09");
-    // Slots 10 to 15 are not identified yet (message, setActor, reset4MapJump
-    // and termWorld of MagLifePC are among them); 16 is the pad handler.
-    virtual void vfunc10();
-    virtual void vfunc11();
-    virtual void vfunc12();
-    virtual void vfunc13();
-    virtual void vfunc14();
-    virtual void vfunc15();
+    // Slots 10 to 16, in the order and with the names of _vt$9MagLifePC
+    // (asm/data/vtbl); the return types are guesses.
+    virtual void setActor(DogActor *theActor, int theA, int theB);
+    virtual DogActor *getActor();
+    virtual void reset4MapJump();
+    virtual void termWorld();
+    virtual int message(int theMsg, int theArg, void *theData);
+    virtual void renderPostProcess();
     virtual void vfunc16(void *thePad);
     void func_0011A010(int theState) asm("func_0011A010");
     int func_0011A028() asm("func_0011A028");
