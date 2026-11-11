@@ -604,7 +604,98 @@ extern "C" int func_0011B2C4(MagPC *self, void *theA)
 }
 
 
+// NON_MATCHING: 56 of 181 instructions. The choice among the three buttons
+// (bits 12, 13 and 15) is two conditional moves in the game, with an
+// `xori $v1, $v1, 0` before the second: probably accessors of BedPad.
+#ifdef NON_MATCHING
+struct MagPCModeC { virtual void vfunc01(MagPC *thePC); virtual void vfunc02(MagPC *thePC); virtual void vfunc03(MagPC *thePC, void *thePad); };
+struct PadBits7A { unsigned short b0 : 10; unsigned short b10 : 1; unsigned short b11 : 1; unsigned short b12 : 1; unsigned short b13 : 1; unsigned short b14 : 1; unsigned short b15 : 1; };
+static inline int padB14(void *p) { return ((PadBits7A *)((char *)p + 0x7A))->b14; }
+static inline int padB10(void *p) { return ((PadBits7A *)((char *)p + 0x7A))->b10; }
+static inline int padB12(void *p) { return ((PadBits7A *)((char *)p + 0x7A))->b12; }
+static inline int padB13(void *p) { return ((PadBits7A *)((char *)p + 0x7A))->b13; }
+static inline int padB15(void *p) { return ((PadBits7A *)((char *)p + 0x7A))->b15; }
+extern "C" int func_0011C520(MagPC *self);
+extern "C" int func_0011CB70(MagPC *self, int theA);
+extern "C" void func_0011DD40(MagPC *self);
+extern "C" int func_0011D044(MagPC *self);
+extern "C" int func_0010346C();
+extern "C" void func_0011AF30(MagPC *self, int theType, int theFlag);
+
+#define PADBTN(p) (*(unsigned short *)((char *)(p) + 0x7A))
+static inline unsigned int padTrigU(void *p) { return PADBTN(p); }
+static inline int padTrigI(void *p) { return PADBTN(p); }
+
+extern "C" void MagLifePC__vfunc_16(MagPC *self, void *thePad)
+{
+    I(self, 0xF8) = 1;
+    if (I(self, 0x58) == 0) {
+        return;
+    }
+    int mode = I(self, 0);
+    if (mode < 1 || mode > 0xB) {
+        return;
+    }
+    I(self, 0x21C) = func_0011CB70(self, func_0011C520(self));
+    func_0011AD6C(self, thePad);
+    if (I(self, 0xE8) != I(self, 0xDC)) {
+        I(self, 0xF4) = -1;
+        func_0011DD40(self);
+        if (I(self, 0xE8) == 0) {
+            func_0011C1E8(self, 0xB, 0, 0);
+            I(self, 8) = 0;
+            return;
+        }
+        if (I(self, 0xDC) == 0) {
+            func_0011C1E8(self, 0, 0, 0);
+            return;
+        }
+    }
+    if (mode < 0xB) {
+        if (I(self, 0x54) != 1 && I(self, 0x54) != 3 && ((padTrigU(thePad) >> 14) & 1) && (mode == 5 || mode == 6)) {
+            func_0011C1E8(self, 0xA, 0, 0);
+            return;
+        }
+        if (mode == 0xA) {
+            MagPCModeC *m = (MagPCModeC *)I(self, 0x134);
+            if (m != 0) {
+                m->vfunc03(self, thePad);
+            }
+        } else if (mode < 0xA) {
+            if (((padTrigI(thePad) >> 10) & 1) && func_0011D044(self) != 0) {
+                func_0011C1E8(self, 0x14, 0, 0);
+                return;
+            }
+            if (I(self, 0x54) != 1 && func_0010346C() != 0 && I(I(self, 0x20), 0x2BD8C) == 0) {
+                unsigned int btn = PADBTN(thePad);
+                int no;
+                if ((btn >> 12) & 1) {
+                    no = 0;
+                } else {
+                    if ((btn >> 13) & 1) { no = 1; } else if (btn >> 15) { no = 2; } else { no = -1; }
+                }
+                if (no >= 0) {
+                    if (mode == 9) {
+                        if (I(self, 0x130) >= 0) {
+                            func_0011AF30(self, no + 0xF, 3);
+                            I(self, 0x130) = -100;
+                        }
+                    } else {
+                        func_0011C1E8(self, no + 0xF, 0, 0);
+                    }
+                    return;
+                }
+            }
+            int r;
+            do {
+                r = func_0011B2C4(self, thePad);
+            } while (r != 1 && r >= 2);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", MagLifePC__vfunc_16);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", message__9MagLifePCiiPv);
 
