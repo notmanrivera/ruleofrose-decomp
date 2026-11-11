@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiii_func_001D5BC8(int, int, int) asm("func_001D5BC8");
 struct m2c_block8 { int w[2]; };
 struct m2c_ulong { long v; } __attribute__((packed));
 #define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
@@ -132,7 +133,30 @@ extern "C" void func_001D8B9C(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8C50);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8D28);
+extern "C" int func_001D8D28(int arg0, int arg1)
+{
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x120);
+    if (temp_v1 & 0x40) {
+        if (!(temp_v1 & 0x10000000)) {
+            Xiiii_func_001D5BC8((int)&D_007812C0, arg1, M2C_FIELD(arg0, int *, 0x100));
+        }
+        M2C_FIELD(arg0, int *, 0x114) = arg1;
+        M2C_FIELD(arg0, int *, 0x110) = arg1;
+        if (arg1 != 0) {
+            M2C_FIELD(arg0, int *, 0x10C) = arg1;
+            M2C_FIELD(arg0, float *, 0x1F0) = (float) M2C_FIELD(arg0, float *, 0x190);
+            M2C_FIELD(arg0, float *, 0x1F4) = (float) M2C_FIELD(arg0, float *, 0x194);
+            M2C_FIELD(arg0, float *, 0x1F8) = (float) M2C_FIELD(arg0, float *, 0x198);
+            M2C_FIELD(arg0, float *, 0x1FC) = (float) M2C_FIELD(arg0, float *, 0x19C);
+        }
+        return 1;
+    }
+    M2C_FIELD(arg0, int *, 0x114) = arg1;
+    M2C_FIELD(arg0, int *, 0x110) = arg1;
+    return 0;
+}
 
 extern "C" void func_001D8DC4(int arg0)
 {
@@ -475,7 +499,27 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBDF0);
 extern "C" void func_001DBEF0(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBEF8);
+extern "C" void func_001DBEF8(int arg0, int arg1)
+{
+    int temp_a2;
+    int temp_a1;
+    int temp_v1;
+
+    M2C_FIELD(arg0, int *, 0x58) = arg1;
+    temp_a1 = arg1 + 0x10;
+    temp_v1 = arg1 + 0x40;
+    temp_a2 = M2C_FIELD(arg1, int *, 0x10);
+    M2C_FIELD(arg0, int *, 0) = temp_v1;
+    M2C_FIELD(arg0, int *, 4) = (int) (temp_v1 + (M2C_FIELD(temp_a1, int *, 4) - temp_a2));
+    M2C_FIELD(arg0, int *, 8) = (int) (temp_v1 + (M2C_FIELD(temp_a1, int *, 8) - temp_a2));
+    M2C_FIELD(arg0, int *, 0xC) = (int) (temp_v1 + (M2C_FIELD(temp_a1, int *, 0xC) - temp_a2));
+    M2C_FIELD(arg0, int *, 0x10) = (int) (temp_v1 + (M2C_FIELD(temp_a1, int *, 0x10) - temp_a2));
+    M2C_FIELD(arg0, int *, 0x14) = (int) (temp_v1 + (M2C_FIELD(temp_a1, int *, 0x14) - temp_a2));
+    M2C_FIELD(arg0, int *, 0x18) = (int) (temp_v1 + (M2C_FIELD(temp_a1, int *, 0x18) - temp_a2));
+    M2C_FIELD(arg0, int *, 0x1C) = (int) (temp_v1 + (M2C_FIELD(temp_a1, int *, 0x1C) - temp_a2));
+    M2C_FIELD(arg0, int *, 0x20) = (int) (temp_v1 + (M2C_FIELD(temp_a1, int *, 0x20) - temp_a2));
+    M2C_FIELD(arg0, int *, 0x24) = (int) (temp_v1 + (M2C_FIELD(temp_a1, int *, 0x24) - temp_a2));
+}
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamtrg", D_002FC748);
 

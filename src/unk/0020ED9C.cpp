@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
+extern "C" int Xii___builtin_vec_delete(int) asm("__builtin_vec_delete");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiiii_memset(int, int, int) asm("memset");
 extern int D_002D9950;
@@ -51,7 +53,43 @@ extern "C" void func_0020F1A8(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020F1FC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020F37C);
+extern "C" void func_0020F37C(int arg0)
+{
+    int temp_a0;
+    int temp_a0_2;
+    int temp_a0_3;
+    int temp_s0;
+    int temp_s0_2;
+    int temp_s0_3;
+
+    temp_s0 = M2C_FIELD(arg0, int *, 0x10);
+    if (temp_s0 != 0) {
+        temp_a0 = M2C_FIELD(temp_s0, int *, 0x1C0);
+        if (temp_a0 != 0) {
+            Xii___builtin_vec_delete(temp_a0);
+        }
+        Xii___builtin_delete(temp_s0);
+    }
+    temp_s0_2 = M2C_FIELD(arg0, int *, 0x14);
+    if (temp_s0_2 != 0) {
+        temp_a0_2 = M2C_FIELD(temp_s0_2, int *, 0x1C0);
+        if (temp_a0_2 != 0) {
+            Xii___builtin_vec_delete(temp_a0_2);
+        }
+        Xii___builtin_delete(temp_s0_2);
+    }
+    temp_s0_3 = M2C_FIELD(arg0, int *, 0x18);
+    if (temp_s0_3 != 0) {
+        temp_a0_3 = M2C_FIELD(temp_s0_3, int *, 0x1C0);
+        if (temp_a0_3 != 0) {
+            Xii___builtin_vec_delete(temp_a0_3);
+        }
+        Xii___builtin_delete(temp_s0_3);
+    }
+    M2C_FIELD(arg0, int *, 0x10) = 0;
+    M2C_FIELD(arg0, int *, 0x14) = 0;
+    M2C_FIELD(arg0, int *, 0x18) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020F428);
 
@@ -104,7 +142,16 @@ extern "C" void func_002100C8(int arg0, int arg1)
     (*(int *)&D_007B4790) = temp_v0 % temp_v1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210110);
+extern "C" void func_00210110(int arg0, int arg1)
+{
+    int temp_v0;
+    int temp_v1;
+
+    temp_v0 = ((int *)&D_007B4700)[arg0];
+    temp_v1 = ((int *)&D_007B4700)[arg1];
+    (*(int *)&D_007B47A0) = temp_v0 / temp_v1;
+    (*(int *)&D_007B4790) = temp_v0 % temp_v1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210158);
 

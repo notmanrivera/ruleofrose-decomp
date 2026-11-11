@@ -1,4 +1,10 @@
 #include "include_asm.h"
+struct m2c_block8 { int w[2]; };
+struct m2c_ulong { long v; } __attribute__((packed));
+#define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
+extern "C" int Xiiii_func_001DA740(int, int, int) asm("func_001DA740");
+extern int D_002F14B0;
+extern int _vt$7EmyMain;
 extern "C" int Xiii_func_001636A4(int, int) asm("func_001636A4");
 extern "C" int Xiii_func_001665B8(int, int) asm("func_001665B8");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -321,7 +327,36 @@ INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001640AC);
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001640E8);
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00164118);
+extern "C" int func_00164118(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+{
+    M2C_FIELD(arg0, int *, 0) = arg1;
+    M2C_FIELD(arg0, int *, 0x200) = (int)&_vt$7EmyMain;
+    M2C_FIELD(arg0, int *, 0x24) = -1;
+    M2C_FIELD(arg0, int *, 0xE8) = arg5;
+    M2C_FIELD(arg0, int *, 8) = 1;
+    M2C_FIELD(arg0, int *, 0xC) = 1;
+    M2C_FIELD(arg0, int *, 0x10) = 0;
+    M2C_FIELD(arg0, int *, 0x14) = 0;
+    M2C_FIELD(arg0, int *, 0x1C) = 0;
+    M2C_FIELD(arg0, int *, 0x20) = 0;
+    M2C_FIELD(arg0, int *, 0x44) = 0;
+    M2C_FIELD(arg0, int *, 0x28) = 1;
+    M2C_FIELD(arg0, int *, 0x2C) = 1;
+    M2C_FIELD(arg0, int *, 0x30) = 0;
+    M2C_FIELD(arg0, int *, 0x150) = 0;
+    *(m2c_block8 *)((char *)(arg0) + 476) = *(m2c_block8 *)((char *)(&D_002F14B0) + 0);
+    M2C_FIELD(arg0, float *, 0x1C4) = 1.0f;
+    M2C_FIELD(arg0, signed char *, 6) = 0;
+    M2C_FIELD(arg0, int *, 0x1EC) = 0;
+    M2C_FIELD(arg0, int *, 0x1F0) = 0;
+    M2C_FIELD(arg0, int *, 0x1F8) = 0;
+    Xiiii_memset(arg0 + 0x154, 0, 0x70);
+    M2C_FIELD(arg0, int *, 0x20) = arg3;
+    if (arg6 != 0) {
+        Xiiii_func_001DA740((int) arg3, 0x59, arg6);
+    }
+    return Xiiii_memset(arg0 + 0x48, 0, 0xA0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", EmyMain__vfunc_01);
 

@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern int _vt$14DisplayMessage;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xff_cosf(float) asm("cosf");
 extern "C" float Xff_sinf(float) asm("sinf");
@@ -89,6 +90,12 @@ extern "C" float func_001F6C14(int arg0, float fparg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6C54);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6C64);
+extern "C" void func_001F6C64(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0x8C) = (int)&_vt$14DisplayMessage;
+    M2C_FIELD(arg0, int *, 0x84) = -1;
+    M2C_FIELD(arg0, int *, 0x80) = 0;
+    M2C_FIELD(arg0, int *, 0x88) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", DisplayMessage__vfunc_01);

@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiii_Eff0__vfunc_02(int, int) asm("Eff0__vfunc_02");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X___10FileReader(...) asm("__10FileReader");
@@ -33,7 +34,22 @@ extern int D_00298E08;
 extern int D_00298E0C;
 extern int D_006E9800;
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFindItem1", EffFindItem1__vfunc_02);
+extern "C" int EffFindItem1__vfunc_02(int arg0, int arg1)
+{
+    int var_v0;
+
+    var_v0 = Xiii_Eff0__vfunc_02(arg0, arg1);
+    if (var_v0 != 0) {
+        var_v0 = 1;
+        M2C_FIELD(arg0, float *, 0x30) = (float) M2C_FIELD(arg1, float *, 0x10);
+        M2C_FIELD(arg0, float *, 0x34) = (float) M2C_FIELD(arg1, float *, 0x14);
+        M2C_FIELD(arg0, float *, 0x38) = (float) M2C_FIELD(arg1, float *, 0x18);
+        M2C_FIELD(arg0, float *, 0x3C) = 1.0f;
+        M2C_FIELD(arg0, float *, 0x40) = (float) M2C_FIELD(arg1, float *, 0x1C);
+        M2C_FIELD(arg0, signed char *, 0x44) = 0;
+    }
+    return var_v0;
+}
 
 extern "C" int EffFindItem1__vfunc_05(int arg0)
 {
