@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xiiiii_func_001BE444(int, int, int, int) asm("func_001BE444");
+extern "C" int Xiii_func_001BE3C4(int, int) asm("func_001BE3C4");
+extern "C" int Xiiiii_func_001BE36C(int, int, int, int) asm("func_001BE36C");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int X_FlushCache(...) asm("FlushCache");
 extern "C" int X_func_001E71FC(...) asm("func_001E71FC");
@@ -278,7 +281,16 @@ extern "C" int func_001BE36C(int arg0, int arg1, int arg2, int arg3)
     return X_func_00243938(arg1, arg2, arg3);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BE38C);
+extern "C" int func_001BE38C(int arg0, int arg1, int arg2)
+{
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 4);
+    if (temp_v1 < 0) {
+        return -1;
+    }
+    return Xiiiii_func_001BE36C((int) arg0, temp_v1, arg1, arg2);
+}
 
 extern "C" int func_001BE3C4(int arg0, int arg1)
 {
@@ -291,11 +303,29 @@ extern "C" int func_001BE3C4(int arg0, int arg1)
     return 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BE414);
+extern "C" int func_001BE414(int arg0)
+{
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 4);
+    if (temp_v1 < 0) {
+        return -1;
+    }
+    return Xiii_func_001BE3C4(arg0, temp_v1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BE444);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BE490);
+extern "C" int func_001BE490(int arg0, int arg1, int arg2)
+{
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 4);
+    if (temp_v1 < 0) {
+        return -1;
+    }
+    return Xiiiii_func_001BE444((int) arg0, temp_v1, arg1, arg2);
+}
 
 extern "C" int func_001BE4C8(int arg0, int arg1, int arg2)
 {

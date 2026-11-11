@@ -124,7 +124,13 @@ extern "C" void func_0016366C(int arg0, int arg1, int arg2)
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001636A4);
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001636E4);
+extern "C" int func_001636E4(int arg0, int arg1)
+{
+    if (arg1 == 0) {
+        return M2C_FIELD(arg0, unsigned char *, 0x134) != 0;
+    }
+    return M2C_FIELD(arg0, unsigned char *, 0x135) != 0;
+}
 
 extern "C" void func_00163700(int arg0, int arg1, int arg2)
 {

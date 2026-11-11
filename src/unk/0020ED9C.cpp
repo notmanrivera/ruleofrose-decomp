@@ -40,9 +40,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020EFAC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020F0C8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020F140);
+extern "C" int func_0020F140(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0xDC24) & 0x100) {
+        return M2C_FIELD(arg0, int *, 0xDC58);
+    }
+    return M2C_FIELD((*(int *)&D_007B4640), int *, 0x38);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020F174);
+extern "C" int func_0020F174(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0xDC24) & 0x100) {
+        return M2C_FIELD(arg0, int *, 0xDC34);
+    }
+    return M2C_FIELD((*(int *)&D_007B4640), int *, 0x14);
+}
 
 extern "C" void func_0020F1A8(int arg0)
 {
