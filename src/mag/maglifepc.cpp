@@ -9,6 +9,8 @@ public:
 #define I(p, off) (*(int *)((char *)(p) + (off)))
 #include "bed/bedpad.h"
 #include "dog/dogcamera.h"
+extern "C" float cosf(float);
+#define PC_ASSERT(e, line) ((e) ? (void)0 : ror_assert(D_002E9F28, line, #e))
 struct MagPCModeB { virtual void vfunc01(MagPC *thePC); virtual void vfunc02(MagPC *thePC); };
 extern "C" void func_0011A738_c(MagPC *self, void *theTable) asm("func_0011A738");
 extern "C" void func_0012CB50(MagPC *self);
@@ -606,7 +608,49 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", MagLifePC__vfunc_16);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", message__9MagLifePCiiPv);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011B964);
+extern "C" void func_0011B964(MagPC *self, int theType, float theValue)
+{
+    switch (theType) {
+    case 6:
+        PC_ASSERT(theValue >= 0.0f && theValue < 1.0f, 0x653);
+        F(self, 0x1F8) = theValue;
+        break;
+    case 7:
+        PC_ASSERT(theValue > 0.0f && theValue < 90.0f, 0x657);
+        F(self, 0x1FC) = cosf(theValue * DOG_PI / 180.0f);
+        break;
+    case 8:
+        PC_ASSERT(theValue > 0.0f && theValue < 90.0f, 0x65B);
+        F(self, 0x200) = cosf(theValue * DOG_PI / 180.0f);
+        break;
+    case 9:
+        PC_ASSERT(theValue >= 0.0f && theValue < 10.0f, 0x65F);
+        F(self, 0x204) = theValue;
+        break;
+    case 10:
+        PC_ASSERT(theValue > 0.0f && theValue < 180.0f, 0x664);
+        F(self, 0x208) = theValue / 180.0f;
+        break;
+    case 11:
+        PC_ASSERT(theValue > 0.0f && theValue < 1.0f, 0x66A);
+        F(self, 0x20C) = theValue;
+        break;
+    case 12:
+        PC_ASSERT(theValue > 0.0f && theValue < 1000.0f, 0x66E);
+        F(self, 0x210) = theValue;
+        break;
+    case 13:
+        PC_ASSERT(theValue > 0.0f && theValue < 1000.0f, 0x672);
+        F(self, 0x214) = theValue;
+        break;
+    case 14:
+        F(self, 0x218) = theValue;
+        break;
+    default:
+        ror_assert(D_002E9F28, 0x679, D_002E9F40);
+        break;
+    }
+}
 
 // NON_MATCHING: close, not identical yet.
 #ifdef NON_MATCHING
