@@ -1091,6 +1091,29 @@ def typed(ctx, fn, hdr, body):
         for mm in re.finditer(r"(?<![\w.])" + c + r"\(", b):
             counts.add(len(split_args(b[mm.end():close_paren(b, mm.end() - 1)])))
         alias, d = callee(ctx, c, counts)
+        # A mangled name gives the real order of the parameters, and the
+        # arguments are worked out in that order; m2c lists ints, then floats.
+        order = demangle_params(c)
+        if (order and "float" in order and order[-order.count("float"):] != ["float"] * order.count("float")
+                and counts == {len(order)} and alias[1:2] in SIG_LETTER.values()):
+            try:
+                code = alias[1] + "".join(SIG_LETTER[t] for t in order)
+            except KeyError:
+                code = None
+            if code:
+                rt = "float" if alias[1] == "f" else "int"
+                alias = f"X{code}_{c}"
+                d = f'extern "C" {rt} {alias}({", ".join(order)}) asm("{c}");'
+                ni = len(order) - order.count("float")
+                while True:
+                    mm = re.search(r"(?<![\w.])" + c + r"\(", b)
+                    if not mm:
+                        break
+                    e = close_paren(b, mm.end() - 1)
+                    args = split_args(b[mm.end():e])
+                    ints, floats = args[:ni], args[ni:]
+                    new = [floats.pop(0) if t == "float" else ints.pop(0) for t in order]
+                    b = b[:mm.start()] + alias + "(" + ", ".join(new) + b[e:]
         pre.add(d)
         b = re.sub(r"(?<![\w.])" + c + r"\(", alias + "(", b)
     if re.search(r"\)\(", re.sub(r"\((?:unsigned |signed )?(?:int|char|short|long|float)(?: \*+)?\)\(", "(", b)):
