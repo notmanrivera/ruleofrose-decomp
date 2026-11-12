@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiii_func_0018F744(int, int, int) asm("func_0018F744");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_alloc__9BedMemoryiPCciii(...) asm("alloc__9BedMemoryiPCciii");
@@ -59,7 +60,11 @@ extern "C" int func_0018F734(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018F744);
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018F808);
+extern "C" void func_0018F808(int arg0, int arg1, int arg2, int arg3)
+{
+    M2C_FIELD(arg0, int *, 0x434) = arg3;
+    Xiiii_func_0018F744(arg0, arg1, arg2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018F824);
 
