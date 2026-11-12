@@ -228,7 +228,26 @@ INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017FD58);
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017FF58);
 
-INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0018000C);
+extern "C" int func_0018000C(int arg0, int arg1, int arg2)
+{
+    int *p = (int *)X_func_0017F584(arg0, arg1);
+    if (p == 0) {
+        return -1;
+    }
+    if (p[0] != 1) {
+        return -1;
+    }
+    if (arg2 != -0x400) {
+        p[13] = arg2;
+    }
+    int state = p[4];
+    if (state != 0) {
+        if (state == 2) {
+            p[4] = 3;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_00180078);
 
