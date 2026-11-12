@@ -464,7 +464,15 @@ extern "C" int func_001C0298(int arg0, int arg1)
     return (unsigned int)(arg1 - 0xA0) < 0x40U;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C02B8);
+extern "C" int func_001C02B8(int arg0, int arg1)
+{
+    int v = arg1 & 0xFF00;
+
+    if ((unsigned int)(v - 0x8000) < 0x1F01U) {
+        return 1;
+    }
+    return (unsigned int)(v - 0xE000) < 0xA01U;
+}
 
 extern "C" int func_001C02E4(int arg0, int arg1)
 {
