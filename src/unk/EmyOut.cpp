@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_0010423C(int, int) asm("func_0010423C");
 extern "C" int Xiiii_func_001DA740(int, int, int) asm("func_001DA740");
 extern "C" int Xi_func_001442D4() asm("func_001442D4");
 extern "C" int Xii_func_00118FEC__9MagSystem(int) asm("func_00118FEC__9MagSystem");
@@ -235,7 +236,16 @@ extern "C" void func_00166534(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166568);
+extern "C" int func_00166568(int arg0, int arg1)
+{
+    unsigned char var_v1 = M2C_FIELD(arg0, unsigned char *, 6);
+
+    if (var_v1 == 2) {
+        int t = Xiii_func_0010423C(0, 0x63) < 0x32;
+        var_v1 = !t;
+    }
+    return M2C_FIELD(arg1 + var_v1 * 4, int *, 0);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EmyOut", D_002F1520);
 
