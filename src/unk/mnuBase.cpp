@@ -139,7 +139,20 @@ INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001918C8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00191938);
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00191BA8);
+extern "C" int func_00191BA8(int arg0, int arg1, int arg2, int arg3)
+{
+    int *sub;
+    int idx;
+
+    if (arg1 >= 0xE) {
+        return 0;
+    }
+    sub = (int *)(arg0 + 0x48);
+    idx = ((int *)&D_0029BB70)[arg1] * 0x154;
+    M2C_FIELD((idx + M2C_FIELD(sub, int *, 0x4AC)), int *, 0x58) = arg2;
+    M2C_FIELD((idx + M2C_FIELD(sub, int *, 0x4AC)), int *, 0x5C) = arg3;
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00191C00);
 
