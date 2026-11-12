@@ -1,4 +1,5 @@
 #include "include_asm.h"
+typedef unsigned int u_long128 __attribute__((mode(TI)));
 extern int _vt$10TskSysFunc;
 extern int _vt$9TskRotAdj;
 extern int _vt$16TskMoveTypeRound;
@@ -408,7 +409,22 @@ extern "C" void TskMoveSecta__vfunc_05(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveSecta__vfunc_04);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EE2FC);
+extern "C" u_long128 *func_001EE2FC(int arg0, int arg1, int arg2, int arg3, u_long128 *arg4, int arg5, float fparg0)
+{
+    register u_long128 *p asm("$2");
+    register int vt asm("$2") = (int)&_vt$10TskMoveAdj;
+
+    M2C_FIELD(arg0, int *, 0x20) = arg1;
+    M2C_FIELD(arg0, int *, 0) = vt;
+    M2C_FIELD(arg0, int *, 0x30) = arg3;
+    M2C_FIELD(arg0, int *, 0x28) = arg2 + 0x10;
+    M2C_FIELD(arg0, float *, 0x24) = fparg0;
+    M2C_FIELD(arg0, int *, 0x34) = arg5;
+    p = (u_long128 *)((char *)arg0 + 0x10);
+    register u_long128 tmp asm("$6") = *arg4;
+    *p = tmp;
+    return p;
+}
 
 extern "C" void TskMoveAdj__vfunc_06(int arg0, int arg1)
 {
