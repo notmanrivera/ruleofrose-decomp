@@ -149,7 +149,21 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcbtl", D_002EC8A0);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcbtl", D_002EC8B0);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012BC20);
+extern "C" float func_0012BC20(int arg0, int arg1)
+{
+    float temp_f0;
+    int temp_v0;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x58);
+    M2C_FIELD(arg1, float *, 0) = M2C_FIELD(temp_v0, float *, 0x40);
+    M2C_FIELD(arg1, float *, 4) = M2C_FIELD(temp_v0, float *, 0x44);
+    M2C_FIELD(arg1, float *, 8) = M2C_FIELD(temp_v0, float *, 0x48);
+    M2C_FIELD(arg1, float *, 4) += -120.0f;
+    if (M2C_FIELD(arg0, int *, 0x58) == 0) {
+        X_ror_assert((int) D_002EC8B0, 0xFB, (int) "m_actor");
+    }
+    return M2C_FIELD(M2C_FIELD(arg0, int *, 0x58), float *, 0x54);
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012BC98);
 
