@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int X_func_0017F200(...) asm("func_0017F200");
+extern "C" int X_func_0024B3F8(...) asm("func_0024B3F8");
 extern "C" int X_func_00191D20(...) asm("func_00191D20");
 extern "C" int X_func_00191D74(...) asm("func_00191D74");
 extern "C" int X_func_00191DC8(...) asm("func_00191DC8");
@@ -699,7 +701,34 @@ extern "C" void __11FileReadReq(int arg0)
     (*(int *)(arg0)) = -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BE768);
+extern "C" int func_001BE768(const char *theName)
+{
+    int fd = X_func_00243788(theName, 0x8001);
+    if (fd < 0) {
+        return fd;
+    }
+
+    while (X_func_00243CD8(fd, 1) != 0) {
+        X_func_0024B3F8(1);
+        X_func_0017F200(&D_007B2580);
+    }
+
+    int size = X_func_00243C40(fd, 0, 2);
+
+    while (X_func_00243CD8(fd, 1) != 0) {
+        X_func_0024B3F8(1);
+        X_func_0017F200(&D_007B2580);
+    }
+
+    X_func_002437F8(fd);
+
+    while (X_func_00243CD8(fd, 1) != 0) {
+        X_func_0024B3F8(1);
+        X_func_0017F200(&D_007B2580);
+    }
+
+    return size;
+}
 
 extern "C" int func_001BE84C(int theA)
 {
