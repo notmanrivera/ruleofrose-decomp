@@ -1135,7 +1135,20 @@ extern "C" int func_00184698(MsgWin *self, const char *theStr, char *theOut)
 #endif
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184710);
+extern "C" int func_00184710(void *arg0, char *arg1)
+{
+    if (*arg1 == 0x1A) {
+        *arg1 = 0;
+    }
+    int i = 0;
+    while (D_00299738[i].id != 0x29) {
+        if (func_001844C4(arg0, D_00299738[i].name, arg1) == 0) {
+            return D_00299738[i].id;
+        }
+        i++;
+    }
+    return 0x29;
+}
 
 extern "C" char *func_001847BC(int arg0, int theId)
 {
