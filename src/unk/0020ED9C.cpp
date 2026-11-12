@@ -357,7 +357,13 @@ extern "C" void func_0021082C(int arg0, int arg1, int arg2, int arg3)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210864);
+extern "C" void func_00210864(int arg0, int arg1, unsigned int arg2)
+{
+    int v = ((arg2 * 4) & 0x03FFFFFF) | ((*(int *)&D_007B4780) & 0xF0000000) | 0x80000000;
+
+    (*(int *)&D_007B477C) = ((*(int *)&D_007B4780) - (*(int *)&D_007B47D0)) + 0x8168;
+    (*(int *)&D_007B47C0) = v;
+}
 
 extern "C" void func_002108B8(int arg0, int arg1, int arg2)
 {
