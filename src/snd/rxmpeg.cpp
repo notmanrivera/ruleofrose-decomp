@@ -683,7 +683,13 @@ extern "C" int func_00182F58()
     return (long) (*(int *)&D_006E9204);
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00182F64);
+extern "C" int func_00182F64()
+{
+    int mod = (*(int *)&D_006E927C + 1) % 2;
+    int size = (*(int *)&D_00298F5C) * (*(int *)&D_00298F58);
+    int base = ((*(int *)&D_00298F40) + 0x3F) & ~0x3F;
+    return base + mod * size * 4;
+}
 
 extern "C" int func_00182FBC()
 {
