@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
 extern "C" int func_0023CCA8_alias(int, int, int) asm("func_0023CCA8");
 extern "C" int Xi_func_001830F0() asm("func_001830F0");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -173,7 +174,12 @@ INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180F44);
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_001810F4);
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00181128);
+extern "C" void func_00181128(void *self, int theFlags)
+{
+    if (theFlags & 1) {
+        return X___builtin_delete(self);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00181150);
 
