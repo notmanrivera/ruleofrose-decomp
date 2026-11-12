@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xii_heapFree__FPv(int) asm("heapFree__FPv");
 extern "C" void Xv_func_001E8F88(int) asm("func_001E8F88");
 extern "C" int Xiii_func_001D811C(int, int, int, int) asm("func_001D811C");
 extern "C" int Xiiif_func_001333C0(int, int, float) asm("func_001333C0");
@@ -73,7 +74,14 @@ extern int D_007A320C;
 extern int D_007A3D80;
 extern int D_007B2060;
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D859C);
+extern "C" void func_001D859C(int arg0, int arg1)
+{
+    Xii_heapFree__FPv(M2C_FIELD(arg0, int *, 4));
+    Xii_heapFree__FPv(M2C_FIELD(arg0, int *, 8));
+    if (arg1 & 1) {
+        return Xv___builtin_delete((void *)arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D85F8);
 
