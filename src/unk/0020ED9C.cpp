@@ -341,7 +341,10 @@ extern "C" void func_00210B0C(unsigned int arg0, unsigned int arg1, short arg2)
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210B54);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210BA4);
+extern "C" void func_00210BA4(unsigned int arg0, unsigned int arg1, short arg2)
+{
+    *(int *)(((int *)&D_007B4700)[arg0] + arg2) = ((int *)&D_007B4700)[arg1];
+}
 
 extern "C" void func_00210BD8(int arg0, int arg1, int arg2)
 {
