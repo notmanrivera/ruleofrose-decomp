@@ -93,6 +93,11 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+extern char *D_002997D0[];
+struct MsgSub5F68 {
+    char pad[0x100];
+    char buf[64];
+};
 struct RingBuf {
     int m_wpos;
     int m_rpos;
@@ -1484,7 +1489,22 @@ INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185DEC);
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185EA4);
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185F68);
+extern "C" int func_00185F68(MsgWin *self, const char *theStr, int *theLen)
+{
+    char buf[32];
+    int n = func_00184698(self, theStr, buf);
+    if (n < 0) {
+        return 0;
+    }
+    *theLen += n;
+    for (int i = 0; i < n; i++) {
+        ((MsgSub5F68 *)((char *)self + 0xC))->buf[i * 2] = D_002997D0[buf[i]][0];
+        ((MsgSub5F68 *)((char *)self + 0xC))->buf[i * 2 + 1] = D_002997D0[buf[i]][1];
+    }
+    self->m[0xFC / 4] = 0;
+    *(char **)&self->m[0x104 / 4] = (char *)self + 0x10C;
+    return 0;
+}
 
 extern "C" int func_00186018(int arg0)
 {
