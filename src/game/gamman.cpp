@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int func_001BFFCC(int, int);
+extern "C" int func_001C020C(int, int);
+extern "C" int func_001C0254(int, int);
 extern "C" int func_001BE084(int);
 extern "C" void func_001BDC54(int);
 extern "C" void func_0018BC18(char *, int);
@@ -840,7 +843,41 @@ extern "C" int func_001BFFCC(int arg0, int arg1)
     return ((int)found - *(int *)((char *)arg0 + 0x58)) / 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C0078);
+extern "C" void func_001C0078(int arg0, int arg1, int *arg2, int *arg3, int *arg4)
+{
+    if (arg1 < 0x20) {
+        *arg2 = 0;
+        *arg3 = 0;
+        *arg4 = 0;
+        return;
+    }
+
+    if (*(int *)(arg0 + 0x24) != 0) {
+        int temp = func_001BFFCC(arg0, arg1);
+        if (temp < 0) {
+            *arg2 = 0;
+            *arg3 = *(int *)(arg0 + 0x38);
+            *arg4 = 0;
+            return;
+        }
+
+        *arg2 = func_001C020C(arg0, temp);
+        *arg3 = func_001C0254(arg0, temp);
+
+        register int var_a0 asm("$4");
+        if (*(int *)(arg0 + 0x24) != 0) {
+            var_a0 = *(int *)(arg0 + 0x34);
+        } else {
+            var_a0 = *(int *)(arg0 + 0x30);
+        }
+        *arg4 = var_a0;
+        return;
+    }
+
+    *arg2 = 0;
+    *arg3 = func_001C0148(arg0, arg1);
+    *arg4 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C0148);
 
