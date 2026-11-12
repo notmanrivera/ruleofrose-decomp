@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiii_strncpy(int, int, int) asm("strncpy");
 extern "C" void Xff_func_00218424(float, float) asm("func_00218424");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
@@ -62,7 +63,33 @@ INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00217F10);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_002180E4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_002182C4);
+extern "C" int func_002182C4(int arg0)
+{
+    struct { char pad0[256]; } stack;
+    int temp_s0;
+    int var_a0;
+    int var_a3;
+    int temp_v1;
+
+    var_a0 = arg0;
+    temp_s0 = var_a0;
+    var_a3 = (int)&stack;
+    if ((*(signed char *)(temp_s0)) != 0) {
+        do {
+            temp_v1 = (unsigned char) (*(signed char *)(var_a0));
+            var_a0 += 1;
+            if ((unsigned int) (temp_v1 - 0x61) < 0x1AU) {
+                (*(unsigned char *)(var_a3)) = temp_v1 - 0x20;
+            } else {
+                (*(unsigned char *)(var_a3)) = temp_v1;
+            }
+            var_a3 += 1;
+        } while ((*(signed char *)(var_a0)) != 0);
+    }
+    (*(unsigned char *)(var_a3)) = 0;
+    Xiiii_strncpy(temp_s0, (int)&stack, 0x100);
+    return temp_s0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00218338);
 
