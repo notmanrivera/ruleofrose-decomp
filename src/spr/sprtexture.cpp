@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiii_func_00190884(int, int, int) asm("func_00190884");
 extern "C" int Xiiiiiiiii_func_0018F1F4(int, int, int, int, int, int, int, int) asm("func_0018F1F4");
 extern int D_00299990;
 extern int D_002999B0;
@@ -133,7 +134,17 @@ extern "C" int func_00190884(int arg0, const unsigned char *arg1, const unsigned
     return *arg1 != *arg2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_001908D0);
+extern "C" int func_001908D0(int arg0, int arg1)
+{
+    static const char sMagic[16] = "RTCM";
+    unsigned int var_v0;
+
+    var_v0 = 0;
+    if (arg1 != 0) {
+        var_v0 = (unsigned int) ~Xiiii_func_00190884(arg0, (int)sMagic, arg1) >> 0x1F;
+    }
+    return var_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190904);
 
