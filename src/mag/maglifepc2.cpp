@@ -270,7 +270,45 @@ extern "C" int func_0011CE50(void *self)
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc2", D_002EA280);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011CE5C);
+extern "C" int func_001CBE38(GamMan *theGamMan, int theId);
+extern "C" float func_001638FC(void *theEmy, int theId);
+extern "C" float func_00163958(void *theEmy, int theId);
+extern const char D_002EA280[];
+extern const char D_002EA298[];
+extern const char D_002EA2A8[];
+extern const char D_002EA2B8[];
+extern const char D_002EA2C0[];
+extern const char D_002EA2D0[];
+
+static inline int getNodeIndexByName_ce5c(DogActor *self, const char *p)
+{
+    if (!self->m_i3r_root) ror_assert(D_002EA298, 0x131, D_002EA2A8);
+    if (!p) ror_assert(D_002EA298, 0x131, D_002EA2B8);
+    return func_0022B3D8(self->m_i3r_root, p);
+}
+
+extern "C" float func_0011CE5C(void *self, DogVector *theOut, int theId, int theFlag)
+{
+    int id = (short)func_001CBE38(&D_007812C0, theId);
+    if (id < 0 || id >= 0x80) {
+        return 0.0f;
+    }
+    if (!*(char **)((char *)self + 0x20)) ror_assert(D_002EA208, 0x23A, D_002EA280);
+    DogActor *actor = (DogActor *)(*(char **)((char *)self + 0x20) + id * 0x4D0 + 0x2920);
+    int n = getNodeIndexByName_ce5c(actor, "p_fuckme");
+    if (n < 0) {
+        n = getNodeIndexByName_ce5c(actor, D_002EA2C0);
+        if (!(n >= 0)) ror_assert(D_002EA208, 0x24E, D_002EA2D0);
+    }
+    actor->vfunc18(*theOut, n);
+    float r;
+    if (theFlag) {
+        r = func_001638FC(&D_007B2140, theId);
+    } else {
+        r = func_00163958(&D_007B2140, theId);
+    }
+    return r;
+}
 
 extern "C" void func_0011D028()
 {
