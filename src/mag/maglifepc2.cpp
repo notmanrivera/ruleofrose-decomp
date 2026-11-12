@@ -106,7 +106,163 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc2", D_002EA1E8);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc2", D_002EA208);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011C64C);
+void vecTurnY(float *theVec, float theAngle);
+extern "C" void func_001D35AC(GamMan *theGamMan, DogVector *thePos, void *theList, int theKind, int theMask1, int theMask2, float theRange);
+extern "C" void func_001DB71C(ObjStat *theObj, void *thePos);
+
+template <class T> class GamPoolList {
+public:
+    struct Node {
+        Node *m_prev;
+        Node *m_next;
+        T m_data;
+    };
+
+    class iterator {
+    public:
+        Node *m_node;
+
+        iterator() : m_node(0) {}
+        iterator(Node *theNode) : m_node(theNode) {}
+        iterator(const iterator &theIt) : m_node(theIt.m_node) {}
+        T &operator*() const { return m_node->m_data; }
+        iterator operator++(int)
+        {
+            iterator tmp = *this;
+            m_node = m_node->m_next;
+            return tmp;
+        }
+        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; }
+    };
+
+    struct SubList {
+        Node m_head;
+        int m_count;
+
+        SubList()
+        {
+            m_count = 0;
+            m_head.m_prev = &m_head;
+            m_head.m_next = &m_head;
+        }
+        void clear()
+        {
+            m_count = 0;
+            m_head.m_prev = &m_head;
+            m_head.m_next = &m_head;
+        }
+        iterator begin() { return iterator(m_head.m_next); }
+        iterator end() { return iterator(&m_head); }
+    };
+
+    SubList m_free;
+    SubList m_used;
+    int m_max;
+    int m_pad[7];
+    Node *m_pool;
+    int m_pad2[15];
+
+    GamPoolList(int theMax) : m_max(0)
+    {
+        Node *pool = new Node[theMax];
+        m_max = theMax;
+        m_pool = pool;
+        GamPoolList *self = this;
+        for (int i = 0; i < self->m_max; i++) {
+            pool[i].m_prev = &pool[i - 1];
+            pool[i].m_next = &pool[i + 1];
+        }
+        self->m_used.clear();
+        self->m_free.m_head.m_next = pool;
+        self->m_free.m_count = self->m_max;
+        pool[0].m_prev = &self->m_free.m_head;
+        Node *last = &self->m_free.m_head.m_next[self->m_free.m_count - 1];
+        self->m_free.m_head.m_prev = last;
+        last->m_next = &self->m_free.m_head;
+    }
+
+    ~GamPoolList()
+    {
+        delete[] m_pool;
+    }
+
+    iterator begin() { return m_used.begin(); }
+    iterator end() { return m_used.end(); }
+};
+
+struct PcTargetData {
+    float m_pos[4];
+    int m_oid;
+    int m_uid;
+    int m_unk18;
+    short m_unk1C;
+    short m_unk1E;
+};
+
+class ObjStatEx {
+public:
+    unsigned char m_unk000[0x100];
+    int m_oid;
+    unsigned char m_unk104[0x4];
+    int m_unk108;
+    unsigned char m_unk10C[0x1C];
+    unsigned short m_uid;
+
+    int getOID() const { return m_oid; }
+    int getUnk108() const { return m_unk108; }
+    unsigned short getUID() const { return m_uid; }
+};
+
+static inline void addVec(DogVector *a, DogVector *b)
+{
+    a->m_x += b->m_x;
+    a->m_w = 1.0f;
+    a->m_y += b->m_y;
+    a->m_z += b->m_z;
+}
+
+extern "C" int func_0011C64C(void *self, PcTargetData *theData, int theMax, float theRange)
+{
+    if (!(theRange >= 5.0f)) ror_assert(D_002EA208, 0xCC, "theRange >= 5.0f");
+    if (!theData) ror_assert(D_002EA208, 0xCD, "theData");
+    if (!(theMax >= 10)) ror_assert(D_002EA208, 0xCE, "theMax >= 10");
+
+    GamPoolList<ObjStatEx *> list(0x20);
+    int count = 0;
+
+    DogActor *actor = *(DogActor **)((char *)self + 0x58);
+    DogVector pos = actor->m_unk40;
+    float rot = actor->func_0010A650();
+    DogVector ofs(0.0f, 0.0f, theRange - 5.0f, 1.0f);
+    DogVector *op = &ofs;
+    vecTurnY(&op->m_x, rot);
+    addVec(&pos, op);
+
+    func_001D35AC(&D_007812C0, &pos, &list, 5, 0x100000, 0x04008001, theRange);
+
+    GamPoolList<ObjStatEx *>::iterator last = list.end();
+    GamPoolList<ObjStatEx *>::iterator it = list.begin();
+    for (; it != last; it++) {
+        func_001DB71C((ObjStat *)*it, theData[count].m_pos);
+        float dy = theData[count].m_pos[1] - pos.m_y;
+        if (dy < -200.0f || dy > 30.0f) {
+            continue;
+        }
+        ObjStatEx *&obj = *it;
+        unsigned short uid = obj->getUID();
+        if (uid == 0xFFFF) {
+            continue;
+        }
+        theData[count].m_uid = uid;
+        theData[count].m_oid = obj->getOID();
+        theData[count].m_unk1C = obj->getUnk108();
+        count++;
+        if (count >= theMax) {
+            break;
+        }
+    }
+    return count;
+}
 
 extern "C" void func_0011C974(void *self, int theA, int theB, int theC)
 {
