@@ -1,4 +1,6 @@
 #include "include_asm.h"
+typedef int (*FuncPtr68)(int, int, int, int, int, int);
+extern FuncPtr68 D_00298F68[];
 extern "C" int DIntr_alias() asm("DIntr");
 extern "C" int func_00267530_alias() asm("func_00267530");
 typedef void (*FuncPtr)(int);
@@ -432,7 +434,16 @@ extern "C" void func_001818B4(int arg0)
     memset_alias((void *)(temp_s0 + 0x18), 0, 0x20);
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00181920);
+extern "C" void func_00181920(int arg0)
+{
+    char *elem = (char *)&D_006E9288 + (arg0 << 6);
+    if (*(int *)(elem + 8) < 0) {
+        int idx = *(int *)(elem + 4);
+        if (idx != -1) {
+            *(int *)(elem + 8) = D_00298F68[idx](*(int *)(elem + 0x28) >= 2, *(int *)(elem + 0x24), 0, 8, 0, 8);
+        }
+    }
+}
 
 extern "C" void func_00181998(int arg0)
 {
