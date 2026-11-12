@@ -25,9 +25,16 @@ while :; do
   orca terminal wait --terminal "$H" --for tui-idle --timeout-ms 1800000 --json >/dev/null 2>&1
   sleep 30
   # "unknown" (a stale handle, Orca closed) is never read as a normal stop.
-  scr=$(orca terminal read --terminal "$H" --screen --json 2>/dev/null |
-        "$PY" -c "import sys,json; print('\n'.join(json.load(sys.stdin)['result']['terminal']['tail']))") &&
-    [ -n "$scr" ] || { echo "STATUS: unknown (could not read terminal $H)"; exit 5; }
+  # A failed read is retried for 10 minutes first: Orca updating itself takes
+  # its CLI away for a minute or two while the agents keep running.
+  scr=""
+  for _ in 1 2 3 4 5 6 7 8 9 10; do
+    scr=$(orca terminal read --terminal "$H" --screen --json 2>/dev/null |
+          "$PY" -c "import sys,json; print('\n'.join(json.load(sys.stdin)['result']['terminal']['tail']))" 2>/dev/null) &&
+      [ -n "$scr" ] && break
+    scr=""; sleep 60
+  done
+  [ -n "$scr" ] || { echo "STATUS: unknown (could not read terminal $H)"; exit 5; }
   echo "$scr" | grep -qE "$BUSY" && continue
   last=$(echo "$scr" | grep -v '^\s*$' | tail -30 | cut -c1-170)
   # Only the last lines count: an old message higher up is not the reason.
