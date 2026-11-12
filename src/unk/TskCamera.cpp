@@ -400,7 +400,17 @@ extern "C" void func_001FC744(int arg0, int arg1, int arg2)
     Xiiiii_func_001FC600(arg0, arg1, M2C_FIELD(arg2, int *, 0x504), M2C_FIELD(arg2, int *, 0x508));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FC77C);
+extern "C" void func_001FC77C(int arg0, int arg1, int arg2)
+{
+    int buf[4];
+    int v;
+
+    v = M2C_FIELD(arg0, int *, 0x50C);
+    buf[0] = arg2;
+    v = (v + 3) & ~3;
+    M2C_FIELD(arg0, int *, 0x50C) = v;
+    X_func_001FC5E4(arg0, arg1, (int)buf, 4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FC7B8);
 
