@@ -1933,7 +1933,28 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D10D0);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D1410);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D1720);
+extern "C" int func_001D1720(int arg0, unsigned int arg1, int arg2)
+{
+    void *var_v0_2;
+
+    if (Xiiu_func_001D046C(arg0, arg1) != 0) {
+        switch ((arg1 >> 28) & 3) {
+        case 0:
+            var_v0_2 = (void *)Xiiu_func_001D2D00(arg0, arg1);
+            break;
+        case 1:
+            var_v0_2 = (void *)Xiiu_func_001D2B8C(arg0, arg1);
+            break;
+        case 2:
+            var_v0_2 = (void *)Xiiu_func_001D2BA8(arg0, arg1);
+            break;
+        default:
+            return 0;
+        }
+        return (*(int *)((char *)var_v0_2 + 0x120) & arg2) != 0;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D17C8);
 
