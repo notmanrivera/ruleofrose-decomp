@@ -351,7 +351,17 @@ extern "C" int func_00166A0C(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166A1C);
+extern "C" int func_00166A1C(int arg0, int arg1, int arg2, int arg3)
+{
+    M2C_FIELD(arg0, int *, 0) = arg1;
+    M2C_FIELD(arg0, int *, 8) = arg2;
+    M2C_FIELD(arg0, int *, 0xC) = arg3;
+    M2C_FIELD(arg0, int *, 0x2C) = -1;
+    M2C_FIELD(arg0, int *, 0x34) = (int)&_vt$6EmyOut;
+    M2C_FIELD(arg0, int *, 0x1C) = 0;
+    M2C_FIELD(arg0, int *, 0x20) = 0;
+    M2C_FIELD(arg0, int *, 0x30) = Xiii_func_0010423C(8, 0x18);
+}
 
 extern "C" int Xii_func_00166AD0(int) asm("func_00166AD0");
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
