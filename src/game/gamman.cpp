@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int X_func_001D84B0(...) asm("func_001D84B0");
 extern "C" void func_001331F4(void *, int, int, int, int, int, float);
 template <class T> class GamList4610 {
 public:
@@ -862,7 +863,28 @@ extern "C" void func_001C0D44(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C0D70);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C1378);
+extern "C" void func_001C1378(int arg0)
+{
+    struct { char pad0[16]; } stack;
+    int temp_a0;
+    int temp_v0;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x22090);
+    if (temp_v0 != 0) {
+        X_func_001DA228(temp_v0, 0x1C, (int)&stack);
+        X_func_001DA740(M2C_FIELD(arg0, int *, 0x22090), 0x1B, (int)&stack);
+    }
+    temp_a0 = M2C_FIELD(arg0, int *, 0x22094);
+    if (temp_a0 != 0) {
+        X_func_001DA228(temp_a0, 0x1C, (int)&stack);
+        X_func_001DA740(M2C_FIELD(arg0, int *, 0x22094), 0x1B, (int)&stack);
+    }
+    X_func_001D84B0(arg0);
+    M2C_FIELD(arg0, int *, 0x21FF0) = 0;
+    M2C_FIELD(arg0, int *, 0x22004) = 0;
+    M2C_FIELD(arg0, int *, 0x22008) = 0;
+    M2C_FIELD(arg0, int *, 0x21F60) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C143C);
 
