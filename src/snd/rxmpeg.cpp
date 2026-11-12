@@ -423,7 +423,21 @@ end:
     return ret;
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_001810F4);
+// Returns the 0x180: $v0 holds it at the end, and only a pseudo tied to
+// the return register is allocated ahead of the 0x80 used three times.
+extern "C" int func_001810F4(int arg0)
+{
+    int r = 0x180;
+    M2C_FIELD(arg0, int *, 0x30) = r;
+    M2C_FIELD(arg0, int *, 0x28) = 0xE00;
+    M2C_FIELD(arg0, int *, 0x2C) = 0x200;
+    M2C_FIELD(arg0, int *, 0) = 0;
+    M2C_FIELD(arg0, int *, 4) = 0;
+    M2C_FIELD(arg0, int *, 0x20) = 0x80;
+    M2C_FIELD(arg0, int *, 0x18) = 0x80;
+    M2C_FIELD(arg0, int *, 0x1C) = 0x80;
+    return r;
+}
 
 extern "C" void func_00181128(void *self, int theFlags)
 {
