@@ -78,7 +78,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C990);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C9D8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018CA58);
+extern "C" int func_0018CA58(int arg0, char *arg1)
+{
+    int n = 0;
+
+    if (arg1 == 0) {
+        return 0;
+    }
+    if (M2C_FIELD(arg1, int *, 0) >= 0) {
+        do {
+            arg1 += 0x20;
+            n += 1;
+        } while (M2C_FIELD(arg1, int *, 0) >= 0);
+    }
+    return n;
+}
 
 extern "C" float func_0018CA98(int arg0, int arg1, float fparg0)
 {
