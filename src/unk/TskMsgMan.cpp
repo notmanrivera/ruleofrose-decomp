@@ -995,7 +995,16 @@ extern "C" int func_001F3788()
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F37B8);
+extern "C" int func_001F37B8()
+{
+    char *base = (char *)&D_007812C0;
+
+    if (M2C_FIELD(base, int *, 0x21F48) & 4) {
+        M2C_FIELD(base, int *, 0x21F4C) &= ~0x800;
+    }
+    M2C_FIELD(base, int *, 0x21F4C) &= ~0x400000;
+    return 1;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE548);
 
