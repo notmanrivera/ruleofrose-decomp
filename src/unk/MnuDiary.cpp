@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0018741C(int) asm("func_0018741C");
 extern "C" int Xii_func_00187464(int) asm("func_00187464");
 extern "C" int Xii_func_0018C130(int) asm("func_0018C130");
 extern "C" int Xii_func_0019A7D8(int) asm("func_0019A7D8");
@@ -265,7 +266,21 @@ extern "C" void func_0019A754(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A780);
+extern "C" int func_0019A780(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0) == 1) {
+        return -1;
+    }
+    M2C_FIELD(arg0, int *, 0) = 1;
+    M2C_FIELD(arg0, int *, 0x3C) = 0;
+    M2C_FIELD(arg0, int *, 0x54) = 3;
+    M2C_FIELD(arg0, int *, 0x40) = 0;
+    M2C_FIELD(arg0, int *, 0x44) = 0;
+    M2C_FIELD(arg0, int *, 0x154C) = -1;
+    M2C_FIELD(arg0, int *, 0x1550) = -1;
+    Xii_func_0018741C(arg0 + 0x58);
+    return 0;
+}
 
 extern "C" int func_0019A7D8(int arg0)
 {
