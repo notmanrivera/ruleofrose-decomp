@@ -558,7 +558,18 @@ extern "C" int func_00164078()
     return X_func_00166A0C(p);
 }
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001640AC);
+extern "C" void func_001640AC(int arg0, int arg1, int arg2)
+{
+    MgrX *m = (MgrX *)arg0;
+    int i;
+    for (i = 0; i < 0x40; i++) {
+        EmyX *e = m->m_emy[i];
+        if (e != 0 && e->m_id == arg1) {
+            int *slot = (int *)((i * 4) + (int)m);
+            slot[0xCC] = arg2;
+        }
+    }
+}
 
 extern "C" int func_001640E8(int arg0)
 {
