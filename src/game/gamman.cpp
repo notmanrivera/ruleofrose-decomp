@@ -1,4 +1,11 @@
 #include "include_asm.h"
+extern "C" int X_func_0018741C(...) asm("func_0018741C");
+extern "C" int X_func_00187464(...) asm("func_00187464");
+extern "C" int X_func_001874AC(...) asm("func_001874AC");
+extern "C" int X_func_001874F4(...) asm("func_001874F4");
+extern "C" int X_func_001875C0(...) asm("func_001875C0");
+extern "C" int X_ror_assert(...) asm("ror_assert");
+extern int D_002B8C90;
 extern "C" void func_001348B0(void *, int) asm("func_001348B0");
 extern "C" void func_00135594(void *, int) asm("func_00135594");
 extern "C" void *func_001D2B8C();
@@ -265,7 +272,21 @@ extern "C" void func_001BDD48(int arg0)
     Xii_func_00187464(arg0 + 0x14);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BDDBC);
+extern "C" void func_001BDDBC(int arg0)
+{
+    int temp_s1;
+
+    temp_s1 = arg0 + 0x14;
+    if (M2C_FIELD(arg0, int *, 0x1078) == 0) {
+        X_ror_assert((int) D_002FB330, 0xCC, (int) D_002FB350);
+    }
+    if (X_func_001875C0(temp_s1, M2C_FIELD(arg0, int *, 0x1084)) != 0) {
+        X_func_00187464(temp_s1);
+    }
+    X_func_0018741C(temp_s1);
+    X_func_001874F4(temp_s1, M2C_FIELD(arg0, int *, 0x1084), ((int *)&D_002B8C90)[M2C_FIELD(arg0, int *, 0x107C)], 0);
+    X_func_001874AC(temp_s1);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FB188);
 
