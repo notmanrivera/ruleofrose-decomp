@@ -1396,7 +1396,27 @@ extern "C" int func_00185A74(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185AA4);
+extern "C" int func_00185AA4(MsgWin *self)
+{
+    int v;
+    if (self->m_str[self->m_pos] == 'g') {
+        self->m_pos++;
+        int n = func_00184578(self, self->m_str + self->m_pos, &v);
+        self->m_pos += n;
+        if (n <= 0) {
+            return 0;
+        }
+        v = D_007B205C[v];
+    } else {
+        int n = Xiiii_func_00184600((int)self, (int)(self->m_str + self->m_pos), (int)&v);
+        self->m_pos += n;
+        if (n <= 0) {
+            return 0;
+        }
+    }
+    self->m[0x90 / 4] = v;
+    return 0;
+}
 
 extern "C" int func_00185B58(int arg0, unsigned char *arg1, int *arg2)
 {
