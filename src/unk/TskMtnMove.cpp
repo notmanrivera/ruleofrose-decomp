@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiii_func_001E4908(int, int, int, int) asm("func_001E4908");
 extern "C" int Xii_func_001E4D04(int) asm("func_001E4D04");
 extern "C" int Xiiiiii_func_001E4EBC(int, int, int, int, int) asm("func_001E4EBC");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -122,7 +123,17 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5C40);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5D1C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5DE4);
+extern "C" void func_001E5DE4(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
+{
+    int p[4];
+
+    if (Xiiii_func_001E4908(arg0, arg1, (int)p, 1) != 0) {
+        *(short *)(p[0] + 0x2A) = arg2;
+        *(short *)(p[0] + 0x2C) = arg3;
+        *(short *)(p[0] + 0x2E) = arg4;
+        *(short *)(p[0] + 0x30) = arg5;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5E58);
 
