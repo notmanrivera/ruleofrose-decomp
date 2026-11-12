@@ -449,7 +449,20 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BF8C4);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BFE30);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BFF28);
+extern "C" void func_001BFF28(char *self, int theA)
+{
+    *(int *)(self + 0x64) = theA;
+
+    switch (*(int *)(self + 0x18)) {
+    case 4:
+        break;
+    case 8:
+        if (*(int *)(self + 0x68) != 0) {
+            *(int *)(self + 0x64) = theA | 0x80;
+        }
+        break;
+    }
+}
 
 extern "C" void func_001BFF5C(int arg0, int arg1)
 {
