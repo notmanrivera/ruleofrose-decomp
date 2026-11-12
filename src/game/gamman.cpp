@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern char *D_007B205C;
 extern "C" int X_func_00191E58(...) asm("func_00191E58");
 extern char D_006FBD80[];
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
@@ -114,7 +115,18 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BBCFC);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BC370);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BC760);
+extern "C" int func_001BC760()
+{
+    int r = -1;
+
+    if (*(int *)(D_007B205C + 0x54) == 2) {
+        r = *(int *)(D_007B205C + 0x44);
+        if (r == 0xA00) {
+            r = -1;
+        }
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BC790);
 
