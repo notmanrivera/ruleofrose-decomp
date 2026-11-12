@@ -34,7 +34,14 @@ extern int D_007B40C0;
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F0D0);
 
-INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F13C);
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+
+extern "C" void func_0017F13C(void *arg0, int arg1)
+{
+    if (arg1 & 1) {
+        return X___builtin_delete(arg0);
+    }
+}
 
 extern "C" void func_0017F164(int arg0)
 {
