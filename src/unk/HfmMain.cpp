@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void Xv_func_00147760(int) asm("func_00147760");
+extern "C" int Xii_func_001457F0(int) asm("func_001457F0");
 extern "C" int Xiiii_ffi_func_001F603C(int, int, int, int, float, float, int) asm("func_001F603C");
 extern "C" void Xv_func_001469CC(int, int) asm("func_001469CC");
 extern "C" int Xiii_func_001DA228(int, int, int) asm("func_001DA228");
@@ -602,7 +604,17 @@ INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001481B8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_0014827C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00148304);
+extern "C" void func_00148304(int arg0)
+{
+    if (X_func_00118FEC__9MagSystem((int)&D_006E9840) == 3) {
+        if (Xii_func_001457F0(M2C_FIELD(arg0, int *, 0xC)) != 0) {
+            return Xv_func_00147760(arg0);
+        }
+    } else {
+        X_func_001680A0(arg0, (M2C_FIELD(arg0, int *, 0x60) == 0) ? 0x24 : 0x25, 0x100);
+        X_func_00148450(arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_0014837C);
 
