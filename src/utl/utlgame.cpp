@@ -41,7 +41,7 @@ extern char D_007B2140;
 extern "C" void func_001026B0(int theN, int theFade, int theA);
 extern "C" int func_001025C0(unsigned int theN);
 static inline char *getSnd(GamMan *g) { return (char *)g + 0x18E00; }
-extern "C" void func_001E4EBC(void *theSnd, int theOID, int theA, int theB);
+extern "C" void func_001E4EBC(void *theSnd, int theOID, int theA, int theB, int theC);
 extern "C" int func_001E5E58(void *theSnd, int theOID, int theA, int theB);
 extern "C" void func_001F97C8(int theOID, int theFade);
 extern "C" int func_0010423C(int theMin, int theMax);
@@ -77,19 +77,14 @@ INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_001024D0);
 #endif
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
-extern "C" void func_0010254C(int theOID, int theA)
+extern "C" int func_0010254C(int theOID, int theA)
 {
     if (theA) {
-        func_001E4EBC(getSnd(&D_007812C0), theOID, 1, theA);
+        func_001E4EBC(getSnd(&D_007812C0), theOID, 1, theA, 0);
     } else {
-        func_001E4EBC(getSnd(&D_007812C0), theOID, 1, 0);
+        func_001E4EBC(getSnd(&D_007812C0), theOID, 1, 0, 0);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_0010254C);
-#endif
 
 
 INCLUDE_RODATA("asm/nonmatchings/utl/utlgame", D_002E5728);
@@ -130,11 +125,11 @@ extern "C" void func_001026B0(int theN, int theFade, int theA)
     int oid = func_001025C0(theN);
     if (oid) {
         if (theA) {
-            func_001E4EBC(getSnd(&D_007812C0), oid, 1, theA);
+            func_001E4EBC(getSnd(&D_007812C0), oid, 1, theA, 0);
         } else if (theFade > 0) {
             func_001F97C8(oid, theFade);
         } else {
-            func_001E4EBC(getSnd(&D_007812C0), oid, 1, 0);
+            func_001E4EBC(getSnd(&D_007812C0), oid, 1, 0, 0);
         }
     }
 }
@@ -150,7 +145,7 @@ extern "C" void func_00102758(int theN)
     int oid = func_001025C0(theN);
     void *snd = getSnd(&D_007812C0);
     if (oid && func_001E5E58(snd, oid, 0x16, 0) == 0) {
-        func_001E4EBC(snd, oid, 1, 0);
+        func_001E4EBC(snd, oid, 1, 0, 0);
     }
 }
 #else
