@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void V_func_00183194(int) asm("func_00183194");
+extern "C" int I_sceMpegReset(void *) asm("sceMpegReset");
 extern "C" int X_func_0023A5A8(...) asm("func_0023A5A8");
 static inline int rxBad(const int &n) { return n >= 0x41; }
 static inline int &rxAt(int s, const int &n) { return *(int *)(n * 4 + s + 0x20); }
@@ -1004,7 +1006,30 @@ extern "C" void func_001824C8()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_0018252C);
+extern "C" void func_0018252C()
+{
+    if (D_00298F30 != 0) {
+        // set before the first call: it stays in $s0 for both stores
+        int one = 1;
+        func_001824C8();
+        D_00298F54 = 0;
+        D_00298F18 = one;
+        D_00298F1C = 0;
+        D_00298F48 = 0;
+        I_sceMpegReset(&D_006E9200);
+        func_001818B4(0);
+        V_func_00183194(D_00298F2C);
+        func_00181EF4(1);
+        D_00298F24 = one;
+        D_00298F28 = 0;
+        D_006E926C = 0;
+        D_006E9270 = 0;
+        D_006E9274 = 0;
+        D_00298F14 = 0;
+        D_00298F10 = 0x80;
+        func_00181BF4();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_001825E4);
 
