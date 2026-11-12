@@ -531,7 +531,18 @@ extern "C" void func_00211298(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002112A0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002112D8);
+// unk/0020ED9C, func_002112D8: m2c's draft
+
+// ---- declarations
+
+// ---- function
+extern "C" void func_002112D8(unsigned int arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3)
+{
+    char *base = (char *)&D_007B4700;
+    int x = *(int *)(base + ((arg3 >> 19) & 0x7C));
+    int y = *(int *)(base + ((arg3 >> 14) & 0x7C));
+    *(int *)(base + ((arg3 >> 9) & 0x7C)) = x * y;
+};
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00211318);
 
