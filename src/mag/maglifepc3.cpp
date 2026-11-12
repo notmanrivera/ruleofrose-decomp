@@ -1,4 +1,28 @@
 #include "include_asm.h"
+#include "bed/bedmemory.h"
+#include "bed/bedpfh.h"
+extern BedMemory D_006E9800;
+struct FileReadReq {
+    int m_unk00;
+    int m_unk04;
+    int m_unk08;
+    const char *m_name;
+    int m_offset;
+    int m_unk14;
+    void *m_buf;
+    int m_size;
+    int m_unk20;
+    FileReadReq();
+};
+class FileReader {
+public:
+    FileReadReq *m_req;
+    int m_unk04;
+    FileReader();
+    ~FileReader();
+    int func_001BE524(FileReadReq *theReq, int theFlag);
+};
+extern "C" int X_func_0010C568__8DogActorP6BedPfhi(...) asm("func_0010C568__8DogActorP6BedPfhi");
 extern "C" int Xiiifii_func_0010B1B0__8DogActoriifii(int, int, int, float, int, int) asm("func_0010B1B0__8DogActoriifii");
 extern "C" int Xiiiiiif_func_0011D790(int, int, int, int, int, float) asm("func_0011D790");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -142,7 +166,53 @@ end:
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc3", D_002EA7C0);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011D990);
+extern "C" int func_0011D990(int arg0, int arg1, const char *theFileName, int theIndex)
+{
+    char work[0x800 + 0x40];
+    if (!theFileName) {
+        X_ror_assert((int) D_002EA758, 0xFC, (int) "theFileName");
+    }
+    X_func_00109B88__8DogActori(M2C_FIELD(arg0, int *, 0x58), arg1);
+    FileReader reader;
+    FileReadReq req;
+    req.m_unk08 = 1;
+    req.m_name = theFileName;
+    req.m_buf = (void *)(((int)work / 64 + 1) * 64);
+    req.m_size = 0x800;
+    reader.func_001BE524(&req, 0);
+    BedPfh pfh1(req.m_buf);
+    if (pfh1.getFileOffset(0) != 2048) {
+        X_ror_assert((int) D_002EA758, 0x114, (int) "pfh1.getFileOffset(0) == (2048)");
+    }
+    if (!(theIndex >= 0 && theIndex < pfh1.getNumFile())) {
+        X_ror_assert((int) D_002EA758, 0x116, (int) "theIndex >= 0 && theIndex < pfh1.getNumFile()");
+    }
+    int size = pfh1.getFileSize(theIndex);
+    if (size <= 0) {
+        X_ror_assert((int) D_002EA758, 0x11C, (int) D_002EA7A8);
+        return 0;
+    }
+    int bytes = (size + 2047) / 2048 * 2048;
+    void *p = D_006E9800.alloc(bytes, D_002EA758, 0x121, 0, 1);
+    if (!(p != __null)) {
+        X_ror_assert((int) D_002EA758, 0x122, (int) "p != __null");
+    }
+    if (!((((int)p) % 64) == 0)) {
+        X_ror_assert((int) D_002EA758, 0x123, (int) "(((int)p)%64)==0");
+    }
+    req.m_offset = pfh1.getFileOffset(theIndex);
+    req.m_unk14 = 0;
+    req.m_buf = p;
+    req.m_size = bytes;
+    req.m_unk20 = 1;
+    reader.func_001BE524(&req, 0);
+    BedPfh pfh2(p);
+    if (X_func_0010C568__8DogActorP6BedPfhi(M2C_FIELD(arg0, int *, 0x58), &pfh2, arg1) <= 0) {
+        D_006E9800.free(p);
+        return 0;
+    }
+    return 1;
+}
 
 #ifdef NON_MATCHING
 // NON_MATCHING: 11 of 55 instructions
