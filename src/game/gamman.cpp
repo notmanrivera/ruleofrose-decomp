@@ -1,4 +1,14 @@
 #include "include_asm.h"
+struct Header1F84 {
+    int data[8];
+};
+struct Entry1F84 {
+    int data[12];
+};
+struct DstEntry1F84 {
+    Entry1F84 entry;
+    int pad[8];
+};
 struct GamElemD0530 {
     char pad[0xC];
     int unk0c;
@@ -971,7 +981,19 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FB3F0);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C1B48);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C1F84);
+extern "C" void func_001C1F84(int unused, Header1F84 *dst_header, const Header1F84 *src_header, int count)
+{
+    *dst_header = *src_header;
+    DstEntry1F84 *dst = (DstEntry1F84 *)(dst_header + 1);
+    const Entry1F84 *src = (const Entry1F84 *)(src_header + 1);
+    if (count > 0) {
+        do {
+            dst->entry = *src;
+            dst++;
+            src++;
+        } while (--count != 0);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FB418);
 
