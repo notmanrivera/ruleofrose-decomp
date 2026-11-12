@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int func_001D2AAC(int, unsigned int);
+extern "C" int func_001D2ADC(int, unsigned int);
+extern "C" int func_001D2B10(int, unsigned int);
 extern "C" int func_001D890C(int, int);
 extern "C" int func_001DB71C(int, int);
 extern "C" int func_001D89C4(int, int);
@@ -2101,7 +2104,25 @@ extern "C" int func_001D045C(int arg0)
     return (*(int *)(int *)((char *)(arg0) + 0x1D99C));
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D046C);
+extern "C" int func_001D046C(int arg0, unsigned int arg1)
+{
+    switch ((arg1 >> 28) & 3) {
+    case 0:
+        return func_001D2B10(arg0, arg1);
+    case 1:
+        return func_001D2AAC(arg0, arg1);
+    case 2:
+        if (((arg1 >> 23) & 0x1F) == 5) {
+            if (func_001D2B10(arg0, arg1) != 0) {
+                return 1;
+            }
+            return func_001D2ADC(arg0, arg1) != 0;
+        }
+        return func_001D2ADC(arg0, arg1);
+    default:
+        return 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D0530);
 
