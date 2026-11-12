@@ -310,8 +310,10 @@ def write_ninja():
         # From src/, so __FILE__ is the original relative path ("bed/bedsubmode.cpp").
         # strip -N rewrites the symbol table: the old assembler emits an sh_info
         # modern ld rejects ("local symbol at index N (>= sh_info of N)").
+        # fix_hi16.py puts back the lui the old assembler sometimes loses.
         n.rule("cc", f"cd src && ee-cc {COMPILER} $cflags -c $srcrel -o ../$out"
-                     " && cd .. && mips-linux-gnu-strip $out -N dummy-symbol-name",
+                     " && cd .. && mips-linux-gnu-strip $out -N dummy-symbol-name"
+                     " && python3 tools/fix_hi16.py $out",
                description="CC $in")
         n.rule("ld", f"mips-linux-gnu-ld -EL -T build/{BASENAME}.ld "
                      "-T build/undefined_funcs_auto.txt -T build/undefined_syms_auto.txt "

@@ -72,6 +72,13 @@ While a `.cpp` still has `INCLUDE_ASM`/`INCLUDE_RODATA` it is **partial**:
 
   `tools/match.py <file> --extra=-DNON_MATCHING` shows how close it is.
 
+GNU as 2.10-ee sometimes loses the `lui` of a macro load or store through a
+symbol (`lw $2,$L12($2)`, `sw $0,D_xxx($3)`): another instruction of the
+expansion lands on it, with the `R_MIPS_HI16` still attached. It depends on
+the assembler's internal state, so it comes and goes as a file changes. The
+build and `match.py` run `tools/fix_hi16.py` on every compiled object, which
+rebuilds those `lui`s; no workaround is needed in the source.
+
 The `.s` files are assembled by ee-gcc 2.96's own assembler (GNU as
 2.10-ee) as part of the compiler's output; `include/include_asm.h` and
 `include/labels.inc` are ours (splat's generation is off).

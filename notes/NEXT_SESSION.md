@@ -106,3 +106,8 @@ Pendiente que salió:
   `.rodata` al principio) quizá solo lo esquiva en maglifepc: si vuelve a
   salir, mejor un `RESET_AT_STATE` (ver `src/unk/0020ED9C.cpp`) en
   `include_asm.h` y comprobarlo con la compilación completa.
+- Resuelto: `tools/fix_hi16.py` repara en cada objeto (build y match.py)
+  todo R_MIPS_HI16 que no caiga sobre un `lui`, con el registro base de su
+  R_MIPS_LO16. Se quitó el parche de `include_asm.h`; `build/ok` verde, y
+  reparó 2 instrucciones (maglifepc, 0020ED9C). Los `RESET_AT_STATE` de
+  `unk/0020ED9C.cpp` ya no hacen falta.

@@ -41,6 +41,7 @@ from elftools.elf.relocation import RelocationSection
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import configure  # noqa: E402  (flags and split table)
+import fix_hi16  # noqa: E402  (the build's lui repair)
 
 ROOT = Path(__file__).resolve().parent.parent
 BASE = 0x00100000
@@ -168,6 +169,7 @@ cp {v}/out.o /work/{out_rel}
                            capture_output=True, text=True)
     if r.returncode:
         raise CompileError(r.stdout + r.stderr)
+    fix_hi16.fix(str(out))          # as the build does (tools/fix_hi16.py)
     return out, r.stderr.strip()
 
 
