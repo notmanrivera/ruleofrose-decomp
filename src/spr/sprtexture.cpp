@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xiiiiiiiii_func_0018F1F4(int, int, int, int, int, int, int, int) asm("func_0018F1F4");
+extern int D_00299990;
+extern int D_002999B0;
 extern "C" int Xii_func_00191124(int) asm("func_00191124");
 extern "C" int Xii_func_00191174(int) asm("func_00191174");
 extern "C" int Xiiii_func_0018F744(int, int, int) asm("func_0018F744");
@@ -328,7 +331,10 @@ INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_001912A0);
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_001913C4);
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0019143C);
+extern "C" void func_0019143C(int arg0, int arg1, int arg2)
+{
+    Xiiiiiiiii_func_0018F1F4(arg0 + 0x48, arg1, 1, arg2, 0, -1, (int)&D_002999B0, (int)&D_00299990);
+}
 
 extern "C" void func_00191478(int arg0)
 {
