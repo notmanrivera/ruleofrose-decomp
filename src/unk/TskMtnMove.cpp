@@ -1,4 +1,16 @@
 #include "include_asm.h"
+struct VObj747C {
+    virtual int vfunc1();
+};
+struct Node747C {
+    VObj747C *obj;
+    Node747C *next;
+    int state;
+};
+struct List747C {
+    Node747C *head;
+};
+extern "C" void X747C_func_001E7340(List747C *, Node747C *, int) asm("func_001E7340");
 struct Ent5D1C {
     char pad0[0x14];
     int unk14;
@@ -470,7 +482,17 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7340);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7414);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E747C);
+extern "C" void func_001E747C(List747C *arg0, int *arg1, int arg2)
+{
+    for (Node747C *node = arg0->head; node != 0; node = node->next) {
+        for (int *p = arg1; *p != -1; p++) {
+            if (node->obj->vfunc1() == *p && node->state != 2) {
+                X747C_func_001E7340(arg0, node, arg2);
+                node->state = arg2;
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7544);
 
