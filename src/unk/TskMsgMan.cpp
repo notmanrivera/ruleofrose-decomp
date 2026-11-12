@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" int Xii_func_001A06D4(int, int) asm("func_001A06D4");
+extern "C" int Xii_func_001A0BA0(int) asm("func_001A0BA0");
+extern int D_007B205C;
+extern int _9MagSystem$m_current_system;
 extern "C" int Xiiu_func_001D19A8(int, unsigned int) asm("func_001D19A8");
 typedef unsigned int u_long128 __attribute__((mode(TI)));
 extern int _vt$10TskSysFunc;
@@ -947,7 +951,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2F0C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F34C8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F370C);
+extern "C" int func_001F370C(int arg0)
+{
+    if (Xii_func_001A06D4(M2C_FIELD(arg0, int *, 0x18),
+                          (int)_9MagSystem$m_current_system + 0x40) != 0) {
+        M2C_FIELD(D_007B205C, int *, 0xB4) = Xii_func_001A0BA0(M2C_FIELD(arg0, int *, 0x18));
+        return 1;
+    }
+    return 0;
+}
 
 extern "C" int func_001F3760()
 {
