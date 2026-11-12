@@ -1243,7 +1243,27 @@ extern "C" void func_00185348(MsgWin *self)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001853CC);
+extern "C" void func_001853CC(void *arg0, int arg1)
+{
+    MsgWin *self = (MsgWin *)arg0;
+    if (arg1 == 1) {
+        self->m[0xD0 / 4] = arg1;
+        char *p = (char *)&D_006FBD80;
+        void *s = p + 0x42BB0;
+        int n = self->m[0xD4 / 4];
+        X_func_00191F98(s, 2);
+        X_func_00191ED0(s, 2);
+        X_func_00191D20(s, 2, 1);
+        X_func_00191D74(s, 2, 1);
+        X_func_00191DC8(s, 2, (n <= 0) ? 0 : (n - 1));
+    } else {
+        self->m[0xD0 / 4] = 0;
+        char *p = (char *)&D_006FBD80;
+        void *s = p + 0x42BB0;
+        X_func_00191D20(s, 2, 0);
+        X_func_00191D74(s, 2, 0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001854AC);
 
