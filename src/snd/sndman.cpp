@@ -111,7 +111,20 @@ extern "C" int func_0017F81C(int arg0, int arg1)
     return Xiii_func_00180A90(arg0, *(unsigned short *)(v + 0x20));
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F878);
+extern "C" int X4_func_001809D8(int, int, int, int) asm("func_001809D8");
+extern "C" int atoi(const char *);
+
+extern "C" void func_0017F878(int arg0, unsigned char *arg1, int arg2)
+{
+    char buf[3];
+
+    buf[0] = arg1[3];
+    buf[1] = arg1[4];
+    buf[2] = 0;
+    int n = atoi(buf);
+    *(int *)(arg0 + 0x1AF4) = n;
+    X4_func_001809D8(arg0, n, (int)arg1, arg2);
+}
 
 extern "C" int func_0017F8E4(int arg0)
 {
