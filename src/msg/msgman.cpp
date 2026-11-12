@@ -93,6 +93,7 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+extern "C" void Xv_func_00183BB8(void *) asm("func_00183BB8");
 extern "C" int Xii_func_00184A94(int) asm("func_00184A94");
 extern "C" int atoi(const char *);
 extern "C" int func_0027BBA8(const char *theStr, int theA, int theBase);
@@ -1604,7 +1605,22 @@ extern "C" int func_00187414()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_0018741C);
+// Two windows of 0x3BC bytes: the copied pointer keeps the first call's
+// argument separate from the parameter (the game copies $a0 to $s0 and back).
+extern "C" int func_0018741C(int arg0)
+{
+    MsgWin *p = (MsgWin *)arg0;
+    MsgWin *q;
+    int i;
+    q = p;
+    i = 1;
+    for (; i >= 0; i--) {
+        Xv_func_00183BB8(q);
+        q = (MsgWin *)((char *)q + 0x3BC);
+        p = q;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00187464);
 
