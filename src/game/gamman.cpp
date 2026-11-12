@@ -1,4 +1,30 @@
 #include "include_asm.h"
+struct __attribute__((aligned(8))) DogVector {
+    float m_x;
+    float m_y;
+    float m_z;
+    float m_w;
+    DogVector() {}
+    DogVector(float x, float y, float z, float w)
+    {
+        m_x = x;
+        m_y = y;
+        m_z = z;
+        m_w = w;
+    }
+};
+struct PcEffParam {
+    int m_kind;
+    int m_unk04;
+    int m_unk08;
+    int m_unk0C;
+    DogVector m_pos;
+    float m_rot[3];
+    int m_num;
+    int m_pad[20];
+};
+extern "C" int func_00176CC8(void *, void *);
+extern "C" void func_001CBA0C(void *, void *, int);
 extern "C" int X_func_0018741C(...) asm("func_0018741C");
 extern "C" int X_func_00187464(...) asm("func_00187464");
 extern "C" int X_func_001874AC(...) asm("func_001874AC");
@@ -1439,7 +1465,19 @@ extern "C" void func_001CB8E4(int arg0, int arg1, int arg2)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CB970);
+extern "C" void func_001CB970(void *arg0, void *arg1, int arg2, float *arg3)
+{
+    if (arg2 == 0x32) {
+        DogVector pos(arg3[0], arg3[1], arg3[2], 50.0f);
+        PcEffParam param;
+        param.m_kind = arg2;
+        param.m_pos = pos;
+        param.m_unk08 = 0;
+        unsigned int off = 0x837E0;
+        char *p = D_006FBD80 + off;
+        func_001CBA0C(arg0, arg1, func_00176CC8(p, &param));
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBA0C);
 
