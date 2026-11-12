@@ -445,7 +445,13 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C020C);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C0254);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C0298);
+extern "C" int func_001C0298(int arg0, int arg1)
+{
+    if ((unsigned int)(arg1 - 0x20) < 0x60U) {
+        return 1;
+    }
+    return (unsigned int)(arg1 - 0xA0) < 0x40U;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C02B8);
 
