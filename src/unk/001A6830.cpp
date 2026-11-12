@@ -1401,7 +1401,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE040);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE188);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE1BC);
+extern "C" int func_001AE1BC(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0) == 0) {
+        return -1;
+    }
+    M2C_FIELD(arg0, int *, 0) = 0;
+    return 0;
+}
 
 extern "C" int func_001AE1D8()
 {
