@@ -575,9 +575,14 @@ every linked worktree its own compile server (`ror-match-<dir>`), so
 Ownership: a worker edits one `src/<file>.cpp` (or proposes a new header).
 `config/`, `symbols/`, shared headers, `notes/` and `docs/` change only in
 the main checkout; a worker writes the lines it needs (for example for
-`config/symbol_addrs_manual.txt`) in its report. Before taking a worker's
-commit, run `tools/match.py <file>` in its worktree yourself, then
-cherry-pick it and run the full build in the main checkout.
+`config/symbol_addrs_manual.txt`) in its report.
+
+Taking a worker's commits: `tools/merge_worker.sh <name>` (`--check` to
+only verify) re-runs `match.py` on every file they touch inside the
+worker's worktree, refuses commits outside `src/*.cpp`, cherry-picks them,
+requires `build/ok` (undoing the merge otherwise) and resets the worker's
+branch to the result. `tools/backlog.py` lists what is left by size, per
+file, for the next batch; the briefs themselves are in `WORKER_BRIEF.md`.
 
 Orca on Windows splits a multi-line `agent launch --prompt` into separate
 command-line arguments, and the agent refuses them. Launch the agent
