@@ -123,7 +123,12 @@ extern "C" int func_001442DC(int arg0)
     return X_func_0012A6DC((int)&D_006FBD80 + off, arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144308);
+extern "C" int func_00144308(int arg0)
+{
+    int off = 0x2BD20;
+
+    return X_func_0012A71C((int)&D_006FBD80 + off, arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144334);
 
