@@ -93,6 +93,8 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+extern "C" int Xii_func_00185704(int) asm("func_00185704");
+extern "C" int Xiii_func_00184F2C(int, int) asm("func_00184F2C");
 extern "C" int Xiiii_func_00184578(int, int, int) asm("func_00184578");
 extern "C" int Xiiii_func_00184600(int, int, int) asm("func_00184600");
 struct MsgNameEnt { int id; char *name; };
@@ -1133,7 +1135,21 @@ extern "C" void func_00185704(MsgWin *self)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185760);
+extern "C" int func_00185760(int arg0)
+{
+    int temp_a1;
+    int var_v0 = 0;
+
+    Xii_func_00185704(arg0);
+    temp_a1 = M2C_FIELD(arg0, int *, 0x34);
+    if (temp_a1 != 0) {
+        if (temp_a1 == 1) {
+            var_v0 = ((M2C_FIELD(arg0, int *, 0x78) - M2C_FIELD(arg0, int *, 0x70)) >> 1) -
+                     (Xiii_func_00184F2C(arg0, M2C_FIELD(arg0, int *, 0x18) + M2C_FIELD(arg0, int *, 0x1C)) >> 1);
+        }
+    }
+    return var_v0;
+}
 
 extern "C" int func_001857C8(int arg0, int arg1, int arg2, unsigned int arg3)
 {
