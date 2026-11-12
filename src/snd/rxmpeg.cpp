@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int func_0023CCA8_alias(int, int, int) asm("func_0023CCA8");
 extern "C" int Xi_func_001830F0() asm("func_001830F0");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiii_func_001814CC(int, int) asm("func_001814CC");
@@ -294,7 +295,10 @@ extern "C" int func_0018176C()
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00181780);
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_0018182C);
+extern "C" int func_0018182C(int arg0, int arg1, int arg2, int arg3)
+{
+    return func_0023CCA8_alias(arg0, arg2, arg3);
+}
 
 extern "C" int func_00181848()
 {
