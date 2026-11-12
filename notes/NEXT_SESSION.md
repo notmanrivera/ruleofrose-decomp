@@ -65,3 +65,35 @@ Ideas pendientes, de más a menos útil:
    comprobaciones) y que copie también el nombre del servidor de match.
 6. `merge_worker.sh`: avisar cuando un worker haya saltado muchas
    funciones (señal de que su sesión ya está muy larga).
+
+## Hecho en la sesión siguiente (2026-11-12, tarde)
+
+- Tarea 1 hecha (commit `bab916f`): `MagLife0`/`MagLife` viven ahora en
+  `mag/maglife.h` con sus cuerpos inline (las copias de `asm/inline/`) y los
+  campos de `MagLife` (+0x18..+0x2F: `m_scene`, `m_hide`). `MagLifePC` hereda
+  de `MagLifeControlChara`. Además: el slot 16 no es de `MagLifeControlChara`
+  (tiene 15) sino de `MagLifeBwn`/`MagLifePC`/`MagLifeTest`, cada una el
+  suyo. `vfunc09` y `MagLifeBillboard::live` vuelven a ser métodos: son los
+  "key methods", así que `mag/maglife` emite sus nombres RTTI y el `.rodata`
+  de `mag/maglifepc` empieza en 0x2E96B0 (`config/splits_manual.tsv`).
+- Fallo de GNU as 2.10-ee encontrado por el camino: si `.rodata` aparece por
+  primera vez a mitad del archivo, puede ensamblar la carga de una tabla de
+  saltos como lw+addu+lw en vez de lui+addu+lw. `include/include_asm.h` crea
+  `.rodata` al principio de cada archivo parcial; `build/ok` sigue verde.
+- Tarea 2: `tools/orca/next_batch.sh <worker> --watch` (ideas 1, 2 y 6),
+  `watch_agent.sh` dice `STATUS: idle/quota/filter` (idea 3), `progress.py`
+  cuenta los NON_MATCHING (idea 4). Falta la 5.
+
+Pendiente que salió:
+
+- `magscene.h` tiene su propio `MagLifePC` de mentira (0xE0 bytes, sin
+  vtable) para `MagScene::m_pc` (+0x2ADC0); el real mide 0x220, así que
+  `m_unk2AEA0`/`m_unk2AEA4` son campos del PC (+0xE0/+0xE4). Unificarlo con
+  `maglifepc.h` y rehacer el relleno de `MagScene` hasta +0x2BD20.
+- El `.rodata` de `mag/maglifetest` (0x2ED3C8) empieza con "10MagLifePos",
+  "13MagLifeWindow", "8MagLife0", "7MagLife": son los nombres RTTI que cierra
+  `mag/maglifewindow` (su key method está ahí); el límite está mal puesto,
+  como el de `maglifepc`. Igual con "12MagLifeNoise" (0x2ED408), que
+  `maglifetest.cpp` contiene (`MagLifeNoise__vfunc_06`).
+- El constructor `func_0011A888` puede escribirse como constructor real de
+  `MagLifeControlChara` (y el de `MagLifeBillboard`, inline, lo llama).
