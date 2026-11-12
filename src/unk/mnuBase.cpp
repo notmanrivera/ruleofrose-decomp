@@ -265,7 +265,23 @@ extern "C" int func_00191E04(int arg0, int arg1, int arg2)
     return var_v0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00191E58);
+extern "C" int func_00191E58(int arg0, int arg1, int arg2)
+{
+    int *sub;
+    int entry;
+    int idx;
+
+    if (arg1 >= 0xE) {
+        return 0;
+    }
+    sub = (int *)(arg0 + 0x48);
+    entry = ((int *)&D_0029BB70)[arg1];
+    idx = entry * 0x154;
+    if (M2C_FIELD((idx + M2C_FIELD(sub, int *, 0x4AC)), int *, 0x10) != 0) {
+        X_func_0018F520((int)sub, entry, arg2, (int)&D_002999B0, (int)&D_00299990);
+    }
+    return 1;
+}
 
 extern "C" int func_00191ED0(int arg0, int arg1)
 {
