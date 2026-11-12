@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_0019C0E4(int, int) asm("func_0019C0E4");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int X_func_00279C98(...) asm("func_00279C98");
 extern "C" int Xii_func_00194588(int) asm("func_00194588");
@@ -221,7 +222,15 @@ extern "C" void func_0019A754(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A780);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A7D8);
+extern "C" int func_0019A7D8(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0) == 0) {
+        return -1;
+    }
+    Xiii_func_0019C0E4(arg0, 1);
+    M2C_FIELD(arg0, int *, 0) = 0;
+    return 0;
+}
 
 extern "C" int func_0019A814()
 {
