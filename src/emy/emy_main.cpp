@@ -73,7 +73,18 @@ extern "C" void func_00162AFC(int arg0, int arg1, int arg2)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00162B14);
+extern "C" int func_00162B14(int arg0, int arg1)
+{
+    int *p = (int *)(arg0 + 0x10);
+    int *q = (int *)(arg0 + 8);
+    int off = arg1 * 0x3C + 0x170;
+    p = (int *)((char *)p + off);
+    q = (int *)((char *)q + off);
+    int old = *p;
+    *p = old + 1;
+    (*q)--;
+    return old;
+}
 
 extern "C" void func_00162B50(int arg0, int arg1)
 {
