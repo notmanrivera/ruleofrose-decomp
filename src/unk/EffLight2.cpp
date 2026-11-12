@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiiff_func_00174C4C(int, float *, float, float) asm("func_00174C4C");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfi_func_0010DA4C__8DogActor(int) asm("func_0010DA4C__8DogActor");
 extern "C" float Xfii_func_00174D14(int, int) asm("func_00174D14");
@@ -236,7 +237,10 @@ extern "C" void func_00174B3C(int arg0, int arg1, int arg2)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00174BB0);
+extern "C" void func_00174BB0(int arg0, int arg1)
+{
+    Xiiiff_func_00174C4C(arg0, (float *)(arg1 + 4), M2C_FIELD(arg1, float *, 0x2C), M2C_FIELD(arg1, float *, 0x30));
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00174BD8);
 
