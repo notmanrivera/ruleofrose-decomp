@@ -1,4 +1,19 @@
 #include "include_asm.h"
+struct Ent5D1C {
+    char pad0[0x14];
+    int unk14;
+    int unk18;
+    char pad1C[0x28 - 0x1C];
+};
+struct Sub5D1C {
+    Ent5D1C *arr;
+};
+struct Obj5D1C {
+    char pad0[0xD40];
+    Sub5D1C sub;
+};
+extern "C" int func_001800D0(int *, int);
+extern "C" void func_001801C8(int *, int);
 struct Big484C {
     int w[0xC4E0 / 4];
 };
@@ -366,7 +381,24 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5BE0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5C40);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5D1C);
+extern "C" int func_001E5D1C(Obj5D1C *arg0, int arg1, int arg2)
+{
+    if (arg2 < 0) {
+        return 0;
+    }
+    if (func_001800D0(&D_007B2580, arg2) == -1) {
+        return 0;
+    }
+    Sub5D1C *sub = &arg0->sub;
+    int off = arg2 * sizeof(Ent5D1C);
+    if (((Ent5D1C *)((char *)sub->arr + off))->unk14 != arg1) {
+        return 0;
+    }
+    func_001801C8(&D_007B2580, arg2);
+    ((Ent5D1C *)((char *)sub->arr + off))->unk14 = -1;
+    ((Ent5D1C *)((char *)sub->arr + off))->unk18 = -1;
+    return 1;
+}
 
 extern "C" void func_001E5DE4(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
 {
