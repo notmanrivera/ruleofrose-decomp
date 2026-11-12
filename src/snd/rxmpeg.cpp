@@ -665,7 +665,14 @@ extern "C" int func_00183060(int arg0)
     return var_v0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00183078);
+extern "C" void func_00183078(int arg0, int arg1, int arg2)
+{
+    if (arg0 == 0) {
+        char *p = (char *)&D_006E9288;
+        *(int *)(p + 0xC) = arg1;
+        *(int *)(p + 0x10) = arg2;
+    }
+}
 
 extern "C" int func_00183094(int arg0)
 {
