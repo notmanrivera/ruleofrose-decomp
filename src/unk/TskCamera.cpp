@@ -535,7 +535,18 @@ extern "C" int func_001FCA84(int arg0, int arg1)
     return Xii_func_001FCBF8(arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FCAAC);
+extern "C" void func_001FCAAC(int arg0, int arg1)
+{
+    int temp_a0;
+
+    temp_a0 = M2C_FIELD(arg0, int *, 0);
+    if ((temp_a0 != 0) && (M2C_FIELD(arg0, int *, 4) != 0)) {
+        Xii_heapFree__FPv(temp_a0);
+    }
+    if (arg1 & 1) {
+        return Xv___builtin_delete((void *)arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FCB14);
 
