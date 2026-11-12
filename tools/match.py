@@ -51,7 +51,13 @@ LINK_MAP = ROOT / "build/SLUS_214.48.map"
 # The map of the last link that ended well: a build that is running or failed
 # leaves LINK_MAP empty or half written.
 GOOD_MAP = ROOT / "build/match/link.map"
-SERVER = "ror-match"            # see server()
+# The compile server (see server()) mounts one checkout, so each git worktree
+# gets its own: "ror-match" for the main checkout (.git is a directory),
+# "ror-match-<worktree dir>" for a linked worktree (.git is a file).
+# ROR_MATCH_SERVER overrides the name.
+SERVER = os.environ.get("ROR_MATCH_SERVER") or (
+    "ror-match" if (ROOT / ".git").is_dir()
+    else "ror-match-" + (re.sub(r"[^a-zA-Z0-9_.-]", "-", ROOT.name).strip("-.") or "wt"))
 # Bring the mirror up to date with the host: headers, and one file's asm.
 SYNC = """  cp -au /work/src/. $B/src/
   cp -au /work/include/. $B/include/
