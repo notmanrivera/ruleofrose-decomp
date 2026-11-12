@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" float func_0010A650__8DogActor(void *);
 extern "C" int X_func_001C772C(...) asm("func_001C772C");
 extern "C" int X_func_001E4540(...) asm("func_001E4540");
 struct __attribute__((aligned(8))) GamStruct32 {
@@ -2011,7 +2012,23 @@ block_6:
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D0758);
+extern "C" int func_001D0758(int arg0, unsigned int arg1, float *arg2)
+{
+    void *actor = 0;
+    if (Xiiu_func_001D046C(arg0, arg1) != 0) {
+        switch ((arg1 >> 28) & 3) {
+        case 1:
+            actor = (void *)Xiiu_func_001D2B8C(arg0, arg1);
+            break;
+        case 2:
+            actor = (void *)Xiiu_func_001D2BA8(arg0, arg1);
+            break;
+        }
+        *arg2 = func_0010A650__8DogActor((void *)((char *)&D_006FE6A0 + *(int *)((char *)actor + 0x108) * 0x4D0));
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D080C);
 
