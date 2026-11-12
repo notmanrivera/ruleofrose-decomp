@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" void Xii_func_00202F60(int) asm("func_00202F60");
+extern "C" void Xii_func_00202FBC(int) asm("func_00202FBC");
+extern "C" void Xii_func_002039A4(int) asm("func_002039A4");
+extern "C" void Xii_func_00203A00(int) asm("func_00203A00");
+extern "C" int Xiiii_func_001DA130(int, int, int) asm("func_001DA130");
 struct E24 { char b[0x18]; };
 extern E24 D_002F18B8[];
 extern "C" int Xii_func_001CBEDC(int, int) asm("func_001CBEDC");
@@ -231,7 +236,16 @@ extern "C" void func_0016649C(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_001664A4);
+extern "C" void func_001664A4(int arg0, int arg1)
+{
+    Xiiii_func_001DA130(M2C_FIELD(arg0, int *, 0x20), arg1, 0);
+    if (arg1 == 1) {
+        Xii_func_00202F60(M2C_FIELD(arg0, int *, 0x1F0));
+        return Xii_func_002039A4(M2C_FIELD(arg0, int *, 0x1F8));
+    }
+    Xii_func_00202FBC(M2C_FIELD(arg0, int *, 0x1F0));
+    Xii_func_00203A00(M2C_FIELD(arg0, int *, 0x1F8));
+}
 
 extern "C" void func_00166518(int arg0)
 {
