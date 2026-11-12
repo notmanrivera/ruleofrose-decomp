@@ -782,7 +782,20 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00215430);
 extern "C" void func_002155A0(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002155A8);
+// unk/0020ED9C, func_002155A8: m2c's draft
+
+// ---- declarations
+
+// ---- function
+extern "C" void func_002155A8(int arg0, int arg1)
+{
+    if (arg1 == 0xFFFF && arg0 == 1) {
+        D_007B4640 = 0;
+    }
+    if (arg1 == 0xFFFF && arg0 == 1) {
+        D_007B4650 = 0;
+    }
+};
 
 extern "C" void func_002155D4()
 {
