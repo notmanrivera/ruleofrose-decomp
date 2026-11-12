@@ -763,7 +763,23 @@ extern "C" int func_00213ADC(int arg0, int arg1, int arg2, int arg3, int arg4)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213B28);
+extern "C" int func_00213B28(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
+{
+    NodeIter it;
+    int *end = *(int **)arg3;
+    int **found = (int **)arg4;
+
+    it.m_node = *(int **)arg2;
+    while (it.m_node != end) {
+        int *sub = (int *)((char *)it.m_node + 0x10);
+        if (sub[1] == arg1 && sub[10] == arg5) {
+            *found = it.m_node;
+            return 1;
+        }
+        it.m_node = (int *)it.m_node[1];
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213B7C);
 
