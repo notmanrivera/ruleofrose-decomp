@@ -119,7 +119,25 @@ INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00162C88);
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001634D4);
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163570);
+struct EmyX { char pad[0x340]; };
+struct MgrX { int m_unk0; EmyX *m_emy[0x40]; };
+
+extern "C" void func_00163570(int arg0)
+{
+    MgrX *m = (MgrX *)arg0;
+    int i;
+    for (i = 0; i < 0x40; i++) {
+        EmyX *e = m->m_emy[i];
+        if (e != 0) {
+            int *vt = M2C_FIELD(e, int **, 0x200);
+            char *entry = (char *)vt + 8;
+            short adj = M2C_FIELD(entry, short *, 0);
+            int fn = M2C_FIELD(entry, int *, 4);
+            ((void (*)(int, int))fn)((int)e + adj, 3);
+        }
+    }
+    func_00162698(arg0);
+}
 
 extern "C" void func_001635E0(int arg0)
 {
