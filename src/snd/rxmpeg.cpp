@@ -346,7 +346,12 @@ extern "C" void func_00181A70(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00181AB4);
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00181BF4);
+extern "C" void func_00181BF4()
+{
+    D_006E9278 = 0;
+    D_006E927C = 0;
+    D_006E9280 = 2;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/snd/rxmpeg", D_002F3228);
 
