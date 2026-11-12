@@ -1,5 +1,7 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
+extern "C" int X_func_0011D15C(...) asm("func_0011D15C");
+extern const char *D_00298228[4][5][3];
 struct PairF {
     float a;
     float b;
@@ -222,7 +224,22 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcbtl", D_002EC9F8);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcbtl", D_002ECA58);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012C104);
+extern "C" const char *func_0012C104(int arg0, unsigned int theWeapon, unsigned int theHeight, unsigned int theCombo)
+{
+    if (theCombo >= 3U) {
+        Xiiii_ror_assert((int) D_002EC8B0, 0x250, (int) "theCombo >= 0 && theCombo < 3");
+    }
+    if (theWeapon >= 4U) {
+        Xiiii_ror_assert((int) D_002EC8B0, 0x251, (int) D_002ECAD8);
+    }
+    if (theHeight >= 5U) {
+        Xiiii_ror_assert((int) D_002EC8B0, 0x252, (int) D_002ECAF8);
+    }
+    if (theWeapon == 1 && X_func_0011D15C(arg0) <= 0) {
+        return D_002ECB18;
+    }
+    return D_00298228[theWeapon][theHeight][theCombo];
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcbtl", D_002ECAD8);
 
