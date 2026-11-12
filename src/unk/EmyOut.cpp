@@ -1,4 +1,5 @@
 #include "include_asm.h"
+struct m2c_v200_18_i { char pad[512]; virtual void v1(); virtual void v2(); virtual int call(); };
 extern "C" void Xii_func_00202F60(int) asm("func_00202F60");
 extern "C" void Xii_func_00202FBC(int) asm("func_00202FBC");
 extern "C" void Xii_func_002039A4(int) asm("func_002039A4");
@@ -99,7 +100,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165570);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165638);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_001656B4);
+extern "C" int func_001656B4(int arg0)
+{
+    int r = ((m2c_v200_18_i *)(arg0))->call();
+
+    if (r == 3 && M2C_FIELD(arg0, int *, 0x3C) == r) {
+        return 0;
+    }
+    return M2C_FIELD(arg0, int *, 0x10) == 0;
+}
 
 extern "C" int func_00165710(int arg0)
 {
