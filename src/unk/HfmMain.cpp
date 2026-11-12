@@ -91,7 +91,12 @@ extern "C" void func_00144214(int arg0)
     M2C_FIELD(arg0, int *, 0x14) = (int)&_vt$18MagLifeWindowDebug;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144244);
+extern "C" int func_00144244()
+{
+    int off = 0x2BD20;
+
+    return X_func_0012BA54((int)&D_006FBD80 + off);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_0014426C);
 
