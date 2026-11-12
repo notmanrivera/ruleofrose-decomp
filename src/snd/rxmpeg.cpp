@@ -728,7 +728,31 @@ extern "C" void func_00182148(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00182154);
+extern "C" void func_00182154()
+{
+    while (*(volatile int *)&D_00298F44 == 0) {
+        if (D_00298F38 == 1) {
+            while (D_006E9280 >= 2 && func_001831C4(D_00298F2C) >= 0x801) {
+                D_00298F64 = 1;
+                int a5 = D_00298F5C * D_00298F58;
+                int a2 = (D_00298F58 / 16) * D_00298F5C;
+                int a3 = (D_006E9278 * a5) * 4;
+                int a1 = ((D_00298F40 + 0x3F) & -0x40) + a3;
+                int ret = sceMpegGetPicture((int)&D_006E9200, a1, a2 / 16);
+                D_00298FD8 = ret;
+                D_00298F60++;
+                if (ret >= 0) {
+                    func_0024A8C8();
+                    D_006E9280--;
+                    int rem = (D_006E9278 + 3) % 2;
+                    D_006E9278 = rem;
+                    func_0024A958();
+                }
+            }
+            D_00298F64 = 0;
+        }
+    }
+}
 
 extern "C" void func_001822C4()
 {
