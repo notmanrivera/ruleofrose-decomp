@@ -181,7 +181,11 @@ extern "C" int func_00163A78(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163A8C);
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163AB8);
+extern "C" void func_00163AB8(int arg0, int *arg1, int *arg2)
+{
+    *arg1 = M2C_FIELD(arg0, int *, 0x138);
+    *arg2 = M2C_FIELD(arg0, int *, 0x13C);
+}
 
 extern "C" void func_00163ACC(int arg0, int arg1, int arg2)
 {
