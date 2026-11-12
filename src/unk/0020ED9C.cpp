@@ -386,7 +386,10 @@ extern "C" void func_00210CA8(void) {
 extern "C" void func_00210CB0(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210CB8);
+extern "C" void func_00210CB8(unsigned int arg0, unsigned int arg1, short arg2)
+{
+    *(int *)(((int *)&D_007B4700)[arg0] + arg2) = ((int *)&D_007B4680)[arg1];
+}
 
 extern "C" void func_00210CEC(void) {
 }
