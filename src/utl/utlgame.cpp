@@ -32,7 +32,7 @@ extern "C" void func_001E4EBC(void *theSnd, int theOID, int theA, int theB);
 extern "C" int func_001E5E58(void *theSnd, int theOID, int theA, int theB);
 extern "C" void func_001F97C8(int theOID, int theFade);
 extern "C" int func_0010423C(int theMin, int theMax);
-extern "C" void func_001D05F4(void *theGame, int theA);
+extern "C" void func_001D05F4(void *theGame, int theA, void *theOut);
 extern "C" void func_00163A10(void *theA, int theOID);
 extern "C" void func_00163770(void *theA, int theOID);
 extern "C" int func_0010315C(void *theOut, int theA);
@@ -202,15 +202,10 @@ extern "C" void func_001029C4(int theA, int theB, int theC, int theD)
 }
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
-extern "C" void func_00102AB8(int theA)
+extern "C" void func_00102AB8(void *theOut, int theA)
 {
-    return func_001D05F4(&D_007812C0, theA);
+    func_001D05F4(&D_007812C0, theA, theOut);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00102AB8);
-#endif
 
 
 extern "C" void func_00102ADC(int theOID)
