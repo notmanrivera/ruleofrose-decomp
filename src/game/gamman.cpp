@@ -1,4 +1,8 @@
 #include "include_asm.h"
+struct Foo {
+    char pad[0x1F24C];
+    int ids[0x180];
+};
 extern "C" void func_001CB01C(int, int);
 extern "C" void func_001CDF5C(int, int, int);
 extern "C" void func_0018BD94(char *);
@@ -1300,7 +1304,15 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBF4C);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBFB0);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CC004);
+extern "C" void func_001CC004(Foo *self, int arg1)
+{
+    for (int i = 0; i < 0x180; i++) {
+        if (self->ids[i] == arg1) {
+            self->ids[i] = 0;
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CC044);
 
