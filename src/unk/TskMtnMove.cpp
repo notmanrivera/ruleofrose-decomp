@@ -1,4 +1,10 @@
 #include "include_asm.h"
+struct Obj7724 {
+    char pad0[0x84];
+    int arr[0x80];
+    int *end;
+};
+extern "C" int func_001E76B8(Obj7724 *);
 struct Ent4AB8 {
     char name[0x1C];
     int id;
@@ -238,7 +244,18 @@ extern "C" void func_001E7698(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E76B8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7724);
+extern "C" void func_001E7724(Obj7724 *arg0, int arg1)
+{
+    if (arg1 != -1 && func_001E76B8(arg0) == 0) {
+        for (int *p = arg0->arr; p != arg0->end; p++) {
+            if (*p == arg1) {
+                return;
+            }
+        }
+        *arg0->end = arg1;
+        arg0->end++;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E77B4);
 
