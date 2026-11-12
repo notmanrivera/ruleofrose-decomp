@@ -229,7 +229,10 @@ extern "C" void func_0021041C(int arg0, int arg1, int arg2)
     ((int *)&D_007B4700)[arg2] = ((int *)&D_007B4700)[arg0] ^ ((int *)&D_007B4700)[arg1];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210450);
+extern "C" void func_00210450(unsigned int arg0, unsigned int arg1, int arg2)
+{
+    ((int *)&D_007B4700)[arg1] = ((int *)&D_007B4700)[arg0] ^ arg2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210478);
 
