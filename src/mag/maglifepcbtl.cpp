@@ -1,5 +1,14 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
+struct PairF {
+    float a;
+    float b;
+};
+extern const PairF D_002EC9C8;
+extern const PairF D_002EC9D0;
+extern const PairF D_002EC9D8[4];
+extern const PairF D_002EC9F8[4][3];
+extern const PairF D_002ECA58[4][3];
 extern "C" float Xf_vecDistXZ__FPCfT0(...) asm("vecDistXZ__FPCfT0");
 extern "C" int X_func_0011D1B0(...) asm("func_0011D1B0");
 extern "C" float func_0012BC20(int arg0, int arg1);
@@ -173,7 +182,35 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012BC98);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012BEDC);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012C014);
+extern "C" void func_0012C014(int arg0, float *arg1, float *arg2)
+{
+    int n = M2C_FIELD(arg0, int *, 0x128);
+    PairF def = D_002EC9C8;
+    const PairF *p;
+    if (n >= 4) {
+        p = &D_002EC9D0;
+    } else {
+        switch (M2C_FIELD(arg0, int *, 0x124)) {
+        case 0:
+            p = &D_002EC9D8[n];
+            break;
+        case 1:
+            p = &def;
+            break;
+        case 2:
+            p = &D_002EC9F8[n][M2C_FIELD(arg0, int *, 0x12C)];
+            break;
+        case 3:
+            p = &D_002ECA58[n][M2C_FIELD(arg0, int *, 0x12C)];
+            break;
+        default:
+            p = &def;
+            break;
+        }
+    }
+    *arg1 = p->a;
+    *arg2 = p->b;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcbtl", D_002EC9C8);
 
