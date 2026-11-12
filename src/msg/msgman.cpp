@@ -93,6 +93,9 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+extern "C" int func_00279C98(char *, const char *, ...);
+extern const char D_002F7200[];
+extern int *D_007B205C;
 struct MsgWin;
 extern "C" void func_00185268(MsgWin *, int);
 extern "C" void func_00185594(MsgWin *, int);
@@ -1870,7 +1873,21 @@ extern "C" int func_001872CC()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001872D4);
+extern "C" int func_001872D4(MsgWin *self)
+{
+    int v;
+    char *buf = (char *)self + 0x10C;
+    int n = func_00184578(self, self->m_str + self->m_pos, &v);
+    self->m_pos += n;
+    if (n < 0) {
+        return 0;
+    }
+    v = D_007B205C[v];
+    func_00279C98(buf, D_002F7200, v);
+    *(char **)((char *)self + 0x104) = buf;
+    *(int *)((char *)self + 0xFC) = 0;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00187368);
 
