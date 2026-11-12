@@ -1049,7 +1049,26 @@ extern "C" void func_001C899C(int arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C89E4);
+extern "C" int func_001C89E4(int arg0)
+{
+    int var_a2 = 0;
+    int var_a1 = 0;
+
+loop_1:
+    int temp_v0 = M2C_FIELD(arg0, int *, 0x1A6C0);
+    int temp_v1 = var_a1 * 0x10;
+    var_a1 += 1;
+    int temp_v2 = temp_v0 + temp_v1;
+    unsigned short val = M2C_FIELD(temp_v2, unsigned short *, 8);
+    int diff = val ^ 0xA00;
+    if (diff != 0) {
+        var_a2++;
+    }
+    if (var_a1 < 0xC) {
+        goto loop_1;
+    }
+    return var_a2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C8A28);
 
