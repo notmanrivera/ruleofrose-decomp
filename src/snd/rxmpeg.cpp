@@ -627,7 +627,25 @@ extern "C" void func_00182FDC(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00182FEC);
+extern "C" void func_00182FEC(int arg0)
+{
+    int var_v1;
+
+    if (arg0 < 0) {
+        goto label_zero;
+    }
+    var_v1 = arg0;
+    if (var_v1 > 0x80) {
+        var_v1 = 0x80;
+    }
+    goto label_store;
+
+label_zero:
+    var_v1 = 0;
+
+label_store:
+    D_00298F10 = var_v1;
+}
 
 extern "C" int func_00183018(int arg0)
 {
