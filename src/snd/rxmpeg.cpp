@@ -170,7 +170,20 @@ INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180CE0);
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180D94);
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180E00);
+extern "C" int func_00180E00()
+{
+    int p = X_func_0017F584();
+    if (p == 0) {
+        return -1;
+    }
+    if (*(int *)p != 8) {
+        return -1;
+    }
+    if (*(int *)(p + 0x10) == 2) {
+        *(int *)(p + 0x10) = 4;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180E54);
 
