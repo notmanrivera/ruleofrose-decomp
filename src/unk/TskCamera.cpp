@@ -135,7 +135,13 @@ extern "C" int func_001F95A8(int arg0, int arg1, int arg2)
     return M2C_FIELD(arg0, int *, 0x3C) > M2C_FIELD(arg0, int *, 0x38);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001F9600);
+extern "C" int func_001F9600(int arg0, int arg1, int arg2)
+{
+    int off = 0x18E00;
+
+    X_func_001E6734((int)&D_007812C0 + off, 0xF, arg1, arg2, 0, -1);
+    return M2C_FIELD(arg0, int *, 0x3C) > M2C_FIELD(arg0, int *, 0x38);
+}
 
 extern "C" int func_001F9658(int arg0, int *arg1, int *arg2)
 {
