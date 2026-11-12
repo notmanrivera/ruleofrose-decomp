@@ -773,7 +773,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213E78);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213F48);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002142C0);
+extern "C" void func_002142C0(void)
+{
+    int i;
+
+    i = 0x1FF;
+    do {
+        i -= 0x20;
+        asm("nop");
+    } while (i >= 0);
+    i = 0x1FF;
+    do {
+        i -= 0x20;
+        asm("nop");
+    } while (i >= 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00214310);
 
