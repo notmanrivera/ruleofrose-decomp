@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiii_ffi_func_001F603C(int, int, int, int, float, float, int) asm("func_001F603C");
 extern "C" void Xv_func_001469CC(int, int) asm("func_001469CC");
 extern "C" int Xiii_func_001DA228(int, int, int) asm("func_001DA228");
 extern "C" int Xff_iii_func_00169BAC(float, float, int, int, int) asm("func_00169BAC");
@@ -507,7 +508,18 @@ extern "C" void func_001468E0(int arg0, int arg1)
     X_func_001469CC(arg0, 3);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00146944);
+extern "C" void func_00146944(int arg0, int arg1)
+{
+    float v;
+
+    v = M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), float *, 0x1C4);
+    if (v != 0.0f) {
+        v = v * 0.016666666f;
+    } else {
+        v = 0.016666666f;
+    }
+    Xiiii_ffi_func_001F603C(M2C_FIELD(arg0, int *, 0), arg1, -1, 0x100, v, 32769.0f, 1);
+}
 
 extern "C" void HfmOutWalk2__vfunc_04()
 {
