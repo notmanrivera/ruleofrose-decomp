@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int func_001C6C38(void *);
+extern "C" int func_001C8A28(void *, int, int);
 extern "C" int func_001BFFCC(int, int);
 extern "C" int func_001C020C(int, int);
 extern "C" int func_001C0254(int, int);
@@ -1706,7 +1708,17 @@ extern "C" int func_001C97C8(int arg0)
     return (M2C_FIELD(arg0, long *, 0x21F48) & (((long) 0x800 << 0x20) | 4)) == 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C97F0);
+extern "C" int func_001C97F0(void *arg0)
+{
+    if ((func_001C8A28(arg0, 0xAD0, 1) && func_001C6C38(arg0) == 0) ||
+        (func_001C8A28(arg0, 0xAD1, 1) && func_001C6C38(arg0) == 2) ||
+        (func_001C8A28(arg0, 0xAD2, 1) && func_001C6C38(arg0) == 1)) {
+        if ((*(unsigned long long*)((char*)arg0 + 0x21F48) & 0x80000000004ULL) == 4) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 extern "C" void func_001C98B8(void) {
 }
