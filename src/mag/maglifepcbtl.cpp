@@ -1,5 +1,8 @@
 #include "include_asm.h"
+#include "mag/maglifepc.h"
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" float X_func_0011CE5C(...) asm("func_0011CE5C");
+extern "C" int X_func_0012CAA4(...) asm("func_0012CAA4");
 extern "C" int Xii_func_0011DFD0(int) asm("func_0011DFD0");
 extern "C" int Xiiii_func_001026B0(int, int, int) asm("func_001026B0");
 extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
@@ -273,7 +276,22 @@ extern "C" void func_0012C9C0(int arg0, int arg1, int arg2)
     }
 }
 
+// NON_MATCHING: 3 of 31 instructions
+#ifdef NON_MATCHING
+extern "C" int func_0012CA28(int arg0)
+{
+    int ret = M2C_FIELD(arg0, int *, 0x1F0);
+    if (ret != 0) {
+        DogVector vec;
+        X_func_0011CE5C(arg0, &vec, ret, 0);
+        return X_func_0012CAA4(arg0, &vec, M2C_FIELD(arg0, int *, 0x1F0));
+    }
+    ret = M2C_FIELD(arg0, int *, 0x1B0);
+    return (ret < 0) ? 0 : ret;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012CA28);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012CAA4);
 
