@@ -231,7 +231,36 @@ extern "C" int func_0011CCD4(void *self, const u_long128 *thePos, int *theOut)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011CD20);
+extern "C" void func_00102AB8(DogVector *theOut, int theA);
+void vecNormalize(float *v);
+float vecDot(float *a, float *b);
+float vecLength(float *v);
+
+extern "C" void func_0011CD20(void *self, DogVector *theOut, DogVector *theIn, int theA)
+{
+    DogVector pos = *(DogVector *)((char *)*(void **)((char *)self + 0x58) + 0x40);
+    DogVector dir;
+    DogVector *dp = &dir;
+    func_00102AB8(dp, theA);
+    dp->m_x -= pos.m_x;
+    dp->m_y = 0.0f;
+    dp->m_z -= pos.m_z;
+    dp->m_w = 1.0f;
+    vecNormalize(&dp->m_x);
+    float d = vecDot(&dp->m_x, &theIn->m_x);
+    dp->m_x *= d;
+    dp->m_y *= d;
+    dp->m_z *= d;
+    dp->m_w = 1.0f;
+    *theOut = *theIn;
+    theOut->m_x -= dp->m_x;
+    theOut->m_y -= dp->m_y;
+    theOut->m_z -= dp->m_z;
+    theOut->m_w = 1.0f;
+    if (vecLength(&theOut->m_x) < 1.0f) {
+        vecNormalize(&theOut->m_x);
+    }
+}
 
 extern "C" int func_0011CE50(void *self)
 {
