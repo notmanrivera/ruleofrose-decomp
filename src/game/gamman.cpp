@@ -271,7 +271,15 @@ extern "C" int func_001BE048(int self)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BE084);
+extern "C" int func_001BE084(int self)
+{
+    if (*(int *)(self + 0) == 0) {
+        return -1;
+    }
+    func_001BDD48(self);
+    *(int *)(self + 0) = 0;
+    return 0;
+}
 
 extern "C" int func_001BE0C0(int arg0)
 {
