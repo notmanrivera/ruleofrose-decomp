@@ -1506,7 +1506,19 @@ extern "C" int func_00186578(MsgWin *self)
     return 0;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00186578);
+extern "C" int func_00186578(MsgWin *self)
+{
+    int v;
+    int n = func_00184578(self, self->m_str + self->m_pos, &v);
+
+    self->m_pos += n;
+    if (n <= 0) {
+        return 0;
+    }
+    self->m[0x23] = v;
+    func_00135014((char *)self->m_system + 0x12540, self->m_no, v);
+    return 0;
+}
 #endif
 
 
