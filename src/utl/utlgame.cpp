@@ -11,6 +11,7 @@ extern const char D_002E57A8[];
 #define ASSERT_FILE D_002E5728
 extern const char D_002E5728[];
 #include "game/gamman.h"
+#include "game/gamtrg.h"
 extern "C" int func_001D1A48(int arg0);
 extern "C" void func_001C6A40(void *theGamMan, int theA);
 extern "C" void func_001D1C80(GamMan *theGamMan, int theA, int theB, int *theOut);
@@ -268,7 +269,18 @@ INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00102B6C);
 
 INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00102BF0);
 
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00102D54);
+extern "C" ObjStat *func_00102D54(int theUid)
+{
+    GamList<ObjStat *> *list = D_007812C0.getVFchrListPtr();
+
+    for (GamList<ObjStat *>::iterator it = list->begin(); it != list->end(); it++) {
+        ObjStat *obj = *it;
+        if (theUid == obj->getUID()) {
+            return obj;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/utl/utlgame", D_002E57A8);
 
