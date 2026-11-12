@@ -481,7 +481,12 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C143C);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C19C4);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C1A6C);
+extern "C" int func_001C1A6C(void *self, int theIdx)
+{
+    int *p = *(int **)((char *)self + 0x22200);
+
+    return p[theIdx];
+}
 
 extern "C" void func_001C1A88(void) {
 }
