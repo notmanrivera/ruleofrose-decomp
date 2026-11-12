@@ -93,6 +93,7 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+extern int D_002F73E4;
 extern "C" int Xiiiii_func_001DC48C(int, int, int, int) asm("func_001DC48C");
 extern char D_002F71F0[];
 extern int D_007812C0;
@@ -1049,7 +1050,29 @@ INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184710);
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001847BC);
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184820);
+extern "C" int func_00184820(int arg0, signed char arg1)
+{
+    int temp_a1 = arg1 & 0xFF;
+    unsigned int temp_v1 = temp_a1 - 0x20;
+    int var_v0;
+
+    if (((*(int *)&D_002F73E4) ^ 3) != 0) {
+        var_v0 = 1;
+        if (temp_v1 < 0x60U) {
+            return 1;
+        }
+        if ((unsigned int)(temp_a1 - 0xA0) < 0x40U) {
+            return 1;
+        }
+        goto block_5;
+    }
+    var_v0 = 1;
+    if (temp_v1 >= 0xE0U) {
+block_5:
+        var_v0 = 0;
+    }
+    return var_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184874);
 
