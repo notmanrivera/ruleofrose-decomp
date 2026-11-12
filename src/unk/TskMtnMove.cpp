@@ -1,4 +1,17 @@
 #include "include_asm.h"
+struct VObj77B4 {
+    virtual int vfunc1();
+};
+struct Node77B4 {
+    VObj77B4 *obj;
+    Node77B4 *next;
+    int state;
+};
+struct List77B4 {
+    Node77B4 *head;
+};
+extern "C" void X77B4_func_001E7698(List77B4 *, Node77B4 *) asm("func_001E7698");
+extern "C" void X77B4_func_001E7D08(List77B4 *, Node77B4 *) asm("func_001E7D08");
 struct Node70DC {
     int unk0;
     Node70DC *next;
@@ -371,7 +384,21 @@ extern "C" void func_001E7724(Obj7724 *arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E77B4);
+extern "C" void func_001E77B4(List77B4 *arg0, int arg1)
+{
+    Node77B4 *p = arg0->head;
+    while (p != 0) {
+        if (p->state != 2) {
+            VObj77B4 *obj = p->obj;
+            if (obj != 0 && arg1 == obj->vfunc1()) {
+                X77B4_func_001E7D08(arg0, p);
+                p->state = 2;
+                X77B4_func_001E7698(arg0, p);
+            }
+        }
+        p = p->next;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E785C);
 
