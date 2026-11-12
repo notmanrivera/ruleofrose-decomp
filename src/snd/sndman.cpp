@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int X4_func_001E4908(int, int, int, int) asm("func_001E4908");
+extern "C" int X4_func_001809D8(int, int, int, int) asm("func_001809D8");
+extern "C" int atoi(const char *);
+extern int D_007812C0;
+
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xii_func_0017FB5C(int) asm("func_0017FB5C");
 extern "C" int Xiii_func_0017FB00(int, int) asm("func_0017FB00");
@@ -96,10 +101,15 @@ INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F5E8);
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F6B8);
 
-INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F7AC);
-
-extern "C" int X4_func_001E4908(int, int, int, int) asm("func_001E4908");
-extern int D_007812C0;
+extern "C" int func_0017F7AC(int arg0, int arg1, int arg2)
+{
+    int v;
+    int base = (int)&D_007812C0;
+    if (X4_func_001E4908(base + 0x18E00, arg1, (int)&v, 1) == 0) {
+        return -1;
+    }
+    return X4_func_001809D8(arg0, *(unsigned short *)(v + 0x20), v, arg2);
+}
 
 extern "C" int func_0017F81C(int arg0, int arg1)
 {
@@ -110,9 +120,6 @@ extern "C" int func_0017F81C(int arg0, int arg1)
     }
     return Xiii_func_00180A90(arg0, *(unsigned short *)(v + 0x20));
 }
-
-extern "C" int X4_func_001809D8(int, int, int, int) asm("func_001809D8");
-extern "C" int atoi(const char *);
 
 extern "C" void func_0017F878(int arg0, unsigned char *arg1, int arg2)
 {
