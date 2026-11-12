@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int DIntr_alias() asm("DIntr");
+extern "C" int func_00267530_alias() asm("func_00267530");
 typedef void (*FuncPtr)(int);
 extern FuncPtr D_00298F70[];
 extern "C" void *memset_alias(void *, int, unsigned int) asm("memset");
@@ -504,7 +506,18 @@ extern "C" int func_00181EEC()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00181EF4);
+extern "C" void func_00181EF4(int arg0)
+{
+    DIntr_alias();
+    volatile int *f520 = (volatile int *)0x1000F520;
+    volatile int *f590 = (volatile int *)0x1000F590;
+    volatile int *b400 = (volatile int *)0x1000B400;
+
+    *f590 = *f520 | 0x10000;
+    *b400 = arg0;
+    *f590 = *f520 & 0xFFFEFFFF;
+    func_00267530_alias();
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00181F5C);
 
