@@ -540,7 +540,15 @@ extern "C" void func_00211168()
 extern "C" void func_00211174(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0021117C);
+// unk/0020ED9C, func_0021117C: m2c's draft
+
+// ---- declarations
+
+// ---- function
+extern "C" void func_0021117C(int arg0, int arg1)
+{
+    D_007B4840 = ((float *)&D_007B4680)[arg0] == ((float *)&D_007B4680)[arg1];
+};
 
 extern "C" void func_002111BC(void) {
 }
