@@ -151,7 +151,12 @@ INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144418);
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_0014448C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144500);
+extern "C" void func_00144500(int arg0)
+{
+    int off = 0x2BD20;
+
+    X_func_0012A758((int)&D_006FBD80 + off, arg0, 0, 0);
+}
 
 extern "C" void func_00144538()
 {
