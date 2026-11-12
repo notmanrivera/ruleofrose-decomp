@@ -158,7 +158,14 @@ INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_0016373C);
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163770);
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001637A4);
+extern "C" int func_001637A4()
+{
+    int *p = (int *)X_func_001636A4();
+    if (p != 0) {
+        return M2C_FIELD(p, int *, 0xC);
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001637CC);
 
