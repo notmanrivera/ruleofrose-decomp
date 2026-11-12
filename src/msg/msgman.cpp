@@ -1261,7 +1261,28 @@ extern "C" int func_001859CC(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001859FC);
+extern "C" int func_001859FC(int arg0)
+{
+    int v;
+    int n = Xiiii_func_00184578(arg0, M2C_FIELD(arg0, int *, 0x18) + M2C_FIELD(arg0, int *, 0x1C), (int)&v);
+    int c;
+
+    M2C_FIELD(arg0, int *, 0x1C) += n;
+    if (n <= 0) {
+        return 0;
+    }
+    c = v;
+    if (c == 0) {
+        M2C_FIELD(arg0, int *, 0xA0) = 0;
+        M2C_FIELD(arg0, int *, 0xA8) = 0;
+    } else {
+        M2C_FIELD(arg0, int *, 0xA0) = 1;
+        M2C_FIELD(arg0, int *, 0xA8) = 1;
+    }
+    M2C_FIELD(arg0, int *, 0xB0) = c;
+    M2C_FIELD(arg0, int *, 0xAC) = c;
+    return 0;
+}
 
 extern "C" int func_00185A74(MsgWin *self, const char *theStr, int *theLen)
 {
