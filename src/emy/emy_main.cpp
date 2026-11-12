@@ -410,7 +410,14 @@ extern "C" void func_0016404C()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00164078);
+extern "C" int func_00164078()
+{
+    int p = X_func_001636A4();
+    if (p == 0) {
+        return 0;
+    }
+    return X_func_00166A0C(p);
+}
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001640AC);
 
