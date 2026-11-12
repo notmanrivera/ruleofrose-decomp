@@ -90,12 +90,14 @@ if [ -n "$MERGE" ]; then
 fi
 
 # 2. Skipped = tried by the worker (tools/work.py left its scratch file in
-# the worktree's build/work/) and still in asm here. Untried functions of
+# the worktree's build/work/, or logged it in build/work/.tried, which
+# survives a worker deleting its scratch files) and still in asm here. Untried functions of
 # the batch are not skipped; they simply come back in a later batch.
 if [ -n "$BATCH" ] && [ -n "$FILE" ] && [ -n "$MERGE" ]; then
   n=0
   for f in $(echo "$BATCH" | tr ',' ' '); do
-    if { [ -e "$WT/build/work/$FILE/$f.cpp" ] || [ -e "$WT/build/work/$FILE/$f.trial.cpp" ]; } &&
+    if { [ -e "$WT/build/work/$FILE/$f.cpp" ] || [ -e "$WT/build/work/$FILE/$f.trial.cpp" ] ||
+         grep -qx "$FILE $f" "$WT/build/work/.tried" 2>/dev/null; } &&
        grep -qE "INCLUDE_ASM\(\"[^\"]+\", *$f\)" "src/$FILE.cpp" &&
        ! grep -q "^$FILE $f\b" "$SKIP"; then
       echo "$FILE $f $NAME" >> "$SKIP"; n=$((n + 1))

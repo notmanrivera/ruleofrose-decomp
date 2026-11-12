@@ -135,6 +135,11 @@ def main():
         print("compile server down (tools/match.py --server start): each check takes a minute on Windows")
     if not path.exists():
         start(name, a.function, path)
+    # A log of what was tried, kept apart from the scratch files (workers clean
+    # those up): tools/orca/next_batch.sh counts a tried function still in asm
+    # as skipped.
+    with open(WORK / ".tried", "a", encoding="utf8") as log:
+        log.write(f"{name} {a.function}\n")
     good, ok = check(name, a.function, path)
     if a.done:
         if not (good and ok):
