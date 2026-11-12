@@ -311,7 +311,11 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F29C0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F29E0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_001764FC);
+extern "C" int func_001764FC(int arg0, int arg1)
+{
+    int tbl[4] = { 0x0D, 3, 11, 7 };
+    return tbl[arg1];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_0017653C);
 
