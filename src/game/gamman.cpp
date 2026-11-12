@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void func_0018BD94(char *);
 extern "C" int X4_func_0013F280(int, int, int, int) asm("func_0013F280");
 extern "C" int X_func_00243C40(int, int, int) asm("func_00243C40");
 extern "C" int X_func_001CBE38(int, int) asm("func_001CBE38");
@@ -249,7 +250,14 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FB350);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BDE58);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BDFE0);
+extern "C" void func_001BDFE0(char *arg0, int arg1)
+{
+    if (arg1 != 0) {
+        arg0 += 0x78C;
+        *(int *)(arg0 + 0x4D0) = arg1;
+        func_0018BD94(arg0);
+    }
+}
 
 extern "C" void func_001BE004(int arg0)
 {
