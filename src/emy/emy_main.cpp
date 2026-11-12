@@ -201,7 +201,14 @@ extern "C" int func_00163A78(int arg0)
     return (M2C_FIELD(arg0, unsigned char *, 0x134) | M2C_FIELD(arg0, unsigned char *, 0x135)) != 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163A8C);
+extern "C" int func_00163A8C()
+{
+    int p = X_func_001636A4();
+    if (p == 0) {
+        return 0;
+    }
+    return M2C_FIELD(p, int *, 0x150) != 0;
+}
 
 extern "C" void func_00163AB8(int arg0, int *arg1, int *arg2)
 {
