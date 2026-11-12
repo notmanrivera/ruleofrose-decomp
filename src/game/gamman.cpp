@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void X_func_001BE564(...) asm("func_001BE564");
 extern "C" int Xiiiii_func_001BE444(int, int, int, int) asm("func_001BE444");
 extern "C" int Xiii_func_001BE3C4(int, int) asm("func_001BE3C4");
 extern "C" int Xiiiii_func_001BE36C(int, int, int, int) asm("func_001BE36C");
@@ -345,7 +346,11 @@ extern "C" int func_001BE4C8(int arg0, int arg1, int arg2)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BE524__10FileReaderP11FileReadReqi);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BE548);
+extern "C" void func_001BE548(int *theOut, int theA, int theB)
+{
+    *theOut = theA;
+    return X_func_001BE564(theOut, theB);
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BE564);
 
