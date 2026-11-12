@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0018FEBC(int) asm("func_0018FEBC");
 extern "C" int Xii_func_00190C44(int) asm("func_00190C44");
 extern "C" int Xiii_func_0018BCC0(int, int) asm("func_0018BCC0");
 extern "C" int Xiiii_func_00190884(int, int, int) asm("func_00190884");
@@ -418,7 +419,16 @@ INCLUDE_RODATA("asm/nonmatchings/spr/sprtexture", D_002F7C30);
 
 INCLUDE_RODATA("asm/nonmatchings/spr/sprtexture", D_002F7C40);
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00191640);
+extern "C" void func_00191640(int arg0)
+{
+    int temp_s0;
+
+    temp_s0 = arg0 + 0x50;
+    Xiiii_func_0018F744(temp_s0, (int)&D_0029A340, (int) "data/mnurpk/s2dman.rpk");
+    do {
+
+    } while (Xii_func_0018FEBC(temp_s0) == 0);
+}
 
 extern "C" void S2dMes__vfunc_02()
 {
