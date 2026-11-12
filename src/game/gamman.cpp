@@ -382,7 +382,16 @@ extern "C" void __11FileReadReq(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BE768);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BE84C);
+extern "C" int func_001BE84C(int theA)
+{
+    int r = X_func_00243788(theA, 1);
+
+    if (r < 0) {
+        return 0;
+    }
+    X_func_002437F8(r);
+    return 1;
+}
 
 extern "C" int func_001BE880()
 {
