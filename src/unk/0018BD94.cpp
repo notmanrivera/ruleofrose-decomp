@@ -114,7 +114,23 @@ INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C5A8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C630);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C6C4);
+extern "C" int func_0018C6C4(int arg0, int arg1, int arg2)
+{
+    char *p = (char *)M2C_FIELD(arg0, int *, 0x4AC);
+    char *q;
+
+    p += arg1 * 0x154;
+    if (arg2 >= M2C_FIELD(p, int *, 0x13C)) {
+        return 1;
+    }
+    M2C_FIELD(p, int *, 0x104) = arg2;
+    M2C_FIELD(p, int *, 0x108) = 0;
+    q = (char *)M2C_FIELD(p, int *, 0x140);
+    q += arg2 * 0xC;
+    M2C_FIELD(p, int *, 0xF8) = M2C_FIELD(M2C_FIELD(q, int *, 8), int *, 4);
+    Xiii_func_0018D08C(arg0, (int)p);
+    return 0;
+}
 
 extern "C" int func_0018C738(int arg0, char *arg1, int arg2)
 {
