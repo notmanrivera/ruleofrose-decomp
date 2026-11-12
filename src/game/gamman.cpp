@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int func_001DC48C(void *, int, int, int *);
+extern "C" int func_001DD00C(void *, int, int);
+extern int D_002B8870;
 extern "C" void func_00191BA8(char *, int, int, int);
 extern "C" void func_00191C64(char *, int, int, int);
 extern "C" void setActorLight__9MagSystemii(void *, int, int);
@@ -154,7 +157,24 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BC790);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BC8F8);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BCB84);
+static inline void *gamSub22220() {
+    void *p = (void *)&D_007812C0;
+    return (char *)p + 0x22220;
+}
+
+extern "C" int func_001BCB84(int unused, unsigned int arg1)
+{
+    int sp0;
+    void *temp_s0 = gamSub22220();
+    unsigned short temp_s1 = arg1 & 0xFFFF;
+    sp0 = 0;
+    if (func_001DD00C(temp_s0, temp_s1, 4) != 0) {
+        func_001DC48C(temp_s0, temp_s1, 0xC, &sp0);
+    } else {
+        sp0 = D_002B8870;
+    }
+    return sp0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BCC08);
 
