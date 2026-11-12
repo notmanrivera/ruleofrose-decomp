@@ -93,6 +93,8 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+extern "C" int Xiii_func_00191E58(int, int, int) asm("func_00191E58");
+extern int D_006FBD80;
 extern "C" int Xii_func_00185704(int) asm("func_00185704");
 extern "C" int Xiii_func_00184F2C(int, int) asm("func_00184F2C");
 extern "C" int Xiiii_func_00184578(int, int, int) asm("func_00184578");
@@ -1540,7 +1542,19 @@ extern "C" int func_00186880(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001868B8);
+extern "C" int func_001868B8(int arg0)
+{
+    int v;
+    int n = Xiiii_func_00184578(arg0, M2C_FIELD(arg0, int *, 0x18) + M2C_FIELD(arg0, int *, 0x1C), (int)&v);
+
+    M2C_FIELD(arg0, int *, 0x1C) += n;
+    if (n <= 0) {
+        return 0;
+    }
+    char *p = (char *)&D_006FBD80;
+    Xiii_func_00191E58((int)(p + 0x42BB0), 3, v);
+    return 0;
+}
 
 extern "C" int func_00186928(MsgWin *self, const char *theStr, int *theLen)
 {
