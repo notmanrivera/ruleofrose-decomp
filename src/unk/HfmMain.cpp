@@ -1,4 +1,7 @@
 #include "include_asm.h"
+struct HfmSub { unsigned long a; unsigned long b; };
+struct HfmLocal { HfmSub sub; float f[4]; };
+extern "C" int Xii_func_00143D7C(int, int, int) asm("func_00143D7C");
 struct m2c_v200_10_i { char pad[512]; virtual void v1(); virtual int call(); };
 struct m2c_v34_18_i { char pad[52]; virtual void v1(); virtual void v2(); virtual int call(); };
 struct m2c_v34_20_i { char pad[52]; virtual void v1(); virtual void v2(); virtual void v3(); virtual int call(); };
@@ -77,7 +80,17 @@ extern int D_00727B1C;
 extern int D_007812C0;
 extern int D_007B2580;
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00143D3C);
+extern "C" void func_00143D3C(int arg0, HfmSub *arg1, int arg2, float f0, float f1, float f2, float f3)
+{
+    HfmLocal local;
+
+    local.sub = *arg1;
+    local.f[0] = f0;
+    local.f[1] = f1;
+    local.f[2] = f2;
+    local.f[3] = f3;
+    Xii_func_00143D7C(arg0, (int)&local, arg2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00143D7C);
 
