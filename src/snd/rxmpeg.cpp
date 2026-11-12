@@ -1,4 +1,12 @@
 #include "include_asm.h"
+struct Struct_00180BE4 {
+    char pad0[4];
+    int unk4;
+    char pad8[0x18 - 8];
+    int unk18;
+    int unk1C;
+    int unk20;
+};
 typedef void (*DestructorFn)(int);
 typedef int (*FuncPtr68)(int, int, int, int, int, int);
 extern FuncPtr68 D_00298F68[];
@@ -163,7 +171,30 @@ INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180B30);
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180B9C);
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180BE4);
+extern "C" int func_00180BE4(void *arg0, int arg1, int arg2, int arg3)
+{
+    if (*(int *)((char *)arg0 + arg1 * 4 + 0x2C) < 0) {
+        return -1;
+    }
+
+    int s1 = X_func_0017F9AC(arg0, 1);
+    if (s1 < 0) {
+        return -1;
+    }
+
+    Struct_00180BE4 *s0 = (Struct_00180BE4 *)X_func_0017FB5C(arg0);
+    if (s0 == 0) {
+        return -1;
+    }
+
+    X_func_00180B9C(arg0, s0);
+    s0->unk18 = arg1;
+    s0->unk1C = arg2;
+    s0->unk20 = arg3;
+    X_func_0017FA90(arg0, s1);
+    s0->unk4 = s1;
+    return s1;
+}
 
 extern "C" int func_00180CA8()
 {
