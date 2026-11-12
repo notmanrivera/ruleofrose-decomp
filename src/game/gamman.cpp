@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int func_001BE084(int);
+extern "C" void func_001BDC54(int);
+extern "C" void func_0018BC18(char *, int);
+extern "C" void func_00183B24(char *, int);
+extern "C" void X_del(void *) asm("__builtin_delete");
 extern "C" void func_0017762C(void *);
 struct ListNode {
     ListNode *prev;
@@ -365,7 +370,34 @@ extern "C" int func_001BDAE4(int arg0)
     return X_func_001BE0C0(arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BDB4C);
+extern "C" void func_001BDB4C(char *self, int flags)
+{
+    func_001BE084((int)self);
+
+    if (*(int *)(self + 0x1080) != 0) {
+        func_001BDC54((int)self);
+    }
+
+    char *p = self + 0x78C;
+    char *start = self + 0x14;
+
+    register int two asm("$5") = 2;
+    func_0018BC18(p, two);
+
+    if (start != 0) {
+        if (start != p) {
+            do {
+                p -= 0x3BC;
+                func_00183B24(p, 2);
+            } while (start != p);
+        }
+    }
+
+    if (flags & 1) {
+        X_del(self);
+        return;
+    }
+}
 
 extern "C" void func_001BDC00(int arg0, int arg1)
 {
