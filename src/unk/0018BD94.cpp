@@ -257,7 +257,31 @@ INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018E05C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018EA9C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018EB30);
+extern "C" int func_0018EB30(int arg0, unsigned char *arg1)
+{
+    unsigned int c;
+    unsigned int off;
+    int var_a3 = 0;
+
+    if (*arg1 != 0) {
+        do {
+            c = *arg1++;
+            c &= 0xFF;
+            off = c - 0x81;
+            if (c == 0x23) {
+                if (*arg1 == 0x30) {
+                    arg1++;
+                    var_a3++;
+                    continue;
+                }
+            }
+            if (off < 0x1F || (unsigned int)(c - 0xE0) < 0x1D) {
+                arg1++;
+            }
+        } while (*arg1 != 0);
+    }
+    return var_a3 + 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018EBA4);
 
