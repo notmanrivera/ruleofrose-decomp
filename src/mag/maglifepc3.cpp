@@ -98,7 +98,44 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc3", D_002EA7C0);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011D990);
 
+#ifdef NON_MATCHING
+// NON_MATCHING: 11 of 55 instructions
+extern "C" void func_0011DC64(int arg0, int arg1, int arg2)
+{
+    int var_s2 = 0;
+    int temp_s3 = 3;
+    if (arg2 >= 0) {
+        temp_s3 = arg2;
+    }
+    X_func_00109B88__8DogActori(M2C_FIELD(arg0, int *, 0x58), temp_s3);
+    if (arg1 < 0) {
+        switch (M2C_FIELD(arg0, int *, 0xDC)) {
+        case 0:
+            return;
+        case 1:
+            var_s2 = 0;
+            break;
+        case 2:
+            var_s2 = 3;
+            break;
+        case 3:
+            var_s2 = 2;
+            break;
+        case 4:
+            var_s2 = 1;
+            break;
+        default:
+            X_ror_assert((int) D_002EA758, 0x168, (int) D_002EA7A8);
+            break;
+        }
+    } else {
+        var_s2 = arg1;
+    }
+    X_func_0010C17C__8DogActorPCcii(M2C_FIELD(arg0, int *, 0x58), (int) "data/ch/pc/pc/MOTIONPK.RPK", var_s2, temp_s3);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011DC64);
+#endif
 
 #ifdef NON_MATCHING
 // NON_MATCHING: 19 of 46 instructions
