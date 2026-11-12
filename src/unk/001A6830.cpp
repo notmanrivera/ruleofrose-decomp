@@ -504,7 +504,18 @@ extern "C" void func_001A97B0(int arg0)
     } while (Xii_func_0018FEBC(temp_s0) == 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A97F4);
+extern "C" int func_001A97F4(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0x4D6C) == 1) {
+        return -1;
+    }
+    M2C_FIELD(arg0, int *, 0x4D6C) = 1;
+    M2C_FIELD(arg0, int *, 0x4DC4) = 0;
+    M2C_FIELD(arg0, int *, 0x4DC8) = 0;
+    M2C_FIELD(arg0, int *, 0x4DCC) = 0;
+    M2C_FIELD(arg0, int *, 0x4DEC) = 7;
+    return 0;
+}
 
 extern "C" int func_001A9828(int arg0)
 {
