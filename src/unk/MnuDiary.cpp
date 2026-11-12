@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0019A780(int) asm("func_0019A780");
+extern "C" int Xiii_func_0018BCC0(int, int) asm("func_0018BCC0");
 extern "C" int Xii_func_0018741C(int) asm("func_0018741C");
 extern "C" int Xii_func_00187464(int) asm("func_00187464");
 extern "C" int Xii_func_0018C130(int) asm("func_0018C130");
@@ -220,7 +222,20 @@ extern "C" void func_0019A52C(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A598);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A650);
+extern "C" void func_0019A650(int arg0, int arg1)
+{
+    int var_s2 = 1;
+
+    if (M2C_FIELD(arg0, int *, 0x1540) == 0) {
+        M2C_FIELD(arg0, int *, 8) = 0;
+        M2C_FIELD(arg0, int *, 0x10) = 0;
+        Xiii_func_0018BCC0(arg0 + 0x7D0, 0x8A);
+        M2C_FIELD(arg0, int *, 0xBEC) = arg1;
+        Xii_func_0019A780(arg0);
+        M2C_FIELD(arg0, int *, 0x1540) = var_s2;
+        M2C_FIELD(arg0, int *, 0x156C) = var_s2;
+    }
+}
 
 extern "C" void func_0019A6B8(int arg0)
 {
