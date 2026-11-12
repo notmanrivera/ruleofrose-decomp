@@ -134,7 +134,16 @@ extern "C" void func_001A1650(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1658);
+extern "C" int func_001A1658(int arg0, int arg1)
+{
+    if ((M2C_FIELD(arg0, int *, 0x24) ^ 4) != 0) {
+        return 0;
+    }
+    M2C_FIELD(arg0, int *, 0x30) = arg1;
+    M2C_FIELD(arg0, int *, 0x1390) = 0;
+    M2C_FIELD(arg0, int *, 0x28) = 2;
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1684);
 
