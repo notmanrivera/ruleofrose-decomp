@@ -143,7 +143,14 @@ extern "C" void S2dCineSco__vfunc_02()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", S2dCineSco__vfunc_06);
+extern "C" void S2dCineSco__vfunc_06(char *arg0, int arg1)
+{
+    if (arg1) {
+        arg0 += 0x3C;
+        M2C_FIELD(arg0, int *, 0x4D0) = arg1;
+        X_func_0018BD94(arg0);
+    }
+}
 
 extern "C" int func_00190C44(int arg0)
 {
