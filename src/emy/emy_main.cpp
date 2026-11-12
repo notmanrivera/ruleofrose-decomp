@@ -119,7 +119,7 @@ INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00162C88);
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001634D4);
 
-struct EmyX { char pad[0x340]; };
+struct EmyX { int m_id; char pad[0x33C]; };
 struct MgrX { int m_unk0; EmyX *m_emy[0x40]; };
 
 extern "C" void func_00163570(int arg0)
@@ -177,7 +177,18 @@ extern "C" void func_0016366C(int arg0, int arg1, int arg2)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001636A4);
+extern "C" int func_001636A4(int arg0, int arg1)
+{
+    MgrX *m = (MgrX *)arg0;
+    int i;
+    for (i = 0; i < 0x40; i++) {
+        EmyX *e = m->m_emy[i];
+        if (e != 0 && e->m_id == arg1) {
+            return (int)e;
+        }
+    }
+    return 0;
+}
 
 extern "C" int func_001636E4(int arg0, int arg1)
 {
