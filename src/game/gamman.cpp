@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void func_001348B0(void *, int) asm("func_001348B0");
+extern "C" void func_00135594(void *, int) asm("func_00135594");
 extern "C" void *func_001D2B8C();
 extern "C" void *func_001D2BA8();
 extern "C" void func_00191D20(void *, int, int);
@@ -1654,7 +1656,17 @@ extern "C" void func_001CFA5C(int self, int theA)
     *(int *)(self + 0x2227C) = X4_func_0013F280((int)(p + 0x12540), theA, 0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CFAA8);
+extern "C" void func_001CFAA8(char *arg0)
+{
+    int temp_v0 = *(int *)(arg0 + 0x2227C);
+    if (temp_v0 != -1) {
+        char *p = (char *)&D_006E9840;
+        func_00135594(p + 0x12540, temp_v0);
+        func_001348B0(p + 0x12540, *(int *)(arg0 + 0x2227C));
+        *(int *)(arg0 + 0x2227C) = -1;
+    }
+    *(int *)(arg0 + 0x225D8) = 0;
+}
 
 extern "C" void func_001CFB38(int arg0, int arg1)
 {
