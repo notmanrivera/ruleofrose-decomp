@@ -34,7 +34,15 @@ extern "C" void func_0012BA2C(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012BA54);
+extern "C" int func_0012BA54(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0) == 0xB) {
+        if (M2C_FIELD(arg0, int *, 8) == 3) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012BA80);
 
