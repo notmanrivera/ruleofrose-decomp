@@ -1850,7 +1850,27 @@ extern "C" int func_00186D0C()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00186D14);
+extern "C" int func_00186D14(MsgWin *self)
+{
+    int v;
+    int n = func_00184578(self, self->m_str + self->m_pos, &v);
+    self->m_pos += n;
+    if (n <= 0) {
+        return 0;
+    }
+    self->m[0xC0 / 4] = 1;
+    self->m[0xCC / 4] = v;
+    if (v == 0) {
+        func_00185268(self, 0);
+    } else {
+        func_00185268(self, 1);
+    }
+    func_001853CC(self, 0);
+    if (self->m[0xC4 / 4] == 1) {
+        self->m[0x38 / 4] = self->m[0x68 / 4] - self->m[0x40 / 4];
+    }
+    return 1;
+}
 
 extern "C" int func_00186DC4(MsgWin *self, const char *theStr, int *theLen)
 {
