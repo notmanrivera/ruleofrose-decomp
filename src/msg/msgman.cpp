@@ -93,6 +93,7 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+extern "C" int Xii_func_00184A94(int) asm("func_00184A94");
 extern "C" int atoi(const char *);
 extern "C" int func_0027BBA8(const char *theStr, int theA, int theBase);
 extern const char *D_00298FE8[];
@@ -272,7 +273,16 @@ INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00183CE0);
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00183DB0);
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184008);
+extern "C" int func_00184008(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 8) == 0) {
+        return -1;
+    }
+    if (M2C_FIELD(arg0, int *, 0x14) == 1) {
+        Xii_func_00184A94(arg0);
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184048);
 
