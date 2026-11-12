@@ -97,7 +97,15 @@ extern "C" int func_001916C4(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001916F8);
+extern "C" int func_001916F8(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0x30) == 0) {
+        return -1;
+    }
+    M2C_FIELD(arg0, int *, 0x30) = 0;
+    M2C_FIELD(arg0, int *, 0x93C) = 0;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00191718);
 
