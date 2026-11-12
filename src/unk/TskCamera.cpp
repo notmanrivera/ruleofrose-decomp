@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_00218470(int, int, int) asm("func_00218470");
 extern "C" int Xiii_getInfo__9BedMemoryP13BedMemoryInfoi(int, int, int) asm("getInfo__9BedMemoryP13BedMemoryInfoi");
 extern "C" void Xv_func_001F9E58(int) asm("func_001F9E58");
 extern int _vt$9TskDamage;
@@ -300,7 +301,14 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskCamera", D_002FEE90);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskCamera", D_002FEEA0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FBBD0);
+extern "C" void func_001FBBD0()
+{
+    static const char msg[0x30] = "free mem   max/total/size   = %d/%d \n";
+    int info[4];
+
+    Xiii_getInfo__9BedMemoryP13BedMemoryInfoi((int)&D_006E9800, (int)info, 0);
+    Xiii_func_00218470((int)msg, info[0], info[1]);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FBC0C);
 
