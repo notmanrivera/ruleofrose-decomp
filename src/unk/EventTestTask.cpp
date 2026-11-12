@@ -90,7 +90,10 @@ extern "C" void func_002183F8(int arg0, int arg1, int arg2)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00218424);
+extern "C" float func_00218424(float fparg0, float fparg1)
+{
+    return fparg0 - fparg1 * (float)(int)(fparg0 / fparg1);
+}
 
 extern "C" void func_00218450(float f)
 {
