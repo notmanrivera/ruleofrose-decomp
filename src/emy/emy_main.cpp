@@ -400,7 +400,26 @@ INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00164078);
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001640AC);
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001640E8);
+extern "C" int func_001640E8(int arg0)
+{
+    int var_a1;
+    int var_a2;
+    int var_a3;
+    int temp_v0;
+
+    var_a2 = 0;
+    var_a3 = 0x300;
+    var_a1 = 0x3F;
+    do {
+        temp_v0 = arg0 + var_a3;
+        var_a3 += 4;
+        var_a1 -= 1;
+        if (M2C_FIELD(temp_v0, int *, 0x30) != 0) {
+            var_a2++;
+        }
+    } while (var_a1 >= 0);
+    return var_a2;
+}
 
 extern "C" int func_00164118(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
 {
