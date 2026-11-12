@@ -420,7 +420,17 @@ extern "C" void func_0018185C(int arg0)
     memset_alias((void *)(temp_v0 + 0x18), 0, 0x20);
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_001818B4);
+extern "C" void func_001818B4(int arg0)
+{
+    int temp_s0 = (int)&D_006E9288 + (arg0 << 6);
+    X_func_00183194(M2C_FIELD(temp_s0, int *, 0x14));
+    M2C_FIELD(temp_s0, int *, 0) = arg0;
+    M2C_FIELD(temp_s0, int *, 8) = -1;
+    M2C_FIELD(temp_s0, int *, 4) = -1;
+    M2C_FIELD(temp_s0, int *, 0xC) = 0x80;
+    M2C_FIELD(temp_s0, int *, 0x10) = 0x80;
+    memset_alias((void *)(temp_s0 + 0x18), 0, 0x20);
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00181920);
 
