@@ -1140,7 +1140,15 @@ INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001854AC);
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185594);
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185670);
+extern "C" void func_00185670(MsgWin *self)
+{
+    if (self->m[0xD8 / 4] == 1) {
+        char *p = (char *)&D_006FBD80;
+        void *sub = p + 0x42BB0;
+        func_00191BA8(sub, 1, self->m[0x5C / 4] * 0x10, self->m[0x60 / 4] * 0x10);
+        func_00191C64(sub, 1, self->m[0x48 / 4] * 0x10, self->m[0x4C / 4] * 0x10);
+    }
+}
 
 extern "C" void func_001856F4(MsgWin *self, int theA)
 {
