@@ -415,7 +415,16 @@ extern "C" void func_001937C0(int arg0, int arg1, int arg2)
     M2C_FIELD(arg1, float *, 4) = (float) ((M2C_FIELD(arg0, float *, 0x104) * (M2C_FIELD(arg2, float *, 4) - 224.0f)) / 448.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_0019381C);
+extern "C" void func_0019381C(int arg0)
+{
+    int base;
+
+    base = (int)&D_007812C0;
+    if (~M2C_FIELD(base, int *, 0x22214) == 0) {
+        M2C_FIELD(arg0, int *, 4) = M2C_FIELD(arg0, int *, 4) | 0x10;
+        Xiii_func_001D3AC8(base, 0);
+    }
+}
 
 extern "C" void func_00193868(int arg0)
 {
