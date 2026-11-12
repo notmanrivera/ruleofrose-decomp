@@ -237,7 +237,28 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E8FC4);
 extern "C" void TskMtnMove2__vfunc_05(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", TskMtnMove2__vfunc_04);
+extern "C" void TskMtnMove2__vfunc_04(int arg0)
+{
+    short idx;
+    long ent;
+    int fp;
+    short base;
+    int off;
+    int p;
+
+    idx = M2C_FIELD(arg0, short *, 0xCE);
+    if (idx >= 0) {
+        p = *(int *) (arg0 + M2C_FIELD(arg0, short *, 0xD0));
+        p += idx * 8;
+        ent = *((long *) p - 1);
+        fp = (int) (ent >> 32);
+    } else {
+        fp = M2C_FIELD(arg0, int *, 0xD0);
+    }
+    base = M2C_FIELD(arg0, short *, 0xCC);
+    off = (idx >= 0) ? (short) ent + base : base;
+    ((void (*)(int)) fp)(arg0 + off);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", TskMtnMove2__vfunc_02);
 
