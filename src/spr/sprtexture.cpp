@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern char D_0029A180[];
+struct TexEntry { int m_0; int m_4; int m_8; int m_C; int m_10; int m_14; };
+extern TexEntry D_00299C60[];
 typedef unsigned int u_long128 __attribute__((mode(TI)));
 extern "C" char vtbl_S2dMes[] asm("_vt$6S2dMes");
 extern "C" int Xii_func_0019183C(int) asm("func_0019183C");
@@ -416,7 +419,18 @@ extern "C" int func_00191278(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_001912A0);
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_001913C4);
+extern "C" int func_001913C4(int arg0, int arg1, int arg2)
+{
+    if (arg1 >= 7) {
+        return -1;
+    }
+    char *dst = D_0029A180 + arg1 * 0x40;
+    *dst = 0;
+    Xiii_strcpy((int)dst, arg2);
+    D_00299C60[arg1].m_0 = arg1;
+    D_00299C60[arg1 + 1].m_0 = -1;
+    return 0;
+}
 
 extern "C" void func_0019143C(int arg0, int arg1, int arg2)
 {
