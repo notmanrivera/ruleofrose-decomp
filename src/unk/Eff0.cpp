@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" float Xii_func_0016FF18(int, int) asm("func_0016FF18");
 extern "C" int Xii_func_0016A914(int) asm("func_0016A914");
 extern "C" int Xii_func_00173DF8(int) asm("func_00173DF8");
 extern "C" int Xiiii_memset(int, int, int) asm("memset");
@@ -188,7 +189,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodSpray1__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodSpray1__vfunc_08);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", updateZDepth__14EffBloodSpray1);
+extern "C" void updateZDepth__14EffBloodSpray1(int arg0)
+{
+    M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, arg0 + 0x30);
+}
 
 extern "C" int func_0016BE14(int arg0)
 {
