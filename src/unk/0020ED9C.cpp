@@ -238,7 +238,19 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210478);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002104EC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210534);
+// unk/0020ED9C, func_00210534: m2c's draft
+
+// ---- declarations
+
+// ---- function
+extern "C" void func_00210534(unsigned int arg0, unsigned int arg1, short arg2)
+{
+    if (((int *)&D_007B4700)[arg0] < arg2) {
+        ((int *)&D_007B4700)[arg1] = 1;
+    } else {
+        ((int *)&D_007B4700)[arg1] = 0;
+    }
+};
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210578);
 
