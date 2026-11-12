@@ -86,6 +86,7 @@ extern "C" int Xii_func_00187464(int) asm("func_00187464");
 extern "C" int Xii_func_0018FEBC(int) asm("func_0018FEBC");
 extern "C" int Xii_func_001BE048(int) asm("func_001BE048");
 extern "C" int Xii_func_001D8DC4(int) asm("func_001D8DC4");
+extern "C" void Xii_func_001D8FEC(int, int) asm("func_001D8FEC");
 extern "C" int Xii_func_001D9F40(int) asm("func_001D9F40");
 extern "C" int Xii_func_001D9F84(int) asm("func_001D9F84");
 extern "C" int Xii_func_001DA05C(int) asm("func_001DA05C");
@@ -1750,7 +1751,19 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CFBE4);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CFCA8);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CFDA4);
+extern "C" void func_001CFDA4(int arg0, unsigned int arg1, int arg2)
+{
+    register unsigned int v0 asm("$2") = arg1 >> 28;
+    register unsigned int a3 asm("$7") = v0 & 3;
+    switch (a3) {
+    case 1:
+        Xii_func_001D8FEC(Xiiu_func_001D2B8C(arg0, arg1), arg2);
+        break;
+    case 2:
+        Xii_func_001D8FEC(Xiiu_func_001D2BA8(arg0, arg1), arg2);
+        break;
+    }
+}
 
 extern "C" int func_001CFE1C(int arg0, unsigned int arg1)
 {
