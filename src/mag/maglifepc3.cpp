@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiifii_func_0010B1B0__8DogActoriifii(int, int, int, float, int, int) asm("func_0010B1B0__8DogActoriifii");
 extern "C" int Xiiiiiif_func_0011D790(int, int, int, int, int, float) asm("func_0011D790");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfi_func_0010DAD8__8DogActor(int) asm("func_0010DAD8__8DogActor");
@@ -92,7 +93,52 @@ extern "C" int func_0011D790()
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc3", D_002EA7A8);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011D7C0);
+extern "C" int func_0011D7C0(int arg0, int arg1, int arg2, int arg3, int arg4, float fparg0)
+{
+    if (arg1 == 0) {
+        X_ror_assert((int) D_002EA758, 0xC5, (int) "theMotion");
+    }
+    if (M2C_FIELD(arg0, int *, 0x58) == 0) {
+        X_ror_assert((int) D_002EA758, 0xC6, (int) D_002EA7C0);
+    }
+    int var_v0 = -1;
+    if (arg1 != 0 && M2C_FIELD(arg0, int *, 0x58) != 0) {
+        int var_s0;
+        int var_s5 = -1;
+        if (M2C_FIELD(arg0, int *, 0x54) == 2) {
+            int temp_s3 = (int)&D_002971D5;
+            int temp_s6 = temp_s3 - 5;
+            X_strcpy(temp_s3, arg1 + 3);
+            var_s0 = X_func_0010AB40__8DogActorPCc(M2C_FIELD(arg0, int *, 0x58), temp_s6);
+            if (var_s0 < 0) {
+                var_s0 = X_func_0010AB40__8DogActorPCc(M2C_FIELD(arg0, int *, 0x58), arg1);
+                if (var_s0 < 0) {
+                    var_v0 = var_s0;
+                    goto end;
+                }
+            }
+            if (arg3 != 0) {
+                X_strcpy(temp_s3, arg3 + 3);
+                var_s5 = X_func_0010AB40__8DogActorPCc(M2C_FIELD(arg0, int *, 0x58), temp_s6);
+                if (var_s5 < 0) {
+                    var_s5 = X_func_0010AB40__8DogActorPCc(M2C_FIELD(arg0, int *, 0x58), arg3);
+                }
+            }
+        } else {
+            var_s0 = X_func_0010AA5C__8DogActorPCc(M2C_FIELD(arg0, int *, 0x58), arg1);
+            if (var_s0 < 0) {
+                var_v0 = var_s0;
+                goto end;
+            }
+            if (arg3 != 0) {
+                var_s5 = X_func_0010AA5C__8DogActorPCc(M2C_FIELD(arg0, int *, 0x58), arg3);
+            }
+        }
+        return Xiiifii_func_0010B1B0__8DogActoriifii(M2C_FIELD(arg0, int *, 0x58), var_s0, arg2, fparg0, var_s5, arg4);
+    }
+end:
+    return var_v0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc3", D_002EA7C0);
 
