@@ -1321,7 +1321,27 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBEDC);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBF4C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBFB0);
+extern "C" void *func_001CBFB0(int arg0, unsigned int arg1)
+{
+    int var_a2 = 0;
+    int var_a4 = 0;
+    unsigned int off = 0x1F24CU;
+
+loop_1:
+    int temp_v0 = var_a2 * 4;
+    var_a2 += 1;
+    int temp_v1 = temp_v0 + arg0;
+    int *p = (int *)(temp_v1 + off);
+    if (*p == 0) {
+        *p = arg1;
+        return *(char **)(arg0 + 0x1F248) + var_a4;
+    }
+    var_a4 += 0x2C0;
+    if (var_a2 < 0x180) {
+        goto loop_1;
+    }
+    return 0;
+}
 
 extern "C" void func_001CC004(Foo *self, int arg1)
 {
