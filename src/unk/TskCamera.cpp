@@ -87,7 +87,16 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001F8FC0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", TskSnd__vfunc_04);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", TskSnd__vfunc_05);
+extern "C" void TskSnd__vfunc_05(int arg0)
+{
+    int temp_a2;
+    int off = 0x18E00;
+
+    if (M2C_FIELD(arg0, int *, 0x34) == 2) {
+        temp_a2 = M2C_FIELD(arg0, int *, 0x84);
+        X_func_001E6734((int)&D_007812C0 + off, 0xD, temp_a2, temp_a2, 0, -1);
+    }
+}
 
 extern "C" float func_001F9294(int arg0)
 {
