@@ -507,7 +507,23 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB31C);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB520);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB71C);
+extern "C" void func_001DB71C(int arg0, int arg1)
+{
+    int temp_v1;
+    int temp_v0;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x108);
+    if (temp_v1 == -1) {
+        M2C_FIELD(arg1, float *, 0) = M2C_FIELD(arg0, float *, 0x190);
+        M2C_FIELD(arg1, float *, 4) = M2C_FIELD(arg0, float *, 0x194);
+        M2C_FIELD(arg1, float *, 8) = M2C_FIELD(arg0, float *, 0x198);
+        return;
+    }
+    temp_v0 = (int)&D_006FE6A0 + (temp_v1 * 0x4D0);
+    M2C_FIELD(arg1, float *, 0) = M2C_FIELD(temp_v0, float *, 0x40);
+    M2C_FIELD(arg1, float *, 4) = M2C_FIELD(temp_v0, float *, 0x44);
+    M2C_FIELD(arg1, float *, 8) = M2C_FIELD(temp_v0, float *, 0x48);
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB774);
 
