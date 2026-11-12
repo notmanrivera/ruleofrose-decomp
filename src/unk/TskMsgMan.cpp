@@ -851,7 +851,13 @@ extern "C" int func_001F3760()
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3788);
+extern "C" int func_001F3788()
+{
+    char *base = (char *)&D_007812C0;
+
+    M2C_FIELD(base, int *, 0x21F4C) = M2C_FIELD(base, int *, 0x21F4C) & ~0x100;
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F37B8);
 
