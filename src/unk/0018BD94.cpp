@@ -166,7 +166,12 @@ extern "C" void func_0018F024()
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018F060);
+extern "C" void func_0018F060()
+{
+    if (~D_007812C0.m_22214 == 0) {
+        Xiii_func_001D3AC8((int)&D_007812C0, 0);
+    }
+}
 
 extern "C" void func_0018F09C(int arg0)
 {
