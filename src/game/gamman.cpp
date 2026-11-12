@@ -424,7 +424,16 @@ extern "C" void func_001BFF5C(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BFF64);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BFFAC);
+extern "C" int func_001BFFAC(unsigned short *theA, unsigned short *theB)
+{
+    int a = *theA;
+    int b = *theB;
+
+    if (a < b) {
+        return -1;
+    }
+    return b < a;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BFFCC);
 
