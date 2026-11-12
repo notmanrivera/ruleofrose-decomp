@@ -98,7 +98,18 @@ INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F6B8);
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F7AC);
 
-INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F81C);
+extern "C" int X4_func_001E4908(int, int, int, int) asm("func_001E4908");
+extern int D_007812C0;
+
+extern "C" int func_0017F81C(int arg0, int arg1)
+{
+    int v;
+    int base = (int)&D_007812C0;
+    if (X4_func_001E4908(base + 0x18E00, arg1, (int)&v, 1) == 0) {
+        return -1;
+    }
+    return Xiii_func_00180A90(arg0, *(unsigned short *)(v + 0x20));
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F878);
 
