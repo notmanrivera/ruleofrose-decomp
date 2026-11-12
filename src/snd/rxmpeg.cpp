@@ -1,4 +1,5 @@
 #include "include_asm.h"
+typedef void (*DestructorFn)(int);
 typedef int (*FuncPtr68)(int, int, int, int, int, int);
 extern FuncPtr68 D_00298F68[];
 extern "C" int DIntr_alias() asm("DIntr");
@@ -683,7 +684,27 @@ INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_0018252C);
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_001825E4);
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00182818);
+extern "C" void func_00182818()
+{
+    int *p30 = (int *)&D_00298F30;
+    if (*p30 != 0) {
+        *p30 = 0;
+        int *p_6e9200 = (int *)&D_006E9200;
+        X_sceMpegReset((int)p_6e9200);
+        X_func_0024F780((int)p_6e9200);
+        int *p2c = (int *)&D_00298F2C;
+        X_func_0018316C(*p2c);
+        *p2c = 0;
+        X_func_00181A70(0);
+        X_func_00181CE4();
+        int *p20 = (int *)&D_00298F20;
+        ((DestructorFn)D_002DBE98)(*p20);
+        *p20 = 0;
+        int *p00 = (int *)&D_00298F00;
+        ((DestructorFn)D_002DBE98)(*p00);
+        *p00 = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_001828C4);
 
