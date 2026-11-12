@@ -93,6 +93,11 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+extern "C" void X_func_00191D20(void *, int, int) asm("func_00191D20");
+extern "C" void X_func_00191D74(void *, int, int) asm("func_00191D74");
+extern "C" void X_func_00191DC8(void *, int, int) asm("func_00191DC8");
+extern "C" void X_func_00191ED0(void *, int) asm("func_00191ED0");
+extern "C" void X_func_00191F98(void *, int) asm("func_00191F98");
 extern "C" void func_0013511C(void *, int, int, int, int);
 extern char *D_002997D0[];
 struct MsgSub5F68 {
@@ -1207,7 +1212,26 @@ INCLUDE_RODATA("asm/nonmatchings/msg/msgman", D_002F72C0);
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001850FC);
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185268);
+extern "C" void func_00185268(MsgWin *self, int arg1)
+{
+    if (arg1 == 1) {
+        self->m[0xC8 / 4] = arg1;
+        char *p = (char *)&D_006FBD80;
+        void *s = p + 0x42BB0;
+        int n = self->m[0xCC / 4];
+        X_func_00191F98(s, 0);
+        X_func_00191ED0(s, 0);
+        X_func_00191D20(s, 0, 1);
+        X_func_00191D74(s, 0, 1);
+        X_func_00191DC8(s, 0, (n <= 0) ? 0 : (n - 1));
+    } else {
+        self->m[0xC8 / 4] = 0;
+        char *p = (char *)&D_006FBD80;
+        void *s = p + 0x42BB0;
+        X_func_00191D20(s, 0, 0);
+        X_func_00191D74(s, 0, 0);
+    }
+}
 
 extern "C" void func_00185348(MsgWin *self)
 {
