@@ -352,7 +352,12 @@ extern "C" int func_001819F4(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00181A24);
+extern "C" void func_00181A24(int arg0)
+{
+    char *elem = (char *)&D_006E9288 + (arg0 << 6);
+    *(int *)(elem + 0x14) = X_func_001830FC(0x20000);
+    X_func_001818B4(arg0);
+}
 
 extern "C" void func_00181A70(int arg0)
 {
