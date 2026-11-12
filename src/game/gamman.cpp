@@ -324,7 +324,21 @@ extern "C" void __10FileReader(int arg0)
     (*(int *)(int *)((char *)(arg0) + 0x4)) = -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", _$_10FileReader);
+extern "C" int func_001BE414(int);
+
+class FileReader {
+public:
+    int unk0;
+    int unk4;
+    ~FileReader();
+};
+
+FileReader::~FileReader()
+{
+    if (unk4 >= 0) {
+        func_001BE414((int)this);
+    }
+}
 
 extern "C" int func_001BE338(int arg0, int arg1)
 {
