@@ -93,6 +93,10 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+struct MsgWin;
+extern "C" void func_00185268(MsgWin *, int);
+extern "C" void func_00185594(MsgWin *, int);
+extern "C" void func_001856F4(MsgWin *self, int theA);
 extern "C" void func_001853CC(void *, int);
 extern "C" unsigned int strlen(const char *);
 extern "C" void func_00191BA8(void *, int, int, int);
@@ -309,7 +313,25 @@ extern "C" int func_00183B74(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00183BB8);
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00183C4C);
+extern "C" int func_00183C4C(MsgWin *self)
+{
+    if (self->m[8 / 4] == 0) {
+        return -1;
+    }
+
+    self->m[0] = -1;
+    func_00185268(self, 0);
+    func_001853CC(self, 0);
+    func_00185594(self, 0);
+    func_001856F4(self, 0);
+    self->m[0x10 / 4] = 0;
+    self->m[8 / 4] = 0;
+    if (self->m[0x28 / 4] != -1) {
+        func_001801C8(&D_007B2580, self->m[0x28 / 4]);
+        self->m[0x28 / 4] = -1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00183CE0);
 
