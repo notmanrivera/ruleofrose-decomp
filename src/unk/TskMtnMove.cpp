@@ -1,4 +1,18 @@
 #include "include_asm.h"
+struct Obj7C7C {
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+};
+struct Node7C7C {
+    Obj7C7C *obj;
+    int pad[4];
+    int flags;
+};
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void *X_memset(void *, int, unsigned int) asm("memset");
 struct TskObj7618 {
     virtual int vfunc1(int);
 };
@@ -237,7 +251,20 @@ extern "C" int func_001E79C0(char *arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7A20);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7C7C);
+extern "C" void func_001E7C7C(void *arg0, Node7C7C *arg1)
+{
+    X_func_001E7698(arg0, arg1);
+    if (arg1->obj != 0) {
+        arg1->obj->v5();
+        if (arg1->flags & 1) {
+            X___builtin_delete(arg1->obj);
+            arg1->flags &= ~1;
+        }
+        arg1->obj = 0;
+    }
+    X_memset(arg1, 0, 0x40);
+    X___builtin_delete(arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7D08);
 
