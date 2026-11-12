@@ -76,7 +76,10 @@ INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00162B68);
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00162C2C);
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00162C5C);
+extern "C" void func_00162C5C(int a0, int a1, unsigned short a2, int a3, int a4, int a5, int a6, int a7, int a8)
+{
+    X_func_00162C88(a0, a1, a2, a3, a4, a5, a6, a7, 0, 0, a8);
+}
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00162C88);
 
