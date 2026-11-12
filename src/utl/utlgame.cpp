@@ -11,6 +11,8 @@ extern const char D_002E57A8[];
 #define ASSERT_FILE D_002E5728
 extern const char D_002E5728[];
 #include "game/gamman.h"
+extern "C" int func_001D1A48(int arg0);
+extern "C" void func_001C6A40(void *theGamMan, int theA);
 extern "C" void func_001D1C80(GamMan *theGamMan, int theA, int theB, int *theOut);
 extern "C" void func_001C7E40(GamMan *theGamMan, int theA, int theB);
 extern "C" void func_001CCC30(GamMan *theGamMan, int theA);
@@ -377,7 +379,17 @@ INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103A90);
 
 INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103CCC);
 
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103DE4);
+extern "C" int func_00103DE4()
+{
+    GamMan *g = &D_007812C0;
+
+    if (func_001D1A48((int)g)) {
+        return 0;
+    }
+    func_001C6A40(g, 0x100000);
+    *(int *)((char *)g + 0x21F48) |= 0x400;
+    return 1;
+}
 
 extern "C" int func_00103E4C()
 {
