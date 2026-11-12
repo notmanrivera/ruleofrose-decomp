@@ -1,4 +1,10 @@
 #include "include_asm.h"
+extern "C" void ror_assert(const char *, int, const char *);
+struct MapModel {
+    int val;
+    char pad[0x520 - 4];
+};
+extern MapModel D_007257B8[];
 struct Foo {
     char pad[0x1F24C];
     int ids[0x180];
@@ -927,7 +933,14 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C6FE0);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C7210);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C7494);
+extern "C" int func_001C7494(char *arg0)
+{
+    unsigned int no = *(unsigned int *)(arg0 + 0x1D300);
+    if (no >= 4) {
+        ror_assert("mag/magscene.h", 0x330, "no >= 0 && no < MAX_MAP_MODEL");
+    }
+    return D_007257B8[no].val;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C7500);
 
