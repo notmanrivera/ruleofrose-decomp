@@ -121,11 +121,11 @@ struct MagLifePCModeHug : public MagLifePCMode {};
 // ============================================================================
 // 2. MagLifePC (aliased as MagPC in maglifepc.cpp)
 // ============================================================================
-// - Inheritance: MagLife0 -> MagLife -> MagLifeControlChara (size 0x80) -> MagLifeBillboard (size 0x84) -> MagLifePC
-//   (Proven by .rodata RTTI strings D_002E9660..D_002E96A0 and constructor func_0011BF0C calling
-//   MagLifeBillboard/MagLifeControlChara ctor func_0011A888 at 0x0011BF38 before writing +0x84).
+// - Inheritance: MagLife0 -> MagLife -> MagLifeControlChara (size 0x80) -> MagLifePC (RTTI:
+//   __tf9MagLifePC calls __tf19MagLifeControlChara; MagLifeBillboard is a sibling). The
+//   constructor func_0011BF0C calls MagLifeControlChara's, func_0011A888, at 0x0011BF38.
 //
-// - Inherited fields from MagLifeControlChara (+0x00..+0x7F) & MagLifeBillboard (+0x80..+0x83) used in maglifepc.s:
+// - Inherited fields from MagLifeControlChara (+0x00..+0x7F) used in maglifepc.s:
 //   * +0x00 (size 0x10): int m_unk00[4] (mode tuple copied to/from +0x30 and pushed/popped to m_submode_stack at +0x90)
 //     - +0x00 (int m_unk00[0], current mode ID): 0x0011C22C: lw $v0, 0x0($s1); 0x0011C2C4: lw $v1, 0x0($a0)
 //     - +0x04 (int m_unk00[1], mode tick counter): 0x0011AE58: lw $v0, 0x4($s0); 0x0011AE70: sw $v0, 0x4($s0)
@@ -138,7 +138,6 @@ struct MagLifePCModeHug : public MagLifePCMode {};
 //   * +0x54 (size 0x04): int m_unk54 - 0x0011ACFC: lw $v1, 0x54($a3) (compared with 2); 0x0011BD68: sw $a3, 0x54($s0)
 //   * +0x58 (size 0x04): DogActor *m_actor - 0x0011ADF4: lw $v0, 0x58($s0); 0x0011BD60: sw $a1, 0x58($s0)
 //   * +0x78 (size 0x04): int m_zeroLink - 0x0011BDA0: sw $v0, 0x78($s0); 0x0011BDA4: sw $zero, 0x78($s0)
-//   * +0x80 (size 0x04): float m_distance (inherited from MagLifeBillboard, initialized by func_0011A888)
 //
 // - Virtual table pointer position: +0x14 (void *m_vptr, inherited from MagLife0/MagLifeControlChara)
 // - Virtual table entries evidenced in maglifepc.s:
@@ -149,13 +148,16 @@ struct MagLifePCModeHug : public MagLifePCMode {};
 //   * Entry 9 (+0x48): virtual void vfunc09(int theMode, int theA)
 //     Called in func_0011C1E8 at 0x0011C250..0x0011C26C and termWorld__9MagLifePC at 0x0011C430..0x0011C444:
 //     lw $v0, 0x14($s0); addiu $v0, $v0, 0x48; lh $a0, 0x0($v0); lw $v0, 0x4($v0); jalr $v0
-//   * Entry 16 (+0x80): virtual void vfunc16(BedPad *thePad) (MagLifePC__vfunc_16 at 0x0011B30C)
+//   * Entry 16 (+0x80): virtual void vfunc16(BedPad *thePad) (MagLifePC__vfunc_16 at 0x0011B30C):
+//     MagLifePC's own slot (MagLifeControlChara has 15; MagLifeBwn and MagLifeTest add theirs)
 //
 // - Total size: 0x220 bytes (544 bytes).
 //   Deduced from constructor func_0011BF0C (0x0011BF0C..0x0011C1E4) initializing up to +0x21C
 //   (0x0011C178: sw $zero, 0x21C($fp)) and 16-byte alignment required by quadword fields (+0x30, +0x90).
-struct MagLifePC : public MagLifeBillboard {
+struct MagLifePC : public MagLifeControlChara {
     enum { MAX_SUBMODE_STACK = 4 };
+
+    int m_unk80;                    // +0x80 (size 0x04, DOUBTFUL: no access found yet; the constructor leaves it)
 
     int m_unk84;                    // +0x84 (size 0x04) - 0x0011BF44: sw $zero, 0x84($fp); 0x0011AC98: sw $zero, 0x84($s1)
     int m_unk88;                    // +0x88 (size 0x04, DOUBTFUL: unreferenced; likely 16-byte alignment padding before +0x90)
@@ -278,6 +280,17 @@ struct MagLifePC : public MagLifeBillboard {
 
     // Proposed name: m_equipped_weapon (returned by func_0011CB70 in vfunc_16; +1 returned by func_0011ACF4 when attacking)
     int m_unk21C;                   // +0x21C (size 0x04) - 0x0011AD58: lw $v0, 0x21C($a3); 0x0011B364: sw $v0, 0x21C($s0)
+
+    // The overrides are still free functions in maglifepc.cpp (live__9MagLifePC,
+    // message__9MagLifePCiiPv, ...); getName is inline (returns 0, asm/inline/).
+    virtual void live();
+    virtual const char *getName() { return 0; }
+    virtual void setActor(DogActor *theActor, int theA, int theB);
+    virtual void reset4MapJump();
+    virtual void termWorld();
+    virtual int message(int theMsg, int theArg, void *theData);
+    // Slot 16, MagLifePC's own.
+    virtual void vfunc16(void *thePad) asm("MagLifePC__vfunc_16");
 };
 
 

@@ -4,7 +4,7 @@
 #ifndef MAG_MAGLIFEWINDOW_H
 #define MAG_MAGLIFEWINDOW_H
 
-#include "mag/maglifeman.h"
+#include "mag/maglife.h"
 #include "dog/dogentity.h"
 
 class BedPad;
@@ -26,8 +26,6 @@ struct MagFntMan {
 
 class MagLifePos : public MagLife {
 public:
-    unsigned char m_unk18[0x18];    // +0x18
-
     virtual void updatePos();
     virtual void updateSpeed();
     virtual void move();

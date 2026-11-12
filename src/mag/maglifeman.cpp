@@ -20,9 +20,9 @@
 // The 64 pods are 0x10 bytes each (MagLifePod), so m_head sits at +0x400.
 // The functions are the game's, in address order, with its ASSERTs: a fired
 // assert only prints and spins, so the walks rely on them holding.
-
 #include "ror.h"
 #include "mag/maglifeman.h"
+#include "mag/maglife.h"
 #include "sdk/string.h"
 
 // 0x001194B4: forgets what a pod held. The order of the stores is the

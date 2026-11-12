@@ -35,7 +35,13 @@
         ".section .text" \
     )
 
-__asm__(".include \"include/labels.inc\"\n");
+// Creates .rodata before any code. GNU as 2.10-ee can otherwise assemble a
+// compiled jump table's `lw $2,$L($2)` macro into lw+addu+lw instead of
+// lui+addu+lw when .rodata first appears in the middle of the file (an
+// INCLUDE_RODATA): mag/maglifepc's func_0011C2AC did once its .rodata moved.
+__asm__(".include \"include/labels.inc\"\n"
+        ".section .rodata\n"
+        ".section .text\n");
 
 #else
 

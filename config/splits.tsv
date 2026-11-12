@@ -32,7 +32,7 @@ text	rodata	data	bss	file	confidence
 00117654	002E9050	00296190	00308580	mag/magsystem	manual
 001194B4	002E9510	-	-	mag/maglifeman	manual
 00119B34	002E9598	-	-	mag/maglife	likely
-0011AB40	002E9660	-	-	mag/maglifepc	likely
+0011AB40	002E96B0	-	-	mag/maglifepc	manual
 0011C464	002EA1E8	-	-	mag/maglifepc2	likely
 0011D720	002EA5F0	002961E0	-	mag/maglifepc3	certain
 0011DF7C	002EA8D0	00297220	0030FFF0	mag/maglifepcmove	likely

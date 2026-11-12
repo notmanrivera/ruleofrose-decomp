@@ -171,15 +171,15 @@ extern "C" float func_00119FB0(MagLifeControlChara *self)
     return 0.0f;
 }
 
-extern "C" void MagLifeControlChara__vfunc_09(MagLifeControlChara *self, int theA, int theB)
+void MagLifeControlChara::vfunc09(int theA, int theB)
 {
-    if (self->m_unk00) {
-        *(long long *)&self->m_last0 = *(long long *)&self->m_unk00;
-        *(long long *)&self->m_last2 = *(long long *)&self->m_unk08;
+    if (m_unk00) {
+        *(long long *)&m_last0 = *(long long *)&m_unk00;
+        *(long long *)&m_last2 = *(long long *)&m_unk08;
     }
-    self->m_unk08 = theB;
-    self->m_unk00 = theA;
-    self->m_unk04 = -1;
+    m_unk08 = theB;
+    m_unk00 = theA;
+    m_unk04 = -1;
 }
 
 extern "C" void func_0011A010(MagLifeControlChara *self, int theState)
@@ -631,7 +631,7 @@ void MagLifeControlChara::func_0011A888()
     *(u_long128 *)&m_last0 = 0;
     m_unk04 = -1;
     m_unk00 = 0;
-    m_unk24 = 0;
+    m_hide = 0;
     m_scene = 0;
     *state = 0;
     m_sctPos[0] = 0;
@@ -651,7 +651,7 @@ void MagLifeControlChara::func_0011A888()
 
 
 
-void MagLifeBillboard::liveBillboard()
+void MagLifeBillboard::live()
 {
     m_unk04++;
     ASSERT(m_scene);

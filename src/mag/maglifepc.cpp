@@ -220,14 +220,6 @@ extern "C" void func_0011AF30(MagPC *self, int theType, int theFlag)
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc", D_002E9660);
-
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc", D_002E9678);
-
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc", D_002E9690);
-
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc", D_002E96A0);
-
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc", D_002E96B0);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc", D_002E96B8);

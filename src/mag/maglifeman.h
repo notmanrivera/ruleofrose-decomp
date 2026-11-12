@@ -14,37 +14,9 @@
 
 #include "ror.h"
 
-class MagLifeManager;
 struct tag_I3dRenderStage_s;
 
-// MagLife0 / MagLife: the base of every life object (mag/maglife.cpp, whose
-// methods are still asm). Only what MagLifeManager needs is declared here:
-// the vtable slots must keep the original order (the dtor first, then live,
-// attached, getLevel, getName; MagLife adds getName, render, setHide,
-// getHide), and the fields before the vptr must keep +0x10 a mask word.
-class MagLife0 {
-public:
-    int m_unk00;                    // +0x00
-    int m_unk04;                    // +0x04
-    int m_unk08;                    // +0x08
-    int m_unk0C;                    // +0x0C
-    int m_unk10;                    // +0x10: live() mask
-    // +0x14: vtable
-
-    virtual ~MagLife0();
-    virtual void live();
-    virtual void attached(MagLifeManager *theMan);
-    virtual int getLevel();
-    virtual const char *getName() = 0;
-};
-
-class MagLife : public MagLife0 {
-public:
-    virtual const char *getName();
-    virtual void render(tag_I3dRenderStage_s *theStage);
-    virtual void setHide(bool theHide);
-    virtual int getHide();
-};
+class MagLife;                      // mag/maglife.h
 
 // One slot of the pool: one life and its list links (0x10 bytes).
 struct MagLifePod {

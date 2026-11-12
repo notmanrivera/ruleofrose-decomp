@@ -7,19 +7,15 @@ extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
 extern const char D_002EB870[];
 extern "C" int Xi_func_00103F08() asm("func_00103F08");
 extern "C" int Xi_func_00103F38() asm("func_00103F38");
-#include "mag/maglifeman.h"
+#include "mag/maglife.h"
 #include "dog/dogactor.h"
-class MagBwn : public MagLife {
+// MagLifeBwn: the dog (RTTI: derives from MagLifeControlChara). Slot 16 is
+// its own; func_001233F4 calls it with the new mode and two arguments.
+class MagLifeBwn : public MagLifeControlChara {
 public:
-    virtual void vfunc09();
-    virtual void vfunc10();
-    virtual void vfunc11();
-    virtual void vfunc12();
-    virtual void vfunc13();
-    virtual void vfunc14();
-    virtual void vfunc15();
-    virtual void vfunc16(int theMode, int theA, int theB);
+    virtual void vfunc16(int theMode, int theA, int theB) asm("MagLifeBwn__vfunc_16");
 };
+typedef MagLifeBwn MagBwn;
 #define I(p, off) (*(int *)((char *)(p) + (off)))
 extern "C" void func_00125704(MagBwn *self, int theA);
 extern "C" void func_00125A90(MagBwn *self);

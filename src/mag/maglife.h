@@ -1,19 +1,71 @@
-// mag/maglife.h: MagLifeControlChara and MagLifeBillboard, the life objects
-// that drive a DogActor and the floating billboards. The class names and the
-// virtual order come from the vtables (_vt$19MagLifeControlChara,
-// _vt$16MagLifeBillboard); the fields are reconstructed from mag/maglife.cpp.
+// mag/maglife.h: the base classes of every "life" object of a scene
+// (MagLife0, MagLife) and MagLifeControlChara, the life that drives a
+// DogActor, with MagLifeBillboard. The hierarchy is the game's RTTI
+// (notes/class_hierarchy.txt):
 //
-// The out-of-line methods are free functions in mag/maglife.cpp with their
-// original symbols: the game calls them directly, so keeping the symbols is
-// what lets the rest of the asm link against this file.
+//   MagLife0 -> MagLife -> MagLifeControlChara -> MagLifeBillboard
+//                                              -> MagLifeBwn, MagLifePC,
+//                                                 MagLifeTest
+//                       -> MagLifeBwnCtrl, MagLifeFader, MagLifeNoise,
+//                          MagLifeFadeKeyHole, MagLifeMenuBase (menus),
+//                          MagLifePos -> MagLifeWindow, S2dBg, ...
+//
+// Every method of MagLife0 and MagLife, and all of MagLifeControlChara's
+// but vfunc09, is inline: their out-of-line copies are linkonce
+// (asm/inline/), and every file that emits a MagLife class's RTTI also
+// emits "8MagLife0" (and "7MagLife" when it emits a direct child's). The
+// bodies below are those copies. vfunc09 is MagLifeControlChara's key
+// method and live is MagLifeBillboard's: mag/maglife.cpp defines both, so it
+// emits both classes' vtables and RTTI names ("19MagLifeControlChara",
+// "16MagLifeBillboard", "8MagLife0", "7MagLife" close its .rodata).
+//
+// Layout: g++ 2.96 puts the vptr after the first polymorphic class's data,
+// so it sits at +0x14 for all of them. MagLife's fields are +0x18..+0x2F:
+// every MagLife constructor zeroes +0x20 and +0x24 (setHide/getHide), and
+// the classes derived from MagLife start their own fields at +0x30.
 #ifndef MAG_MAGLIFE_H
 #define MAG_MAGLIFE_H
 
 #include "ror.h"
 #include "dog/dogactor.h"
-#include "mag/maglifeman.h"
 
+class MagLifeManager;
 class MagScene;
+struct tag_I3dRenderStage_s;
+
+class MagLife0 {
+public:
+    int m_unk00;                    // +0x00: the mode (vfunc09)
+    int m_unk04;                    // +0x04: frame counter (live)
+    int m_unk08;                    // +0x08
+    int m_unk0C;                    // +0x0C
+    int m_unk10;                    // +0x10: live() mask
+    // +0x14: vtable
+
+    virtual ~MagLife0() {}
+    virtual void live() { m_unk04++; }
+    virtual void attached(MagLifeManager *theMan) {}
+    virtual int getLevel() { return 0; }
+    virtual const char *getName() = 0;
+};
+
+class MagLife : public MagLife0 {
+public:
+    int m_unk18;                    // +0x18
+    int m_unk1C;                    // +0x1C
+    // Named by MagLifeBillboard::live's assert; every MagLife constructor
+    // zeroes it, but the menus keep their scene at +0x30 instead.
+    MagScene *m_scene;              // +0x20
+    int m_hide;                     // +0x24
+    int m_unk28;                    // +0x28
+    int m_unk2C;                    // +0x2C
+
+    virtual void live() { m_unk04++; }
+    virtual const char *getName() { return 0; }
+    virtual void render(tag_I3dRenderStage_s *theStage) {}
+    virtual void setHide(bool theHide) { m_hide = theHide; }
+    virtual int getHide() { return m_hide; }
+};
 
 // One entry of a MagLifeControlChara's motion-state table. The table is a
 // 0x18-byte stride; the assert strings name m_state_id, m_next_state and
@@ -30,19 +82,12 @@ struct MagLifeMotionState {
     int m_sound;                    // +0x14
 };
 
-// A MagLife (maglifeman.h): the first 0x18 bytes, with the vptr at +0x14, are
-// the base's (other MagLife classes, such as MagLifeWindow, put their own
-// fields at +0x18). Virtual slots 1 to 8 are MagLife's; this class adds 9 to
-// 16. The hierarchy and the offsets were worked out
-// from the asm with Gemini 4 Argon and checked against the compiler.
-struct MagLifeControlChara : public MagLife {
-    int m_unk18;                    // +0x18
-    int m_unk1C;                    // +0x1C
-    MagScene *m_scene;              // +0x20
-    int m_unk24;                    // +0x24
-    int m_unk28;                    // +0x28
-    int m_unk2C;                    // +0x2C
-    int m_last0;                    // +0x30
+// Virtual slots 1 to 8 are MagLife0's and MagLife's; this class adds 9 to 15
+// (_vt$19MagLifeControlChara). Slot 16 is not its: MagLifeBwn, MagLifePC and
+// MagLifeTest each add their own, with different parameters.
+class MagLifeControlChara : public MagLife {
+public:
+    int m_last0;                    // +0x30: the previous mode (vfunc09)
     int m_last1;                    // +0x34
     int m_last2;                    // +0x38
     int m_last3;                    // +0x3C
@@ -50,8 +95,8 @@ struct MagLifeControlChara : public MagLife {
     int m_count;                    // +0x44
     int m_mode;                     // +0x48
     int m_unk4C;                    // +0x4C
-    int m_unk50;                    // +0x50
-    int m_unk54;                    // +0x54
+    int m_unk50;                    // +0x50: setActor's second argument
+    int m_unk54;                    // +0x54: setActor's third argument
     DogActor *m_actor;              // +0x58
     MagLifeMotionState *m_tbl_motion_state; // +0x5C
     int m_sctPos[4];                // +0x60
@@ -60,6 +105,37 @@ struct MagLifeControlChara : public MagLife {
     int m_zeroLink;                 // +0x78
     int m_unk7C;                    // +0x7C
 
+    virtual ~MagLifeControlChara() {}
+    virtual void live() { m_unk04++; }
+    virtual const char *getName() { return 0; }
+    virtual void vfunc09(int theA, int theB) asm("MagLifeControlChara__vfunc_09");
+    virtual void setActor(DogActor *theActor, int theA, int theB)
+    {
+        m_actor = theActor;
+        m_unk50 = theA;
+        m_unk54 = theB;
+    }
+    virtual DogActor *getActor() { return m_actor; }
+    virtual void reset4MapJump()
+    {
+        *(u_long128 *)&m_last0 = 0;
+        func_00119B34();
+    }
+    virtual void termWorld() {}
+    virtual int message(int theMsg, int theArg, void *theData) { return 0; }
+    virtual void renderPostProcess()
+    {
+        if (m_actor)
+            func_0011A14C();
+    }
+
+    int getMotionStateCount() const { return m_count; }
+    int getLastMode() const { return m_last0; }
+    int getSctFlag() const { return m_sctFlag; }
+    void clearZeroLink() { m_zeroLink = 0; }
+    void setZeroLink() { m_zeroLink = 1; }
+    int *getSctPos() { return m_sctPos; }
+
     void func_00119B34() asm("func_00119B34");
     int func_00119B60(DogVector *theOut, float theRot) asm("func_00119B60");
     int func_00119CEC(DogVector *theOut, float theRot) asm("func_00119CEC");
@@ -67,16 +143,6 @@ struct MagLifeControlChara : public MagLife {
     void func_00119F88(DogVector *theOut) asm("func_00119F88");
     DogVector *func_00119FA4() asm("func_00119FA4");
     float func_00119FB0() asm("func_00119FB0");
-    virtual void vfunc09(int theA, int theB) asm("MagLifeControlChara__vfunc_09");
-    // Slots 10 to 16, in the order and with the names of _vt$9MagLifePC
-    // (asm/data/vtbl); the return types are guesses.
-    virtual void setActor(DogActor *theActor, int theA, int theB);
-    virtual DogActor *getActor();
-    virtual void reset4MapJump();
-    virtual void termWorld();
-    virtual int message(int theMsg, int theArg, void *theData);
-    virtual void renderPostProcess();
-    virtual void vfunc16(void *thePad);
     void func_0011A010(int theState) asm("func_0011A010");
     int func_0011A028() asm("func_0011A028");
     void func_0011A030() asm("func_0011A030");
@@ -95,17 +161,19 @@ struct MagLifeControlChara : public MagLife {
     void func_0011A6B0() asm("func_0011A6B0");
     void func_0011A704(int theSound) asm("func_0011A704");
     void func_0011A738(int *theSounds) asm("func_0011A738");
+    // The constructor (it stores this class's vtable); a plain method until
+    // its body is written as a real constructor.
     void func_0011A888() asm("func_0011A888");
 };
 
-struct MagLifeBillboard : MagLifeControlChara {
+class MagLifeBillboard : public MagLifeControlChara {
+public:
     float m_distance;               // +0x80
 
-    // The override of MagLife0::live. Under another name while the class's
-    // vtable is still asm: as `live` it would be the class's first virtual
-    // defined out of line, and the compiler would emit the vtable and the
-    // type name with it.
-    void liveBillboard() asm("live__16MagLifeBillboard");
+    virtual ~MagLifeBillboard() {}
+    virtual void live();
+    void setDistance(float theDistance) { m_distance = theDistance; }
+    float getDistance() const { return m_distance; }
 };
 
 #endif
