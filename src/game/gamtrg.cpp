@@ -80,7 +80,15 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8778);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D87F4);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", _$_7ObjStat);
+extern int _vt$7ObjStat;
+extern "C" void Xv_ObjStatDtor(int arg0, int arg1) asm("_$_7ObjStat");
+extern "C" void Xv_ObjStatDtor(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x258) = (int)&_vt$7ObjStat;
+    if (arg1 & 1) {
+        return Xv___builtin_delete((void *)arg0);
+    }
+}
 
 extern "C" void func_001D88FC(int arg0)
 {
