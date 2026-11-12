@@ -93,6 +93,7 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+extern "C" void func_001853CC(void *, int);
 extern "C" unsigned int strlen(const char *);
 extern "C" void func_00191BA8(void *, int, int, int);
 extern "C" void func_00191C64(void *, int, int, int);
@@ -1772,7 +1773,24 @@ extern "C" int func_00186F90(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00186FC0);
+extern "C" int func_00186FC0(MsgWin *self)
+{
+    int v;
+    int n = func_00184578(self, self->m_str + self->m_pos, &v);
+    self->m_pos += n;
+    if (n <= 0) {
+        return 0;
+    }
+    self->m[0xC0 / 4] = 1;
+    self->m[0xD4 / 4] = v;
+    if (v == 0) {
+        func_001853CC(self, 0);
+    } else {
+        func_001853CC(self, 1);
+    }
+    self->m[0xC4 / 4] = 2;
+    return 1;
+}
 
 extern "C" int func_0018704C(MsgWin *self, const char *theStr, int *theLen)
 {
