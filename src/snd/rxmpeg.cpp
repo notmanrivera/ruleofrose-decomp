@@ -212,7 +212,22 @@ extern "C" int func_00180EA8()
     return -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180EEC);
+extern "C" int func_00180EEC(int arg0, int arg1, int arg2)
+{
+    int p = X_func_0017F584();
+    if (p == 0) {
+        return -1;
+    }
+    if (*(int *)p != 8) {
+        return -1;
+    }
+    if (arg2 == 0) {
+        *(int *)(p + 0xC) = 0;
+    } else {
+        *(int *)(p + 0xC) = 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180F44);
 
