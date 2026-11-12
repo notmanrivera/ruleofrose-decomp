@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_001DA228(int, int, int) asm("func_001DA228");
+extern "C" int Xff_iii_func_00169BAC(float, float, int, int, int) asm("func_00169BAC");
+extern int D_007A3350;
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
 extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
 extern int _vt$7HfmMain;
@@ -358,7 +361,18 @@ extern "C" int func_00145760()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00145788);
+extern "C" void func_00145788(int arg0)
+{
+    float f;
+    int v;
+
+    Xiii_func_001DA228(M2C_FIELD(arg0, int *, 0x20), 0x5F, (int)&f);
+    v = 0;
+    if (D_007A3350 != 0) {
+        v = M2C_FIELD(D_007A3350, int *, 0x100);
+    }
+    Xff_iii_func_00169BAC(f, 3.14159265f, 1, v, M2C_FIELD(arg0, int *, 0x20));
+}
 
 extern "C" int HfmMain__vfunc_07()
 {
