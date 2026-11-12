@@ -552,3 +552,34 @@ tools/dock ninja
 `src/<file>.cpp` exists. `build/ok` must be recreated (SHA-1 of the whole image matches);
 if not, `tools/.venv/bin/python tools/first_diff.py` points at the first
 difference.
+
+## 6. Several agents at once (worktrees)
+
+Each worker agent gets its own git worktree, so two agents never edit the
+same checkout:
+
+```bash
+tools/new_worktree.sh <name>            # ../ror-wt-<name> on branch wt/<name>
+tools/new_worktree.sh --remove <name>   # when its work is merged or dropped
+```
+
+The script branches from the main checkout's current branch, copies
+`disc/SLUS_214.48`, runs `configure.py` and `ninja` in the new worktree and
+stops unless `build/ok` appears (about the time of a full build). A worktree
+has no `tools/.venv`: run the main checkout's interpreter
+(`../ruleofrose-decomp-main/tools/.venv/Scripts/python.exe tools/work.py ...`
+on Windows); the tools find the repo from their own path. `match.py` gives
+every linked worktree its own compile server (`ror-match-<dir>`), so
+`--server start` in one worktree never compiles another's files.
+
+Ownership: a worker edits one `src/<file>.cpp` (or proposes a new header).
+`config/`, `symbols/`, shared headers, `notes/` and `docs/` change only in
+the main checkout; a worker writes the lines it needs (for example for
+`config/symbol_addrs_manual.txt`) in its report. Before taking a worker's
+commit, run `tools/match.py <file>` in its worktree yourself, then
+cherry-pick it and run the full build in the main checkout.
+
+Orca on Windows splits a multi-line `agent launch --prompt` into separate
+command-line arguments, and the agent refuses them. Launch the agent
+without `--prompt`, then send the brief as one line with
+`orca terminal send --text "..." --enter`.
