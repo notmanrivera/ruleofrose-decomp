@@ -147,7 +147,14 @@ INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", S2dCineSco__vfunc_06);
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190C44);
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190C68);
+extern "C" int func_00190C68(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0x30) == 0) {
+        return -1;
+    }
+    M2C_FIELD(arg0, int *, 0x30) = 0;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190C84);
 
