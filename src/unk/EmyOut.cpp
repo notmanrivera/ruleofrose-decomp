@@ -270,7 +270,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_001665B8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_001669A4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166A0C);
+extern "C" int func_00166A0C(int arg0)
+{
+    int v = M2C_FIELD(arg0, int *, 0x30) & 1;
+
+    if (v != 0) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166A1C);
 
