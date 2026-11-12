@@ -689,7 +689,19 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD118);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD154);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD194);
+extern "C" int func_001DD194(int arg0, unsigned short arg1, int arg2, int arg3)
+{
+    unsigned int hi;
+    unsigned int idx;
+
+    hi = arg1 >> 9;
+    idx = arg1 & 0x1FF;
+    if (hi == 2) {
+        int temp_v0 = M2C_FIELD(arg0, int *, 8) + idx * 0xC0;
+        return (M2C_FIELD(temp_v0, int *, 0x94) & arg3) != 0;
+    }
+    return 0;
+}
 
 extern "C" void func_001DD1D8(void) {
 }
