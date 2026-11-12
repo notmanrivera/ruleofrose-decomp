@@ -80,7 +80,18 @@ extern int D_0029BCF8;
 extern int D_007812C0;
 extern int D_007B40C0;
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001916C4);
+extern "C" int func_001916C4(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0x30) == 1) {
+        return -1;
+    }
+    M2C_FIELD(arg0, int *, 0x30) = 1;
+    M2C_FIELD(arg0, int *, 0x3C) = 0;
+    M2C_FIELD(arg0, int *, 0x40) = 0;
+    M2C_FIELD(arg0, int *, 0x44) = 2;
+    M2C_FIELD(arg0, int *, 0x38) = 0;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001916F8);
 
