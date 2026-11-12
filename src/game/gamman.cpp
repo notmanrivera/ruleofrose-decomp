@@ -742,7 +742,32 @@ extern "C" int func_001C02F0()
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C02F8);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C03D0);
+extern "C" int func_001C03D0(int arg0, const unsigned char *arg1)
+{
+    int total = 0;
+    int c;
+    const unsigned char *p = arg1;
+
+    while ((c = *p++) != 0) {
+        if (func_001C02E4(arg0, c) == 1) {
+            int width;
+            if (c == 0x8164) {
+                width = 0x12;
+            } else if (c == 0x8149) {
+                width = 0xA;
+            } else {
+                width = func_001C0148(arg0, c);
+            }
+            total += width;
+            if (*(int *)((char *)arg0 + 0x24) != 0) {
+                total += *(int *)((char *)arg0 + 0x34);
+            } else {
+                total += *(int *)((char *)arg0 + 0x30);
+            }
+        }
+    }
+    return total;
+}
 
 extern "C" int func_001C047C()
 {
