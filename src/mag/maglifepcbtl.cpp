@@ -1,5 +1,20 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
+struct PcTarget {
+    DogVector m_pos;
+    DogVector m_unk10;
+    int m_id;
+    int m_unk24;
+    int m_unk28[6];
+};
+struct PcTargetList {
+    PcTarget m_item[32];
+    int m_num;
+};
+extern "C" int X_func_00119FA4(...) asm("func_00119FA4");
+extern "C" float X_func_00119FB0(...) asm("func_00119FB0");
+extern "C" int func_0010376C(PcTargetList *theList, int theA, float theD, int theB, int theC, float theE);
+extern "C" int func_00103654(PcTargetList *theList, float theAngle);
 void vecDirToRot(float *theDir, float *theRot);
 extern "C" int X_func_0011D15C(...) asm("func_0011D15C");
 extern const char *D_00298228[4][5][3];
@@ -398,4 +413,32 @@ extern "C" int func_0012CAA4(int arg0, int arg1, int arg2)
     return Xiiif_func_0011D3D0(arg0, arg2, dist);
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012CB50);
+extern "C" void func_0012CB50(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0) != 0xB) {
+        Xiiii_ror_assert((int) D_002EC8B0, 0x4AF, (int) "m_submode.getMode() == MAG_PC_MODE_TARGETTING");
+    }
+    if (M2C_FIELD(arg0, int *, 0x21C) == 1) {
+        Xiiii_func_001026B0(0x7D, 0, 0);
+    }
+    M2C_FIELD(arg0, int *, 0x1F0) = 0;
+    M2C_FIELD(arg0, int *, 0x1F4) = -1;
+    PcTargetList list;
+    list.m_num = 0;
+    int a = X_func_00119FA4(arg0);
+    if (func_0010376C(&list, a, X_func_00119FB0(arg0), 0, 1, 500.0f) > 0) {
+        int i = func_00103654(&list, 1.5707965f);
+        if (i >= 0) {
+            int id = list.m_item[i].m_id;
+            int u = list.m_item[i].m_unk24;
+            M2C_FIELD(arg0, DogVector *, 0x1C0) = list.m_item[i].m_pos;
+            M2C_FIELD(arg0, int *, 0x1F0) = id;
+            M2C_FIELD(arg0, int *, 0x1F4) = u;
+        } else {
+            M2C_FIELD(arg0, int *, 0x1F0) = 0;
+        }
+    } else {
+        M2C_FIELD(arg0, int *, 0x1F0) = 0;
+    }
+    Xiiiui_func_0011C1E8(arg0, 5, 0, 0);
+}
