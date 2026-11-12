@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xii_func_00191124(int) asm("func_00191124");
 extern "C" int Xii_func_00191174(int) asm("func_00191174");
 extern "C" int Xiiii_func_0018F744(int, int, int) asm("func_0018F744");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -205,7 +206,13 @@ extern "C" int func_00191054(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00191068);
+extern "C" int func_00191068(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x938) = arg1;
+    Xii_func_00191124(arg0);
+    M2C_FIELD(arg0, int *, 0x34) = 1;
+    return 1;
+}
 
 extern "C" void func_00191098(int arg0)
 {
