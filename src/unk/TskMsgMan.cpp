@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern int D_002FE590;
 extern "C" int Xi_rand() asm("rand");
 struct MagGameFlags2 {
     int m_unk00;
@@ -1084,7 +1085,24 @@ extern "C" int func_001F415C(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F4184);
+extern "C" void func_001F4184(int arg0, int arg1, int arg2, int arg3)
+{
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$10TskSysFunc;
+    M2C_FIELD(arg0, int *, 0x10) = 0;
+    M2C_FIELD(arg0, int *, 4) = arg1;
+    if (arg1 >= 2) {
+        return;
+    }
+    if (arg1 < 0) {
+        return;
+    }
+    M2C_FIELD(arg0, int *, 0x18) = arg3;
+    M2C_FIELD(arg0, int *, 0x10) = 0x64;
+    M2C_FIELD(arg0, int *, 0x1C) = 0x1E;
+    M2C_FIELD(arg0, int *, 0x20) = 0xF;
+    M2C_FIELD(arg0, int *, 0x24) = 0x1B;
+    *(m2c_block8 *)((char *)(arg0) + 0x8) = *(m2c_block8 *)((char *)(&D_002FE590) + 0x0);
+}
 
 extern "C" void TskSysFunc__vfunc_06(int arg0, int arg1)
 {
