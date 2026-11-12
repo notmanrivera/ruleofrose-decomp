@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void V_func_0018185C(int) asm("func_0018185C");
+extern "C" int I_sceMpegInit() asm("sceMpegInit");
 extern "C" void V_func_001828C4() asm("func_001828C4");
 extern "C" void V_func_00182F3C(int) asm("func_00182F3C");
 extern "C" void V_func_00182FC8(int) asm("func_00182FC8");
@@ -1013,7 +1015,15 @@ extern "C" void func_00182818()
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_001828C4);
+extern "C" void func_001828C4() {
+D_00298F3C = 0;
+D_00298F30 = 0;
+D_00298F10 = 0x80;
+D_00298F54 = 0;
+D_00298F2C = 0;
+D_00298F34 = 0;
+D_00298F50 = 0;
+I_sceMpegInit(); V_func_0018185C(0); }
 
 extern "C" void func_00182920(void) {
 }
