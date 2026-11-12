@@ -1,4 +1,20 @@
 #include "include_asm.h"
+struct Item1A6C0 {
+    int unk0;
+    int unk4;
+    unsigned short unk8;
+    unsigned short unkA;
+    int unkC;
+    Item1A6C0(void *sub, unsigned short id);
+};
+extern "C" void func_001C7A4C(int, unsigned short);
+extern "C" void func_001C9784(int, unsigned short);
+extern "C" int func_001DBFA0(void *, unsigned short);
+inline Item1A6C0::Item1A6C0(void *sub, unsigned short id)
+{
+    unk0 = func_001DBFA0(sub, id);
+    unk8 = id;
+}
 extern "C" int X_func_0017F200(...) asm("func_0017F200");
 extern "C" int X_func_0024B3F8(...) asm("func_0024B3F8");
 extern "C" int X_func_00191D20(...) asm("func_00191D20");
@@ -1634,7 +1650,19 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C7E40);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C812C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C8214);
+extern "C" void func_001C8214(char *arg0, int arg1)
+{
+    char **vec = (char **)(arg0 + 0x1A6C0);
+    int off = arg1 * 0x10;
+    if (((Item1A6C0 *)(*vec + off))->unk8 == *(unsigned short *)(arg0 + 0x2220C)) {
+        func_001C7A4C((int)arg0, 0xA00);
+    }
+    if (((Item1A6C0 *)(*vec + off))->unk8 == *(unsigned short *)(arg0 + 0x2220E)) {
+        func_001C9784((int)arg0, 0xA00);
+    }
+    Item1A6C0 tmp(gamSub22220(), 0xA00);
+    *(Item1A6C0 *)(*vec + off) = tmp;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C82F8);
 
