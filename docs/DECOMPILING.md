@@ -373,6 +373,15 @@ Things that changed codegen so far:
   names of other classes it instantiates (`"8DogModel"`, `"p"`, `"n>0"`,
   `"9DogEntity"`). Check what follows the RTTI name before fixing where a
   file's `.rodata` ends; a missing string there is a missing inline method.
+- A callee's real return type matters even when the result is unused:
+  declaring a `void` function as the generic `int X_func(...)` alias changes
+  register choice and order around the call (`snd/rxmpeg` func_00181150,
+  func_001828C4). Give asm callees their true prototype (argument count
+  too: m2c invents arguments for `sceMpegInit`).
+- A leaf that leaves a constant in `$v0` may be returning it: `int r =
+  0x180; m30 = r; ...; return r;` (func_001810F4).
+- A constant used in two places can be one local set before both
+  (`int one = 1;`, func_0018252C, func_00181780).
 - Loops that share one register in the game share one variable in the
   source: `int i;` for a search loop and the trimming loop after it
   (`DogTexInfo::releaseModel`), or `i` and `name` reused by three loops
