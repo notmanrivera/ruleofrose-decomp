@@ -508,7 +508,20 @@ extern "C" void func_001BFF5C(int arg0, int arg1)
     (*(int *)(int *)((char *)(arg0) + 0x68)) = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BFF64);
+extern "C" void func_001BFF64(char *self, int theA)
+{
+    switch (*(int *)(self + 0x18)) {
+    case 4:
+        *(int *)(self + 0x2C) = theA & 0xF;
+        break;
+    case 8:
+        *(int *)(self + 0x2C) = theA & 0xFF;
+        if (*(int *)(self + 0x68) != 0) {
+            *(int *)(self + 0x2C) = (theA & 0xFF) | 0x80;
+        }
+        break;
+    }
+}
 
 extern "C" int func_001BFFAC(unsigned short *theA, unsigned short *theB)
 {
