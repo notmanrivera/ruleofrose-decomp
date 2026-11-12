@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiiiiif_func_0011D790(int, int, int, int, int, float) asm("func_0011D790");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfi_func_0010DAD8__8DogActor(int) asm("func_0010DAD8__8DogActor");
 extern "C" int Xiii_func_0010AA9C__8DogActorPCc(int, int) asm("func_0010AA9C__8DogActorPCc");
@@ -92,7 +93,17 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011DC64);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011DD40);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011DDF4);
+extern "C" int func_0011DDF4(int arg0, int arg1, float fparg0)
+{
+    if (arg1 < 0) {
+        X_ror_assert((int) D_002EA758, 0x1E3, (int) "theNo >= 0");
+    }
+    if (M2C_FIELD(arg0, int *, 0xF4) < 0) {
+        Xiiiiiif_func_0011D790(arg0, arg1, 0, -1, -1, fparg0);
+        M2C_FIELD(arg0, int *, 0xF4) = arg1;
+    }
+    return -1;
+}
 
 extern "C" int func_0011DE78(int arg0, int arg1, float fparg0)
 {
