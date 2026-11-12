@@ -93,6 +93,7 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+extern "C" void func_0013511C(void *, int, int, int, int);
 extern char *D_002997D0[];
 struct MsgSub5F68 {
     char pad[0x100];
@@ -1734,7 +1735,22 @@ extern "C" int func_00186714(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_0018674C);
+extern "C" int func_0018674C(MsgWin *self)
+{
+    int v;
+    int n = func_00184578(self, self->m_str + self->m_pos, &v);
+    self->m_pos += n;
+    if (n <= 0) {
+        return 0;
+    }
+    func_0013511C((char *)self->m_system + 0x12540, self->m_no, v, 0, 0x80);
+    char *p = (char *)&D_006FBD80;
+    void *sub = p + 0x42BB0;
+    Xiii_func_00191E58((int)sub, 0, v);
+    Xiii_func_00191E58((int)sub, 2, v);
+    Xiii_func_00191E58((int)sub, 1, v);
+    return 0;
+}
 
 extern "C" int func_00186804(MsgWin *self, const char *theStr, int *theLen)
 {
