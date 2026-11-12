@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void Xv_func_0012B7CC(int, int) asm("func_0012B7CC");
 struct HfmSub { unsigned long a; unsigned long b; };
 struct HfmLocal { HfmSub sub; float f[4]; };
 extern "C" int Xii_func_00143D7C(int, int, int) asm("func_00143D7C");
@@ -198,7 +199,16 @@ extern "C" float func_0014456C()
     return 10.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_0014457C);
+extern "C" void func_0014457C(int arg0)
+{
+    int off = 0x2BD20;
+    int addr = (int)&D_006FBD80 + off;
+
+    if (arg0 != 0) {
+        return Xv_func_0012B7CC(addr, 1);
+    }
+    X_func_0012B7CC(addr, 0);
+}
 
 extern "C" int func_001445C8()
 {
