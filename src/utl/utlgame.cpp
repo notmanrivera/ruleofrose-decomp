@@ -319,7 +319,13 @@ extern "C" int func_0010346C()
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103484);
+extern "C" int func_00103484()
+{
+    int v = 0;
+
+    func_001C6CCC((int)&D_007812C0, 0x12, &v);
+    return v != 0;
+}
 
 extern "C" int func_001034B8()
 {
