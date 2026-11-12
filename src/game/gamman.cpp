@@ -1,4 +1,8 @@
 #include "include_asm.h"
+struct __attribute__((aligned(8))) GamStruct32 {
+    float m_val;
+    char pad[28];
+};
 extern "C" void *bsearch(const void *, const void *, unsigned int, unsigned int, int (*)(const void *, const void *));
 extern "C" int func_001C0534(int, unsigned int);
 extern "C" int func_001BFFAC(unsigned short *, unsigned short *);
@@ -1062,7 +1066,34 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C5FFC);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C621C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C6470);
+extern "C" void func_001C6470(int arg0)
+{
+    register int i asm("$5") = 0;
+
+    if (*(float *)((char *)arg0 + 0x22540) != -1.0f) {
+        do {
+            i++;
+            if (i >= 3) {
+                return;
+            }
+            register int v0 asm("$2") = i << 5;
+            v0 += arg0;
+            if (*(float *)((char *)v0 + 0x22540) == -1.0f) {
+                break;
+            }
+        } while (1);
+    }
+
+    if (i < 3) {
+        register char *dest asm("$3") = (char *)((i << 5) + arg0);
+        char *v0 = (char *)&D_006FBD80;
+        unsigned int off = 0x2AAE0;
+        v0 += off;
+        unsigned int dest_off = 0x22540;
+        dest += dest_off;
+        *(GamStruct32 *)dest = *(GamStruct32 *)v0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C651C);
 
