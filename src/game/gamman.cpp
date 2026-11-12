@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int X_func_001C772C(...) asm("func_001C772C");
+extern "C" int X_func_001E4540(...) asm("func_001E4540");
 struct __attribute__((aligned(8))) GamStruct32 {
     float m_val;
     char pad[28];
@@ -1143,7 +1145,19 @@ extern "C" int func_001C7494(char *arg0)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C7500);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C75BC);
+extern "C" void func_001C75BC(int arg0, int arg1)
+{
+    char *snd = (char *)&D_007B2580;
+    X_func_0017F5E8((int)snd, 8);
+    X_func_00180B30((int)snd, 0x20);
+    X_func_00180B30((int)snd, 0x40);
+
+    char *base = (char *)&D_007812C0;
+    int off = 0x18E00;
+    X_func_001E4540((int)(base + off), arg1, 0);
+    X_func_001C772C((int)base, 0xA00, 1);
+    *(int *)((char *)arg0 + 0x21F4C) |= 0x2000000;
+}
 
 extern "C" void func_001C766C(int arg0)
 {
