@@ -100,7 +100,10 @@ extern "C" void func_00218450(float f)
     return Xff_func_00218424(f, 3.14159265f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00218470);
+extern "C" void func_00218470(int arg0, ...)
+{
+    __builtin_next_arg(arg0);
+}
 
 extern "C" void func_002184B8(void) {
 }
