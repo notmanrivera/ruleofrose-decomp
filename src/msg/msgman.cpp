@@ -93,6 +93,9 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+extern "C" int Xiiiii_func_001DC48C(int, int, int, int) asm("func_001DC48C");
+extern char D_002F71F0[];
+extern int D_007812C0;
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
 extern "C" int Xi_func_00184008(void *) asm("func_00184008");
 extern "C" void Xv_func_00183C4C(void *) asm("func_00183C4C");
@@ -308,7 +311,16 @@ extern "C" int func_00184008(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184048);
+extern "C" char *func_00184048(int arg0, int arg1)
+{
+    char *base = (char *)&D_007812C0;
+    int v = 0;
+    Xiiiii_func_001DC48C((int)(base + 0x22220), arg1 & 0xFFFF, 0xC, (int)&v);
+    if (!v) {
+        return D_002F71F0;
+    }
+    return (char *)v;
+}
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184098);
 
