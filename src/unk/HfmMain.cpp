@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void Xv_func_001469CC(int, int) asm("func_001469CC");
 extern "C" int Xiii_func_001DA228(int, int, int) asm("func_001DA228");
 extern "C" int Xff_iii_func_00169BAC(float, float, int, int, int) asm("func_00169BAC");
 extern int D_007A3350;
@@ -496,7 +497,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmOutWalk2__vfunc_03);
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00146628);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001468E0);
+extern "C" void func_001468E0(int arg0, int arg1)
+{
+    if (arg1 < 0x5B) {
+        X_func_00146944(arg0, 1);
+        return Xv_func_001469CC(arg0, 2);
+    }
+    X_func_001680A0(arg0, 0xC, 0);
+    X_func_001469CC(arg0, 3);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00146944);
 
