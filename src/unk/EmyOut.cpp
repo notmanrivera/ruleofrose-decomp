@@ -1,4 +1,8 @@
 #include "include_asm.h"
+struct E24 { char b[0x18]; };
+extern E24 D_002F18B8[];
+extern "C" int Xii_func_001CBEDC(int, int) asm("func_001CBEDC");
+extern "C" int Xiiii_func_001DC48C(int, int, int, int) asm("func_001DC48C");
 extern int D_007A3350;
 extern "C" int Xiii_func_001DA228(int, int, int) asm("func_001DA228");
 extern int _vt$6EmyOut;
@@ -315,7 +319,13 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EmyOut", D_002F15E8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_001665B8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_001669A4);
+extern "C" void *func_001669A4(int *arg0)
+{
+    unsigned short idx;
+
+    Xiiii_func_001DC48C((int)&D_007812C0 + 0x22220, Xii_func_001CBEDC((int)&D_007812C0, *arg0), 0x20, (int)&idx);
+    return &D_002F18B8[idx];
+}
 
 extern "C" int func_00166A0C(int arg0)
 {
