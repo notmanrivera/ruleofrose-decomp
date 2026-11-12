@@ -1,4 +1,34 @@
 #include "include_asm.h"
+struct GamElemD0530 {
+    char pad[0xC];
+    int unk0c;
+};
+template <class T> class GamListD0530 {
+public:
+    struct Node {
+        Node *m_prev;
+        Node *m_next;
+        T m_data;
+    };
+    class iterator {
+    public:
+        Node *m_node;
+        iterator() : m_node(0) {}
+        iterator(Node *theNode) : m_node(theNode) {}
+        iterator(const iterator &theIt) : m_node(theIt.m_node) {}
+        T &operator*() const { return m_node->m_data; }
+        iterator &operator++()
+        {
+            m_node = m_node->m_next;
+            return *this;
+        }
+        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; }
+    };
+    unsigned char m_unk00[0x10];
+    Node m_head;
+    iterator begin() { return iterator(m_head.m_next); }
+    iterator end() { return iterator(&m_head); }
+};
 extern "C" int func_001D2AAC(int, unsigned int);
 extern "C" int func_001D2ADC(int, unsigned int);
 extern "C" int func_001D2B10(int, unsigned int);
@@ -2124,7 +2154,30 @@ extern "C" int func_001D046C(int arg0, unsigned int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D0530);
+extern "C" int func_001D0530(char *arg0, int arg1)
+{
+    GamListD0530<GamElemD0530>::iterator it;
+    GamListD0530<GamElemD0530>::iterator last;
+    GamListD0530<GamElemD0530> *list = (GamListD0530<GamElemD0530> *)(arg0 + 0x1A7E0);
+    it = list->begin();
+    last = list->end();
+    while (it != last) {
+        if ((*it).unk0c == arg1) {
+            return 1;
+        }
+        ++it;
+    }
+
+    char *vec = arg0 + 0x1A6C0;
+    char *start = *(char **)vec;
+    char *finish = *(char **)(vec + 4);
+    for (; start != finish; start += 0x10) {
+        if (*(int *)(start + 4) == arg1) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 extern "C" int func_001D05F4(int arg0, unsigned int arg1, int arg2)
 {
