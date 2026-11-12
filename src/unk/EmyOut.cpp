@@ -160,7 +160,28 @@ INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166378);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_0016640C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166434);
+extern "C" void func_00166434(int arg0)
+{
+    short idx;
+    long ent;
+    int fp;
+    short base;
+    int off;
+    int p;
+
+    idx = M2C_FIELD(arg0, short *, 0x1DE);
+    if (idx >= 0) {
+        p = *(int *) (arg0 + M2C_FIELD(arg0, short *, 0x1E0));
+        p += idx * 8;
+        ent = *((long *) p - 1);
+        fp = (int) (ent >> 32);
+    } else {
+        fp = M2C_FIELD(arg0, int *, 0x1E0);
+    }
+    base = M2C_FIELD(arg0, short *, 0x1DC);
+    off = (idx >= 0) ? (short) ent + base : base;
+    ((void (*)(int)) fp)(arg0 + off);
+}
 
 extern "C" void func_0016649C(int arg0, int arg1)
 {
