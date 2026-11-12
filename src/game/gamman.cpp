@@ -1,4 +1,31 @@
 #include "include_asm.h"
+extern "C" void func_001331F4(void *, int, int, int, int, int, float);
+template <class T> class GamList4610 {
+public:
+    struct Node {
+        Node *m_prev;       // +0x00
+        Node *m_next;       // +0x04
+        T m_data;           // +0x08
+    };
+    class iterator {
+    public:
+        Node *m_node;
+        iterator() : m_node(0) {}
+        iterator(Node *theNode) : m_node(theNode) {}
+        iterator(const iterator &theIt) : m_node(theIt.m_node) {}
+        T &operator*() const { return m_node->m_data; }
+        iterator &operator++()
+        {
+            m_node = m_node->m_next;
+            return *this;
+        }
+        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; }
+    };
+    unsigned char m_unk00[0x10];
+    Node m_head;            // +0x10
+    iterator begin() { return iterator(m_head.m_next); }
+    iterator end() { return iterator(&m_head); }
+};
 extern "C" char vtbl_GamMan[] asm("_vt$6GamMan");
 extern "C" void GamSndMan__vfunc_01(void *, int);
 extern "C" void func_001DD3EC(void *, int);
@@ -971,7 +998,24 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C4168);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C43F0);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C4610);
+extern "C" void func_001C4610(char *arg0)
+{
+    GamList4610<void *>::iterator it;
+    GamList4610<void *>::iterator last;
+    GamList4610<void *> *list = (GamList4610<void *> *)(arg0 + 0x1EF00);
+
+    it = list->begin();
+    last = list->end();
+
+    while (it != last) {
+        void *actor = *it;
+        char *p = (char *)&D_006E9840;
+        int off = 0x12540;
+        int no = *(int *)((char *)actor + 0x108);
+        func_001331F4(p + off, no, 1, 0, 0, 0, 0.016666694f);
+        ++it;
+    }
+}
 
 extern "C" void func_001C46C8(int arg0)
 {
