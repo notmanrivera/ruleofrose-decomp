@@ -248,7 +248,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay2__vfunc_08);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", _$_13EffBloodStay3);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay3__vfunc_02);
+extern "C" int EffBloodStay3__vfunc_02(int arg0, int arg1)
+{
+    if (Xiii_Eff0__vfunc_02(arg0, arg1) == 0) {
+        return 0;
+    }
+    Xiiii_memset(arg0 + 0x24, 0, 8);
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay3__vfunc_05);
 
