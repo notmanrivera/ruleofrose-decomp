@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern int D_007A3350;
+extern "C" int Xiii_func_001DA228(int, int, int) asm("func_001DA228");
+extern int _vt$6EmyOut;
 extern "C" int Xiii_func_0010423C(int, int) asm("func_0010423C");
 extern "C" int Xiiii_func_001DA740(int, int, int) asm("func_001DA740");
 extern "C" int Xi_func_001442D4() asm("func_001442D4");
@@ -97,7 +100,18 @@ extern "C" int func_00165710(int arg0)
     return M2C_FIELD((M2C_FIELD(arg0, int *, 0x3C) + arg0), unsigned char *, 0x128) != 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165734);
+extern "C" int func_00165734(int arg0)
+{
+    int a;
+    int b;
+
+    if (D_007A3350 == 0) {
+        return 0;
+    }
+    Xiii_func_001DA228(D_007A3350, 8, (int)&a);
+    Xiii_func_001DA228(M2C_FIELD(arg0, int *, 0x20), 8, (int)&b);
+    return a == b;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165794);
 
@@ -315,7 +329,6 @@ extern "C" int func_00166A0C(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166A1C);
 
-extern int _vt$6EmyOut;
 extern "C" int Xii_func_00166AD0(int) asm("func_00166AD0");
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
 extern "C" void dtor_6EmyOut(int, int) asm("_$_6EmyOut");
