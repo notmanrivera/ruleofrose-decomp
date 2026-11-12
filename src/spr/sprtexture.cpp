@@ -1,8 +1,11 @@
 #include "include_asm.h"
+typedef unsigned int u_long128 __attribute__((mode(TI)));
+extern "C" char vtbl_S2dCineSco[] asm("_vt$10S2dCineSco");
+extern "C" int Xii_func_0018BB8C(int) asm("func_0018BB8C");
+extern "C" int func_00190B60(int);
 extern "C" int Xiii_func_0018C190(int, int) asm("func_0018C190");
 extern int D_002999D8;
 extern int D_00299B90;
-extern int _9MagSystem$m_current_system;
 extern "C" int Xii_func_0018FEBC(int) asm("func_0018FEBC");
 extern "C" int Xii_func_00190C44(int) asm("func_00190C44");
 extern "C" int Xiii_func_0018BCC0(int, int) asm("func_0018BCC0");
@@ -52,6 +55,7 @@ extern "C" int X_releaseTex__10DogTexInfoi(...) asm("releaseTex__10DogTexInfoi")
 extern const char D_002F7A18[];
 extern int D_0029A340;
 extern int D_006E9800;
+extern "C" int *X_magCurrentSystem asm("_9MagSystem$m_current_system");
 
 extern "C" int func_0018F6DC(int arg0, int arg1)
 {
@@ -155,7 +159,18 @@ extern "C" int func_001908D0(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190904);
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190A78);
+extern "C" int func_00190A78(int arg0)
+{
+    *(void **)(arg0 + 0x14) = vtbl_S2dCineSco;
+    *(u_long128 *)arg0 = 0;
+    M2C_FIELD(arg0, int *, 0x10) = 1;
+    M2C_FIELD(arg0, int *, 4) = -1;
+    M2C_FIELD(arg0, int *, 0) = 0;
+    M2C_FIELD(arg0, int *, 0x24) = 0;
+    M2C_FIELD(arg0, int *, 0x20) = 0;
+    Xii_func_0018BB8C(arg0 + 0x3C);
+    return func_00190B60(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", S2dCineSco__vfunc_01);
 
@@ -232,7 +247,7 @@ extern "C" void func_00190D20(int arg0)
     int temp_s0;
 
     temp_s0 = arg0 + 0x3C;
-    M2C_FIELD(arg0, int *, 0x928) = (int) (*(int *)&_9MagSystem$m_current_system);
+    M2C_FIELD(arg0, int *, 0x928) = (int) X_magCurrentSystem;
     M2C_FIELD(temp_s0, int *, 0x4B0) = (int)&D_002999D8;
     Xiii_func_0018C190(temp_s0, (int)&D_00299B90);
     M2C_FIELD(temp_s0, int *, 4) = 1;
@@ -343,7 +358,8 @@ INCLUDE_RODATA("asm/nonmatchings/spr/sprtexture", D_002F7B60);
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00191174);
 
-extern "C" int *X_magCurrentSystem asm("_9MagSystem$m_current_system");
+
+
 
 extern "C" void func_00191248(int arg0)
 {
