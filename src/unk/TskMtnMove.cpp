@@ -183,7 +183,25 @@ extern "C" void func_001E7908(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7910);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E79C0);
+extern "C" int func_001E79C0(char *arg0, int arg1)
+{
+    char *n = M2C_FIELD(arg0, char **, 4);
+
+    while (n != 0) {
+        if (M2C_FIELD(n, int *, 0xC) == arg1) {
+            return M2C_FIELD(n, int *, 0);
+        }
+        n = M2C_FIELD(n, char **, 4);
+    }
+    n = M2C_FIELD(arg0, char **, 0);
+    while (n != 0) {
+        if (M2C_FIELD(n, int *, 0xC) == arg1) {
+            return M2C_FIELD(n, int *, 0);
+        }
+        n = M2C_FIELD(n, char **, 4);
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7A20);
 
