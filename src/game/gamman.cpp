@@ -1163,7 +1163,20 @@ extern "C" int func_001C7494(char *arg0)
     return D_007257B8[no].val;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C7500);
+extern "C" void func_001C7500(int arg0, int arg1)
+{
+    char *snd = (char *)&D_007B2580;
+    X_func_0017F5E8((int)snd, 8);
+    X_func_00180B30((int)snd, 0xB);
+    X_func_00180B30((int)snd, 0x20);
+    X_func_00180B30((int)snd, 0x40);
+
+    char *base = (char *)&D_007812C0;
+    int off = 0x18E00;
+    X_func_001E4540((int)(base + off), arg1, 0);
+    X_func_001C772C((int)base, 0xA00, 1);
+    *(int *)((char *)arg0 + 0x21F4C) |= 0x1000000;
+}
 
 extern "C" void func_001C75BC(int arg0, int arg1)
 {
