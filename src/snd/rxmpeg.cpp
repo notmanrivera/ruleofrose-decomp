@@ -336,7 +336,23 @@ extern "C" int func_001814AC(int arg0, int arg1, int arg2, int arg3)
     return Xiii_func_001814CC(arg0, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_001814CC);
+extern "C" int func_001814CC(int arg0, int arg1)
+{
+    int ret = -1;
+    int s3 = *(int *)arg0;
+    if (s3 != 1) {
+        return -1;
+    }
+    *(int *)(arg0 + 0x40) = 0;
+    if (X_func_001830F0() != 0) {
+        X_func_00182928();
+        ret = X_func_0018294C(arg1);
+        if (ret >= 0) {
+            *(int *)(arg0 + 4) = s3;
+        }
+    }
+    return ret;
+}
 
 extern "C" int func_0018154C(int arg0, int arg1, int arg2, int arg3)
 {
