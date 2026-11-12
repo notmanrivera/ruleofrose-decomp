@@ -230,7 +230,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001925F0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192670);
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001926A4);
+extern "C" int func_001926A4(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0) == 0) {
+        return -1;
+    }
+    M2C_FIELD(arg0, int *, 0) = 0;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001926C0);
 
