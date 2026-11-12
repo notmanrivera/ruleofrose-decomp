@@ -714,7 +714,21 @@ extern "C" void func_001AB598(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AB5E4);
+extern "C" void func_001AB5E4(int arg0)
+{
+    int temp_s0;
+
+    if (M2C_FIELD(arg0, int *, 0x10CC) != 0) {
+        X_func_0018C130(arg0 + 0x7D0);
+        temp_s0 = (int)&D_006E9840;
+        temp_s0 += 0x12540;
+        X_func_00135594(temp_s0, M2C_FIELD(arg0, int *, 0x10E0));
+        X_func_001348B0(temp_s0, M2C_FIELD(arg0, int *, 0x10E0));
+        X_func_00187464(arg0 + 0x58);
+        X_func_001AB6F4(arg0);
+        M2C_FIELD(arg0, int *, 0x10CC) = 0;
+    }
+}
 
 extern "C" int func_001AB65C(int arg0)
 {
