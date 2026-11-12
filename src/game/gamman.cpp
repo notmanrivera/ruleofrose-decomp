@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void setActorLight__9MagSystemii(void *, int, int);
 extern "C" void ror_assert(const char *, int, const char *);
 struct MapModel {
     int val;
@@ -1182,7 +1183,24 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CA0DC);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CA38C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CA598);
+extern "C" void func_001CA598(int unused, int arg1, unsigned int arg2)
+{
+    switch ((arg2 >> 23) & 0x1F) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 5:
+        setActorLight__9MagSystemii(&D_006E9840, arg1, 1);
+        break;
+    case 4:
+    case 9:
+        setActorLight__9MagSystemii(&D_006E9840, arg1, 0);
+        break;
+    default:
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CA604);
 
