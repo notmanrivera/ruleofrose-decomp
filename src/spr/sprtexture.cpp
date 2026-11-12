@@ -39,7 +39,15 @@ extern const char D_002F7A18[];
 extern int D_0029A340;
 extern int D_006E9800;
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018F6DC);
+extern "C" int func_0018F6DC(int arg0, int arg1)
+{
+    int temp_v0;
+
+    temp_v0 = M2C_FIELD(((arg1 * 4) + arg0), int *, 0x21C);
+    if (temp_v0 < 0)
+        temp_v0 = -1;
+    return temp_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018F6F8);
 
