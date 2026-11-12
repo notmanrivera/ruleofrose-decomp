@@ -860,7 +860,18 @@ extern "C" void func_001AD8E0(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AD90C);
+extern "C" int func_001AD90C(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0x778) == 1) {
+        return -1;
+    }
+    M2C_FIELD(arg0, int *, 0x778) = 1;
+    M2C_FIELD(arg0, int *, 0x78C) = 0;
+    M2C_FIELD(arg0, int *, 0x790) = 0;
+    M2C_FIELD(arg0, int *, 0x794) = 0;
+    M2C_FIELD(arg0, int *, 0x7A0) = 2;
+    return 0;
+}
 
 extern "C" int func_001AD940(int arg0)
 {
