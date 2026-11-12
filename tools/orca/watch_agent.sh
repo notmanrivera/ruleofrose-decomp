@@ -9,8 +9,15 @@
 #   OpenCode: "esc interrupt"     Antigravity (Gemini/Claude): "esc to cancel"
 # Handles come from `orca agent launch --json` (launch.outcome.handle) or
 # `orca terminal list --json`.
+#
+# The first output line says why it stopped, and so does the exit code:
+#   STATUS: idle (0)   STATUS: quota (3)   STATUS: filter (4)
+# "quota" covers quota and rate-limit messages, "filter" a refusal by the
+# model's content filter: don't send that worker more work until it's fixed.
 H=$1; BUSY=$2
 [ -n "$H" ] && [ -n "$BUSY" ] || { sed -n '6p' "$0" | sed 's/^# *//'; exit 2; }
+QUOTA='quota (reached|exceeded)|[Rr]ate.?limit|resets in [0-9]+h|(HTTP|status|error) 429|[Ii]nsufficient (balance|credits)|out of credits'
+FILTER='[Cc]ontent (filter|policy)|blocked by (safety|the filter)|SAFETY|[Rr]esponse was blocked'
 sleep 60
 while :; do
   orca terminal wait --terminal "$H" --for tui-idle --timeout-ms 1800000 --json >/dev/null 2>&1
@@ -18,6 +25,13 @@ while :; do
   scr=$(orca terminal read --terminal "$H" --screen --json 2>/dev/null |
         python -c "import sys,json; print('\n'.join(json.load(sys.stdin)['result']['terminal']['tail']))")
   echo "$scr" | grep -qE "$BUSY" && continue
-  echo "$scr" | grep -v '^\s*$' | tail -30 | cut -c1-170
-  exit 0
+  last=$(echo "$scr" | grep -v '^\s*$' | tail -30 | cut -c1-170)
+  # Only the last lines count: an old message higher up is not the reason.
+  tail12=$(echo "$last" | tail -12)
+  if echo "$tail12" | grep -qE "$QUOTA"; then st=quota; code=3
+  elif echo "$tail12" | grep -qE "$FILTER"; then st=filter; code=4
+  else st=idle; code=0; fi
+  echo "STATUS: $st"
+  echo "$last"
+  exit $code
 done

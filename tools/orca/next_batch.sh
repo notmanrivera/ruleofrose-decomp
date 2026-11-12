@@ -1,0 +1,116 @@
+#!/bin/sh
+# One coordinator step for a worker: merge what it finished, pick its next
+# batch, send the brief, and (with --watch) wait for it to finish.
+#
+#   tools/orca/next_batch.sh <name> [options]
+#
+#   --handle H --busy RE  its Orca terminal and busy marker (see watch_agent.sh);
+#                         needed the first time, then remembered
+#   --file F              work on this file (default: keep the current file
+#                         while it has functions left, else take the file with
+#                         the most small functions that no other worker holds)
+#   --avoid P             never pick a file under this prefix (e.g. mag/;
+#                         remembered; --avoid - clears it)
+#   --max N               largest function handed out, in instructions (30)
+#   --names N             functions per batch (20)
+#   --tries T             tries before skipping a function (5)
+#   --new                 fresh agent session (OpenCode /new) and the first brief
+#   --no-merge            don't run merge_worker.sh first
+#   --dry-run             print the brief instead of sending it
+#   --watch               then run watch_agent.sh; exits with its code
+#
+# State lives in build/workers/ (not in git): <name>.env (handle, marker,
+# file, last batch, last status) and skipped.txt, the functions a worker gave
+# up on, which backlog.py leaves out. After a merge, every function of the
+# last batch still in asm counts as skipped, but only when the worker had
+# stopped normally (STATUS: idle), not on quota or a content filter.
+# The briefs are the text blocks of docs/WORKER_BRIEF.md.
+set -eu
+MAIN="$(cd "$(git -C "$(dirname "$0")" rev-parse --path-format=absolute --git-common-dir)/.." && pwd)"
+cd "$MAIN"
+PY="$MAIN/tools/.venv/Scripts/python.exe"; [ -x "$PY" ] || PY="$MAIN/tools/.venv/bin/python"
+[ $# -ge 1 ] || { sed -n '5p' "$0" | sed 's/^# *//'; exit 2; }
+NAME=$1; shift
+ST=build/workers; mkdir -p "$ST"; ENV="$ST/$NAME.env"; SKIP="$ST/skipped.txt"; touch "$SKIP"
+HANDLE=""; BUSY=""; FILE=""; AVOID=""; BATCH=""; STATUS=""
+# shellcheck disable=SC1090
+[ -f "$ENV" ] && . "./$ENV"
+NEWFILE=""; MAX=30; NAMES=20; TRIES=5; NEW=""; MERGE=1; DRY=""; WATCH=""
+while [ $# -gt 0 ]; do
+  case $1 in
+    --handle) HANDLE=$2; shift ;;
+    --busy) BUSY=$2; shift ;;
+    --file) NEWFILE=$2; shift ;;
+    --avoid) AVOID=$2; [ "$AVOID" = - ] && AVOID=""; shift ;;
+    --max) MAX=$2; shift ;;
+    --names) NAMES=$2; shift ;;
+    --tries) TRIES=$2; shift ;;
+    --new) NEW=1 ;;
+    --no-merge) MERGE="" ;;
+    --dry-run) DRY=1 ;;
+    --watch) WATCH=1 ;;
+    *) echo "unknown option $1"; exit 2 ;;
+  esac; shift
+done
+[ -n "$HANDLE" ] && [ -n "$BUSY" ] || { echo "$NAME: give --handle and --busy once"; exit 2; }
+
+save() {
+  { echo "HANDLE='$HANDLE'"; echo "BUSY='$BUSY'"; echo "FILE='$FILE'"; echo "AVOID='$AVOID'"
+    echo "BATCH='$BATCH'"; echo "STATUS='$STATUS'"; } > "$ENV"
+}
+
+# 1. Merge. A failure (a mismatch, a broken build) stops here.
+if [ -n "$MERGE" ]; then
+  sh tools/merge_worker.sh "$NAME"
+fi
+
+# 2. What the last batch left in asm was skipped (only after a normal stop).
+if [ -n "$BATCH" ] && [ -n "$FILE" ] && [ "$STATUS" = idle ] && [ -n "$MERGE" ]; then
+  n=0
+  for f in $(echo "$BATCH" | tr ',' ' '); do
+    if grep -qE "INCLUDE_ASM\(\"[^\"]+\", *$f\)" "src/$FILE.cpp" &&
+       ! grep -qx "$FILE $f" "$SKIP"; then
+      echo "$FILE $f" >> "$SKIP"; n=$((n + 1))
+    fi
+  done
+  [ $n -eq 0 ] || echo "$NAME skipped $n of its last batch (now in $SKIP)"
+  [ $n -lt 8 ] || echo "  that is a lot: start a fresh session (--new) for the next batch"
+  BATCH=""
+fi
+
+# 3. Pick the file and the functions.
+others=$(for e in "$ST"/*.env; do
+  [ -e "$e" ] && [ "$e" != "$ENV" ] && sed -n "s/^FILE='\(.*\)'$/\1/p" "$e"; done | paste -sd, -)
+[ -n "$NEWFILE" ] && FILE=$NEWFILE
+funcs=""
+[ -n "$FILE" ] && funcs=$("$PY" tools/backlog.py --file "$FILE" --max "$MAX" --names "$NAMES")
+if [ -z "$funcs" ]; then
+  [ -z "$NEWFILE" ] || { echo "$NEWFILE has no functions of up to $MAX instructions left"; exit 1; }
+  FILE=$("$PY" tools/backlog.py --max "$MAX" --top 200 --exclude "${others:-}${FILE:+,$FILE}" |
+         awk 'NF == 5 && $2 == "functions" {print $5}' |
+         { if [ -n "$AVOID" ]; then grep -v "^$AVOID" || true; else cat; fi; } | head -1)
+  [ -n "$FILE" ] || { echo "no file left with functions of up to $MAX instructions"; exit 1; }
+  funcs=$("$PY" tools/backlog.py --file "$FILE" --max "$MAX" --names "$NAMES")
+fi
+
+# 4. The brief: the first one for a fresh session, the follow-up otherwise.
+brief() {   # $1: section heading in WORKER_BRIEF.md
+  awk -v h="$1" '$0 == h {f = 1; next} f && /^```text/ {t = 1; next} t && /^```/ {exit} t' docs/WORKER_BRIEF.md
+}
+if [ -n "$NEW" ]; then text=$(brief "## First brief (fresh session)"); else text=$(brief "## Follow-up brief (same session)"); fi
+[ -n "$text" ] || { echo "no brief text found in docs/WORKER_BRIEF.md"; exit 1; }
+text=$(printf '%s' "$text" | sed -e "s|<NAME>|$NAME|g" -e "s|<FILE>|$FILE|g" -e "s|<FUNCS>|$funcs|g" -e "s|<TRIES>|$TRIES|g")
+
+echo "$NAME -> $FILE: $funcs"
+if [ -n "$DRY" ]; then echo "$text"; exit 0; fi
+sh tools/orca/send_brief.sh ${NEW:+--new} "$HANDLE" "$text"
+BATCH=$funcs; STATUS=busy; save
+
+# 5. Wait for the report.
+[ -n "$WATCH" ] || exit 0
+set +e
+sh tools/orca/watch_agent.sh "$HANDLE" "$BUSY"; code=$?
+set -e
+case $code in 0) STATUS=idle ;; 3) STATUS=quota ;; 4) STATUS=filter ;; *) STATUS=unknown ;; esac
+save
+exit $code

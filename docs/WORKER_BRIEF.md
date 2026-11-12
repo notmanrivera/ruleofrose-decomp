@@ -24,10 +24,33 @@ Verified with match.py and merged. Your branch was reset to the merged result; k
 
 ## Coordinator loop
 
+One call does a whole step:
+
+```sh
+tools/orca/next_batch.sh <NAME> --watch     # run it in the background
+```
+
+It merges the worker's verified commits (`tools/merge_worker.sh`), records
+the functions of its last batch it left in asm as skipped
+(`build/workers/skipped.txt`, which `tools/backlog.py` leaves out), keeps
+the worker on its file while that file has functions left (else takes the
+file with the most small functions no other worker holds), fills in the
+follow-up brief and sends it (`tools/orca/send_brief.sh`), then waits for the
+worker (`tools/orca/watch_agent.sh`). The first line of its output is
+`STATUS: idle`, `quota` or `filter`; on the last two, stop giving that
+worker work. The first time, give `--handle <terminal> --busy <marker>`
+(remembered in `build/workers/<NAME>.env`); `--avoid mag/` keeps a worker
+out of a module, `--file`, `--max`, `--names`, `--tries` override the
+choice, `--new` starts a fresh agent session with the first brief, and
+`--dry-run` only prints the brief.
+
+By hand, the same steps are:
+
 1. `tools/backlog.py --exclude <files other workers hold>` to pick a file.
 2. Send the brief; wait for the worker's report.
 3. `tools/merge_worker.sh <NAME>`: it re-runs `match.py` in the worker's
    worktree, cherry-picks only verified commits, requires `build/ok`, and
    resets the worker's branch.
 4. Start a fresh agent session (OpenCode: `/new`) when its context passes
-   about a third; long sessions skip more functions.
+   about a third; long sessions skip more functions (`next_batch.sh` says so
+   when a batch leaves 8 or more).

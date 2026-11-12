@@ -11,12 +11,17 @@ Only files that already have src/<file>.cpp count (a file is started with
 `configure.py --new`). Functions whose INCLUDE_ASM sits under
 `#ifdef NON_MATCHING ... #else` are attempts someone already made; they are
 left out unless --nonmatching is given (then listed apart).
+
+Functions a worker already skipped are left out too: build/workers/skipped.txt
+(not in git) holds one "<file> <function>" per line; tools/orca/next_batch.sh
+fills it from the workers' reports. --skipped also lists them.
 """
 import argparse
 import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+SKIPPED = ROOT / "build/workers/skipped.txt"
 INCLUDE = re.compile(r'INCLUDE_ASM\("asm/nonmatchings/([^"]+)",\s*([^)\s]+)\)')
 SIZE = re.compile(r"^\s*(?:nonmatching|glabel)\s+\S+,\s*(0x[0-9A-Fa-f]+)", re.M)
 INSN = re.compile(r"^\s*/\* [0-9A-F]+ [0-9A-F]{8} [0-9A-F]{8} \*/", re.M)
@@ -48,6 +53,13 @@ def insns(file, name):
     return int(m.group(1), 16) // 4 if m else len(INSN.findall(text))
 
 
+def skipped():
+    """{(file, name)} a worker gave up on."""
+    if not SKIPPED.exists():
+        return set()
+    return {tuple(l.split()[:2]) for l in SKIPPED.read_text().splitlines() if len(l.split()) >= 2}
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--max", type=int, default=30, help="largest function counted as small (instructions)")
@@ -56,8 +68,10 @@ def main():
     ap.add_argument("--exclude", default="", help="comma-separated files to leave out (taken by a worker)")
     ap.add_argument("--nonmatching", action="store_true", help="also list NON_MATCHING attempts")
     ap.add_argument("--top", type=int, default=25, help="files shown in the summary")
+    ap.add_argument("--skipped", action="store_true", help="also list functions a worker skipped")
     args = ap.parse_args()
     exclude = {e.strip() for e in args.exclude.split(",") if e.strip()}
+    skip = set() if args.skipped else skipped()
 
     files = [args.file] if args.file else sorted(
         str(p.relative_to(ROOT / "src").with_suffix("")).replace("\\", "/") for p in (ROOT / "src").rglob("*.cpp"))
@@ -68,6 +82,8 @@ def main():
             continue
         for name, nm in pending(cpp):
             n = insns(f, name)
+            if (f, name) in skip:
+                continue
             if n is not None and n <= args.max and (args.nonmatching or not nm):
                 rows.setdefault(f, []).append((n, name, nm))
 
