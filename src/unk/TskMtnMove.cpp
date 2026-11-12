@@ -1,4 +1,16 @@
 #include "include_asm.h"
+struct Ent4D18 {
+    char pad0[0xC];
+    unsigned int unk0C;
+    char pad10[0x8];
+    int unk18;
+    char pad1C[0x28 - 0x1C];
+};
+struct Obj4D18 {
+    char pad0[0xD40];
+    Ent4D18 *arr;
+};
+extern "C" void func_001E649C(Obj4D18 *, unsigned int, int);
 struct Obj7724 {
     char pad0[0x84];
     int arr[0x80];
@@ -136,7 +148,22 @@ extern "C" int func_001E4D04()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4D18);
+extern "C" void func_001E4D18(Obj4D18 *arg0, int arg1)
+{
+    if (arg1 == 0) {
+        return;
+    }
+    if (arg1 == 1) {
+        for (int i = 0; i < 0x30; i++) {
+            if (arg1 == 1) {
+                Ent4D18 *e = &arg0->arr[i];
+                if ((e->unk0C >> 24) != 0xB) {
+                    func_001E649C(arg0, e->unk0C, e->unk18);
+                }
+            }
+        }
+    }
+}
 
 extern "C" int func_001E4DB0(int arg0, int arg1, int arg2, int arg3)
 {
