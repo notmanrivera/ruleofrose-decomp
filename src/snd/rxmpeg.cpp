@@ -1,4 +1,6 @@
 #include "include_asm.h"
+typedef void (*FuncPtr)(int);
+extern FuncPtr D_00298F70[];
 extern "C" void *memset_alias(void *, int, unsigned int) asm("memset");
 extern "C" void func_00182154();
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
@@ -388,7 +390,15 @@ INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_001818B4);
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00181920);
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00181998);
+extern "C" void func_00181998(int arg0)
+{
+    char *elem = (char *)&D_006E9288 + (arg0 << 6);
+    int val = *(int *)(elem + 8);
+    if (val >= 0) {
+        D_00298F70[*(int *)(elem + 4)](val);
+        *(int *)(elem + 8) = -1;
+    }
+}
 
 extern "C" int func_001819F4(int arg0)
 {
