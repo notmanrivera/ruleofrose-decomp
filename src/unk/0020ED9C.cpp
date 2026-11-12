@@ -6,6 +6,12 @@ struct NodeIter {
     NodeIter() {}
     NodeIter(const NodeIter &other) : m_node(other.m_node) {}
 };
+// gas 2.10-ee's macro expansion for `li`, `dsll $r,$r,32` and `la $r,K($r)`
+// leaves its $at bookkeeping dirty: a later `lw $r, sym($reg)` or
+// `s.s $f, sym($reg)` then loses its `lui $at`. The assembler directives
+// INCLUDE_ASM wraps its .s files in (with reorder off and on) reset it.
+#define RESET_AT_STATE asm(".set noat\n.set noreorder\n.set reorder\n.set at\n")
+extern "C" int strcmp(const char *, const char *);
 extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
 extern "C" int Xii___builtin_vec_delete(int) asm("__builtin_vec_delete");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -215,10 +221,7 @@ extern "C" void func_002101B4(int arg0, int arg1)
     (*(int *)&D_007B4790) = (int)(p >> 32);
 }
 
-// `dsll $r,$r,32` above is a macro too: it leaves this assembler's $at
-// bookkeeping dirty and a later `lw $r, sym($reg)` (func_002106A0) loses its
-// `lui $at`; INCLUDE_ASM's `.set noat`/`.set at` pair is what resets it.
-asm(".set noat\n.set at\n");
+RESET_AT_STATE;
 
 extern "C" void func_00210210(int arg0, int arg1, int arg2)
 {
@@ -373,10 +376,7 @@ extern "C" void func_00210748(unsigned int arg0, unsigned int arg1, int arg2)
     }
 }
 
-// `la $r, K($r)` above is another macro: it leaves this assembler's $at
-// bookkeeping dirty and a later `lui $r, %hi(sym)` (func_002106F4) comes out
-// as a load of offset 0; INCLUDE_ASM's `.set noat`/`.set at` resets it.
-asm(".set noat\n.set at\n");
+RESET_AT_STATE;
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002107AC);
 
@@ -469,10 +469,7 @@ extern "C" void func_00210B54(unsigned int arg0, unsigned int arg1, short arg2)
     *(int *)p = (((int *)&D_007B4700)[arg1] << 0x18) | (*(int *)p & 0xFFFFFF);
 }
 
-// The `li` this expands to leaves this assembler's $at bookkeeping dirty, and
-// a later `s.s $f, sym($reg)` (func_00210C68, func_00210CFC) then loses its
-// `lui $at`; INCLUDE_ASM's `.set noat`/`.set at` pair is what resets it.
-asm(".set noat\n.set at\n");
+RESET_AT_STATE;
 
 extern "C" void func_00210BA4(unsigned int arg0, unsigned int arg1, short arg2)
 {
@@ -812,7 +809,19 @@ extern "C" int func_00213B28(int arg0, int arg1, int arg2, int arg3, int arg4, i
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213B7C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213BFC);
+extern "C" int func_00213BFC(int arg0, int arg1, int arg2, int arg3)
+{
+    NodeIter it;
+
+    it.m_node = *(int **)arg2;
+    while (it.m_node != *(int **)arg3) {
+        if (strcmp((char *)it.m_node + 0x20, (char *)arg1) == 0) {
+            return 1;
+        }
+        it.m_node = (int *)it.m_node[1];
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213C6C);
 
