@@ -109,4 +109,17 @@ extern "C" int func_0011DE78(int arg0, int arg1, float fparg0)
     return -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011DF14);
+extern "C" int func_0011DF14(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0xF4) < 0) {
+        return 1;
+    }
+    if (M2C_FIELD(arg0, int *, 0x58) == 0) {
+        X_ror_assert((int) D_002EA758, 0x20E, (int) D_002EA7C0);
+    }
+    if (X_func_0010A834__8DogActor(M2C_FIELD(arg0, int *, 0x58)) == 0) {
+        M2C_FIELD(arg0, int *, 0xF4) = -1;
+        return 1;
+    }
+    return 0;
+}
