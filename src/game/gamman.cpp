@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int func_001D966C(int);
+extern "C" int X_loadModel__9MagSystemii(void *, int, int) asm("loadModel__9MagSystemii");
 extern "C" void func_001CCC30(int, int);
 extern "C" int func_001C0148(int, int);
 extern "C" int func_001C0298(int, int);
@@ -1367,7 +1369,17 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CABD4);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CAD88);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CAF78);
+extern "C" int func_001CAF78(int arg0, unsigned short arg1, int arg2)
+{
+    int sp0 = arg1;
+    int temp_s0 = Xiiu_func_001D2B8C(arg0, arg2);
+    func_001D966C(temp_s0);
+    int sp4 = X_loadModel__9MagSystemii(&D_006E9840, arg1, -1);
+    func_001CA598(arg0, sp4, arg2);
+    X_func_001DA740(temp_s0, 3, (int)&sp4);
+    X_func_001DA740(temp_s0, 0x1000, (int)&sp0);
+    return sp4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CB01C);
 
