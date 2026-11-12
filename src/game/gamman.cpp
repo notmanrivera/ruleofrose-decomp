@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int func_001C0148(int, int);
+extern "C" int func_001C0298(int, int);
+extern "C" int func_001C02B8(int, int);
 struct __attribute__((aligned(8))) DogVector {
     float m_x;
     float m_y;
@@ -720,7 +723,26 @@ extern "C" int func_001C047C()
     return X_func_001C02F8();
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C0490);
+extern "C" int func_001C0490(int arg0, const unsigned char *arg1)
+{
+    int total = 0;
+    int c;
+    const unsigned char *p = arg1;
+
+    while ((c = *p++) != 0) {
+        if (func_001C0298(arg0, c) == 1) {
+            goto do_add;
+        }
+        c <<= 8;
+        c |= *p;
+        if (func_001C02B8(arg0, c) == 1) {
+            p++;
+do_add:
+            total += func_001C0148(arg0, c);
+        }
+    }
+    return total;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C0534);
 
