@@ -253,7 +253,19 @@ INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166A0C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166A1C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", _$_6EmyOut);
+extern int _vt$6EmyOut;
+extern "C" int Xii_func_00166AD0(int) asm("func_00166AD0");
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void dtor_6EmyOut(int, int) asm("_$_6EmyOut");
+
+extern "C" void dtor_6EmyOut(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x34) = (int)&_vt$6EmyOut;
+    Xii_func_00166AD0(arg0);
+    if (arg1 & 1) {
+        return X___builtin_delete((void *)arg0);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EmyOut", D_002F16A8);
 
