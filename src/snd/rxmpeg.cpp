@@ -587,7 +587,15 @@ extern "C" int func_0018240C()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00182414);
+extern "C" void func_00182414()
+{
+    *(volatile int *)&D_00298F44 = 1;
+    while (X_func_00249DE0() > 0) {
+        X_func_0024AE60((void *)func_0018240C, 0, 0, 0);
+        X_func_0024A508();
+    }
+    *(volatile int *)&D_00298F44 = 0;
+}
 
 extern "C" void func_0018247C()
 {
