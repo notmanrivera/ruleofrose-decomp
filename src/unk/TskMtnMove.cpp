@@ -1,4 +1,17 @@
 #include "include_asm.h"
+struct Node785C {
+    void *obj;
+    Node785C *next;
+    int state;
+    int id;
+};
+struct Obj785C {
+    Node785C *head;
+    char pad4[0x80];
+    int arr[0x80];
+    int *end;
+};
+extern "C" void X785C_func_001E7D08(Obj785C *, Node785C *) asm("func_001E7D08");
 struct Obj6D54 {
     void *unk0;
     int unk4;
@@ -449,7 +462,26 @@ extern "C" void func_001E77B4(List77B4 *arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E785C);
+extern "C" void func_001E785C(Obj785C *arg0)
+{
+    Node785C *node = arg0->head;
+    while (node != 0 && arg0->end != arg0->arr) {
+        int *p = arg0->arr;
+        if (node->state != 2) {
+            do {
+                if (node->id == *p) {
+                    X785C_func_001E7D08(arg0, node);
+                    node->state = 2;
+                    if (--arg0->end == arg0->arr) {
+                        return;
+                    }
+                }
+                p++;
+            } while (p < arg0->end);
+        }
+        node = node->next;
+    }
+}
 
 extern "C" void func_001E7908(void) {
 }
