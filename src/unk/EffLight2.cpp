@@ -299,7 +299,29 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", render__9EffLight2PQ24Eff011RENDER
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffLight2__vfunc_08);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", liveActivateExec__9EffLight2);
+extern "C" void liveActivateExec__9EffLight2(int arg0)
+{
+    int temp_a2;
+    int temp_v0;
+    int temp_v0_2;
+    unsigned short temp_a1;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x78);
+    temp_a1 = M2C_FIELD(arg0, unsigned short *, 0);
+    temp_v0_2 = temp_v0 - 1;
+    temp_a2 = temp_v0 + 1;
+    if (temp_a1 & 4) {
+        M2C_FIELD(arg0, int *, 0x78) = temp_a2;
+        if (temp_a2 >= 5) {
+            M2C_FIELD(arg0, unsigned short *, 0) = (unsigned short) (temp_a1 & 0xFFF7);
+        }
+    } else {
+        M2C_FIELD(arg0, int *, 0x78) = temp_v0_2;
+        if (temp_v0_2 <= 0) {
+            M2C_FIELD(arg0, unsigned short *, 0) = (unsigned short) (temp_a1 & 0xFFF7);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_0017562C);
 
