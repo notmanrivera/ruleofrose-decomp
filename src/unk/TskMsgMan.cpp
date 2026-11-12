@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xi_rand() asm("rand");
 struct MagGameFlags2 {
     int m_unk00;
     int m_flags;
@@ -320,7 +321,16 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC6E8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC72C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC774);
+extern "C" int func_001EC774(int arg0)
+{
+    int old = M2C_FIELD(arg0, int *, 0x1C)++;
+
+    if (old < M2C_FIELD(arg0, int *, 0x18)) {
+        M2C_FIELD(arg0, int *, 0x10) = (int) (M2C_FIELD(arg0, int *, 0xC) + ((Xi_rand() % (int) M2C_FIELD(arg0, int *, 0x18)) * 8));
+        return 0;
+    }
+    return 1;
+}
 
 extern "C" int func_001EC7E8(int arg0)
 {
