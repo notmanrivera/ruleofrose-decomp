@@ -136,7 +136,36 @@ extern "C" int func_001A1430(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1468);
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1514);
+extern "C" void func_001A1514(int arg0, int arg1)
+{
+    int var_a4;
+    int var_a5;
+    int temp_a0;
+    int temp_a6;
+    int var_a2;
+    int var_a3;
+    int temp_v1;
+
+    var_a2 = arg1;
+    var_a5 = 0;
+    temp_a6 = var_a2 + 0x2D10;
+    var_a3 = var_a2 + 0x2D20;
+    do {
+        var_a4 = 0;
+loop_2:
+        temp_a0 = (int) (&((unsigned char *)(temp_a6))[var_a4]);
+        var_a4 += 1;
+        (*(unsigned char *)(var_a3)) += (*(unsigned char *)(var_a2));
+        temp_v1 = (*(unsigned char *)(var_a2));
+        var_a2 += 1;
+        (*(unsigned char *)(temp_a0)) += temp_v1;
+        if (var_a4 < 0x10) {
+            goto loop_2;
+        }
+        var_a5 += 1;
+        var_a3 += 1;
+    } while (var_a5 < 0x2D1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1574);
 
