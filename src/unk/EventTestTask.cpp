@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void Xff_func_00218424(float, float) asm("func_00218424");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
 extern int _vt$13EventTestTask;
@@ -91,7 +92,10 @@ extern "C" void func_002183F8(int arg0, int arg1, int arg2)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00218424);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00218450);
+extern "C" void func_00218450(float f)
+{
+    return Xff_func_00218424(f, 3.14159265f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00218470);
 
