@@ -18,6 +18,12 @@
 #   --no-merge            don't run merge_worker.sh first
 #   --dry-run             print the brief instead of sending it (no merge)
 #   --watch               then run watch_agent.sh; exits with its code
+#   --loop                --watch, then start over (merge, next batch, ...) until
+#                         something needs the coordinator: a failed merge or
+#                         build, a worker stop other than idle, a batch with no
+#                         match, or no functions left. A batch that leaves 8 or
+#                         more skipped makes the next one start a fresh session.
+#                         Exit codes: watch_agent.sh's, 1 failure, 6 no match.
 #
 # State lives in build/workers/ (not in git): <name>.env (handle, marker,
 # file, last batch, last status) and skipped.txt, the functions a worker gave
@@ -31,11 +37,12 @@ cd "$MAIN"
 PY="$MAIN/tools/.venv/Scripts/python.exe"; [ -x "$PY" ] || PY="$MAIN/tools/.venv/bin/python"
 [ $# -ge 1 ] || { sed -n '5p' "$0" | sed 's/^# *//'; exit 2; }
 NAME=$1; shift
+ARGS="$*"                          # for --loop's next round (no spaces in values)
 ST=build/workers; mkdir -p "$ST"; ENV="$ST/$NAME.env"; SKIP="$ST/skipped.txt"; touch "$SKIP"
 HANDLE=""; BUSY=""; FILE=""; AVOID=""; BATCH=""; STATUS=""
 # shellcheck disable=SC1090
 [ -f "$ENV" ] && . "./$ENV"
-NEWFILE=""; MAX=30; NAMES=20; TRIES=5; NEW=""; MERGE=1; DRY=""; WATCH=""
+NEWFILE=""; MAX=30; NAMES=20; TRIES=5; NEW=""; MERGE=1; DRY=""; WATCH=""; LOOP=""; ROUND=""
 while [ $# -gt 0 ]; do
   case $1 in
     --handle) HANDLE=$2; shift ;;
@@ -49,6 +56,8 @@ while [ $# -gt 0 ]; do
     --no-merge) MERGE="" ;;
     --dry-run) DRY=1 ;;
     --watch) WATCH=1 ;;
+    --loop) WATCH=1; LOOP=1 ;;
+    --round) ROUND=1 ;;              # internal: a --loop round after the first
     *) echo "unknown option $1"; exit 2 ;;
   esac; shift
 done
@@ -74,7 +83,8 @@ if [ -n "$MERGE" ]; then
   echo "$out"
   case $out in
     *"reset to"*) STATE="Verified with match.py and merged; your branch was reset to the merged result." ;;
-    *"nothing new"*) STATE="Nothing new to merge from your branch." ;;
+    *"nothing new"*) STATE="Nothing new to merge from your branch."
+      if [ -n "$ROUND" ]; then echo "$NAME: no match in its last batch; loop stopped"; exit 6; fi ;;
     *merged*) STATE="Verified with match.py and merged; your branch was left as it is (commit any uncommitted work)." ;;
   esac
 fi
@@ -92,7 +102,10 @@ if [ -n "$BATCH" ] && [ -n "$FILE" ] && [ -n "$MERGE" ]; then
     fi
   done
   [ $n -eq 0 ] || echo "$NAME skipped $n of its last batch (now in $SKIP)"
-  [ $n -lt 8 ] || echo "  that is a lot: start a fresh session (--new) for the next batch"
+  if [ $n -ge 8 ]; then
+    if [ -n "$LOOP" ]; then NEW=1; echo "  that is a lot: the next batch starts a fresh session"
+    else echo "  that is a lot: start a fresh session (--new) for the next batch"; fi
+  fi
   BATCH=""
 fi
 
@@ -131,4 +144,10 @@ sh tools/orca/watch_agent.sh "$HANDLE" "$BUSY"; code=$?
 set -e
 case $code in 0) STATUS=idle ;; 3) STATUS=quota ;; 4) STATUS=filter ;; *) STATUS=unknown ;; esac
 save
+if [ -n "$LOOP" ] && [ $code -eq 0 ]; then
+  # Next round with the same options, minus the one-shot ones.
+  next=$(echo " $ARGS " | sed -e 's/ --new / /g' -e 's/ --file [^ ]* / /g' -e 's/ --round / /g')
+  # shellcheck disable=SC2086
+  exec sh "$0" "$NAME" $next --round
+fi
 exit $code

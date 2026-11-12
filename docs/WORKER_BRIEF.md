@@ -29,7 +29,8 @@ then commit the best attempt under #ifdef NON_MATCHING with a
 One call does a whole step:
 
 ```sh
-tools/orca/next_batch.sh <NAME> --watch     # run it in the background
+tools/orca/next_batch.sh <NAME> --watch     # one step, in the background
+tools/orca/next_batch.sh <NAME> --loop      # step after step until something needs you
 ```
 
 It merges the worker's verified commits (`tools/merge_worker.sh`), records
