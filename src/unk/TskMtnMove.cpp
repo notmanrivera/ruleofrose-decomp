@@ -1,4 +1,10 @@
 #include "include_asm.h"
+struct Ent4AB8 {
+    char name[0x1C];
+    int id;
+    char pad[0x38 - 0x20];
+};
+extern "C" int strcmp(const char *, const char *);
 struct Obj7C7C {
     virtual void v1();
     virtual void v2();
@@ -82,7 +88,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4970);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4A0C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4AB8);
+extern "C" int func_001E4AB8(void *arg0, const char *arg1)
+{
+    Ent4AB8 *p = *(Ent4AB8 **)((char *)arg0 + 0x1544);
+    if (p == 0) {
+        return 0;
+    }
+    int i = 0;
+    while (i++ < 0x384 && p->id != -1) {
+        if (strcmp(arg1, p->name) == 0) {
+            return p->id;
+        }
+        p++;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4B48);
 
