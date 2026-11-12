@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" void V_func_001828C4() asm("func_001828C4");
+extern "C" void V_func_00182F3C(int) asm("func_00182F3C");
+extern "C" void V_func_00182FC8(int) asm("func_00182FC8");
+extern "C" void V_func_00182FDC(int) asm("func_00182FDC");
 extern "C" int X_func_001311BC(...) asm("func_001311BC");
 extern "C" int X_func_00131550(...) asm("func_00131550");
 extern "C" int X_func_00182A60(...) asm("func_00182A60");
@@ -459,7 +463,20 @@ extern "C" void func_00181128(void *self, int theFlags)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00181150);
+extern "C" void func_00181150(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0) = 1;
+    M2C_FIELD(arg0, int *, 0x28) = 0xE00;
+    M2C_FIELD(arg0, int *, 4) = 0;
+    M2C_FIELD(arg0, int *, 0x10) = 0;
+    M2C_FIELD(arg0, int *, 8) = 0;
+    V_func_001828C4();
+    V_func_00182FDC(0);
+    V_func_00182FC8(0);
+    V_func_00182F3C(0);
+    M2C_FIELD(arg0, int *, 0x24) = 0;
+    M2C_FIELD(arg0, int *, 0x34) = 0;
+}
 
 extern "C" void func_001811B0(int arg0)
 {
