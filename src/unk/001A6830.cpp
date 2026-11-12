@@ -1705,7 +1705,12 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B113C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B1B34);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B1B80);
+extern "C" int func_001B1B80()
+{
+    int bit = M2C_FIELD((*(int *)&D_007B2060), int *, 4) & 0x20;
+
+    return bit != 0;
+}
 
 extern "C" int func_001B1B98()
 {
