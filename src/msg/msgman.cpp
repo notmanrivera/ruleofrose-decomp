@@ -934,19 +934,17 @@ INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184128);
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001844C4);
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" int func_0018454C(MsgWin *self, const char *theStr)
 {
+    const unsigned char *p = (const unsigned char *)theStr;
     int n = 0;
-    while ((unsigned int)(theStr[n] - 0x30) < 10) {
+loop:
+    if ((unsigned int)(p[n] - 0x30) < 10) {
         n++;
+        goto loop;
     }
     return n;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_0018454C);
-#endif
 
 
 // NON_MATCHING: close, not identical yet.
