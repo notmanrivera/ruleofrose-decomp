@@ -120,7 +120,19 @@ extern "C" int func_001A1414()
 extern "C" void func_001A1428(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1430);
+extern "C" int func_001A1430(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0) == 1) {
+        return -1;
+    }
+    M2C_FIELD(arg0, int *, 0) = 1;
+    M2C_FIELD(arg0, int *, 0x24) = 0;
+    M2C_FIELD(arg0, int *, 0x28) = 4;
+    M2C_FIELD(arg0, int *, 0x2C) = 0;
+    M2C_FIELD(arg0, int *, 0x30) = 0;
+    M2C_FIELD(arg0, int *, 0x34) = 0;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1468);
 
