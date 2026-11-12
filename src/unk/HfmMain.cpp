@@ -203,7 +203,18 @@ extern "C" int func_00144A34()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144A40);
+extern "C" int func_00144A40()
+{
+    int off = 0x2BD20;
+    int *p = (int *) ((int)&D_006FBD80 + off);
+    int v;
+
+    v = 0;
+    if (M2C_FIELD(p, int *, 0x7C) != 0) {
+        v = M2C_FIELD(p, int *, 0x68);
+    }
+    return v;
+}
 
 extern "C" int func_00144A6C()
 {
