@@ -320,7 +320,18 @@ extern "C" void func_00163BB8()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163BE4);
+extern "C" void func_00163BE4()
+{
+    int p = X_func_001636A4();
+    if (p == 0) {
+        return;
+    }
+    int *vt = M2C_FIELD(p, int **, 0x200);
+    char *entry = (char *)vt + 0x18;
+    short adj = M2C_FIELD(entry, short *, 0);
+    int fn = M2C_FIELD(entry, int *, 4);
+    ((void (*)(int))fn)(p + adj);
+}
 
 extern "C" void func_00163C24()
 {
