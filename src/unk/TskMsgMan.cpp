@@ -1045,7 +1045,20 @@ extern "C" void TskSysFunc__vfunc_06(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskSysFunc__vfunc_05);
+extern "C" void TskSysFunc__vfunc_05(int arg0)
+{
+    int temp_a0 = M2C_FIELD(arg0, int *, 4);
+
+    if (temp_a0 == 1) {
+        char *base = (char *)&D_006FBD80;
+        char *p = base + 0x42BB0;
+
+        if (M2C_FIELD(p, int *, 0x944) == temp_a0) {
+            M2C_FIELD(p, int *, 0x94C) = 0;
+            M2C_FIELD(p, int *, 0x944) = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskSysFunc__vfunc_04);
 
