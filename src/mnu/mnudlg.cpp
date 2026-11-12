@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0018741C(int) asm("func_0018741C");
+extern "C" int Xii_func_001A4FF0(int) asm("func_001A4FF0");
+extern int _9MagSystem$m_current_system;
 extern "C" int Xiiiiiii_alloc__9BedMemoryiPCciii(int, int, int, int, int, int) asm("alloc__9BedMemoryiPCciii");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiii_func_001A1684(int, int) asm("func_001A1684");
@@ -382,7 +385,23 @@ extern "C" int func_001A4CC8()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A4CDC);
+extern "C" int func_001A4CDC(int arg0)
+{
+    int cur;
+
+    if (M2C_FIELD(arg0, int *, 0) == 1) {
+        return -1;
+    }
+    cur = (int)(*(int *)&_9MagSystem$m_current_system);
+    M2C_FIELD(arg0, int *, 0) = 1;
+    M2C_FIELD(arg0, int *, 0x7CC) = cur;
+    M2C_FIELD(arg0, int *, 0x3C) = 0;
+    M2C_FIELD(arg0, int *, 0x40) = 0;
+    M2C_FIELD(arg0, int *, 0x44) = 0;
+    Xii_func_001A4FF0((int) arg0);
+    Xii_func_0018741C(arg0 + 0x54);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A4D38);
 
