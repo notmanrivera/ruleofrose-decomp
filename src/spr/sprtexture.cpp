@@ -244,7 +244,18 @@ extern "C" void S2dBg__vfunc_06(char *arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00191124);
+extern "C" int func_00191124(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0x30) == 1) {
+        return -1;
+    }
+    M2C_FIELD(arg0, int *, 0x30) = 1;
+    M2C_FIELD(arg0, int *, 0x3C) = 0;
+    M2C_FIELD(arg0, int *, 0x40) = 0;
+    M2C_FIELD(arg0, int *, 0x44) = 2;
+    M2C_FIELD(arg0, int *, 0x38) = 0;
+    return 0;
+}
 
 extern "C" int func_00191158(int arg0)
 {
