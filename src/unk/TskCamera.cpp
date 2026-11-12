@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void Xv_func_001F9E58(int) asm("func_001F9E58");
+extern int _vt$9TskDamage;
 extern "C" int Xii_func_001FCBF8(int) asm("func_001FCBF8");
 extern "C" int Xiiii_func_001F98C0(int, int, int) asm("func_001F98C0");
 extern int _vt$9TskAttack;
@@ -168,7 +170,11 @@ extern "C" int func_001F9D74(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001F9D90);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001F9E38);
+extern "C" void func_001F9E38(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$9TskDamage;
+    return Xv_func_001F9E58(arg0);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskCamera", D_002FEB40);
 
