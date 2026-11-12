@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xii_func_00190C44(int) asm("func_00190C44");
+extern "C" int Xiii_func_0018BCC0(int, int) asm("func_0018BCC0");
 extern "C" int Xiiii_func_00190884(int, int, int) asm("func_00190884");
 extern "C" int Xiiiiiiiii_func_0018F1F4(int, int, int, int, int, int, int, int) asm("func_0018F1F4");
 extern int D_00299990;
@@ -159,7 +161,14 @@ extern "C" int func_00190B60(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190B70);
+extern "C" int func_00190B70(int arg0, int arg1)
+{
+    Xiii_func_0018BCC0(arg0 + 0x3C, 3);
+    M2C_FIELD(arg0, int *, 0x458) = arg1;
+    Xii_func_00190C44(arg0);
+    M2C_FIELD(arg0, int *, 0x34) = 1;
+    return 1;
+}
 
 extern "C" void func_00190BBC(int arg0)
 {
