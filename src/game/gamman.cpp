@@ -1436,7 +1436,38 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FB930);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C6CCC);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C6F08);
+extern "C" void func_001C6F08(char *arg0, int arg1, void *arg2)
+{
+    switch (arg1) {
+    case 17:
+        *(int *)(arg0 + 0x21F8C) = *(int *)arg2;
+        break;
+    case 18:
+        *(int *)(arg0 + 0x21F90) = *(int *)arg2;
+        break;
+    case 19:
+        *(int *)(arg0 + 0x21F94) = *(int *)arg2;
+        break;
+    case 20:
+        *(int *)(arg0 + 0x21F98) = *(int *)arg2;
+        break;
+    case 22:
+        *(float *)(arg0 + 0x21FBC) = *(float *)arg2;
+        break;
+    case 23:
+        *(float *)(arg0 + 0x21FC0) = *(float *)arg2;
+        break;
+    case 24:
+        *(float *)(arg0 + 0x21FC4) = *(float *)arg2;
+        break;
+    case 27:
+        *(int *)(arg0 + 0x21F54) = *(int *)arg2;
+        break;
+    case 28:
+        *(int *)(arg0 + 4) = *(int *)arg2;
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C6FE0);
 
