@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_001CB460(int, int, int) asm("func_001CB460");
+extern "C" int Xiii_func_001FB624(int, int, int) asm("func_001FB624");
 extern "C" int Xiii_func_00218470(int, int, int) asm("func_00218470");
 extern "C" int Xiii_getInfo__9BedMemoryP13BedMemoryInfoi(int, int, int) asm("getInfo__9BedMemoryP13BedMemoryInfoi");
 extern "C" void Xv_func_001F9E58(int) asm("func_001F9E58");
@@ -254,7 +256,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FAE14);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FB084);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FB5D4);
+extern "C" void func_001FB5D4(int arg0, int arg1)
+{
+    int info[4];
+
+    Xiii_func_001CB460((int)&D_007812C0, 1, (int)info);
+    Xiii_func_001FB624(info[0], arg0, arg1);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskCamera", D_002FED70);
 
