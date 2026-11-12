@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int X_func_00191D20(...) asm("func_00191D20");
+extern "C" int X_func_00191D74(...) asm("func_00191D74");
+extern "C" int X_func_00191DC8(...) asm("func_00191DC8");
+extern "C" int X_func_00191ED0(...) asm("func_00191ED0");
+extern "C" int X_func_00191F98(...) asm("func_00191F98");
 extern "C" int func_001C6C38(void *);
 extern "C" int func_001C8A28(void *, int, int);
 extern "C" int func_001BFFCC(int, int);
@@ -1260,7 +1265,24 @@ extern "C" void func_001C4FA4()
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C4FC0);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C5094);
+extern "C" void func_001C5094(int arg0, int arg1, int arg2, int arg3)
+{
+    unsigned int off = 0x42BB0;
+
+    if (arg2 != 0) {
+        char *p = D_006FBD80 + off;
+        X_func_00191F98(p);
+        X_func_00191ED0(p, arg1);
+        X_func_00191D20(p, arg1, 1);
+        X_func_00191D74(p, arg1, 1);
+        X_func_00191DC8(p, arg1, (arg3 <= 0) ? 0 : (arg3 - 1));
+        return;
+    }
+
+    char *p = D_006FBD80 + off;
+    X_func_00191D20(p);
+    X_func_00191D74(p, arg1, 0);
+}
 
 extern "C" void func_001C5168(int unused, int arg1, int arg2, int arg3)
 {
