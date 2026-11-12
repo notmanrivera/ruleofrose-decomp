@@ -10,7 +10,9 @@
 Only files that already have src/<file>.cpp count (a file is started with
 `configure.py --new`). Functions whose INCLUDE_ASM sits under
 `#ifdef NON_MATCHING ... #else` are attempts someone already made; they are
-left out unless --nonmatching is given (then listed apart).
+left out unless --nonmatching is given (then listed apart). With --file,
+functions with a matched twin (tools/twins.py: same instructions as one
+already in C++) come first, marked "twin" in the listing.
 
 Functions a worker already skipped are left out too: build/workers/skipped.txt
 (not in git) holds one "<file> <function>" per line; tools/orca/next_batch.sh
@@ -88,12 +90,15 @@ def main():
                 rows.setdefault(f, []).append((n, name, nm))
 
     if args.file:
-        items = sorted(rows.get(args.file, []))
+        import twins
+        idx = twins.index()
+        tw = {name for _, name, _ in rows.get(args.file, []) if twins.twin_of(args.file, name, idx)}
+        items = sorted(rows.get(args.file, []), key=lambda r: (r[1] not in tw, r[0], r[1]))
         if args.names:
             print(", ".join([name for _, name, nm in items if not nm][: args.names]))
             return
         for n, name, nm in items:
-            print(f"{n:5}  {name}{'  (NON_MATCHING attempt)' if nm else ''}")
+            print(f"{n:5}  {name}{'  (NON_MATCHING attempt)' if nm else ''}{'  twin' if name in tw else ''}")
         print(f"{len(items)} functions of up to {args.max} instructions")
         return
 

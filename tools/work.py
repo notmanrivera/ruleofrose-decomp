@@ -28,6 +28,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import auto_m2c as auto  # noqa: E402
 import match  # noqa: E402
+import twins  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 WORK = ROOT / "build/work"
@@ -62,6 +63,13 @@ def start(name, fn, path):
             pre, text = sorted(c.pre), c.text
         except auto.Reject as e:
             comment += f"// (no mechanical translation: {e})\n"
+    twin = twins.twin_of(name, fn)
+    body = twins.source_of(*twin) if twin else None
+    if body:
+        comment += (f"//\n// Same instructions as {twin[0]} {twin[1]}, already matched: its C++\n"
+                    "// with this function's names, offsets and constants is the best start.\n"
+                    + "".join(f"// {ln}\n" for ln in body.split("\n")))
+        print(f"twin: {twin[0]} {twin[1]} (its C++ is in the scratch file)")
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(f"// {name}, {fn}: m2c's draft\n{comment}\n{DECL}\n" + "".join(d + "\n" for d in pre)
                     + f"\n{FUNC}\n{text}", encoding="utf8", newline="\n")
