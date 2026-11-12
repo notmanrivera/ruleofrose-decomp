@@ -271,7 +271,19 @@ INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016D3E4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay2__vfunc_08);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", _$_13EffBloodStay3);
+extern int _vt$13EffBloodStay3;
+extern int D_00298E10;
+extern "C" void dtor_13EffBloodStay3(int, int) asm("_$_13EffBloodStay3");
+
+extern "C" void dtor_13EffBloodStay3(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x20) = (int)&_vt$13EffBloodStay3;
+    D_00298E10 = -1;
+    dtor_4Eff0(arg0, 0);
+    if (arg1 & 1) {
+        return X___builtin_delete((void *)arg0);
+    }
+}
 
 extern "C" int EffBloodStay3__vfunc_02(int arg0, int arg1)
 {
