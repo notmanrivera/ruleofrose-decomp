@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0012A974(int, int) asm("func_0012A974");
 extern "C" int Xii_func_0012A9EC(int, int) asm("func_0012A9EC");
 extern "C" void Xv_func_00147760(int) asm("func_00147760");
 extern "C" int Xii_func_001457F0(int) asm("func_001457F0");
@@ -192,7 +193,28 @@ extern "C" void func_001443D8(int arg0)
     X_func_0012A89C((int)&D_006FBD80 + off, arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144418);
+extern "C" void func_00144418(int arg0)
+{
+    struct { float sp0; float sp4; float sp8; float spC; } stack;
+    int off = 0x2BD20;
+    float zero;
+    float a;
+    float b;
+    float c;
+
+    if (arg0 != 0) {
+        zero = 0.0f;
+        stack.sp0 = stack.sp4 = stack.sp8 = zero;
+        stack.spC = 1.0f;
+        Xii_func_0012A974((int)&D_006FBD80 + off, (int)&stack);
+        a = stack.sp0;
+        b = stack.sp4;
+        c = stack.sp8;
+        M2C_FIELD(arg0, float *, 8) = c;
+        M2C_FIELD(arg0, float *, 4) = b;
+        M2C_FIELD(arg0, float *, 0) = a;
+    }
+}
 
 extern "C" void func_0014448C(int arg0)
 {
