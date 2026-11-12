@@ -267,7 +267,22 @@ extern "C" int func_00191E04(int arg0, int arg1, int arg2)
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00191E58);
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00191ED0);
+extern "C" int func_00191ED0(int arg0, int arg1)
+{
+    int *sub;
+    int idx;
+
+    if (arg1 >= 0xE) {
+        return 0;
+    }
+    sub = (int *)(arg0 + 0x48);
+    idx = ((int *)&D_0029BB70)[arg1] * 0x154;
+    M2C_FIELD((idx + M2C_FIELD(sub, int *, 0x4AC)), int *, 0x18) = 0x80;
+    M2C_FIELD((idx + M2C_FIELD(sub, int *, 0x4AC)), int *, 0x1C) = 0x80;
+    M2C_FIELD((idx + M2C_FIELD(sub, int *, 0x4AC)), int *, 0x20) = 0x80;
+    M2C_FIELD((idx + M2C_FIELD(sub, int *, 0x4AC)), int *, 0x24) = 0x80;
+    return 1;
+}
 
 extern "C" int func_00191F44(int arg0, int arg1)
 {
