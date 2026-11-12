@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern int _vt$8TskMovie;
+extern "C" void TskMovie__vfunc_05();
 extern "C" int Xii_func_001A06D4(int, int) asm("func_001A06D4");
 extern "C" int Xii_func_001A0BA0(int) asm("func_001A0BA0");
 extern int D_007B205C;
@@ -1086,7 +1088,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F42C4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F438C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovie__vfunc_06);
+extern "C" void TskMovie__vfunc_06(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$8TskMovie;
+    TskMovie__vfunc_05();
+    if (arg1 & 1) {
+        return Xv___builtin_delete(arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovie__vfunc_05);
 
