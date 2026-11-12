@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern int _vt$16TskMoveTypeRound;
 extern int _vt$14TskMoveTypeGen;
 extern int _vt$12TskMoveSecta;
 extern int _vt$20TskMoveSectaFindPath;
@@ -117,7 +118,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAFB0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EB63C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveTypeRound__vfunc_06);
+extern "C" void TskMoveTypeRound__vfunc_06(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$16TskMoveTypeRound;
+    if (arg1 & 1) {
+        return Xv___builtin_delete(arg0);
+    }
+}
 
 extern "C" void TskMoveTypeRound__vfunc_05(void) {
 }
