@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" int Xii_func_0019237C(int) asm("func_0019237C");
+extern "C" int Xii_func_0018BC18(int, int) asm("func_0018BC18");
 extern "C" int Xiii_func_0018C190(int, int) asm("func_0018C190");
 extern int D_0029A388;
 extern int D_0029B7F8;
@@ -173,7 +176,17 @@ extern "C" void func_0019226C(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001922A4);
+extern "C" void func_001922A4(int arg0, int arg1)
+{
+    X_func_001926A4(arg0);
+    if (M2C_FIELD(arg0, int *, 4) == 1) {
+        Xii_func_0019237C(arg0);
+    }
+    Xii_func_0018BC18(arg0 + 0x18, 2);
+    if (arg1 & 1) {
+        return Xv___builtin_delete((void *)arg0);
+    }
+}
 
 extern "C" void func_00192318(int arg0, int arg1, int arg2)
 {
