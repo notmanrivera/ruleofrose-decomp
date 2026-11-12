@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern int _vt$13TskMovePhysic;
 extern int _vt$10TskMoveAdj;
 extern int _vt$12TskFrameFunc;
 extern int _vt$9TskChrRot;
@@ -400,7 +401,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EE954);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EEAEC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovePhysic__vfunc_06);
+extern "C" void TskMovePhysic__vfunc_06(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$13TskMovePhysic;
+    if (arg1 & 1) {
+        return Xv___builtin_delete(arg0);
+    }
+}
 
 extern "C" void TskMovePhysic__vfunc_05(void) {
 }
