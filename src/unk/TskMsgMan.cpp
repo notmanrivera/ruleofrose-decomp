@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiu_func_001D19A8(int, unsigned int) asm("func_001D19A8");
 typedef unsigned int u_long128 __attribute__((mode(TI)));
 extern int _vt$10TskSysFunc;
 extern int _vt$9TskRotAdj;
@@ -863,7 +864,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2BCC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2D38);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2EC4);
+extern "C" int func_001F2EC4(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0x10) == 0x64) {
+        return Xiiu_func_001D19A8((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0x20)) != 0;
+    }
+    M2C_FIELD(arg0, int *, 0x14) = M2C_FIELD(arg0, int *, 0x14) + 1;
+    return 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE3B8);
 
