@@ -1,4 +1,11 @@
 #include "include_asm.h"
+// A one-pointer iterator class with a copy constructor: BLKmode, so a local
+// keeps its 16-byte stack slot (like GamList<T>::iterator in gamman.h).
+struct NodeIter {
+    int *m_node;
+    NodeIter() {}
+    NodeIter(const NodeIter &other) : m_node(other.m_node) {}
+};
 extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
 extern "C" int Xii___builtin_vec_delete(int) asm("__builtin_vec_delete");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -723,7 +730,21 @@ extern "C" void func_00213448(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213450);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213ADC);
+extern "C" int func_00213ADC(int arg0, int arg1, int arg2, int arg3, int arg4)
+{
+    NodeIter it;
+    int *end = *(int **)arg3;
+
+    it.m_node = *(int **)arg2;
+    while (it.m_node != end) {
+        int *sub = (int *)((char *)it.m_node + 0x10);
+        if (sub[1] == arg1 && sub[10] == arg4) {
+            return 1;
+        }
+        it.m_node = (int *)it.m_node[1];
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213B28);
 
