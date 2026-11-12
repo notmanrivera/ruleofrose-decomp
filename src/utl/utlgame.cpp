@@ -283,7 +283,15 @@ INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103240);
 
 INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_0010332C);
 
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103390);
+extern "C" int func_00103390(unsigned int arg0)
+{
+    int t = (arg0 >> 0x17) & 0x1F;
+
+    if (t == 5) {
+        return 1;
+    }
+    return t == 6 ? 2 : 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_001033B8);
 
