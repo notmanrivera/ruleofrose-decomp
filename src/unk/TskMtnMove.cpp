@@ -1,4 +1,20 @@
 #include "include_asm.h"
+struct Ent63C0 {
+    int unk0;
+    int unk4;
+    int unk8;
+    int unk0C;
+    char pad10[0x28 - 0x10];
+};
+struct Sub63C0 {
+    Ent63C0 *arr;
+};
+struct Obj63C0 {
+    char pad0[0xD40];
+    Sub63C0 sub;
+};
+extern "C" int func_00180CA8(int *, int);
+extern "C" void func_00180CE0(int *, int, int, int, int, float);
 struct VObj7544 {
     virtual int vfunc1();
 };
@@ -474,7 +490,24 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5E58);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E6368);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E63C0);
+extern "C" int func_001E63C0(Obj63C0 *arg0, int arg1, int arg2, int arg3, int arg4)
+{
+    if (arg2 < 0) {
+        return 0;
+    }
+    Sub63C0 *sub = &arg0->sub;
+    int off = arg2 * sizeof(Ent63C0);
+    if (((Ent63C0 *)((char *)sub->arr + off))->unk0C != arg1) {
+        return 0;
+    }
+    if (func_00180CA8(&D_007B2580, arg2) == -1) {
+        return 0;
+    }
+    ((Ent63C0 *)((char *)sub->arr + off))->unk4 = arg3;
+    ((Ent63C0 *)((char *)sub->arr + off))->unk8 = arg4;
+    func_00180CE0(&D_007B2580, arg2, arg3, arg4, 0, -1024.0f);
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E649C);
 
