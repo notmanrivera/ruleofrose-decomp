@@ -263,7 +263,21 @@ extern "C" int func_0018330C(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00183B24);
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00183B74);
+extern "C" int func_00183B74(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0x2C) = 1;
+    M2C_FIELD(arg0, int *, 0x68) = 0x9C;
+    M2C_FIELD(arg0, int *, 0x28) = M2C_FIELD(arg0, int *, 0x0) = -1;
+    M2C_FIELD(arg0, int *, 0x20) = 0;
+    M2C_FIELD(arg0, int *, 0x10) = 0;
+    M2C_FIELD(arg0, int *, 0x104) = 0;
+    M2C_FIELD(arg0, int *, 0x90) = 0;
+    M2C_FIELD(arg0, int *, 0x84) = 0;
+    M2C_FIELD(arg0, int *, 0x24) = 0;
+    M2C_FIELD(arg0, int *, 0xC) = 0;
+    M2C_FIELD(arg0, int *, 0x18) = 0;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00183BB8);
 
