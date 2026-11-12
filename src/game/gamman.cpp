@@ -437,7 +437,16 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BEDC0);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BEE8C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BEEB4);
+extern "C" int func_001BEEB4(int self)
+{
+    void *p = *(void **)(self + 0xC);
+
+    if (p == 0) {
+        return 0;
+    }
+    Xiiii_memset((int)p, *(int *)(self + 0x64), *(int *)(self + 0x1C));
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BEEEC);
 
