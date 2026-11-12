@@ -89,7 +89,28 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskCamera", D_002FEA48);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001F8FC0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", TskSnd__vfunc_04);
+extern "C" void TskSnd__vfunc_04(int arg0)
+{
+    short idx;
+    long ent;
+    int fp;
+    short base;
+    int off;
+    int p;
+
+    idx = M2C_FIELD(arg0, short *, 0x26);
+    if (idx >= 0) {
+        p = *(int *) (arg0 + M2C_FIELD(arg0, short *, 0x28));
+        p += idx * 8;
+        ent = *((long *) p - 1);
+        fp = (int) (ent >> 32);
+    } else {
+        fp = M2C_FIELD(arg0, int *, 0x28);
+    }
+    base = M2C_FIELD(arg0, short *, 0x24);
+    off = (idx >= 0) ? (short) ent + base : base;
+    ((void (*)(int)) fp)(arg0 + off);
+}
 
 extern "C" void TskSnd__vfunc_05(int arg0)
 {
