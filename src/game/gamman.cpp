@@ -1780,7 +1780,27 @@ extern "C" void func_001D1838(int unused, unsigned int arg1, unsigned int arg2)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D18C4);
+extern "C" void func_001D18C4(int unused, unsigned int arg1, unsigned int arg2)
+{
+    register unsigned int v0 asm("$2") = arg1 >> 28;
+    register unsigned int a3 asm("$7") = v0 & 3;
+    switch (a3) {
+    case 1: {
+        register char *ret asm("$2") = (char *)func_001D2B8C();
+        int mask = arg2 & 0x00FFFFFF;
+        register int idx asm("$3") = (arg2 >> 24) << 2;
+        idx += (int)ret;
+        idx += 0x3EC;
+        *(int *)idx &= ~mask;
+        break;
+    }
+    case 2:
+        *(int *)((char *)func_001D2BA8() + 0x120) &= ~arg2;
+        break;
+    default:
+        break;
+    }
+}
 
 extern "C" int func_001D1958(int arg0, unsigned int arg1)
 {
