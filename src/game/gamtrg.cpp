@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
 extern "C" int Xiiii_func_001D5BC8(int, int, int) asm("func_001D5BC8");
 struct m2c_block8 { int w[2]; };
 struct m2c_ulong { long v; } __attribute__((packed));
@@ -567,7 +568,12 @@ extern "C" void func_001DD1E0(void) {
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD1E8);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD3EC);
+extern "C" void func_001DD3EC(void *arg0, int arg1)
+{
+    if (arg1 & 1) {
+        return Xv___builtin_delete(arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD414);
 
