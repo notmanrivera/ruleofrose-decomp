@@ -120,7 +120,12 @@ extern "C" void func_00166004(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166048);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166108);
+extern "C" int func_00166108(int arg0)
+{
+    float v[4];   // unused: the original keeps a 16-byte slot in the frame
+
+    return (unsigned short) M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), unsigned short *, 0x126) < (unsigned int) ((unsigned short) M2C_FIELD(arg0, unsigned short *, 0x1D8) >> 2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166128);
 
