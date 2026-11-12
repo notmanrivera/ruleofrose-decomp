@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiii_func_001A6C90(int, int, int) asm("func_001A6C90");
 extern "C" int Xii_func_0018741C(int) asm("func_0018741C");
 extern "C" int Xiii_func_001AF44C(int, int) asm("func_001AF44C");
 extern "C" int Xii_func_0018330C(int) asm("func_0018330C");
@@ -283,7 +284,14 @@ INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F93F0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A6C90);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A6FE8);
+extern "C" void func_001A6FE8(int arg0)
+{
+    int i;
+
+    for (i = 0; i < M2C_FIELD(arg0, int *, 0x142C); i++) {
+        Xiiii_func_001A6C90(arg0, i, i);
+    }
+}
 
 extern "C" int func_001A7040(unsigned char arg0)
 {
