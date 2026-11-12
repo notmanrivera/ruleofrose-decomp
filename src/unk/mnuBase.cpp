@@ -378,7 +378,17 @@ extern "C" int func_00192A20(int arg0, int arg1, int arg2)
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192A70);
+extern "C" int func_00192A70(int arg0, int arg1, int arg2)
+{
+    int flag;
+
+    flag = (int) (arg2 == 1);
+    if (arg1 > 0) {
+        return 0;
+    }
+    M2C_FIELD(((((int *)&D_0029BFB0)[arg1] * 0x154) + M2C_FIELD(arg0, int *, 0x4C4)), int *, 0xC) = flag;
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192AC0);
 
