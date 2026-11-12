@@ -1,5 +1,8 @@
 #include "include_asm.h"
 typedef unsigned int u_long128 __attribute__((mode(TI)));
+extern "C" char vtbl_S2dBg[] asm("_vt$5S2dBg");
+extern "C" int func_00191054(int);
+typedef unsigned int u_long128 __attribute__((mode(TI)));
 extern "C" char vtbl_S2dCineSco[] asm("_vt$10S2dCineSco");
 extern "C" int Xii_func_0018BB8C(int) asm("func_0018BB8C");
 extern "C" int func_00190B60(int);
@@ -264,7 +267,18 @@ INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190D90);
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190E98);
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190F6C);
+extern "C" int func_00190F6C(int arg0)
+{
+    *(void **)(arg0 + 0x14) = vtbl_S2dBg;
+    *(u_long128 *)arg0 = 0;
+    M2C_FIELD(arg0, int *, 0x10) = 1;
+    M2C_FIELD(arg0, int *, 4) = -1;
+    M2C_FIELD(arg0, int *, 0) = 0;
+    M2C_FIELD(arg0, int *, 0x24) = 0;
+    M2C_FIELD(arg0, int *, 0x20) = 0;
+    Xii_func_0018BB8C(arg0 + 0x48);
+    return func_00191054(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", S2dBg__vfunc_01);
 
