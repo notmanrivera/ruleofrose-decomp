@@ -997,7 +997,16 @@ loop_1:
     goto loop_1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C854C);
+extern "C" int func_001C854C(int self)
+{
+    for (int i = 0; i < 0xC; i++) {
+        int base = *(int *)(self + 0x1A6C0);
+        if (*(unsigned short *)(base + (i << 4) + 8) == *(unsigned short *)(self + 0x2220C)) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C8598);
 
