@@ -110,7 +110,12 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001F95A8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001F9600);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001F9658);
+extern "C" int func_001F9658(int arg0, int *arg1, int *arg2)
+{
+    *arg1 = M2C_FIELD(arg0, int *, 0x84);
+    *arg2 = M2C_FIELD(arg0, int *, 0x88);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001F9670);
 
