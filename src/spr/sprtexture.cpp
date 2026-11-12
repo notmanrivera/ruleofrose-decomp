@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_001905A8(int, int) asm("func_001905A8");
+extern "C" int Xiii_strcpy(int, int) asm("strcpy");
 typedef unsigned int u_long128 __attribute__((mode(TI)));
 extern "C" char vtbl_S2dBg[] asm("_vt$5S2dBg");
 extern "C" int func_00191054(int);
@@ -132,7 +134,15 @@ extern "C" void func_001905A8(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_001905B0);
+extern "C" int func_001905B0(int arg0, int arg1, int arg2, unsigned int arg3, int arg4)
+{
+    Xiii_strcpy(arg0 + 0x10, (int) arg1);
+    M2C_FIELD(arg0, int *, 0x110) = arg2;
+    M2C_FIELD(arg0, unsigned int *, 0x114) = arg3;
+    M2C_FIELD(arg0, int *, 0x118) = arg4;
+    Xiii_func_001905A8(arg0, 1);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190618);
 
