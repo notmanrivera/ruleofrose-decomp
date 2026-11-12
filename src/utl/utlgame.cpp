@@ -11,6 +11,7 @@ extern const char D_002E57A8[];
 #define ASSERT_FILE D_002E5728
 extern const char D_002E5728[];
 #include "game/gamman.h"
+extern "C" void func_001DC48C(void *theObj, int theId, int theA, int *theOut);
 extern "C" void func_001DD00C(void *theObj, int theA, int theB);
 extern "C" void func_001DCD38(void *theObj, int theA, int theB);
 static inline void *gamSub22220() { GamMan *g = &D_007812C0; return (char *)g + 0x22220; }
@@ -44,7 +45,13 @@ extern "C" void func_00163770(void *theA, int theOID);
 extern "C" int func_0010315C(void *theOut, int theA);
 extern "C" int func_00102BF0(void *theOut, int theA);
 
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00102490);
+extern "C" int func_00102490(unsigned short theA)
+{
+    int v;
+
+    func_001DC48C(gamSub22220(), theA, 0xF, &v);
+    return (unsigned short)v;
+}
 
 // NON_MATCHING: close, not identical yet.
 #ifdef NON_MATCHING
