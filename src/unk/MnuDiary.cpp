@@ -157,7 +157,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A1D0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A20C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A24C);
+extern "C" int func_0019A24C(int arg0, int arg1)
+{
+    for (int i = 0; i < M2C_FIELD(arg0, int *, 0xA8); i++) {
+        if (M2C_FIELD(M2C_FIELD(arg0, int *, 0x8B8) + i * 4, int *, 0) == arg1) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuDiary", D_002F8270);
 
