@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void func_002127F4(int arg0);
+extern "C" void func_00213450(int arg0, int arg1, int arg2);
 // A one-pointer iterator class with a copy constructor: BLKmode, so a local
 // keeps its 16-byte stack slot (like GamList<T>::iterator in gamman.h).
 struct NodeIter {
@@ -51,7 +53,17 @@ extern "C" void func_0020EFA4(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020EFAC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020F0C8);
+extern "C" void func_0020F0C8(int arg0, int arg1)
+{
+    switch (arg1) {
+    case 1:
+        func_002127F4(arg0);
+        func_00213450(arg0, 1, 0);
+        return func_00213450(arg0, 2, 0);
+    case 2:
+        return func_00213450(arg0, arg1, 0);
+    }
+}
 
 extern "C" int func_0020F140(int arg0)
 {
