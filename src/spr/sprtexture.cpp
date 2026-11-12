@@ -52,7 +52,15 @@ extern "C" int func_0018F6DC(int arg0, int arg1)
     return temp_v0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018F6F8);
+extern "C" int func_0018F6F8(int arg0, int arg1)
+{
+    int idx = X_func_0018F6DC(arg0, arg1);
+
+    if (idx < 0) {
+        return -1;
+    }
+    return M2C_FIELD((idx * 4) + arg0, int *, 0x12C);
+}
 
 extern "C" int func_0018F734(int arg0, int arg1)
 {
