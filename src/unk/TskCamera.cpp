@@ -160,7 +160,11 @@ extern "C" void TskAttack__vfunc_05(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", TskAttack__vfunc_04);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001F9D74);
+extern "C" int func_001F9D74(int arg0)
+{
+    arg0 += 0x38;
+    return M2C_FIELD(arg0, int *, 0)-- < 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001F9D90);
 
