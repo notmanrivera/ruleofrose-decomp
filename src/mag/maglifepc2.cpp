@@ -3,6 +3,16 @@
 #include "game/gamman.h"
 #include "dog/dogentity.h"
 #include "dog/dogactor.h"
+extern "C" int func_00163BE4(void *theEmy);
+struct EmyDistEntry {
+    const char *m_name;
+    int m_id;
+    float m_range[8];
+};
+struct EmyDistTable {
+    EmyDistEntry m_entries[10];
+};
+extern const EmyDistTable D_002EA450;
 extern "C" int func_0011C520(void *self);
 extern "C" void func_001C870C(void *theGamMan, int theA);
 extern "C" void func_00176CC8(void *theObj, void *theParam);
@@ -560,4 +570,46 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc2", D_002EA440);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc2", D_002EA450);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011D3D0);
+extern "C" int func_0011D3D0(void *self, int theId, float theDist)
+{
+    int kind = func_00163BE4(&D_007B2140);
+    if (kind < 0) {
+        return -1;
+    }
+    EmyDistTable table = D_002EA450;
+    int idx;
+    if (kind == 6) {
+        idx = 8;
+        int id = (short)func_001CBE38(&D_007812C0, theId);
+        if (id >= 0) {
+            if (!*(char **)((char *)self + 0x20)) ror_assert(D_002EA208, 0x3A9, D_002EA280);
+            DogActor *actor = (DogActor *)(*(char **)((char *)self + 0x20) + id * 0x4D0 + 0x2920);
+            int node = getNodeIndexByName_ce5c(actor, "Bip01 Neck");
+            DogVector pos;
+            actor->vfunc18(pos, node < 0 ? 0 : node);
+            if (pos.m_y >= -140.0f) {
+                idx = 9;
+            }
+        }
+    } else {
+        for (idx = 0; idx < 8; idx++) {
+            if (table.m_entries[idx].m_id == kind) {
+                break;
+            }
+        }
+        if (idx >= 8) {
+            idx = 0;
+        }
+    }
+    int ret = -1;
+    if (theDist < table.m_entries[idx].m_range[0] && theDist >= table.m_entries[idx].m_range[1]) {
+        ret = 1;
+    } else if (theDist < table.m_entries[idx].m_range[2] && theDist >= table.m_entries[idx].m_range[3]) {
+        ret = 0;
+    } else if (theDist < table.m_entries[idx].m_range[4] && theDist >= table.m_entries[idx].m_range[5]) {
+        ret = 3;
+    } else if (theDist < table.m_entries[idx].m_range[6] && theDist >= table.m_entries[idx].m_range[7]) {
+        ret = 2;
+    }
+    return ret;
+}
