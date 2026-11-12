@@ -945,7 +945,13 @@ extern "C" void func_001F4088(int arg0, int arg1, int arg2)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskGenFrameFunc__vfunc_06);
+extern "C" void TskGenFrameFunc__vfunc_06(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$15TskGenFrameFunc;
+    if (arg1 & 1) {
+        return Xv___builtin_delete(arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskGenFrameFunc__vfunc_04);
 
