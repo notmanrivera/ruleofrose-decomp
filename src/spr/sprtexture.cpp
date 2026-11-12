@@ -75,7 +75,13 @@ INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018FAB4);
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018FBB0);
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018FE8C);
+extern "C" int func_0018FE8C(int arg0, int arg1)
+{
+    if (M2C_FIELD(arg0, int *, 0x430) == 0) {
+        return -1;
+    }
+    return X_getIndex__C6BedPfhPCc(M2C_FIELD(arg0, int *, 0x430), arg1);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/spr/sprtexture", D_002F79E0);
 
