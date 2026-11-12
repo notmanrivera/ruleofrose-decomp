@@ -2,6 +2,7 @@
 extern "C" int Xii_func_0016A914(int) asm("func_0016A914");
 extern "C" int Xii_func_00173DF8(int) asm("func_00173DF8");
 extern "C" int Xiiii_memset(int, int, int) asm("memset");
+extern int _vt$4Eff0;
 extern int _vt$14EffBloodSpray1;
 extern int _vt$14EffBloodSpray2;
 extern int _vt$6EffBg1;
@@ -38,7 +39,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016A8A4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016A914);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", _$_4Eff0);
+extern "C" void X_Eff0__vfunc_03(int) asm("Eff0__vfunc_03");
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void dtor_4Eff0(int, int) asm("_$_4Eff0");
+
+extern "C" void dtor_4Eff0(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x20) = (int)&_vt$4Eff0;
+    X_Eff0__vfunc_03(arg0);
+    if (arg1 & 1) {
+        return X___builtin_delete((void *)arg0);
+    }
+}
 
 extern "C" int Eff0__vfunc_02(int arg0, int arg1)
 {
