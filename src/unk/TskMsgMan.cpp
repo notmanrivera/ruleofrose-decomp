@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern int _vt$20TskMoveSectaFindPath;
 extern int _vt$16TskMovePointPath;
 extern int _vt$13TskMovePhysic;
 extern int _vt$10TskMoveAdj;
@@ -299,7 +300,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC834);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC940);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveSectaFindPath__vfunc_06);
+extern "C" void TskMoveSectaFindPath__vfunc_06(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$20TskMoveSectaFindPath;
+    if (arg1 & 1) {
+        return Xv___builtin_delete(arg0);
+    }
+}
 
 extern "C" void TskMoveSectaFindPath__vfunc_05(void) {
 }
