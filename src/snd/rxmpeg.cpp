@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void *memset_alias(void *, int, unsigned int) asm("memset");
 extern "C" void func_00182154();
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
 extern "C" int func_0023CCA8_alias(int, int, int) asm("func_0023CCA8");
@@ -371,7 +372,17 @@ extern "C" int func_00181848()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_0018185C);
+extern "C" void func_0018185C(int arg0)
+{
+    int temp_v0 = (int)&D_006E9288 + (arg0 << 6);
+    M2C_FIELD(temp_v0, int *, 0) = arg0;
+    M2C_FIELD(temp_v0, int *, 8) = -1;
+    M2C_FIELD(temp_v0, int *, 0xC) = 0x80;
+    M2C_FIELD(temp_v0, int *, 4) = -1;
+    M2C_FIELD(temp_v0, int *, 0x10) = 0x80;
+    M2C_FIELD(temp_v0, int *, 0x14) = 0;
+    memset_alias((void *)(temp_v0 + 0x18), 0, 0x20);
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_001818B4);
 
