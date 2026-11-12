@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" int Xii_heapFree__FPv(int) asm("heapFree__FPv");
 extern "C" int Xiii_func_001CB460(int, int, int) asm("func_001CB460");
 extern "C" int Xiii_func_001FB624(int, int, int) asm("func_001FB624");
 extern "C" int Xiii_func_00218470(int, int, int) asm("func_00218470");
@@ -381,7 +383,18 @@ extern "C" void func_001FC47C(int arg0)
     M2C_FIELD(arg0, int *, 0x508) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FC490);
+extern "C" void func_001FC490(int arg0, int arg1)
+{
+    int temp_v0;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x504);
+    if (temp_v0 != 0) {
+        Xii_heapFree__FPv(temp_v0);
+    }
+    if (arg1 & 1) {
+        return Xv___builtin_delete((void *)arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FC4F0);
 
