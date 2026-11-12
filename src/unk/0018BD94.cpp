@@ -74,7 +74,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C9D8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018CA58);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018CA98);
+extern "C" float func_0018CA98(int arg0, int arg1, float fparg0)
+{
+    float t = (float) arg1;
+
+    t = (t * t + t) * 0.5f;
+    return fparg0 / t;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018CAC8);
 
