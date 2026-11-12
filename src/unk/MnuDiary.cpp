@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int Xii_func_00187464(int) asm("func_00187464");
+extern "C" int Xii_func_0018C130(int) asm("func_0018C130");
+extern "C" int Xii_func_0019A7D8(int) asm("func_0019A7D8");
+extern "C" int Xiiu_func_001348B0(int, unsigned int) asm("func_001348B0");
+extern "C" int Xiiu_func_00135594(int, unsigned int) asm("func_00135594");
 extern "C" int Xiii_func_0019C0E4(int, int) asm("func_0019C0E4");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int X_func_00279C98(...) asm("func_00279C98");
@@ -198,7 +203,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A598);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A650);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A6B8);
+extern "C" void func_0019A6B8(int arg0)
+{
+    int temp_s0;
+
+    if (M2C_FIELD(arg0, int *, 0x1540) != 0) {
+        Xii_func_0018C130(arg0 + 0x7D0);
+        temp_s0 = (int)&D_006E9840;
+        temp_s0 += 0x12540;
+        Xiiu_func_00135594(temp_s0, M2C_FIELD(arg0, unsigned int *, 0x1580));
+        Xiiu_func_001348B0(temp_s0, M2C_FIELD(arg0, unsigned int *, 0x1580));
+        Xii_func_00187464(arg0 + 0x58);
+        Xii_func_0019A7D8(arg0);
+        M2C_FIELD(arg0, int *, 0x1540) = 0;
+    }
+}
 
 extern "C" int func_0019A730(int arg0)
 {
