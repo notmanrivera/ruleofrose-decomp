@@ -143,7 +143,16 @@ extern "C" void func_00163700(int arg0, int arg1, int arg2)
     M2C_FIELD(arg0, signed char *, 0x135) = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163720);
+extern "C" void func_00163720(int arg0, int arg1)
+{
+    if (arg1 == 0) {
+        M2C_FIELD(arg0, signed char *, 0x134) = 0;
+        M2C_FIELD(arg0, int *, 0x138) = 0;
+    } else {
+        M2C_FIELD(arg0, signed char *, 0x135) = 0;
+        M2C_FIELD(arg0, int *, 0x13C) = 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_0016373C);
 
