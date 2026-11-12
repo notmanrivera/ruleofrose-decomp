@@ -208,7 +208,20 @@ INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180A90);
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180B30);
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180B9C);
+extern "C" void func_00180B9C(int arg0, int arg1)
+{
+    M2C_FIELD(arg1, int *, 0) = 8;
+    M2C_FIELD(arg1, int *, 0x18) = 0x41;
+    M2C_FIELD(arg1, int *, 0xC) = 0;
+    M2C_FIELD(arg1, int *, 0x10) = 0;
+    M2C_FIELD(arg1, int *, 0x14) = -1;
+    M2C_FIELD(arg1, int *, 0x1C) = -1;
+    M2C_FIELD(arg1, int *, 0x24) = 0x80;
+    M2C_FIELD(arg1, int *, 0x2C) = 0;
+    M2C_FIELD(arg1, int *, 0x20) = -1;
+    M2C_FIELD(arg1, int *, 0x28) = 0x80;
+    M2C_FIELD(arg1, float *, 0x30) = 1.0f;
+}
 
 extern "C" int func_00180BE4(void *arg0, int arg1, int arg2, int arg3)
 {
