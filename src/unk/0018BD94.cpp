@@ -92,7 +92,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018D1E8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018D640);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018D7C8);
+extern "C" int func_0018D7C8(int arg0, int arg1)
+{
+    char *p = (char *)M2C_FIELD(arg0, int *, 0x4AC);
+
+    p += arg1 * 0x154;
+    return M2C_FIELD(p, int *, 0x14);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018D7EC);
 
