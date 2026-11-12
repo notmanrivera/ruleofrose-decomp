@@ -160,7 +160,25 @@ extern "C" int func_0019A174(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A1D0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A20C);
+extern "C" int func_0019A20C(int arg0, int arg1)
+{
+    int *p = (int *)M2C_FIELD(arg0, int *, 0x128);
+    int i = 0;
+
+    for (;;) {
+        if (M2C_FIELD(p, int *, 0) & 1) {
+            if (M2C_FIELD(p, int *, 0x14) == arg1) {
+                return i;
+            }
+        }
+        i += 1;
+        if (i < 5) {
+            p += 8;
+            continue;
+        }
+        return -1;
+    }
+}
 
 extern "C" int func_0019A24C(int arg0, int arg1)
 {
