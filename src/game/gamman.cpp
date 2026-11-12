@@ -344,7 +344,12 @@ extern "C" int func_001BE4C8(int arg0, int arg1, int arg2)
     return var_v1 == 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BE524__10FileReaderP11FileReadReqi);
+extern "C" void func_001BE524__10FileReaderP11FileReadReqi(int self, int theReq, int theA)
+{
+    *(int *)(self) = theReq;
+    *(int *)(theReq + 4) = 0;
+    return X_func_001BE564(self, theA);
+}
 
 extern "C" void func_001BE548(int *theOut, int theA, int theB)
 {
