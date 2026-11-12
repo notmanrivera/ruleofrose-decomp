@@ -79,7 +79,13 @@ extern "C" void Eff0__vfunc_03(int arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", Eff0__vfunc_10);
+extern "C" void Eff0__vfunc_10(int arg0, int arg1)
+{
+    unsigned short temp_v0 = (*(unsigned short *)(arg0));
+
+    (*(unsigned short *)(arg0)) = arg1 != 0 ? (temp_v0 & 0xFFFB) : (temp_v0 | 4);
+    (*(unsigned short *)(arg0)) |= 8;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", Eff0__vfunc_04);
 
