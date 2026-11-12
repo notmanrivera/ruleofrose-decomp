@@ -1,4 +1,13 @@
 #include "include_asm.h"
+struct VObj7340 {
+    virtual int vfunc1();
+    virtual void vfunc2(int);
+};
+struct Node7340 {
+    VObj7340 *obj;
+    Node7340 *next;
+    int state;
+};
 struct Ent4B48 {
     char name[0x1C];
     int id;
@@ -503,7 +512,17 @@ extern "C" void func_001E71F4(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E71FC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7340);
+extern "C" void func_001E7340(void *arg0, Node7340 *arg1, int arg2)
+{
+    int id = arg1->obj->vfunc1();
+    if ((id == 0x10 || id == 5 || id == 0x13 || id == 0x14) && arg1->state != arg2) {
+        if (arg2 == 1) {
+            arg1->obj->vfunc2(1);
+        } else if (arg2 == 0) {
+            arg1->obj->vfunc2(0);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7414);
 
