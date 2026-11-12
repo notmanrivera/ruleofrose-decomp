@@ -1505,7 +1505,30 @@ extern "C" int func_00185D20(MsgWin *self, const char *theStr, int *theLen)
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185D2C);
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185DEC);
+extern "C" int func_00185DEC(MsgWin *self, const unsigned char *theStr, int *theLen)
+{
+    int v;
+    int n;
+    if (*theStr == 'g') {
+        *theLen = 1;
+        n = func_00184578(self, (const char *)(theStr + *theLen), &v);
+        *theLen += n;
+        if (n <= 0) {
+            return 0;
+        }
+        v = D_007B205C[v];
+    } else {
+        n = func_00184578(self, (const char *)theStr, &v);
+        *theLen = n;
+        if (n <= 0) {
+            return 0;
+        }
+    }
+    char *s = func_00184048((int)self, v);
+    self->m[0x100 / 4] = 0;
+    *(char **)&self->m[0x108 / 4] = s;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185EA4);
 
