@@ -1,4 +1,7 @@
 #include "include_asm.h"
+typedef unsigned int u_long128 __attribute__((mode(TI)));
+extern "C" char vtbl_S2dMes[] asm("_vt$6S2dMes");
+extern "C" int Xii_func_0019183C(int) asm("func_0019183C");
 extern "C" int Xiii_func_001905A8(int, int) asm("func_001905A8");
 extern "C" int Xiii_strcpy(int, int) asm("strcpy");
 typedef unsigned int u_long128 __attribute__((mode(TI)));
@@ -426,7 +429,20 @@ extern "C" void func_00191478(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00191494);
+extern "C" void func_00191494(int arg0)
+{
+    *(void **)(arg0 + 0x14) = vtbl_S2dMes;
+    *(u_long128 *)arg0 = 0;
+    M2C_FIELD(arg0, int *, 0x10) = 1;
+    M2C_FIELD(arg0, int *, 0x24) = 0;
+    M2C_FIELD(arg0, int *, 4) = -1;
+    M2C_FIELD(arg0, int *, 0) = 0;
+    M2C_FIELD(arg0, int *, 0x20) = 0;
+    Xii_func_0018BB8C(arg0 + 0x48);
+    M2C_FIELD(arg0, int *, 0x30) = 0;
+    Xii_func_0019183C(arg0);
+    M2C_FIELD(arg0, int *, 0x34) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", S2dMes__vfunc_01);
 
