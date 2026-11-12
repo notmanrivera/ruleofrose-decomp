@@ -29,7 +29,16 @@ extern "C" int X_func_0016968C(...) asm("func_0016968C");
 extern "C" int X_func_00202F10(...) asm("func_00202F10");
 extern "C" int X_memset(...) asm("memset");
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_0016265C);
+extern "C" void func_00162698(int);
+extern int _vt$10EmyManager;
+extern "C" void Y_memset(int, int, int) asm("memset");
+
+extern "C" void func_0016265C(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$10EmyManager;
+    func_00162698(arg0);
+    return Y_memset(arg0 + 0x104, 0x64, 0x30);
+}
 
 extern "C" void func_00162698(int arg0)
 {
