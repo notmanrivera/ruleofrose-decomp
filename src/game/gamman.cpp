@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int func_001C6FE0(void *, int, int, int);
+extern "C" void func_001CC250(void *, int, int, int, int, int);
+extern "C" int func_001CFBE4(int, unsigned int, int);
 struct Struct1C46FC {
     int x;
     int y;
@@ -1563,7 +1566,16 @@ extern "C" void func_001C8E1C(int arg0, int arg1)
 extern "C" void func_001C8EAC(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C8EB4);
+extern "C" void func_001C8EB4(char *arg0, int arg1, int arg2)
+{
+    int sp0;
+    unsigned short temp_s3 = arg1 & 0xFFFF;
+    func_001DC48C(arg0 + 0x22220, temp_s3, 0xF, &sp0);
+    int temp_s2 = X_loadModel__9MagSystemii(&D_006E9840, (unsigned short)sp0, -1);
+    int temp_v0 = func_001C6FE0(arg0, 2, 5, -1);
+    func_001CC250(&D_007812C0, temp_s2, temp_v0, temp_s3, 0, 0);
+    func_001CFBE4((int)&D_007812C0, temp_v0, arg2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C8F7C);
 
