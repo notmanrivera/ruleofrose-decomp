@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int X4E20_func_001E4D04(int, int) asm("func_001E4D04");
+extern "C" int func_001E50C8(int, int, int, int, float, int, int, int);
 struct Ent4970 {
     char name[0x1C];
     int unk1C;
@@ -201,7 +203,14 @@ extern "C" int func_001E4DB0(int arg0, int arg1, int arg2, int arg3)
     return -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4E20);
+extern "C" int func_001E4E20(int arg0, int arg1, int arg2, int arg3, int arg4, float fparg0)
+{
+    int temp_v0 = X4E20_func_001E4D04(arg0, arg1);
+    if (temp_v0 != 0) {
+        return func_001E50C8(arg0, temp_v0, arg2, arg3, fparg0, arg4, 0, 0);
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4EBC);
 
