@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" void *bsearch(const void *, const void *, unsigned int, unsigned int, int (*)(const void *, const void *));
+extern "C" int func_001C0534(int, unsigned int);
+extern "C" int func_001BFFAC(unsigned short *, unsigned short *);
 extern "C" int Xiiu_func_001D2D00(int, unsigned int) asm("func_001D2D00");
 extern "C" int func_001D966C(int);
 extern "C" int X_loadModel__9MagSystemii(void *, int, int) asm("loadModel__9MagSystemii");
@@ -672,7 +675,26 @@ extern "C" int func_001BFFAC(unsigned short *theA, unsigned short *theB)
     return b < a;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BFFCC);
+extern "C" int func_001BFFCC(int arg0, int arg1)
+{
+    short key = arg1;
+
+    if (*(int *)(*(int *)((char *)arg0 + 0x54) + 8) & 0x06000000) {
+        if ((unsigned short)arg1 > 0x813F) {
+            int ret = func_001C0534(arg0, (unsigned short)arg1);
+            if (ret >= 0) {
+                ret += *(int *)((char *)arg0 + 0x44);
+            }
+            return ret;
+        }
+    }
+
+    void *found = bsearch(&key, *(void **)((char *)arg0 + 0x58), *(int *)((char *)arg0 + 0x44), 2, (int (*)(const void *, const void *))func_001BFFAC);
+    if (found == 0) {
+        return -1;
+    }
+    return ((int)found - *(int *)((char *)arg0 + 0x58)) / 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C0078);
 
