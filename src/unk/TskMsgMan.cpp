@@ -1,4 +1,12 @@
 #include "include_asm.h"
+struct MagGameFlags2 {
+    int m_unk00;
+    int m_flags;
+};
+extern MagGameFlags2 *D_007B2060;
+extern "C" int Xii_func_00192920(int) asm("func_00192920");
+extern "C" int Xii_func_001CF95C(int) asm("func_001CF95C");
+extern int _9MagSystem$m_v_rate;
 extern int _vt$8TskMovie;
 extern "C" void TskMovie__vfunc_05();
 extern "C" int Xii_func_001A06D4(int, int) asm("func_001A06D4");
@@ -1097,7 +1105,17 @@ extern "C" void TskMovie__vfunc_06(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovie__vfunc_05);
+extern "C" void TskMovie__vfunc_05()
+{
+    int *p = &D_007B2060->m_flags;
+
+    *p &= 0xF7FFFFFF;
+    Xii_func_001CF95C((int)&D_007812C0);
+    char *base = (char *)&D_006FBD80;
+    Xii_func_00192920((int)(base + 0x84AA8));
+    int v = 2;
+    _9MagSystem$m_v_rate = v;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE588);
 
