@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int X_func_00243C40(int, int, int) asm("func_00243C40");
 extern "C" int X_func_001CBE38(int, int) asm("func_001CBE38");
 extern int D_006FE6A0;
 extern "C" void X_func_00144500(...) asm("func_00144500");
@@ -354,7 +355,22 @@ extern "C" int func_001BE414(int arg0)
     return Xiii_func_001BE3C4(arg0, temp_v1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BE444);
+extern "C" int func_001BE444(int theA, int theB, int theC, int theD)
+{
+    int mode = 0;
+
+    switch (theD) {
+    case 0:
+        break;
+    case 1:
+        mode = 1;
+        break;
+    case 2:
+        mode = 2;
+        break;
+    }
+    return X_func_00243C40(theB, theC, mode);
+}
 
 extern "C" int func_001BE490(int arg0, int arg1, int arg2)
 {
