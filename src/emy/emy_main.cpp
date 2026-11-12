@@ -53,7 +53,18 @@ extern "C" void func_00162698(int arg0)
     M2C_FIELD(arg0, int *, 0x140) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", EmyManager__vfunc_06);
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void func_00163570(int);
+extern "C" void EmyManager_vfunc06(int arg0, int arg1) asm("EmyManager__vfunc_06");
+
+extern "C" void EmyManager_vfunc06(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$10EmyManager;
+    func_00163570(arg0);
+    if (arg1 & 1) {
+        return X___builtin_delete((void *)arg0);
+    }
+}
 
 extern "C" int EmyManager__vfunc_04(int arg0)
 {
