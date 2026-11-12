@@ -199,7 +199,13 @@ extern "C" void func_00210110(int arg0, int arg1)
     (*(int *)&D_007B4790) = temp_v0 % temp_v1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210158);
+extern "C" void func_00210158(unsigned int arg0, unsigned int arg1)
+{
+    unsigned long long p = (unsigned long long)((unsigned int *)&D_007B4700)[arg0] * ((unsigned int *)&D_007B4700)[arg1];
+
+    (*(int *)&D_007B47A0) = (int)p;
+    (*(int *)&D_007B4790) = (int)(p >> 32);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002101B4);
 
