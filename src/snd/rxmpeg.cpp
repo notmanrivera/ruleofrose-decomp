@@ -173,7 +173,26 @@ extern "C" int func_00180CA8()
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180CE0);
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180D94);
+extern "C" int func_00180D94(int arg0, int arg1, int arg2)
+{
+    int p = X_func_0017F584();
+    if (p == 0) {
+        return -1;
+    }
+    if (*(int *)p != 8) {
+        return -1;
+    }
+    if (arg2 != -0x400) {
+        *(int *)(p + 0x2C) = arg2;
+    }
+    int v = *(int *)(p + 0x10);
+    if (v != 0) {
+        if (v == 2) {
+            *(int *)(p + 0x10) = 3;
+        }
+    }
+    return 0;
+}
 
 extern "C" int func_00180E00()
 {
