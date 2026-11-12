@@ -93,6 +93,8 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+struct MsgNameEnt { int id; char *name; };
+extern MsgNameEnt D_00299738[];
 extern int D_002F73E4;
 extern "C" int Xiiiii_func_001DC48C(int, int, int, int) asm("func_001DC48C");
 extern char D_002F71F0[];
@@ -1048,7 +1050,18 @@ INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184698);
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184710);
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001847BC);
+extern "C" char *func_001847BC(int arg0, int theId)
+{
+    int i = 0;
+
+    while (D_00299738[i].id != 0x29) {
+        if (theId == D_00299738[i].id) {
+            return D_00299738[i].name;
+        }
+        i++;
+    }
+    return D_00299738[i].name;
+}
 
 extern "C" int func_00184820(int arg0, signed char arg1)
 {
