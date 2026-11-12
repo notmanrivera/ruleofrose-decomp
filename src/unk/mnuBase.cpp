@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xii__10FileReader(int, int) asm("_$_10FileReader");
+extern "C" int Xv_mnuBase__vfunc_03(int) asm("mnuBase__vfunc_03");
+extern int _vt$7mnuBase;
 extern "C" void Xv_func_0018154C(int, int, int, int) asm("func_0018154C");
 extern int D_0029BFB0;
 extern "C" void Xv_func_00192850(int, int, int, int) asm("func_00192850");
@@ -523,7 +526,15 @@ extern "C" int func_00192A70(int arg0, int arg1, int arg2)
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192AC0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", mnuBase__vfunc_01);
+extern "C" void mnuBase__vfunc_01(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x10C) = (int)&_vt$7mnuBase;
+    Xv_mnuBase__vfunc_03(arg0);
+    Xii__10FileReader(arg0 + 0x68, 2);
+    if (arg1 & 1) {
+        return Xv___builtin_delete((void *)arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192BA4);
 
