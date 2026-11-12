@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern int _vt$9TskChrRot;
 extern int _vt$12TskAvoidMove;
 extern "C" void Xv___builtin_delete(int) asm("__builtin_delete");
 extern int _vt$9TskAttach;
@@ -476,7 +477,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskAvoidMove__vfunc_04);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0434);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskChrRot__vfunc_06);
+extern "C" void TskChrRot__vfunc_06(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$9TskChrRot;
+    if (arg1 & 1) {
+        return Xv___builtin_delete(arg0);
+    }
+}
 
 extern "C" void TskChrRot__vfunc_05(void) {
 }
