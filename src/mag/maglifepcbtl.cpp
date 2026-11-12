@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
+void vecDirToRot(float *theDir, float *theRot);
 extern "C" int X_func_0011D15C(...) asm("func_0011D15C");
 extern const char *D_00298228[4][5][3];
 struct PairF {
@@ -182,7 +183,28 @@ extern "C" float func_0012BC20(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012BC98);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012BEDC);
+extern "C" float func_0012BEDC(int arg0, float *theYaw, float *thePitch, const DogVector *thePos)
+{
+    DogVector pos = M2C_FIELD(arg0, DogActor **, 0x58)->m_unk40;
+    DogVector dir;
+    DogVector *dp = &dir;
+    *dp = *thePos;
+    dp->m_x -= pos.m_x;
+    dp->m_y -= pos.m_y;
+    dp->m_z -= pos.m_z;
+    dp->m_w = 1.0f;
+    DogVector rot;
+    vecDirToRot(&dp->m_x, &rot.m_x);
+    *theYaw = rot.m_y;
+    *thePitch = rot.m_x;
+    float d = *theYaw - M2C_FIELD(arg0, DogActor **, 0x58)->m_unk50.m_y;
+    if (d < -DOG_PI) {
+        d += DOG_PI2;
+    } else if (d > DOG_PI) {
+        d -= DOG_PI2;
+    }
+    return d;
+}
 
 extern "C" void func_0012C014(int arg0, float *arg1, float *arg2)
 {
