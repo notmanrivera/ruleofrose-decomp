@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" char vtbl_GamMan[] asm("_vt$6GamMan");
+extern "C" void GamSndMan__vfunc_01(void *, int);
+extern "C" void func_001DD3EC(void *, int);
 extern "C" float func_0010A650__8DogActor(void *);
 extern "C" int X_func_001C772C(...) asm("func_001C772C");
 extern "C" int X_func_001E4540(...) asm("func_001E4540");
@@ -806,7 +809,23 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C0534);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C05C0);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", GamMan__vfunc_01);
+extern "C" void GamMan__vfunc_01(char *arg0, int arg1)
+{
+    char *vec = arg0 + 0x1A6C0;
+    *(void **)(arg0 + 0x22AB4) = vtbl_GamMan;
+    char *finish = *(char **)(vec + 4);
+    char *start = *(char **)vec;
+    if (start != finish) {
+        do {
+            start += 0x10;
+        } while (start != finish);
+    }
+    GamSndMan__vfunc_01(arg0 + 0x18E00, 2);
+    func_001DD3EC(arg0 + 0x40, 2);
+    if (arg1 & 1) {
+        return X___builtin_delete(arg0);
+    }
+}
 
 extern "C" void func_001C0D44(int arg0)
 {
