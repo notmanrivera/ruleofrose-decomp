@@ -240,7 +240,13 @@ extern "C" int func_00144A78()
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144AA8);
+extern "C" int func_00144AA8()
+{
+    int off = 0x12540;
+
+    X_func_0013166C((int)&D_006E9840 + off, 0x14, 0);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144AE0);
 
