@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void func_00182154();
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
 extern "C" int func_0023CCA8_alias(int, int, int) asm("func_0023CCA8");
 extern "C" int Xi_func_001830F0() asm("func_001830F0");
@@ -485,7 +486,11 @@ extern "C" int func_0018240C()
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00182414);
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_0018247C);
+extern "C" void func_0018247C()
+{
+    *(volatile int *)&D_00298F44 = 0;
+    X_func_00249E08(func_00182154, 0, 0, 0);
+}
 
 extern "C" void func_001824B4(int arg0, int arg1)
 {
