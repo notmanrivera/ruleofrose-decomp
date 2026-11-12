@@ -121,7 +121,17 @@ INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_001905B0);
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190618);
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190884);
+extern "C" int func_00190884(int arg0, const unsigned char *arg1, const unsigned char *arg2)
+{
+    while (*arg1 != 0) {
+        if (*arg1 != *arg2) {
+            return -1;
+        }
+        arg1++;
+        arg2++;
+    }
+    return *arg1 != *arg2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_001908D0);
 
