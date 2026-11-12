@@ -1421,7 +1421,18 @@ extern "C" int func_001AE02C()
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE040);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE188);
+extern "C" int func_001AE188(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0) == 1) {
+        return -1;
+    }
+    M2C_FIELD(arg0, int *, 0) = 1;
+    M2C_FIELD(arg0, int *, 0x3C) = 0;
+    M2C_FIELD(arg0, int *, 0x40) = 0;
+    M2C_FIELD(arg0, int *, 0x44) = 0;
+    M2C_FIELD(arg0, int *, 0x50) = 2;
+    return 0;
+}
 
 extern "C" int func_001AE1BC(int arg0)
 {
