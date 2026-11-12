@@ -158,9 +158,6 @@ extern "C" void func_0011CBF4(void *self, int theA)
 }
 
 
-// NON_MATCHING: 7 of 48 instructions, all in the order of independent ones
-// around the three stores (the constant 0x13 is loaded before the address).
-#ifdef NON_MATCHING
 extern "C" int func_0011CBF4_i(void *self, int theA) asm("func_0011CBF4");
 extern "C" void func_001D1C80(GamMan *theGamMan, int theA, int theB, int *theOut);
 extern "C" void func_001C7E40(GamMan *theGamMan, int theA, int theB);
@@ -170,6 +167,7 @@ extern char D_007A4440[];
 // The pointer at +0xDC1C of the object at D_007A4440, reached the way an
 // inline method would (see gamSub22220).
 static inline int *sysWork() { char *p = D_007A4440; return *(int **)(p + 0xDC1C); }
+static inline void setSysWork(int theIdx, int theVal) { sysWork()[theIdx] = theVal; }
 
 extern "C" int func_0011CC14(void *self, int theA)
 {
@@ -180,16 +178,13 @@ extern "C" int func_0011CC14(void *self, int theA)
     int v = 0;
     func_001D1C80(g, theA, 2, &v);
     func_001C7E40(g, (unsigned short)v, 0);
-    sysWork()[0xA0 / 4] = 0x13;
-    sysWork()[0xA4 / 4] = v;
-    sysWork()[0xA8 / 4] = theA;
+    setSysWork(0xA0 / 4, 0x13);
+    setSysWork(0xA4 / 4, v);
+    setSysWork(0xA8 / 4, theA);
     func_001D4540(g);
     func_001CCC30(g, theA);
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011CC14);
-#endif
 
 extern "C" int func_0011CCD4(void *self, const u_long128 *thePos, int *theOut)
 {
