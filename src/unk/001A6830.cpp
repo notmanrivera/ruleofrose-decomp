@@ -1757,7 +1757,29 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF024);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF130);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF1D4);
+extern "C" int func_001AF1D4()
+{
+    char *base = (char *)&D_007812C0;
+    int temp_a2;
+    int var_a1;
+    unsigned short temp_v0;
+    int var_a0;
+
+    int *p = (int *)(base + 0x1A6C0);
+    var_a0 = p[0];
+    temp_a2 = p[1];
+    var_a1 = 0;
+    if (var_a0 != temp_a2) {
+        do {
+            temp_v0 = M2C_FIELD(var_a0, unsigned short *, 8);
+            var_a0 += 0x10;
+            if ((temp_v0 ^ 0xA00) != 0) {
+                var_a1 += 1;
+            }
+        } while (var_a0 != temp_a2);
+    }
+    return var_a1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF21C);
 
