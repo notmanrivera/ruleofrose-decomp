@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern int _vt$12TskAvoidMove;
 extern "C" void Xv___builtin_delete(int) asm("__builtin_delete");
 extern int _vt$9TskAttach;
 struct m2c_block8 { int w[2]; };
@@ -417,7 +418,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovePhysic__vfunc_04);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF184);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskAvoidMove__vfunc_06);
+extern "C" void TskAvoidMove__vfunc_06(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$12TskAvoidMove;
+    if (arg1 & 1) {
+        return Xv___builtin_delete(arg0);
+    }
+}
 
 extern "C" void TskAvoidMove__vfunc_05(int arg0)
 {
