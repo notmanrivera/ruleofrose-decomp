@@ -55,7 +55,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00217CF0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00217D2C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00217D68);
+extern "C" int func_00217D68(int arg0)
+{
+    char *p = (char *)&D_006E9840;
+    int var_a0 = 0;
+    unsigned int v;
+
+    p += 0xD0;
+    if ((M2C_FIELD(arg0, int *, 0x28) >= 9) || (v = M2C_FIELD(p, unsigned short *, 0x7A), (v >> 5) & 1)) {
+        var_a0 = 1;
+    }
+    return var_a0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00217DA4);
 
