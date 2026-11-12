@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void *func_001D2B8C();
+extern "C" void *func_001D2BA8();
 extern "C" void func_00191D20(void *, int, int);
 extern "C" void func_00191D74(void *, int, int);
 extern "C" int func_001E7D7C(void *, int);
@@ -1744,7 +1746,27 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D1720);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D17C8);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D1838);
+extern "C" void func_001D1838(int unused, unsigned int arg1, unsigned int arg2)
+{
+    register unsigned int v0 asm("$2") = arg1 >> 28;
+    register unsigned int a3 asm("$7") = v0 & 3;
+    switch (a3) {
+    case 1: {
+        register char *ret asm("$2") = (char *)func_001D2B8C();
+        int mask = arg2 & 0x00FFFFFF;
+        register int idx asm("$3") = (arg2 >> 24) << 2;
+        idx += (int)ret;
+        idx += 0x3EC;
+        *(int *)idx |= mask;
+        break;
+    }
+    case 2:
+        *(int *)((char *)func_001D2BA8() + 0x120) |= arg2;
+        break;
+    default:
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D18C4);
 
