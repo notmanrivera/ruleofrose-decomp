@@ -103,7 +103,17 @@ INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F8FC);
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F9AC);
 
-INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017FA5C);
+extern "C" int func_0017FA5C(int arg0, int arg1, int arg2)
+{
+    switch (arg1) {
+    case 0:
+        return ((((*(unsigned int *)(arg0 + 0x24) >> arg2) & 1) == 0) ? arg2 : -1);
+    case 1:
+        return -1;
+    default:
+        return -1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017FA90);
 
