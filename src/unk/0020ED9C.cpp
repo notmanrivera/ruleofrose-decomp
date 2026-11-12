@@ -426,7 +426,18 @@ extern "C" void func_00210B0C(unsigned int arg0, unsigned int arg1, short arg2)
     (*(int *)(temp_a0)) = ((unsigned int) ((int *)&D_007B4700)[arg1] >> 8) | ((*(int *)(temp_a0)) & 0xFF000000);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210B54);
+extern "C" void func_00210B54(unsigned int arg0, unsigned int arg1, short arg2)
+{
+    char *p = (char *)(((int *)&D_007B4700)[arg0] + arg2);
+
+    p++;
+    *(int *)p = (((int *)&D_007B4700)[arg1] << 0x18) | (*(int *)p & 0xFFFFFF);
+}
+
+// The `li` this expands to leaves this assembler's $at bookkeeping dirty, and
+// a later `s.s $f, sym($reg)` (func_00210C68, func_00210CFC) then loses its
+// `lui $at`; INCLUDE_ASM's `.set noat`/`.set at` pair is what resets it.
+asm(".set noat\n.set at\n");
 
 extern "C" void func_00210BA4(unsigned int arg0, unsigned int arg1, short arg2)
 {
