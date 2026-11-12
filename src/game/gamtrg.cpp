@@ -512,7 +512,15 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBCF0);
 extern "C" void func_001DBD4C(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBD54);
+extern "C" int func_001DBD54(int arg0)
+{
+    int base = (int)&D_007812C0;
+
+    if ((M2C_FIELD(base + 0x21F4C, int *, 0) & 0x40000) == 0) {
+        return M2C_FIELD(arg0, int *, 0x1C0);
+    }
+    return M2C_FIELD(base + 0x21F58, int *, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBD90);
 
