@@ -425,7 +425,13 @@ extern "C" void func_001DB18C(int arg0, int arg1, int arg2)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB19C);
+extern "C" void func_001DB19C(int arg0, int arg1, int arg2)
+{
+    int off;
+
+    off = arg1 * 4 + 0x1B0;
+    M2C_FIELD(arg0 + off, int *, 0) += arg2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB1B8);
 
