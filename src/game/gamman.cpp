@@ -1,4 +1,11 @@
 #include "include_asm.h"
+extern "C" void func_0017762C(void *);
+struct ListNode {
+    ListNode *prev;
+    ListNode *next;
+    char pad[8];
+    int count;
+};
 extern "C" int func_00143D7C(char *, char *, int);
 extern "C" int func_001C6FE0(void *, int, int, int);
 extern "C" void func_001CC250(void *, int, int, int, int, int);
@@ -1931,7 +1938,28 @@ extern "C" int func_001CBAFC(char *arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBB80);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBD0C);
+extern "C" void func_001CBD0C(char *arg0)
+{
+    char *v0 = (char *)&D_006FBD80;
+    unsigned int off = 0x837E0;
+    v0 += off;
+    func_0017762C(v0);
+
+    ListNode *head1 = (ListNode *)(arg0 + 0x20B14);
+    ListNode *head2 = (ListNode *)(arg0 + 0x20B00);
+
+    if (*(int *)((char *)head2 + 0x24) != 0 && head1->count != 0) {
+        head2->prev->next = head1->next;
+        head2->prev->next->prev = head2->prev;
+        head2->prev = head1->prev;
+        head2->prev->next = head2;
+        head2->count += head1->count;
+        head1->next = head1;
+        head1->count = 0;
+        asm("":::"memory");
+        head1->prev = head1;
+    }
+}
 
 extern "C" int func_001CBDB8(int theA, int theB)
 {
