@@ -273,7 +273,19 @@ extern "C" int func_00191258()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00191278);
+extern "C" int func_00191278(int arg0)
+{
+    int v = M2C_FIELD(arg0, int *, 0x40);
+
+    if (v != 3) {
+        if (v < 4) {
+            if (v == 0) {
+                M2C_FIELD(arg0, int *, 0x40) = 3;
+            }
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_001912A0);
 
