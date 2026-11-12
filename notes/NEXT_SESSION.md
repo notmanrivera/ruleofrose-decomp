@@ -111,3 +111,28 @@ Pendiente que salió:
   R_MIPS_LO16. Se quitó el parche de `include_asm.h`; `build/ok` verde, y
   reparó 2 instrucciones (maglifepc, 0020ED9C). Los `RESET_AT_STATE` de
   `unk/0020ED9C.cpp` ya no hacen falta.
+
+## Revisión de scripts (Fable 5.2): pendiente
+
+Aplicado en "Worker loop fixes from a review": --dry-run sin merge, candado
+de merge, skipped solo si el worker la intentó, STATUS unknown, texto real
+del brief (<STATE>), work.py. Falta, de más a menos útil:
+
+- Coste: hoy el worker espera los ~200 s de la compilación completa en cada
+  ciclo. Reordenar merge_worker: verificar, cherry-pick, resetear al worker y
+  mandarle el lote, y compilar después (con el candado); ante un fallo,
+  parar el bucle en vez de deshacer. Probar ninja con `docker exec` en el
+  contenedor ror-match (ahorraría la copia del mirror, ~54 s).
+- `next_batch.sh --loop`: repetir hasta un fallo, un STATUS no idle o un
+  lote sin aciertos; aplicar --new solo cuando salte 8 o más; resumen corto
+  en vez de 30 líneas de pantalla.
+- Funciones gemelas: 44 de las pendientes tienen la misma secuencia de
+  instrucciones que una ya hecha. Ordenar los lotes por forma y que work.py
+  añada al borrador el C++ de la gemela ya emparejada.
+- skipped.txt ya guarda quién la saltó: añadir `--retry-from-others` para
+  que el otro modelo la intente una vez antes de darla por perdida.
+- work.py: la línea de los errores de compilación es la del .trial.cpp, no
+  la de src/. match.py: avisar si el objeto tiene otro número de funciones
+  que el juego, en vez de mostrarlo todo como "differ".
+- merge_worker: integrar los commits verificados aunque uno falle;
+  send_brief.sh: no depender del espaciado del JSON.
