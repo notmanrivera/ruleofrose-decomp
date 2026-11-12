@@ -87,7 +87,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165638);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_001656B4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165710);
+extern "C" int func_00165710(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0x10) != 0) {
+        return 0;
+    }
+    return M2C_FIELD((M2C_FIELD(arg0, int *, 0x3C) + arg0), unsigned char *, 0x128) != 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165734);
 
