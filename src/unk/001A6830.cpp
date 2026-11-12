@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_001AF44C(int, int) asm("func_001AF44C");
 extern "C" int Xii_func_0018330C(int) asm("func_0018330C");
 extern "C" int Xii_func_0018BB8C(int) asm("func_0018BB8C");
 extern "C" int Xii_func_001A066C(int) asm("func_001A066C");
@@ -1723,7 +1724,15 @@ extern "C" void func_001AED08(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AED5C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AEE50);
+extern "C" int func_001AEE50(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0) == 0) {
+        return -1;
+    }
+    Xiii_func_001AF44C(arg0, 1);
+    M2C_FIELD(arg0, int *, 0) = 0;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AEE8C);
 
