@@ -257,7 +257,19 @@ extern "C" void func_001BE004(int arg0)
     } while (Xii_func_0018FEBC(temp_s0) == 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BE048);
+extern "C" int func_001BE048(int self)
+{
+    int *p = (int *)self;
+
+    if (p[0] == 1) {
+        return -1;
+    }
+    p[0] = 1;
+    p[3] = 0;
+    p[4] = 0;
+    func_001BDC9C(self);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BE084);
 
