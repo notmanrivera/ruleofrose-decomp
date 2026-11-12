@@ -1,4 +1,16 @@
 #include "include_asm.h"
+struct VObj7544 {
+    virtual int vfunc1();
+};
+struct Node7544 {
+    VObj7544 *obj;
+    Node7544 *next;
+    int state;
+};
+struct List7544 {
+    Node7544 *head;
+};
+extern "C" void X7544_func_001E7340(List7544 *, Node7544 *, int) asm("func_001E7340");
 struct VObj7340 {
     virtual int vfunc1();
     virtual void vfunc2(int);
@@ -538,7 +550,16 @@ extern "C" void func_001E747C(List747C *arg0, int *arg1, int arg2)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7544);
+extern "C" void func_001E7544(List7544 *arg0, int arg1)
+{
+    for (Node7544 *node = arg0->head; node != 0; node = node->next) {
+        int id = node->obj->vfunc1();
+        if ((node->obj == 0 || (id != 1 && id != 0x12 && id != 2 && id != 7 && id != 0xF && id != 0x17 && id != 0x11 && id != 5)) && node->state != 2) {
+            X7544_func_001E7340(arg0, node, arg1);
+            node->state = arg1;
+        }
+    }
+}
 
 extern "C" void func_001E7618(TskNode7618 **arg0, int arg1)
 {
