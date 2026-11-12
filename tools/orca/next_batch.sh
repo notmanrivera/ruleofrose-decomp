@@ -15,6 +15,8 @@
 #   --names N             functions per batch (20)
 #   --tries T             tries before skipping a function (5)
 #   --new                 fresh agent session (OpenCode /new) and the first brief
+#   --retry               second tries: only functions other workers skipped
+#                         (backlog.py --retry); remembered
 #   --no-merge            don't run merge_worker.sh first
 #   --dry-run             print the brief instead of sending it (no merge)
 #   --watch               then run watch_agent.sh; exits with its code
@@ -39,7 +41,7 @@ PY="$MAIN/tools/.venv/Scripts/python.exe"; [ -x "$PY" ] || PY="$MAIN/tools/.venv
 NAME=$1; shift
 ARGS="$*"                          # for --loop's next round (no spaces in values)
 ST=build/workers; mkdir -p "$ST"; ENV="$ST/$NAME.env"; SKIP="$ST/skipped.txt"; touch "$SKIP"
-HANDLE=""; BUSY=""; FILE=""; AVOID=""; BATCH=""; STATUS=""
+HANDLE=""; BUSY=""; FILE=""; AVOID=""; BATCH=""; STATUS=""; RETRY=""
 # shellcheck disable=SC1090
 [ -f "$ENV" ] && . "./$ENV"
 NEWFILE=""; MAX=30; NAMES=20; TRIES=5; NEW=""; MERGE=1; DRY=""; WATCH=""; LOOP=""; ROUND=""
@@ -53,6 +55,7 @@ while [ $# -gt 0 ]; do
     --names) NAMES=$2; shift ;;
     --tries) TRIES=$2; shift ;;
     --new) NEW=1 ;;
+    --retry) RETRY=1 ;;
     --no-merge) MERGE="" ;;
     --dry-run) DRY=1 ;;
     --watch) WATCH=1 ;;
@@ -65,7 +68,7 @@ done
 
 save() {
   { echo "HANDLE='$HANDLE'"; echo "BUSY='$BUSY'"; echo "FILE='$FILE'"; echo "AVOID='$AVOID'"
-    echo "BATCH='$BATCH'"; echo "STATUS='$STATUS'"; } > "$ENV"
+    echo "BATCH='$BATCH'"; echo "STATUS='$STATUS'"; echo "RETRY='$RETRY'"; } > "$ENV"
 }
 
 [ -z "$DRY" ] || MERGE=""          # a dry run changes nothing
@@ -84,7 +87,7 @@ if [ -n "$MERGE" ]; then
   case $out in
     *"reset to"*) STATE="Verified with match.py and merged; your branch was reset to the merged result." ;;
     *"nothing new"*) STATE="Nothing new to merge from your branch."
-      if [ -n "$ROUND" ]; then echo "$NAME: no match in its last batch; loop stopped"; exit 6; fi ;;
+      if [ -n "$ROUND" ] && [ -z "$RETRY" ]; then echo "$NAME: no match in its last batch; loop stopped"; exit 6; fi ;;
     *merged*) STATE="Verified with match.py and merged; your branch was left as it is (commit any uncommitted work)." ;;
   esac
 fi
@@ -99,7 +102,7 @@ if [ -n "$BATCH" ] && [ -n "$FILE" ] && [ -n "$MERGE" ]; then
     if { [ -e "$WT/build/work/$FILE/$f.cpp" ] || [ -e "$WT/build/work/$FILE/$f.trial.cpp" ] ||
          grep -qx "$FILE $f" "$WT/build/work/.tried" 2>/dev/null; } &&
        grep -qE "INCLUDE_ASM\(\"[^\"]+\", *$f\)" "src/$FILE.cpp" &&
-       ! grep -q "^$FILE $f\b" "$SKIP"; then
+       ! grep -q "^$FILE $f${RETRY:+ $NAME}\b" "$SKIP"; then
       echo "$FILE $f $NAME" >> "$SKIP"; n=$((n + 1))
     fi
   done
@@ -116,14 +119,18 @@ others=$(for e in "$ST"/*.env; do
   [ -e "$e" ] && [ "$e" != "$ENV" ] && sed -n "s/^FILE='\(.*\)'$/\1/p" "$e"; done | paste -sd, -)
 [ -n "$NEWFILE" ] && FILE=$NEWFILE
 funcs=""
-[ -n "$FILE" ] && funcs=$("$PY" tools/backlog.py --file "$FILE" --max "$MAX" --names "$NAMES")
+R=${RETRY:+--retry $NAME}
+# shellcheck disable=SC2086
+[ -n "$FILE" ] && funcs=$("$PY" tools/backlog.py $R --file "$FILE" --max "$MAX" --names "$NAMES")
 if [ -z "$funcs" ]; then
   [ -z "$NEWFILE" ] || { echo "$NEWFILE has no functions of up to $MAX instructions left"; exit 1; }
-  FILE=$("$PY" tools/backlog.py --max "$MAX" --top 200 --exclude "${others:-}${FILE:+,$FILE}" |
+  # shellcheck disable=SC2086
+  FILE=$("$PY" tools/backlog.py $R --max "$MAX" --top 200 --exclude "${others:-}${FILE:+,$FILE}" |
          awk 'NF == 5 && $2 == "functions" {print $5}' |
          { if [ -n "$AVOID" ]; then grep -v "^$AVOID" || true; else cat; fi; } | head -1)
   [ -n "$FILE" ] || { echo "no file left with functions of up to $MAX instructions"; exit 1; }
-  funcs=$("$PY" tools/backlog.py --file "$FILE" --max "$MAX" --names "$NAMES")
+  # shellcheck disable=SC2086
+  funcs=$("$PY" tools/backlog.py $R --file "$FILE" --max "$MAX" --names "$NAMES")
 fi
 
 # 4. The brief: the first one for a fresh session, the follow-up otherwise.

@@ -55,11 +55,20 @@ def insns(file, name):
     return int(m.group(1), 16) // 4 if m else len(INSN.findall(text))
 
 
+def skipped_by():
+    """{(file, name): {workers that gave up on it}}."""
+    out = {}
+    if SKIPPED.exists():
+        for l in SKIPPED.read_text().splitlines():
+            w = l.split()
+            if len(w) >= 2:
+                out.setdefault((w[0], w[1]), set()).update(w[2:3])
+    return out
+
+
 def skipped():
     """{(file, name)} a worker gave up on."""
-    if not SKIPPED.exists():
-        return set()
-    return {tuple(l.split()[:2]) for l in SKIPPED.read_text().splitlines() if len(l.split()) >= 2}
+    return set(skipped_by())
 
 
 def main():
@@ -71,9 +80,12 @@ def main():
     ap.add_argument("--nonmatching", action="store_true", help="also list NON_MATCHING attempts")
     ap.add_argument("--top", type=int, default=25, help="files shown in the summary")
     ap.add_argument("--skipped", action="store_true", help="also list functions a worker skipped")
+    ap.add_argument("--retry", metavar="WORKER",
+                    help="only functions other workers skipped and WORKER has not (a second try)")
     args = ap.parse_args()
     exclude = {e.strip() for e in args.exclude.split(",") if e.strip()}
-    skip = set() if args.skipped else skipped()
+    by = skipped_by()
+    skip = set() if args.skipped else set(by)
 
     files = [args.file] if args.file else sorted(
         str(p.relative_to(ROOT / "src").with_suffix("")).replace("\\", "/") for p in (ROOT / "src").rglob("*.cpp"))
@@ -84,7 +96,10 @@ def main():
             continue
         for name, nm in pending(cpp):
             n = insns(f, name)
-            if (f, name) in skip:
+            if args.retry:
+                if args.retry in by.get((f, name), {args.retry}):
+                    continue
+            elif (f, name) in skip:
                 continue
             if n is not None and n <= args.max and (args.nonmatching or not nm):
                 rows.setdefault(f, []).append((n, name, nm))
