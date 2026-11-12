@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiu_func_001D2D00(int, unsigned int) asm("func_001D2D00");
 extern "C" int func_001D966C(int);
 extern "C" int X_loadModel__9MagSystemii(void *, int, int) asm("loadModel__9MagSystemii");
 extern "C" void func_001CCC30(int, int);
@@ -1632,7 +1633,30 @@ extern "C" void func_001CBDFC(int arg0, int arg1, int arg2)
     M2C_FIELD(((arg1 * 4) + arg0), int *, 0x222E4) = arg2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBE38);
+extern "C" int func_001CBE38(int arg0, unsigned int arg1)
+{
+    void *var_v0;
+
+    if (Xiiu_func_001D046C(arg0, arg1) != 0) {
+        switch ((arg1 >> 28) & 3) {
+        case 1:
+            var_v0 = (void *)Xiiu_func_001D2B8C(arg0, arg1);
+            break;
+        case 2:
+            var_v0 = (void *)Xiiu_func_001D2BA8(arg0, arg1);
+            break;
+        case 0:
+            var_v0 = (void *)Xiiu_func_001D2D00(arg0, arg1);
+            break;
+        default:
+            return -1;
+        }
+        if (var_v0 != 0) {
+            return *(int *)((char *)var_v0 + 0x108);
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBEDC);
 
