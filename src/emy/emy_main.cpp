@@ -447,7 +447,22 @@ extern "C" int func_00163F1C()
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163F44);
+extern "C" int func_00163F44()
+{
+    int p = X_func_001636A4();
+    if (p == 0) {
+        return 0;
+    }
+    int *vt = M2C_FIELD(p, int **, 0x200);
+    char *entry = (char *)vt + 0x18;
+    short adj = M2C_FIELD(entry, short *, 0);
+    int fn = M2C_FIELD(entry, int *, 4);
+    int r = ((int (*)(int))fn)(p + adj);
+    if (r != 0xA) {
+        return 0;
+    }
+    return M2C_FIELD(p, int *, 0x24C);
+}
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163F9C);
 
