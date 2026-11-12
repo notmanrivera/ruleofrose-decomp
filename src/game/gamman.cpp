@@ -526,7 +526,15 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C0148);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C020C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C0254);
+extern "C" int func_001C0254(int self, int theA)
+{
+    int r = *(int *)(self + 0x38);
+
+    if (*(int *)(self + 0x24) != 0 && *(int *)(self + 0x28) != 0 && theA >= 0) {
+        r = *(unsigned char *)(*(int *)(self + 0x5C) + ((theA << 1) + 1 & 0xFF));
+    }
+    return r;
+}
 
 extern "C" int func_001C0298(int arg0, int arg1)
 {
