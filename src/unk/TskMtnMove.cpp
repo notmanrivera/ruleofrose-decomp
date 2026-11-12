@@ -1,4 +1,13 @@
 #include "include_asm.h"
+struct Ent4C1C {
+    char name[0x1C];
+    int id;
+    char pad[0x38 - 0x20];
+};
+struct Obj4C1C {
+    char pad[0x1544];
+    Ent4C1C *list;
+};
 extern "C" int X4E20_func_001E4D04(int, int) asm("func_001E4D04");
 extern "C" int func_001E50C8(int, int, int, int, float, int, int, int);
 struct Ent4970 {
@@ -151,7 +160,21 @@ extern "C" int func_001E4AB8(void *arg0, const char *arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4B48);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4C1C);
+extern "C" int func_001E4C1C(Obj4C1C *arg0, int arg1, Ent4C1C **arg2)
+{
+    int idx = (arg1 % 100000) / 2;
+    for (int i = 0; i < 0x384; i++, idx++) {
+        if (arg0->list[idx].id == -1 || idx >= 0x385) {
+            idx = 0;
+        }
+        if (arg0->list[idx].id == arg1) {
+            *arg2 = &arg0->list[idx];
+            return 1;
+        }
+    }
+    *arg2 = 0;
+    return 0;
+}
 
 extern "C" int func_001E4CBC()
 {
