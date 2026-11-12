@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_001D811C(int, int, int, int) asm("func_001D811C");
 extern "C" int Xiiif_func_001333C0(int, int, float) asm("func_001333C0");
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
 extern "C" int Xiiii_func_001D5BC8(int, int, int) asm("func_001D5BC8");
@@ -237,7 +238,15 @@ extern "C" void func_001D8EA8(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8F04);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8FEC);
+extern "C" void func_001D8FEC(int arg0, int arg1)
+{
+    int buf[4];
+
+    Xiii_func_001D8D28(arg0, Xiii_func_001D811C((int)&D_007812C0, arg1, (int)buf, 0));
+    if (M2C_FIELD(arg0, int *, 0x114) != 0) {
+        Xiii_func_001D89C4(arg0, (int)buf);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D9044);
 
