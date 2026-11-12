@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" int Xii_func_00187464(int) asm("func_00187464");
+extern "C" int Xiiu_func_001348B0(int, unsigned int) asm("func_001348B0");
+extern "C" int Xiiu_func_00135594(int, unsigned int) asm("func_00135594");
+extern "C" int Xiiui_func_001351B0(int, unsigned int, int) asm("func_001351B0");
 extern int D_002FE590;
 extern "C" int Xi_rand() asm("rand");
 struct MagGameFlags2 {
@@ -1198,7 +1202,17 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F4A24);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMsgMan__vfunc_06);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMsgMan__vfunc_05);
+extern "C" void TskMsgMan__vfunc_05(int arg0)
+{
+    char *base = (char *)&D_006E9840;
+
+    Xii_func_00187464(arg0 + 0x224);
+    char *scene = base + 0x12540;
+    Xiiui_func_001351B0((int) scene, M2C_FIELD(arg0, unsigned int *, 0x214), 1);
+    Xiiu_func_00135594((int) scene, M2C_FIELD(arg0, unsigned int *, 0x214));
+    Xiiu_func_001348B0((int) scene, M2C_FIELD(arg0, unsigned int *, 0x214));
+    M2C_FIELD(arg0, int *, 0x204) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMsgMan__vfunc_02);
 
