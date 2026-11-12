@@ -581,6 +581,9 @@ def compare(name, source=None, extra="", diff=False, sync=True):
             if lines:
                 status.append(f"{len(lines)} relocs differ" if len(lines) > 1 else "1 reloc differs")
             status = ", ".join(status) or ("MATCH" if size_ok else "0 words differ")
+            if status == "MATCH" and len(mine) != len(want):
+                # size_ok accepted it: the rest is the linker's alignment padding.
+                status += f" (0x{abs(len(want) - len(mine)):X} bytes of padding apart; build/ok decides)"
             emit(f"  {sec_name}: 0x{len(mine):X} bytes vs 0x{len(want):X}, {status}"
                   f"{unchecked if sec_name in moved else ''}")
             if lines and (diff or not bad):
