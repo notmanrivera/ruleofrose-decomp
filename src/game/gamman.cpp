@@ -1,4 +1,20 @@
 #include "include_asm.h"
+struct Struct1C46FC {
+    int x;
+    int y;
+    int w;
+    int h;
+    int unk10;
+    int unk14;
+    int unk18;
+};
+extern "C" int func_0017EA44(void *, int);
+extern "C" int func_001DB8E8(char *, int, int);
+extern "C" int func_00279C98(void *, const char *, ...);
+extern "C" void X_func_001CF7D0(char *, const void *) asm("func_001CF7D0");
+extern "C" void X_func_001CF854(char *, void *, int, int) asm("func_001CF854");
+extern int D_00298EE0;
+extern int D_006E9640;
 struct Header1F84 {
     int data[8];
 };
@@ -1123,7 +1139,22 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FB8B8);
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FB8C0);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C46FC);
+extern "C" void func_001C46FC(char *arg0)
+{
+    if (func_0017EA44(&D_00298EE0, *(int *)(arg0 + 0x21F7C)) != 0) {
+        func_00279C98(&D_006E9640, "%s #f060 \n", func_001DB8E8(arg0 + 0x18C00, 2, -1));
+        Struct1C46FC param;
+        param.x = 0x30;
+        param.y = 0xE0;
+        param.w = 0xFFFF;
+        param.h = 0x100;
+        param.unk10 = 0x20;
+        param.unk14 = 0;
+        param.unk18 = 0;
+        X_func_001CF7D0(arg0, &param);
+        X_func_001CF854(arg0, &D_006E9640, 0, 0xB4);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C47C4);
 
