@@ -138,7 +138,25 @@ INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017FA90);
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017FAC4);
 
-INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017FB00);
+extern "C" void func_0017FB00(int arg0, int arg1)
+{
+    *(int *)(arg1 + 0x00) = 1;
+    *(int *)(arg1 + 0x0C) = 0;
+    *(int *)(arg1 + 0x10) = 5;
+    *(int *)(arg1 + 0x14) = -1;
+    *(int *)(arg1 + 0x18) = -1;
+    *(int *)(arg1 + 0x1C) = -1;
+    *(int *)(arg1 + 0x20) = 0;
+    *(int *)(arg1 + 0x24) = -1;
+    *(int *)(arg1 + 0x28) = 1;
+    *(int *)(arg1 + 0x2C) = 0x80;
+    *(int *)(arg1 + 0x30) = 0x80;
+    *(int *)(arg1 + 0x34) = 0;
+    *(int *)(arg1 + 0x38) = 0;
+    *(float *)(arg1 + 0x3C) = 1.0f;
+    *(int *)(arg1 + 0x40) = 0;
+    *(char *)(arg1 + 0x44) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017FB5C);
 
