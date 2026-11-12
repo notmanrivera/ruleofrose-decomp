@@ -195,7 +195,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001446B8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144820);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144924);
+extern "C" int func_00144924(int arg0)
+{
+    int off = 0x12540;
+
+    X_func_00131184((int)&D_006E9840 + off, M2C_FIELD(arg0, int *, 4), 7, 1);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144960);
 
