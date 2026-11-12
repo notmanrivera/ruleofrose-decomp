@@ -1,4 +1,16 @@
 #include "include_asm.h"
+struct Obj6D54 {
+    void *unk0;
+    int unk4;
+    float unk8;
+    void *unkC;
+};
+extern "C" void func_00237340(void *);
+extern "C" void func_00237830(void *, void *, float);
+extern "C" void func_002378B0(void *, void *, int);
+extern "C" void func_00237408(void *, void *, void *);
+extern "C" void func_002375D8(void *, void *);
+extern "C" float func_00237580(void *, void *);
 struct Ent4A0C {
     char name[0x1C];
     int id;
@@ -336,7 +348,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E6734);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E6CAC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E6D54);
+extern "C" float func_001E6D54(Obj6D54 *arg0)
+{
+    char mat[0x40];
+    char vec[0x10];
+
+    func_00237340(mat);
+    func_00237830(mat, mat, arg0->unk8);
+    func_002378B0(mat, mat, arg0->unk4);
+    func_00237408(vec, arg0->unkC, arg0->unk0);
+    func_002375D8(vec, vec);
+    return ((func_00237580(mat + 0x20, vec) + 1.0f) * 0.5f * 0.7f) + 0.3f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E6E00);
 
