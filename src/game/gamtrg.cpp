@@ -125,7 +125,11 @@ extern "C" void func_001D8A8C(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8ADC);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8B5C);
+extern "C" int func_001D8B5C(int arg0, int arg1)
+{
+    return Xiiiii_func_001D8064((int)&D_007812C0, arg1, M2C_FIELD(arg0, int *, 0x114),
+                                (((unsigned int) M2C_FIELD(arg0, unsigned int *, 0x100) >> 0x17) & 0x1F) == 2) != 0;
+}
 
 extern "C" void func_001D8B9C(int arg0, int arg1)
 {
