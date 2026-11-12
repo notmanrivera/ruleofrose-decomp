@@ -16,14 +16,14 @@
 #   --tries T             tries before skipping a function (5)
 #   --new                 fresh agent session (OpenCode /new) and the first brief
 #   --no-merge            don't run merge_worker.sh first
-#   --dry-run             print the brief instead of sending it
+#   --dry-run             print the brief instead of sending it (no merge)
 #   --watch               then run watch_agent.sh; exits with its code
 #
 # State lives in build/workers/ (not in git): <name>.env (handle, marker,
 # file, last batch, last status) and skipped.txt, the functions a worker gave
-# up on, which backlog.py leaves out. After a merge, every function of the
-# last batch still in asm counts as skipped, but only when the worker had
-# stopped normally (STATUS: idle), not on quota or a content filter.
+# up on ("<file> <function> <worker>"), which backlog.py leaves out. After a
+# merge, a function of the last batch counts as skipped when the worker tried
+# it (tools/work.py's scratch file is in its build/work/) and it is still asm.
 # The briefs are the text blocks of docs/WORKER_BRIEF.md.
 set -eu
 MAIN="$(cd "$(git -C "$(dirname "$0")" rev-parse --path-format=absolute --git-common-dir)/.." && pwd)"
@@ -59,18 +59,36 @@ save() {
     echo "BATCH='$BATCH'"; echo "STATUS='$STATUS'"; } > "$ENV"
 }
 
-# 1. Merge. A failure (a mismatch, a broken build) stops here.
-if [ -n "$MERGE" ]; then
-  sh tools/merge_worker.sh "$NAME"
+[ -z "$DRY" ] || MERGE=""          # a dry run changes nothing
+WT="$(dirname "$MAIN")/ror-wt-$NAME"
+
+# A worker still busy gets nothing new (its TUI would queue the text).
+if [ -z "$DRY" ] && orca terminal read --terminal "$HANDLE" --screen --json 2>/dev/null | grep -qE "$BUSY"; then
+  echo "$NAME is still working; nothing sent"; exit 1
 fi
 
-# 2. What the last batch left in asm was skipped (only after a normal stop).
-if [ -n "$BATCH" ] && [ -n "$FILE" ] && [ "$STATUS" = idle ] && [ -n "$MERGE" ]; then
+# 1. Merge. A failure (a mismatch, a broken build) stops here.
+STATE="Your last commits were not merged yet; keep your branch as it is."
+if [ -n "$MERGE" ]; then
+  out=$(sh tools/merge_worker.sh "$NAME") || { echo "$out"; exit 1; }
+  echo "$out"
+  case $out in
+    *"reset to"*) STATE="Verified with match.py and merged; your branch was reset to the merged result." ;;
+    *"nothing new"*) STATE="Nothing new to merge from your branch." ;;
+    *merged*) STATE="Verified with match.py and merged; your branch was left as it is (commit any uncommitted work)." ;;
+  esac
+fi
+
+# 2. Skipped = tried by the worker (tools/work.py left its scratch file in
+# the worktree's build/work/) and still in asm here. Untried functions of
+# the batch are not skipped; they simply come back in a later batch.
+if [ -n "$BATCH" ] && [ -n "$FILE" ] && [ -n "$MERGE" ]; then
   n=0
   for f in $(echo "$BATCH" | tr ',' ' '); do
-    if grep -qE "INCLUDE_ASM\(\"[^\"]+\", *$f\)" "src/$FILE.cpp" &&
-       ! grep -qx "$FILE $f" "$SKIP"; then
-      echo "$FILE $f" >> "$SKIP"; n=$((n + 1))
+    if { [ -e "$WT/build/work/$FILE/$f.cpp" ] || [ -e "$WT/build/work/$FILE/$f.trial.cpp" ]; } &&
+       grep -qE "INCLUDE_ASM\(\"[^\"]+\", *$f\)" "src/$FILE.cpp" &&
+       ! grep -q "^$FILE $f\b" "$SKIP"; then
+      echo "$FILE $f $NAME" >> "$SKIP"; n=$((n + 1))
     fi
   done
   [ $n -eq 0 ] || echo "$NAME skipped $n of its last batch (now in $SKIP)"
@@ -99,7 +117,7 @@ brief() {   # $1: section heading in WORKER_BRIEF.md
 }
 if [ -n "$NEW" ]; then text=$(brief "## First brief (fresh session)"); else text=$(brief "## Follow-up brief (same session)"); fi
 [ -n "$text" ] || { echo "no brief text found in docs/WORKER_BRIEF.md"; exit 1; }
-text=$(printf '%s' "$text" | sed -e "s|<NAME>|$NAME|g" -e "s|<FILE>|$FILE|g" -e "s|<FUNCS>|$funcs|g" -e "s|<TRIES>|$TRIES|g")
+text=$(printf '%s' "$text" | sed -e "s|<STATE>|$STATE|g" -e "s|<NAME>|$NAME|g" -e "s|<FILE>|$FILE|g" -e "s|<FUNCS>|$funcs|g" -e "s|<TRIES>|$TRIES|g")
 
 echo "$NAME -> $FILE: $funcs"
 if [ -n "$DRY" ]; then echo "$text"; exit 0; fi

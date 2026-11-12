@@ -23,6 +23,13 @@ PY="$MAIN/tools/.venv/Scripts/python.exe"
 [ -x "$PY" ] || PY="$MAIN/tools/.venv/bin/python"
 [ -d "$WT" ] || { echo "no worktree $WT"; exit 1; }
 cd "$MAIN"
+if [ "$CHECK" != "--check" ]; then
+  # One merge+build at a time: two at once share build/, and a failing one's
+  # reset would drop the other's cherry-picks.
+  L="$MAIN/build/workers/merge.lock"; mkdir -p "$MAIN/build/workers"
+  until mkdir "$L" 2>/dev/null; do sleep 10; done
+  trap 'rmdir "$L"' EXIT INT TERM
+fi
 BRANCH="$(git branch --show-current)"
 [ -z "$(git status --porcelain --untracked-files=no)" ] || { echo "$MAIN has uncommitted changes"; exit 1; }
 

@@ -109,7 +109,8 @@ def check(name, fn, path, quiet=False):
     print("\n".join(mine[:1] if good or quiet else mine))
     if good and not ok:
         print("the function matches, but not the whole object:")
-        print("\n".join(ln for ln in report if ln.startswith("  .") or "NOT MATCHING" in ln))
+        print("\n".join(ln for ln in report if ln.startswith("  .") or "NOT MATCHING" in ln
+                        or (re.match(r"^  0x", ln) and not re.search(r"(MATCH|asm)$", ln))))
     return good, ok
 
 
@@ -132,7 +133,10 @@ def main():
             sys.exit("not written: it does not match")
         (ROOT / f"src/{name}.cpp").write_text(assemble(name, a.function, path), encoding="utf8", newline="\n")
         path.rename(path.with_suffix(".done.cpp"))
-        print(f"src/{name}.cpp updated. Before committing: tools/dock python3 tools/configure.py && tools/dock ninja")
+        if (ROOT / ".git").is_file():   # a worker's worktree: the coordinator builds
+            print(f'src/{name}.cpp updated. Commit it: git commit -am "{name}: {a.function}"')
+        else:
+            print(f"src/{name}.cpp updated. Before committing: tools/dock ninja (build/ok)")
     while a.watch:
         seen = path.stat().st_mtime
         while path.stat().st_mtime == seen:

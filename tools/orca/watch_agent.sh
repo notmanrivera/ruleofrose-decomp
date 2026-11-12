@@ -11,19 +11,23 @@
 # `orca terminal list --json`.
 #
 # The first output line says why it stopped, and so does the exit code:
-#   STATUS: idle (0)   STATUS: quota (3)   STATUS: filter (4)
+#   STATUS: idle (0)   STATUS: quota (3)   STATUS: filter (4)   STATUS: unknown (5)
 # "quota" covers quota and rate-limit messages, "filter" a refusal by the
 # model's content filter: don't send that worker more work until it's fixed.
 H=$1; BUSY=$2
 [ -n "$H" ] && [ -n "$BUSY" ] || { sed -n '6p' "$0" | sed 's/^# *//'; exit 2; }
+MAIN="$(cd "$(git -C "$(dirname "$0")" rev-parse --path-format=absolute --git-common-dir)/.." && pwd)"
+PY="$MAIN/tools/.venv/Scripts/python.exe"; [ -x "$PY" ] || PY="$MAIN/tools/.venv/bin/python"
 QUOTA='quota (reached|exceeded)|[Rr]ate.?limit|resets in [0-9]+h|(HTTP|status|error) 429|[Ii]nsufficient (balance|credits)|out of credits'
 FILTER='[Cc]ontent (filter|policy)|blocked by (safety|the filter)|SAFETY|[Rr]esponse was blocked'
 sleep 60
 while :; do
   orca terminal wait --terminal "$H" --for tui-idle --timeout-ms 1800000 --json >/dev/null 2>&1
   sleep 30
+  # "unknown" (a stale handle, Orca closed) is never read as a normal stop.
   scr=$(orca terminal read --terminal "$H" --screen --json 2>/dev/null |
-        python -c "import sys,json; print('\n'.join(json.load(sys.stdin)['result']['terminal']['tail']))")
+        "$PY" -c "import sys,json; print('\n'.join(json.load(sys.stdin)['result']['terminal']['tail']))") &&
+    [ -n "$scr" ] || { echo "STATUS: unknown (could not read terminal $H)"; exit 5; }
   echo "$scr" | grep -qE "$BUSY" && continue
   last=$(echo "$scr" | grep -v '^\s*$' | tail -30 | cut -c1-170)
   # Only the last lines count: an old message higher up is not the reason.
