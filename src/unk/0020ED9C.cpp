@@ -364,7 +364,19 @@ extern "C" void func_002106F4(unsigned int arg0, int arg1, unsigned int arg2)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210748);
+extern "C" void func_00210748(unsigned int arg0, unsigned int arg1, int arg2)
+{
+    int v = ((short) (arg2 * 4) + ((*(int *)&D_007B4780) - (*(int *)&D_007B47D0)) + 0x8164) | 0x80000000;
+
+    if (((int *)&D_007B4700)[arg0] != ((int *)&D_007B4700)[arg1]) {
+        (*(int *)&D_007B47C0) = v;
+    }
+}
+
+// `la $r, K($r)` above is another macro: it leaves this assembler's $at
+// bookkeeping dirty and a later `lui $r, %hi(sym)` (func_002106F4) comes out
+// as a load of offset 0; INCLUDE_ASM's `.set noat`/`.set at` resets it.
+asm(".set noat\n.set at\n");
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002107AC);
 
