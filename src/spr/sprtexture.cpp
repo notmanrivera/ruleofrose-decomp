@@ -210,7 +210,14 @@ extern "C" int func_001910D0(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", S2dBg__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", S2dBg__vfunc_06);
+extern "C" void S2dBg__vfunc_06(char *arg0, int arg1)
+{
+    if (arg1) {
+        arg0 += 0x48;
+        M2C_FIELD(arg0, int *, 0x4D0) = arg1;
+        X_func_0018BD94(arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00191124);
 
