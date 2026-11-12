@@ -59,7 +59,20 @@ INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C448);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C4D8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C54C);
+extern "C" int func_0018C54C(int arg0, char *arg1, int arg2)
+{
+    int temp_a0;
+
+    if (arg2 >= M2C_FIELD(arg1, int *, 0x134)) {
+        return 1;
+    }
+    M2C_FIELD(arg1, int *, 0x110) = arg2;
+    M2C_FIELD(arg1, int *, 0x114) = 0;
+    temp_a0 = M2C_FIELD(arg1, int *, 0x138) + arg2 * 0xC;
+    M2C_FIELD(arg1, int *, 0xF4) = *(unsigned short *)M2C_FIELD(temp_a0, int *, 8);
+    M2C_FIELD(arg1, int *, 0x118) = *(int *)M2C_FIELD(temp_a0, int *, 8) & 0xFF0000;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C5A8);
 
