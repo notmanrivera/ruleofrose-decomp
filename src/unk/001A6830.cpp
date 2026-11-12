@@ -1820,7 +1820,19 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B0784);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B0908);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B0948);
+extern "C" int func_001B0948(int arg0, int arg1)
+{
+    unsigned short temp_v1;
+
+    if (arg1 == 0xD) {
+        return M2C_FIELD(arg0, int *, 0x242C) == (*(unsigned short *)&D_007A34CE);
+    }
+    temp_v1 = M2C_FIELD(M2C_FIELD(((arg1 * 4) + arg0), int *, 0x2434), unsigned short *, 8);
+    if (temp_v1 == 0xA00) {
+        return 0;
+    }
+    return temp_v1 == (*(unsigned short *)&D_007A34CE);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B099C);
 
