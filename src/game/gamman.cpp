@@ -1535,7 +1535,14 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CF518);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CF6BC);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CF7D0);
+struct Struct32 {
+    char data[32];
+} __attribute__((packed));
+
+extern "C" void func_001CF7D0(char *arg0, const Struct32 *arg1)
+{
+    *(Struct32 *)(arg0 + 0x22280) = *arg1;
+}
 
 extern "C" void func_001CF854(int arg0, int arg1, int arg2, int arg3)
 {
