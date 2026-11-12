@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
 extern "C" void X_func_001BE564(...) asm("func_001BE564");
 extern "C" int Xiiiii_func_001BE444(int, int, int, int) asm("func_001BE444");
 extern "C" int Xiii_func_001BE3C4(int, int) asm("func_001BE3C4");
@@ -390,7 +391,12 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BEA18);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BEB70);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BEBC4);
+extern "C" void func_001BEBC4(void *self, int theFlags)
+{
+    if (theFlags & 1) {
+        return X___builtin_delete(self);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BEBEC);
 
