@@ -93,6 +93,8 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+extern "C" int func_001E5250(void *, int, int, int, int, int);
+static inline void *getGamSnd(void *g) { return (char *)g + 0x18E00; }
 extern "C" int func_00279C98(char *, const char *, ...);
 extern const char D_002F7200[];
 extern int *D_007B205C;
@@ -1679,7 +1681,21 @@ extern "C" int func_00186928(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00186960);
+extern "C" int func_00186960(MsgWin *self)
+{
+    int v;
+    int n = func_00184578(self, self->m_str + self->m_pos, &v);
+    self->m_pos += n;
+    if (n <= 0) {
+        return 0;
+    }
+    if (self->m[0x28 / 4] != -1) {
+        func_001801C8(&D_007B2580, self->m[0x28 / 4]);
+        self->m[0x28 / 4] = -1;
+    }
+    self->m[0x28 / 4] = func_001E5250(getGamSnd(&D_007812C0), v, -1, 0, 0, 0);
+    return 0;
+}
 
 extern "C" int func_00186A04(MsgWin *self, const char *theStr, int *theLen)
 {
