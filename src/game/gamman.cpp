@@ -1259,7 +1259,52 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CAF78);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CB01C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CB1C0);
+template <class T> class GamListLocal2 {
+public:
+    struct Node {
+        Node *m_prev;       // +0x00
+        Node *m_next;       // +0x04
+        T m_data;           // +0x08
+    };
+
+    class iterator {
+    public:
+        Node *m_node;
+
+        iterator() : m_node(0) {}
+        iterator(Node *theNode) : m_node(theNode) {}
+        iterator(const iterator &theIt) : m_node(theIt.m_node) {}
+        T &operator*() const { return m_node->m_data; }
+        iterator &operator++()
+        {
+            m_node = m_node->m_next;
+            return *this;
+        }
+        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; }
+    };
+
+    unsigned char m_unk00[0x10];
+    Node m_head;            // +0x10
+
+    iterator begin() { return iterator(m_head.m_next); }
+    iterator end() { return iterator(&m_head); }
+};
+
+extern "C" int func_001CB1C0(char *arg0)
+{
+    GamListLocal2<int>::iterator it;
+    GamListLocal2<int>::iterator last;
+    GamListLocal2<int> *list = (GamListLocal2<int> *)(arg0 + 0x1D24C);
+    it = list->begin();
+    last = list->end();
+    while (it != last) {
+        if (*it & 1) {
+            *it &= ~1;
+        }
+        ++it;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CB24C);
 
