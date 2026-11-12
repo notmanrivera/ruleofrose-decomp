@@ -1,4 +1,13 @@
 #include "include_asm.h"
+struct Ent4970 {
+    char name[0x1C];
+    int unk1C;
+    char pad[0x38 - 0x20];
+};
+struct Obj4970 {
+    char pad[0x1540];
+    Ent4970 *list;
+};
 struct Ent4D18 {
     char pad0[0xC];
     unsigned int unk0C;
@@ -102,7 +111,23 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E484C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4908);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4970);
+extern "C" int func_001E4970(Obj4970 *arg0, const char *arg1, Ent4970 **arg2)
+{
+    Ent4970 *p = arg0->list;
+    if (p == 0) {
+        return 0;
+    }
+    int i = 0;
+    while (i++ < 0x400 && p->unk1C != 0) {
+        if (strcmp(arg1, p->name) == 0) {
+            *arg2 = p;
+            return 1;
+        }
+        p++;
+    }
+    *arg2 = 0;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4A0C);
 
