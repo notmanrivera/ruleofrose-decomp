@@ -97,3 +97,12 @@ Pendiente que salió:
   `maglifetest.cpp` contiene (`MagLifeNoise__vfunc_06`).
 - El constructor `func_0011A888` puede escribirse como constructor real de
   `MagLifeControlChara` (y el de `MagLifeBillboard`, inline, lo llama).
+- La causa del fallo de as 2.10-ee, según OpenCode (unk/0020ED9C): tras
+  secuencias de macros `li` / `dsll $r,$r,32` / `la $r,K($r)` el ensamblador
+  deja mal su estado de `$at`, y un `lw/sw/s.s $r,sym($reg)` posterior pierde
+  su `lui $at` (sale `lw $r,0($r)` con un R_MIPS_HI16). Los `.set noat` /
+  `.set at` que rodean cada INCLUDE_ASM lo reinician; por eso aparecía y
+  desaparecía al convertir funciones. El arreglo de `include_asm.h` (crear
+  `.rodata` al principio) quizá solo lo esquiva en maglifepc: si vuelve a
+  salir, mejor un `RESET_AT_STATE` (ver `src/unk/0020ED9C.cpp`) en
+  `include_asm.h` y comprobarlo con la compilación completa.
