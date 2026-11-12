@@ -1,4 +1,20 @@
 #include "include_asm.h"
+struct Node70DC {
+    int unk0;
+    Node70DC *next;
+};
+struct Sub70DC {
+    int unk0;
+    ~Sub70DC() asm("func_00203DA8");
+};
+struct Obj70DC {
+    Node70DC *head0;
+    Node70DC *head4;
+    char pad8[0x38];
+    Sub70DC sub40;
+    ~Obj70DC() asm("func_001E70DC");
+};
+extern "C" void X70DC_func_001E7C7C(Obj70DC *, Node70DC *) asm("func_001E7C7C");
 struct Ent4C1C {
     char name[0x1C];
     int id;
@@ -287,7 +303,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E6E00);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7094);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E70DC);
+Obj70DC::~Obj70DC()
+{
+    Node70DC *p = head4;
+    while (p != 0) {
+        Node70DC *cur = p;
+        p = p->next;
+        X70DC_func_001E7C7C(this, cur);
+    }
+    p = head0;
+    while (p != 0) {
+        Node70DC *cur = p;
+        p = p->next;
+        X70DC_func_001E7C7C(this, cur);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7184);
 
