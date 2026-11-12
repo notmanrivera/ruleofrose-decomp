@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_0018F734(int, int) asm("func_0018F734");
 struct D007812C0Type {
     char pad[0x22214];
     int m_22214;
@@ -146,7 +147,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018DAFC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018DF20);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018DFDC);
+extern "C" int func_0018DFDC(int arg0, int arg1)
+{
+    char *p = (char *)M2C_FIELD(arg0, int *, 0x4AC);
+    int r;
+
+    p += arg1 * 0x154;
+    r = Xiii_func_0018F734(arg0 + 8, M2C_FIELD(p, int *, 0x10C));
+    if (r == 0) {
+        return 0;
+    }
+    return M2C_FIELD(M2C_FIELD(r, int *, 4), int *, 0x50);
+}
 
 extern "C" int func_0018E028(int arg0, int arg1, int arg2, int arg3, int arg4)
 {
