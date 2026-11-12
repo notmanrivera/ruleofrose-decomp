@@ -1,4 +1,7 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern int _vt$13EventTestTask;
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00217CB4(...) asm("func_00217CB4");
 extern "C" int X_func_00217CF0(...) asm("func_00217CF0");
@@ -10,7 +13,13 @@ extern int D_006E9840;
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00216828);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", EventTestTask__vfunc_06);
+extern "C" void EventTestTask__vfunc_06(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$13EventTestTask;
+    if (arg1 & 1) {
+        return X___builtin_delete((void *)arg0);
+    }
+}
 
 extern "C" void EventTestTask__vfunc_03(void) {
 }
