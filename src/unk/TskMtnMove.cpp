@@ -1,4 +1,13 @@
 #include "include_asm.h"
+struct Ent4A0C {
+    char name[0x1C];
+    int id;
+    char pad[0x38 - 0x20];
+};
+struct Obj4A0C {
+    char pad[0x1540];
+    Ent4A0C *list;
+};
 struct VObj77B4 {
     virtual int vfunc1();
 };
@@ -169,7 +178,24 @@ extern "C" int func_001E4970(Obj4970 *arg0, const char *arg1, Ent4970 **arg2)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4A0C);
+extern "C" int func_001E4A0C(Obj4A0C *arg0, const char *arg1)
+{
+    Ent4A0C *p = arg0->list;
+    if (*arg1 == '.' || *arg1 == '*') {
+        arg1++;
+    }
+    if (p == 0) {
+        return 0;
+    }
+    int i = 0;
+    while (i++ < 0x400 && p->id != -1) {
+        if (strcmp(arg1, p->name) == 0) {
+            return p->id;
+        }
+        p++;
+    }
+    return 0;
+}
 
 extern "C" int func_001E4AB8(void *arg0, const char *arg1)
 {
