@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiii_func_001DA740(int, int, int) asm("func_001DA740");
 extern "C" int Xi_func_001442D4() asm("func_001442D4");
 extern "C" int Xii_func_00118FEC__9MagSystem(int) asm("func_00118FEC__9MagSystem");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -174,7 +175,13 @@ extern "C" void func_00166364(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166378);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_0016640C);
+extern "C" int func_0016640C(int arg0)
+{
+    int r;
+
+    Xiiii_func_001DA740(M2C_FIELD(arg0, int *, 0x20), 0x1B, (int)&r);
+    return r;
+}
 
 extern "C" void func_00166434(int arg0)
 {
