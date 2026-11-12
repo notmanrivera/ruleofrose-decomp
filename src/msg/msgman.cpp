@@ -93,6 +93,15 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+struct RingBuf {
+    int m_wpos;
+    int m_rpos;
+    int m_used;
+    int m_unk0C;
+    int m_cap;
+    char m_pad[0x2C];
+    char m_buf[1];
+};
 extern "C" int func_001E5250(void *, int, int, int, int, int);
 static inline void *getGamSnd(void *g) { return (char *)g + 0x18E00; }
 extern "C" int func_00279C98(char *, const char *, ...);
@@ -178,7 +187,23 @@ extern "C" int func_001831CC(MsgQueue *self)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001831F8);
+extern "C" void func_001831F8(RingBuf *self, const char *src, int len)
+{
+    while (len > 0) {
+        int chunk = self->m_cap - self->m_wpos;
+        if (len < chunk) {
+            chunk = len;
+        }
+        if (chunk < 0) {
+            chunk = 0;
+        }
+        len -= chunk;
+        memcpy(self->m_buf + self->m_wpos, src, chunk);
+        src += chunk;
+        self->m_wpos = (self->m_wpos + chunk) % self->m_cap;
+        self->m_used += chunk;
+    }
+}
 
 extern "C" char *func_001832A4(MsgQueue *self)
 {
