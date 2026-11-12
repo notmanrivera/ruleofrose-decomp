@@ -123,12 +123,9 @@ del brief (<STATE>), work.py. Falta, de más a menos útil:
   mandarle el lote, y compilar después (con el candado); ante un fallo,
   parar el bucle en vez de deshacer. Probar ninja con `docker exec` en el
   contenedor ror-match (ahorraría la copia del mirror, ~54 s).
-- `next_batch.sh --loop`: repetir hasta un fallo, un STATUS no idle o un
-  lote sin aciertos; aplicar --new solo cuando salte 8 o más; resumen corto
-  en vez de 30 líneas de pantalla.
-- Funciones gemelas: 44 de las pendientes tienen la misma secuencia de
-  instrucciones que una ya hecha. Ordenar los lotes por forma y que work.py
-  añada al borrador el C++ de la gemela ya emparejada.
+- Hecho: `next_batch.sh --loop` (a196d8c) y `tools/twins.py` (fe66394:
+  46 pendientes con gemela; work.py pone su C++ en el borrador y backlog.py
+  las da primero). Falta el resumen corto en vez de 30 líneas de pantalla.
 - skipped.txt ya guarda quién la saltó: añadir `--retry-from-others` para
   que el otro modelo la intente una vez antes de darla por perdida.
 - work.py: la línea de los errores de compilación es la del .trial.cpp, no
