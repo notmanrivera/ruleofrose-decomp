@@ -144,7 +144,18 @@ extern "C" void func_0016AFCC(int arg0)
     M2C_FIELD(arg0, int *, 0x20) = (int)&_vt$6EffBg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", _$_6EffBg1);
+extern "C" void X_dtor_11EffGeneric1(int, int) asm("_$_11EffGeneric1");
+extern "C" void dtor_6EffBg1(int, int) asm("_$_6EffBg1");
+
+extern "C" void dtor_6EffBg1(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x24) = 0;
+    M2C_FIELD(arg0, int *, 0x20) = (int)&_vt$6EffBg1;
+    X_dtor_11EffGeneric1(arg0, 0);
+    if (arg1 & 1) {
+        return X___builtin_delete((void *)arg0);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/Eff0", D_002F1F38);
 
