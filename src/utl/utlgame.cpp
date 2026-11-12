@@ -11,6 +11,7 @@ extern const char D_002E57A8[];
 #define ASSERT_FILE D_002E5728
 extern const char D_002E5728[];
 #include "game/gamman.h"
+extern "C" void func_001C6CCC(int arg0, int arg1, void *theOut);
 extern "C" void func_001C8E1C(int arg0, int arg1);
 extern "C" void func_001D046C(void *theSnd, int arg0);
 struct GameFlags {
@@ -319,7 +320,13 @@ extern "C" int func_0010346C()
 
 INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103484);
 
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_001034B8);
+extern "C" int func_001034B8()
+{
+    int v;
+
+    func_001C6CCC((int)&D_007812C0, 5, &v);
+    return v;
+}
 
 INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_001034E4);
 
