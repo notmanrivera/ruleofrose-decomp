@@ -67,7 +67,40 @@ extern "C" int func_0011C520(void *self)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc2", func_0011C52C);
+extern "C" void func_001DA228(void *theObj, int theKind, int *theOut);
+extern "C" void func_001D890C(void *theObj, void *thePos);
+static inline GamList<void *> *achrList(GamMan *g = &D_007812C0)
+{
+    int o = 0x1D340;
+    return (GamList<void *> *)((char *)g + o);
+}
+
+extern "C" int func_0011C52C(void *self, char *thePos, int theMax)
+{
+    int count = 0;
+    GamList<void *>::iterator it;
+    GamList<void *>::iterator last;
+    GamList<void *> *list = achrList();
+    int secta = func_0011C4F0(self);
+    last = list->end();
+    it = list->begin();
+    for (; it != last; it.m_node = it.m_node->m_next) {
+        void *obj = *it;
+        if (*(int *)((char *)obj + 0x120) & 0x10000) {
+            continue;
+        }
+        int obj_secta;
+        func_001DA228(obj, 0, &obj_secta);
+        if (secta == obj_secta) {
+            func_001D890C(*it, thePos + count * 0x10);
+            count++;
+            if (count >= theMax) {
+                break;
+            }
+        }
+    }
+    return count;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc2", D_002EA1E8);
 
