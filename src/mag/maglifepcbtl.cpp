@@ -1,5 +1,9 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
+extern "C" float Xf_vecDistXZ__FPCfT0(...) asm("vecDistXZ__FPCfT0");
+extern "C" int X_func_0011D1B0(...) asm("func_0011D1B0");
+extern "C" float func_0012BC20(int arg0, int arg1);
+extern "C" int Xiiif_func_0011D3D0(int, int, float) asm("func_0011D3D0");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float X_func_0011CE5C(...) asm("func_0011CE5C");
 extern "C" int X_func_0012CAA4(...) asm("func_0012CAA4");
@@ -307,6 +311,15 @@ extern "C" int func_0012CA28(int arg0)
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012CA28);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012CAA4);
+extern "C" int func_0012CAA4(int arg0, int arg1, int arg2)
+{
+    DogVector vec;
+    func_0012BC20(arg0, (int)&vec);
+    float dist = Xf_vecDistXZ__FPCfT0(&vec, arg1);
+    if (X_func_0011D1B0(arg0, arg2) == 0 && dist <= 80.0f) {
+        return 4;
+    }
+    return Xiiif_func_0011D3D0(arg0, arg2, dist);
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012CB50);
