@@ -14,6 +14,7 @@ extern "C" int X_func_00173618(...) asm("func_00173618");
 extern "C" int X_func_00173620(...) asm("func_00173620");
 extern "C" int X_func_00173628(...) asm("func_00173628");
 extern "C" int X_func_00174C4C(...) asm("func_00174C4C");
+extern "C" float Xii_func_0016FF18(int, int) asm("func_0016FF18");
 extern int D_00298E08;
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot1__vfunc_02);
@@ -28,7 +29,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot1Prim__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot1Prim__vfunc_08);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", updateZDepth__12EffFoot1Prim);
+extern "C" void updateZDepth__12EffFoot1Prim(int arg0)
+{
+    M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, arg0 + 0x30);
+}
 
 extern "C" int func_00173380(int arg0)
 {
