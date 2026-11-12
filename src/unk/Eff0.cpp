@@ -98,7 +98,17 @@ INCLUDE_ASM("asm/nonmatchings/unk/Eff0", createPacketEntry__4Eff0P20tag_I3dRende
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016AC84);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016AD94);
+extern "C" int func_0016AD94()
+{
+    int *p = &D_00308050;
+    int old = *p;
+    int idx = old + 1;
+    int t = (idx < 0) ? (old + 0x100) : idx;
+    int d = idx - ((t >> 8) << 8);
+
+    *p = d;
+    return ((unsigned char *)&D_00828378)[d];
+}
 
 extern "C" void func_0016ADD8()
 {
