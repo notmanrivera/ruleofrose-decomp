@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" void func_00182928();
+extern "C" int func_00182A6C(int);
+extern "C" int func_001830F0();
+extern "C" void func_001C6CCC(void *, int, void *);
+extern "C" void func_001C9C1C(void *, int, int);
 struct Struct_00180BE4 {
     char pad0[4];
     int unk4;
@@ -421,7 +426,33 @@ extern "C" int func_0018154C(int arg0, int arg1, int arg2, int arg3)
     return Xiii_func_0018156C(arg0, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_0018156C);
+extern "C" int func_0018156C(int *arg0, int arg1)
+{
+    int ret = -1;
+    if (arg0[0] != 1) {
+        return -1;
+    }
+
+    void *obj = &D_007812C0;
+    int *pC4 = (int *)((char *)arg0 + 0xC4);
+    func_001C6CCC(obj, 0x10, pC4);
+    int val = *pC4;
+    func_001C9C1C(obj, 0, (5 - val) / 2 + val);
+    *(int *)((char *)arg0 + 0x40) = 0;
+
+    do {
+        if (func_001830F0() != 0) {
+            func_00182928();
+            ret = func_00182A6C(arg1);
+            if (ret < 0) {
+                continue;
+            }
+            arg0[1] = 1;
+        }
+    } while (ret < 0);
+
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00181644);
 
