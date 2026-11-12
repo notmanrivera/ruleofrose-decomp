@@ -1,4 +1,11 @@
 #include "include_asm.h"
+struct Big4790 {
+    int w[0xE000 / 4];
+};
+struct Obj4790 {
+    char pad[0x1540];
+    Big4790 *unk1540;
+};
 struct VObj7910 {
     virtual int vfunc1();
 };
@@ -192,7 +199,10 @@ extern "C" void func_001E4700(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4790);
+extern "C" void func_001E4790(Obj4790 *arg0, int arg1, const Big4790 *arg2)
+{
+    *arg0->unk1540 = *arg2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E484C);
 
