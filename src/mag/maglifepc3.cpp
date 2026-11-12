@@ -20,6 +20,15 @@ extern const char D_002EA758[];
 extern const char D_002EA7A8[];
 extern const char D_002EA7C0[];
 extern int D_002971D5;
+extern int D_00297210[];
+extern int D_00298178[];
+extern "C" int X_func_0010A8B8__8DogActorPCc(...) asm("func_0010A8B8__8DogActorPCc");
+extern "C" int X_func_0011C2AC(...) asm("func_0011C2AC");
+extern "C" int X_func_0011C520(...) asm("func_0011C520");
+extern "C" int X_func_0011CB70(...) asm("func_0011CB70");
+extern "C" int X_func_0011DC64(...) asm("func_0011DC64");
+extern "C" int X_func_0011DF7C(...) asm("func_0011DF7C");
+extern "C" int X_getMainMotionNo__C14DogMotionBlend(...) asm("getMainMotionNo__C14DogMotionBlend");
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc3", D_002EA5F0);
 
@@ -91,7 +100,27 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011D990);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011DC64);
 
+#ifdef NON_MATCHING
+// NON_MATCHING: 19 of 46 instructions
+extern "C" void func_0011DD40(int arg0)
+{
+    int temp_v0;
+
+    if (M2C_FIELD(arg0, int *, 0x58) != 0) {
+        temp_v0 = X_func_0011CB70(arg0, X_func_0011C520());
+        M2C_FIELD(arg0, int *, 0x21C) = temp_v0;
+        if (X_func_0010A8B8__8DogActorPCc(M2C_FIELD(arg0, int *, 0x58), *(int *)((int)D_00298178 + (temp_v0 * 0x18))) < 0) {
+            X_func_0011DC64(arg0, D_00297210[M2C_FIELD(arg0, int *, 0x21C)], -1);
+            X_func_0011DF7C(arg0);
+            if (X_getMainMotionNo__C14DogMotionBlend(M2C_FIELD(arg0, int *, 0x58) + 0x1E4) <= 0) {
+                X_func_0011C2AC(arg0, 1);
+            }
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc3", func_0011DD40);
+#endif
 
 extern "C" int func_0011DDF4(int arg0, int arg1, float fparg0)
 {
