@@ -152,7 +152,10 @@ extern "C" int func_0017FD1C(int arg0, int arg1)
     return X_func_0017FD58(arg0, arg1, 1, -1, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017FD3C);
+extern "C" int func_0017FD3C(int arg0, int arg1, int arg2)
+{
+    return X_func_0017FD58(arg0, arg1, arg2, -1, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017FD58);
 
