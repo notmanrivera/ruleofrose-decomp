@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int func_001D89C4(int, int);
+extern "C" int func_001DB7CC(int, int);
 extern "C" int X_func_001D84B0(...) asm("func_001D84B0");
 extern "C" void func_001331F4(void *, int, int, int, int, int, float);
 template <class T> class GamList4610 {
@@ -2033,7 +2035,26 @@ extern "C" float func_001CFB48(int arg0, unsigned int arg1, unsigned int arg2)
     return func_00217F10(v2.m_x - v1.m_x, v2.m_z - v1.m_z);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CFBE4);
+extern "C" int func_001CFBE4(int arg0, unsigned int arg1, int arg2)
+{
+    if (Xiiu_func_001D046C(arg0, arg1) == 0) {
+        return 0;
+    }
+
+    switch ((arg1 >> 28) & 3) {
+    case 0:
+        func_001DB7CC(Xiiu_func_001D2D00(arg0, arg1), arg2);
+        break;
+    case 1:
+        func_001D89C4(Xiiu_func_001D2B8C(arg0, arg1), arg2);
+        break;
+    case 2:
+        func_001DB7CC(Xiiu_func_001D2BA8(arg0, arg1), arg2);
+        break;
+    }
+
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CFCA8);
 
