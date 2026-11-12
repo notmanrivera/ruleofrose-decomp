@@ -360,7 +360,11 @@ extern "C" void func_001FC7F4(int arg0, int arg1, int arg2)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskCamera", func_001FC848);
+extern "C" void func_001FC848(int arg0, int arg1, int arg2)
+{
+    M2C_FIELD(arg0, int *, 0x50C) = (int) ((M2C_FIELD(arg0, int *, 0x50C) + 3) & ~3);
+    X_func_001FC5E4(arg0, arg1, M2C_FIELD(arg2, int *, 0x504), M2C_FIELD(arg2, int *, 0x508));
+}
 
 extern "C" void func_001FC880(int arg0, int arg1)
 {
