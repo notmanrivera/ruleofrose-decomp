@@ -1,4 +1,26 @@
 #include "include_asm.h"
+extern "C" int func_0023BE68(int, int, int, int, int, int);
+extern "C" void func_0023C0F8(int, int);
+extern "C" int func_0023C228(int);
+extern "C" void func_0023C260(int, int, int);
+extern "C" void func_0023C328(int, int);
+extern "C" void func_0023C3C0(int, int, int);
+extern "C" void func_0023C510(int, float);
+struct Struct_00180F44 {
+    int unk0;
+    int unk4;
+    int unk8;
+    int unkC;
+    int state;
+    int handle;
+    int unk18;
+    int unk1C;
+    int unk20;
+    int unk24;
+    int unk28;
+    int unk2C;
+    float unk30;
+};
 extern "C" int func_001831C4(int);
 extern "C" void func_0024A8C8();
 extern "C" void func_0024A958();
@@ -324,7 +346,74 @@ extern "C" int func_00180EEC(int arg0, int arg1, int arg2)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180F44);
+extern "C" int func_00180F44(int arg0, Struct_00180F44 *arg1)
+{
+    int ret = 0;
+    if (arg1->handle < 0) {
+        if (arg1->state == 0) {
+            arg1->handle = func_0023BE68(*(int *)(arg0 + arg1->unk18 * 4 + 0x2C), arg1->unk1C, arg1->unk20, arg1->unk24, arg1->unk28, 1);
+            func_0023C510(arg1->handle, arg1->unk30);
+            func_0023C328(arg1->handle, arg1->unk2C);
+            arg1->state = 2;
+        }
+        if (arg1->handle < 0) {
+            goto end;
+        }
+    }
+
+    switch (arg1->state) {
+    case 0:
+    case 1:
+    case 2:
+    case 5:
+    case 8:
+    case 9:
+        break;
+    case 3:
+        func_0023C3C0(arg1->handle, arg1->unk24, arg1->unk28);
+        func_0023C510(arg1->handle, arg1->unk30);
+        func_0023C328(arg1->handle, arg1->unk2C);
+        arg1->state = 2;
+        break;
+    case 4:
+        arg1->state = 5;
+        if (func_0023C228(arg1->handle) != 8) {
+            func_0023C260(arg1->handle, 1, 0);
+        }
+        break;
+    case 6:
+        arg1->state = 2;
+        if (func_0023C228(arg1->handle) == 8) {
+            func_0023C260(arg1->handle, 0, 0);
+        }
+        break;
+    case 7:
+        if (arg1->handle >= 0) {
+            func_0023C0F8(arg1->handle, 1);
+        }
+        arg1->handle = -1;
+        ret = -1;
+        break;
+    }
+
+    if (arg1->handle >= 0) {
+        if (func_0023C228(arg1->handle) & 4) {
+            func_0023C0F8(arg1->handle, 1);
+            arg1->handle = -1;
+            switch (arg1->unkC) {
+            case 1:
+                arg1->state = 0;
+                break;
+            case 0:
+                ret = -1;
+                break;
+            }
+        }
+    }
+
+end:
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_001810F4);
 
