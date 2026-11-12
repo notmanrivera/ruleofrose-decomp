@@ -291,7 +291,26 @@ fail:
     return 0.0f;
 }
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001639B4);
+extern float D_002F13C0[];
+
+extern "C" float func_001639B4()
+{
+    int p = X_func_001636A4();
+    if (p == 0) {
+        goto fail;
+    }
+    {
+        int *vt = M2C_FIELD(p, int **, 0x200);
+        char *entry = (char *)vt + 0x18;
+        short adj = M2C_FIELD(entry, short *, 0);
+        int fn = M2C_FIELD(entry, int *, 4);
+        float *tbl = D_002F13C0;
+        int r = ((int (*)(int))fn)(p + adj);
+        return tbl[r];
+    }
+fail:
+    return 0.0f;
+}
 
 extern "C" int func_00163A10()
 {
