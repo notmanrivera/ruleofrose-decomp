@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int X_func_0023A5A8(...) asm("func_0023A5A8");
+static inline int rxBad(const int &n) { return n >= 0x41; }
+static inline int &rxAt(int s, const int &n) { return *(int *)(n * 4 + s + 0x20); }
 extern "C" void V_func_0018185C(int) asm("func_0018185C");
 extern "C" int I_sceMpegInit() asm("sceMpegInit");
 extern "C" void V_func_001828C4() asm("func_001828C4");
@@ -212,7 +215,19 @@ INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_001809D8);
 
 INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180A90);
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00180B30);
+extern "C" int func_00180B30(int arg0, int n)
+{
+    int s = arg0 + 0xC;
+    if (rxBad(n)) {
+        return -1;
+    }
+    if (rxAt(s, n) < 0) {
+        return -1;
+    }
+    X_func_0023A5A8(rxAt(s, n), 1);
+    rxAt(s, n) = -1;
+    return 0;
+}
 
 extern "C" void func_00180B9C(int arg0, int arg1)
 {
