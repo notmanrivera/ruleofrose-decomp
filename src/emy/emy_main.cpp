@@ -349,7 +349,14 @@ extern "C" void func_00163EE4(int arg0, int arg1, int arg2)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163F1C);
+extern "C" int func_00163F1C()
+{
+    int *p = (int *)X_func_001636A4();
+    if (p != 0) {
+        return M2C_FIELD(p, int *, 0x238);
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163F44);
 
