@@ -1,4 +1,12 @@
 #include "include_asm.h"
+struct TskObj7618 {
+    virtual int vfunc1(int);
+};
+struct TskNode7618 {
+    TskObj7618 *obj;
+    TskNode7618 *next;
+    int state;
+};
 extern "C" int Xiiii_func_001E4908(int, int, int, int) asm("func_001E4908");
 extern "C" int Xii_func_001E4D04(int) asm("func_001E4D04");
 extern "C" int Xiiiiii_func_001E4EBC(int, int, int, int, int) asm("func_001E4EBC");
@@ -172,7 +180,20 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E747C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7544);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7618);
+extern "C" void func_001E7618(TskNode7618 **arg0, int arg1)
+{
+    TskNode7618 *p = *arg0;
+    if (p != 0) {
+        do {
+            int res = p->obj->vfunc1(arg1);
+            arg1 = 2;
+            if (p->obj == 0 || ((unsigned int)(res - 1) >= 3U && res != 0x11)) {
+                p->state = 2;
+            }
+            p = p->next;
+        } while (p != 0);
+    }
+}
 
 extern "C" void func_001E7698(int arg0, int arg1)
 {
