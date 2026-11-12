@@ -80,7 +80,15 @@ extern "C" void func_0017F514(int arg0, int arg1)
     M2C_FIELD(arg1, int *, 0x10) = -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F530);
+extern "C" void func_0017F530(int arg0)
+{
+    int *p = (int *)(arg0 + 0x234);
+    int i;
+    for (i = 0x2F; i >= 0; i--) {
+        X_func_0017F514(arg0, (int)p);
+        p = (int *)((char *)p + 0x84);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017F584);
 
