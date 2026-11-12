@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" int X_func_00131184(...) asm("func_00131184");
+extern "C" int X_func_00182B7C(...) asm("func_00182B7C");
+extern int D_007B2060;
+extern int _9MagSystem$m_current_system;
 extern "C" int func_0023BE68(int, int, int, int, int, int);
 extern "C" void func_0023C0F8(int, int);
 extern "C" int func_0023C228(int);
@@ -547,7 +551,17 @@ extern "C" int func_0018156C(int *arg0, int arg1)
     return ret;
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/rxmpeg", func_00181644);
+extern "C" int func_00181644(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 4) == 1) {
+        if (M2C_FIELD((*(int *)&D_007B2060), int *, 4) & 0x08000000) {
+            X_func_00131184((*(int *)&_9MagSystem$m_current_system) + 0x12540, 0x1E, 7, 0);
+        }
+        X_func_00182B7C();
+        return 0;
+    }
+    return -1;
+}
 
 extern "C" int func_001816B0(int arg0)
 {
