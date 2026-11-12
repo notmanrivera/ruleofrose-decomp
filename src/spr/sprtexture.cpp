@@ -210,7 +210,12 @@ INCLUDE_RODATA("asm/nonmatchings/spr/sprtexture", D_002F7B60);
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00191174);
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00191248);
+extern "C" int *X_magCurrentSystem asm("_9MagSystem$m_current_system");
+
+extern "C" void func_00191248(int arg0)
+{
+    (*(int **)(int *)((char *)(arg0) + 0x934)) = X_magCurrentSystem;
+}
 
 extern "C" int func_00191258()
 {
