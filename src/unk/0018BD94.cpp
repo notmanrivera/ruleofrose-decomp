@@ -1,4 +1,10 @@
 #include "include_asm.h"
+struct D007812C0Type {
+    char pad[0x22214];
+    int m_22214;
+};
+extern D007812C0Type D_007812C0;
+extern "C" int Xiii_func_001D3AC8(int, int) asm("func_001D3AC8");
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiiiiiii_func_0018D7EC(int, int, int, int, int, int) asm("func_0018D7EC");
@@ -153,7 +159,12 @@ extern "C" void func_0018EFF0(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018F024);
+extern "C" void func_0018F024()
+{
+    if (~D_007812C0.m_22214 != 0) {
+        Xiii_func_001D3AC8((int)&D_007812C0, 1);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018F060);
 
