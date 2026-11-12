@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
+extern int _vt$7HfmMain;
 extern "C" void Xv_func_0012B7CC(int, int) asm("func_0012B7CC");
 struct HfmSub { unsigned long a; unsigned long b; };
 struct HfmLocal { HfmSub sub; float f[4]; };
@@ -307,7 +310,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144AE0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00145020);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmMain__vfunc_01);
+extern "C" void HfmMain__vfunc_01(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x200) = (int)&_vt$7HfmMain;
+    Xii_EmyMain__vfunc_01(arg0, 0);
+    if (arg1 & 1) {
+        return Xv___builtin_delete((void *)arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001452FC);
 
