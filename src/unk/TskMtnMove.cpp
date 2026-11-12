@@ -1,4 +1,17 @@
 #include "include_asm.h"
+struct VObj7910 {
+    virtual int vfunc1();
+};
+struct Node7910 {
+    VObj7910 *obj;
+    Node7910 *next;
+    int state;
+    int id;
+};
+struct List7910 {
+    Node7910 *head;
+};
+extern "C" void X7910_func_001E7724(List7910 *, int) asm("func_001E7724");
 struct Node785C {
     void *obj;
     Node785C *next;
@@ -486,7 +499,19 @@ extern "C" void func_001E785C(Obj785C *arg0)
 extern "C" void func_001E7908(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7910);
+extern "C" void func_001E7910(List7910 *arg0, int *arg1)
+{
+    Node7910 *node = arg0->head;
+    while (node != 0) {
+        Node7910 *next = node->next;
+        for (int *p = arg1; *p != -1; p++) {
+            if (node->obj->vfunc1() == *p) {
+                X7910_func_001E7724(arg0, node->id);
+            }
+        }
+        node = next;
+    }
+}
 
 extern "C" int func_001E79C0(char *arg0, int arg1)
 {
