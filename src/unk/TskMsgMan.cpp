@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void Xv___builtin_delete(int) asm("__builtin_delete");
+extern int _vt$9TskAttach;
 struct m2c_block8 { int w[2]; };
 struct m2c_ulong { long v; } __attribute__((packed));
 #define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
@@ -1003,7 +1005,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F50B8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F5244);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskAttach__vfunc_06);
+extern "C" void TskAttach__vfunc_06(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$9TskAttach;
+    if (arg1 & 1) {
+        return Xv___builtin_delete(arg0);
+    }
+}
 
 extern "C" void TskAttach__vfunc_05(void) {
 }
