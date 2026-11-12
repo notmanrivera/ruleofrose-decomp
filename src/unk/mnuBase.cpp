@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void Xv_func_0018154C(int, int, int, int) asm("func_0018154C");
 extern int D_0029BFB0;
 extern "C" void Xv_func_00192850(int, int, int, int) asm("func_00192850");
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
@@ -423,7 +424,17 @@ extern "C" void func_00192834(int arg0, int arg1)
     return Xv_func_00192850(arg0, arg1, 0x200, 0x180);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192850);
+extern "C" void func_00192850(int arg0, char *arg1, int arg2, int arg3)
+{
+    char *base;
+    char *p;
+
+    base = (char *)&D_007B40C0;
+    p = base + 0x44;
+    X_strcpy((int)p, (int)arg1);
+    X_func_00181150((int)base);
+    return Xv_func_0018154C((int)base, (int)p, arg2, arg3);
+}
 
 extern "C" int func_001928B8()
 {
