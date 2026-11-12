@@ -111,6 +111,7 @@ extern "C" int Xiiu_func_001D2B8C(int, unsigned int) asm("func_001D2B8C");
 extern "C" int Xiiu_func_001D2BA8(int, unsigned int) asm("func_001D2BA8");
 extern "C" int Xiiui_func_001351B0(int, unsigned int, int) asm("func_001351B0");
 extern "C" int Xiiui_func_001D05F4(int, unsigned int, int) asm("func_001D05F4");
+extern "C" float func_00217F10(float, float);
 extern "C" int Xiiuii_func_00134AB8(int, unsigned int, int, int) asm("func_00134AB8");
 extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func_00134A00");
 extern const char D_002FB330[];
@@ -1732,7 +1733,18 @@ extern "C" void func_001CFB38(int arg0, int arg1)
     (*(int *)(int *)((char *)(arg0) + 0x2227C)) = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CFB48);
+extern "C" float func_001CFB48(int arg0, unsigned int arg1, unsigned int arg2)
+{
+    DogVector v1;
+    DogVector v2;
+
+    if (Xiiu_func_001D046C(arg0, arg1) == 0 || Xiiu_func_001D046C(arg0, arg2) == 0) {
+        return 0.0f;
+    }
+    Xiiui_func_001D05F4(arg0, arg1, (int)&v1);
+    Xiiui_func_001D05F4(arg0, arg2, (int)&v2);
+    return func_00217F10(v2.m_x - v1.m_x, v2.m_z - v1.m_z);
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CFBE4);
 
