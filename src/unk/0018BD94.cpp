@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0018F824(int) asm("func_0018F824");
+extern "C" int Xii_heapFree__FPv(int) asm("heapFree__FPv");
 extern "C" int Xiii_func_0018D08C(int, int) asm("func_0018D08C");
 extern "C" int Xiii_func_0018F734(int, int) asm("func_0018F734");
 struct D007812C0Type {
@@ -50,7 +52,25 @@ INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018BEF8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C068);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C130);
+extern "C" int func_0018C130(int arg0)
+{
+    int *p;
+    int *q;
+
+    if (M2C_FIELD(arg0, int *, 0x4AC) == 0) {
+        return -1;
+    }
+    Xii_func_0018F824(arg0 + 8);
+    Xii_heapFree__FPv(M2C_FIELD(arg0, int *, 0x4AC));
+    M2C_FIELD(arg0, int *, 0x4AC) = 0;
+    p = (int *)(arg0 + 0x4E4);
+    q = (int *)(arg0 + 4);
+    if (*p != 0) {
+        *p = 0;
+    }
+    *q = 0;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C190);
 
