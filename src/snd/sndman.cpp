@@ -182,7 +182,17 @@ INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0018000C);
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_00180078);
 
-INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_001800D0);
+extern "C" int func_001800D0(int arg0, int arg1)
+{
+    int *p = (int *)X_func_0017F584(arg0, arg1);
+    if (p == 0) {
+        return -1;
+    }
+    if (p[0] == 1) {
+        return p[4];
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_00180108);
 
