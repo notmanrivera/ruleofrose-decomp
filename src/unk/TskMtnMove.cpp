@@ -1,4 +1,15 @@
 #include "include_asm.h"
+struct Ent4B48 {
+    char name[0x1C];
+    int id;
+    long unk20;
+    long unk28;
+    long unk30;
+};
+struct Obj4B48 {
+    char pad[0x1544];
+    Ent4B48 *list;
+};
 struct VObj747C {
     virtual int vfunc1();
 };
@@ -298,7 +309,21 @@ extern "C" int func_001E4AB8(void *arg0, const char *arg1)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4B48);
+extern "C" int func_001E4B48(Obj4B48 *arg0, int arg1, Ent4B48 *arg2)
+{
+    int idx = (arg1 % 100000) / 2;
+    for (int i = 0; i < 0x384; i++, idx++) {
+        if (arg0->list[idx].id == -1 || idx >= 0x385) {
+            idx = 0;
+        }
+        if (arg0->list[idx].id == arg1) {
+            arg2->id = arg1;
+            arg0->list[idx] = *arg2;
+            return 1;
+        }
+    }
+    return 0;
+}
 
 extern "C" int func_001E4C1C(Obj4C1C *arg0, int arg1, Ent4C1C **arg2)
 {
