@@ -1050,7 +1050,18 @@ extern "C" int func_00184698(MsgWin *self, const char *theStr, char *theOut)
     return n;
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184698);
+extern "C" int func_00184698(MsgWin *self, const char *theStr, char *theOut)
+{
+    int n;
+
+    memset(theOut, 0, 16);
+    n = func_0018454C(self, theStr);
+    if (!n) {
+        return n;
+    }
+    memcpy(theOut, theStr, n < 16 ? n : 15);
+    return n;
+}
 #endif
 
 
