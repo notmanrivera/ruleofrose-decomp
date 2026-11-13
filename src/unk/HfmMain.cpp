@@ -386,7 +386,36 @@ INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001452FC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmMain__vfunc_04);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmMain__vfunc_05);
+extern "C" void HfmMain__vfunc_05(int arg0)
+{
+    int temp_a0;
+    int temp_v0;
+    int temp_v0_2;
+
+    M2C_FIELD(arg0, int *, 0x40) = 0;
+    temp_a0 = M2C_FIELD(arg0, int *, 0x30);
+    if (temp_a0 & 2) {
+        M2C_FIELD(arg0, int *, 0x3C) = 7;
+        M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = 7;
+        M2C_FIELD(arg0, int *, 0x40) = 1;
+    } else {
+        temp_v0 = M2C_FIELD(arg0, int *, 0x24);
+        if (temp_v0 != -1) {
+            temp_v0_2 = X_func_0016968C(M2C_FIELD(arg0, int *, 0x1C), temp_v0);
+            M2C_FIELD(arg0, signed char *, 0x228) = 0;
+            if (temp_v0_2 != 0) {
+                M2C_FIELD(arg0, int *, 0x3C) = temp_v0_2;
+                M2C_FIELD(arg0, int *, 0x40) = 1;
+            } else {
+                M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = M2C_FIELD(arg0, int *, 0x3C);
+            }
+        } else if (temp_a0 & 1) {
+            M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = M2C_FIELD(arg0, int *, 0x3C);
+            M2C_FIELD(arg0, int *, 0x40) = 1;
+        }
+    }
+    M2C_FIELD(arg0, int *, 0x30) = 0;
+}
 
 extern "C" void HfmMain__vfunc_06(int arg0)
 {
