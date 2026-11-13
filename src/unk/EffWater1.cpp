@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiii_func_001787B0(int, int, int) asm("func_001787B0");
 struct m2c_block12 { int w[3]; };
 struct m2c_ulong { long v; } __attribute__((packed));
 #define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
@@ -12,7 +13,14 @@ extern int _vt$9EffWater1;
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_001787B0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_00178894);
+extern "C" void func_00178894(int arg0, int arg1)
+{
+    int i;
+
+    for (i = 0; i < 16; i++) {
+        Xiiii_func_001787B0(arg0, i, arg1);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffMuzzleFlash1__vfunc_02);
 
