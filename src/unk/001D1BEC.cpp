@@ -1,4 +1,11 @@
 #include "include_asm.h"
+struct Vec2A14 {
+    float x;
+    float y;
+    float z;
+};
+extern "C" int X_func_001D890C(...) asm("func_001D890C");
+extern "C" int X_func_001D89C4(...) asm("func_001D89C4");
 extern "C" void Xvpi_func_00130DE0(void *, int) asm("func_00130DE0");
 struct Obj2D00 {
     struct Node {
@@ -181,7 +188,23 @@ INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2724);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D27DC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2A14);
+extern "C" void func_001D2A14(int arg0, unsigned int arg1, Vec2A14 *arg2)
+{
+    Vec2A14 stack;
+    float x = arg2->x;
+    float y = arg2->y;
+    float z = arg2->z;
+    int temp_v0;
+
+    if (((arg1 >> 0x1C) & 3) == 1) {
+        temp_v0 = X_func_001D2B8C(arg0, arg1);
+        X_func_001D890C(temp_v0, (int)&stack);
+        stack.x += x;
+        stack.y += y;
+        stack.z += z;
+        X_func_001D89C4(temp_v0, (int)&stack);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2AAC);
 
