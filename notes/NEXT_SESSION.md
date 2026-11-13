@@ -191,3 +191,44 @@ Hechas tras revisar el día (lo que queda pendiente está al final):
 
 Pendiente: que el coordinador dedique su tiempo a cabeceras (structs y
 clases reales), que hacen falta para las funciones medianas y grandes.
+
+## Revisión de Fable (2026-11-12, noche) y lo aplicado
+
+Informe completo: 10 fallos y 5 mejoras. Aplicado (commit a203b9d y
+siguientes):
+
+- `permute.py`: solo un MATCH se guarda como mejor versión (las mutaciones
+  pueden cambiar el significado; un "casi" del permutador va a
+  `.perm.cpp`), respeta la precedencia y solo intercambia sentencias
+  independientes; prueba primero cada mutación sola, sin repetir, y sin
+  sincronizar el servidor en cada prueba (~8 pruebas/s). Mutaciones nuevas:
+  orden de `&&`/`||`, signo de locales, `for`/`while`, temporales.
+- `match.py`: cada función distinta dice también sus "edits" alineados (una
+  instrucción de más ya no hace que todo lo de después cuente como distinto);
+  `work.py` puntúa por ellos.
+- `merge_worker.sh`: espera si el checkout principal tiene cambios; verifica
+  cada archivo tal como está en el commit (no el disco del worker) con el
+  servidor del checkout principal; rechaza ensamblador en línea; el candado
+  dice quién lo tiene y caduca.
+- `next_batch.sh`: reintenta lecturas y envíos a Orca; una función cuenta
+  como saltada tras dos checks que compilan (y no si la cuota cortó el lote);
+  un bucle `--retry` para tras dos lotes vacíos; sesión nueva cada 4 lotes
+  si no se ve el contexto; `--budget` (instrucciones por lote) y archivos por
+  rendimiento esperado (`backlog.py --by-yield`).
+- `watch_agent.sh`: `STATUS: stuck` tras 150 min ocupado.
+- `work.py --keep`: declaraciones dentro del `#ifdef` y comprobación con
+  `-DNON_MATCHING` (los NON_MATCHING viejos se pudren: ya hay alguno que no
+  compila con las cabeceras de hoy).
+- `tools/permute_queue.py` en `../ror-wt-perm`: el permutador como un worker
+  sin agente sobre los "casi" (`--merge` integra cada MATCH).
+
+Pendiente de la revisión, para el coordinador:
+- Cabeceras primero (la palanca más grande): antes de dar funciones de más
+  de 60 instrucciones de un archivo, escribir su clase (campos desde los
+  offsets del asm, vtable desde los símbolos), empezando por `game/gamman`,
+  `unk/TskMsgMan` y `game/gamtrg`; y un `context.c` con structs planos
+  para que m2c escriba `this->m_x`.
+- Etapas por modelo: Flash primera pasada con `--keep` → permutador →
+  Claude para lo que quede (8/10 en segundos intentos frente a 2/10 de
+  DeepSeek V4 Pro e Hydrogen). Medir Kimi con un lote antes de darle más.
+- Integrar por archivo (que un archivo malo no frene los demás).
