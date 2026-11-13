@@ -1,4 +1,9 @@
 #include "include_asm.h"
+struct EntEE8C {
+    int unk0;
+    char pad[0x18 - 4];
+};
+extern EntEE8C X_D_002ACA20[] asm("D_002ACA20");
 extern "C" int X_func_00279C98_68E0(char *, const char *, ...) asm("func_00279C98");
 struct Ent68E0 {
     int f0;
@@ -1880,7 +1885,12 @@ extern "C" int func_001AEE50(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AEE8C);
+extern "C" void func_001AEE8C(int arg0)
+{
+    for (int i = 0; X_D_002ACA20[i].unk0 != -1; i++) {
+        X_func_0018FBB0(arg0 + 0xA0, X_D_002ACA20[i].unk0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AEF14);
 
