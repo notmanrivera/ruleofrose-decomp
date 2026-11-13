@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "sdk/math.h"
 extern "C" int X_func_0025B890(...) asm("func_0025B890");
 extern "C" int Xii_func_00169A14(int) asm("func_00169A14");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
@@ -85,7 +86,11 @@ INCLUDE_RODATA("asm/nonmatchings/unk/001693A4", D_002F1DF0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_00169810);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_00169A14);
+extern "C" float vecLength_00169A14(const float *v) asm("func_00169A14");
+extern "C" float vecLength_00169A14(const float *v)
+{
+    return sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+}
 
 extern "C" void func_00169A68(int arg0, int arg1)
 {
