@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int X_func_001DC48C(...) asm("func_001DC48C");
 extern "C" void Xv_func_001AE574(int) asm("func_001AE574");
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
 extern "C" int Xii_func_0018BC18(int, int) asm("func_0018BC18");
@@ -1858,7 +1859,22 @@ extern "C" int func_001AF4D0(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF4FC);
+extern "C" int func_001AF4FC(int arg0, int arg1)
+{
+    struct { unsigned short sp0; } stack;
+    int temp_v0;
+
+    if ((arg1 == 0xA00) || (arg1 == 0xB3B)) {
+        return 0;
+    }
+    char *base = (char *)&D_007812C0;
+    X_func_001DC48C((int)(base + 0x22220), arg1 & 0xFFFF, 0xD, (int)&stack);
+    if (stack.sp0 != 0) {
+        stack.sp0 += 0xFFFF;
+    }
+    temp_v0 = (stack.sp0 * 4) + 0xD0;
+    return (temp_v0 >= 0x2B2) ? 0xD0 : temp_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF578);
 
