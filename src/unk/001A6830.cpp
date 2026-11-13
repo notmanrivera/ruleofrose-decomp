@@ -1920,7 +1920,29 @@ INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002FAE58);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002FAE68);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AEACC);
+extern "C" void func_001AEACC(int arg0, int arg1)
+{
+    int temp_s0;
+    int temp_s3;
+
+    temp_s3 = arg0 + 0x98;
+    if (M2C_FIELD(arg0, int *, 0x2480) == 0) {
+        M2C_FIELD(arg0, int *, 0x23E0) = arg1;
+        M2C_FIELD(arg0, int *, 0x24A0) = 0;
+        M2C_FIELD(arg0, int *, 0x2490) = 0;
+        M2C_FIELD(arg0, int *, 0x249C) = 0;
+        X_func_0018BCC0(temp_s3, 0x78);
+        M2C_FIELD(temp_s3, int *, 0x8E8) = 1;
+        M2C_FIELD(arg0, int *, 0x4B4) = arg1;
+        temp_s0 = (int) "fnt16US.bin";
+        X_func_001AED5C(arg0);
+        X_func_001AEC50(arg0);
+        M2C_FIELD(temp_s3, int *, 0x8E8) = 1;
+        X_func_0018C2E4(temp_s3, temp_s0, 0);
+        X_func_0018C2E4(temp_s3, temp_s0, 1);
+        M2C_FIELD(arg0, int *, 0x2480) = 1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AEB7C);
 
