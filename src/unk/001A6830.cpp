@@ -1,4 +1,9 @@
 #include "include_asm.h"
+struct EntEF14 {
+    int unk0;
+    char pad[0x18 - 4];
+};
+extern EntEF14 X_D_002ACA20_EF14[] asm("D_002ACA20");
 struct EntEE8C {
     int unk0;
     char pad[0x18 - 4];
@@ -1892,7 +1897,12 @@ extern "C" void func_001AEE8C(int arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AEF14);
+extern "C" void func_001AEF14(int arg0)
+{
+    for (int i = 0; X_D_002ACA20_EF14[i].unk0 != -1; i++) {
+        X_func_0018F9CC(arg0 + 0xA0, X_D_002ACA20_EF14[i].unk0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AEF9C);
 
