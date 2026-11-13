@@ -139,7 +139,7 @@ del brief (<STATE>), work.py. Falta, de más a menos útil:
 
 - Avance: 22.06 % (253,144 / 1,147,560 B), todo con `build/ok`. Subido a
   GitHub (rama `claude/project-thread-2lnh6n`, la que sigue `pr-merge`) a
-  petición del dueño; `main` no se tocó.
+  petición del dueño, y `main` avanzado al mismo commit (ca48918).
 - Tres workers, todos parados y con su trabajo integrado:
   - `opencode` (`ror-wt-opencode`, OpenCode, DeepSeek V4.1 Flash): lotes
     normales. Dejó trabajo a medias sin commit en `src/game/gamsnd.cpp`.
