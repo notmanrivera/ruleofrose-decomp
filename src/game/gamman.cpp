@@ -2356,7 +2356,32 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CDBF0);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CDF5C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CEA44);
+// Frees the model of every object of the VFchr list; with theKeep 0 the list
+// is emptied too.
+extern "C" void func_001CEA44(GamMan *self, int theKeep)
+{
+    GamList<ObjStat *>::iterator it;
+    GamList<ObjStat *>::iterator last;
+    int area;
+    GamList<ObjStat *> *list = self->getVFchrListPtr();
+
+    it = list->begin();
+    last = list->end();
+    while (it != last) {
+        int chr = (*it)->getChrID();
+        int oid = (*it)->getOID();
+        func_001DB31C(*it, 8, &area);
+        if (chr != -1) {
+            func_001D966C((int)*it);
+        }
+        if (theKeep == 0) {
+            func_001CC004(self, oid);
+            it = self->m_vfchrList.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CEBF8);
 
