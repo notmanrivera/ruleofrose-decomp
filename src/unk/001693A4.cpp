@@ -131,7 +131,18 @@ extern "C" int func_0016968C(int arg0, int arg1)
     return v;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_001696FC);
+extern "C" int func_001696FC(int arg0, int arg1)
+{
+    int n = *(int *)(arg0 + 0xA4);
+    if (n == 0)
+        return 0;
+    int v = func_00169604(arg0, n);
+    if (v == 0) {
+        *(int *)(arg0 + 0xA4) = 0;
+        return v;
+    }
+    return X_func_001D8778(v, arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016976C);
 
