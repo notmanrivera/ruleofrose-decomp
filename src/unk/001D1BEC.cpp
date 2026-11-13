@@ -1,4 +1,29 @@
 #include "include_asm.h"
+struct Obj2D00 {
+    struct Node {
+        Node *m_prev;
+        Node *m_next;
+        void *m_data;
+    };
+    class iterator {
+    public:
+        Node *m_node;
+        iterator() : m_node(0) {}
+        iterator(Node *theNode) : m_node(theNode) {}
+        iterator(const iterator &theIt) : m_node(theIt.m_node) {}
+        void *&operator*() const { return m_node->m_data; }
+        iterator &operator++()
+        {
+            m_node = m_node->m_next;
+            return *this;
+        }
+        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; }
+    };
+    unsigned char pad[0x1DCD0];
+    Node m_head;
+    iterator begin() { return iterator(m_head.m_next); }
+    iterator end() { return iterator(&m_head); }
+};
 struct Obj2B10 {
     struct Node {
         Node *m_prev;
@@ -181,7 +206,23 @@ extern "C" int func_001D2BA8(int arg0, unsigned int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2C0C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2D00);
+extern "C" void *func_001D2D00(Obj2D00 *arg0, unsigned int arg1)
+{
+    Obj2D00::iterator it;
+    Obj2D00::iterator last;
+
+    it = arg0->begin();
+    last = arg0->end();
+
+    while (it != last) {
+        void *item = *it;
+        if (*(unsigned int *)((char *)item + 0x100) == arg1) {
+            return item;
+        }
+        ++it;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2D7C);
 
