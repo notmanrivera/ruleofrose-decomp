@@ -665,7 +665,27 @@ INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00147E94);
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00147F00);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00148060);
+extern "C" void func_00148060(int arg0)
+{
+    int temp_v0;
+    int temp_v0_2;
+    int var_v0;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x48) + 1;
+    M2C_FIELD(arg0, int *, 0x48) = temp_v0;
+    if (temp_v0 == M2C_FIELD(arg0, int *, 0x4C)) {
+        X_func_001694CC(arg0, 0x10);
+        X_func_001FAC60(0xB, M2C_FIELD(arg0, int *, 0), 0, 0, 0x2B, M2C_FIELD(arg0, int *, 0x14), 0);
+        M2C_FIELD(arg0, int *, 0x48) = 0;
+        temp_v0_2 = M2C_FIELD(arg0, int *, 0x70) - 1;
+        M2C_FIELD(arg0, int *, 0x70) = temp_v0_2;
+        if (temp_v0_2 == 0) {
+            M2C_FIELD(arg0, int *, 4) = 3;
+        } else {
+            M2C_FIELD(arg0, int *, 4) = 6;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001480E0);
 
