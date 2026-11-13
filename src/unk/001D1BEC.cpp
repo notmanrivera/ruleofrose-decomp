@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void Xvpi_func_00130DE0(void *, int) asm("func_00130DE0");
 struct Obj2D00 {
     struct Node {
         Node *m_prev;
@@ -261,7 +262,16 @@ extern "C" void func_001D3A14()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D3A38);
+extern "C" void func_001D3A38(int arg0, int arg1)
+{
+    if (!(M2C_FIELD(arg0, int *, 0x21F48) & 0x40)) {
+        int val = M2C_FIELD(arg0, int *, 0x21FA0);
+        int off = 0x418F0;
+        char *p = (char *)&D_006FBD80 + off;
+        M2C_FIELD(arg0, int *, 0x22218) = arg1;
+        Xvpi_func_00130DE0(p, (int)(((float)(arg1 * val) / 255.0f) * 2.0f));
+    }
+}
 
 extern "C" void func_001D3AC8(int arg0, int arg1)
 {
