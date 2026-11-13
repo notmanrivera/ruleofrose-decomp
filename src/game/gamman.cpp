@@ -933,7 +933,22 @@ extern "C" void func_001C0078(int arg0, int arg1, int *arg2, int *arg3, int *arg
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C0148);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C020C);
+extern "C" int func_001C020C(int arg0, int arg1)
+{
+    register int one asm("$3") = 1;
+    int flag = 0;
+
+    if (M2C_FIELD(arg0, int *, 0x24) == one) {
+        flag = (M2C_FIELD(arg0, int *, 0x28) == one);
+    }
+    if (flag == one) {
+        if (arg1 < 0) {
+            return M2C_FIELD(arg0, int *, 0x38);
+        }
+        return *(unsigned char *)((arg1 * 2) + M2C_FIELD(arg0, int *, 0x5C));
+    }
+    return 0;
+}
 
 extern "C" int func_001C0254(int self, int theA)
 {
