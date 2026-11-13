@@ -5,6 +5,8 @@ struct m2c_ulong { long v; } __attribute__((packed));
 extern "C" int Xiii_Eff0__vfunc_02(int, int) asm("Eff0__vfunc_02");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xii_func_0016A914(int) asm("func_0016A914");
+extern "C" float Xii_func_0016FF18(int, int) asm("func_0016FF18");
+extern int D_00298E08;
 extern int _vt$9EffWater1;
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 
@@ -48,7 +50,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1Prim__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1Prim__vfunc_08);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", updateZDepth__13EffSteam1Prim);
+extern "C" void updateZDepth__13EffSteam1Prim(int arg0)
+{
+    M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, arg0 + 0x30);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam2__vfunc_02);
 
