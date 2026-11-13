@@ -149,7 +149,29 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffWater1__vfunc_02);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffWater1__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", liveActivateExec__9EffWater1);
+extern "C" void liveActivateExec__9EffWater1(int arg0)
+{
+    int temp_a2;
+    int temp_v0;
+    int temp_v0_2;
+    unsigned short temp_a1;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x80);
+    temp_a1 = M2C_FIELD(arg0, unsigned short *, 0);
+    temp_v0_2 = temp_v0 - 1;
+    temp_a2 = temp_v0 + 1;
+    if (temp_a1 & 4) {
+        M2C_FIELD(arg0, int *, 0x80) = temp_a2;
+        if (temp_a2 >= 5) {
+            M2C_FIELD(arg0, unsigned short *, 0) = (unsigned short) (temp_a1 & 0xFFF7);
+        }
+    } else {
+        M2C_FIELD(arg0, int *, 0x80) = temp_v0_2;
+        if (temp_v0_2 <= 0) {
+            M2C_FIELD(arg0, unsigned short *, 0) = (unsigned short) (temp_a1 & 0xFFF7);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", renderPreMain__9EffWater1PQ24Eff011RENDERPARAM);
 
