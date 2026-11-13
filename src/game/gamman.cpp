@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int X_func_001D2BA8(...) asm("func_001D2BA8");
 extern "C" int X_func_00191E04(...) asm("func_00191E04");
 struct Item1A6C0 {
     int unk0;
@@ -2224,7 +2225,32 @@ extern "C" int func_001CBE38(int arg0, unsigned int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBEDC);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBF4C);
+extern "C" int func_001CBF4C(int arg0, unsigned int arg1)
+{
+    int temp_v0;
+    int temp_a2;
+    int var_v1;
+    int var_v0;
+
+    temp_a2 = (arg1 >> 0x1C) & 3;
+    switch (temp_a2) {
+    case 1:
+        var_v0 = X_func_001D2B8C(arg0, arg1);
+        var_v1 = -1;
+        break;
+    case 2:
+        var_v0 = X_func_001D2BA8(arg0, arg1);
+        var_v1 = -1;
+        break;
+    default:
+        return -1;
+    }
+    temp_v0 = M2C_FIELD(var_v0, int *, 0x114);
+    if (temp_v0 != 0) {
+        var_v1 = (*(int *)(temp_v0));
+    }
+    return var_v1;
+}
 
 extern "C" void *func_001CBFB0(int arg0, unsigned int arg1)
 {
