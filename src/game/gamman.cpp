@@ -1749,7 +1749,38 @@ extern "C" void func_001C8EB4(char *arg0, int arg1, int arg2)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C8F7C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C9198);
+// Adds an item to the stock: on top of one with the same uid when the item's
+// record allows piling (at most 99), else as a new entry. 1 when it is full.
+extern "C" int func_001C9198(GamMan *self, GamItemStock theItem)
+{
+    GamList<GamItemStock>::iterator it;
+    GamList<GamItemStock>::iterator last;
+    GamPool<GamItemStock, 0x14E> *list = self->getItemStockPtr();
+
+    if ((unsigned int)list->size() < 0x14E) {
+        if (*(int *)(theItem.m_item.m_unq + 0xB0) & 0x20000) {
+            it = list->begin();
+            last = list->end();
+            while (it != last) {
+                if ((*it).m_item.m_uid == theItem.m_item.m_uid) {
+                    (*it).m_item.m_num += theItem.m_item.m_num;
+                    if ((*it).m_item.m_num >= 100) {
+                        (*it).m_item.m_num = 99;
+                    }
+                    return 0;
+                }
+                ++it;
+            }
+        }
+        if ((unsigned int)self->getItemStockPtr()->size() >= 0x14E) {
+            return 0;
+        }
+        self->getItemStockPtr()->push_back(theItem);
+    } else {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C9334);
 

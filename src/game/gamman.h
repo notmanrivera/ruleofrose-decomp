@@ -34,9 +34,34 @@ public:
         T m_data;           // +0x08 (+0x10 when T is aligned to 16)
     };
 
+    // The inline methods are ours, written from the code GamMan's methods
+    // repeat in line (func_001C9198: take the last free node, append it).
     struct Chain {
         Node m_head;        // +0x00: the sentinel
         int m_num;          // nodes linked, the sentinel not counted
+
+        Node *pop_back()
+        {
+            Node *n = m_head.m_prev;
+            Node *prev = n->m_prev;
+            m_head.m_prev = prev;
+            prev->m_next = &m_head;
+            --m_num;
+            return n;
+        }
+        void push_back(Node *theNode)
+        {
+            if (m_num == 0) {
+                m_head.m_next = theNode;
+                theNode->m_prev = &m_head;
+            } else {
+                m_head.m_prev->m_next = theNode;
+                theNode->m_prev = m_head.m_prev;
+            }
+            theNode->m_next = &m_head;
+            m_head.m_prev = theNode;
+            ++m_num;
+        }
     };
 
     class iterator {
@@ -67,6 +92,16 @@ public:
 
     iterator begin() { return iterator(m_used.m_head.m_next); }
     iterator end() { return iterator(&m_used.m_head); }
+    int size() const { return m_used.m_num; }
+
+    // Ours. Appends a copy, in a node taken from the free chain; the caller
+    // has checked that there is one.
+    void push_back(const T &theData)
+    {
+        Node *n = m_free.pop_back();
+        n->m_data = theData;
+        m_used.push_back(n);
+    }
 };
 
 // A GamList and its N nodes. The nodes start at the next multiple of 64 and
@@ -74,6 +109,10 @@ public:
 template <class T, int N> class GamPool : public GamList<T> {
 public:
     typename GamList<T>::Node m_nodes[N] __attribute__((aligned(64)));
+
+    // Before appending, the game tests `(unsigned int)size() >= N` with the
+    // constant N (never m_max) in the calling function: written as an
+    // inline method returning bool it compiles to an extra xori.
 };
 
 // An item the player carries. 16 bytes, copied with ldl/ldr (aligned to 4).
@@ -99,6 +138,14 @@ struct GamItemHave {
 // it is aligned to 16 there but not in GamItemHave. The wrapper is ours.
 struct GamItemStock {
     GamItem m_item;
+
+    // Storing one in a node copies the item unaligned (ldl/ldr) although
+    // both sides are aligned: an assignment of the inner struct.
+    GamItemStock &operator=(const GamItemStock &theOther)
+    {
+        m_item = theOther.m_item;
+        return *this;
+    }
 } __attribute__((aligned(16)));
 
 // m_unk1D240's element, 16 bytes; func_001CB1C0 clears bit 0 of the first word.
@@ -318,7 +365,7 @@ public:
     unsigned short getPcEquipItem() const { return m_pcEquipItem; }
     unsigned short getFindTargetItem() const { return m_findTargetItem; }
     GamItemHave *getItemHavePtr() { return &m_itemHave; }
-    GamList<GamItemStock> *getItemStockPtr() { return &m_itemStock; }
+    GamPool<GamItemStock, 0x14E> *getItemStockPtr() { return &m_itemStock; }
     void *getMapObjPtr() { return m_mapObj; }
     GamList<ObjStat *> *getAchrListPtr() { return &m_achrList; }
     GamList<ObjStat *> *getFchrListPtr() { return &m_fchrList; }
