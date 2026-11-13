@@ -131,6 +131,12 @@ struct GamMsgRect {
     int m_unk1C;
 };
 
+// m_unk22540's element: 0x20 bytes copied with ld/sd (aligned to 8).
+struct GamElem22540 {
+    float m_val;                // +0x00
+    char m_unk04[28];
+} __attribute__((aligned(8)));
+
 // sizeof 0x22AC0: the next object in .bss, D_007A3D80, starts there.
 // Vtable pointer at +0x22AB4, after the last member (constructor), as g++ 2.96
 // places it for a class with no base; two slots, the destructor only
@@ -270,10 +276,8 @@ public:
     unsigned char m_pad22470[0xC0];
     int m_unk22530;                                 // +0x22530
     unsigned char m_pad22534[0xC];
-    float m_unk22540;                               // +0x22540
-    unsigned char m_pad22544[0x3C];
-    float m_unk22580;                               // +0x22580
-    unsigned char m_pad22584[0x54];
+    GamElem22540 m_unk22540[3];                     // +0x22540: func_001C6470 copies one in from D_006FBD80+0x2AAE0; m_val -1.0f means unused
+    unsigned char m_pad225A0[0x38];
     int m_msgMode;                                  // +0x225D8: chgMsgMode (MSG_MODE)
     unsigned int m_realMemSize;                     // +0x225DC: get_real_mem_size, reveal_mem_size
     unsigned char m_pad225E0[0x4];

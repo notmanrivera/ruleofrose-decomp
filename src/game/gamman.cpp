@@ -46,15 +46,6 @@ extern "C" int func_00143D7C(char *, char *, int);
 extern "C" int func_001C6FE0(GamMan *, int, int, int);
 extern "C" void func_001CC250(GamMan *, int, int, int, int, int);
 extern "C" int func_001CFBE4(int, unsigned int, int);
-struct Struct1C46FC {
-    int x;
-    int y;
-    int w;
-    int h;
-    int unk10;
-    int unk14;
-    int unk18;
-};
 extern "C" int func_0017EA44(void *, int);
 extern "C" int func_001DB8E8(char *, int, int);
 extern "C" int func_00279C98(void *, const char *, ...);
@@ -72,36 +63,6 @@ struct DstEntry1F84 {
     Entry1F84 entry;
     int pad[8];
 };
-struct GamElemD0530 {
-    char pad[0xC];
-    int unk0c;
-};
-template <class T> class GamListD0530 {
-public:
-    struct Node {
-        Node *m_prev;
-        Node *m_next;
-        T m_data;
-    };
-    class iterator {
-    public:
-        Node *m_node;
-        iterator() : m_node(0) {}
-        iterator(Node *theNode) : m_node(theNode) {}
-        iterator(const iterator &theIt) : m_node(theIt.m_node) {}
-        T &operator*() const { return m_node->m_data; }
-        iterator &operator++()
-        {
-            m_node = m_node->m_next;
-            return *this;
-        }
-        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; }
-    };
-    unsigned char m_unk00[0x10];
-    Node m_head;
-    iterator begin() { return iterator(m_head.m_next); }
-    iterator end() { return iterator(&m_head); }
-};
 extern "C" int func_001D2AAC(int, unsigned int);
 extern "C" int func_001D2ADC(int, unsigned int);
 extern "C" int func_001D2B10(int, unsigned int);
@@ -111,42 +72,12 @@ extern "C" int func_001D89C4(int, int);
 extern "C" int func_001DB7CC(int, int);
 extern "C" int X_func_001D84B0(...) asm("func_001D84B0");
 extern "C" void func_001331F4(void *, int, int, int, int, int, float);
-template <class T> class GamList4610 {
-public:
-    struct Node {
-        Node *m_prev;       // +0x00
-        Node *m_next;       // +0x04
-        T m_data;           // +0x08
-    };
-    class iterator {
-    public:
-        Node *m_node;
-        iterator() : m_node(0) {}
-        iterator(Node *theNode) : m_node(theNode) {}
-        iterator(const iterator &theIt) : m_node(theIt.m_node) {}
-        T &operator*() const { return m_node->m_data; }
-        iterator &operator++()
-        {
-            m_node = m_node->m_next;
-            return *this;
-        }
-        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; }
-    };
-    unsigned char m_unk00[0x10];
-    Node m_head;            // +0x10
-    iterator begin() { return iterator(m_head.m_next); }
-    iterator end() { return iterator(&m_head); }
-};
 extern "C" char vtbl_GamMan[] asm("_vt$6GamMan");
 extern "C" void GamSndMan__vfunc_01(void *, int);
 extern "C" void func_001DD3EC(void *, int);
 extern "C" float func_0010A650__8DogActor(void *);
 extern "C" int X_func_001C772C(...) asm("func_001C772C");
 extern "C" int X_func_001E4540(...) asm("func_001E4540");
-struct __attribute__((aligned(8))) GamStruct32 {
-    float m_val;
-    char pad[28];
-};
 extern "C" void *bsearch(const void *, const void *, unsigned int, unsigned int, int (*)(const void *, const void *));
 extern "C" int func_001C0534(int, unsigned int);
 extern "C" int func_001BFFAC(unsigned short *, unsigned short *);
@@ -210,10 +141,6 @@ struct MapModel {
     char pad[0x520 - 4];
 };
 extern MapModel D_007257B8[];
-struct Foo {
-    char pad[0x1F24C];
-    int ids[0x180];
-};
 extern "C" void func_001CB01C(GamMan *, int);
 extern "C" void func_001CDF5C(GamMan *, int, int);
 extern "C" void func_0018BD94(char *);
@@ -1246,18 +1173,18 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C43F0);
 
 extern "C" void func_001C4610(GamMan *arg0)
 {
-    GamList4610<void *>::iterator it;
-    GamList4610<void *>::iterator last;
-    GamList4610<void *> *list = (GamList4610<void *> *)((char *)&arg0->m_avfchrList.m_free.m_head.m_prev);
+    GamList<ObjStat *>::iterator it;
+    GamList<ObjStat *>::iterator last;
+    GamList<ObjStat *> *list = arg0->getAVFchrListPtr();
 
     it = list->begin();
     last = list->end();
 
     while (it != last) {
-        void *actor = *it;
+        ObjStat *actor = *it;
         char *p = (char *)&D_006E9840;
         int off = 0x12540;
-        int no = *(int *)((char *)actor + 0x108);
+        int no = actor->getChrID();
         func_001331F4(p + off, no, 1, 0, 0, 0, 0.016666694f);
         ++it;
     }
@@ -1292,14 +1219,14 @@ extern "C" void func_001C46FC(GamMan *arg0)
 {
     if (func_0017EA44(&D_00298EE0, arg0->m_unk21F7C) != 0) {
         func_00279C98(&D_006E9640, "%s #f060 \n", func_001DB8E8((char *)arg0->m_mapObj, 2, -1));
-        Struct1C46FC param;
-        param.x = 0x30;
-        param.y = 0xE0;
-        param.w = 0xFFFF;
-        param.h = 0x100;
-        param.unk10 = 0x20;
-        param.unk14 = 0;
-        param.unk18 = 0;
+        GamMsgRect param;
+        param.m_x = 0x30;
+        param.m_y = 0xE0;
+        param.m_w = 0xFFFF;
+        param.m_h = 0x100;
+        param.m_unk10 = 0x20;
+        param.m_unk14 = 0;
+        param.m_unk18 = 0;
         X_func_001CF7D0((char *)arg0, &param);
         X_func_001CF854((char *)arg0, &D_006E9640, 0, 0xB4);
     }
@@ -1421,7 +1348,7 @@ extern "C" void func_001C6470(GamMan *arg0)
 {
     register int i asm("$5") = 0;
 
-    if (arg0->m_unk22540 != -1.0f) {
+    if (arg0->m_unk22540[0].m_val != -1.0f) {
         do {
             i++;
             if (i >= 3) {
@@ -1436,13 +1363,13 @@ extern "C" void func_001C6470(GamMan *arg0)
     }
 
     if (i < 3) {
-        register char *dest asm("$3") = (char *)((i << 5) + (int)arg0);
+        register char *dest asm("$3") = (char *)((i << 5) + (int)arg0);     // &arg0->m_unk22540[i]
         char *v0 = (char *)&D_006FBD80;
         unsigned int off = 0x2AAE0;
         v0 += off;
         unsigned int dest_off = 0x22540;
         dest += dest_off;
-        *(GamStruct32 *)dest = *(GamStruct32 *)v0;
+        *(GamElem22540 *)dest = *(GamElem22540 *)v0;
     }
 }
 
@@ -1676,6 +1603,8 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C812C);
 
 extern "C" void func_001C8214(GamMan *arg0, int arg1)
 {
+    // m_itemHave.m_begin[arg1], kept as a byte offset: indexing the GamItem
+    // array reloads m_begin in another register order.
     char **vec = (char **)((char *)&arg0->m_itemHave.m_begin);
     int off = arg1 * 0x10;
     if (((Item1A6C0 *)(*vec + off))->unk8 == arg0->m_pcEquipItem) {
@@ -1928,47 +1857,16 @@ extern "C" int func_001CAF78(int arg0, unsigned short arg1, int arg2)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CB01C);
 
-template <class T> class GamListLocal2 {
-public:
-    struct Node {
-        Node *m_prev;       // +0x00
-        Node *m_next;       // +0x04
-        T m_data;           // +0x08
-    };
-
-    class iterator {
-    public:
-        Node *m_node;
-
-        iterator() : m_node(0) {}
-        iterator(Node *theNode) : m_node(theNode) {}
-        iterator(const iterator &theIt) : m_node(theIt.m_node) {}
-        T &operator*() const { return m_node->m_data; }
-        iterator &operator++()
-        {
-            m_node = m_node->m_next;
-            return *this;
-        }
-        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; }
-    };
-
-    unsigned char m_unk00[0x10];
-    Node m_head;            // +0x10
-
-    iterator begin() { return iterator(m_head.m_next); }
-    iterator end() { return iterator(&m_head); }
-};
-
 extern "C" int func_001CB1C0(GamMan *arg0)
 {
-    GamListLocal2<int>::iterator it;
-    GamListLocal2<int>::iterator last;
-    GamListLocal2<int> *list = (GamListLocal2<int> *)(((char *)arg0 + 0x1D24C));
+    GamList<GamElem1D240>::iterator it;
+    GamList<GamElem1D240>::iterator last;
+    GamList<GamElem1D240> *list = &arg0->m_unk1D240;
     it = list->begin();
     last = list->end();
     while (it != last) {
-        if (*it & 1) {
-            *it &= ~1;
+        if ((*it).m_flg & 1) {
+            (*it).m_flg &= ~1;
         }
         ++it;
     }
@@ -2099,42 +1997,11 @@ extern "C" void func_001CB970(void *arg0, void *arg1, int arg2, float *arg3)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBA0C);
 
-template <class T> class GamListLocal {
-public:
-    struct Node {
-        Node *m_prev;       // +0x00
-        Node *m_next;       // +0x04
-        T m_data;           // +0x08
-    };
-
-    class iterator {
-    public:
-        Node *m_node;
-
-        iterator() : m_node(0) {}
-        iterator(Node *theNode) : m_node(theNode) {}
-        iterator(const iterator &theIt) : m_node(theIt.m_node) {}
-        T &operator*() const { return m_node->m_data; }
-        iterator &operator++()
-        {
-            m_node = m_node->m_next;
-            return *this;
-        }
-        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; }
-    };
-
-    unsigned char m_unk00[0x10];
-    Node m_head;            // +0x10
-
-    iterator begin() { return iterator(m_head.m_next); }
-    iterator end() { return iterator(&m_head); }
-};
-
 extern "C" int func_001CBAFC(GamMan *arg0, int arg1)
 {
-    GamListLocal<GamPair>::iterator it;
-    GamListLocal<GamPair>::iterator last;
-    GamListLocal<GamPair> *list = (GamListLocal<GamPair> *)((char *)&arg0->m_unk20B00.m_free.m_head.m_next);
+    GamList<GamPair>::iterator it;
+    GamList<GamPair>::iterator last;
+    GamList<GamPair> *list = &arg0->m_unk20B00;
     it = list->begin();
     last = list->end();
     while (it != last) {
@@ -2155,6 +2022,9 @@ extern "C" void func_001CBD0C(GamMan *arg0)
     v0 += off;
     func_0017762C(v0);
 
+    // m_unk20B00.clear(): every node in use goes back to the free chain.
+    // Kept on ListNode: written with GamList<GamPair>::Chain the stores come
+    // out in another order (8 bytes longer).
     ListNode *head1 = (ListNode *)((char *)&arg0->m_unk20B00.m_used.m_head.m_prev);
     ListNode *head2 = (ListNode *)((char *)&arg0->m_unk20B00.m_free.m_head.m_prev);
 
@@ -2269,11 +2139,11 @@ loop_1:
     return 0;
 }
 
-extern "C" void func_001CC004(Foo *self, int arg1)
+extern "C" void func_001CC004(GamMan *self, int arg1)
 {
     for (int i = 0; i < 0x180; i++) {
-        if (self->ids[i] == arg1) {
-            self->ids[i] = 0;
+        if (self->m_unk1F24C[i] == arg1) {
+            self->m_unk1F24C[i] = 0;
             return;
         }
     }
@@ -2338,13 +2208,9 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CF518);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CF6BC);
 
-struct Struct32 {
-    char data[32];
-} __attribute__((packed));
-
-extern "C" void func_001CF7D0(GamMan *arg0, const Struct32 *arg1)
+extern "C" void func_001CF7D0(GamMan *arg0, const GamMsgRect *arg1)
 {
-    (*(Struct32 *)&arg0->m_unk22280) = *arg1;
+    arg0->m_unk22280 = *arg1;
 }
 
 extern "C" void func_001CF854(GamMan *arg0, int arg1, int arg2, int arg3)
@@ -2513,23 +2379,23 @@ extern "C" int func_001D046C(int arg0, unsigned int arg1)
 
 extern "C" int func_001D0530(GamMan *arg0, int arg1)
 {
-    GamListD0530<GamElemD0530>::iterator it;
-    GamListD0530<GamElemD0530>::iterator last;
-    GamListD0530<GamElemD0530> *list = (GamListD0530<GamElemD0530> *)((char *)&arg0->m_itemStock.m_free.m_num);
+    GamList<GamItemStock>::iterator it;
+    GamList<GamItemStock>::iterator last;
+    GamList<GamItemStock> *list = arg0->getItemStockPtr();
     it = list->begin();
     last = list->end();
     while (it != last) {
-        if ((*it).unk0c == arg1) {
+        if ((*it).m_item.m_oid == arg1) {
             return 1;
         }
         ++it;
     }
 
-    char *vec = (char *)&arg0->m_itemHave.m_begin;
-    char *start = *(char **)vec;
-    char *finish = *(char **)(vec + 4);
-    for (; start != finish; start += 0x10) {
-        if (*(int *)(start + 4) == arg1) {
+    GamItemHave *vec = arg0->getItemHavePtr();
+    GamItem *start = vec->m_begin;
+    GamItem *finish = vec->m_end;
+    for (; start != finish; start++) {
+        if (start->m_oid == arg1) {
             return 1;
         }
     }
