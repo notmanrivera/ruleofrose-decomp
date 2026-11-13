@@ -1,4 +1,5 @@
 #include "include_asm.h"
+static inline unsigned int padTrigU_F40(int p) { return *(unsigned short *)((char *)p + 0x7A); }
 struct EntAEC50 {
     int unk0;
     const char *unk4;
@@ -481,7 +482,35 @@ INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9440);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A7C54);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A7F40);
+extern "C" int func_001A7F40(int arg0, int arg1)
+{
+    int temp_v1;
+    int var_s2;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x1454);
+    var_s2 = 0;
+    switch (temp_v1) {                              
+    case 13:
+        break;
+    case 0:
+        M2C_FIELD(arg0, int *, 0x1404) = 0;
+        M2C_FIELD(arg0, int *, 0x1454) = 0xD;
+        X_func_001A6BF8();
+        X_func_001A6FE8(arg0);
+        break;
+    case 17:
+        M2C_FIELD(arg0, int *, 0x1454) = 0;
+        break;
+    case 1:
+        M2C_FIELD(arg0, int *, 0x1454) = 0xD;
+        break;
+    }
+    if ((padTrigU_F40(arg1) >> 0xD) & 1) {
+        var_s2 = 2;
+        X_func_0017F8FC((int)&D_007B2580, 2);
+    }
+    return var_s2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A8000);
 
