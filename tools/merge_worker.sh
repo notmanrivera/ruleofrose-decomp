@@ -3,6 +3,7 @@
 #
 #   tools/merge_worker.sh <name>          # worktree ../ror-wt-<name>, branch wt/<name>
 #   tools/merge_worker.sh <name> --check  # verify only, change nothing
+#   tools/merge_worker.sh <name> --defer  # full build after returning (see 3)
 #
 # 1. Lists the worker's commits not yet in the current branch (by patch, so
 #    commits already cherry-picked are skipped) and refuses any that touch
@@ -12,12 +13,18 @@
 #    NON_MATCHING are fine, a mismatching compiled function is not).
 # 3. Cherry-picks them, runs the full build and requires build/ok; on any
 #    failure the branch goes back to where it was.
+#    With --defer the build runs in the background after the reset (it keeps
+#    the merge lock, so the next merge waits for it): the worker gets its next
+#    batch at once instead of after the build. match.py already passed, so the
+#    build rarely fails; when it does, build/workers/BUILD_FAILED says so and
+#    tools/orca/next_batch.sh stops every worker until it is dealt with.
 # 4. Resets the worker's branch to the result (only if its tree is clean),
 #    and prints the progress before and after.
 set -eu
 MAIN="$(cd "$(git -C "$(dirname "$0")" rev-parse --path-format=absolute --git-common-dir)/.." && pwd)"
 [ $# -ge 1 ] || { sed -n '4,5p' "$0" | sed 's/^# *//'; exit 2; }
-NAME="$1"; CHECK="${2:-}"
+NAME="$1"; shift; CHECK=""; DEFER=""
+for a in "$@"; do case $a in --check) CHECK=--check ;; --defer) DEFER=1 ;; *) echo "unknown option $a"; exit 2 ;; esac; done
 WT="$(dirname "$MAIN")/ror-wt-$NAME"
 PY="$MAIN/tools/.venv/Scripts/python.exe"
 [ -x "$PY" ] || PY="$MAIN/tools/.venv/bin/python"
@@ -59,12 +66,16 @@ else
   BEFORE="$(git rev-parse HEAD)"; P0="$(progress)"
   # shellcheck disable=SC2086
   git cherry-pick $COMMITS >/dev/null || { git cherry-pick --abort; echo "cherry-pick failed; nothing merged"; exit 1; }
-  rm -f build/ok
-  if ! tools/dock ninja >build/ninja-merge.log 2>&1 || [ ! -e build/ok ]; then
-    git reset -q --hard "$BEFORE"
-    echo "full build failed (build/ninja-merge.log); merge undone"; exit 1
+  if [ -n "$DEFER" ]; then
+    echo "merged (full build in the background); progress $P0 -> $(progress)"
+  else
+    rm -f build/ok
+    if ! tools/dock ninja >build/ninja-merge.log 2>&1 || [ ! -e build/ok ]; then
+      git reset -q --hard "$BEFORE"
+      echo "full build failed (build/ninja-merge.log); merge undone"; exit 1
+    fi
+    echo "merged, build/ok; progress $P0 -> $(progress)"
   fi
-  echo "merged, build/ok; progress $P0 -> $(progress)"
 fi
 
 [ "$CHECK" = "--check" ] && exit 0
@@ -77,4 +88,16 @@ elif [ -z "$(git -C "$WT" status --porcelain --untracked-files=no)" ]; then
   echo "wt/$NAME reset to $BRANCH"
 else
   echo "wt/$NAME has uncommitted work; left as is"
+fi
+
+# The deferred build, holding the lock until it ends.
+if [ -n "$DEFER" ] && [ -n "$COMMITS" ]; then
+  trap - EXIT INT TERM
+  (
+    rm -f build/ok
+    if ! tools/dock ninja >build/ninja-merge.log 2>&1 || [ ! -e build/ok ]; then
+      echo "$(date '+%F %T') after merging wt/$NAME ($BEFORE..$(git rev-parse --short HEAD)): full build failed, see build/ninja-merge.log"         > build/workers/BUILD_FAILED
+    fi
+    rmdir "$L"
+  ) </dev/null >/dev/null 2>&1 &
 fi
