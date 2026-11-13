@@ -5,6 +5,7 @@
     tools/.venv/bin/python tools/work.py mag/maglifepc func_0011B2C4          # start, or check
     tools/.venv/bin/python tools/work.py mag/maglifepc func_0011B2C4 --watch  # check on every save
     tools/.venv/bin/python tools/work.py mag/maglifepc func_0011B2C4 --done   # into src/ if it matches
+    tools/.venv/bin/python tools/work.py mag/maglifepc func_0011B2C4 --keep   # giving up: best try into src/
 
 The first call writes build/work/<file>/<function>.cpp: m2c's draft as a
 comment, and under it a first version of the function (auto_m2c's mechanical
@@ -17,7 +18,14 @@ Each check puts the function in a copy of src/<file>.cpp in place of its
 INCLUDE_ASM (the function is compiled with everything the file already
 includes and declares), compiles it and prints the function's status and,
 if it differs, the instructions side by side: game | ours. src/ is only
-touched by --done.
+touched by --done and --keep.
+
+Every check that compiles remembers the best version so far (fewest
+instructions off) in build/work/.best/<file>/<function>.cpp. --keep writes
+that one into src/ under #ifdef NON_MATCHING (the asm stays what is built):
+it does what the game does, which the PC port can use, and the next try
+starts from it. A function that already has a NON_MATCHING attempt starts
+from that attempt, and --done replaces the whole #ifdef block.
 """
 import argparse
 import re
@@ -32,7 +40,15 @@ import twins  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 WORK = ROOT / "build/work"
+BEST = WORK / ".best"                 # apart from the scratch files: workers delete those
 DECL, FUNC = "// ---- declarations", "// ---- function"
+
+
+def nm_block(text, name, fn):
+    """The '#ifdef NON_MATCHING ... #else INCLUDE_ASM #endif' block around the
+    function's INCLUDE_ASM (with its '// NON_MATCHING' note), or None."""
+    return re.search(r"(?:^// NON_MATCHING[^\n]*\n)?^#ifdef NON_MATCHING\n((?:(?!^#ifdef NON_MATCHING).)*?)^#else\n"
+                     + re.escape(include_line(name, fn)) + r"\n#endif\n", text, re.S | re.M)
 
 
 def include_line(name, fn):
@@ -50,6 +66,7 @@ def start(name, fn, path):
                   if re.match(r"^.*?\b(\w+)\(", h).group(1) == fn), None)
     pre, text = [], include_line(name, fn) + "\n"
     comment = "// m2c has no draft for this function\n"
+    old = nm_block(src.read_text(encoding="utf8"), name, fn)
     if found:
         hdr, body = found
         comment = "".join(f"// {ln}\n" for ln in (hdr + "\n" + body + "}").split("\n"))
@@ -63,6 +80,10 @@ def start(name, fn, path):
             pre, text = sorted(c.pre), c.text
         except auto.Reject as e:
             comment += f"// (no mechanical translation: {e})\n"
+    if old:                               # an earlier attempt beats m2c's draft
+        text = old.group(1)
+        comment += "// The function below is the NON_MATCHING attempt already in src/: go on from it.\n"
+        print("starting from the NON_MATCHING attempt in src/")
     twin = twins.twin_of(name, fn)
     body = twins.source_of(*twin) if twin else None
     if body:
@@ -93,7 +114,34 @@ def assemble(name, fn, path):
     text = text[:at] + block + text[at:]
     if include_line(name, fn) not in text:
         sys.exit(f"{fn} is no longer INCLUDE_ASM in src/{name}.cpp")
+    old = nm_block(text, name, fn)
+    if old:                               # the attempt and its #ifdef go
+        return text[:old.start()] + func + "\n" + text[old.end():]
     return text.replace(include_line(name, fn), func, 1)
+
+
+def kept(name, fn, path, status):
+    """src/<name>.cpp with the scratch file's function under #ifdef NON_MATCHING."""
+    work = path.read_text(encoding="utf8")
+    func = work[work.index(FUNC) + len(FUNC):].strip("\n")
+    if func.strip() == include_line(name, fn):
+        sys.exit("nothing to keep: the best version is still the INCLUDE_ASM line")
+    block = (f"// NON_MATCHING: {status}\n#ifdef NON_MATCHING\n{func}\n#else\n"
+             f"{include_line(name, fn)}\n#endif")
+    text = assemble(name, fn, path)       # the declarations go in as for a check
+    return text.replace(func, block, 1) if func in text else None
+
+
+def score(status):
+    """Instructions off for a check's status text ('MATCH' 0, '8/23 differ' 8);
+    a wrong size or differing relocations count extra."""
+    if status.endswith("MATCH"):
+        return 0
+    m = re.search(r"(\d+)/\d+ differ", status)
+    n = int(m.group(1)) if m else 0
+    r = re.search(r"(\d+) relocs? differ", status)
+    n += int(r.group(1)) if r else 0
+    return n + (1000 if "size" in status else 0)
 
 
 def check(name, fn, path, quiet=False):
@@ -105,21 +153,58 @@ def check(name, fn, path, quiet=False):
     except match.CompileError as e:
         print(re.sub(r"^.*?\.cpp:", f"{name}.cpp:", str(e).strip(), flags=re.M))
         return False, False
-    mine, on, good = [], False, False
+    mine, on, good, status = [], False, False, None
     for line in report:
         g = re.match(r"^  0x[0-9A-F]+ (\S+)\s+0x[0-9a-f]+\s+(.*)$", line)
         if g or line.startswith("  .") or not line.startswith(" "):
             on = bool(g) and g.group(1) == fn
             if on:
-                good = g.group(2).strip().endswith("MATCH")
+                status = g.group(2).strip()
+                good = status.endswith("MATCH")
         if on:
             mine.append(line)
     print("\n".join(mine[:1] if good or quiet else mine))
+    if status is not None:                # compiled: is it the best one yet?
+        best = BEST / name / f"{fn}.cpp"
+        prev = best.read_text(encoding="utf8").split("\n", 1)[0].removeprefix("// best: ") if best.exists() else None
+        if prev is None or score(status) <= score(prev):
+            best.parent.mkdir(parents=True, exist_ok=True)
+            best.write_text(f"// best: {status}\n" + path.read_text(encoding="utf8"), encoding="utf8", newline="\n")
     if good and not ok:
         print("the function matches, but not the whole object:")
         print("\n".join(ln for ln in report if ln.startswith("  .") or "NOT MATCHING" in ln
                         or (re.match(r"^  0x", ln) and not re.search(r"(MATCH|asm)$", ln))))
     return good, ok
+
+
+def keep(name, fn):
+    best = BEST / name / f"{fn}.cpp"
+    if not best.exists():
+        sys.exit(f"no best version of {fn} yet: check it with work.py first")
+    status, body = best.read_text(encoding="utf8").split("\n", 1)
+    status = status.removeprefix("// best: ")
+    if status.endswith("MATCH"):
+        sys.exit("its best version matches: use --done")
+    tmp = WORK / name / f"{fn}.keep.cpp"
+    tmp.parent.mkdir(parents=True, exist_ok=True)
+    tmp.write_text(body, encoding="utf8", newline="\n")
+    text = kept(name, fn, tmp, status)
+    if text is None:
+        sys.exit("could not place the function in the file")
+    # With NON_MATCHING undefined the asm is what compiles: the object must
+    # still match (the declarations must not add code or data).
+    trial = WORK / name / f"{fn}.trial.cpp"
+    trial.write_text(text, encoding="utf8", newline="\n")
+    try:
+        ok, _ = match.compare(name, trial, diff=False)
+    except match.CompileError as e:
+        sys.exit(f"not written: the file does not compile with it\n{e}")
+    if not ok:
+        sys.exit("not written: its declarations change the object")
+    (ROOT / f"src/{name}.cpp").write_text(text, encoding="utf8", newline="\n")
+    tmp.unlink()
+    print(f"src/{name}.cpp: {fn} kept under NON_MATCHING ({status}). "
+          f'Commit it: git commit -am "{name}: {fn} (NON_MATCHING)"')
 
 
 def main():
@@ -128,9 +213,14 @@ def main():
     ap.add_argument("function")
     ap.add_argument("--watch", action="store_true", help="check again whenever the scratch file is saved")
     ap.add_argument("--done", action="store_true", help="write the function into src/ if the object matches")
+    ap.add_argument("--keep", action="store_true",
+                    help="giving up: write the best version tried into src/ under #ifdef NON_MATCHING")
     a = ap.parse_args()
     name = a.name.removeprefix("src/").removesuffix(".cpp")
     path = WORK / name / f"{a.function}.cpp"
+    if a.keep:
+        keep(name, a.function)
+        return
     if not match.server_up():
         print("compile server down (tools/match.py --server start): each check takes a minute on Windows")
     if not path.exists():

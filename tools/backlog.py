@@ -101,7 +101,7 @@ def main():
                     continue
             elif (f, name) in skip:
                 continue
-            if n is not None and n <= args.max and (args.nonmatching or not nm):
+            if n is not None and n <= args.max and (args.nonmatching or args.retry or not nm):
                 rows.setdefault(f, []).append((n, name, nm))
 
     if args.file:
@@ -110,7 +110,7 @@ def main():
         tw = {name for _, name, _ in rows.get(args.file, []) if twins.twin_of(args.file, name, idx)}
         items = sorted(rows.get(args.file, []), key=lambda r: (r[1] not in tw, r[0], r[1]))
         if args.names:
-            print(", ".join([name for _, name, nm in items if not nm][: args.names]))
+            print(", ".join([name for _, name, nm in items if args.retry or not nm][: args.names]))
             return
         for n, name, nm in items:
             print(f"{n:5}  {name}{'  (NON_MATCHING attempt)' if nm else ''}{'  twin' if name in tw else ''}")
