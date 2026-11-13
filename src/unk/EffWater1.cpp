@@ -93,7 +93,18 @@ extern "C" int EffSteam2Prim__vfunc_02(int arg0, int arg1)
     return var_v0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam2Prim__vfunc_05);
+extern "C" int EffSteam2Prim__vfunc_05(int arg0)
+{
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, unsigned char *, 0x48) + 1;
+    M2C_FIELD(arg0, unsigned char *, 0x48) = temp_v1;
+    if ((unsigned int) (temp_v1 & 0xFF) >= 0x96U) {
+        return 0;
+    }
+    M2C_FIELD(arg0, float *, 0x34) = (float) (M2C_FIELD(arg0, float *, 0x34) + ((M2C_FIELD(arg0, float *, 0x40) * -0.09999999590218067f) / 30.0f));
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam2Prim__vfunc_08);
 
