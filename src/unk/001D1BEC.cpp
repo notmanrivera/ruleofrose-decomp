@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void Xviii_func_001DB19C(int, int, int) asm("func_001DB19C");
 extern "C" void Xviii_func_001DB18C(int, int, int) asm("func_001DB18C");
 struct Obj2D7C {
     struct Node {
@@ -197,7 +198,22 @@ extern "C" int func_001D2270(int arg0, unsigned int arg1, int arg2, int arg3)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2334);
+extern "C" int func_001D2334(int arg0, unsigned int arg1, int arg2, int arg3)
+{
+    if (X_func_001D046C(arg0, arg1) != 0) {
+        switch ((arg1 >> 0x1C) & 3) {
+            case 0:
+                Xviii_func_001DB19C(X_func_001D2D00(arg0, arg1), arg2, arg3);
+                break;
+            case 1:
+                Xviii_func_001DB19C(X_func_001D2B8C(arg0, arg1), arg2, arg3);
+                break;
+            case 2:
+                Xviii_func_001DB19C(X_func_001D2BA8(arg0, arg1), arg2, arg3);
+                break;
+        }
+    }
+}
 
 extern "C" void func_001D23F8(int arg0, int arg1, int arg2)
 {
