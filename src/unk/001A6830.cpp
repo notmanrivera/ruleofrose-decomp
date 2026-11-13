@@ -1,4 +1,12 @@
 #include "include_asm.h"
+struct EntAEC50 {
+    int unk0;
+    const char *unk4;
+    char pad[0x10];
+};
+extern EntAEC50 X_D_002ACA20_AEC50[] asm("D_002ACA20");
+extern "C" void Xvp_func_0018F744(void *, void *, const char *) asm("func_0018F744");
+extern "C" int Xvp_func_0018FEBC(void *) asm("func_0018FEBC");
 extern "C" void Xvp_func_001AB5E4(void *) asm("func_001AB5E4");
 extern "C" void Xvp_func_001AB6F4(void *) asm("func_001AB6F4");
 struct MsgAB4E0 {
@@ -2022,7 +2030,29 @@ extern "C" int func_001AEC48(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AEC50);
+extern "C" void func_001AEC50(int arg0)
+{
+    int lang = D_007812AC;
+    int i;
+    void *p;
+
+    for (i = 0; X_D_002ACA20_AEC50[i].unk0 != -1; i++) {
+        if (X_D_002ACA20_AEC50[i].unk0 == 1) {
+            if (lang != 0) {
+                if (lang >= 0) {
+                    if (lang < 5) {
+                        X_D_002ACA20_AEC50[i].unk4 = "tex01_eu.tm2";
+                    }
+                }
+            }
+            break;
+        }
+    }
+    p = (char *)arg0 + 0xA0;
+    Xvp_func_0018F744(p, X_D_002ACA20_AEC50, "data/mnurpk/mnuitem.rpk");
+    while (Xvp_func_0018FEBC(p) == 0) {
+    }
+}
 
 extern "C" void func_001AED08(int arg0, int arg1)
 {
