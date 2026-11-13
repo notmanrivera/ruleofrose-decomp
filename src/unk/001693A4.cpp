@@ -11,6 +11,9 @@ extern "C" int X_func_00180EA8(...) asm("func_00180EA8");
 extern "C" int X_func_001D7F48(...) asm("func_001D7F48");
 extern "C" int X_func_001D81C4(...) asm("func_001D81C4");
 extern "C" int X_func_001D859C(...) asm("func_001D859C");
+extern "C" void Xiii_func_00166B74(int, int) asm("func_00166B74");
+extern "C" int Xiii_func_001665B8(int, int) asm("func_001665B8");
+extern "C" int Xiiiiii_func_001E4EBC(int, int, int, int, int) asm("func_001E4EBC");
 extern "C" int X_func_001D8778(...) asm("func_001D8778");
 extern "C" int X_memset(...) asm("memset");
 extern int D_007812C0;
@@ -67,7 +70,16 @@ extern "C" void func_001694C4(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_001694CC);
+static inline char *getSnd(void *g) { return (char *)g + 0x18E00; }
+extern "C" int func_001694CC(int arg0, int arg1)
+{
+    struct { int w[4]; } stack;
+    Xiii_func_00166B74(arg0, (int)&stack);
+    int v = *(int *)(arg0 + 0xC);
+    stack.w[3] = 0;
+    int oid = Xiii_func_001665B8(v, arg1);
+    return Xiiiiii_func_001E4EBC((int)getSnd(&D_007812C0), oid, 0, (int)&stack, 0);
+}
 
 extern "C" void func_00169538(int arg0, int arg1)
 {
