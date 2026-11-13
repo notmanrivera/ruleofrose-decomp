@@ -564,7 +564,27 @@ extern "C" void HfmOutBreak__vfunc_02(int arg0)
     M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x150) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmOutBreak__vfunc_03);
+extern "C" int HfmOutBreak__vfunc_03(int arg0)
+{
+    int temp_s0;
+    int temp_v0;
+
+    temp_s0 = M2C_FIELD(arg0, int *, 4);
+    switch (temp_s0) {                              
+    case 0:
+        X_func_001680A0(arg0, 0x30, 0);
+        X_func_001694CC(arg0, 0x2A);
+        M2C_FIELD(arg0, int *, 4) = 1;
+        break;
+    case 1:
+        if (check_001D19A8(arg0, (int)&D_007812C0) != 0) {
+            X_func_0016649C(M2C_FIELD(arg0, int *, 0xC), 1);
+            return 7;
+        }
+        break;
+    }
+    return -1;
+}
 
 extern "C" void HfmOutBreak__vfunc_04()
 {
