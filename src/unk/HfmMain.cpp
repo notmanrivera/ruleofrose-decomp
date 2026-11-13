@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int X_func_00169810(...) asm("func_00169810");
+extern "C" int X_func_001CA8E8(...) asm("func_001CA8E8");
+extern "C" int X_func_001CC250(...) asm("func_001CC250");
+extern "C" int X_func_001DA228(...) asm("func_001DA228");
+extern "C" int X_func_001DC48C(...) asm("func_001DC48C");
 extern "C" int X_func_00104394(...) asm("func_00104394");
 extern "C" void Xiif_func_00166F50(int, int, float) asm("func_00166F50");
 extern "C" void Xvif_func_00146C8C(int, float) asm("func_00146C8C");
@@ -382,7 +387,24 @@ extern "C" void HfmMain__vfunc_01(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001452FC);
+extern "C" void func_001452FC(int arg0)
+{
+    struct { unsigned short sp0; unsigned short sp2; int sp4; } stack;
+
+    X_func_001DA228(M2C_FIELD(arg0, int *, 0x20), 0x67, (int)&stack.sp4);
+    if (stack.sp4 != 0) {
+        int base;
+        X_func_001DA228(M2C_FIELD(arg0, int *, 0x20), 0x66, (int)&stack.sp0);
+        base = (int)&D_007812C0;
+        X_func_001DC48C(base + 0x22220, stack.sp0, 0xF, (int)&stack.sp2);
+        if (stack.sp2 != 0xFFFF) {
+            X_func_001CA8E8(base, stack.sp2, stack.sp4, stack.sp0, 0, -1, 1);
+        } else {
+            X_func_001CC250(base, -1, stack.sp4, stack.sp0, 0, 0, 1);
+        }
+        X_func_00169810(M2C_FIELD(arg0, int *, 0), stack.sp4);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmMain__vfunc_04);
 
