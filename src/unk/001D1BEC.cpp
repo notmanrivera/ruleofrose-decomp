@@ -173,7 +173,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D3B44);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D4370);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D44E4);
+extern "C" int func_001D44E4(int arg0)
+{
+    int a = M2C_FIELD(arg0, int *, 0x222C4);
+    int b = M2C_FIELD(arg0, int *, 0x222C8);
+    int var_a1 = 0;
+
+    if ((a != 0) && (b != 0) && (M2C_FIELD((*(int *)&D_007B205C), int *, 0x190) == M2C_FIELD((*(int *)&D_007B205C), int *, 0x194))) {
+        int mask = M2C_FIELD(arg0, int *, 0x21F48) & 0x8000;
+        var_a1 = (mask == 0);
+    }
+    return var_a1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D4540);
 
