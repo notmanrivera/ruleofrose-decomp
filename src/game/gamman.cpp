@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void func_001D5DA0(GamMan *, int);
+extern "C" void func_001D3588(GamMan *);
 extern "C" void func_0017756C(void *, int);
 extern "C" int X_func_001D2BA8(...) asm("func_001D2BA8");
 extern "C" int X_func_00191E04(...) asm("func_00191E04");
@@ -2317,7 +2319,44 @@ extern "C" void func_001CC7C8(GamMan *self, int theOID)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CC970);
+// Removes the object with this id from the AVFchr and VFchr lists, freeing
+// its model.
+extern "C" void func_001CC970(GamMan *self, int theOID)
+{
+    if (self->m_vfchrList.size() != 0) {
+        func_001D5DA0(self, theOID);
+
+        GamList<ObjStat *>::iterator it;
+        GamList<ObjStat *>::iterator last;
+        GamList<ObjStat *> *list = self->getAVFchrListPtr();
+        it = list->begin();
+        last = list->end();
+        while (it != last) {
+            if ((*it)->getOID() == theOID) {
+                it = self->m_avfchrList.erase(it);
+            } else {
+                ++it;
+            }
+        }
+
+        list = self->getVFchrListPtr();
+        it = list->begin();
+        last = list->end();
+        while (it != last) {
+            ObjStat *obj = *it;
+            if (obj->getOID() == theOID) {
+                if (obj->getChrID() != -1) {
+                    func_001D3588(self);
+                    func_001D966C((int)*it);
+                }
+                func_001CC004(self, theOID);
+                self->m_vfchrList.erase(it);
+                return;
+            }
+            ++it;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CCC30);
 
