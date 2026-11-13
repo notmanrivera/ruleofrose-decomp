@@ -18,7 +18,7 @@ H=$1; BUSY=$2
 [ -n "$H" ] && [ -n "$BUSY" ] || { sed -n '6p' "$0" | sed 's/^# *//'; exit 2; }
 MAIN="$(cd "$(git -C "$(dirname "$0")" rev-parse --path-format=absolute --git-common-dir)/.." && pwd)"
 PY="$MAIN/tools/.venv/Scripts/python.exe"; [ -x "$PY" ] || PY="$MAIN/tools/.venv/bin/python"
-QUOTA='quota (reached|exceeded)|[Rr]ate.?limit|resets in [0-9]+h|(HTTP|status|error) 429|[Ii]nsufficient (balance|credits)|out of credits'
+QUOTA='quota (reached|exceeded)|[Rr]ate.?limit|resets in [0-9]+h|(HTTP|status|error) 429|[Ii]nsufficient (balance|credits)|out of credits|[Uu]sage limit reached|Resets [0-9]+:[0-9]+'
 FILTER='[Cc]ontent (filter|policy)|blocked by (safety|the filter)|SAFETY|[Rr]esponse was blocked'
 sleep 60
 while :; do
