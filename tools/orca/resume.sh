@@ -7,7 +7,8 @@
 # 1. Docker: started (Windows: Docker Desktop) and waited for.
 # 2. A merge left half done: a merge.lock with no merge running is removed,
 #    and without build/ok the full build runs again (it must pass).
-# 3. The compile server (tools/match.py --server start).
+# 3. The compile server (tools/match.py --server start), and m2c's context
+#    (tools/m2c_context/*.c included) copied to every worktree.
 # 4. Each worker with a build/workers/<name>.env: its terminal handle is
 #    looked up again by worktree in `orca terminal list` (Orca gives new
 #    handles after a restart) and saved.
@@ -39,8 +40,11 @@ if [ ! -e build/ok ]; then
 fi
 echo "build: ok"
 
-# 3. Compile server.
+# 3. Compile server, and m2c's context (with tools/m2c_context/*.c) for
+# every worktree.
 "$PY" tools/match.py --server start | tail -1
+"$PY" -c "import sys; sys.path.insert(0, 'tools'); import auto_m2c as a; a.write_context(a.signatures(1))"
+for d in ../ror-wt-*/build/auto; do [ -d "$d" ] && cp build/auto/context.c build/auto/sigs.json "$d/"; done
 
 # 4 and 5. Workers.
 terms=$(orca terminal list --json 2>/dev/null | "$PY" -c '

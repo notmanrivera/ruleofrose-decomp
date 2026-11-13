@@ -377,9 +377,16 @@ def definitions(draft):
 
 
 def write_context(sigs):
-    lines = [TYPEDEFS]
+    # Hand-made context first: flattened structs of recovered classes and
+    # prototypes typed with them (tools/m2c_context/*.c); those prototypes
+    # replace the generated ones of the same functions.
+    lines, given = [TYPEDEFS], set()
+    for extra in sorted((Path(__file__).resolve().parent / "m2c_context").glob("*.c")):
+        text = extra.read_text(encoding="utf8")
+        lines.append(text if text.endswith("\n") else text + "\n")
+        given |= set(re.findall(r"^[^/#\n][^\n(]*?\b([A-Za-z_]\w*)\s*\([^;{]*\)\s*;", text, re.M))
     for name, (ret, ints, floats) in sorted(sigs.items()):
-        if re.fullmatch(r"[A-Za-z_]\w*", name):
+        if re.fullmatch(r"[A-Za-z_]\w*", name) and name not in given:
             lines.append(f"{ret} {name}({', '.join(ints + ['f32'] * floats) or 'void'});\n")
     text = "".join(lines)
     if not CONTEXT.exists() or CONTEXT.read_text(encoding="utf8") != text:

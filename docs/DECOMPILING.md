@@ -541,6 +541,34 @@ Found while matching; each one cost a function at least once.
 - **Declaration order of locals does not choose registers** (tried on 813
   functions): look at how the values are used instead.
 
+From recovering `game/gamman`'s types (2026-11-12):
+
+- **Recover a file's class first, from its linkonce inline accessors**
+  (`symbols/symbol_addrs.txt`, `asm/inline/<name>.s`): each gives a
+  member's offset and its original name. Read them before the asm, write
+  the class with offset comments and `static_assert`-style checks, then the
+  file's medium and large functions become tractable; its flattened C copy
+  in `tools/m2c_context/<file>.c` makes m2c's drafts say `this->m_x`.
+- **A by-value struct parameter is copied by the callee** (EABI): `ld/sd`
+  from `$a1` to the stack at entry means `T theItem`, not `T *`.
+- A struct aligned to 16 whose assignment is `ldl/ldr` has an `operator=`
+  that assigns an inner struct aligned to 4.
+- `if ((unsigned)list->size() >= N) return 0;` in the caller, then an
+  unchecked inline `push_back`, matched; the same test inside an inline
+  returning `bool` gave `xori`, or the temporary in `$v0` instead of `$v1`.
+- `--m_num` / `++m_num` in an inline keeps `lw/sw off(base)`; `m_num--`
+  computes the member's address first.
+- Unlinking a middle node, `p->m_next = n->m_next; Node *prev = n->m_prev;
+  p = n->m_next; p->m_prev = prev;` (one variable reused) gives the game's
+  registers (six functions).
+- `erase(it); return;` and `it = erase(it); return;` differ: the game does
+  not store the result when it returns right after.
+- A `return 1` in each branch, not one after the `if/else`, gives each path
+  its own `addiu $v0` in the delay slot.
+- A local used only as an out-parameter gets its stack slot by declaration
+  order among the 16-byte iterator slots; iterators declared inside the
+  `if`, after a call, are zeroed after that call.
+
 ## 4. Name it
 
 Functions in the binary are referenced by other (asm) files, so the C++ name
