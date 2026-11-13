@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" float Xf_func_001D8C50(int) asm("func_001D8C50");
 extern "C" void Xvp_func_001D10D0(int, int, int) asm("func_001D10D0");
 extern "C" void Xvp_func_001D1410(int, int, int) asm("func_001D1410");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -54,7 +55,17 @@ INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D1D5C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D1E88);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D1F14);
+extern "C" float func_001D1F14(int arg0, unsigned int arg1)
+{
+    switch ((arg1 >> 0x1C) & 3) {
+        case 1:
+            return Xf_func_001D8C50(X_func_001D2B8C(arg0, arg1));
+        case 2:
+            return Xf_func_001D8C50(X_func_001D2BA8(arg0, arg1));
+        default:
+            return 0.0f;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D1F74);
 
