@@ -849,7 +849,22 @@ extern "C" void func_00148304(int arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_0014837C);
+extern "C" void func_0014837C(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0x6C) = M2C_FIELD(arg0, int *, 0x6C) - 1;
+    X_func_001693EC(arg0, 1, 0xA, 0x13);
+    if (X_func_00118FEC__9MagSystem((int)&D_006E9840) == 3) {
+        if (X_func_001457F0(M2C_FIELD(arg0, int *, 0xC)) != 0) {
+            X_func_0016947C(arg0);
+            return Xv_func_00147760(arg0);
+        }
+    } else if (M2C_FIELD(arg0, int *, 0x6C) <= 0) {
+        X_func_0016947C(arg0);
+        X_func_001FAC60(0xB, M2C_FIELD(arg0, int *, 0), 0, 0, 0x2B, M2C_FIELD(arg0, int *, 0x14), 0);
+        X_func_001680A0(arg0, (M2C_FIELD(arg0, int *, 0x60) == 0) ? 0x24 : 0x25, 0x100);
+        X_func_00148450(arg0);
+    }
+}
 
 extern "C" int func_00148450(int arg0)
 {
