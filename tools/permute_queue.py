@@ -109,6 +109,7 @@ def main():
     if a.list:
         return
     branch = git("-C", str(main_dir), "branch", "--show-current").stdout.strip()
+    subprocess.run([py, "tools/match.py", "--server", "start"], cwd=ROOT, check=True)   # this worktree's
     for off, name, fn, status in queue:
         if not git("status", "--porcelain", "--untracked-files=no").stdout.strip():
             git("reset", "-q", "--hard", branch)
