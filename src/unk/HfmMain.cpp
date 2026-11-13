@@ -1,4 +1,13 @@
 #include "include_asm.h"
+extern "C" int Xh_func_001D19A8(...) asm("func_001D19A8");
+static inline int check_001D19A8(int arg0, int d)
+{
+    int ret = Xh_func_001D19A8(d, (*(int *)(arg0 + 0)));
+    if (ret != 0) {
+        (*(int *)((*(int *)(arg0 + 0xC)) + 0x2C)) = 1;
+    }
+    return ret;
+}
 extern "C" int Xii_func_0012A974(int, int) asm("func_0012A974");
 extern "C" int Xii_func_0012A9EC(int, int) asm("func_0012A9EC");
 extern "C" void Xv_func_00147760(int) asm("func_00147760");
@@ -691,7 +700,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001480E0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001481B8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_0014827C);
+extern "C" void func_0014827C(int arg0)
+{
+    int temp_v0;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x48) + 1;
+    M2C_FIELD(arg0, int *, 0x48) = temp_v0;
+    if ((temp_v0 >= 0x29) && (M2C_FIELD(arg0, int *, 0x84) == 0)) {
+        X_func_001694CC(arg0, 0x37);
+        M2C_FIELD(arg0, int *, 0x84) = 1;
+    }
+    if (check_001D19A8(arg0, (int)&D_007812C0) != 0) {
+        M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x238) = 0;
+        X_func_00146AE4(arg0);
+    }
+}
 
 extern "C" void func_00148304(int arg0)
 {
