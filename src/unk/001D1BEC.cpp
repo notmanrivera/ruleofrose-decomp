@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void X_func_001D1C80(void *, unsigned int, int, void *) asm("func_001D1C80");
+extern "C" void X_func_001D1D5C(void *, unsigned int, int, void *) asm("func_001D1D5C");
 extern "C" void Xv_func_001DAC8C(int, int, int) asm("func_001DAC8C");
 extern "C" float Xf_func_001D8C50(int) asm("func_001D8C50");
 extern "C" void Xvp_func_001D10D0(int, int, int) asm("func_001D10D0");
@@ -220,7 +222,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D4730);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D480C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D49D0);
+extern "C" void func_001D49D0(int arg0, unsigned int arg1, float fparg0)
+{
+    struct {
+        int f0;
+        int f4;
+        int f8;
+        int fC;
+        float f10;
+        char pad[0x1C];
+    } stack;
+    X_func_001D1C80(&D_007812C0, arg1, 0x18, &stack);
+    stack.f4 = 4;
+    stack.f10 = fparg0;
+    X_func_001D1D5C(&D_007812C0, arg1, 0x18, &stack);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/001D1BEC", D_002FC130);
 
