@@ -44,6 +44,15 @@ def held_files(main):
     return out
 
 
+def note_off(note):
+    """Instructions off as a NON_MATCHING note states it, or None."""
+    for pat in (r"(\d+) edits", r"(\d+)/\d+ differ", r"(\d+) of \d+ instructions"):
+        m = re.search(pat, note)
+        if m:
+            return int(m.group(1))
+    return None
+
+
 def near_misses(max_off, skip_files):
     """[(off, file, function, status)], closest first."""
     found = []
@@ -60,9 +69,9 @@ def near_misses(max_off, skip_files):
             for j in range(i + 2, min(i + 2000, len(lines))):
                 g = backlog.INCLUDE.search(lines[j])
                 if g and lines[j - 1].startswith("#else"):
-                    off = work.score(m.group(1)) if re.search(r"\d", m.group(1)) else 999
-                    if off <= max_off:
-                        found.append((off, name, g.group(2), m.group(1)))
+                    off = note_off(m.group(1))
+                    if off is None or off <= max_off:     # unknown: measured when its turn comes
+                        found.append((99 if off is None else off, name, g.group(2), m.group(1)))
                     break
     return sorted(found)
 
@@ -105,8 +114,12 @@ def main():
             git("reset", "-q", "--hard", branch)
         print(f"\n== {name} {fn}: {status}", flush=True)
         r = subprocess.run([py, "tools/work.py", name, fn], cwd=ROOT, capture_output=True, text=True)
-        if "differ" not in r.stdout and "MATCH" not in r.stdout:
+        st = re.search(rf"^  0x[0-9A-F]+ {re.escape(fn)}\s+0x[0-9a-f]+\s+(.*)$", r.stdout, re.M)
+        if not st:
             print("  does not compile as it is; next")
+            continue
+        if work.score(st.group(1).strip()) > a.max_off:
+            print(f"  {st.group(1).strip()}: further off than --max-off; next")
             continue
         subprocess.run([py, "tools/permute.py", name, fn, "--minutes", str(a.minutes)], cwd=ROOT)
         LOG.parent.mkdir(parents=True, exist_ok=True)
