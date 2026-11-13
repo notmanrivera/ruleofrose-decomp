@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" float Xf_func_0022E958(...) asm("func_0022E958");
 extern "C" int Xiiii_func_001787B0(int, int, int) asm("func_001787B0");
 struct m2c_block12 { int w[3]; };
 struct m2c_ulong { long v; } __attribute__((packed));
@@ -54,7 +55,19 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", _$_10EffReload1);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffReload1__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffReload1__vfunc_05);
+extern "C" int EffReload1__vfunc_05(int arg0)
+{
+    int temp_v0;
+
+    if (M2C_FIELD(arg0, int *, 0x24) != 0) {
+        temp_v0 = M2C_FIELD(arg0, int *, 0x80) + 1;
+        M2C_FIELD(arg0, int *, 0x80) = temp_v0;
+        if (((float) temp_v0 / 60.0f) < Xf_func_0022E958(M2C_FIELD(arg0, int *, 0x28))) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", renderPreMain__10EffReload1PQ24Eff011RENDERPARAM);
 
