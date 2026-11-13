@@ -1,4 +1,17 @@
 #include "include_asm.h"
+extern "C" void Xvp_func_0018BC18(void *, int) asm("func_0018BC18");
+extern "C" void Xvp_func_001AD870(void *) asm("func_001AD870");
+extern "C" void Xvp_func_001AD940(void *) asm("func_001AD940");
+struct MsgAD72C {
+    unsigned char m_unk[0x3BC];
+    ~MsgAD72C() asm("func_00183B24");
+};
+struct ObjAD72C {
+    MsgAD72C m_msg[2];
+    unsigned char m_pad778[0x93C];
+    int m_10B4;
+    ~ObjAD72C() asm("func_001AD72C");
+};
 extern int D_007A3210;
 extern int D_007A4440;
 static inline int *sysFlags_F130()
@@ -988,7 +1001,14 @@ extern "C" void func_001AD6B4(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AD72C);
+ObjAD72C::~ObjAD72C()
+{
+    Xvp_func_001AD940(this);
+    if (m_10B4 == 1) {
+        Xvp_func_001AD870(this);
+    }
+    Xvp_func_0018BC18((char *)this + 0x7A4, 2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AD7D4);
 
