@@ -1,4 +1,8 @@
 #include "include_asm.h"
+struct Vec2_4730 {
+    float x;
+    float y;
+};
 extern "C" void Xviii_func_001DB19C(int, int, int) asm("func_001DB19C");
 extern "C" void Xviii_func_001DB18C(int, int, int) asm("func_001DB18C");
 struct Obj2D7C {
@@ -440,7 +444,24 @@ extern "C" int func_001D44E4(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D4540);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D4730);
+extern "C" void func_001D4730(int arg0, Vec2_4730 *arg1)
+{
+    int i;
+    int j;
+
+    for (i = 0; i < 3; i++) {
+        for (j = i + 1; j < 4; j++) {
+            if (arg1[j].x < arg1[i].x && arg1[j].y < arg1[i].y) {
+                Vec2_4730 tmp = arg1[j];
+                arg1[j] = arg1[i];
+                arg1[i] = tmp;
+            }
+        }
+    }
+    Vec2_4730 tmp = arg1[3];
+    arg1[3] = arg1[2];
+    arg1[2] = tmp;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D480C);
 
