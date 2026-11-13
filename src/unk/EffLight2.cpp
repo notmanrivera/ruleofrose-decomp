@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xi_func_00173610() asm("func_00173610");
+extern "C" int Xi_func_00173620() asm("func_00173620");
+extern "C" int Xii_func_00173380(int) asm("func_00173380");
 extern "C" int Xiiiff_func_00174C4C(int, float *, float, float) asm("func_00174C4C");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfi_func_0010DA4C__8DogActor(int) asm("func_0010DA4C__8DogActor");
@@ -26,7 +29,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_001730D4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot1Prim__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot1Prim__vfunc_05);
+extern "C" int EffFoot1Prim__vfunc_05(int arg0)
+{
+    switch (M2C_FIELD(arg0, int *, 0x44)) {
+    case 0:
+        return Xii_func_00173380(arg0);
+    case 1:
+        return Xi_func_00173610();
+    case 2:
+        return Xi_func_00173620();
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot1Prim__vfunc_08);
 
