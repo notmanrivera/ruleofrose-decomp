@@ -1750,7 +1750,52 @@ extern "C" void func_001C8EB4(char *arg0, int arg1, int arg2)
     func_001CFBE4((int)&D_007812C0, temp_v0, arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C8F7C);
+// Puts theNum (or one) of an item in the stock: on its pile when its record
+// allows piling, else as a new entry. 1 when the stock or the pile is full.
+extern "C" int func_001C8F7C(GamMan *self, unsigned short theUID, int theNum)
+{
+    GamList<GamItemStock>::iterator it;
+    GamList<GamItemStock>::iterator last;
+    GamItemStock item;
+    GamPool<GamItemStock, 0x14E> *list = self->getItemStockPtr();
+
+    if ((unsigned int)list->size() < 0x14E) {
+        if (func_001DD00C(self->m_unq, theUID, 0x20000) != 0) {
+            it = list->begin();
+            last = list->end();
+            while (it != last) {
+                if ((*it).m_item.m_uid == theUID) {
+                    if (theNum != 0) {
+                        (*it).m_item.m_num += theNum;
+                    } else {
+                        (*it).m_item.m_num++;
+                    }
+                    if ((*it).m_item.m_num >= 100) {
+                        (*it).m_item.m_num = 99;
+                        return 1;
+                    }
+                    return 0;
+                }
+                ++it;
+            }
+        }
+        if (theNum != 0) {
+            item.m_item.m_num = theNum;
+        } else {
+            item.m_item.m_num = 1;
+        }
+        if (item.m_item.m_num >= 100) {
+            item.m_item.m_num = 99;
+        }
+        item.m_item.m_uid = theUID;
+        item.m_item.m_unq = func_001DBFA0(self->m_unq, theUID);
+        item.m_item.m_oid = func_001C6FE0(self, 2, 5, -1);
+        self->m_itemStock.push_back(item);
+    } else {
+        return 1;
+    }
+    return 0;
+}
 
 // Adds an item to the stock: on top of one with the same uid when the item's
 // record allows piling (at most 99), else as a new entry. 1 when it is full.
