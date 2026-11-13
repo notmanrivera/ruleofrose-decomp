@@ -1,4 +1,21 @@
 #include "include_asm.h"
+extern "C" int X_func_00279C98_1(char *, const char *, ...) asm("func_00279C98");
+struct Ent6858 {
+    int f0;
+    int f4;
+    int f8;
+    int fC;
+    int f10;
+    char pad[0x2C - 0x14];
+};
+struct Sub6858 {
+    char pad[0x2500];
+    Ent6858 arr[12];
+};
+struct Obj6858 {
+    char pad[8];
+    Sub6858 sub;
+};
 extern "C" int X_func_001AF024(...) asm("func_001AF024");
 extern "C" int X_func_001AF3F0(...) asm("func_001AF3F0");
 extern "C" int X_func_001DC48C(...) asm("func_001DC48C");
@@ -182,7 +199,18 @@ extern "C" int func_001A6830(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A6858);
+extern "C" void func_001A6858(Obj6858 *arg0, int arg1, char *arg2)
+{
+    X_func_00279C98_1(
+        arg2, D_002F9248, D_002F9268, D_002F9278,
+        arg1,
+        arg0->sub.arr[arg1].f0,
+        arg0->sub.arr[arg1].f4,
+        arg0->sub.arr[arg1].f8,
+        arg0->sub.arr[arg1].fC,
+        arg0->sub.arr[arg1].f10
+    );
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A68E0);
 
