@@ -763,7 +763,26 @@ extern "C" void func_00148304(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_0014837C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00148450);
+extern "C" int func_00148450(int arg0)
+{
+    int temp_v0;
+    int var_v0;
+
+    if (X_func_0010423C(0, 0x63) < 0x1E) {
+        M2C_FIELD(arg0, int *, 4) = 0xA;
+        M2C_FIELD(arg0, int *, 0x6C) = X_func_0010423C(0x14, 0x28);
+        return X_func_001680A0(arg0, 0x23, 0x100);
+    }
+    M2C_FIELD(arg0, int *, 4) = 4;
+    temp_v0 = X_func_0010423C(0, 0x63);
+    if (temp_v0 < 0x27) {
+        M2C_FIELD(arg0, int *, 0x68) = 0x14;
+    } else if (temp_v0 < 0x4F) {
+        M2C_FIELD(arg0, int *, 0x68) = 0x2D;
+    } else {
+        M2C_FIELD(arg0, int *, 0x68) = 0x4B;
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/HfmMain", D_002EF3F0);
 
