@@ -1,4 +1,35 @@
 #include "include_asm.h"
+extern "C" void Xvp_func_001AEBC8(void *) asm("func_001AEBC8");
+struct SprAE9F4 {
+    unsigned char m_unk[0x8EC];
+    ~SprAE9F4() asm("func_0018BC18");
+};
+struct Sub1B64_AE9F4 {
+    unsigned char m_unk[0x104];
+    ~Sub1B64_AE9F4() asm("func_001A0684");
+};
+struct MsgAE9F4 {
+    unsigned char m_unk[0x3BC];
+    ~MsgAE9F4() asm("func_00183B24");
+};
+struct Base1_AE9F4 {
+    unsigned char m_pad00[0x98];
+    SprAE9F4 m_spr0;
+    SprAE9F4 m_spr1;
+    SprAE9F4 m_spr2;
+    unsigned char m_pad1B5C[8];
+    Sub1B64_AE9F4 m_1B64;
+    inline ~Base1_AE9F4() {}
+};
+struct Base2_AE9F4 {
+    MsgAE9F4 m_msg[2];
+    inline ~Base2_AE9F4() {}
+};
+struct ObjAE9F4 : public Base1_AE9F4, public Base2_AE9F4 {
+    unsigned char m_pad23E0[0xA0];
+    int m_2480;
+    ~ObjAE9F4() asm("func_001AE9F4");
+};
 extern "C" int Xvp_snprintf(void *, int, const char *, ...) asm("snprintf");
 extern "C" char *Xvp_strcpy(char *, const char *) asm("strcpy");
 extern "C" unsigned int Xvp_strlen(const char *) asm("strlen");
@@ -1984,7 +2015,12 @@ extern "C" void func_001AE954(int arg0)
     M2C_FIELD(arg0, int *, 0x24A0) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE9F4);
+ObjAE9F4::~ObjAE9F4()
+{
+    if (m_2480 == 1) {
+        Xvp_func_001AEBC8(this);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002FAD20);
 
