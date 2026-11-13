@@ -160,3 +160,34 @@ del brief (<STATE>), work.py. Falta, de más a menos útil:
   `work.py` anota cada función intentada en `build/work/.tried` (Gemini borra
   sus borradores); `--loop` ya no pasa `--busy` con espacios.
 
+
+## Mejoras del modelo de trabajo (2026-11-12, noche)
+
+Hechas tras revisar el día (lo que queda pendiente está al final):
+
+- Lo fácil se acaba: de lo pendiente en archivos empezados, las funciones de
+  hasta 30 instrucciones son el 3 % de los bytes y las de más de 120, el
+  67 %. Al reanudar, los workers van con `--max 60` (opencode), `--max 120`
+  (gemini y oc2); las opciones están en `LOOPARGS` de cada `.env`.
+- `work.py` guarda siempre el mejor intento (`build/work/.best/`) y
+  `--keep` lo deja en `src/` bajo `#ifdef NON_MATCHING`: los "casi" ya no se
+  pierden al saltar una función, sirven para el port y el siguiente intento
+  parte de ahí. Los briefs piden `--keep` al saltar.
+- `merge_worker.sh --defer`: el worker recibe su lote sin esperar la
+  compilación completa (~4 min por lote); un fallo deja
+  `build/workers/BUILD_FAILED` y para todos los bucles.
+- `build/workers/stats.tsv`: una línea por lote (modelo, enviadas,
+  integradas, NON_MATCHING, bytes, minutos) para elegir modelos con datos.
+- Cuota: el bucle espera solo hasta el reinicio si la pantalla dice la hora
+  (`tools/orca/screen.py wait`), y sigue con sesión nueva.
+- Sesión nueva automática cuando el contexto del agente pasa del 60 %.
+- Los bucles ejecutan copias de sus scripts (`build/workers/run/`): editar
+  `tools/orca/*.sh` ya no rompe un bucle en marcha.
+- `tools/orca/resume.sh [--start]`: Docker, merge a medias, servidor, handles
+  nuevos y bucles, de una vez.
+- `tools/permute.py`: búsqueda automática de variantes (orden de sentencias y
+  declaraciones, operandos conmutativos, comparaciones, if/else invertidos)
+  para los "casi", con el servidor de compilación (~4-5 pruebas/s).
+
+Pendiente: que el coordinador dedique su tiempo a cabeceras (structs y
+clases reales), que hacen falta para las funciones medianas y grandes.
