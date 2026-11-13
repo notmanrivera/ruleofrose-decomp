@@ -1,6 +1,7 @@
 # Próxima sesión del coordinador
 
-Escrito el 2026-11-12 al cerrar la sesión de los workers. Léelo después de
+Escrito el 2026-11-12; la sección "Pausa (2026-11-12, noche)" es la más
+reciente y manda sobre "Estado al cerrar". Léelo después de
 CLAUDE.md, `notes/PROJECT_STATE.md` y `docs/DECOMPILING.md` §6.
 
 ## Estado al cerrar
@@ -133,3 +134,29 @@ del brief (<STATE>), work.py. Falta, de más a menos útil:
   que el juego, en vez de mostrarlo todo como "differ".
 - merge_worker: integrar los commits verificados aunque uno falle;
   send_brief.sh: no depender del espaciado del JSON.
+
+## Pausa (2026-11-12, noche)
+
+- Avance: 22.06 % (253,144 / 1,147,560 B), todo con `build/ok`. Subido a
+  GitHub (rama `claude/project-thread-2lnh6n`, la que sigue `pr-merge`) a
+  petición del dueño; `main` no se tocó.
+- Tres workers, todos parados y con su trabajo integrado:
+  - `opencode` (`ror-wt-opencode`, OpenCode, DeepSeek V4.1 Flash): lotes
+    normales. Dejó trabajo a medias sin commit en `src/game/gamsnd.cpp`.
+  - `gemini` (`ror-wt-gemini`, Antigravity, Gemini 4 Hydrogen · high): lotes
+    normales, `--max 60 --names 10`. Se paró por un falso positivo del filtro
+    de contenido de Google en `unk/HfmMain`.
+  - `oc2` (`ror-wt-oc2`, OpenCode, Kimi K3.1 Pro): `--retry --max 80
+    --names 10`, segundos intentos. Su primer lote con Kimi no llegó a
+    correr. Antes, DeepSeek V4 Pro sacó 2 de 10 en 1 h 26 min.
+  - Los dos OpenCode comparten el límite de 5 horas de OpenCode Go.
+- Para reanudar: Docker, `tools/match.py --server start`, los `HANDLE` de
+  `build/workers/*.env` desde `orca terminal list --json`, y cada bucle con
+  `--new` (sin `--handle/--busy`, que ya están guardados).
+- No editar `tools/orca/*.sh` mientras corre un bucle: `sh` lee el archivo
+  a trozos y el bucle se rompe.
+- Arreglados hoy: `watch_agent.sh` reintenta lecturas fallidas (Orca se
+  actualiza solo), reconoce el límite de OpenCode Go y el filtro de Gemini;
+  `work.py` anota cada función intentada en `build/work/.tried` (Gemini borra
+  sus borradores); `--loop` ya no pasa `--busy` con espacios.
+

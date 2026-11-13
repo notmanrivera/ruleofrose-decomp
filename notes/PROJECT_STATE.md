@@ -194,3 +194,23 @@ structs que m2c no entiende (`ldl/ldr/sdl/sdr`, 200 KB), copias de 128 bits
 (llamadas a `fptodp`, `dpadd`...). Hallazgos del compilador: recorta los
 decimales de las constantes `float` (0.1f es 0x3DCCCCCC) y emite del último al
 primero algunas asignaciones consecutivas del mismo valor.
+
+Trabajo en paralelo (2026-11-12): 22.06 % del `.text` del juego (253,144 /
+1,147,560 B), 117 de 125 archivos con C++ (29 completos). El día empezó en
+16.80 %. Un coordinador (Claude) reparte lotes de funciones chicas a varios
+agentes, cada uno en su worktree (`tools/new_worktree.sh`), los verifica con
+`tools/match.py` y la compilación completa, y los integra
+(`tools/merge_worker.sh`); el ciclo entero lo hace `tools/orca/next_batch.sh
+<worker> --loop` (ver `docs/WORKER_BRIEF.md`). Con `--retry`, un worker solo
+recibe funciones que otro ya se saltó. `tools/twins.py` encuentra funciones
+pendientes con las mismas instrucciones que una ya hecha y da su C++ como
+punto de partida. Modelos probados: DeepSeek V4.1 Flash (OpenCode), Gemini
+3.8 Flash y Gemini 4 Hydrogen (Antigravity), DeepSeek V4 Pro (2 de 10 en
+segundos intentos) y Claude Fable 5.2 (8 de 10 en segundos intentos).
+
+Hallazgos: GNU as 2.10-ee a veces pierde el `lui` de una macro `lw/sw
+$r,sym($reg)` y deja el R_MIPS_HI16 sobre otra instrucción;
+`tools/fix_hi16.py` lo repara en cada objeto (build y match.py). La jerarquía
+real de `MagLife*` está en `mag/maglife.h` (los "key methods" deciden qué
+archivo emite los nombres RTTI, y con ello dónde empieza cada `.rodata`).
+

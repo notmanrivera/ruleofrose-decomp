@@ -31,6 +31,7 @@ One call does a whole step:
 ```sh
 tools/orca/next_batch.sh <NAME> --watch     # one step, in the background
 tools/orca/next_batch.sh <NAME> --loop      # step after step until something needs you
+tools/orca/next_batch.sh <NAME> --retry --loop   # only second tries of functions others skipped
 ```
 
 It merges the worker's verified commits (`tools/merge_worker.sh`), records
