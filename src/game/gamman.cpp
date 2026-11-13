@@ -2266,7 +2266,26 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CC250);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CC560);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CC7C8);
+// Deletes the FCHRstat with this object id, if there is one.
+extern "C" void func_001CC7C8(GamMan *self, int theOID)
+{
+    GamList<FCHRstat *>::iterator it;
+    GamList<FCHRstat *>::iterator last;
+    GamList<FCHRstat *> *list = self->getFchrListPtr();
+
+    it = list->begin();
+    last = list->end();
+    while (it != last) {
+        FCHRstat *stat = *it;
+        if (stat->getOID() == theOID) {
+            self->delete_fchr_core(stat);
+            delete *it;
+            self->m_fchrList.erase(it);
+            return;
+        }
+        ++it;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CC970);
 

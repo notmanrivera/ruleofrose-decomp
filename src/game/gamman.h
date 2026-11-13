@@ -234,6 +234,9 @@ struct GamElem22540 {
     char m_unk04[28];
 } __attribute__((aligned(8)));
 
+// Still asm (game/gamtrg.cpp); what it returns is not known.
+extern "C" int func_001D966C(int);
+
 // sizeof 0x22AC0: the next object in .bss, D_007A3D80, starts there.
 // Vtable pointer at +0x22AB4, after the last member (constructor), as g++ 2.96
 // places it for a class with no base; two slots, the destructor only
@@ -263,8 +266,8 @@ public:
     GamPool<GamElem1D240, 4> m_unk1D240;            // +0x1D240: ctor; func_001CA38C, func_001CB01C, func_001CB1C0
     unsigned int m_unk1D300;                        // +0x1D300: index into D_007257B8 (MagScene map models), asserted < MAX_MAP_MODEL
     unsigned char m_pad1D304[0x3C];
-    GamPool<ObjStat *, 0x80> m_achrList;            // +0x1D340: getAchrListPtr
-    GamPool<ObjStat *, 0x40> m_fchrList;            // +0x1D980: getFchrListPtr
+    GamPool<ACHRstat *, 0x80> m_achrList;           // +0x1D340: getAchrListPtr
+    GamPool<FCHRstat *, 0x40> m_fchrList;           // +0x1D980: getFchrListPtr
     GamPool<ObjStat *, 0x180> m_vfchrList;          // +0x1DCC0: getVFchrListPtr
     GamPool<ObjStat *, 0x40> m_avfchrList;          // +0x1EF00: getAVFchrListPtr
     int *m_unk1F240;                                // +0x1F240: 0x169 ints: func_001C7D04, func_001C7DA8, func_001C7DEC
@@ -417,10 +420,21 @@ public:
     GamItemHave *getItemHavePtr() { return &m_itemHave; }
     GamPool<GamItemStock, 0x14E> *getItemStockPtr() { return &m_itemStock; }
     void *getMapObjPtr() { return m_mapObj; }
-    GamList<ObjStat *> *getAchrListPtr() { return &m_achrList; }
-    GamList<ObjStat *> *getFchrListPtr() { return &m_fchrList; }
+    GamList<ACHRstat *> *getAchrListPtr() { return &m_achrList; }
+    GamList<FCHRstat *> *getFchrListPtr() { return &m_fchrList; }
     GamList<ObjStat *> *getVFchrListPtr() { return &m_vfchrList; }
     GamList<ObjStat *> *getAVFchrListPtr() { return &m_avfchrList; }
+
+    // delete_fchr_core (linkonce copy at 0x0028F794). It needs FCHRstat:
+    // only for files that include game/gamtrg.h first (some older files
+    // declare their own ObjStat instead).
+#ifdef GAME_GAMTRG_H
+    void delete_fchr_core(FCHRstat *theStat)
+    {
+        func_001D966C((int)theStat);
+        m_fchrTbl[theStat->getOID() & 0x1FF] = 0;
+    }
+#endif
 
     // Not original: older decompiled files call the object at +0x22094 "the
     // player". It is the dog (getDogPtr); the player is m_pc (getPCPtr).

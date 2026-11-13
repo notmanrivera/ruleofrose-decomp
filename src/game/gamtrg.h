@@ -7,7 +7,7 @@
 // (0x0028F874-0x0028FDB0, symbols/symbol_addrs.txt), and each copy shows its
 // member's offset. Member names follow the method (getChrID -> m_chrID): the
 // offset and width are certain, the spelling is ours. m_unkXXX is what nothing
-// names yet. Where the vtable pointer sits is not known (not declared).
+// names yet. The vtable pointer follows m_attachID.
 #ifndef GAME_GAMTRG_H
 #define GAME_GAMTRG_H
 
@@ -50,6 +50,10 @@ public:
     tagColParam m_colPrmKeep;       // +0x220: getColPrmKeep, setColPrm (which also sets m_colPrm)
     float m_tmp2;                   // +0x250: getTmp2, setTmp2
     int m_attachID;                 // +0x254: get_attach_id, set_attach_id
+
+    // Vtable pointer at +0x258: GamMan's func_001CC7C8 deletes one through
+    // it (slot 1, the destructor at 0x001D88C8). Two slots.
+    virtual ~ObjStat();
 
     int getOID() const { return m_oid; }
     unsigned short getUID() const { return m_uid; }
