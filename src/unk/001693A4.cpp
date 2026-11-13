@@ -92,7 +92,14 @@ extern "C" void func_00169614(int arg0, int arg1, int arg2)
     (*(int *)(arg0)) += 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_00169630);
+extern "C" void func_00169630(int arg0, int arg1)
+{
+    int *p = (int *)(arg0 + 4) + arg1;
+    if (*p != 0)
+        X_func_001D859C(*p, 3);
+    *p = 0;
+    (*(int *)(arg0)) -= 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016968C);
 
