@@ -1,4 +1,11 @@
 #include "include_asm.h"
+extern int D_007A3210;
+extern int D_007A4440;
+static inline int *sysFlags_F130()
+{
+    char *p = (char *)&D_007A4440;
+    return *(int **)(p + 0xDC20);
+}
 extern "C" void Xv___builtin_delete_9150(void *) asm("__builtin_delete");
 extern "C" int X_func_0018BC18(...) asm("func_0018BC18");
 extern "C" int X_func_001A0684(...) asm("func_001A0684");
@@ -1978,7 +1985,37 @@ extern "C" void func_001AEF9C(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF024);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF130);
+extern "C" void func_001AF130(int arg0)
+{
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+
+    int one = 1;
+
+    temp_v0 = sysFlags_F130()[1] & one;
+    if (temp_v0 == one) {
+        M2C_FIELD(arg0, int *, 0x241C) = one;
+        M2C_FIELD(arg0, int *, 0x2414) = one;
+    } else {
+        M2C_FIELD(arg0, int *, 0x241C) = 0;
+        M2C_FIELD(arg0, int *, 0x2414) = 0;
+    }
+    if (D_007A3210 == 7) {
+        M2C_FIELD(arg0, int *, 0x2414) = 0;
+    }
+    temp_v0_2 = sysFlags_F130()[1] & 2;
+    if (temp_v0_2 != 0) {
+        int temp_v1 = temp_v0_2 != 0;
+        M2C_FIELD(arg0, int *, 0x2418) = temp_v1;
+        M2C_FIELD(arg0, int *, 0x2410) = temp_v1;
+    } else {
+        M2C_FIELD(arg0, int *, 0x2418) = 0;
+        M2C_FIELD(arg0, int *, 0x2410) = 0;
+    }
+    temp_v0_3 = sysFlags_F130()[1] & 4;
+    M2C_FIELD(arg0, int *, 0x240C) = (temp_v0_3 != 0);
+}
 
 extern "C" int func_001AF1D4()
 {
