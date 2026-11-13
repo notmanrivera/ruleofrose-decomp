@@ -802,7 +802,24 @@ extern "C" void func_00148060(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001480E0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001481B8);
+extern "C" void func_001481B8(int arg0)
+{
+    int temp_v0;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x48) + 1;
+    M2C_FIELD(arg0, int *, 0x48) = temp_v0;
+    if ((temp_v0 >= 0x29) && (M2C_FIELD(arg0, int *, 0x84) == 0)) {
+        X_func_001694CC(arg0, 0x37);
+        M2C_FIELD(arg0, int *, 0x84) = 1;
+    }
+    if (check_001D19A8(arg0, (int)&D_007812C0) != 0) {
+        M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x238) = 0;
+        X_func_001D10D0((int)&D_007812C0, M2C_FIELD(arg0, int *, 0), 0x40);
+        X_func_001D1410((int)&D_007812C0, M2C_FIELD(arg0, int *, 0), 0x10000000);
+        X_func_001D1410((int)&D_007812C0, M2C_FIELD(arg0, int *, 0), 0x04000000);
+        X_func_00146AE4(arg0);
+    }
+}
 
 extern "C" void func_0014827C(int arg0)
 {
