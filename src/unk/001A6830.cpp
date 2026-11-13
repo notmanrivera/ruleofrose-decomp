@@ -724,7 +724,31 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AABB4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AAED0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AAF98);
+extern "C" int func_001AAF98(int arg0)
+{
+    int ret = 0;
+
+    switch (M2C_FIELD(arg0, int *, 0x4DCC)) {
+    case 0:
+        M2C_FIELD(arg0, int *, 0x4D80) = 0;
+        M2C_FIELD(arg0, int *, 0x4DB8) = 0;
+        X_func_001AB598(arg0 + 0x3B80, M2C_FIELD(arg0, int *, 0x56E4));
+        M2C_FIELD(arg0, int *, 0x4DCC) = 1;
+    case 1:
+        M2C_FIELD(arg0, int *, 0x4DCC) = 0xF;
+        break;
+    case 0xF: {
+        int p = arg0 + 0x3B80;
+        if (X_func_001AB66C(p) != 0) {
+            ret = 1;
+            X_func_001AB5E4(p);
+            M2C_FIELD(arg0, int *, 0x4DCC) = 0;
+        }
+        break;
+    }
+    }
+    return ret;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9BE8);
 
