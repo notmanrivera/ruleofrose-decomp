@@ -95,7 +95,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffCloud1__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffCloud1__vfunc_08);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", updateZDepth__9EffCloud1);
+extern "C" void updateZDepth__9EffCloud1(int arg0)
+{
+    M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, arg0 + 0x30);
+}
 
 extern "C" void func_0017A918(int arg0)
 {
