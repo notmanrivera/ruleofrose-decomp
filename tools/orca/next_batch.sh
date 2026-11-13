@@ -39,7 +39,13 @@ cd "$MAIN"
 PY="$MAIN/tools/.venv/Scripts/python.exe"; [ -x "$PY" ] || PY="$MAIN/tools/.venv/bin/python"
 [ $# -ge 1 ] || { sed -n '5p' "$0" | sed 's/^# *//'; exit 2; }
 NAME=$1; shift
-ARGS="$*"                          # for --loop's next round (no spaces in values)
+# For --loop's next round. --handle and --busy are left out (they are saved in
+# <name>.env, and a busy marker has spaces); other values have none.
+ARGS=""; drop=""
+for a in "$@"; do
+  if [ -n "$drop" ]; then drop=""; continue; fi
+  case $a in --handle|--busy) drop=1 ;; *) ARGS="$ARGS $a" ;; esac
+done
 ST=build/workers; mkdir -p "$ST"; ENV="$ST/$NAME.env"; SKIP="$ST/skipped.txt"; touch "$SKIP"
 HANDLE=""; BUSY=""; FILE=""; AVOID=""; BATCH=""; STATUS=""; RETRY=""
 # shellcheck disable=SC1090
