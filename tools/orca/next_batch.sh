@@ -13,6 +13,7 @@
 #                         remembered; --avoid - clears it)
 #   --max N               largest function handed out, in instructions (30)
 #   --names N             functions per batch (20)
+#   --budget I            ... and at most about I instructions in all (0: no limit)
 #   --tries T             tries before skipping a function (5)
 #   --new                 fresh agent session (/new) and the first brief
 #   --retry               second tries: only functions other workers skipped
@@ -26,7 +27,11 @@
 #                         no match, or no functions left. A quota stop whose
 #                         screen gives the reset time (within 8 h) is waited
 #                         out. A fresh session starts when a batch leaves 8 or
-#                         more skipped or the agent's context passes 60 %.
+#                         more skipped, when the agent's context passes 60 %,
+#                         or every 4 batches when its screen shows no context.
+#                         A --retry loop stops after 2 batches in a row with no
+#                         commit. Files are chosen by expected yield
+#                         (backlog.py --by-yield).
 #                         Exit codes: watch_agent.sh's, 1 failure, 6 no match.
 #
 # State lives in build/workers/ (not in git): <name>.env (handle, marker,
@@ -68,9 +73,10 @@ done
 ST=build/workers; mkdir -p "$ST"; ENV="$ST/$NAME.env"; SKIP="$ST/skipped.txt"; touch "$SKIP"
 STATS="$ST/stats.tsv"
 HANDLE=""; BUSY=""; FILE=""; AVOID=""; BATCH=""; STATUS=""; RETRY=""; MODEL=""; SENT=""; LOOPARGS=""
+ZERO=0; SINCE_NEW=0
 # shellcheck disable=SC1090
 [ -f "$ENV" ] && . "./$ENV"
-NEWFILE=""; MAX=30; NAMES=20; TRIES=5; NEW=""; MERGE=1; DRY=""; WATCH=""; LOOP=""; ROUND=""
+NEWFILE=""; MAX=30; NAMES=20; BUDGET=0; TRIES=5; NEW=""; MERGE=1; DRY=""; WATCH=""; LOOP=""; ROUND=""
 while [ $# -gt 0 ]; do
   case $1 in
     --handle) HANDLE=$2; shift ;;
@@ -79,6 +85,7 @@ while [ $# -gt 0 ]; do
     --avoid) AVOID=$2; [ "$AVOID" = - ] && AVOID=""; shift ;;
     --max) MAX=$2; shift ;;
     --names) NAMES=$2; shift ;;
+    --budget) BUDGET=$2; shift ;;
     --tries) TRIES=$2; shift ;;
     --new) NEW=1 ;;
     --retry) RETRY=1 ;;
@@ -97,9 +104,16 @@ done
 save() {
   { echo "HANDLE='$HANDLE'"; echo "BUSY='$BUSY'"; echo "FILE='$FILE'"; echo "AVOID='$AVOID'"
     echo "BATCH='$BATCH'"; echo "STATUS='$STATUS'"; echo "RETRY='$RETRY'"; echo "MODEL='$MODEL'"
-    echo "SENT='$SENT'"; echo "LOOPARGS='$LOOPARGS'"; } > "$ENV"
+    echo "SENT='$SENT'"; echo "LOOPARGS='$LOOPARGS'"; echo "ZERO='$ZERO'"; echo "SINCE_NEW='$SINCE_NEW'"; } > "$ENV"
 }
-screen() { orca terminal read --terminal "$HANDLE" --screen --json 2>/dev/null || true; }
+# The agent's screen as JSON; Orca may be away for a minute (it updates
+# itself), so a failed read is retried for 5 minutes. Empty if it never came.
+screen() {
+  for _ in 1 2 3 4 5 6 7 8 9 10; do
+    j=$(orca terminal read --terminal "$HANDLE" --screen --json 2>/dev/null) && [ -n "$j" ] && { printf '%s' "$j"; return 0; }
+    sleep 30
+  done
+}
 
 [ -z "$DRY" ] || MERGE=""          # a dry run changes nothing
 WT="$(dirname "$MAIN")/ror-wt-$NAME"
@@ -109,8 +123,10 @@ if [ -e "$ST/BUILD_FAILED" ]; then
 fi
 
 # A worker still busy gets nothing new (its TUI would queue the text).
-if [ -z "$DRY" ] && screen | grep -qE "$BUSY"; then
-  echo "$NAME is still working; nothing sent"; exit 1
+if [ -z "$DRY" ]; then
+  scr=$(screen)
+  [ -n "$scr" ] || { echo "$NAME: cannot read its terminal $HANDLE (stale handle? tools/orca/resume.sh)"; exit 5; }
+  if printf '%s' "$scr" | grep -qE "$BUSY"; then echo "$NAME is still working; nothing sent"; exit 1; fi
 fi
 
 # 1. Merge. A failure (a mismatch, a broken build) stops here.
@@ -127,10 +143,10 @@ if [ -n "$MERGE" ]; then
 fi
 
 # 2. The last batch: its line in stats.tsv, and what it left skipped.
-# Skipped = tried by the worker (tools/work.py left its scratch file in the
-# worktree's build/work/, or logged it in build/work/.tried, which survives
-# a worker deleting its scratch files) and still in asm here. Untried
-# functions of the batch are not skipped; they come back in a later batch.
+# Skipped = checked by the worker at least twice with a compiling version
+# (tools/work.py logs each in build/work/.tried, apart from the scratch
+# files workers delete) and still in asm here. Functions it did not really
+# try come back in a later batch, and so does all of a batch the quota cut.
 if [ -n "$BATCH" ] && [ -n "$FILE" ] && [ -n "$MERGE" ]; then
   subj=$(git log --format=%s "$H0..HEAD")
   ncommit=$(printf '%s' "$subj" | grep -c . || true)
@@ -143,9 +159,9 @@ if [ -n "$BATCH" ] && [ -n "$FILE" ] && [ -n "$MERGE" ]; then
   printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$(date '+%F %H:%M')" "$NAME" "$MODEL" "$FILE" \
     "$nsent" "$ncommit" "$nnm" "${bytes:-0}" "$mins" >> "$STATS"
   n=0
+  [ "$STATUS" != quota ] || BATCH=""
   for f in $(echo "$BATCH" | tr ',' ' '); do
-    if { [ -e "$WT/build/work/$FILE/$f.cpp" ] || [ -e "$WT/build/work/$FILE/$f.trial.cpp" ] ||
-         grep -qx "$FILE $f" "$WT/build/work/.tried" 2>/dev/null; } &&
+    if [ "$( (grep -cE "^$FILE $f( |$)" "$WT/build/work/.tried" 2>/dev/null || echo 0) | head -1)" -ge 2 ] &&
        grep -qE "INCLUDE_ASM\(\"[^\"]+\", *$f\)" "src/$FILE.cpp" &&
        ! grep -q "^$FILE $f${RETRY:+ $NAME}\b" "$SKIP"; then
       echo "$FILE $f $NAME" >> "$SKIP"; n=$((n + 1))
@@ -157,10 +173,12 @@ if [ -n "$BATCH" ] && [ -n "$FILE" ] && [ -n "$MERGE" ]; then
     else echo "  that is a lot: start a fresh session (--new) for the next batch"; fi
   fi
   BATCH=""
-  # A loop whose worker merged nothing at all is stuck somehow (retries may
-  # well match nothing; a batch cut off by the quota is no sign either).
-  if [ -n "$ROUND" ] && [ -z "$RETRY" ] && [ "$ncommit" = 0 ] && [ "$STATUS" != quota ]; then
-    save; echo "$NAME: nothing merged from its last batch; loop stopped"; exit 6
+  # A loop whose worker merged nothing at all is stuck somehow; a retry
+  # loop gets two batches (a batch cut off by the quota is no sign either).
+  if [ "$ncommit" = 0 ] && [ "$STATUS" != quota ]; then ZERO=$((ZERO + 1)); else ZERO=0; fi
+  save
+  if [ -n "$ROUND" ] && { { [ -z "$RETRY" ] && [ "$ZERO" -ge 1 ]; } || [ "$ZERO" -ge 2 ]; }; then
+    echo "$NAME: nothing merged from its last $ZERO batch(es); loop stopped"; exit 6
   fi
 fi
 
@@ -171,16 +189,16 @@ others=$(for e in "$ST"/*.env; do
 funcs=""
 R=${RETRY:+--retry $NAME}
 # shellcheck disable=SC2086
-[ -n "$FILE" ] && funcs=$("$PY" tools/backlog.py $R --file "$FILE" --max "$MAX" --names "$NAMES")
+[ -n "$FILE" ] && funcs=$("$PY" tools/backlog.py $R --file "$FILE" --max "$MAX" --names "$NAMES" --budget "$BUDGET")
 if [ -z "$funcs" ]; then
   [ -z "$NEWFILE" ] || { echo "$NEWFILE has no functions of up to $MAX instructions left"; exit 1; }
   # shellcheck disable=SC2086
-  FILE=$("$PY" tools/backlog.py $R --max "$MAX" --top 200 --exclude "${others:-}${FILE:+,$FILE}" |
+  FILE=$("$PY" tools/backlog.py $R --by-yield --max "$MAX" --top 200 --exclude "${others:-}${FILE:+,$FILE}" |
          awk 'NF == 5 && $2 == "functions" {print $5}' |
          { if [ -n "$AVOID" ]; then grep -v "^$AVOID" || true; else cat; fi; } | head -1)
   [ -n "$FILE" ] || { echo "no file left with functions of up to $MAX instructions"; exit 1; }
   # shellcheck disable=SC2086
-  funcs=$("$PY" tools/backlog.py $R --file "$FILE" --max "$MAX" --names "$NAMES")
+  funcs=$("$PY" tools/backlog.py $R --file "$FILE" --max "$MAX" --names "$NAMES" --budget "$BUDGET")
 fi
 
 # 4. The brief: the first one for a fresh session, the follow-up otherwise.
@@ -188,7 +206,10 @@ scr=$(screen)
 ctx=$(printf '%s' "$scr" | "$PY" tools/orca/screen.py context)
 if [ -z "$NEW" ] && [ -n "$ctx" ] && [ "$ctx" -ge 60 ]; then
   NEW=1; echo "  context at $ctx %: this batch starts a fresh session"
+elif [ -z "$NEW" ] && [ -z "$ctx" ] && [ "$SINCE_NEW" -ge 4 ]; then
+  NEW=1; echo "  4 batches in this session (its context is not on screen): this one starts a fresh session"
 fi
+if [ -n "$NEW" ]; then SINCE_NEW=1; else SINCE_NEW=$((SINCE_NEW + 1)); fi
 brief() {   # $1: section heading in WORKER_BRIEF.md
   awk -v h="$1" '$0 == h {f = 1; next} f && /^```text/ {t = 1; next} t && /^```/ {exit} t' docs/WORKER_BRIEF.md
 }
@@ -198,7 +219,12 @@ text=$(printf '%s' "$text" | sed -e "s|<STATE>|$STATE|g" -e "s|<NAME>|$NAME|g" -
 
 echo "$NAME -> $FILE: $funcs"
 if [ -n "$DRY" ]; then echo "$text"; exit 0; fi
-runcopy orca/send_brief.sh ${NEW:+--new} "$HANDLE" "$text"
+sent=""
+for _ in 1 2 3; do
+  if runcopy orca/send_brief.sh ${NEW:+--new} "$HANDLE" "$text"; then sent=1; break; fi
+  sleep 60; NEW=""                   # a retry must not clear the session again
+done
+[ -n "$sent" ] || { echo "$NAME: the brief was not accepted (3 tries)"; exit 1; }
 MODEL=$(printf '%s' "$scr" | "$PY" tools/orca/screen.py model)
 BATCH=$funcs; STATUS=busy; SENT=$(date +%s); save
 
@@ -207,7 +233,7 @@ BATCH=$funcs; STATUS=busy; SENT=$(date +%s); save
 set +e
 runcopy orca/watch_agent.sh "$HANDLE" "$BUSY"; code=$?
 set -e
-case $code in 0) STATUS=idle ;; 3) STATUS=quota ;; 4) STATUS=filter ;; *) STATUS=unknown ;; esac
+case $code in 0) STATUS=idle ;; 3) STATUS=quota ;; 4) STATUS=filter ;; 7) STATUS=stuck ;; *) STATUS=unknown ;; esac
 save
 [ -n "$LOOP" ] || exit $code
 again=""

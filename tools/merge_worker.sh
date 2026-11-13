@@ -8,9 +8,13 @@
 # 1. Lists the worker's commits not yet in the current branch (by patch, so
 #    commits already cherry-picked are skipped) and refuses any that touch
 #    something other than src/**.cpp.
-# 2. Runs tools/match.py on every touched file inside the worker's worktree;
-#    all must report a matching object (functions left as INCLUDE_ASM or
-#    NON_MATCHING are fine, a mismatching compiled function is not).
+#    Commits that add inline assembly (__asm__, asm volatile) are refused
+#    too: a function must be C++ to count.
+# 2. Runs tools/match.py on every touched file (here, with this checkout's
+#    compile server), on the file as committed (a worker's uncommitted edits are not what is
+#    merged); all must report a matching object (functions left as
+#    INCLUDE_ASM or NON_MATCHING are fine, a mismatching compiled function
+#    is not).
 # 3. Cherry-picks them, runs the full build and requires build/ok; on any
 #    failure the branch goes back to where it was.
 #    With --defer the build runs in the background after the reset (it keeps
@@ -30,15 +34,29 @@ PY="$MAIN/tools/.venv/Scripts/python.exe"
 [ -x "$PY" ] || PY="$MAIN/tools/.venv/bin/python"
 [ -d "$WT" ] || { echo "no worktree $WT"; exit 1; }
 cd "$MAIN"
+dirty() { [ -n "$(git status --porcelain --untracked-files=no)" ]; }
+# The coordinator may be editing the main checkout (better in a worktree of
+# its own): wait up to an hour for it to commit instead of failing the loop.
+if [ "$CHECK" != "--check" ] && dirty; then
+  echo "$MAIN has uncommitted changes: waiting for them to be committed"
+  i=0; while dirty; do i=$((i + 1)); [ $i -le 120 ] || { echo "still uncommitted after an hour"; exit 1; }; sleep 30; done
+fi
 if [ "$CHECK" != "--check" ]; then
   # One merge+build at a time: two at once share build/, and a failing one's
-  # reset would drop the other's cherry-picks.
+  # reset would drop the other's cherry-picks. The lock says who holds it.
   L="$MAIN/build/workers/merge.lock"; mkdir -p "$MAIN/build/workers"
-  until mkdir "$L" 2>/dev/null; do sleep 10; done
-  trap 'rmdir "$L"' EXIT INT TERM
+  i=0
+  until mkdir "$L" 2>/dev/null; do
+    i=$((i + 1))
+    [ $i -ne 60 ] || echo "waiting 10 min for the merge lock: $(cat "$L/owner" 2>/dev/null || echo '?')"
+    [ $i -le 360 ] || { echo "merge lock held for an hour ($(cat "$L/owner" 2>/dev/null)); remove $L if stale"; exit 1; }
+    sleep 10
+  done
+  echo "$NAME pid $$ since $(date '+%F %T')" > "$L/owner"
+  trap 'rm -rf "$L"' EXIT INT TERM
 fi
 BRANCH="$(git branch --show-current)"
-[ -z "$(git status --porcelain --untracked-files=no)" ] || { echo "$MAIN has uncommitted changes"; exit 1; }
+[ "$CHECK" = "--check" ] || ! dirty || { echo "$MAIN has uncommitted changes"; exit 1; }
 
 progress() { "$PY" tools/progress.py | sed -n 2p | awk '{print $5, "B,", $8}'; }
 
@@ -49,12 +67,19 @@ if [ -z "$COMMITS" ]; then
 else
   BAD="$(for c in $COMMITS; do git show --name-only --format= "$c"; done | sort -u | grep -v '^src/.*\.cpp$' || true)"
   [ -z "$BAD" ] || { echo "refusing: commits touch files outside src/*.cpp:"; echo "$BAD"; exit 1; }
+  ASM="$(for c in $COMMITS; do git show --format= "$c"; done | grep -E '^\+.*(__asm__|\basm[[:space:]]+(volatile|goto))' || true)"
+  [ -z "$ASM" ] || { echo "refusing: commits add inline assembly:"; echo "$ASM" | head -5; exit 1; }
   FILES="$(for c in $COMMITS; do git show --name-only --format= "$c"; done | sort -u | sed 's|^src/||; s|\.cpp$||')"
   echo "wt/$NAME: $(echo "$COMMITS" | wc -l | tr -d ' ') commits on: $(echo $FILES)"
 
   FAIL=0
+  # Checked here, with this checkout's compile server, on each file as
+  # committed on wt/<name> (not the worker's disk, which may hold edits).
+  "$PY" tools/match.py --server start >/dev/null 2>&1 || true
   for f in $FILES; do
-    if out="$(cd "$WT" && "$PY" tools/match.py "$f" 2>&1)"; then
+    src="build/merge-verify/$f.cpp"; mkdir -p "$(dirname "$src")"
+    git show "wt/$NAME:src/$f.cpp" > "$src"
+    if out="$("$PY" tools/match.py "$f" --src "$src" 2>&1)"; then
       echo "  $f: $(echo "$out" | tail -1)"
     else
       FAIL=1; echo "  $f: MISMATCH"; echo "$out" | grep -vE ' (MATCH|asm)$' | tail -15
@@ -98,6 +123,6 @@ if [ -n "$DEFER" ] && [ -n "$COMMITS" ]; then
     if ! tools/dock ninja >build/ninja-merge.log 2>&1 || [ ! -e build/ok ]; then
       echo "$(date '+%F %T') after merging wt/$NAME ($BEFORE..$(git rev-parse --short HEAD)): full build failed, see build/ninja-merge.log"         > build/workers/BUILD_FAILED
     fi
-    rmdir "$L"
+    rm -rf "$L"
   ) </dev/null >/dev/null 2>&1 &
 fi

@@ -26,6 +26,7 @@ relative path (e.g. "bed/bedsubmode.cpp") that the game's asserts contain.
 """
 import argparse
 import bisect
+import difflib
 import functools
 import os
 import re
@@ -539,6 +540,18 @@ def compare(name, source=None, extra="", diff=False, sync=True):
             size_ok = osize is None or osize == size
             if not size_ok:
                 status += f" (size 0x{size:X}, game 0x{osize:X})"
+            if bad or rbad or not size_ok:
+                # Word N against word N says little once one instruction is
+                # missing or extra: also count the edits that turn the game's
+                # instructions into ours, aligned (what tools/work.py and
+                # tools/permute.py score by).
+                gsize = osize or size
+                theirs = [disasm(game(o), o + delta) for o in range(off, off + gsize, 4)]
+                ours = [disasm(relocs[o].word if o in relocs and relocs[o].word is not None else word(data, o),
+                               o + delta) for o in range(off, off + size, 4)]
+                sm = difflib.SequenceMatcher(None, theirs, ours, autojunk=False)
+                edits = sum(max(i2 - i1, j2 - j1) for tag, i1, i2, j1, j2 in sm.get_opcodes() if tag != "equal")
+                status += f", {edits} edits"
             ok &= not bad and not rbad and size_ok
             emit(f"  0x{addr:08X} {fname:40} {size:#6x}  {status}")
             # Wrong references are worth reading when the code matches;

@@ -79,6 +79,11 @@ def main():
     ap.add_argument("--exclude", default="", help="comma-separated files to leave out (taken by a worker)")
     ap.add_argument("--nonmatching", action="store_true", help="also list NON_MATCHING attempts")
     ap.add_argument("--top", type=int, default=25, help="files shown in the summary")
+    ap.add_argument("--budget", type=int, default=0, metavar="INSNS",
+                    help="with --names: stop adding functions once the batch has this many instructions")
+    ap.add_argument("--by-yield", action="store_true",
+                    help="order the summary by expected yield: pending bytes, less the share of the "
+                         "file's functions workers skipped")
     ap.add_argument("--skipped", action="store_true", help="also list functions a worker skipped")
     ap.add_argument("--retry", metavar="WORKER",
                     help="only functions other workers skipped and WORKER has not (a second try)")
@@ -110,7 +115,15 @@ def main():
         tw = {name for _, name, _ in rows.get(args.file, []) if twins.twin_of(args.file, name, idx)}
         items = sorted(rows.get(args.file, []), key=lambda r: (r[1] not in tw, r[0], r[1]))
         if args.names:
-            print(", ".join([name for _, name, nm in items if args.retry or not nm][: args.names]))
+            pick, total = [], 0
+            for n, name, nm in items:
+                if not (args.retry or not nm) or len(pick) >= args.names:
+                    continue
+                if args.budget and pick and total + n > args.budget:
+                    break
+                pick.append(name)
+                total += n
+            print(", ".join(pick))
             return
         for n, name, nm in items:
             print(f"{n:5}  {name}{'  (NON_MATCHING attempt)' if nm else ''}{'  twin' if name in tw else ''}")
@@ -118,6 +131,16 @@ def main():
         return
 
     summary = sorted(((len(v), sum(n for n, _, _ in v), f) for f, v in rows.items()), reverse=True)
+    if args.by_yield:
+        skipped_in = {}
+        for f, _ in by:
+            skipped_in[f] = skipped_in.get(f, 0) + 1
+
+        def expected(row):
+            count, total, f = row
+            sk = skipped_in.get(f, 0)
+            return total * (1 - sk / (sk + count))
+        summary.sort(key=expected, reverse=True)
     print(f"files with functions of up to {args.max} instructions still in asm:")
     for count, total, f in summary[: args.top]:
         print(f"{count:5} functions {total * 4:7,} B  {f}")

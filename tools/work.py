@@ -121,27 +121,36 @@ def assemble(name, fn, path):
 
 
 def kept(name, fn, path, status):
-    """src/<name>.cpp with the scratch file's function under #ifdef NON_MATCHING."""
+    """src/<name>.cpp with the scratch file's function, and the declarations
+    it needs that the file lacks, under #ifdef NON_MATCHING."""
     work = path.read_text(encoding="utf8")
+    decls = work[work.index(DECL) + len(DECL):work.index(FUNC)].strip("\n")
     func = work[work.index(FUNC) + len(FUNC):].strip("\n")
     if func.strip() == include_line(name, fn):
         sys.exit("nothing to keep: the best version is still the INCLUDE_ASM line")
-    block = (f"// NON_MATCHING: {status}\n#ifdef NON_MATCHING\n{func}\n#else\n"
+    have = set((ROOT / f"src/{name}.cpp").read_text(encoding="utf8").split("\n"))
+    need = "".join(d + "\n" for d in decls.split("\n") if d.strip() and d not in have)
+    block = (f"// NON_MATCHING: {status}\n#ifdef NON_MATCHING\n{need}{func}\n#else\n"
              f"{include_line(name, fn)}\n#endif")
-    text = assemble(name, fn, path)       # the declarations go in as for a check
+    bare = path.with_name(path.stem + ".bare.cpp")   # the function alone, no declarations
+    bare.write_text(work[:work.index(DECL) + len(DECL)] + "\n" + work[work.index(FUNC):],
+                    encoding="utf8", newline="\n")
+    text = assemble(name, fn, bare)
+    bare.unlink()
     return text.replace(func, block, 1) if func in text else None
 
 
 def score(status):
-    """Instructions off for a check's status text ('MATCH' 0, '8/23 differ' 8);
-    a wrong size or differing relocations count extra."""
+    """Instructions off for a check's status text: 'MATCH' 0; else the aligned
+    edits match.py reports ('8/23 differ, 3 edits' 3), or the positional
+    count from an older status; differing relocations count extra."""
     if status.endswith("MATCH"):
         return 0
-    m = re.search(r"(\d+)/\d+ differ", status)
+    m = re.search(r"(\d+) edits", status) or re.search(r"(\d+)/\d+ differ", status)
     n = int(m.group(1)) if m else 0
     r = re.search(r"(\d+) relocs? differ", status)
     n += int(r.group(1)) if r else 0
-    return n + (1000 if "size" in status else 0)
+    return max(n, 1)
 
 
 def check(name, fn, path, quiet=False):
@@ -164,7 +173,12 @@ def check(name, fn, path, quiet=False):
         if on:
             mine.append(line)
     print("\n".join(mine[:1] if good or quiet else mine))
-    if status is not None:                # compiled: is it the best one yet?
+    if status is not None:                # compiled: log it, and is it the best one yet?
+        # tools/orca/next_batch.sh counts a function checked twice or more and
+        # still asm as skipped (a log apart from the scratch files, which
+        # workers delete).
+        with open(WORK / ".tried", "a", encoding="utf8") as log:
+            log.write(f"{name} {fn} {score(status)}\n")
         best = BEST / name / f"{fn}.cpp"
         prev = best.read_text(encoding="utf8").split("\n", 1)[0].removeprefix("// best: ") if best.exists() else None
         if prev is None or score(status) <= score(prev):
@@ -200,7 +214,12 @@ def keep(name, fn):
     except match.CompileError as e:
         sys.exit(f"not written: the file does not compile with it\n{e}")
     if not ok:
-        sys.exit("not written: its declarations change the object")
+        sys.exit("not written: the object no longer matches")
+    # And the kept code must compile when NON_MATCHING is defined, or it rots.
+    try:
+        match.compare(name, trial, extra="-DNON_MATCHING", diff=False)
+    except match.CompileError as e:
+        sys.exit(f"not written: it does not compile with -DNON_MATCHING\n{e}")
     (ROOT / f"src/{name}.cpp").write_text(text, encoding="utf8", newline="\n")
     tmp.unlink()
     print(f"src/{name}.cpp: {fn} kept under NON_MATCHING ({status}). "
@@ -225,11 +244,6 @@ def main():
         print("compile server down (tools/match.py --server start): each check takes a minute on Windows")
     if not path.exists():
         start(name, a.function, path)
-    # A log of what was tried, kept apart from the scratch files (workers clean
-    # those up): tools/orca/next_batch.sh counts a tried function still in asm
-    # as skipped.
-    with open(WORK / ".tried", "a", encoding="utf8") as log:
-        log.write(f"{name} {a.function}\n")
     good, ok = check(name, a.function, path)
     if a.done:
         if not (good and ok):
