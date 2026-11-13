@@ -178,7 +178,27 @@ extern "C" void func_0017FB00(int arg0, int arg1)
     *(char *)(arg1 + 0x44) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017FB5C);
+extern "C" int func_0017FB5C(int arg0)
+{
+    int i;
+    int off;
+    int p;
+    int addr;
+
+    i = 0;
+    p = arg0 + 0x234;
+    off = 0;
+    do {
+        addr = off + arg0;
+        off += 0x84;
+        if (M2C_FIELD(addr, int *, 0x238) == -1) {
+            return p;
+        }
+        p += 0x84;
+        i += 1;
+    } while (i < 0x30);
+    return 0;
+}
 
 extern "C" void func_0017FBA4(int arg0, int arg1)
 {
