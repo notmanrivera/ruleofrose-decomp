@@ -283,7 +283,8 @@ def main():
     cur, cur_score = base, best_score
     print(f"start: {st}")
     tries = since = 0
-    end = time.time() + a.minutes * 60
+    t0 = time.time()
+    end = t0 + a.minutes * 60
     # Every single rewrite of the start first, then random chains.
     queue = [c for mut in MUTATIONS for c in mut(base) if fresh(c)]
     rng.shuffle(queue)
@@ -327,7 +328,8 @@ def main():
     for p in slots:
         for q in (p, p.with_name(p.stem + ".trial.cpp")):
             q.unlink(missing_ok=True)
-    print(f"{tries} tries in {a.minutes:g} min; best: {best_score} off")
+    why = "" if time.time() >= end or best_score == 0 else " (no rewrite left to try)"
+    print(f"{tries} tries in {(time.time() - t0) / 60:.1f} min{why}; best: {best_score} off")
     if best_score == 0:
         text = head + "\n".join(best) + "\n"
         scratch.parent.mkdir(parents=True, exist_ok=True)
