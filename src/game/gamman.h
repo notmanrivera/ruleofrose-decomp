@@ -62,6 +62,28 @@ public:
             m_head.m_prev = theNode;
             ++m_num;
         }
+        // The middle case reuses one variable for both neighbours: that is
+        // what puts m_next in the register m_prev was in (func_001CBB80).
+        void unlink(Node *theNode)
+        {
+            if (theNode == m_head.m_next) {
+                Node *next = theNode->m_next;
+                m_head.m_next = next;
+                next->m_prev = &m_head;
+            } else {
+                Node *p = theNode->m_prev;
+                if (theNode == m_head.m_prev) {
+                    m_head.m_prev = p;
+                    p->m_next = &m_head;
+                } else {
+                    p->m_next = theNode->m_next;
+                    Node *prev = theNode->m_prev;
+                    p = theNode->m_next;
+                    p->m_prev = prev;
+                }
+            }
+            --m_num;
+        }
     };
 
     class iterator {
@@ -101,6 +123,16 @@ public:
         Node *n = m_free.pop_back();
         n->m_data = theData;
         m_used.push_back(n);
+    }
+    // Ours. Gives the node back to the free chain; returns the next one.
+    iterator erase(iterator thePos)
+    {
+        iterator next = thePos;
+        ++next;
+        Node *n = thePos.m_node;
+        m_used.unlink(n);
+        m_free.push_back(n);
+        return next;
     }
 };
 

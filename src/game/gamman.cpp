@@ -1,6 +1,7 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void func_0017756C(void *, int);
 extern "C" int X_func_001D2BA8(...) asm("func_001D2BA8");
 extern "C" int X_func_00191E04(...) asm("func_00191E04");
 struct Item1A6C0 {
@@ -2044,7 +2045,28 @@ extern "C" int func_001CBAFC(GamMan *arg0, int arg1)
     return -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBB80);
+extern "C" void func_001CBB80(GamMan *self, int theKey)
+{
+    GamList<GamPair>::iterator it;
+    GamList<GamPair>::iterator last;
+    GamList<GamPair> *list = &self->m_unk20B00;
+
+    it = list->begin();
+    last = list->end();
+    while (it != last) {
+        if ((*it).m_key == theKey) {
+            if ((*it).m_val != -1) {
+                char *v0 = (char *)&D_006FBD80;
+                unsigned int off = 0x837E0;
+                v0 += off;
+                func_0017756C(v0, (*it).m_val);
+            }
+            it = self->m_unk20B00.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
 
 extern "C" void func_001CBD0C(GamMan *arg0)
 {
