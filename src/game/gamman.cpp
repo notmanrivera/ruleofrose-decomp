@@ -1,4 +1,6 @@
 #include "include_asm.h"
+#include "game/gamtrg.h"
+#include "game/gamman.h"
 extern "C" int X_func_001D2BA8(...) asm("func_001D2BA8");
 extern "C" int X_func_00191E04(...) asm("func_00191E04");
 struct Item1A6C0 {
@@ -9,8 +11,8 @@ struct Item1A6C0 {
     int unkC;
     Item1A6C0(void *sub, unsigned short id);
 };
-extern "C" void func_001C7A4C(int, unsigned short);
-extern "C" void func_001C9784(int, unsigned short);
+extern "C" void func_001C7A4C(GamMan *, unsigned short);
+extern "C" void func_001C9784(GamMan *, unsigned short);
 extern "C" int func_001DBFA0(void *, unsigned short);
 inline Item1A6C0::Item1A6C0(void *sub, unsigned short id)
 {
@@ -24,7 +26,6 @@ extern "C" int X_func_00191D74(...) asm("func_00191D74");
 extern "C" int X_func_00191DC8(...) asm("func_00191DC8");
 extern "C" int X_func_00191ED0(...) asm("func_00191ED0");
 extern "C" int X_func_00191F98(...) asm("func_00191F98");
-extern "C" int func_001C6C38(void *);
 extern "C" int func_001C8A28(void *, int, int);
 extern "C" int func_001BFFCC(int, int);
 extern "C" int func_001C020C(int, int);
@@ -42,8 +43,8 @@ struct ListNode {
     int count;
 };
 extern "C" int func_00143D7C(char *, char *, int);
-extern "C" int func_001C6FE0(void *, int, int, int);
-extern "C" void func_001CC250(void *, int, int, int, int, int);
+extern "C" int func_001C6FE0(GamMan *, int, int, int);
+extern "C" void func_001CC250(GamMan *, int, int, int, int, int);
 extern "C" int func_001CFBE4(int, unsigned int, int);
 struct Struct1C46FC {
     int x;
@@ -105,7 +106,7 @@ extern "C" int func_001D2AAC(int, unsigned int);
 extern "C" int func_001D2ADC(int, unsigned int);
 extern "C" int func_001D2B10(int, unsigned int);
 extern "C" int func_001D890C(int, int);
-extern "C" int func_001DB71C(int, int);
+extern "C" int Xiii_func_001DB71C(int, int) asm("func_001DB71C");
 extern "C" int func_001D89C4(int, int);
 extern "C" int func_001DB7CC(int, int);
 extern "C" int X_func_001D84B0(...) asm("func_001D84B0");
@@ -152,7 +153,7 @@ extern "C" int func_001BFFAC(unsigned short *, unsigned short *);
 extern "C" int Xiiu_func_001D2D00(int, unsigned int) asm("func_001D2D00");
 extern "C" int func_001D966C(int);
 extern "C" int X_loadModel__9MagSystemii(void *, int, int) asm("loadModel__9MagSystemii");
-extern "C" void func_001CCC30(int, int);
+extern "C" void func_001CCC30(GamMan *, int);
 extern "C" int func_001C0148(int, int);
 extern "C" int func_001C0298(int, int);
 extern "C" int func_001C02B8(int, int);
@@ -181,7 +182,7 @@ struct PcEffParam {
     int m_pad[20];
 };
 extern "C" int func_00176CC8(void *, void *);
-extern "C" void func_001CBA0C(void *, void *, int);
+extern "C" void func_001CBA0C(GamMan *, void *, int);
 extern "C" int X_func_0018741C(...) asm("func_0018741C");
 extern "C" int X_func_00187464(...) asm("func_00187464");
 extern "C" int X_func_001874AC(...) asm("func_001874AC");
@@ -213,8 +214,8 @@ struct Foo {
     char pad[0x1F24C];
     int ids[0x180];
 };
-extern "C" void func_001CB01C(int, int);
-extern "C" void func_001CDF5C(int, int, int);
+extern "C" void func_001CB01C(GamMan *, int);
+extern "C" void func_001CDF5C(GamMan *, int, int);
 extern "C" void func_0018BD94(char *);
 extern "C" int X4_func_0013F280(int, int, int, int) asm("func_0013F280");
 extern "C" int X_func_00243C40(int, int, int) asm("func_00243C40");
@@ -277,7 +278,6 @@ extern const char D_002FB350[];
 extern int D_002B89E0;
 extern int D_006FE04C;
 extern int D_00727BD0;
-extern int D_007812C0;
 extern "C" int X_func_00118ED8__9MagSystemiii(...) asm("func_00118ED8__9MagSystemiii");
 extern "C" int X_func_00118F30__9MagSystemii(...) asm("func_00118F30__9MagSystemii");
 extern "C" int X_func_00163AB8(...) asm("func_00163AB8");
@@ -1075,36 +1075,36 @@ extern "C" void func_001C0D44(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C0D70);
 
-extern "C" void func_001C1378(int arg0)
+extern "C" void func_001C1378(GamMan *arg0)
 {
     struct { char pad0[16]; } stack;
     int temp_a0;
     int temp_v0;
 
-    temp_v0 = M2C_FIELD(arg0, int *, 0x22090);
+    temp_v0 = (int)arg0->m_pc;
     if (temp_v0 != 0) {
         X_func_001DA228(temp_v0, 0x1C, (int)&stack);
-        X_func_001DA740(M2C_FIELD(arg0, int *, 0x22090), 0x1B, (int)&stack);
+        X_func_001DA740((int)arg0->m_pc, 0x1B, (int)&stack);
     }
-    temp_a0 = M2C_FIELD(arg0, int *, 0x22094);
+    temp_a0 = (int)arg0->m_dog;
     if (temp_a0 != 0) {
         X_func_001DA228(temp_a0, 0x1C, (int)&stack);
-        X_func_001DA740(M2C_FIELD(arg0, int *, 0x22094), 0x1B, (int)&stack);
+        X_func_001DA740((int)arg0->m_dog, 0x1B, (int)&stack);
     }
-    X_func_001D84B0(arg0);
-    M2C_FIELD(arg0, int *, 0x21FF0) = 0;
-    M2C_FIELD(arg0, int *, 0x22004) = 0;
-    M2C_FIELD(arg0, int *, 0x22008) = 0;
-    M2C_FIELD(arg0, int *, 0x21F60) = 0;
+    X_func_001D84B0((int)arg0);
+    arg0->m_unk21FF0 = 0;
+    arg0->m_unk22004 = 0;
+    arg0->m_unk22008 = 0;
+    (*(int *)&arg0->m_vcount) = 0;
 }
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C143C);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C19C4);
 
-extern "C" int func_001C1A6C(void *self, int theIdx)
+extern "C" int func_001C1A6C(GamMan *self, int theIdx)
 {
-    int *p = *(int **)((char *)self + 0x22200);
+    int *p = self->m_unk22200;
 
     return p[theIdx];
 }
@@ -1244,11 +1244,11 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C4168);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C43F0);
 
-extern "C" void func_001C4610(char *arg0)
+extern "C" void func_001C4610(GamMan *arg0)
 {
     GamList4610<void *>::iterator it;
     GamList4610<void *>::iterator last;
-    GamList4610<void *> *list = (GamList4610<void *> *)(arg0 + 0x1EF00);
+    GamList4610<void *> *list = (GamList4610<void *> *)((char *)&arg0->m_avfchrList.m_free.m_head.m_prev);
 
     it = list->begin();
     last = list->end();
@@ -1263,11 +1263,11 @@ extern "C" void func_001C4610(char *arg0)
     }
 }
 
-extern "C" void func_001C46C8(int arg0)
+extern "C" void func_001C46C8(GamMan *arg0)
 {
     int temp_v0;
 
-    temp_v0 = M2C_FIELD(arg0, int *, 0x21FE0);
+    temp_v0 = arg0->m_unk21FE0;
     if (temp_v0 != 0) {
         M2C_FIELD(temp_v0, float *, 0x1E8) = 9.999999583953922e-08f;
     }
@@ -1288,10 +1288,10 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FB8B8);
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FB8C0);
 
-extern "C" void func_001C46FC(char *arg0)
+extern "C" void func_001C46FC(GamMan *arg0)
 {
-    if (func_0017EA44(&D_00298EE0, *(int *)(arg0 + 0x21F7C)) != 0) {
-        func_00279C98(&D_006E9640, "%s #f060 \n", func_001DB8E8(arg0 + 0x18C00, 2, -1));
+    if (func_0017EA44(&D_00298EE0, arg0->m_unk21F7C) != 0) {
+        func_00279C98(&D_006E9640, "%s #f060 \n", func_001DB8E8((char *)arg0->m_mapObj, 2, -1));
         Struct1C46FC param;
         param.x = 0x30;
         param.y = 0xE0;
@@ -1300,8 +1300,8 @@ extern "C" void func_001C46FC(char *arg0)
         param.unk10 = 0x20;
         param.unk14 = 0;
         param.unk18 = 0;
-        X_func_001CF7D0(arg0, &param);
-        X_func_001CF854(arg0, &D_006E9640, 0, 0xB4);
+        X_func_001CF7D0((char *)arg0, &param);
+        X_func_001CF854((char *)arg0, &D_006E9640, 0, 0xB4);
     }
 }
 
@@ -1310,14 +1310,14 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C47C4);
 extern "C" void func_001C4F30(void) {
 }
 
-extern "C" void func_001C4F38(int arg0, int arg1)
+extern "C" void func_001C4F38(GamMan *arg0, int arg1)
 {
-    X_func_00118ED8__9MagSystemiii((int)&D_006E9840, (*(int *)(int *)((char *)(arg0) + 0x21FDC)), arg1, 1);
+    X_func_00118ED8__9MagSystemiii((int)&D_006E9840, arg0->m_pcChrNo, arg1, 1);
 }
 
-extern "C" void func_001C4F70(int arg0, int arg1)
+extern "C" void func_001C4F70(GamMan *arg0, int arg1)
 {
-    X_func_00118F30__9MagSystemii((int)&D_006E9840, (*(int *)(int *)((char *)(arg0) + 0x21FDC)), arg1);
+    X_func_00118F30__9MagSystemii((int)&D_006E9840, arg0->m_pcChrNo, arg1);
 }
 
 extern "C" void func_001C4FA4()
@@ -1375,10 +1375,10 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C526C);
 extern "C" void func_001C53D8(void) {
 }
 
-extern "C" void func_001C53E0(int arg0, int arg1)
+extern "C" void func_001C53E0(GamMan *arg0, int arg1)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x21FF0)) = arg1;
-    X_setPlayer__9MagSystemii((int)&D_006E9840, (*(int *)(int *)((char *)(arg0) + 0x21FDC)), arg1);
+    arg0->m_unk21FF0 = arg1;
+    X_setPlayer__9MagSystemii((int)&D_006E9840, arg0->m_pcChrNo, arg1);
 }
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C541C);
@@ -1402,33 +1402,33 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C5D08);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C5E1C);
 
-extern "C" void func_001C5F70(char *arg0)
+extern "C" void func_001C5F70(GamMan *arg0)
 {
-    if (*(int *)(arg0 + 0x21F4C) & 0x20) {
+    if ((int)arg0->m_sysFlg2 & 0x20) {
         unsigned int off = 0x42BB0;
         char *p = D_006FBD80 + off;
         func_00191D20(p, 2, 0);
         func_00191D74(p, 2, 0);
     }
-    *(int *)(arg0 + 0x21F4C) |= 8;
+    (*(int *)&arg0->m_sysFlg2) |= 8;
 }
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C5FFC);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C621C);
 
-extern "C" void func_001C6470(int arg0)
+extern "C" void func_001C6470(GamMan *arg0)
 {
     register int i asm("$5") = 0;
 
-    if (*(float *)((char *)arg0 + 0x22540) != -1.0f) {
+    if (arg0->m_unk22540 != -1.0f) {
         do {
             i++;
             if (i >= 3) {
                 return;
             }
             register int v0 asm("$2") = i << 5;
-            v0 += arg0;
+            v0 += (int)arg0;
             if (*(float *)((char *)v0 + 0x22540) == -1.0f) {
                 break;
             }
@@ -1436,7 +1436,7 @@ extern "C" void func_001C6470(int arg0)
     }
 
     if (i < 3) {
-        register char *dest asm("$3") = (char *)((i << 5) + arg0);
+        register char *dest asm("$3") = (char *)((i << 5) + (int)arg0);
         char *v0 = (char *)&D_006FBD80;
         unsigned int off = 0x2AAE0;
         v0 += off;
@@ -1446,9 +1446,9 @@ extern "C" void func_001C6470(int arg0)
     }
 }
 
-extern "C" void func_001C651C(char *arg0)
+extern "C" void func_001C651C(GamMan *arg0)
 {
-    register char *arg0_reg asm("$18") = arg0;
+    register char *arg0_reg asm("$18") = (char *)arg0;
     register int i asm("$17") = 2;
 
     if (*(float *)(arg0_reg + 0x22580) == -1.0f) {
@@ -1487,16 +1487,16 @@ extern "C" void func_001C6A04(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C6A40);
 
-extern "C" int func_001C6C28(int arg0)
+extern "C" int func_001C6C28(GamMan *arg0)
 {
-    return (*(int *)(int *)((char *)(arg0) + 0x21F7C));
+    return arg0->m_unk21F7C;
 }
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C6C38);
 
-extern "C" int func_001C6C98(int arg0)
+extern "C" int func_001C6C98(GamMan *arg0)
 {
-    return (*(int *)(int *)((char *)(arg0) + 0x21F64)) + ((unsigned int) (*(int *)(unsigned int *)((char *)(arg0) + 0x21F60)) / 1800U);
+    return arg0->m_playTime + ((unsigned int) (int)arg0->m_vcount / 1800U);
 }
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FB920);
@@ -1542,16 +1542,16 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C6FE0);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C7210);
 
-extern "C" int func_001C7494(char *arg0)
+extern "C" int func_001C7494(GamMan *arg0)
 {
-    unsigned int no = *(unsigned int *)(arg0 + 0x1D300);
+    unsigned int no = arg0->m_unk1D300;
     if (no >= 4) {
         ror_assert("mag/magscene.h", 0x330, "no >= 0 && no < MAX_MAP_MODEL");
     }
     return D_007257B8[no].val;
 }
 
-extern "C" void func_001C7500(int arg0, int arg1)
+extern "C" void func_001C7500(GamMan *arg0, int arg1)
 {
     char *snd = (char *)&D_007B2580;
     X_func_0017F5E8((int)snd, 8);
@@ -1563,10 +1563,10 @@ extern "C" void func_001C7500(int arg0, int arg1)
     int off = 0x18E00;
     X_func_001E4540((int)(base + off), arg1, 0);
     X_func_001C772C((int)base, 0xA00, 1);
-    *(int *)((char *)arg0 + 0x21F4C) |= 0x1000000;
+    (*(int *)&arg0->m_sysFlg2) |= 0x1000000;
 }
 
-extern "C" void func_001C75BC(int arg0, int arg1)
+extern "C" void func_001C75BC(GamMan *arg0, int arg1)
 {
     char *snd = (char *)&D_007B2580;
     X_func_0017F5E8((int)snd, 8);
@@ -1577,32 +1577,32 @@ extern "C" void func_001C75BC(int arg0, int arg1)
     int off = 0x18E00;
     X_func_001E4540((int)(base + off), arg1, 0);
     X_func_001C772C((int)base, 0xA00, 1);
-    *(int *)((char *)arg0 + 0x21F4C) |= 0x2000000;
+    (*(int *)&arg0->m_sysFlg2) |= 0x2000000;
 }
 
-extern "C" void func_001C766C(int arg0)
+extern "C" void func_001C766C(GamMan *arg0)
 {
     X_func_0017F5E8((int)&D_007B2580, 8);
     X_func_00180B30((int)&D_007B2580, 0x1F);
-    X_func_001C2848(arg0, (*(int *)(int *)((char *)(arg0) + 0x21F50)), 1);
+    X_func_001C2848((int)arg0, arg0->m_chapter, 1);
 }
 
-extern "C" void func_001C76CC(int arg0)
+extern "C" void func_001C76CC(GamMan *arg0)
 {
     X_func_0017F5E8((int)&D_007B2580, 8);
     X_func_00180B30((int)&D_007B2580, 0xC);
-    X_func_001C2848(arg0, (*(int *)(int *)((char *)(arg0) + 0x21F50)), 0);
+    X_func_001C2848((int)arg0, arg0->m_chapter, 0);
 }
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C772C);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C7A4C);
 
-extern "C" void func_001C7D04(int arg0, int arg1)
+extern "C" void func_001C7D04(GamMan *arg0, int arg1)
 {
     int found = 0;
     int i = 0;
-    int *p = *(int **)((char *)arg0 + 0x1F240);
+    int *p = arg0->m_unk1F240;
     int *start = p;
 
     while (1) {
@@ -1636,9 +1636,9 @@ extern "C" void func_001C7D04(int arg0, int arg1)
     func_001CCC30(arg0, arg1);
 }
 
-extern "C" int func_001C7DA8(int self, int theValue)
+extern "C" int func_001C7DA8(GamMan *self, int theValue)
 {
-    int *p = *(int **)(self + 0x1F240);
+    int *p = self->m_unk1F240;
 
     for (int i = 0; i < 0x169; i++) {
         if (*p == theValue) {
@@ -1649,12 +1649,12 @@ extern "C" int func_001C7DA8(int self, int theValue)
     return 0;
 }
 
-extern "C" void func_001C7DEC(int arg0)
+extern "C" void func_001C7DEC(GamMan *arg0)
 {
     int var_a0;
     int var_v1;
 
-    var_v1 = M2C_FIELD(arg0, int *, 0x1F240);
+    var_v1 = (int)arg0->m_unk1F240;
     var_a0 = 0x168;
     do {
         if (((unsigned int) (*(unsigned int *)(var_v1)) >> 0x1E) != 0) {
@@ -1674,15 +1674,15 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C7E40);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C812C);
 
-extern "C" void func_001C8214(char *arg0, int arg1)
+extern "C" void func_001C8214(GamMan *arg0, int arg1)
 {
-    char **vec = (char **)(arg0 + 0x1A6C0);
+    char **vec = (char **)((char *)&arg0->m_itemHave.m_begin);
     int off = arg1 * 0x10;
-    if (((Item1A6C0 *)(*vec + off))->unk8 == *(unsigned short *)(arg0 + 0x2220C)) {
-        func_001C7A4C((int)arg0, 0xA00);
+    if (((Item1A6C0 *)(*vec + off))->unk8 == arg0->m_pcEquipItem) {
+        func_001C7A4C(arg0, 0xA00);
     }
-    if (((Item1A6C0 *)(*vec + off))->unk8 == *(unsigned short *)(arg0 + 0x2220E)) {
-        func_001C9784((int)arg0, 0xA00);
+    if (((Item1A6C0 *)(*vec + off))->unk8 == arg0->m_findTargetItem) {
+        func_001C9784(arg0, 0xA00);
     }
     Item1A6C0 tmp(gamSub22220(), 0xA00);
     *(Item1A6C0 *)(*vec + off) = tmp;
@@ -1738,20 +1738,20 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C8604);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C870C);
 
-extern "C" int func_001C898C(int arg0)
+extern "C" int func_001C898C(GamMan *arg0)
 {
-    return (*(int *)(int *)((char *)(arg0) + 0x1D200));
+    return arg0->m_unk1D200;
 }
 
-extern "C" void func_001C899C(int arg0)
+extern "C" void func_001C899C(GamMan *arg0)
 {
     int temp_v0;
     int temp_v1;
 
-    temp_v0 = M2C_FIELD(arg0, int *, 0x1D200);
+    temp_v0 = arg0->m_unk1D200;
     if (temp_v0 > 0) {
-        temp_v1 = M2C_FIELD(arg0, int *, 0x1D204);
-        M2C_FIELD(arg0, int *, 0x1D200) = (int) (temp_v0 - 1);
+        temp_v1 = (int)arg0->m_unk1D204;
+        arg0->m_unk1D200 = (int) (temp_v0 - 1);
         if (temp_v1 != 0) {
             M2C_FIELD(temp_v1, unsigned short *, 0xA) = (unsigned short) (M2C_FIELD(temp_v1, unsigned short *, 0xA) + 0xFFFF);
         }
@@ -1813,7 +1813,7 @@ extern "C" void func_001C8EB4(char *arg0, int arg1, int arg2)
     unsigned short temp_s3 = arg1 & 0xFFFF;
     func_001DC48C(arg0 + 0x22220, temp_s3, 0xF, &sp0);
     int temp_s2 = X_loadModel__9MagSystemii(&D_006E9840, (unsigned short)sp0, -1);
-    int temp_v0 = func_001C6FE0(arg0, 2, 5, -1);
+    int temp_v0 = func_001C6FE0((GamMan *)(arg0), 2, 5, -1);
     func_001CC250(&D_007812C0, temp_s2, temp_v0, temp_s3, 0, 0);
     func_001CFBE4((int)&D_007812C0, temp_v0, arg2);
 }
@@ -1828,25 +1828,25 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C94D8);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C96C8);
 
-extern "C" void func_001C9784(int self, unsigned short theA)
+extern "C" void func_001C9784(GamMan *self, unsigned short theA)
 {
-    *(unsigned short *)(self + 0x2220E) = theA;
+    self->m_findTargetItem = theA;
     if (theA == 0xA00) {
         return X_func_00144500(0);
     }
     X_func_00144500(theA);
 }
 
-extern "C" int func_001C97C8(int arg0)
+extern "C" int func_001C97C8(GamMan *arg0)
 {
-    return (M2C_FIELD(arg0, long *, 0x21F48) & (((long) 0x800 << 0x20) | 4)) == 4;
+    return ((*(long *)&arg0->m_sysFlg) & (((long) 0x800 << 0x20) | 4)) == 4;
 }
 
 extern "C" int func_001C97F0(void *arg0)
 {
-    if ((func_001C8A28(arg0, 0xAD0, 1) && func_001C6C38(arg0) == 0) ||
-        (func_001C8A28(arg0, 0xAD1, 1) && func_001C6C38(arg0) == 2) ||
-        (func_001C8A28(arg0, 0xAD2, 1) && func_001C6C38(arg0) == 1)) {
+    if ((func_001C8A28(arg0, 0xAD0, 1) && func_001C6C38((GamMan *)(arg0)) == 0) ||
+        (func_001C8A28(arg0, 0xAD1, 1) && func_001C6C38((GamMan *)(arg0)) == 2) ||
+        (func_001C8A28(arg0, 0xAD2, 1) && func_001C6C38((GamMan *)(arg0)) == 1)) {
         if ((*(unsigned long long*)((char*)arg0 + 0x21F48) & 0x80000000004ULL) == 4) {
             return 1;
         }
@@ -1959,11 +1959,11 @@ public:
     iterator end() { return iterator(&m_head); }
 };
 
-extern "C" int func_001CB1C0(char *arg0)
+extern "C" int func_001CB1C0(GamMan *arg0)
 {
     GamListLocal2<int>::iterator it;
     GamListLocal2<int>::iterator last;
-    GamListLocal2<int> *list = (GamListLocal2<int> *)(arg0 + 0x1D24C);
+    GamListLocal2<int> *list = (GamListLocal2<int> *)(((char *)arg0 + 0x1D24C));
     it = list->begin();
     last = list->end();
     while (it != last) {
@@ -1996,47 +1996,47 @@ extern "C" int func_001CB384(int arg0, int arg1)
     }
 }
 
-extern "C" void func_001CB424(int arg0, int arg1)
+extern "C" void func_001CB424(GamMan *arg0, int arg1)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x21FD8)) = arg1;
-    (*(int *)(int *)((char *)(arg0) + 0x22098)) = X_func_001D2B8C();
+    arg0->m_unk21FD8 = arg1;
+    (*(int *)&arg0->m_murder) = X_func_001D2B8C();
 }
 
-extern "C" void func_001CB460(int arg0)
+extern "C" void func_001CB460(GamMan *arg0)
 {
     int temp_v0;
 
-    temp_v0 = (*(int *)(int *)((char *)(arg0) + 0x22090));
+    temp_v0 = (int)arg0->m_pc;
     if (temp_v0 != 0) {
         X_func_001DA228(temp_v0);
     }
 }
 
-extern "C" void func_001CB490(int arg0)
+extern "C" void func_001CB490(GamMan *arg0)
 {
     int temp_v0;
 
-    temp_v0 = (*(int *)(int *)((char *)(arg0) + 0x22094));
+    temp_v0 = (int)arg0->m_dog;
     if (temp_v0 != 0) {
         X_func_001DA228(temp_v0);
     }
 }
 
-extern "C" void func_001CB4C0(int arg0)
+extern "C" void func_001CB4C0(GamMan *arg0)
 {
     int temp_v0;
 
-    temp_v0 = (*(int *)(int *)((char *)(arg0) + 0x22098));
+    temp_v0 = (int)arg0->m_murder;
     if (temp_v0 != 0) {
         X_func_001DA228(temp_v0);
     }
 }
 
-extern "C" void func_001CB4F0(int arg0)
+extern "C" void func_001CB4F0(GamMan *arg0)
 {
     int temp_v0;
 
-    temp_v0 = (*(int *)(int *)((char *)(arg0) + 0x22090));
+    temp_v0 = (int)arg0->m_pc;
     if (temp_v0 != 0) {
         X_func_001DA740(temp_v0);
     }
@@ -2046,21 +2046,21 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CB520);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CB57C);
 
-extern "C" void func_001CB5D8(int arg0)
+extern "C" void func_001CB5D8(GamMan *arg0)
 {
     int temp_v0;
 
-    temp_v0 = (*(int *)(int *)((char *)(arg0) + 0x22094));
+    temp_v0 = (int)arg0->m_dog;
     if (temp_v0 != 0) {
         X_func_001DA740(temp_v0);
     }
 }
 
-extern "C" void func_001CB608(int arg0)
+extern "C" void func_001CB608(GamMan *arg0)
 {
     int temp_v0;
 
-    temp_v0 = (*(int *)(int *)((char *)(arg0) + 0x22098));
+    temp_v0 = (int)arg0->m_murder;
     if (temp_v0 != 0) {
         X_func_001DA740(temp_v0);
     }
@@ -2093,16 +2093,11 @@ extern "C" void func_001CB970(void *arg0, void *arg1, int arg2, float *arg3)
         param.m_unk08 = 0;
         unsigned int off = 0x837E0;
         char *p = D_006FBD80 + off;
-        func_001CBA0C(arg0, arg1, func_00176CC8(p, &param));
+        func_001CBA0C((GamMan *)(arg0), arg1, func_00176CC8(p, &param));
     }
 }
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBA0C);
-
-struct GamPair {
-    int key;
-    int val;
-};
 
 template <class T> class GamListLocal {
 public:
@@ -2135,16 +2130,16 @@ public:
     iterator end() { return iterator(&m_head); }
 };
 
-extern "C" int func_001CBAFC(char *arg0, int arg1)
+extern "C" int func_001CBAFC(GamMan *arg0, int arg1)
 {
     GamListLocal<GamPair>::iterator it;
     GamListLocal<GamPair>::iterator last;
-    GamListLocal<GamPair> *list = (GamListLocal<GamPair> *)(arg0 + 0x20B04);
+    GamListLocal<GamPair> *list = (GamListLocal<GamPair> *)((char *)&arg0->m_unk20B00.m_free.m_head.m_next);
     it = list->begin();
     last = list->end();
     while (it != last) {
-        if ((*it).key == arg1) {
-            return (*it).val;
+        if ((*it).m_key == arg1) {
+            return (*it).m_val;
         }
         ++it;
     }
@@ -2153,15 +2148,15 @@ extern "C" int func_001CBAFC(char *arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CBB80);
 
-extern "C" void func_001CBD0C(char *arg0)
+extern "C" void func_001CBD0C(GamMan *arg0)
 {
     char *v0 = (char *)&D_006FBD80;
     unsigned int off = 0x837E0;
     v0 += off;
     func_0017762C(v0);
 
-    ListNode *head1 = (ListNode *)(arg0 + 0x20B14);
-    ListNode *head2 = (ListNode *)(arg0 + 0x20B00);
+    ListNode *head1 = (ListNode *)((char *)&arg0->m_unk20B00.m_used.m_head.m_prev);
+    ListNode *head2 = (ListNode *)((char *)&arg0->m_unk20B00.m_free.m_head.m_prev);
 
     if (*(int *)((char *)head2 + 0x24) != 0 && head1->count != 0) {
         head2->prev->next = head1->next;
@@ -2300,8 +2295,8 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CD044);
 
 extern "C" void func_001CD224(int arg0)
 {
-    func_001CB01C(arg0, 2);
-    func_001CDF5C(arg0, 2, 0);
+    func_001CB01C((GamMan *)(arg0), 2);
+    func_001CDF5C((GamMan *)(arg0), 2, 0);
 }
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CD25C);
@@ -2347,36 +2342,36 @@ struct Struct32 {
     char data[32];
 } __attribute__((packed));
 
-extern "C" void func_001CF7D0(char *arg0, const Struct32 *arg1)
+extern "C" void func_001CF7D0(GamMan *arg0, const Struct32 *arg1)
 {
-    *(Struct32 *)(arg0 + 0x22280) = *arg1;
+    (*(Struct32 *)&arg0->m_unk22280) = *arg1;
 }
 
-extern "C" void func_001CF854(int arg0, int arg1, int arg2, int arg3)
+extern "C" void func_001CF854(GamMan *arg0, int arg1, int arg2, int arg3)
 {
     int temp_v0;
 
-    if (Xiii_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x222A0)) != 0) {
-        Xiii_func_001E7724((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x222A0));
-        M2C_FIELD(arg0, int *, 0x222A0) = -1;
+    if (Xiii_func_001E7D7C((int)&D_007A3D80, arg0->m_msgTaskID) != 0) {
+        Xiii_func_001E7724((int)&D_007A3D80, arg0->m_msgTaskID);
+        arg0->m_msgTaskID = -1;
     }
     temp_v0 = Xii___builtin_new(0x9C0);
-    Xiiiiiiii_func_001F4A24(temp_v0, arg1, arg2, arg0 + 0x22280, 1, M2C_FIELD(arg0, int *, 0x225D8), arg3);
-    X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0, 0, arg0 + 0x222A0, 0x11);
+    Xiiiiiiii_func_001F4A24(temp_v0, arg1, arg2, (int)&arg0->m_unk22280, 1, arg0->m_msgMode, arg3);
+    X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0, 0, (int)&arg0->m_msgTaskID, 0x11);
 }
 
-extern "C" void func_001CF95C(int arg0)
+extern "C" void func_001CF95C(GamMan *arg0)
 {
-    if (X_func_001E7D7C((int)&D_007A3D80, (*(int *)(int *)((char *)(arg0) + 0x222A0))) != 0) {
-        X_func_001E7724((int)&D_007A3D80, (*(int *)(int *)((char *)(arg0) + 0x222A0)));
-        (*(int *)(int *)((char *)(arg0) + 0x222A0)) = -1;
+    if (X_func_001E7D7C((int)&D_007A3D80, arg0->m_msgTaskID) != 0) {
+        X_func_001E7724((int)&D_007A3D80, arg0->m_msgTaskID);
+        arg0->m_msgTaskID = -1;
     }
-    (*(int *)(int *)((char *)(arg0) + 0x225D8)) = 0;
+    arg0->m_msgMode = 0;
 }
 
-extern "C" int func_001CF9D4(char *self)
+extern "C" int func_001CF9D4(GamMan *self)
 {
-    register char *self_reg asm("$16") = self;
+    register char *self_reg asm("$16") = (char *)self;
     register int var_s1 asm("$17") = 0;
     int temp_v0;
 
@@ -2395,28 +2390,28 @@ block_3:
     return var_s1;
 }
 
-extern "C" void func_001CFA5C(int self, int theA)
+extern "C" void func_001CFA5C(GamMan *self, int theA)
 {
     char *p = (char *)&D_006E9840;
 
-    *(int *)(self + 0x2227C) = X4_func_0013F280((int)(p + 0x12540), theA, 0, 0);
+    self->m_sysMsgHND = X4_func_0013F280((int)(p + 0x12540), theA, 0, 0);
 }
 
-extern "C" void func_001CFAA8(char *arg0)
+extern "C" void func_001CFAA8(GamMan *arg0)
 {
-    int temp_v0 = *(int *)(arg0 + 0x2227C);
+    int temp_v0 = arg0->m_sysMsgHND;
     if (temp_v0 != -1) {
         char *p = (char *)&D_006E9840;
         func_00135594(p + 0x12540, temp_v0);
-        func_001348B0(p + 0x12540, *(int *)(arg0 + 0x2227C));
-        *(int *)(arg0 + 0x2227C) = -1;
+        func_001348B0(p + 0x12540, arg0->m_sysMsgHND);
+        arg0->m_sysMsgHND = -1;
     }
-    *(int *)(arg0 + 0x225D8) = 0;
+    arg0->m_msgMode = 0;
 }
 
-extern "C" void func_001CFB38(int arg0, int arg1)
+extern "C" void func_001CFB38(GamMan *arg0, int arg1)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x2227C)) = arg1;
+    arg0->m_sysMsgHND = arg1;
 }
 
 extern "C" float func_001CFB48(int arg0, unsigned int arg1, unsigned int arg2)
@@ -2486,14 +2481,14 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CFE78);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D024C);
 
-extern "C" int func_001D044C(int arg0)
+extern "C" int func_001D044C(GamMan *arg0)
 {
-    return (*(int *)(int *)((char *)(arg0) + 0x1D35C));
+    return arg0->m_achrList.m_used.m_num;
 }
 
-extern "C" int func_001D045C(int arg0)
+extern "C" int func_001D045C(GamMan *arg0)
 {
-    return (*(int *)(int *)((char *)(arg0) + 0x1D99C));
+    return arg0->m_fchrList.m_used.m_num;
 }
 
 extern "C" int func_001D046C(int arg0, unsigned int arg1)
@@ -2516,11 +2511,11 @@ extern "C" int func_001D046C(int arg0, unsigned int arg1)
     }
 }
 
-extern "C" int func_001D0530(char *arg0, int arg1)
+extern "C" int func_001D0530(GamMan *arg0, int arg1)
 {
     GamListD0530<GamElemD0530>::iterator it;
     GamListD0530<GamElemD0530>::iterator last;
-    GamListD0530<GamElemD0530> *list = (GamListD0530<GamElemD0530> *)(arg0 + 0x1A7E0);
+    GamListD0530<GamElemD0530> *list = (GamListD0530<GamElemD0530> *)((char *)&arg0->m_itemStock.m_free.m_num);
     it = list->begin();
     last = list->end();
     while (it != last) {
@@ -2530,7 +2525,7 @@ extern "C" int func_001D0530(char *arg0, int arg1)
         ++it;
     }
 
-    char *vec = arg0 + 0x1A6C0;
+    char *vec = (char *)&arg0->m_itemHave.m_begin;
     char *start = *(char **)vec;
     char *finish = *(char **)(vec + 4);
     for (; start != finish; start += 0x10) {
@@ -2549,13 +2544,13 @@ extern "C" int func_001D05F4(int arg0, unsigned int arg1, int arg2)
 
     switch ((arg1 >> 28) & 3) {
     case 0:
-        func_001DB71C(Xiiu_func_001D2D00(arg0, arg1), arg2);
+        Xiii_func_001DB71C(Xiiu_func_001D2D00(arg0, arg1), arg2);
         break;
     case 1:
         func_001D890C(Xiiu_func_001D2B8C(arg0, arg1), arg2);
         break;
     case 2:
-        func_001DB71C(Xiiu_func_001D2BA8(arg0, arg1), arg2);
+        Xiii_func_001DB71C(Xiiu_func_001D2BA8(arg0, arg1), arg2);
         break;
     }
 

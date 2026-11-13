@@ -154,11 +154,11 @@ public:
     unsigned char m_pad1A688[0x38];
     GamItemHave m_itemHave;                         // +0x1A6C0: getItemHavePtr
     GamPool<GamItemStock, 0x14E> m_itemStock;       // +0x1A7C0: getItemStockPtr
-    int m_unk1D200;                                 // +0x1D200
-    int m_unk1D204;                                 // +0x1D204
+    int m_unk1D200;                                 // +0x1D200: m_num of the item m_unk1D204 points to (func_001C8598)
+    GamItem *m_unk1D204;                            // +0x1D204: an item of m_itemHave picked by uid (func_001C8598), or 0
     unsigned char m_pad1D208[0x38];
     GamPool<GamElem1D240, 4> m_unk1D240;            // +0x1D240: ctor; func_001CA38C, func_001CB01C, func_001CB1C0
-    int m_unk1D300;                                 // +0x1D300
+    unsigned int m_unk1D300;                        // +0x1D300: index into D_007257B8 (MagScene map models), asserted < MAX_MAP_MODEL
     unsigned char m_pad1D304[0x3C];
     GamPool<ObjStat *, 0x80> m_achrList;            // +0x1D340: getAchrListPtr
     GamPool<ObjStat *, 0x40> m_fchrList;            // +0x1D980: getFchrListPtr
@@ -208,7 +208,7 @@ public:
     int m_unk21FCC;                                 // +0x21FCC
     int m_unk21FD0;                                 // +0x21FD0
     int m_inuMode;                                  // +0x21FD4: getInuMode
-    unsigned char m_pad21FD8[0x4];
+    int m_unk21FD8;                                 // +0x21FD8
     int m_pcChrNo;                                  // +0x21FDC: getPcChrNo
     int m_unk21FE0;                                 // +0x21FE0: an object: func_001C46C8 writes a float at +0x1E8 of it
     int m_pcLastMot;                                // +0x21FE4: get_pc_last_mot, set_pc_last_mot
@@ -236,7 +236,7 @@ public:
     ACHRstat *m_dog;                                // +0x22094: getDogPtr
     ACHRstat *m_murder;                             // +0x22098: getMurderPtr
     unsigned char m_pad2209C[0x164];
-    int m_unk22200;                                 // +0x22200
+    int *m_unk22200;                                // +0x22200: an array: func_001C1A6C reads [theIdx]
     unsigned char m_pad22204[0x4];
     int m_pcEquipItemOID;                           // +0x22208: getPcEquipItemOID
     unsigned short m_pcEquipItem;                   // +0x2220C: getPcEquipItem
