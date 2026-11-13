@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int X_func_001AF024(...) asm("func_001AF024");
+extern "C" int X_func_001AF3F0(...) asm("func_001AF3F0");
 extern "C" int X_func_001DC48C(...) asm("func_001DC48C");
 extern "C" void Xv_func_001AE574(int) asm("func_001AE574");
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
@@ -1860,7 +1862,17 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF21C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF3F0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF44C);
+extern "C" void func_001AF44C(int arg0, int arg1)
+{
+    if (arg1 == 0) {
+        X_func_001AF024();
+        X_func_001AF21C(arg0, -1);
+        char *base = (char *)&D_007812C0;
+        M2C_FIELD(arg0, int *, 0x2424) = X_func_001AF3F0(arg0, M2C_FIELD(base, unsigned short *, 0x2220C));
+        M2C_FIELD(arg0, int *, 0x242C) = (int) M2C_FIELD(base, unsigned short *, 0x2220E);
+        M2C_FIELD(arg0, int *, 0x2428) = X_func_001AF3F0(arg0, M2C_FIELD(base, unsigned short *, 0x2220E));
+    }
+}
 
 extern "C" int func_001AF4D0(int arg0, int arg1)
 {
