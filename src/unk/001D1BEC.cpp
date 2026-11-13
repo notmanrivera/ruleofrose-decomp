@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void Xvp_func_001D10D0(int, int, int) asm("func_001D10D0");
+extern "C" void Xvp_func_001D1410(int, int, int) asm("func_001D1410");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiii_func_001D3A38(int, int) asm("func_001D3A38");
 extern "C" int Xiiiii_attachActor__9MagSystemiii(int, int, int, int) asm("attachActor__9MagSystemiii");
@@ -64,7 +66,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2270);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2334);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D23F8);
+extern "C" void func_001D23F8(int arg0, int arg1, int arg2)
+{
+    if (arg2 != 0) {
+        Xvp_func_001D10D0(arg0, arg1, 1);
+        return;
+    }
+    Xvp_func_001D1410(arg0, arg1, 1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2428);
 
