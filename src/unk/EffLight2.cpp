@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiiff_func_00174C4Cb(int, int, float, float) asm("func_00174C4C");
 extern "C" int Xiiii_func_00173618(int, int, int, int) asm("func_00173618");
 extern "C" int Xiiii_func_00173628(int, int, int, int) asm("func_00173628");
 extern "C" int Xiiii_func_001733CC(int, int, int, int) asm("func_001733CC");
@@ -270,7 +271,31 @@ extern "C" void func_00174BB0(int arg0, int arg1)
     Xiiiff_func_00174C4C(arg0, (float *)(arg1 + 4), M2C_FIELD(arg1, float *, 0x2C), M2C_FIELD(arg1, float *, 0x30));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00174BD8);
+extern "C" void func_00174BD8(int arg0, int arg1)
+{
+    int var_v1;
+    unsigned short temp_v1;
+    int var_a2;
+
+    temp_v1 = M2C_FIELD(arg1, unsigned short *, 0x24);
+    var_v1 = temp_v1 - 1;
+    var_a2 = arg1 + (temp_v1 * 0x10) + 0x18;
+    if (var_v1 >= 0) {
+        for (;;) {
+            if ((unsigned short) M2C_FIELD(arg0, unsigned short *, 0x44) >= (unsigned short) M2C_FIELD(var_a2, unsigned short *, 0)) {
+                break;
+            }
+            var_v1 -= 1;
+            if (var_v1 < 0) {
+                return;
+            }
+            var_a2 -= 0x10;
+        }
+        if (var_v1 >= 0) {
+            Xiiiff_func_00174C4Cb(arg0, arg1 + 4, M2C_FIELD(var_a2, float *, 4), M2C_FIELD(var_a2, float *, 8));
+        }
+    }
+}
 
 extern "C" void func_00174C44(void) {
 }
