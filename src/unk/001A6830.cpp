@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int Xvp_snprintf(void *, int, const char *, ...) asm("snprintf");
+extern "C" char *Xvp_strcpy(char *, const char *) asm("strcpy");
+extern "C" unsigned int Xvp_strlen(const char *) asm("strlen");
+extern int D_002F9428;
+extern int D_002F9430;
 static inline unsigned int padTrigU_F40(int p) { return *(unsigned short *)((char *)p + 0x7A); }
 struct EntAEC50 {
     int unk0;
@@ -472,7 +477,23 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A7418);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A7498);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A7B90);
+extern "C" void *func_001A7B90(void *arg0, const unsigned char *arg1)
+{
+    char buf[64];
+    int count = 0;
+
+    while (arg1[0] == 0x81 && arg1[1] == 0x40) {
+        arg1 += 2;
+        count++;
+    }
+    buf[0] = '\0';
+    for (int i = 0; i < count; i++) {
+        const char *s = (const char *)&D_002F9428;
+        Xvp_strcpy(buf + Xvp_strlen(buf), s);
+    }
+    Xvp_snprintf(arg0, 0x40, (const char *)&D_002F9430, buf, arg1, 0);
+    return arg0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9428);
 
