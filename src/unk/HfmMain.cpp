@@ -589,7 +589,32 @@ extern "C" void HfmOutRide__vfunc_02(int arg0)
     Xii_func_00146AE4(arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmOutRide__vfunc_03);
+extern "C" int HfmOutRide__vfunc_03(int arg0)
+{
+    int temp_v1;
+    int var_a1;
+    int var_v0;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x40);
+    var_a1 = -1;
+    switch (temp_v1) {                              
+    case 0:
+        var_v0 = X_func_00146D88(arg0);
+block_11:
+        var_a1 = var_v0;
+        break;
+    case 1:
+        var_v0 = X_func_001473E4(arg0);
+        goto block_11;
+    case 2:
+        var_v0 = X_func_00147840(arg0);
+        goto block_11;
+    case 3:
+        var_v0 = X_func_001484EC(arg0);
+        goto block_11;
+    }
+    return var_a1;
+}
 
 extern "C" void HfmOutRide__vfunc_04(int arg0)
 {
