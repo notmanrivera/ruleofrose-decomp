@@ -1785,7 +1785,37 @@ extern "C" int func_001C9198(GamMan *self, GamItemStock theItem)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C9334);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C94D8);
+// Takes an item out of the stock by uid: one unit of a pile when theOne is
+// set and its record allows piling, else the whole entry (every entry with
+// that uid when theOne is 0). 1 when an entry was removed.
+extern "C" int func_001C94D8(GamMan *self, unsigned short theUID, int theOne)
+{
+    GamList<GamItemStock>::iterator it;
+    GamList<GamItemStock>::iterator last;
+    GamPool<GamItemStock, 0x14E> *list = self->getItemStockPtr();
+
+    if (list->size() != 0) {
+        it = list->begin();
+        last = list->end();
+        while (it != last) {
+            if ((*it).m_item.m_uid == theUID) {
+                if (func_001DD00C(self->m_unq, theUID, 0x20000) != 0 && theOne != 0) {
+                    if ((*it).m_item.m_num >= 2) {
+                        (*it).m_item.m_num--;
+                        return 0;
+                    }
+                }
+                it = self->m_itemStock.erase(it);
+                if (theOne != 0 || self->m_itemStock.size() == 0) {
+                    return 1;
+                }
+            } else {
+                ++it;
+            }
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C96C8);
 

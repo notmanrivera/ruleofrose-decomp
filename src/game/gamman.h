@@ -84,6 +84,22 @@ public:
             }
             --m_num;
         }
+        // Moves every node of another chain to the end of this one.
+        void splice(Chain &theOther)
+        {
+            if (theOther.m_num != 0) {
+                m_head.m_prev->m_next = theOther.m_head.m_next;
+                Node *last = m_head.m_prev;
+                last->m_next->m_prev = last;
+                Node *tail = theOther.m_head.m_prev;
+                m_head.m_prev = tail;
+                tail->m_next = &m_head;
+                m_num += theOther.m_num;
+                theOther.m_head.m_next = &theOther.m_head;
+                theOther.m_num = 0;
+                theOther.m_head.m_prev = &theOther.m_head;
+            }
+        }
     };
 
     class iterator {
@@ -124,6 +140,8 @@ public:
         n->m_data = theData;
         m_used.push_back(n);
     }
+    // Ours. Every node in use goes back to the free chain.
+    void clear() { m_free.splice(m_used); }
     // Ours. Gives the node back to the free chain; returns the next one.
     iterator erase(iterator thePos)
     {
