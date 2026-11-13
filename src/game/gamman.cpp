@@ -1945,7 +1945,37 @@ extern "C" int func_001CAF78(int arg0, unsigned short arg1, int arg2)
     return sp4;
 }
 
+// NON_MATCHING: 10/105 differ, 10 edits
+#ifdef NON_MATCHING
+extern "C" void func_001386D4(void *, int);
+extern "C" void func_00218470(const char *, ...);
+extern "C" void heapFree__FPv(void *);
+// dropMap: frees every loaded map pack, then the buffer they were kept in.
+extern "C" void func_001CB01C(GamMan *self, int unused)
+{
+    GamList<GamElem1D240>::iterator it;
+    GamList<GamElem1D240>::iterator last;
+    GamList<GamElem1D240> *list = &self->m_unk1D240;
+    bool dropped = false;
+
+    it = list->begin();
+    last = list->end();
+    while (it != last) {
+        char *p = (char *)&D_006E9840;
+        int off = 0x12540;
+        func_001386D4(p + off, (*it).m_unk04[1]);
+        it = self->m_unk1D240.erase(it);
+        dropped = true;
+    }
+    if (dropped) {
+        func_00218470("dropMap : m_p_keep_buf %x \n", self->m_unk225E8);
+        heapFree__FPv((void *)self->m_unk225E8);
+        self->m_unk225E8 = 0;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CB01C);
+#endif
 
 extern "C" int func_001CB1C0(GamMan *arg0)
 {
