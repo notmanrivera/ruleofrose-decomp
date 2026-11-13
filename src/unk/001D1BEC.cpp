@@ -137,7 +137,26 @@ extern "C" void func_001D1BEC(int arg0, unsigned int arg1, unsigned int arg2)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D1C80);
+extern "C" int func_001D1C80(int arg0, unsigned int arg1, int arg2, int arg3)
+{
+    int var_v0 = X_func_001D046C(arg0, arg1);
+
+    if (var_v0 != 0) {
+        switch ((arg1 >> 0x1C) & 3) {
+            case 0:
+                X_func_001DB31C(X_func_001D2D00(arg0, arg1), arg2, arg3);
+                break;
+            case 1:
+                X_func_001DA228(X_func_001D2B8C(arg0, arg1), arg2, arg3);
+                break;
+            case 2:
+                X_func_001DB31C(X_func_001D2BA8(arg0, arg1), arg2, arg3);
+                break;
+        }
+        return 0;
+    }
+    return var_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D1D5C);
 
