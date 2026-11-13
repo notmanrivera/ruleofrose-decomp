@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void Xv_func_001DAC8C(int, int, int) asm("func_001DAC8C");
 extern "C" float Xf_func_001D8C50(int) asm("func_001D8C50");
 extern "C" void Xvp_func_001D10D0(int, int, int) asm("func_001D10D0");
 extern "C" void Xvp_func_001D1410(int, int, int) asm("func_001D1410");
@@ -67,7 +68,12 @@ extern "C" float func_001D1F14(int arg0, unsigned int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D1F74);
+extern "C" void func_001D1F74(int arg0, unsigned int arg1, int arg2, int arg3)
+{
+    if (((arg1 >> 0x1C) & 3) == 1) {
+        return Xv_func_001DAC8C(X_func_001D2B8C(arg0, arg1), arg2, arg3);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D1FD8);
 
