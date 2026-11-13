@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xiiii_func_00173618(int, int, int, int) asm("func_00173618");
+extern "C" int Xiiii_func_00173628(int, int, int, int) asm("func_00173628");
+extern "C" int Xiiii_func_001733CC(int, int, int, int) asm("func_001733CC");
 extern "C" int Xi_func_00173610() asm("func_00173610");
 extern "C" int Xi_func_00173620() asm("func_00173620");
 extern "C" int Xii_func_00173380(int) asm("func_00173380");
@@ -42,7 +45,18 @@ extern "C" int EffFoot1Prim__vfunc_05(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot1Prim__vfunc_08);
+extern "C" int EffFoot1Prim__vfunc_08(int arg0, int arg1, int arg2, int arg3)
+{
+    switch (M2C_FIELD(arg0, int *, 0x44)) {
+    case 0:
+        return Xiiii_func_001733CC(arg0, arg1, arg2, arg3);
+    case 1:
+        return Xiiii_func_00173618(arg0, arg1, arg2, arg3);
+    case 2:
+        return Xiiii_func_00173628(arg0, arg1, arg2, arg3);
+    }
+    return arg3;
+}
 
 extern "C" void updateZDepth__12EffFoot1Prim(int arg0)
 {
