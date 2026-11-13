@@ -1,4 +1,26 @@
 #include "include_asm.h"
+extern "C" void Xvp_func_001AB5E4(void *) asm("func_001AB5E4");
+extern "C" void Xvp_func_001AB6F4(void *) asm("func_001AB6F4");
+struct MsgAB4E0 {
+    unsigned char m_unk[0x3BC];
+    ~MsgAB4E0() asm("func_00183B24");
+};
+struct SprAB4E0 {
+    unsigned char m_unk[0x8FC];
+    ~SprAB4E0() asm("func_0018BC18");
+};
+struct PadAB4E0 {
+    unsigned char m_pad[0x58];
+};
+struct BaseAB4E0 {
+    MsgAB4E0 m_msg[2];
+    inline ~BaseAB4E0() {}
+};
+struct ObjAB4E0 : public PadAB4E0, public BaseAB4E0 {
+    SprAB4E0 m_spr;
+    int m_10CC;
+    ~ObjAB4E0() asm("func_001AB4E0");
+};
 extern "C" void Xvp_func_0018BC18(void *, int) asm("func_0018BC18");
 extern "C" void Xvp_func_001AD870(void *) asm("func_001AD870");
 extern "C" void Xvp_func_001AD940(void *) asm("func_001AD940");
@@ -865,7 +887,13 @@ extern "C" void func_001AB474(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AB4E0);
+ObjAB4E0::~ObjAB4E0()
+{
+    Xvp_func_001AB6F4(this);
+    if (m_10CC == 1) {
+        Xvp_func_001AB5E4(this);
+    }
+}
 
 extern "C" void func_001AB598(int arg0, int arg1)
 {
