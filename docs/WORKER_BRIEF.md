@@ -9,19 +9,20 @@ first newline. `<FUNCS>` comes from
 ## First brief (fresh session)
 
 ```text
-You work in this git worktree only: ror-wt-<NAME> (branch wt/<NAME>). Read docs/DECOMPILING.md sections 2, 3 and 6 first. Task: decompile functions of src/<FILE>.cpp (file argument <FILE>) so they compile to identical bytes. Commands (PowerShell, from the worktree root): $py = "..\ruleofrose-decomp-main\tools\.venv\Scripts\python.exe" ; & $py tools\match.py --server start ; & $py tools\work.py <FILE> <func> (check) ; & $py tools\work.py <FILE> <func> --done (only on MATCH). When work.py prints "twin:", the scratch file holds the C++ of an already matched function with the same instructions: start from it. Functions, in this order: <FUNCS>. Rules: edit only src/<FILE>.cpp (declare what you need locally; an asm("name") alias is fine when a prototype already exists with another signature; keep X__vfunc_NN placeholder names as the asm label); never commit asm/, build/, disc/ or any .s file; never push; commit on top of wt/<NAME> as it is (no reset, no rebase). One commit per MATCH with message "<FILE>: <func>"; skip a function after <TRIES> failed tries. At the end report a table (function, result, tries, note) and the final tools\match.py <FILE> line.
+You work in this git worktree only: ror-wt-<NAME> (branch wt/<NAME>). Read docs/DECOMPILING.md sections 2, 3 and 6 first. Task: decompile functions of src/<FILE>.cpp (file argument <FILE>) so they compile to identical bytes. Commands (PowerShell, from the worktree root): $py = "..\ruleofrose-decomp-main\tools\.venv\Scripts\python.exe" ; & $py tools\match.py --server start ; & $py tools\work.py <FILE> <func> (check) ; & $py tools\work.py <FILE> <func> --done (only on MATCH). When work.py prints "twin:", the scratch file holds the C++ of an already matched function with the same instructions: start from it. Functions, in this order: <FUNCS>. Rules: edit only src/<FILE>.cpp (declare what you need locally; an asm("name") alias is fine when a prototype already exists with another signature; keep X__vfunc_NN placeholder names as the asm label); never commit asm/, build/, disc/ or any .s file; never push; commit on top of wt/<NAME> as it is (no reset, no rebase). One commit per MATCH with message "<FILE>: <func>"; skip a function after <TRIES> failed tries; when you skip one you got to compile, run & $py tools\work.py <FILE> <func> --keep (it puts your best try into src/ under #ifdef NON_MATCHING and checks the object still matches) and commit it as "<FILE>: <func> (NON_MATCHING)". At the end report a table (function, result, tries, note) and the final tools\match.py <FILE> line.
 ```
 
 `<STATE>` (follow-up only) says what happened to its last commits; `tools/orca/next_batch.sh` fills it in from `merge_worker.sh`.
 
-`<TRIES>`: 5 for small functions; for large ones use "3 distinct approaches,
-then commit the best attempt under #ifdef NON_MATCHING with a
-// NON_MATCHING: N of M instructions note".
+`<TRIES>`: 5 for small functions; for large ones use "3 distinct approaches".
+Either way the best version a worker compiled is kept (`work.py --keep`): a
+near miss does what the game does, which the PC port can use, and the next
+try (`next_batch.sh --retry`) starts from it.
 
 ## Follow-up brief (same session)
 
 ```text
-<STATE> Keep working here, same commands and rules (start from the twin when work.py prints "twin:"). Next, src/<FILE>.cpp, in order: <FUNCS>. One commit per MATCH ("<FILE>: <func>"), skip after <TRIES> failed tries, final table plus the tools\match.py <FILE> line.
+<STATE> Keep working here, same commands and rules (start from the twin when work.py prints "twin:"). Next, src/<FILE>.cpp, in order: <FUNCS>. One commit per MATCH ("<FILE>: <func>"), skip after <TRIES> failed tries (work.py <FILE> <func> --keep and a "<FILE>: <func> (NON_MATCHING)" commit for each skipped one that compiled), final table plus the tools\match.py <FILE> line.
 ```
 
 ## Coordinator loop
@@ -47,6 +48,18 @@ worker work. The first time, give `--handle <terminal> --busy <marker>`
 out of a module, `--file`, `--max`, `--names`, `--tries` override the
 choice, `--new` starts a fresh agent session with the first brief, and
 `--dry-run` only prints the brief.
+
+Since 2026-11-12 the loop also: merges with `merge_worker.sh --defer` (the
+worker gets its next batch while the full build runs; a failed build writes
+`build/workers/BUILD_FAILED` and every loop stops), waits out a usage limit
+when the screen says when it resets (`tools/orca/screen.py wait`), starts a
+fresh session when the agent's context passes 60 %, logs one line per batch
+in `build/workers/stats.tsv` (model, functions sent, commits, NON_MATCHING
+kept, bytes, minutes: the data for choosing models), and runs copies of its
+scripts, so they can be edited while loops run. After a pause or a power
+cut, `tools/orca/resume.sh` starts Docker, cleans up a half-done merge,
+re-reads the terminal handles and prints (or with `--start` runs) each
+worker's loop with the options it last had.
 
 By hand, the same steps are:
 
