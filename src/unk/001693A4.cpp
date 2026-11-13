@@ -16,7 +16,16 @@ extern "C" int X_memset(...) asm("memset");
 extern int D_007812C0;
 extern int D_007B2580;
 
-INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_001693A4);
+extern "C" void func_001DA228(void *theObj, int theKind, int *theOut);
+extern int D_002F1DF0[];
+extern "C" int func_001693A4(int arg0)
+{
+    unsigned short n;
+    func_001DA228((void *)*(int *)(arg0 + 8), 0x5A, (int *)&n);
+    if (n >= 6)
+        n = 0;
+    return D_002F1DF0[n];
+}
 
 extern "C" int func_001693EC(int arg0, int arg1, int arg2, int arg3)
 {
