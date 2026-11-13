@@ -1,4 +1,27 @@
 #include "include_asm.h"
+extern "C" int X_func_0018C190_1(int, int) asm("func_0018C190");
+extern int D_002A8848;
+extern int D_002AAD70;
+struct SubABA98 {
+    int unk0;
+    int unk4;
+    char pad8[0x4B0 - 8];
+    int vtbl;
+};
+struct ObjABA98 {
+    int unk0;
+    int unk4;
+    int unk8;
+    int unkC;
+    int unk10;
+    int unk14;
+    int unk18;
+    int unk1C;
+    char pad20[0x7D0 - 0x20];
+    SubABA98 sub;
+    char padC84[0x10BC - (0x7D0 + sizeof(SubABA98))];
+    int sys;
+};
 struct EntEF9C {
     int unk0;
     char pad[0x18 - 4];
@@ -885,7 +908,23 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AB720);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001ABA44);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001ABA98);
+extern "C" void func_001ABA98(ObjABA98 *arg0)
+{
+    int one = 1;
+    int five = 5;
+    SubABA98 *sub = &arg0->sub;
+    arg0->sys = (int) (*(int *)&_9MagSystem$m_current_system);
+    sub->vtbl = (int)&D_002A8848;
+    X_func_0018C190_1((int)sub, (int)&D_002AAD70);
+    arg0->unk4 = 0;
+    arg0->unkC = five;
+    arg0->unk10 = five;
+    arg0->unk14 = five;
+    arg0->unk18 = five;
+    arg0->unk1C = 0;
+    arg0->unk8 = 0;
+    sub->unk4 = one;
+}
 
 extern "C" int func_001ABB24(int arg0)
 {
