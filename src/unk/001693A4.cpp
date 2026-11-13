@@ -70,7 +70,11 @@ extern "C" void func_00169538(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016957C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_00169604);
+extern "C" int func_00169604(int arg0, int arg1)
+{
+    int *p = (int *)(arg0 + arg1 * 4);
+    return p[1];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_00169614);
 
