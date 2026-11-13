@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void Xvif_func_00146C8C(int, float) asm("func_00146C8C");
 extern "C" int Xh_func_001D19A8(...) asm("func_001D19A8");
 static inline int check_001D19A8(int arg0, int d)
 {
@@ -668,7 +669,16 @@ INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00147840);
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00147A28);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00147E04);
+extern "C" void func_00147E04(int arg0)
+{
+    if (check_001D19A8(arg0, (int)&D_007812C0) == 0) {
+        Xvif_func_00146C8C(arg0, -3.0f);
+        return;
+    }
+    Xvif_func_00146C8C(arg0, -3.0f);
+    X_func_001680A0(arg0, (M2C_FIELD(arg0, int *, 0x60) == 0) ? 0x24 : 0x25, 0x100);
+    X_func_00148450(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00147E94);
 
