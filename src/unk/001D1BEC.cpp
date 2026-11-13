@@ -92,7 +92,18 @@ extern "C" void func_001D23F8(int arg0, int arg1, int arg2)
     Xvp_func_001D1410(arg0, arg1, 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2428);
+extern "C" void func_001D2428(int arg0, unsigned int arg1, int arg2)
+{
+    int *temp_v0;
+
+    switch ((arg1 >> 0x1C) & 3) {
+        case 1:
+        case 2:
+            temp_v0 = &D_00724EA0 + X_func_001CBE38(arg0, arg1);
+            *temp_v0 = (*temp_v0 & ~0x60) | ((arg2 & 3) << 5);
+            break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2494);
 
