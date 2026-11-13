@@ -800,7 +800,34 @@ extern "C" void func_00148060(int arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001480E0);
+extern "C" void func_001480E0(int arg0)
+{
+    int temp_v0;
+    int var_a1;
+    int var_v0;
+
+    if (check_001D19A8(arg0, (int)&D_007812C0) != 0) {
+        if (X_func_00118FEC__9MagSystem((int)&D_006E9840) == 3) {
+            X_func_001680A0(arg0, (M2C_FIELD(arg0, int *, 0x60) == 0) ? 0x21 : 0x22, 0x100);
+            var_v0 = 9;
+        } else {
+            if (M2C_FIELD(arg0, int *, 0x74) == 0) {
+                var_a1 = 0x28;
+                M2C_FIELD(arg0, int *, 0x74) = 1;
+                M2C_FIELD(arg0, int *, 0x4C) = 0xC;
+            } else {
+                M2C_FIELD(arg0, int *, 0x74) = 0;
+                M2C_FIELD(arg0, int *, 0x4C) = 0xC;
+                var_a1 = 0x26;
+            }
+            X_func_001680A0(arg0, var_a1, 0);
+            X_func_0016947C(arg0);
+            X_func_001694CC(arg0, 0x38);
+            var_v0 = 5;
+        }
+        M2C_FIELD(arg0, int *, 4) = var_v0;
+    }
+}
 
 extern "C" void func_001481B8(int arg0)
 {
