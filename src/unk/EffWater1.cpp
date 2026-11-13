@@ -28,7 +28,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_00178E68);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_00178EEC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", updateZDepth__15EffMuzzleFlash1);
+extern "C" void updateZDepth__15EffMuzzleFlash1(int arg0)
+{
+    M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, arg0 + 0x30);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_001790E4);
 
