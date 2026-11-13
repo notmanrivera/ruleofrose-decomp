@@ -106,7 +106,22 @@ INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D1C80);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D1D5C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D1E88);
+extern "C" void func_001D1E88(int arg0, unsigned int arg1, float fparg0)
+{
+    int temp_v0;
+
+    X_func_001D046C(arg0, arg1);
+    switch ((arg1 >> 0x1C) & 3) {
+        case 1:
+        case 2:
+            temp_v0 = (int)&D_006FE6A0 + (X_func_001CBE38(arg0, arg1) * 0x4D0);
+            M2C_FIELD(temp_v0, float *, 0x68) = fparg0;
+            M2C_FIELD(temp_v0, float *, 0x64) = fparg0;
+            M2C_FIELD(temp_v0, float *, 0x60) = fparg0;
+            M2C_FIELD(temp_v0, int *, 0x90) = 1;
+            break;
+    }
+}
 
 extern "C" float func_001D1F14(int arg0, unsigned int arg1)
 {
