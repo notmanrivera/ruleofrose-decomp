@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int X_func_00191E04(...) asm("func_00191E04");
 struct Item1A6C0 {
     int unk0;
     int unk4;
@@ -1352,7 +1353,14 @@ extern "C" void func_001C5168(int unused, int arg1, int arg2, int arg3)
     func_00191C64(p, arg1, arg2 << 4, arg3 << 4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C51E0);
+extern "C" void func_001C51E0(int arg0, int arg1, int arg2)
+{
+    unsigned int off = 0x42BB0;
+    char *p = D_006FBD80 + off;
+
+    X_func_00191F98((int)p, arg1);
+    X_func_00191E04((int)p, arg1, arg2);
+}
 
 extern "C" void func_001C5240()
 {
