@@ -1783,7 +1783,35 @@ extern "C" int func_001C9198(GamMan *self, GamItemStock theItem)
     return 0;
 }
 
+// NON_MATCHING: 28/105 differ, 28 edits
+#ifdef NON_MATCHING
+// Removes the stock entry of an item by its object id. 1 when it was there.
+extern "C" int func_001C9334(GamMan *self, int theOID)
+{
+    GamList<GamItemStock>::iterator it;
+    GamList<GamItemStock>::iterator last;
+    GamPool<GamItemStock, 0x14E> *list = self->getItemStockPtr();
+
+    if (list->size() != 0) {
+        it = list->begin();
+        last = list->end();
+        while (it != last) {
+            if ((*it).m_item.m_oid == theOID) {
+                if (self->m_itemStock.size() == 1) {
+                    self->m_itemStock.clear();
+                    return 1;
+                }
+                it = self->m_itemStock.erase(it);
+                return 1;
+            }
+            ++it;
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C9334);
+#endif
 
 // Takes an item out of the stock by uid: one unit of a pile when theOne is
 // set and its record allows piling, else the whole entry (every entry with
