@@ -18,7 +18,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffMuzzleFlash1__vfunc_02);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffMuzzleFlash1__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_00178C54);
+extern "C" void func_00178C54(int arg0, int arg1, short arg2, float fparg0)
+{
+    int temp = M2C_FIELD(arg1, unsigned short *, 0xE);
+
+    M2C_FIELD(arg1, unsigned short *, 0xC) = (unsigned short) (M2C_FIELD(arg1, unsigned short *, 0xC) + temp);
+    M2C_FIELD(arg1, unsigned short *, 0xE) = (unsigned short) (arg2 + temp);
+    M2C_FIELD(arg1, float *, 4) = (float) (M2C_FIELD(arg1, float *, 4) + fparg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffMuzzleFlash1__vfunc_08);
 
