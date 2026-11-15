@@ -1254,7 +1254,42 @@ extern "C" void TskSysFunc__vfunc_05(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskSysFunc__vfunc_04);
 
+// NON_MATCHING: 36/51 differ, 1 reloc differs (size 0xCC, game 0xC8), 8 edits
+#ifdef NON_MATCHING
+extern "C" int func_001F42C4(int arg0)
+{
+    switch (M2C_FIELD(arg0, int *, 0x10)) {
+    case 0x64:
+        {
+            char *base = (char *)&D_006FBD80;
+            char *p = base + 0x42BB0;
+            M2C_FIELD(p, volatile int *, 0x93C) = M2C_FIELD(arg0, int *, 0x18);
+            if (M2C_FIELD(p, volatile int *, 0x944) == 0) {
+                M2C_FIELD(p, volatile int *, 0x94C) = M2C_FIELD(arg0, int *, 0x1C);
+                M2C_FIELD(p, volatile int *, 0x944) = 1;
+            }
+            M2C_FIELD(arg0, int *, 0x10) = 0x65;
+            M2C_FIELD(arg0, int *, 0x14) = M2C_FIELD(arg0, int *, 0x24);
+        }
+        break;
+    case 0x65:
+        if (M2C_FIELD(arg0, int *, 0x14)-- <= 0) {
+            int val = M2C_FIELD(arg0, int *, 0x20);
+            char *base = (char *)&D_006FBD80;
+            char *p = base + 0x42BB0;
+            if (M2C_FIELD(p, volatile int *, 0x944) == 1) {
+                M2C_FIELD(p, volatile int *, 0x94C) = val;
+                M2C_FIELD(p, volatile int *, 0x944) = 0;
+            }
+            return 1;
+        }
+        break;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F42C4);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F438C);
 
