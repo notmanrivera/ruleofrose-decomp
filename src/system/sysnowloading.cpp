@@ -1,4 +1,14 @@
 #include "include_asm.h"
+extern "C" int X___builtin_new(...) asm("__builtin_new");
+extern "C" int X_func_001CF6BC(...) asm("func_001CF6BC");
+extern "C" int X_func_001CF854(...) asm("func_001CF854");
+extern "C" int X_func_001CFA5C(...) asm("func_001CFA5C");
+extern "C" int X_func_001E71FC(...) asm("func_001E71FC");
+extern "C" int X_func_001E7D7C(...) asm("func_001E7D7C");
+extern "C" int X_func_001F184C(...) asm("func_001F184C");
+extern int D_007A3580;
+extern int D_007A3898;
+extern int D_007A3D80;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_FlushCache(...) asm("FlushCache");
@@ -125,7 +135,54 @@ INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00205570);
 
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_002058F0);
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00205928);
+extern "C" int func_00205928(int arg0, int arg1, int arg2)
+{
+    int temp_v0;
+    int base;
+    int var_a0;
+    int var_v1;
+
+    switch (arg0) {
+    case 1:
+        var_a0 = 0;
+        var_v1 = arg1;
+        while (*(unsigned char *)var_v1++ && var_a0++ < 0x200) {}
+        if (var_a0 >= 0x1FE) {
+            M2C_FIELD(var_v1, signed char *, 0) = 0;
+            M2C_FIELD(var_v1, unsigned char *, 1) = 0;
+        }
+        X_func_001CF854((int)&D_007812C0, arg1, 0, 0xB4);
+        break;
+    case 2:
+        X_func_001CF854((int)&D_007812C0, arg1, arg2, 0xB4);
+        break;
+    case 3:
+        X_func_001CFA5C((int)&D_007812C0, arg1, -1, -1, -1, -1);
+        break;
+    case 4:
+        (*(int *)((int)&D_007A3898)) = arg1;
+        break;
+    case 5:
+        X_func_001CF854((int)&D_007812C0, arg1, 0, arg2);
+        break;
+    case 10:
+        X_func_001CF6BC((int)&D_007812C0, 1, arg1);
+        break;
+    case 11:
+        X_func_001CF6BC((int)&D_007812C0, 0, arg1);
+        break;
+    case 20:
+        base = (int)&D_007812C0;
+        M2C_FIELD(base, int *, 0x21F4C) = (int) (M2C_FIELD(base, int *, 0x21F4C) | 0x80000);
+        temp_v0 = X___builtin_new(0x80);
+        X_func_001F184C(temp_v0, 0x15, 0, 0);
+        X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0, 0, base + 0x222C0, 0x11);
+        break;
+    case 21:
+        return (X_func_001E7D7C((int)&D_007A3D80, (*(int *)((int)&D_007A3580))) == 0) ? 0 : 0xCCCCCCCC;
+    }
+    return 0;
+}
 
 extern "C" int func_00205B18(int arg0)
 {
