@@ -1,4 +1,55 @@
 #include "include_asm.h"
+extern "C" int func_00213D90(int arg0, int arg1, int arg2);
+struct Data212E64 {
+    unsigned char b[0xB0];
+};
+struct List212E64 {
+    struct Node {
+        Node *m_prev;
+        Node *m_next;
+        int m_pad08;
+        int m_pad0C;
+        Data212E64 m_data;
+    } ALIGNED(16);
+    struct Chain {
+        Node m_head;
+        int m_num;
+        Node *pop_back()
+        {
+            Node *n = m_head.m_prev;
+            Node *prev = n->m_prev;
+            m_head.m_prev = prev;
+            prev->m_next = &m_head;
+            --m_num;
+            return n;
+        }
+        void push_back(Node *theNode)
+        {
+            if (m_num == 0) {
+                m_head.m_next = theNode;
+                theNode->m_prev = &m_head;
+            } else {
+                m_head.m_prev->m_next = theNode;
+                theNode->m_prev = m_head.m_prev;
+            }
+            theNode->m_next = &m_head;
+            m_head.m_prev = theNode;
+            ++m_num;
+        }
+    };
+    Chain m_free;
+    Chain m_used;
+    void push_back(const Data212E64 &theData)
+    {
+        Node *n = m_free.pop_back();
+        n->m_data = theData;
+        m_used.push_back(n);
+    }
+};
+struct Obj212E64 {
+    unsigned char pad[0x6200];
+    List212E64 m_list;
+};
 struct Item2127F4 {
     unsigned int a;
     int b;
@@ -1108,7 +1159,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00212A5C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00212D08);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00212E64);
+extern "C" void func_00212E64(int arg0, int arg1)
+{
+    List212E64::Node *p = 0;
+    if (func_00213D90(arg0, arg1, (int)&p) != 0) {
+        ((Obj212E64 *)arg0)->m_list.push_back(p->m_data);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00212FBC);
 
