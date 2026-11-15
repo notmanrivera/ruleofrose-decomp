@@ -1,4 +1,18 @@
 #include "include_asm.h"
+extern "C" int Xiii_free__9BedMemoryPv(int, int) asm("free__9BedMemoryPv");
+extern "C" int Xiii_releaseTex__10DogTexInfoi(int, int) asm("releaseTex__10DogTexInfoi");
+struct Unk87B0 {
+    int unk00;
+    signed char unk04;
+    char pad05[0x1F];
+    int unk24;
+    int unk28;
+    int unk2C;
+    int unk30[8];
+    int unk50;
+    int unk54;
+    int unk58;
+};
 extern "C" int X_func_00237360(int, int, float) asm("func_00237360");
 extern "C" int X_func_002373D8(int, int, int) asm("func_002373D8");
 extern "C" int Xii_func_0017A410(int) asm("func_0017A410");
@@ -50,7 +64,43 @@ extern "C" void dtor_10EffReload1(int, int) asm("_$_10EffReload1");
 extern "C" void dtor_9EffWater3(int, int) asm("_$_9EffWater3");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_001787B0);
+extern "C" void func_001787B0(int arg0, int arg1, int arg2)
+{
+    int *var_s1;
+    int temp_s3;
+    int var_s2;
+    int temp_a1;
+    Unk87B0 *temp_s0;
+
+    temp_a1 = arg0 + (arg1 * 0x60);
+    temp_s0 = (Unk87B0 *)(temp_a1 + 0xC94);
+    if (temp_s0->unk00 == 0) {
+        return;
+    }
+    if (arg2 == 0 && (temp_s0->unk24 & 1)) {
+        return;
+    }
+    var_s1 = temp_s0->unk30;
+    var_s2 = 0;
+    temp_s3 = (*(int *)(arg0)) + 0x29520;
+    temp_s0->unk50 = 0;
+    temp_s0->unk54 = 0;
+    if (temp_s0->unk58 > 0) {
+        do {
+            Xiii_releaseTex__10DogTexInfoi(temp_s3, *var_s1++);
+            var_s2++;
+        } while (var_s2 < temp_s0->unk58);
+    }
+    temp_s0->unk58 = 0;
+    if (temp_s0->unk28 != 0) {
+        Xiii_free__9BedMemoryPv((int)&D_006E9800, temp_s0->unk28);
+        temp_s0->unk28 = 0;
+    }
+    temp_s0->unk00 = 0;
+    temp_s0->unk04 = 0;
+    temp_s0->unk24 = 0;
+    temp_s0->unk2C = 0;
+}
 
 extern "C" void func_00178894(int arg0, int arg1)
 {
