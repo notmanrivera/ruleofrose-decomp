@@ -1,4 +1,33 @@
 #include "include_asm.h"
+struct Base_8720 {
+    int m_00;
+    unsigned char m_pad04[0x108];
+    virtual void vfunc0();
+    Base_8720() asm("func_00192AC0");
+};
+struct Msg_8720 {
+    unsigned char m_unk[0x3BC];
+    Msg_8720() asm("func_0018330C");
+};
+inline void *operator new(unsigned int, void *p) { return p; }
+struct MnuDiary : public Base_8720 {
+    int m_110;
+    int m_114;
+    int m_118;
+    int m_11C;
+    int m_120;
+    int m_124;
+    int m_128;
+    int m_12C;
+    int m_130;
+    int m_134;
+    int m_138;
+    unsigned char m_msgs[2*0x3BC];
+    int m_8B4;
+    int m_8B8;
+    void vfunc0();
+    MnuDiary() asm("func_00198720");
+};
 extern "C" void X_func_0019B384_C0E4(void *, int) asm("func_0019B384");
 extern "C" int func_0019C048(void *, unsigned short);
 extern "C" void func_0019B020(void *, int);
@@ -136,7 +165,22 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019844C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_001985B0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00198720);
+MnuDiary::MnuDiary()
+{
+    int i = 1;
+    Msg_8720 *p = (Msg_8720 *)m_msgs;
+    do { new (p) Msg_8720; p++; } while (--i != -1);
+    m_130 = -1;
+    m_134 = -1;
+    m_114 = -1;
+    m_118 = -1;
+    m_11C = -1;
+    m_00 = 7;
+    m_128 = 0;
+    m_138 = 0;
+    m_110 = 0;
+    m_8B8 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", MnuDiary__vfunc_01);
 
