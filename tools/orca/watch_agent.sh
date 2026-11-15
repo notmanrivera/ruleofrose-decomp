@@ -47,7 +47,9 @@ while :; do
   last=$(echo "$scr" | grep -v '^\s*$' | tail -30 | cut -c1-170)
   # Only the last lines count: an old message higher up is not the reason.
   tail12=$(echo "$last" | tail -12)
-  if echo "$tail12" | grep -qE "$QUOTA"; then st=quota; code=3
+  # A usage-limit box stays above whatever is queued under it in the input
+  # (OpenCode), so that one counts anywhere in the last 40 lines.
+  if echo "$tail12" | grep -qE "$QUOTA" || echo "$scr" | tail -40 | grep -qE "[Uu]sage limit reached"; then st=quota; code=3
   elif echo "$tail12" | grep -qE "$FILTER"; then st=filter; code=4
   else st=idle; code=0; fi
   echo "STATUS: $st"
