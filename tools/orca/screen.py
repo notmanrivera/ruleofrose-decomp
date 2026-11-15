@@ -56,10 +56,11 @@ def wait(tail, now=None):
             at += datetime.timedelta(days=1)
         secs = (at - now).total_seconds()
     else:
-        m = re.search(r"resets in (\d+)h(?:\s*(\d+)m)?", text, re.I)
-        if not m:
+        # "resets in 152h", "Resets in 2h 5m", "Resets in" + newline + "48m54s"
+        m = re.search(r"resets in\s+(?:(\d+)h)?\s*(?:(\d+)m)?\s*(?:(\d+)s)?", text, re.I)
+        if not m or not any(m.groups()):
             return ""
-        secs = int(m.group(1)) * 3600 + int(m.group(2) or 0) * 60
+        secs = int(m.group(1) or 0) * 3600 + int(m.group(2) or 0) * 60 + int(m.group(3) or 0)
     if secs > LIMIT_HOURS * 3600:
         return ""
     return str(int(secs) + 180)   # a few minutes' margin
