@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" const char *Xcc_strstr(const char *, const char *) asm("strstr");
+extern "C" int X_matchName(const struct McdMgr *, const char *, const char *) asm("func_0018B918");
 extern "C" int Xi_strcmp(const char *, const char *) asm("strcmp");
 struct McdDirEntry {
     int size;
@@ -404,6 +406,14 @@ fail:
     return -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018B9B8);
+extern "C" int func_0018B9B8(const McdMgr *arg0, const char *arg1)
+{
+    for (int i = 0; i < arg0->m_num; i++) {
+        if (X_matchName(arg0, arg0->getName(i), arg1) == 0) {
+            return Xcc_strstr(arg0->getName(i), D_002F78A0) == 0;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018BA68);
