@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void Xv_setActorRot__9MagSystemiPCf(int, int, int) asm("setActorRot__9MagSystemiPCf");
 extern "C" void Xv_func_001E6734(int, int, int, int, int, int) asm("func_001E6734");
 extern "C" void Xv_func_0017F5E8(int, int) asm("func_0017F5E8");
 extern "C" void Xv_strncpy(char *, const char *, int) asm("strncpy");
@@ -711,6 +712,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveAdj__vfunc_04);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EE4A8);
 
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEC0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEC8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDED0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDED8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEE0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEE8);
+
 extern "C" void TskRotAdj__vfunc_06(int arg0, int arg1)
 {
     M2C_FIELD(arg0, int *, 0) = (int)&_vt$9TskRotAdj;
@@ -722,7 +735,25 @@ extern "C" void TskRotAdj__vfunc_06(int arg0, int arg1)
 extern "C" void TskRotAdj__vfunc_05(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskRotAdj__vfunc_04);
+extern "C" int TskRotAdj__vfunc_04(int arg0)
+{
+    float var_f20;
+
+    if (M2C_FIELD(arg0, int *, 0x10)-- >= 0) {
+        M2C_FIELD(arg0, float *, 0x24) += M2C_FIELD(arg0, float *, 0xC);
+        var_f20 = M2C_FIELD(arg0, float *, 0x24);
+        if (var_f20 < -3.14159265358979323846) {
+            var_f20 += 2.0 * 3.14159265358979323846;
+        }
+        if (var_f20 > 3.14159265358979323846) {
+            var_f20 -= 2.0 * 3.14159265358979323846;
+        }
+        M2C_FIELD(arg0, float *, 0x24) = var_f20;
+        Xv_setActorRot__9MagSystemiPCf((int)&D_006E9840, M2C_FIELD(arg0, int *, 4), arg0 + 0x20);
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EE7F0);
 
@@ -909,26 +940,6 @@ block_4:
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0E90);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0F9C);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEC0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEC8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDED0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDED8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEE0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEE8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEF0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEF8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF00);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF08);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF10);
 
