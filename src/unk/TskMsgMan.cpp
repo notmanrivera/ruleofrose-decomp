@@ -559,7 +559,62 @@ extern "C" void TskMoveTypeRound__vfunc_06(int arg0, int arg1)
 extern "C" void TskMoveTypeRound__vfunc_05(void) {
 }
 
+// NON_MATCHING: 96/125 differ, 4 relocs differ (size 0x1F4, game 0x200), 54 edits
+#ifdef NON_MATCHING
+#include "ror.h"
+struct TskRoundObj { char pad[0x60]; int (TskRoundObj::*method)(); };
+extern const char roundHitText[] asm("D_002FDBF0");
+extern "C" int roundCheck(int, unsigned int, int *, int) asm("func_001D544C");
+extern "C" int roundHit(int, int) asm("func_001D8ADC");
+extern "C" void roundSet(int, int) asm("func_001D8A8C");
+extern "C" void roundPrint(const char *, int) asm("func_00260110");
+extern "C" int TskMoveTypeRound__vfunc_04(TskRoundObj *obj)
+{
+    int out[8];
+    int arg0 = (int)obj;
+    u_long128 *pos = (u_long128 *)(arg0+0x40);
+    (obj->*(obj->method))();
+    int base = (int)&D_007812C0;
+    u_long128 *old = (u_long128 *)(arg0+0x70);
+    int ok = roundCheck(base, M2C_FIELD(arg0, unsigned int *, 8), out, 0);
+    int actor = M2C_FIELD(arg0, int *, 4);
+    int rot = arg0+0x50;
+    if (((ok != 0) && (M2C_FIELD(actor, int *, 0x120) & 0x40)) || roundHit(actor, (int)pos) == 0) {
+        roundPrint(roundHitText, out[4]);
+        if ((M2C_FIELD(arg0, volatile int *, 0x18) ^ 1) & 1) {
+            int a = M2C_FIELD(arg0, int *, 4);
+            M2C_FIELD(a, int *, 0x120) |= 0x1000;
+        }
+        M2C_FIELD(arg0, volatile int *, 0x18) |= 1;
+        *(u_long128 *)(arg0+0x40) = *old;
+        int flags = M2C_FIELD(arg0, volatile int *, 0x18);
+        if (!(flags & 2)) {
+            M2C_FIELD(arg0, volatile int *, 0x18) = flags | 2;
+            int a = M2C_FIELD(arg0, int *, 4);
+            M2C_FIELD(arg0, float *, 0x24) = -M2C_FIELD(arg0, float *, 0x24);
+            M2C_FIELD(a, int *, 0x120) &= ~0x1000;
+        } else {
+            unsigned int period = 60;
+            if (M2C_FIELD(base, unsigned int *, 0x21F60) % period == 0) {
+                M2C_FIELD(arg0, volatile int *, 0x18) = flags & ~2;
+            }
+        }
+    } else {
+        *old = *pos;
+        int a = M2C_FIELD(arg0, int *, 4);
+        M2C_FIELD(a, int *, 0x120) &= ~0x1000;
+        if (M2C_FIELD(arg0, volatile int *, 0x18) & 1) {
+            int b = M2C_FIELD(arg0, int *, 4);
+            M2C_FIELD(b, int *, 0x120) &= ~0x1000;
+        }
+        M2C_FIELD(arg0, volatile int *, 0x18) &= ~1;
+    }
+    roundSet(M2C_FIELD(arg0, int *, 4), rot);
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveTypeRound__vfunc_04);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EBB80);
 
