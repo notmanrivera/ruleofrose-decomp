@@ -1056,7 +1056,46 @@ extern "C" void func_001C1378(GamMan *arg0)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C143C);
 
+// NON_MATCHING: 37/41 differ (size 0xA4, game 0xA8), 9 edits
+#ifdef NON_MATCHING
+extern "C" void func_001C19C4(GamMan *arg0, int *arg1)
+{
+    register int *var_a2 asm("$6");
+    register int *temp_t0 asm("$8");
+    register int temp_a3 asm("$7");
+    register int var_a5 asm("$9");
+    register int var_v1 asm("$3");
+
+    var_a2 = arg1 + 8;
+    temp_t0 = var_a2;
+    temp_a3 = *var_a2;
+    arg0->m_unk22200 = temp_t0;
+    var_a2 = arg1 + 9;
+    *temp_t0 = 0;
+    var_a5 = 0;
+    while (*var_a2 != 0) {
+        *var_a2 -= temp_a3;
+        var_a2++;
+        var_a5++;
+    }
+    if ((int)var_a2 & 0xF) {
+        var_a2 = (int *)((int)var_a2 / 0x10 * 0x10 + 0x10);
+    }
+    temp_a3 = (int)var_a2;
+    var_a2 = temp_t0;
+    if (var_a5 > 0) {
+        var_v1 = var_a5;
+        do {
+            var_v1--;
+            *var_a2 = temp_a3 + *var_a2 + 0x10;
+            var_a2++;
+        } while (var_v1 != 0);
+    }
+    M2C_FIELD(arg0, int **, 0x22204) = (int *)temp_a3;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C19C4);
+#endif
 
 extern "C" int func_001C1A6C(GamMan *self, int theIdx)
 {
