@@ -133,3 +133,10 @@ judgement and go to Sonnet.
   I3mPosture_s; the same VU overlay sections. So i3d is SCE Japan's
   "i3d package", not Punchline's own. Its ELF is stripped too (no
   .symtab). Kept in disc/ape3/ (ignored by git).
+- [x] Ape Escape 3 US demo (SCUS-97548 disc, game at /APEESC3/APEESC3.ELF,
+  owner's image, 2026-11-15): stripped too (no .symtab or debug
+  sections), the same "i3d_package_version 050121", 6.49 MB vs the
+  Japanese retail's 6.34 MB; only 5 more C++ function-name strings (its
+  own game code: LoadScreenProcessState, Recorder, SoundStream...), none
+  about i3d. Kept in disc/ape3demo/ (ignored by git).
+
