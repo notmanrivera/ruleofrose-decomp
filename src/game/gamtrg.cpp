@@ -1,4 +1,63 @@
 #include "include_asm.h"
+extern int X_vt_7ObjStat asm("_vt$7ObjStat");
+struct GamTrgNode_d87f4 {
+    GamTrgNode_d87f4 *m_prev;
+    GamTrgNode_d87f4 *m_next;
+    int m_data;
+};
+struct GamTrgChain_d87f4 {
+    GamTrgNode_d87f4 m_head;
+    int m_num;
+    void init() {
+        m_num = 0;
+        m_head.m_prev = &m_head;
+        m_head.m_next = &m_head;
+    }
+};
+struct GamTrgList_d87f4 {
+    GamTrgChain_d87f4 m_free;
+    GamTrgChain_d87f4 m_used;
+    int m_max;
+    void init(GamTrgNode_d87f4 *theNodes, int theMax) {
+        m_free.init();
+        m_used.init();
+        m_max = theMax;
+        int i = 0;
+        GamTrgNode_d87f4 *p = theNodes;
+        for (; i < m_max; i++) {
+            p->m_prev = p - 1;
+            p->m_next = p + 1;
+            p++;
+        }
+        m_used.init();
+        m_free.m_head.m_next = theNodes;
+        m_free.m_num = m_max;
+        theNodes[0].m_prev = &m_free.m_head;
+        m_free.m_head.m_prev = &m_free.m_head.m_next[m_free.m_num - 1];
+        m_free.m_head.m_prev->m_next = &m_free.m_head;
+    }
+};
+struct ObjStat_d87f4 {
+    unsigned char m_unk000[0x40];
+    GamTrgList_d87f4 m_pool;        // +0x40 .. +0x64
+    unsigned char m_unk064[0x1C];
+    GamTrgNode_d87f4 m_nodes[8];    // +0x80 .. +0xE0
+    unsigned char m_unk0E0[0x20];
+    int m_oid;                      // +0x100
+    int m_curStat;                  // +0x104
+    int m_chrID;                    // +0x108
+    int *m_sectaKeep;               // +0x10C
+    int m_unk110;                   // +0x110
+    int *m_secta;                   // +0x114
+    unsigned char m_unk118[0x10];
+    unsigned short m_uid;           // +0x128
+    unsigned char m_unk12A[0x6];
+    int m_areaNo;                   // +0x130
+    unsigned char m_unk134[0xC];
+    unsigned int m_flgV;            // +0x140
+    unsigned char m_unk144[0x114];
+    void *m_vtbl;                   // +0x258
+};
 struct GamTrgCopy_dd558 {
     long data[0xB0 / 8];
 };
@@ -133,7 +192,19 @@ extern "C" int func_001D8778(GamTrg0_d8778 *arg0, int arg1)
     return (i == arg0->count) ? 0 : ret;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D87F4);
+extern "C" void func_001D87F4(ObjStat_d87f4 *arg0, int arg1, int arg2, int arg3, unsigned short arg4)
+{
+    arg0->m_vtbl = &X_vt_7ObjStat;
+    arg0->m_pool.init(arg0->m_nodes, 8);
+    arg0->m_oid = arg2;
+    arg0->m_uid = arg4;
+    arg0->m_chrID = arg3;
+    arg0->m_curStat = arg1;
+    arg0->m_secta = 0;
+    arg0->m_unk110 = 0;
+    arg0->m_areaNo = 0;
+    arg0->m_flgV = 0;
+}
 
 extern int _vt$7ObjStat;
 extern "C" void Xv_ObjStatDtor(int arg0, int arg1) asm("_$_7ObjStat");
