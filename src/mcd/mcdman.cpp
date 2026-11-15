@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void Xv_func_001879C4(void *) asm("func_001879C4");
 extern "C" int Xii_heapFree__FPv(int) asm("heapFree__FPv");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
@@ -132,7 +134,13 @@ extern "C" int func_00187724()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00187738);
+extern "C" void func_00187738(int arg0, int arg1)
+{
+    Xv_func_001879C4((void *)arg0);
+    if (arg1 & 1) {
+        return Xv___builtin_delete((void *)arg0);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mcd/mcdman", D_002F73F0);
 
