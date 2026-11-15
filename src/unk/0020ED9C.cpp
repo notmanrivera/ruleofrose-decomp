@@ -1,4 +1,8 @@
 #include "include_asm.h"
+struct Elem214AC4 {
+    unsigned char b[0x80];
+};
+extern Elem214AC4 D_007B4920[];
 extern "C" void func_00211E84(int, int, int);
 extern "C" void func_00213F48(int, int, int);
 struct Block18000_1 { char b[0x18000]; };
@@ -1226,7 +1230,17 @@ extern "C" void func_00214A94(int arg0)
     ((int *)&D_007B4D30)[temp_a0] = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00214AC4);
+extern "C" int func_00214AC4(void)
+{
+    int i;
+    for (i = 0; i < 8; i++) {
+        if (*(unsigned int *)D_007B4920[i].b == 0xCCCCCCCCU) {
+            break;
+        }
+    }
+    D_007B4920[i] = *(Elem214AC4 *)&D_007B4700;
+    return i;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00214BCC);
 
