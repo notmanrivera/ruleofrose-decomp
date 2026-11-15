@@ -1,4 +1,17 @@
 #include "include_asm.h"
+struct Sub154_C068 {
+    int unk00;
+    unsigned char pad04[0x150];
+};
+struct Obj_C068 {
+    unsigned char pad000[4];
+    int unk04;
+    unsigned char pad008[0x4AC - 8];
+    int unk4AC;
+    int unk4B0;
+    int unk4B4;
+};
+extern "C" void Xv_func_0018DF20(Obj_C068 *, Sub154_C068 *) asm("func_0018DF20");
 struct Arg223558 {
     float unk00;
     void *unk04;
@@ -105,7 +118,27 @@ INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018BD94);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018BEF8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C068);
+extern "C" int func_0018C068(Obj_C068 *arg0)
+{
+    int i;
+
+    if (arg0->unk04 == 0) {
+        return 0;
+    }
+    for (i = 0; i < arg0->unk4B4; i++) {
+        Sub154_C068 *p = (Sub154_C068 *)(arg0->unk4AC + i * 0x154);
+        if (p->unk00 == 0) {
+            Xv_func_0018DF20(arg0, p);
+        }
+    }
+    for (i = 0; i < arg0->unk4B4; i++) {
+        Sub154_C068 *p = (Sub154_C068 *)(arg0->unk4AC + i * 0x154);
+        if (p->unk00 > 0) {
+            Xv_func_0018DF20(arg0, p);
+        }
+    }
+    return 0;
+}
 
 extern "C" int func_0018C130(int arg0)
 {
