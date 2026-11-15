@@ -155,7 +155,49 @@ extern "C" void func_001FF25C(void *arg0)
     M2C_FIELD(arg0, float *, 0x74) = stack.m[2][3];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FF2E0);
+extern "C" int func_001FF2E0(int arg0)
+{
+    if (Xiiu_func_001D19A8((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0x10)) != 0) {
+        if (Xii_func_001FBB04(arg0) != 0) {
+            return 1;
+        }
+        goto block_6;
+    }
+    if (M2C_FIELD(arg0, int *, 0xC) & 4) {
+block_6:
+        switch (M2C_FIELD(arg0, int *, 0x20)) {
+        case 0:
+        case 20:
+        case 10000:
+        case 10020:
+            M2C_FIELD(arg0, int *, 0x24) = 0x20;
+            M2C_FIELD(arg0, int *, 0xC) |= 8;
+            break;
+        case 10:
+        case 30:
+        case 10010:
+        case 10030:
+            M2C_FIELD(arg0, int *, 0x24) = 0x1D;
+            M2C_FIELD(arg0, int *, 0xC) |= 8;
+            break;
+        case 60:
+        case 10060:
+            M2C_FIELD(arg0, int *, 0x24) = 0x1F;
+            M2C_FIELD(arg0, int *, 0xC) |= 8;
+            break;
+        case 70:
+        case 10070:
+            M2C_FIELD(arg0, int *, 0x24) = 0x1C;
+            M2C_FIELD(arg0, int *, 0xC) |= 8;
+            break;
+        }
+        M2C_FIELD(arg0, int *, 0x20)++;
+        Xiiiiiif_func_001F5BDC(M2C_FIELD(arg0, unsigned int *, 0x10), M2C_FIELD(arg0, int *, 0x24), -1, 0, 0, 1.0f / 60.0f, 32769.0f);
+        M2C_FIELD(arg0, int *, 0xC) &= ~4;
+    }
+    M2C_FIELD(arg0, int *, 0x1C)++;
+    return 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF190);
 
