@@ -1,4 +1,45 @@
 #include "include_asm.h"
+extern "C" void X_func_00191F44_v2(int, int) asm("func_00191F44");
+extern "C" void X_func_00191F98_v2(int, int) asm("func_00191F98");
+extern "C" void X_func_001351B0_v2(int, unsigned int, int) asm("func_001351B0");
+static inline void pause_v2(unsigned int no, char *base)
+{
+    X_func_001351B0_v2((int)(base + 0x12540), no, 1);
+    int s = (int)(base + 0x550F0);
+    X_func_00191F44_v2(s, 0);
+    X_func_00191F44_v2(s, 2);
+    X_func_00191F44_v2(s, 1);
+    X_func_00191F44_v2(s, 3);
+    X_func_00191F44_v2(s, 5);
+    X_func_00191F44_v2(s, 4);
+    X_func_00191F44_v2(s, 6);
+    X_func_00191F44_v2(s, 7);
+    X_func_00191F44_v2(s, 8);
+    X_func_00191F44_v2(s, 9);
+    X_func_00191F44_v2(s, 0xA);
+    X_func_00191F44_v2(s, 0xB);
+    X_func_00191F44_v2(s, 0xC);
+    X_func_00191F44_v2(s, 0xD);
+}
+static inline void resume_v2(unsigned int no, char *base)
+{
+    X_func_001351B0_v2((int)(base + 0x12540), no, 0);
+    int s = (int)(base + 0x550F0);
+    X_func_00191F98_v2(s, 0);
+    X_func_00191F98_v2(s, 2);
+    X_func_00191F98_v2(s, 1);
+    X_func_00191F98_v2(s, 3);
+    X_func_00191F98_v2(s, 5);
+    X_func_00191F98_v2(s, 4);
+    X_func_00191F98_v2(s, 6);
+    X_func_00191F98_v2(s, 7);
+    X_func_00191F98_v2(s, 8);
+    X_func_00191F98_v2(s, 9);
+    X_func_00191F98_v2(s, 0xA);
+    X_func_00191F98_v2(s, 0xB);
+    X_func_00191F98_v2(s, 0xC);
+    X_func_00191F98_v2(s, 0xD);
+}
 extern "C" float X_func_002180E4_ecf3c(float *, float, float) asm("func_002180E4");
 extern "C" void X_func_001F11A0_ecf3c(int, float, float, float) asm("func_001F11A0");
 extern "C" int X_func_001E7D7C_ecf3c(int, int) asm("func_001E7D7C");
@@ -2405,7 +2446,15 @@ extern "C" void TskMsgMan__vfunc_05(int arg0)
     M2C_FIELD(arg0, int *, 0x204) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMsgMan__vfunc_02);
+extern "C" void TskMsgMan__vfunc_02(int arg0, int arg1)
+{
+    unsigned int no = M2C_FIELD(arg0, unsigned int *, 0x214);
+    if (arg1 != 0) {
+        pause_v2(no, (char *)&D_006E9840);
+        return;
+    }
+    resume_v2(no, (char *)&D_006E9840);
+}
 
 // NON_MATCHING: 38/86 differ, 3 relocs differ (size 0x158, game 0x15C), 15 edits
 #ifdef NON_MATCHING
