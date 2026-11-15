@@ -1,4 +1,24 @@
 #include "include_asm.h"
+struct Ent5428 {
+    int unk00;
+    int unk04;
+    int unk08;
+    char pad0C[0x14 - 0x0C];
+    int unk14;
+    int unk18;
+    char pad1C[0x28 - 0x1C];
+};
+struct Sub5428 {
+    Ent5428 *arr;
+};
+struct Obj5428 {
+    char pad0[0xD40];
+    Sub5428 sub;
+};
+extern int X_5428_D_007B2580 asm("D_007B2580");
+extern "C" void X_5428_func_00180078(int *, int, int) asm("func_00180078");
+extern "C" void X_5428_func_0017FF58(int *, int, int, int, int, float) asm("func_0017FF58");
+extern "C" int X_5428_func_001E5250(Obj5428 *, int, int, int, int, int) asm("func_001E5250");
 struct Ent5C40 {
     int unk00;
     int unk04;
@@ -980,7 +1000,20 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E50C8);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5250);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5428);
+extern "C" int func_001E5428(Obj5428 *arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, float fparg0)
+{
+    int idx = X_5428_func_001E5250(arg0, arg1, arg5, 0, 0, arg6);
+    X_5428_func_0017FF58(&X_5428_D_007B2580, idx, arg2, arg3, 0, fparg0);
+    X_5428_func_00180078(&X_5428_D_007B2580, idx, arg4);
+    Sub5428 *sub = &arg0->sub;
+    int off = idx * sizeof(Ent5428);
+    ((Ent5428 *)((char *)sub->arr + off))->unk00 = arg6 | 1;
+    ((Ent5428 *)((char *)sub->arr + off))->unk14 = arg1;
+    ((Ent5428 *)((char *)sub->arr + off))->unk18 = idx;
+    ((Ent5428 *)((char *)sub->arr + off))->unk04 = arg2;
+    ((Ent5428 *)((char *)sub->arr + off))->unk08 = arg3;
+    return idx;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5540);
 
