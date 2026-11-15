@@ -180,7 +180,38 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FF830);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FF9FC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FFBC0);
+extern "C" int func_001FFBC0(int arg0)
+{
+    if (Xiiu_func_001D19A8((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0x10)) != 0) {
+        if (Xii_func_001FBB04(arg0) != 0) {
+            return 1;
+        }
+        goto block_6;
+    }
+    if (M2C_FIELD(arg0, int *, 0xC) & 4) {
+block_6:
+        switch (M2C_FIELD(arg0, int *, 0x20)) {
+        case 0:
+        case 10:
+            M2C_FIELD(arg0, int *, 0x24) = 0x19;
+            M2C_FIELD(arg0, int *, 0xC) |= 8;
+            break;
+        case 20:
+            M2C_FIELD(arg0, int *, 0x24) = 0x1C;
+            M2C_FIELD(arg0, int *, 0xC) |= 8;
+            break;
+        case 30:
+            M2C_FIELD(arg0, int *, 0x24) = 0x1F;
+            M2C_FIELD(arg0, int *, 0xC) |= 8;
+            break;
+        }
+        M2C_FIELD(arg0, int *, 0x20)++;
+        Xiiiiiif_func_001F5BDC(M2C_FIELD(arg0, unsigned int *, 0x10), M2C_FIELD(arg0, int *, 0x24), -1, 0, 0, 1.0f / 60.0f, 32769.0f);
+        M2C_FIELD(arg0, int *, 0xC) &= ~4;
+    }
+    M2C_FIELD(arg0, int *, 0x1C)++;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FFCE0);
 
