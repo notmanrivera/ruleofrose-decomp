@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xii_func_00189068(int) asm("func_00189068");
 extern "C" const char *Xcc_strstr(const char *, const char *) asm("strstr");
 extern "C" int X_matchName(const struct McdMgr *, const char *, const char *) asm("func_0018B918");
 extern "C" int Xi_strcmp(const char *, const char *) asm("strcmp");
@@ -359,7 +360,36 @@ INCLUDE_RODATA("asm/nonmatchings/mcd/mcdman", D_002F78A0);
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018A50C);
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018AD0C);
+extern "C" int func_0018AD0C(int arg0)
+{
+    int ret = 0;
+
+    switch (M2C_FIELD(arg0, int *, 0x68)) {
+    case 0:
+        M2C_FIELD(arg0, int *, 0x60) = 0;
+        M2C_FIELD(arg0, int *, 0x64) = 1;
+        M2C_FIELD(arg0, int *, 0x68) = 1;
+    case 1:
+        if (Xii_func_00189068(arg0) == 1) {
+            switch (M2C_FIELD(arg0, int *, 0x64)) {
+            case 2:
+                M2C_FIELD(arg0, int *, 0x64) = 1;
+                M2C_FIELD(arg0, int *, 0x68) = 0x6E;
+                M2C_FIELD(arg0, int *, 0x60) = 0;
+                break;
+            case 3:
+                ret = 1;
+                break;
+            }
+        }
+        break;
+    case 0x6E:
+        M2C_FIELD(arg0, int *, 0x64) = 2;
+        ret = 1;
+        break;
+    }
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018ADE0);
 
