@@ -224,7 +224,22 @@ extern "C" void func_001E100C(int arg0, Vec3 *v)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E107C);
+extern "C" void func_001E107C(int arg0)
+{
+    // Volatile only to keep the game's store order: plain stores let the
+    // scheduler move the 4 below the two 0x80s (three instructions off).
+    M2C_FIELD(arg0, volatile int *, 0x171C) = 4;
+    M2C_FIELD(arg0, volatile int *, 0x1720) = 0x80;
+    M2C_FIELD(arg0, volatile int *, 0x1724) = 0x80;
+    M2C_FIELD(arg0, volatile int *, 0) = 0;
+    Xiiiiiii_func_001E6734(arg0, 0xD, 0x80, 0x80, 0, -1);
+    M2C_FIELD(arg0, int *, 0x1598) = 0x80;
+    M2C_FIELD(arg0, int *, 0x159C) = 0x80;
+    M2C_FIELD(arg0, int *, 0x1590) = 0x80;
+    M2C_FIELD(arg0, int *, 0x1594) = 0x80;
+    Xiiiiiii_func_001E6734(arg0, 0xE, 0x80, 0x80, 0, -1);
+    Xiiiiiii_func_001E6734(arg0, 0xF, 0x80, 0x80, 0, -1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E111C);
 
