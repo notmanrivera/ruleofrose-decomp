@@ -1,5 +1,46 @@
 #include "include_asm.h"
 #include "utl/filereader.h"
+struct Msg50C8 {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+    int unk10;
+    int unk14;
+    float unk18;
+    char pad1C[0x40 - 0x1C];
+};
+struct Elem28_50C8 {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+    int unk10;
+    int unk14;
+    int unk18;
+    char pad1C[0x28 - 0x1C];
+};
+struct Range50C8 {
+    char *m_begin;
+    char *m_end;
+    int m_max;
+};
+struct TskMan50C8 {
+    char pad00[0x58];
+    int m_prio;
+};
+struct SysFlg50C8 {
+    unsigned int m_sysFlg;
+    bool chkSysFlg(unsigned int theFlg) const { return (m_sysFlg & theFlg) != 0; }
+};
+extern TskMan50C8 X_50C8_D_007A3D80 asm("D_007A3D80");
+extern SysFlg50C8 X_50C8_D_007A320C asm("D_007A320C");
+extern int X_50C8_D_007B2580 asm("D_007B2580");
+extern "C" void *X_50C8_builtin_new(unsigned int) asm("__builtin_new");
+extern "C" void X_50C8_func_001F8FC0(void *, unsigned int, Msg50C8 *) asm("func_001F8FC0");
+extern "C" int X_50C8_func_001E71FC(void *, int, int, int, int, void *, int, int, int) asm("func_001E71FC");
+extern "C" int X_50C8_func_0017F8FC(void *, int) asm("func_0017F8FC");
+extern "C" void X_50C8_func_00180CE0(void *, int, int, int, float, int) asm("func_00180CE0");
 extern "C" void *X_4540_alloc__BedMemory(int, int, const char *, int, int, int) asm("alloc__9BedMemoryiPCciii");
 extern "C" void X_4540_heapFree(void *) asm("heapFree__FPv");
 extern "C" char *X_4540_strcpy(char *, const char *) asm("strcpy");
@@ -1438,7 +1479,36 @@ extern "C" int func_001E4E20(int arg0, int arg1, int arg2, int arg3, int arg4, f
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E4EBC);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E50C8);
+extern "C" int func_001E50C8(int arg0, int arg1, int arg2, int arg3, float fparg0, int arg4, int arg5, int arg6) {
+    Msg50C8 msg;
+    if (arg5 != 0) {
+        msg.unk00 = arg1;
+        msg.unk04 = arg2;
+        msg.unk08 = arg3;
+        msg.unk18 = fparg0;
+        msg.unk10 = arg4;
+        int prio = X_50C8_D_007A3D80.m_prio + arg5;
+        void *node = X_50C8_builtin_new(0xC0);
+        X_50C8_func_001F8FC0(node, 5, &msg);
+        X_50C8_func_001E71FC(&X_50C8_D_007A3D80, 1, prio, 1, 0, node, 0, 0, 1);
+        return -1;
+    }
+    if (X_50C8_D_007A320C.chkSysFlg(1)) {
+        return -1;
+    }
+    int idx = X_50C8_func_0017F8FC(&X_50C8_D_007B2580, arg1);
+    X_50C8_func_00180CE0(&X_50C8_D_007B2580, idx, arg2, arg3, fparg0, arg4);
+    Range50C8 *r = (Range50C8 *)(arg0 + 0xD40);
+    int off = idx * sizeof(Elem28_50C8);
+    ((Elem28_50C8 *)(r->m_begin + off))->unk00 = arg6;
+    ((Elem28_50C8 *)(r->m_begin + off))->unk0C = arg1;
+    ((Elem28_50C8 *)(r->m_begin + off))->unk18 = idx;
+    ((Elem28_50C8 *)(r->m_begin + off))->unk04 = arg2;
+    ((Elem28_50C8 *)(r->m_begin + off))->unk08 = arg3;
+    return idx;
+}
+
+// ---- end
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5250);
 
