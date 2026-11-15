@@ -64,7 +64,49 @@ INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D5610);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D56F4);
 
+#ifdef NON_MATCHING
+struct Cb8_58D8 {
+    unsigned int m_a;
+    unsigned int m_b;
+};
+
+extern const Cb8_58D8 D_002FC1E0;
+extern "C" float Xff_sinf(float) asm("sinf");
+extern "C" float Xff_cosf(float) asm("cosf");
+extern "C" void *func_001D8064(void *arg0, void *arg1, void *arg2, int arg3);
+
+extern "C" int func_001D58D8(void *arg0, void *arg1, float fparg0) {
+    register void *p1 PS2_REG("$16") = arg1;
+    register void *p0 PS2_REG("$17") = arg0;
+    void *temp_v1 = *(void **)((char *)p0 + 0x22094);
+    if (temp_v1 == 0 || (*(int *)((char *)temp_v1 + 0x120) & 0x80)) {
+        return 0;
+    }
+    func_001D8064(p0, p1, *(void **)((char *)temp_v1 + 0x114), 0);
+    {
+        register u_long128 *dst1 PS2_REG("$2") = (u_long128 *)((char *)p0 + 0x225B0);
+        register u_long128 tmp1 PS2_REG("$6") = *(u_long128 *)p1;
+        *dst1 = tmp1;
+    }
+    *(float *)p1 += Xff_sinf(fparg0) * *(float *)((char *)p0 + 0x21FC4);
+    *(float *)((char *)p1 + 8) += Xff_cosf(fparg0) * *(float *)((char *)p0 + 0x21FC4);
+    {
+        register u_long128 *dst2 PS2_REG("$2") = (u_long128 *)((char *)p0 + 0x225C0);
+        register u_long128 tmp2 PS2_REG("$6") = *(u_long128 *)p1;
+        *dst2 = tmp2;
+    }
+    {
+        register float f1 PS2_REG("$f1") = *(float *)((char *)p0 + 0x21FBC);
+        register float f0 PS2_REG("$f0") = *(float *)((char *)p0 + 0x21FC0);
+        *(float *)((char *)p0 + 0x225A0) = f1;
+        *(float *)((char *)p0 + 0x225A4) = f0;
+    }
+    *(Cb8_58D8 *)((char *)p0 + 0x225D0) = D_002FC1E0;
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D58D8);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D5A0C);
 
