@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiii_func_00104394(int, int, int) asm("func_00104394");
 extern "C" int Xiiif_func_00167D88(int, int, float) asm("func_00167D88");
 extern "C" int Xiii_func_00166B74(int, int) asm("func_00166B74");
 extern "C" int Xiii_func_00166C8C(int, int) asm("func_00166C8C");
@@ -780,7 +781,46 @@ extern "C" void HfmOutRide__vfunc_04(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00146AE4);
+extern "C" void func_00146AE4(int arg0)
+{
+    int off = 0x12540;
+    int temp_s1;
+    int t0;
+    int t1;
+    int temp_v0;
+
+    M2C_FIELD(arg0, int *, 0x3C) = 0;
+    M2C_FIELD(arg0, int *, 0x48) = 0;
+    M2C_FIELD(arg0, int *, 0x58) = 0;
+    M2C_FIELD(arg0, int *, 0x5C) = Xiii_func_0010423C(0x3C, 0x5A);
+    temp_s1 = Xiii_func_0010423C(0, 0x63);
+    if (Xiii_func_0013166C((int)&D_006E9840 + off, 0x16, 0) != 0) {
+        t0 = 0xA;
+        t1 = 0x4B;
+    } else {
+        t0 = 0x14;
+        t1 = 0x23;
+    }
+    if (temp_s1 < t0) {
+        M2C_FIELD(arg0, int *, 0x40) = 0;
+        temp_v0 = Xiiii_func_00104394(0xA, 0x96, 3);
+        M2C_FIELD(arg0, int *, 4) = 0;
+        M2C_FIELD(arg0, int *, 0x38) = temp_v0;
+    } else if (temp_s1 < t1) {
+        M2C_FIELD(arg0, int *, 0x40) = 1;
+        temp_v0 = Xiiii_func_00104394(0xA, 0x50, 3);
+        M2C_FIELD(arg0, int *, 4) = 0;
+        M2C_FIELD(arg0, int *, 0x38) = temp_v0;
+    } else if (temp_s1 < 0x55) {
+        M2C_FIELD(arg0, int *, 4) = 0;
+        M2C_FIELD(arg0, int *, 0x40) = 2;
+    } else {
+        M2C_FIELD(arg0, int *, 4) = 0;
+        M2C_FIELD(arg0, int *, 0x40) = 3;
+    }
+    Xiii_func_0010423C(0, 0x63);
+    Xiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), 114.9999924f);
+}
 
 extern "C" void func_00146BF0(int arg0)
 {
