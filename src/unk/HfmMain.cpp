@@ -338,7 +338,50 @@ INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001445D8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001446B8);
 
+// NON_MATCHING: 50/64 differ, 6 relocs differ (size 0x100, game 0x104), 28 edits
+#ifdef NON_MATCHING
+struct DogActor006FE6A0Base {
+    char pad[0x94];
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8(int, int);
+};
+struct DogActor006FE6A0 : DogActor006FE6A0Base {
+    char pad2[0x438];
+};
+extern "C" int Xi_func_00103E4C() asm("func_00103E4C");
+extern "C" int Xi_func_00103E94() asm("func_00103E94");
+extern "C" int Xiiiii_func_0010B620__8DogActoriPCcPPCc(int, int, int, int) asm("func_0010B620__8DogActoriPCcPPCc");
+extern DogActor006FE6A0 D_006FE6A0[];
+extern "C" int func_00144820(int arg0)
+{
+    int temp_v1 = M2C_FIELD(arg0, int *, 4);
+
+    if (temp_v1 == 0x64697370 || temp_v1 == 0x44495350 || temp_v1 == 1) {
+        int idx = Xi_func_00103E4C();
+        if (idx >= 0) {
+            ((DogActor006FE6A0 *)((char *)D_006FE6A0 + idx * 0x4D0))->v8(0, idx);
+        }
+    } else {
+        int idx = Xi_func_00103E4C();
+        if (idx >= 0) {
+            ((DogActor006FE6A0 *)((char *)D_006FE6A0 + idx * 0x4D0))->v8(1, idx);
+        }
+        idx = Xi_func_00103E94();
+        if (idx >= 0) {
+            Xiiiii_func_0010B620__8DogActoriPCcPPCc((int)((char *)D_006FE6A0 + idx * 0x4D0), 0, 0, 0);
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00144820);
+#endif
 
 extern "C" int func_00144924(int arg0)
 {
