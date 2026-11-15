@@ -9,7 +9,11 @@ coordinator has checked its evidence (a full build with `build/ok`, and
 `match.py` on every file touched); the result goes under "Done".
 
 Format: `- [ ] R<n> <title>`, then what to find out, what is known, and
-where to look.
+where to look. Items marked **[flash]** are survey work (scans,
+classifications, reading other projects' docs): they go to a cheap model
+with `tools/orca/research_flash.sh R<n>` (DeepSeek V4.1 Flash, read-only,
+in an idle worktree) instead of a Sonnet subagent; the others need
+judgement and go to Sonnet.
 
 ## Open
 
@@ -30,19 +34,19 @@ where to look.
   func_001DBC5C). Find what in their .rodata the compiler emits in
   another order than the asm piece (strings? the table?) and the source
   shape that gives the game's order.
-- [ ] R8 Recurring near-miss patterns: across the ~100 NON_MATCHING
+- [ ] R8 **[flash]** Recurring near-miss patterns: across the ~100 NON_MATCHING
   attempts (`// NON_MATCHING:` notes, tools/permute_queue.py --list),
   group the causes (bnel vs bnez, $v0/$v1 swaps, store order, delay-slot
   placement) and find, in already-matched functions with the same
   instruction patterns, the source idioms that produce them. Deliver
   ready-to-paste bullets for docs/DECOMPILING.md.
-- [ ] R9 Other wrong boundaries without jump tables: scan every file's
+- [ ] R9 **[flash]** Other wrong boundaries without jump tables: scan every file's
   .rodata start for the signs found so far (RTTI names of the previous
   file's classes at the start, an assert __FILE__ string of another file
   inside the range, a function using data of a file it does not belong
   to) and list suspects with evidence.
 
-- [ ] R11 C++ matching lessons from other ee-gcc decomps: read the
+- [ ] R11 **[flash]** C++ matching lessons from other ee-gcc decomps: read the
   docs/CONTRIBUTING of TheOnlyZac/Sly1, Komasia/sly2-decomp, ethteck/kh1
   and denzi-gh/crashwoc-decomp-ps2 (web), note each one's exact compiler
   and flags, and extract what applies to ee-gcc 2.96 C++ here (vtables,
