@@ -1026,7 +1026,47 @@ extern "C" void TskAvoidMove__vfunc_05(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF498);
 
+// NON_MATCHING: 78/82 differ, 8 relocs differ (size 0x148, game 0x144), 44 edits
+#ifdef NON_MATCHING
+extern "C" int Xiiiiii_func_001D5A0C(void *, void *, unsigned int, int, int, void *) asm("func_001D5A0C");
+extern "C" void Xviii_func_0025B878(void *, void *, void *) asm("func_0025B878");
+extern "C" int Xiuii_func_001F5558(unsigned int, int, int) asm("func_001F5558");
+extern const char D_002FDFE0[];
+extern "C" int func_001EF888(int arg0)
+{
+    u_long128 sp0;
+    u_long128 sp10;
+    struct {
+        int a[4];
+        int sp30;
+    } sp20;
+    int temp_s3;
+    u_long128 *p10;
+
+    temp_s3 = arg0 + 0x20;
+    sp20.sp30 = 0;
+    Xvp_func_001D890C(M2C_FIELD(arg0, int *, 4), temp_s3);
+    p10 = &sp10;
+    if (Xiuii_func_001F5558(M2C_FIELD(arg0, unsigned int *, 0xC), (int)p10, (int)D_002FDFE0) == 0) {
+        *p10 = M2C_FIELD(arg0, u_long128 *, 0x20);
+    }
+    Xviii_func_0025B878(&sp0, p10, (void *)(arg0 + 0x30));
+    if (Xiiiiii_func_001D5A0C(&D_007812C0, &sp0, M2C_FIELD(arg0, unsigned int *, 0xC), 0, 0, &sp20) == 0) {
+        return 1;
+    }
+    Xviii_func_0025B878(&sp0, (void *)temp_s3, (void *)(arg0 + 0x30));
+    Xvp_func_001D89C4(M2C_FIELD(arg0, int *, 4), (int)&sp0);
+    M2C_FIELD(arg0, int *, 0x64) = 0;
+    if (M2C_FIELD(arg0, int *, 0x60)++ > M2C_FIELD(arg0, int *, 0x50)) {
+        if (Xiiiiii_func_001D5A0C(&D_007812C0, &sp0, M2C_FIELD(arg0, unsigned int *, 0xC), 0, 0, &sp20) == 0) {
+            return 1;
+        }
+    }
+    return M2C_FIELD(arg0, int *, 0x70)++ > M2C_FIELD(arg0, int *, 0x68);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF888);
+#endif
 
 extern "C" int func_001EF9CC(int arg0)
 {
