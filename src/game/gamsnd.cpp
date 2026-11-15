@@ -1,4 +1,36 @@
 #include "include_asm.h"
+struct VObj71FC {
+    virtual int v1();
+    virtual void v2();
+    virtual void v3();
+};
+struct Node71FC {
+    VObj71FC *obj;      // +0x00
+    Node71FC *next;     // +0x04
+    int state;          // +0x08
+    int id;             // +0x0C
+    int *unk10;         // +0x10
+    void *unk14;        // +0x14
+    void *unk18;        // +0x18
+    int unk1C;          // +0x1C
+    int unk20;          // +0x20
+    int unk24;          // +0x24
+    int unk28;          // +0x28
+    int unk2C;          // +0x2C
+    int unk30;          // +0x30
+    int prio;           // +0x34
+    char pad38[0x40 - 0x38];
+};
+struct Obj71FC {
+    Node71FC *head0;    // +0x00
+    Node71FC *head4;    // +0x04
+    int nextId;         // +0x08
+    char pad0C[0x58 - 0x0C];
+    int unk58;          // +0x58
+};
+extern "C" void *X_71FC___builtin_new(unsigned int) asm("__builtin_new");
+extern "C" void X_71FC_func_001E7E50(Obj71FC *, int) asm("func_001E7E50");
+extern "C" void X_71FC_func_001E7184(Obj71FC *, Node71FC *) asm("func_001E7184");
 struct Ent5540 {
     char pad00[0x2A];
     short unk2A;
@@ -1380,7 +1412,39 @@ extern "C" void func_001E7184(List7184 *arg0, Node7184 *arg1)
 extern "C" void func_001E71F4(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E71FC);
+extern "C" int func_001E71FC(Obj71FC *arg0, int arg1, int arg2, int arg3, int arg4, VObj71FC *arg5, void *arg6, int *arg7, void *arg8)
+{
+    if (arg2 == -1) {
+        arg2 = arg0->unk58;
+    }
+    Node71FC *node = (Node71FC *)X_71FC___builtin_new(sizeof(Node71FC));
+    if (node == 0) {
+        return 0;
+    }
+    node->obj = arg5;
+    node->next = arg0->head4;
+    node->state = 0;
+    node->unk14 = arg8;
+    node->id = arg0->nextId++;
+    if (arg7 != 0) {
+        node->unk10 = arg7;
+        *arg7 = node->id;
+    }
+    X_71FC_func_001E7E50(arg0, node->id);
+    node->unk18 = arg6;
+    node->unk20 = arg5->v1();
+    node->unk28 = arg3;
+    node->unk24 = arg2;
+    if (arg4 == 0) {
+        node->unk2C = 0;
+    } else {
+        node->unk2C = arg2 + arg4 - 1;
+    }
+    node->prio = arg2;
+    arg5->v3();
+    X_71FC_func_001E7184(arg0, node);
+    return 1;
+}
 
 extern "C" void func_001E7340(void *arg0, Node7340 *arg1, int arg2)
 {
