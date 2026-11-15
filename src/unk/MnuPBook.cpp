@@ -408,6 +408,36 @@ extern "C" void func_00197F18(int arg0, int arg1, int arg2)
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_06);
 
+// NON_MATCHING: 11/34 differ, 6 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_00223228(int, int) asm("func_00223228");
+extern "C" int X_func_00223558(int, int) asm("func_00223558");
+extern "C" void MnuPBook__vfunc_07(int arg0, int arg1)
+{
+    int arr[16];
+    int q[6];
+    int p1;
+    int p2;
+    int v;
+
+    p1 = M2C_FIELD(arg0, int *, 0xA4);
+    arr[0] = M2C_FIELD(p1, int *, 8);
+    M2C_FIELD(p1, int *, 0xC) = 0;
+    p2 = M2C_FIELD(arg0, int *, 0xA4);
+    arr[1] = M2C_FIELD(p2, int *, 0x18);
+    M2C_FIELD(p2, int *, 0x1C) = 1;
+    q[2] = 2;
+    q[0] = 0;
+    q[1] = (int)arr;
+    q[3] = 0;
+    q[4] = 0;
+    q[5] = 0;
+    v = X_func_00223558(arg1, (int)q);
+    M2C_FIELD(arg0, int *, 0xAC) = v;
+    X_func_00223228(arg1, v);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_07);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F8140);
