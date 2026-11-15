@@ -1,4 +1,9 @@
 #include "include_asm.h"
+struct GamTrg0_d85f8 {
+    unsigned int count;
+    unsigned short *unk04;
+    unsigned short *unk08;
+};
 extern "C" int Xii_heapFree__FPv(int) asm("heapFree__FPv");
 extern "C" void Xv_func_001E8F88(int) asm("func_001E8F88");
 extern "C" int Xiii_func_001D811C(int, int, int, int) asm("func_001D811C");
@@ -83,7 +88,20 @@ extern "C" void func_001D859C(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D85F8);
+extern "C" void func_001D85F8(GamTrg0_d85f8 *arg0, unsigned short arg1, unsigned short arg2)
+{
+    unsigned int i;
+
+    for (i = 0; i < arg0->count; i++) {
+        if (arg0->unk08[i] == 0) {
+            break;
+        }
+    }
+    if (i < arg0->count) {
+        arg0->unk08[i] = arg2;
+        arg0->unk04[i] = arg1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8674);
 
