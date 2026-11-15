@@ -2709,7 +2709,71 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE5E0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE5E8);
 
+// NON_MATCHING: 120/150 differ, 21 relocs differ (size 0x258, game 0x250), 13 edits
+#ifdef NON_MATCHING
+struct MsgCopy4a { int w[8]; };
+extern "C" void ctor4a(int) asm("func_0018330C");
+extern "C" void print4a(int, ...) asm("func_00260110");
+extern "C" char *strcpy(char *, const char *);
+extern "C" int X_strlen(int) asm("strlen");
+extern "C" void X_strncpy(int, int, int) asm("strncpy");
+extern "C" void func_001F4A24(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+{
+    int temp_v0;
+    int temp_a1;
+    int temp_s5;
+    int temp_v0_2;
+    int var_a0;
+    int var_s0;
+    register int var_s1 PS2_REG("$17");
+    int temp_s0;
+    register int temp_s0_2 PS2_REG("$16");
+
+    int off = 0x12540;
+    var_s1 = 1;
+    temp_s5 = arg0 + 0x224;
+    var_s0 = temp_s5;
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$9TskMsgMan;
+    var_a0 = var_s0;
+    do {
+        var_s0 += 0x3BC;
+        ctor4a(var_a0);
+        var_s1 -= 1;
+        var_a0 = var_s0;
+    } while (var_s1 != -1);
+    temp_s0 = arg0 + 4;
+    __builtin_memcpy((void *)temp_s0, "#C", 3);
+    X_strncpy(arg0 + X_strlen(temp_s0) + 4, arg1, 0x200);
+    *(MsgCopy4a *)((char *)(arg0) + 2460) = *(MsgCopy4a *)((char *)(arg3) + 0);
+    M2C_FIELD(arg0, int *, 0x220) = temp_s0;
+    temp_s0_2 = (int)&D_006E9840 + off;
+    M2C_FIELD(arg0, int *, 0x204) = arg5;
+    M2C_FIELD(arg0, int *, 0x21C) = 0;
+    temp_v0_2 = X_func_00134730_50b8(temp_s0_2, M2C_FIELD(arg3, int *, 0xC), M2C_FIELD(arg3, int *, 0x10), M2C_FIELD(arg3, int *, 0x18), -1);
+    M2C_FIELD(arg0, int *, 0x210) = arg6;
+    M2C_FIELD(arg0, int *, 0x214) = temp_v0_2;
+    M2C_FIELD(arg0, int *, 0x21C) = 0;
+    M2C_FIELD(arg3, int *, 8) = 0x8001;
+    X_func_00118980__9MagSystemiiiiii(&D_006E9840, M2C_FIELD(arg0, int *, 0x214), M2C_FIELD(arg3, int *, 0), M2C_FIELD(arg3, int *, 4), 0x8001, M2C_FIELD(arg3, int *, 0xC), M2C_FIELD(arg3, int *, 0x10));
+    X_func_00134CD0_50b8(temp_s0_2, M2C_FIELD(arg0, int *, 0x214), 0, 0, M2C_FIELD(arg3, int *, 0xC), M2C_FIELD(arg3, int *, 0x10));
+    temp_a1 = M2C_FIELD(arg0, int *, 0x214);
+    if (arg4 != 0) {
+        X_func_00135494_50b8(temp_s0_2, temp_a1, 1);
+        X_func_00135418_50b8(temp_s0_2, M2C_FIELD(arg0, int *, 0x214), 0);
+    } else {
+        X_func_00135494_50b8(temp_s0_2, temp_a1, 0);
+        X_func_00135418_50b8(temp_s0_2, M2C_FIELD(arg0, int *, 0x214), 1);
+    }
+    X_func_00135594_50b8((int)&D_006E9840 + off, M2C_FIELD(arg0, int *, 0x214));
+    X_func_0018741C_50b8(temp_s5);
+    X_func_001874F4_50b8(temp_s5, M2C_FIELD(arg0, int *, 0x214), M2C_FIELD(arg0, int *, 0x220), M2C_FIELD(arg3, int *, 0x14));
+    print4a((int) "TskMsgMan::TskMsgMan \n");
+    print4a((int) "m_window_no : %d %s \n", M2C_FIELD(arg0, int *, 0x214), M2C_FIELD(arg0, int *, 0x220));
+    return print4a((int) "======= ======= ======= ======= ======= ======= ======= ======= ======= \n");
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F4A24);
+#endif
 
 extern "C" void TskMsgMan__vfunc_06(int arg0, int arg1)
 {
