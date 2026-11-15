@@ -2,15 +2,15 @@
 extern char D_0029A180[];
 struct TexEntry { int m_0; int m_4; int m_8; int m_C; int m_10; int m_14; };
 extern TexEntry D_00299C60[];
-typedef unsigned int u_long128 __attribute__((mode(TI)));
+// u_long128: include/target.h
 extern "C" char vtbl_S2dMes[] asm("_vt$6S2dMes");
 extern "C" int Xii_func_0019183C(int) asm("func_0019183C");
 extern "C" int Xiii_func_001905A8(int, int) asm("func_001905A8");
 extern "C" int Xiii_strcpy(int, int) asm("strcpy");
-typedef unsigned int u_long128 __attribute__((mode(TI)));
+// u_long128: include/target.h
 extern "C" char vtbl_S2dBg[] asm("_vt$5S2dBg");
 extern "C" int func_00191054(int);
-typedef unsigned int u_long128 __attribute__((mode(TI)));
+// u_long128: include/target.h
 extern "C" char vtbl_S2dCineSco[] asm("_vt$10S2dCineSco");
 extern "C" int Xii_func_0018BB8C(int) asm("func_0018BB8C");
 extern "C" int func_00190B60(int);

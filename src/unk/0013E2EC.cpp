@@ -209,7 +209,7 @@ int MagScene::func_0013F280(int theType, const int *theParam, int theA)
 {
     char buf[0x400];
     MagMsgReq req;
-    register int id asm("$17") = func_001832E8(theType);
+    register int id PS2_REG("$17") = func_001832E8(theType);
     if (theParam) {
         for (int i = 0; i < 16; i++) {
             req.m_param[i] = theParam[i];
@@ -218,7 +218,7 @@ int MagScene::func_0013F280(int theType, const int *theParam, int theA)
     req.m_size = 0x400;
     req.m_buf = buf;
     req.m_id = id;
-    register char *msg asm("$17");
+    register char *msg PS2_REG("$17");
     {
         MagMsgWork work[2];
         work[0].func_00184128(&req);

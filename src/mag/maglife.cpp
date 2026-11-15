@@ -327,8 +327,8 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglife", D_002E9598);
 
 int MagLifeControlChara::func_0011A064()
 {
-    register MagLifeControlChara *p asm("$19") = this;
-    register int cnt asm("$18") = 0;
+    register MagLifeControlChara *p PS2_REG("$19") = this;
+    register int cnt PS2_REG("$18") = 0;
     int st = func_0011A028();
     for (;;) {
         if (p->m_tbl_motion_state[st].m_count < 0)
@@ -600,11 +600,11 @@ void MagLifeControlChara::func_0011A738(int *theSounds)
     int sndid = -1;
     int *p = func_0011A64C();
     if (p && *p) {
-        register int idx asm("$4") = *(int *)(*p + 4);
+        register int idx PS2_REG("$4") = *(int *)(*p + 4);
         char *sct = (char *)m_scene + 0x85434;
         int *q = 0;
         if (*(int *)(sct + 4) && *(int *)(sct + 8)) {
-            register int off asm("$2") = idx << 7;
+            register int off PS2_REG("$2") = idx << 7;
             q = (int *)(*(int *)(sct + 8) + off);
         }
         if (q)

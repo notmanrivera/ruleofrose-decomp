@@ -3,6 +3,8 @@
 #ifndef MW_I3D_H
 #define MW_I3D_H
 
+#include "ror.h"   // PS2_REG
+
 struct tag_I3mPosture_s;
 struct tag_I3rRoot_s;
 struct tag_I3dTexInfo_s;
@@ -132,23 +134,23 @@ void func_00237830_r(void *theOut, void *theIn, float theRot) asm("func_00237830
 void func_00237830_t4_r(void *theOut, void *theIn, float theRot) asm("func_00237830");
 #define FUNC_00237830_T12(out, rot) \
     do { \
-        register void *a0reg asm("$4") = (out); \
-        register float f12reg asm("$f12") = (rot); \
-        register void *a1reg asm("$5") = (out); \
+        register void *a0reg PS2_REG("$4") = (out); \
+        register float f12reg PS2_REG("$f12") = (rot); \
+        register void *a1reg PS2_REG("$5") = (out); \
         func_00237830_r(a0reg, a1reg, f12reg); \
     } while (0)
 #define FUNC_00237830_T3(out, rot) \
     do { \
-        register void *a0reg asm("$4") = (out); \
-        register void *a1reg asm("$5") = (out); \
-        register float f12reg asm("$f12") = (rot); \
+        register void *a0reg PS2_REG("$4") = (out); \
+        register void *a1reg PS2_REG("$5") = (out); \
+        register float f12reg PS2_REG("$f12") = (rot); \
         func_00237830_r(a0reg, a1reg, f12reg); \
     } while (0)
 #define FUNC_00237830_T4(out, rot) \
     do { \
-        register void *a0reg asm("$4") = (out); \
-        register void *a1reg asm("$5") = (out); \
-        register float f12reg asm("$f12") = (rot); \
+        register void *a0reg PS2_REG("$4") = (out); \
+        register void *a1reg PS2_REG("$5") = (out); \
+        register float f12reg PS2_REG("$f12") = (rot); \
         func_00237830_t4_r(a0reg, a1reg, f12reg); \
     } while (0)
 void func_00237848(float (*theOut)[4], float (*theIn)[4], float theRot);   // rotated around Z

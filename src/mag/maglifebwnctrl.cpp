@@ -5,7 +5,7 @@ extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
 extern const char D_002EBE40[];
 struct m2c_v14_58_i { char pad[20]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual int call(); };
 struct m2c_v14_70_iiii { char pad[20]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual int call(int, int, int); };
-typedef unsigned int u_long128 __attribute__((mode(TI)));
+// u_long128: include/target.h
 extern "C" float Xfi_func_0010A650__8DogActor(int) asm("func_0010A650__8DogActor");
 extern "C" int Xiii_func_0012349C(int, int) asm("func_0012349C");
 extern "C" int Xii_func_00103428(int) asm("func_00103428");

@@ -661,7 +661,7 @@ void *BedMemory::cutHead(void *theOldPtr, void *theNewPtr)
     h2->m_prev = h;
     // The game keeps the byte difference in $v1 (not $v0, which holds the
     // -1 line); pinning it reproduces that allocation.
-    register int diff asm("$3");
+    register int diff PS2_REG("$3");
     diff = (int)h2 - (int)h;
     diff -= sizeof(BEDMEMHEADER);
     h->m_chunk_size = diff;

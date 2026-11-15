@@ -16,7 +16,9 @@
 #ifndef INCLUDE_ASM_H
 #define INCLUDE_ASM_H
 
-#if !defined(M2CTX) && !defined(PERMUTER)
+#include "target.h"
+
+#if !defined(M2CTX) && !defined(PERMUTER) && !defined(TARGET_PC)
 
 #define INCLUDE_ASM(FOLDER, NAME) \
     __asm__( \
@@ -36,6 +38,13 @@
     )
 
 __asm__(".include \"include/labels.inc\"\n");
+
+#elif defined(TARGET_PC)
+
+// The host check (tools/host_check.py) and later the PC port: no asm. A
+// declaration takes the line's ';' (an empty one is not C++98).
+#define INCLUDE_ASM(FOLDER, NAME) extern int ror_include_asm_unused
+#define INCLUDE_RODATA(FOLDER, NAME) extern int ror_include_asm_unused
 
 #else
 

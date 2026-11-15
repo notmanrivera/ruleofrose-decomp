@@ -241,7 +241,7 @@ extern "C" int Xii_func_001A0BA0(int) asm("func_001A0BA0");
 extern int D_007B205C;
 extern int _9MagSystem$m_current_system;
 extern "C" int Xiiu_func_001D19A8(int, unsigned int) asm("func_001D19A8");
-typedef unsigned int u_long128 __attribute__((mode(TI)));
+// u_long128: include/target.h
 extern int _vt$10TskSysFunc;
 extern int _vt$9TskRotAdj;
 extern int _vt$16TskMoveTypeRound;
@@ -836,7 +836,7 @@ extern "C" int func_001ECDD4(int arg0)
     if (Xiiuii_func_001D544C((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 8), (int)out, 0) != 0) {
         u_long128 *p1 = (u_long128 *)(arg0 + 0x280);
         asm volatile("" : "+r"(p1));
-        register u_long128 tmp1 asm("$6") = *p1;
+        register u_long128 tmp1 PS2_REG("$6") = *p1;
         asm volatile("" : "+r"(tmp1));
         *(u_long128 *)temp_s1 = tmp1;
         X_func_00260110(D_002FDBF0, out[4]);
@@ -844,10 +844,10 @@ extern "C" int func_001ECDD4(int arg0)
     }
     Xv_func_0025B878(temp_s1, temp_s1, arg0 + 0x270);
     if (Xiii_func_001D8ADC(M2C_FIELD(arg0, int *, 4), temp_s1) != 0) {
-        register u_long128 *p2 asm("$3") = (u_long128 *)(arg0 + 0x280);
+        register u_long128 *p2 PS2_REG("$3") = (u_long128 *)(arg0 + 0x280);
         asm volatile("" : "+r"(p2));
         M2C_FIELD(arg0, int *, 0x21C)--;
-        register u_long128 tmp2 asm("$6") = *(u_long128 *)temp_s1;
+        register u_long128 tmp2 PS2_REG("$6") = *(u_long128 *)temp_s1;
         asm volatile("" : "+r"(tmp2));
         *p2 = tmp2;
         asm volatile("" ::: "memory");
@@ -1018,8 +1018,8 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveSecta__vfunc_04);
 
 extern "C" u_long128 *func_001EE2FC(int arg0, int arg1, int arg2, int arg3, u_long128 *arg4, int arg5, float fparg0)
 {
-    register u_long128 *p asm("$2");
-    register int vt asm("$2") = (int)&_vt$10TskMoveAdj;
+    register u_long128 *p PS2_REG("$2");
+    register int vt PS2_REG("$2") = (int)&_vt$10TskMoveAdj;
 
     M2C_FIELD(arg0, int *, 0x20) = arg1;
     M2C_FIELD(arg0, int *, 0) = vt;
@@ -1028,7 +1028,7 @@ extern "C" u_long128 *func_001EE2FC(int arg0, int arg1, int arg2, int arg3, u_lo
     M2C_FIELD(arg0, float *, 0x24) = fparg0;
     M2C_FIELD(arg0, int *, 0x34) = arg5;
     p = (u_long128 *)((char *)arg0 + 0x10);
-    register u_long128 tmp asm("$6") = *arg4;
+    register u_long128 tmp PS2_REG("$6") = *arg4;
     *p = tmp;
     return p;
 }

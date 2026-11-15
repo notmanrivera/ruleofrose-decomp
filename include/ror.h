@@ -5,8 +5,7 @@
 #ifndef ROR_H
 #define ROR_H
 
-// EE 128-bit integer (Sony SDK name). Copies of it compile to lq/sq.
-typedef unsigned int u_long128 __attribute__((mode(TI)));
+#include "target.h"   // TARGET_PS2/TARGET_PC, u_long128, PS2_REG, STATIC_ASSERT
 
 // The game's assert handler at 0x00215A30 prints
 // "Assertion Failed: %s(%d)   %s\n" and spins. Its real name is unknown.

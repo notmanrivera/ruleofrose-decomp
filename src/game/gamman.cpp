@@ -341,7 +341,7 @@ extern "C" void func_001BDB4C(char *self, int flags)
     char *p = self + 0x78C;
     char *start = self + 0x14;
 
-    register int two asm("$5") = 2;
+    register int two PS2_REG("$5") = 2;
     func_0018BC18(p, two);
 
     if (start != 0) {
@@ -848,7 +848,7 @@ extern "C" void func_001C0078(int arg0, int arg1, int *arg2, int *arg3, int *arg
         *arg2 = func_001C020C(arg0, temp);
         *arg3 = func_001C0254(arg0, temp);
 
-        register int var_a0 asm("$4");
+        register int var_a0 PS2_REG("$4");
         if (*(int *)(arg0 + 0x24) != 0) {
             var_a0 = *(int *)(arg0 + 0x34);
         } else {
@@ -867,7 +867,7 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C0148);
 
 extern "C" int func_001C020C(int arg0, int arg1)
 {
-    register int one asm("$3") = 1;
+    register int one PS2_REG("$3") = 1;
     int flag = 0;
 
     if (M2C_FIELD(arg0, int *, 0x24) == one) {
@@ -1060,11 +1060,11 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C143C);
 #ifdef NON_MATCHING
 extern "C" void func_001C19C4(GamMan *arg0, int *arg1)
 {
-    register int *var_a2 asm("$6");
-    register int *temp_t0 asm("$8");
-    register int temp_a3 asm("$7");
-    register int var_a5 asm("$9");
-    register int var_v1 asm("$3");
+    register int *var_a2 PS2_REG("$6");
+    register int *temp_t0 PS2_REG("$8");
+    register int temp_a3 PS2_REG("$7");
+    register int var_a5 PS2_REG("$9");
+    register int var_v1 PS2_REG("$3");
 
     var_a2 = arg1 + 8;
     temp_t0 = var_a2;
@@ -1414,7 +1414,7 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C621C);
 
 extern "C" void func_001C6470(GamMan *arg0)
 {
-    register int i asm("$5") = 0;
+    register int i PS2_REG("$5") = 0;
 
     if (arg0->m_unk22540[0].m_val != -1.0f) {
         do {
@@ -1422,7 +1422,7 @@ extern "C" void func_001C6470(GamMan *arg0)
             if (i >= 3) {
                 return;
             }
-            register int v0 asm("$2") = i << 5;
+            register int v0 PS2_REG("$2") = i << 5;
             v0 += (int)arg0;
             if (*(float *)((char *)v0 + 0x22540) == -1.0f) {
                 break;
@@ -1431,7 +1431,7 @@ extern "C" void func_001C6470(GamMan *arg0)
     }
 
     if (i < 3) {
-        register char *dest asm("$3") = (char *)((i << 5) + (int)arg0);     // &arg0->m_unk22540[i]
+        register char *dest PS2_REG("$3") = (char *)((i << 5) + (int)arg0);     // &arg0->m_unk22540[i]
         char *v0 = (char *)&D_006FBD80;
         unsigned int off = 0x2AAE0;
         v0 += off;
@@ -1443,8 +1443,8 @@ extern "C" void func_001C6470(GamMan *arg0)
 
 extern "C" void func_001C651C(GamMan *arg0)
 {
-    register char *arg0_reg asm("$18") = (char *)arg0;
-    register int i asm("$17") = 2;
+    register char *arg0_reg PS2_REG("$18") = (char *)arg0;
+    register int i PS2_REG("$17") = 2;
 
     if (*(float *)(arg0_reg + 0x22580) == -1.0f) {
         do {
@@ -1452,7 +1452,7 @@ extern "C" void func_001C651C(GamMan *arg0)
             if (i < 0) {
                 return;
             }
-            register int v0 asm("$2") = i << 5;
+            register int v0 PS2_REG("$2") = i << 5;
             v0 += (int)arg0_reg;
             if (*(float *)(v0 + 0x22540) != -1.0f) {
                 break;
@@ -1461,7 +1461,7 @@ extern "C" void func_001C651C(GamMan *arg0)
     }
 
     if (i >= 0) {
-        register unsigned int off asm("$16") = 0x22540;
+        register unsigned int off PS2_REG("$16") = 0x22540;
         char *p = (char *)&D_006E9840;
         char *target = arg0_reg + (i << 5);
         i = (i << 5) + off;
@@ -2605,8 +2605,8 @@ extern "C" void func_001CF95C(GamMan *arg0)
 
 extern "C" int func_001CF9D4(GamMan *self)
 {
-    register char *self_reg asm("$16") = (char *)self;
-    register int var_s1 asm("$17") = 0;
+    register char *self_reg PS2_REG("$16") = (char *)self;
+    register int var_s1 PS2_REG("$17") = 0;
     int temp_v0;
 
     if (func_001E7D7C(&D_007A3D80, *(int *)(self_reg + 0x222A0)) == 0) {
@@ -2686,8 +2686,8 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CFCA8);
 
 extern "C" void func_001CFDA4(int arg0, unsigned int arg1, int arg2)
 {
-    register unsigned int v0 asm("$2") = arg1 >> 28;
-    register unsigned int a3 asm("$7") = v0 & 3;
+    register unsigned int v0 PS2_REG("$2") = arg1 >> 28;
+    register unsigned int a3 PS2_REG("$7") = v0 & 3;
     switch (a3) {
     case 1:
         Xii_func_001D8FEC(Xiiu_func_001D2B8C(arg0, arg1), arg2);
@@ -2884,13 +2884,13 @@ extern "C" int func_001D17C8(int arg0, unsigned int arg1, unsigned int arg2)
 
 extern "C" void func_001D1838(int unused, unsigned int arg1, unsigned int arg2)
 {
-    register unsigned int v0 asm("$2") = arg1 >> 28;
-    register unsigned int a3 asm("$7") = v0 & 3;
+    register unsigned int v0 PS2_REG("$2") = arg1 >> 28;
+    register unsigned int a3 PS2_REG("$7") = v0 & 3;
     switch (a3) {
     case 1: {
-        register char *ret asm("$2") = (char *)func_001D2B8C();
+        register char *ret PS2_REG("$2") = (char *)func_001D2B8C();
         int mask = arg2 & 0x00FFFFFF;
-        register int idx asm("$3") = (arg2 >> 24) << 2;
+        register int idx PS2_REG("$3") = (arg2 >> 24) << 2;
         idx += (int)ret;
         idx += 0x3EC;
         *(int *)idx |= mask;
@@ -2906,13 +2906,13 @@ extern "C" void func_001D1838(int unused, unsigned int arg1, unsigned int arg2)
 
 extern "C" void func_001D18C4(int unused, unsigned int arg1, unsigned int arg2)
 {
-    register unsigned int v0 asm("$2") = arg1 >> 28;
-    register unsigned int a3 asm("$7") = v0 & 3;
+    register unsigned int v0 PS2_REG("$2") = arg1 >> 28;
+    register unsigned int a3 PS2_REG("$7") = v0 & 3;
     switch (a3) {
     case 1: {
-        register char *ret asm("$2") = (char *)func_001D2B8C();
+        register char *ret PS2_REG("$2") = (char *)func_001D2B8C();
         int mask = arg2 & 0x00FFFFFF;
-        register int idx asm("$3") = (arg2 >> 24) << 2;
+        register int idx PS2_REG("$3") = (arg2 >> 24) << 2;
         idx += (int)ret;
         idx += 0x3EC;
         *(int *)idx &= ~mask;
