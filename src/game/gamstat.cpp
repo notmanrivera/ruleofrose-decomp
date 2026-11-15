@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" char *func_001D2B8C(void *, unsigned int);
+extern "C" void *func_001D2BA8(void *, unsigned int);
+extern "C" void func_001D8DC4(void *);
+extern "C" void X_func_001D890C_v(void *, void *) asm("func_001D890C");
+extern "C" void func_001DB71C(void *, void *);
 extern const int D_002FC1F8[][8];
 extern "C" float func_001D817C(int, int *, void *, int);
 extern "C" void *X_memset_p(void *, int, unsigned int) asm("memset");
@@ -24,7 +29,6 @@ struct Cb8 {
 
 extern const Cb8 D_002FC1D8;
 extern "C" int func_001D046C(void *, unsigned int);
-extern "C" char *func_001D2B8C(void *, unsigned int);
 extern "C" void func_001D890C(void *, void *);
 extern "C" float func_001D4A3C(void *, unsigned int, int);
 extern "C" int func_001D7C20(void *, int, unsigned int, unsigned int, void *);
@@ -72,7 +76,34 @@ INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D68A0);
 extern "C" void func_001D7B00(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D7B08);
+extern "C" int func_001D7B08(void *arg0, unsigned int arg1, int arg2)
+{
+    int off = 0x8542C;
+    float pos[4];
+    int *out[4];
+
+    switch ((arg1 >> 28) & 3) {
+    case 1: {
+        void *obj = func_001D2B8C(arg0, arg1);
+        if (((arg1 >> 23) & 0x1F) == 0) {
+            func_001D8DC4(*(void **)((char *)arg0 + 0x22090));
+        }
+        X_func_001D890C_v(obj, pos);
+        break;
+    }
+    case 2:
+        func_001DB71C(func_001D2BA8(arg0, arg1), pos);
+        break;
+    }
+
+    func_0017C340(D_006FBD80 + off, pos, out, 0, 40.0f, 0.0f);
+    int **p = &out[arg2];
+    if (*p == 0) {
+        return -1;
+    }
+    X_func_001D83C0_v(arg0, 0);
+    return **p;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D7C20);
 
