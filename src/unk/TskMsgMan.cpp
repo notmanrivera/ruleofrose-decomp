@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" float X_func_002180E4_ecf3c(float *, float, float) asm("func_002180E4");
+extern "C" void X_func_001F11A0_ecf3c(int, float, float, float) asm("func_001F11A0");
+extern "C" int X_func_001E7D7C_ecf3c(int, int) asm("func_001E7D7C");
+extern "C" int X_func_001EE7F0_ecf3c(unsigned int, unsigned short, float, float, int *, int, float) asm("func_001EE7F0");
 extern "C" float X_func_002180E4_eacb8(float *, float, float) asm("func_002180E4");
 extern "C" void X_func_001F11A0_eacb8(int, float, float, float) asm("func_001F11A0");
 extern "C" int X_func_001E7D7C_eacb8(int, int) asm("func_001E7D7C");
@@ -821,7 +825,60 @@ extern "C" int func_001ECEBC(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001ECF3C);
+extern "C" int func_001ECF3C(int arg0)
+{
+    float dist;
+    float ang;
+    int cnt;
+
+    if (M2C_FIELD(arg0, int *, 0x2A8) & 1) {
+        if (M2C_FIELD(arg0, int *, 0x2A8) & 2) {
+            if (X_func_001E7D7C_ecf3c((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0x3D8)) == 0) {
+                int a = M2C_FIELD(arg0, int *, 0x294);
+                M2C_FIELD(arg0, int *, 0x2A8) &= ~2;
+                M2C_FIELD(a, int *, 4) &= ~1;
+            }
+        } else if (X_func_001E7D7C_ecf3c((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0x3D8)) != 0) {
+            int b = M2C_FIELD(arg0, int *, 0x294);
+            M2C_FIELD(arg0, int *, 0x2A8) |= 2;
+            M2C_FIELD(b, int *, 4) |= 1;
+        }
+    }
+    if (M2C_FIELD(arg0, int *, 0x21C) < M2C_FIELD(arg0, int *, 0x220)) {
+        {
+            struct DogActorStub *d = getDogActor(&D_006FBD80, M2C_FIELD(arg0, int *, 0xC));
+            float *p = (float *)(arg0 + 0x250);
+            p[0] = d->unk40[0];
+            p[1] = d->unk40[1];
+            p[2] = d->unk40[2];
+        }
+        ang = X_func_002180E4_ecf3c(&dist, M2C_FIELD(arg0, float *, 0x240) - M2C_FIELD(arg0, float *, 0x250), M2C_FIELD(arg0, float *, 0x248) - M2C_FIELD(arg0, float *, 0x258));
+        M2C_FIELD(arg0, int *, 0x21C) = X_func_001EE7F0_ecf3c(
+            M2C_FIELD(arg0, unsigned int *, 8),
+            (unsigned short)M2C_FIELD(arg0, int *, 0xC),
+            ang,
+            dist,
+            (int *)(arg0 + 0x294),
+            M2C_FIELD(arg0, int *, 0x29C),
+            M2C_FIELD(arg0, float *, 0x2A0));
+        {
+            struct DogActorStub *d = getDogActor(&D_006FBD80, M2C_FIELD(arg0, int *, 0xC));
+            float *p = (float *)(arg0 + 0x260);
+            p[0] = d->unk50[0];
+            p[1] = d->unk50[1];
+            p[2] = d->unk50[2];
+        }
+        X_func_001F11A0_ecf3c(M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, float *, 0x264), ang, 1.0f);
+        cnt = M2C_FIELD(arg0, int *, 0x21C);
+        if (cnt >= 6) {
+            M2C_FIELD(arg0, int *, 0x220) = cnt / 2;
+        } else {
+            M2C_FIELD(arg0, int *, 0x220) = 0;
+        }
+    }
+    M2C_FIELD(arg0, int *, 0x21C)--;
+    return 0;
+}
 
 extern "C" int TskMoveSectaFindPath__vfunc_04(TskMoveSectaFindPathObj *arg0)
 {
