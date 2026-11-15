@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xiiiiii_func_001BEDC0(int, int, int, int, int) asm("func_001BEDC0");
+extern "C" int Xiiiiii_func_001BEF24(int, int, int, int, int) asm("func_001BEF24");
 extern "C" int Xiii_func_0018C9D8(int, int) asm("func_0018C9D8");
 extern "C" int Xiii_func_0018C910(int, int) asm("func_0018C910");
 struct Entry28_C5A8 {
@@ -386,7 +388,22 @@ extern "C" int func_0018E028(int arg0, int arg1, int arg2, int arg3, int arg4)
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018E05C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018EA9C);
+extern "C" void func_0018EA9C(int arg0, int arg1, int arg2, int arg3, int arg4)
+{
+    int temp_s3;
+    int temp_s0;
+    int temp_s1;
+    int temp_v0;
+    int temp_v0_2;
+
+    temp_s3 = arg0 + 0x440;
+    temp_v0 = M2C_FIELD(arg1, int *, 0x150);
+    temp_s0 = ((int) M2C_FIELD(arg1, int *, 0xB8) >> 4) + M2C_FIELD(temp_v0, int *, 0);
+    temp_s1 = ((int) M2C_FIELD(arg1, int *, 0xBC) >> 4) + M2C_FIELD(temp_v0, int *, 4);
+    Xiiiiii_func_001BEDC0(temp_s3, arg2, arg3, arg4, 4);
+    temp_v0_2 = M2C_FIELD(arg1, int *, 0x150);
+    Xiiiiii_func_001BEF24(temp_s3, temp_s0, temp_s1, M2C_FIELD(temp_v0_2, int *, 8), M2C_FIELD(temp_v0_2, int *, 0xC));
+}
 
 extern "C" int func_0018EB30(int arg0, unsigned char *arg1)
 {
