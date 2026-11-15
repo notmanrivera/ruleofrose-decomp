@@ -1,4 +1,12 @@
 #include "include_asm.h"
+extern "C" int Xii_func_00131550(int) asm("func_00131550");
+extern "C" int Xii_func_001874AC(int) asm("func_001874AC");
+extern "C" int Xii_func_0018C068(int) asm("func_0018C068");
+struct MagGameFlags_CEAC {
+    int m_unk00;
+    int m_flags;
+};
+extern MagGameFlags_CEAC *D_007B2060_CEAC asm("D_007B2060");
 struct Base_8720 {
     int m_00;
     unsigned char m_pad04[0x108];
@@ -611,7 +619,23 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019C16C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019C630);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019CEAC);
+extern "C" int func_0019CEAC(int arg0)
+{
+    Xii_func_0018C068(arg0 + 0x7D0);
+    Xii_func_001874AC(arg0 + 0x58);
+    bool ok = Xii_func_00131550(M2C_FIELD(arg0, int *, 0x10BC) + 0x12540) >= 5;
+    if (ok == 1) {
+        int *p = &D_007B2060_CEAC->m_flags;
+        *p |= 0x40000000;
+    }
+    if (M2C_FIELD(arg0, int *, 0x157C) < 0x7FFF) {
+        M2C_FIELD(arg0, int *, 0x157C)++;
+        if (M2C_FIELD(arg0, int *, 0x157C) == 0xA) {
+            M2C_FIELD(arg0, int *, 0x1574) = 5;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019CF48);
 
