@@ -1,4 +1,11 @@
 #include "include_asm.h"
+struct Elem_de4e4 { unsigned int u0[8]; unsigned int flg; unsigned int u24[(0xB0 - 0x24) / 4]; } __attribute__((aligned(16)));
+struct Node_de4e4 { Node_de4e4 *m_prev; Node_de4e4 *m_next; Elem_de4e4 m_data; };
+struct Chain_de4e4 { Node_de4e4 m_head; int m_num; };
+struct Iter_de4e4 { Node_de4e4 *m_node; Iter_de4e4() : m_node(0) {} Iter_de4e4(Node_de4e4 *n) : m_node(n) {} Iter_de4e4(const Iter_de4e4 &o) : m_node(o.m_node) {} Elem_de4e4 &operator*() const { return m_node->m_data; } Iter_de4e4 &operator++() { m_node = m_node->m_next; return *this; } bool operator!=(const Iter_de4e4 &o) const { return m_node != o.m_node; } };
+struct List_de4e4 { Chain_de4e4 m_free; Chain_de4e4 m_used; int m_max; Iter_de4e4 begin() { return Iter_de4e4(m_used.m_head.m_next); } Iter_de4e4 end() { return Iter_de4e4(&m_used.m_head); } int size() const { return m_used.m_num; } };
+extern "C" void func_001DDC80(List_de4e4 *);
+extern "C" void func_001DE104(List_de4e4 *, Elem_de4e4);
 struct GamTrgCopy_d9830 {
     int data[0xB0 / 4];
 };
@@ -1291,7 +1298,22 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DDF48);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DE104);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DE4E4);
+extern "C" void func_001DE4E4(List_de4e4 *arg0)
+{
+    Iter_de4e4 it;
+    Iter_de4e4 last;
+    func_001DDC80(arg0);
+    if (arg0->size() != 0) {
+        it = arg0->begin();
+        last = arg0->end();
+        while (it != last) {
+            if ((*it).flg & 0x01000000) {
+                func_001DE104(arg0, *it);
+            }
+            ++it;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DE5DC);
 
