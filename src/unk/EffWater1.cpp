@@ -264,7 +264,77 @@ extern "C" int func_00178E68(int arg0, int arg1, int arg2, int arg3)
     return stack.unk0C;
 }
 
+// NON_MATCHING: 10/110 differ, 10 edits
+#ifdef NON_MATCHING
+struct MfMat4 {
+    float m[4][4];
+} __attribute__((aligned(8)));
+
+struct MfVec4 {
+    float x, y, z, w;
+} __attribute__((aligned(8)));
+
+class MfCam {
+public:
+    MfMat4 m_mat;
+    char pad40[0x54];
+    virtual void vfunc0();
+    virtual void transform();
+};
+
+struct MfUnk00 {
+    float unk00;
+    float unk04;
+    float unk08;
+    short unk0C;
+};
+
+struct MfArg1 {
+    MfUnk00 *unk00;
+    MfCam *unk04;
+    int unk08;
+    int unk0C;
+    float unk10;
+    short unk14;
+};
+
+extern "C" void X_8EEC_func_0016FD4C(void *, float) asm("func_0016FD4C");
+extern "C" void X_8EEC_func_00237A40(void *, void *, void *) asm("func_00237A40");
+extern "C" int X_8EEC_func_0021B260(int, int) asm("func_0021B260");
+extern "C" int X_8EEC_func_0021B4F8(int, int) asm("func_0021B4F8");
+extern "C" int X_8EEC_func_0021E428(int, void *) asm("func_0021E428");
+extern "C" int X_8EEC_func_0021E690(int, void *, void *) asm("func_0021E690");
+
+extern "C" void func_00178EEC(int arg0, MfArg1 *arg1)
+{
+    MfMat4 mat;
+    MfCam *cam = arg1->unk04;
+    int ctx = arg1->unk0C;
+
+    cam->transform();
+    mat = cam->m_mat;
+
+    MfUnk00 *p0 = arg1->unk00;
+    MfVec4 scale = { p0->unk04, p0->unk04, 1.0f, 1.0f };
+    MfVec4 color = { 1.0f, 1.0f, 1.0f, (float)p0->unk0C * (1.0f / 32768.0f) };
+    X_8EEC_func_0016FD4C(&mat, p0->unk00);
+    X_8EEC_func_00237A40(&mat, &mat, &scale);
+
+    *(MfVec4 *)mat.m[3] = *(MfVec4 *)(arg0 + 0x30);
+    mat.m[3][0] += mat.m[2][0] * arg1->unk10;
+    mat.m[3][1] += mat.m[2][1] * arg1->unk10 + arg1->unk00->unk08;
+    mat.m[3][2] += mat.m[2][2] * arg1->unk10;
+
+    arg1->unk0C = X_8EEC_func_0021E690(
+        X_8EEC_func_0021E428(
+            X_8EEC_func_0021B4F8(ctx, X_8EEC_func_0021B260(arg1->unk08, arg1->unk14)),
+            &mat),
+        mat.m[3],
+        &color);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_00178EEC);
+#endif
 
 extern "C" void updateZDepth__15EffMuzzleFlash1(int arg0)
 {
