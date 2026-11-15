@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" void Xvii_func_001D7EB8(int, int) asm("func_001D7EB8");
+extern "C" void Xvii_func_001D890C(int, int) asm("func_001D890C");
+extern "C" void Xvii_func_001D8D28(int, int) asm("func_001D8D28");
+extern "C" int Xiiii_func_001D7F48(int, int, int) asm("func_001D7F48");
+extern "C" int Xiu_func_001F6878(unsigned int) asm("func_001F6878");
 extern int X_vt_7ObjStat asm("_vt$7ObjStat");
 struct GamTrgNode_d87f4 {
     GamTrgNode_d87f4 *m_prev;
@@ -335,7 +340,24 @@ extern "C" void func_001D8B9C(int arg0, int arg1)
     Xiii_func_001D89C4(arg0, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8C50);
+extern "C" float func_001D8C50(int arg0)
+{
+    int var_s2 = 0;
+
+    if (M2C_FIELD(arg0, int *, 0x114) == 0) {
+        int r = Xiu_func_001F6878(M2C_FIELD(arg0, unsigned int *, 0x100));
+        Xvii_func_001D7EB8((int)&D_007812C0, r);
+        var_s2 = Xiiii_func_001D7F48((int)&D_007812C0, arg0 + 0x190, 0);
+        Xvii_func_001D7EB8((int)&D_007812C0, 0);
+        if (var_s2 != 0) {
+            Xvii_func_001D8D28(arg0, var_s2);
+        } else {
+            return 0.0f;
+        }
+    }
+    Xvii_func_001D890C(arg0, arg0 + 0x190);
+    return Xfiiii_func_001D817C((int)&D_007812C0, var_s2, arg0 + 0x190, 0);
+}
 
 extern "C" int func_001D8D28(int arg0, int arg1)
 {
