@@ -32,12 +32,15 @@ extern "C" float Xii_func_0016FF18(int, int) asm("func_0016FF18");
 extern int D_00298E08;
 extern int _vt$9EffWater1;
 extern int X_vt_10EffReload1 asm("_vt$10EffReload1");
+extern int X_vt_9EffWater3 asm("_vt$9EffWater3");
 extern int D_006E9800;
+extern int D_00298E1C;
 extern "C" void X_free__9BedMemoryPv(void *, void *) asm("free__9BedMemoryPv");
 extern "C" void X_dtor_4Eff0(void *, int) asm("_$_4Eff0");
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
 extern "C" void dtor_9EffWater1(int, int) asm("_$_9EffWater1");
 extern "C" void dtor_10EffReload1(int, int) asm("_$_10EffReload1");
+extern "C" void dtor_9EffWater3(int, int) asm("_$_9EffWater3");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_001787B0);
@@ -307,7 +310,19 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", renderPreMain__9EffWater1PQ24Eff01
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_0017AFD8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", _$_9EffWater3);
+extern "C" void dtor_9EffWater3(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x20) = (int)&X_vt_9EffWater3;
+    if (M2C_FIELD(arg0, void **, 0x24) != 0) {
+        X_free__9BedMemoryPv(&D_006E9800, M2C_FIELD(arg0, void **, 0x24));
+        M2C_FIELD(arg0, void **, 0x24) = 0;
+    }
+    D_00298E1C--;
+    X_dtor_4Eff0((void *)arg0, 0);
+    if (arg1 & 1) {
+        return X___builtin_delete((void *)arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffWater3__vfunc_02);
 
