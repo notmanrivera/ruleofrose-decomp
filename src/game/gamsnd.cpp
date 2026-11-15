@@ -335,7 +335,89 @@ extern "C" int func_001E0BB0(char *arg0, int arg1)
     return 0;
 }
 
+// NON_MATCHING: func_001E0C2C itself is MATCH (0x144), blocked on .rodata alignment of D_002FD770 (.align 3 in asm vs .align 4)
+#ifdef NON_MATCHING
+struct SndSub0C2C {
+    char pad00[0x20];
+    unsigned int m_flags;   // +0x20 (elem +0x28, node +0x30)
+    void orFlags(unsigned int f) { m_flags |= f; }
+    void andNotFlags(unsigned int f) { m_flags &= ~f; }
+};
+struct SndElem0C2C {
+    char m_pad00[0x08];
+    SndSub0C2C m_sub;       // +0x08 (node +0x10)
+    char m_pad2C[0x34 - 0x2C];
+    int m_unk34;            // +0x34 (node +0x3C)
+    char m_pad38[0x20];
+};
+struct SndNode0C2C {
+    SndNode0C2C *m_prev;
+    SndNode0C2C *m_next;
+    SndElem0C2C m_elem;
+};
+class SndIt0C2C {
+public:
+    SndNode0C2C *m_node;
+    SndIt0C2C() : m_node(0) {}
+    SndIt0C2C(SndNode0C2C *theNode) : m_node(theNode) {}
+    SndIt0C2C(const SndIt0C2C &theIt) : m_node(theIt.m_node) {}
+    SndElem0C2C &operator*() const { return m_node->m_elem; }
+    SndIt0C2C &operator++()
+    {
+        m_node = m_node->m_next;
+        return *this;
+    }
+};
+struct SndChain0C2C {
+    SndNode0C2C m_head;
+    int m_num;
+    SndIt0C2C begin() { return SndIt0C2C(m_head.m_next); }
+    SndIt0C2C end() { return SndIt0C2C(&m_head); }
+};
+extern "C" void X_0C2C_func_001C6A40(char *, int) asm("func_001C6A40");
+
+extern "C" int func_001E0C2C(char *arg0, int arg1, int arg2, unsigned int arg3)
+{
+    char *base = arg0 + 0xC1C0;
+    int count = *(int *)(base + 0x190);
+    if (count == 0)
+        return 0;
+    SndIt0C2C it;
+    SndIt0C2C last;
+    it = SndIt0C2C(*(SndNode0C2C **)(base + 0xD4));
+    last = ((SndChain0C2C *)(base + 0xD0))->end();
+    do {
+        if ((*it).m_unk34 == arg2 || arg2 == 0) {
+            switch (arg1) {
+            case 1:
+                (*it).m_sub.m_flags = arg3;
+                break;
+            case 2:
+                (*it).m_sub.orFlags(arg3);
+                break;
+            case 3:
+                (*it).m_sub.andNotFlags(arg3);
+                break;
+            case 4:
+                return ((*it).m_sub.m_flags & arg3) != 0;
+            case 5:
+                if ((*it).m_sub.m_flags & 0x20000000) {
+                    X_0C2C_func_001C6A40(D_007812C0, 0x8000);
+                    (*it).m_sub.andNotFlags(0x20000000);
+                    return 1;
+                }
+                return 0;
+            }
+            if (arg2 != 0)
+                return 1;
+        }
+        ++it;
+    } while (--count != 0);
+    return arg2 == 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E0C2C);
+#endif
 
 extern "C" int func_001E0D70(char *arg0, int arg1)
 {
