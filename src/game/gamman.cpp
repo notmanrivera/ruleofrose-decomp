@@ -2771,7 +2771,17 @@ extern "C" int func_001D1720(int arg0, unsigned int arg1, int arg2)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D17C8);
+extern "C" int func_001D17C8(int arg0, unsigned int arg1, unsigned int arg2)
+{
+    switch ((arg1 >> 0x1C) & 3) {
+    case 1:
+        return (M2C_FIELD((((arg2 >> 0x18) * 4) + Xiiu_func_001D2B8C(arg0, arg1)), int *, 0x3EC) & arg2 & 0xFFFFFF) != 0;
+    case 2:
+        return 0;
+    default:
+        return 0;
+    }
+}
 
 extern "C" void func_001D1838(int unused, unsigned int arg1, unsigned int arg2)
 {
