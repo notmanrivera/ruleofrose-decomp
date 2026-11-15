@@ -434,7 +434,72 @@ extern "C" void func_00199AB4(void *arg0, int arg1, int arg2)
     (*p)->unk08++;
 }
 
+// NON_MATCHING: 26/86 differ, 26 edits
+#ifdef NON_MATCHING
+struct Entry_9B3C {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+    int unk10;
+    int unk14;
+    int unk18;
+    int unk1C;
+};
+struct Sub9C_9B3C {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+};
+struct Obj_9B3C {
+    unsigned char pad00[0x9C];
+    Sub9C_9B3C *m_9C;
+    unsigned char padA0[0x120 - 0xA0];
+    int m_120;
+    int m_124;
+    Entry_9B3C *m_128;
+};
+extern "C" int X_func_0019A1D0_9B3C(void *) asm("func_0019A1D0");
+extern "C" int X_func_0019A20C_9B3C(void *, int) asm("func_0019A20C");
+extern "C" void X_func_0019A290_9B3C(void *, int) asm("func_0019A290");
+extern "C" void X_func_00193FEC_9B3C(void *, int, int) asm("func_00193FEC");
+extern "C" void X_func_00199AB4_9B3C(void *, int, int) asm("func_00199AB4");
+extern "C" void X_func_00199A08_9B3C(void *, int, int, int) asm("func_00199A08");
+
+static inline void call9A08_9B3C(Obj_9B3C *arg0, int page, int page2)
+{
+    X_func_00199A08_9B3C(arg0, page, page2 + 1, 0);
+    X_func_00199A08_9B3C(arg0, page, page2 + 2, 1);
+}
+
+extern "C" void func_00199B3C(Obj_9B3C *arg0, int arg1, int arg2)
+{
+    int cur2 = arg1 * 2;
+    int idx = X_func_0019A20C_9B3C(arg0, arg1);
+    Entry_9B3C *e = &arg0->m_128[idx];
+    e->unk0C = (arg2 != 0);
+    e->unk10 = 0;
+    X_func_00193FEC_9B3C(arg0, idx, (arg2 != 0));
+    call9A08_9B3C(arg0, arg1, cur2);
+    arg0->m_120 = 0xA;
+    X_func_00199AB4_9B3C(arg0, (arg2 != 0) ? (cur2 + 3) : cur2, arg2);
+    X_func_0019A290_9B3C(arg0, (arg2 != 0) ? (arg1 + 2) : (arg1 - 2));
+
+    idx = X_func_0019A1D0_9B3C(arg0);
+    int next = (arg2 != 0) ? (arg1 + 1) : (arg1 - 1);
+    int zero = arg2 == 0;
+    e = &arg0->m_128[idx];
+    e->unk14 = next;
+    e->unk0C = zero;
+    e->unk00 |= 1;
+    e->unk10 = arg0->m_9C[zero].unk04;
+    X_func_00193FEC_9B3C(arg0, idx, zero);
+    call9A08_9B3C(arg0, next, next * 2);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00199B3C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", MnuDiary__vfunc_06);
 
