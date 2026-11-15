@@ -918,7 +918,35 @@ extern "C" float func_001DBA00()
     return var_f0;
 }
 
+// NON_MATCHING: function matches (.text 0xfc MATCH), whole-object .rodata +8 jtbl alignment
+#ifdef NON_MATCHING
+extern "C" void Xvvvv_func_0017EB3C(int, void *, int, int) asm("func_0017EB3C");
+extern "C" void Xvvvv_func_0017EBAC(int, void *, int, int) asm("func_0017EBAC");
+extern "C" void func_001DBA3C(int arg0, unsigned int arg1, void *arg2, int arg3)
+{
+    int temp_v0;
+
+    switch (arg1) {
+    case 0:
+        Xvvvv_func_0017EBAC((int)&D_00298EE0, arg2, arg3, Xii_func_001C6C28((int)&D_007812C0));
+        return;
+    case 1:
+        Xvvvv_func_0017EB3C((int)&D_00298EE0, arg2, Xii_func_001C6C28((int)&D_007812C0), arg3);
+        return;
+    case 2:
+        temp_v0 = Xiii_func_0017EA44((int)&D_00298EE0, Xii_func_001C6C28((int)&D_007812C0));
+        M2C_FIELD(arg2, float *, 0) = M2C_FIELD(temp_v0, float *, 0x20);
+        M2C_FIELD(arg2, float *, 4) = 0.0f;
+        M2C_FIELD(arg2, float *, 8) = M2C_FIELD(temp_v0, float *, 0x28);
+        return;
+    case 3:
+    case 4:
+        return;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBA3C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBB38);
 
