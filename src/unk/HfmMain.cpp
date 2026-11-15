@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" void Xvi_func_0016947C(int) asm("func_0016947C");
+extern "C" int Xiiiii_func_001693EC(int, int, int, int) asm("func_001693EC");
+extern int D_002EF418[];
 extern "C" void Xvii_func_00146628(int, int) asm("func_00146628");
 extern "C" float Xfi_func_00169A14(int) asm("func_00169A14");
 extern "C" void Xviif_func_001670DC(int, int, float) asm("func_001670DC");
@@ -979,7 +982,44 @@ extern "C" void func_00147E04(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00147E94);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00147F00);
+extern "C" void func_00147F00(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
+    int var_a1;
+
+    Xiiiii_func_001693EC(arg0, 5, 0xF, 0x25);
+    temp_v0 = Xii_func_00118FEC__9MagSystem((int)&D_006E9840);
+    if (temp_v0 != 9) {
+        Xvif_func_00146C8C(arg0, -3.0f);
+        temp_v1 = M2C_FIELD(arg0, int *, 0x68) - 1;
+        M2C_FIELD(arg0, int *, 0x68) = temp_v1;
+        M2C_FIELD(arg0, int *, 0x64) = M2C_FIELD(arg0, int *, 0x64) - 1;
+        if (temp_v1 <= 0) {
+            M2C_FIELD(arg0, int *, 0x70) = Xiii_func_0010423C(1, 3);
+            if (Xiii_func_0010423C(0, 0x63) < 0x32) {
+                M2C_FIELD(arg0, int *, 0x74) = 1;
+                M2C_FIELD(arg0, int *, 0x4C) = 0xC;
+                var_a1 = 0x28;
+            } else {
+                M2C_FIELD(arg0, int *, 0x74) = 0;
+                M2C_FIELD(arg0, int *, 0x4C) = 0xC;
+                var_a1 = 0x26;
+            }
+            Xiiii_func_001680A0(arg0, var_a1, 0);
+            Xvi_func_0016947C(arg0);
+            Xiii_func_001694CC(arg0, D_002EF418[Xiii_func_0010423C(0, 4)]);
+            Xiii_func_001694CC(arg0, 0x38);
+            M2C_FIELD(arg0, int *, 4) = 5;
+            return;
+        }
+        if (temp_v0 == 3) {
+            Xvi_func_0016947C(arg0);
+            Xiiii_func_001680A0(arg0, (M2C_FIELD(arg0, int *, 0x60) == 0) ? 0x21 : 0x22, 0x100);
+            M2C_FIELD(arg0, int *, 4) = 9;
+        }
+    }
+}
 
 extern "C" void func_00148060(int arg0)
 {
