@@ -1,4 +1,19 @@
 #include "include_asm.h"
+extern int D_007A3210;
+struct Block360 {
+    unsigned char b[0x360];
+};
+struct Block40 {
+    unsigned char b[0x40];
+};
+struct Src215430 {
+    Block360 unk0;
+    Block40 unk360;
+};
+struct Obj215430 {
+    unsigned char pad[0xDC20];
+    unsigned char *m_flags;
+};
 extern "C" int X2D08_func_00213C6C(int arg0, int arg1, int arg2, int arg3) asm("func_00213C6C");
 extern "C" int func_00213D90(int arg0, int arg1, int arg2);
 struct Data212E64 {
@@ -1422,7 +1437,16 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002150B0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002152B8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00215430);
+extern "C" int func_00215430(Obj215430 *arg0, Src215430 *arg1)
+{
+    int lang = D_007A3210;
+    if (lang < 1 || lang > 13) {
+        lang = 9;
+    }
+    *(Block360 *)arg0->m_flags = arg1->unk0;
+    *(Block40 *)((((lang - 1) * 512 + 0x1B00) >> 3) + (long)arg0->m_flags) = arg1->unk360;
+    return 0x400;
+}
 
 extern "C" void func_002155A0(void) {
 }
