@@ -9,7 +9,7 @@
 #   --file F              work on this file (default: keep the current file
 #                         while it has functions left, else take the file with
 #                         the most small functions that no other worker holds)
-#   --avoid P             never pick a file under this prefix (e.g. mag/;
+#   --avoid P[,P...]      never pick a file under these prefixes (e.g. mag/,unk/Eff0;
 #                         remembered; --avoid - clears it)
 #   --max N               largest function handed out, in instructions (30)
 #   --min N               smallest one (0): a worker for the big functions only
@@ -208,7 +208,7 @@ if [ -z "$funcs" ]; then
   # shellcheck disable=SC2086
   FILE=$("$PY" tools/backlog.py $R --by-yield --min "$MIN" --max "$MAX" --top 200 --exclude "${others:-}${FILE:+,$FILE}" |
          awk 'NF == 5 && $2 == "functions" {print $5}' |
-         { if [ -n "$AVOID" ]; then grep -v "^$AVOID" || true; else cat; fi; } | head -1)
+         { if [ -n "$AVOID" ]; then grep -vE "^($(echo "$AVOID" | sed "s/,/|/g"))" || true; else cat; fi; } | head -1)
   [ -n "$FILE" ] || { echo "no file left with functions of up to $MAX instructions"; exit 1; }
   # shellcheck disable=SC2086
   funcs=$("$PY" tools/backlog.py $R --file "$FILE" --min "$MIN" --max "$MAX" --names "$NAMES" --budget "$BUDGET")
