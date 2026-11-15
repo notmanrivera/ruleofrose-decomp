@@ -1,4 +1,15 @@
 #include "include_asm.h"
+extern "C" int func_00213B7C(int arg0, int arg1, int arg2, int arg3, int arg4);
+struct NodeIter3D90 {
+    int *m_node;
+    NodeIter3D90() {}
+    NodeIter3D90(const NodeIter3D90 &other) : m_node(other.m_node) {}
+};
+static inline int checkRange3D90(int arg0, int arg1, char *p, NodeIter3D90 *beg, NodeIter3D90 *end, int arg2) {
+    beg->m_node = *(int **)(p + 0xD4);
+    end->m_node = (int *)(p + 0xD0);
+    return func_00213B7C(arg0, arg1, (int)beg, (int)end, arg2);
+}
 extern "C" int func_001E0C2C(void *, int, int, int);
 extern "C" void func_001C6A40(void *, int);
 extern "C" void func_00214A94(int arg0);
@@ -1089,7 +1100,16 @@ extern "C" int func_00213D00(int arg0, unsigned int arg1, int arg2)
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213D00);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213D90);
+extern "C" int func_00213D90(int arg0, int arg1, int arg2)
+{
+    NodeIter3D90 beg0, end0, beg1, end1, beg2, end2;
+    if ((checkRange3D90(arg0, arg1, *(char **)(arg0 + 0x10), &beg0, &end0, arg2) ^ 1) == 0 ||
+        (checkRange3D90(arg0, arg1, *(char **)(arg0 + 0x14), &beg1, &end1, arg2) ^ 1) == 0 ||
+        (checkRange3D90(arg0, arg1, *(char **)(arg0 + 0x18), &beg2, &end2, arg2) ^ 1) == 0) {
+        return 1;
+    }
+    return 0;
+}
 
 extern "C" int func_00213E78(int arg0, int arg1)
 {
