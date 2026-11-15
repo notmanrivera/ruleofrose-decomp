@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" void Xv_TskMsgMan__vfunc_05(int) asm("TskMsgMan__vfunc_05");
+extern "C" void Xvii_func_00183B24(int, int) asm("func_00183B24");
+extern int _vt$9TskMsgMan;
 struct TskAvoidMoveObj {
     char pad0[0xC];
     unsigned int m_unk0C;
@@ -1266,7 +1269,25 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE5E8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F4A24);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMsgMan__vfunc_06);
+extern "C" void TskMsgMan__vfunc_06(int arg0, int arg1)
+{
+    int temp_s0;
+    int temp_s1;
+
+    (*(int *)(arg0)) = (int)&_vt$9TskMsgMan;
+    Xv_TskMsgMan__vfunc_05(arg0);
+    temp_s1 = arg0 + 0x224;
+    if (temp_s1 != 0) {
+        temp_s0 = temp_s1 + 0x778;
+        while (temp_s1 != temp_s0) {
+            temp_s0 -= 0x3BC;
+            Xvii_func_00183B24(temp_s0, 2);
+        }
+    }
+    if (arg1 & 1) {
+        return Xv___builtin_delete(arg0);
+    }
+}
 
 extern "C" void TskMsgMan__vfunc_05(int arg0)
 {
