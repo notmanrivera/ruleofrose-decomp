@@ -283,6 +283,66 @@ def write_cpp_syms(asm):
     (ROOT / "build/cpp_syms.ld").write_text("\n".join(lines) + "\n")
 
 
+def write_missing_rodata():
+    """Write asm/nonmatchings/<file>/<sym>.s for each .rodata symbol of a
+    decompiled file that splat left without one. splat migrates a symbol
+    into the function that uses it, and writes none when that function is
+    in another file: D_002FC418, game/gamstat's last 8 bytes, which game/
+    gamtrg's code reads. The block is copied from the whole-file asm."""
+    for src in sorted((ROOT / "src").glob("**/*.cpp")):
+        name = src.relative_to(ROOT / "src").with_suffix("").as_posix()
+        whole = ROOT / "asm" / f"{name}.s"
+        folder = ROOT / "asm/nonmatchings" / name
+        if not whole.exists() or not folder.is_dir():
+            continue
+        text = whole.read_text(errors="replace")
+        have = {p.stem for p in folder.glob("*.s")}
+        inside = " ".join(p.read_text(errors="replace") for p in folder.glob("*.s")
+                          if not p.stem.startswith(("D_", "jtbl_")))  # functions
+        section = None
+        for m in re.finditer(r"^\.section (\S+)|^((?:\.align \d+\n)?)nonmatching (\w+)\n(.*?^enddlabel \3\n)",
+                             text, re.M | re.S):
+            if m.group(1):
+                section = m.group(1).rstrip(",")
+                continue
+            sym = m.group(3)
+            if section != ".rodata" or sym in have or f"dlabel {sym}\n" in inside:
+                continue
+            (folder / f"{sym}.s").write_text(f".section .rodata\n\n{m.group(2)}nonmatching {sym}\n{m.group(4)}")
+            print(f"wrote asm/nonmatchings/{name}/{sym}.s (splat left it out)")
+
+
+def align_jump_tables():
+    """ee-gcc 2.96 aligns every jump table to 16 (all 267 of the game's are
+    at multiples of 16); splat writes them with .align 3. Once a function
+    before one is C++, its own table can end on an 8-byte boundary and the
+    asm table after it lands 8 bytes early. So the per-function asm of a
+    decompiled file gets .align 4 for its tables, when the file's .rodata
+    starts at a multiple of 16 as it must (a file with tables and another
+    start has a wrong boundary: listed, and left as it is)."""
+    starts = {row[4]: row[1] for row in load_splits() if row[1] is not None}
+    n, wrong = 0, []
+    for src in sorted((ROOT / "src").glob("**/*.cpp")):
+        name = src.relative_to(ROOT / "src").with_suffix("").as_posix()
+        folder = ROOT / "asm/nonmatchings" / name
+        if not folder.is_dir():
+            continue
+        files = [f for f in folder.glob("*.s") if "nonmatching jtbl_" in f.read_text(errors="replace")]
+        if not files:
+            continue
+        if starts.get(name, 0) % 16:
+            wrong.append(name)
+            continue
+        for f in files:
+            text = f.read_text(errors="replace")
+            new = re.sub(r"^\.align 3\n(nonmatching jtbl_)", r".align 4\n\1", text, flags=re.M)
+            if new != text:
+                f.write_text(new)
+                n += 1
+    print(f"jump tables aligned to 16 in {n} asm files"
+          + (f"; .rodata start not a multiple of 16 in {len(wrong)} files with tables: {' '.join(wrong)}" if wrong else ""))
+
+
 def write_ninja():
     # Only the asm the linker script uses: a re-split leaves stale files behind.
     ld = (ROOT / f"build/{BASENAME}.ld").read_text()
@@ -368,6 +428,8 @@ def main():
         info = ps2elfinfo.Ps2Elf.get_info(ELF, ELF.read_bytes())
         write_config(info, set(a.new))
         sh(["splat", "split", str(CONFIG)])
+        write_missing_rodata()
+        align_jump_tables()
         for name in a.new:
             # splat writes absolute paths; the assembler searches from the repo root
             src = ROOT / "src" / f"{name}.cpp"

@@ -106,7 +106,7 @@ text	rodata	data	bss	file	confidence
 001B64C4	002FB050	002B8598	006E9640	game/gamman	likely
 001D1BEC	002FC0B8	-	-	unk/001D1BEC	likely
 001D5610	002FC1D8	002C0000	007811AC	game/gamstat	conflict
-001D859C	002FC418	002D8F60	-	game/gamtrg	likely
+001D859C	002FC420	002D8F60	-	game/gamtrg	manual
 001E0BB0	002FD750	-	-	game/gamsnd	likely
 001E46B8	002FD798	-	-	unk/TskMtnMove	likely
 001E9A34	002FDA88	-	00781280	unk/TskMsgMan	likely

@@ -168,3 +168,5 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamstat", D_002FC3E8);
 INCLUDE_RODATA("asm/nonmatchings/game/gamstat", D_002FC3F8);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D84C8);
+
+INCLUDE_RODATA("asm/nonmatchings/game/gamstat", D_002FC418);
