@@ -1,4 +1,21 @@
 #include "include_asm.h"
+struct Ent6CAC {
+    unsigned int flags;
+    char pad4[0x10];
+    int unk14;
+    int unk18;
+    char pad1C[0x28 - 0x1C];
+    bool isFree() const { return (flags & 1) == 0; }
+};
+struct Sub6CAC {
+    Ent6CAC *arr;
+};
+struct Obj6CAC {
+    char pad0[0xD40];
+    Sub6CAC sub;
+};
+extern int X_6CAC_D_007B2580 asm("D_007B2580");
+extern "C" int X_6CAC_func_001800D0(int *, int) asm("func_001800D0");
 struct Ent5B60 {
     char pad0[0x14];
     int unk14;
@@ -1050,7 +1067,18 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E6570);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E6734);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E6CAC);
+extern "C" int func_001E6CAC(Obj6CAC *arg0)
+{
+    for (int i = 0; i < 0x30; i++) {
+        Ent6CAC *p = &arg0->sub.arr[i];
+        if (!p->isFree() && (p->flags & 8)) {
+            if (p->unk14 != -1 && X_6CAC_func_001800D0(&X_6CAC_D_007B2580, p->unk18) != -1) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 extern "C" float func_001E6D54(Obj6D54 *arg0)
 {
