@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" void Xp_func_00237340(void *) asm("func_00237340");
+extern "C" void Xpp_func_00237830(void *, void *, float) asm("func_00237830");
+extern float D_002F2FB0;
 struct m2c_block16 { int w[4]; };
 extern "C" int X_func_0021B260(int, int) asm("func_0021B260");
 extern "C" int X_func_0021B4F8(int, int) asm("func_0021B4F8");
@@ -332,7 +335,33 @@ extern "C" void updateZDepth__13EffSteam2Prim(int arg0)
     M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, arg0 + 0x30);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffCloud1__vfunc_02);
+extern "C" int EffCloud1__vfunc_02(int arg0, int arg1)
+{
+    float mat[16];
+    int t;
+
+    if (Xiii_Eff0__vfunc_02(arg0, arg1)) {
+        *(m2c_block12 *)((char *)(arg0) + 0x40) = *(m2c_block12 *)((char *)(arg1) + 0x10);
+        *(m2c_block16 *)((char *)(arg0) + 0x60) = *(m2c_block16 *)((char *)(arg1) + 0x2C);
+        M2C_FIELD(arg0, float *, 0x58) = M2C_FIELD(arg1, float *, 0x20);
+        Xp_func_00237340(mat);
+        float sc = M2C_FIELD(arg1, float *, 0x24);
+        float rot = M2C_FIELD(arg1, float *, 0x1C);
+        mat[10] = sc;
+        Xpp_func_00237830(mat, mat, rot);
+        *(m2c_block12 *)((char *)(arg0) + 0x4C) = *(m2c_block12 *)(mat + 8);
+        Xii_func_0017A410(arg0);
+        M2C_FIELD(arg0, float *, 0x3C) = 1.0f;
+        t = (int)(M2C_FIELD(arg1, float *, 0x28) / M2C_FIELD(arg1, float *, 0x24)) + 1;
+        M2C_FIELD(arg0, int *, 0x74) = t;
+        int e = t + (t % 30);
+        M2C_FIELD(arg0, int *, 0x70) = t;
+        M2C_FIELD(arg0, float *, 0x10) = D_002F2FB0;
+        M2C_FIELD(arg0, int *, 0x78) = e;
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_0017A410);
 
