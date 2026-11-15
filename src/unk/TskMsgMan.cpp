@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_00143D7C(int, float *, int) asm("func_00143D7C");
 extern int D_006FE6A0;
 extern "C" int Xiiu_func_001CBE38(void *, unsigned int) asm("func_001CBE38");
 extern "C" int X_func_001311F4_loc(int, int *) asm("func_001311F4");
@@ -1747,7 +1748,42 @@ block_6:
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3C44);
+extern "C" int func_001F3C44(int arg0)
+{
+    float stack[8];
+    int temp_v1;
+    int temp_a0;
+    float temp_f0;
+    float temp_f1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x14);
+    temp_a0 = M2C_FIELD(arg0, int *, 0x60);
+    if (temp_v1 < temp_a0) {
+        temp_f0 = (float)temp_v1 / (float)temp_a0;
+        temp_f1 = 1.0f - temp_f0;
+        float f0 = M2C_FIELD(arg0, float *, 0x40) * temp_f0 + M2C_FIELD(arg0, float *, 0x20) * temp_f1;
+        float f1 = M2C_FIELD(arg0, float *, 0x44) * temp_f0 + M2C_FIELD(arg0, float *, 0x24) * temp_f1;
+        float f2 = M2C_FIELD(arg0, float *, 0x48) * temp_f0 + M2C_FIELD(arg0, float *, 0x28) * temp_f1;
+        float f3 = M2C_FIELD(arg0, float *, 0x4C) * temp_f0 + M2C_FIELD(arg0, float *, 0x2C) * temp_f1;
+        float f4 = M2C_FIELD(arg0, float *, 0x50) * temp_f0 + M2C_FIELD(arg0, float *, 0x30) * temp_f1;
+        float f5 = M2C_FIELD(arg0, float *, 0x54) * temp_f0 + M2C_FIELD(arg0, float *, 0x34) * temp_f1;
+        float f6 = M2C_FIELD(arg0, float *, 0x58) * temp_f0 + M2C_FIELD(arg0, float *, 0x38) * temp_f1;
+        float f7 = M2C_FIELD(arg0, float *, 0x5C) * temp_f0 + M2C_FIELD(arg0, float *, 0x3C) * temp_f1;
+        stack[0] = f0;
+        stack[1] = f1;
+        stack[2] = f2;
+        stack[3] = f3;
+        stack[4] = f4;
+        stack[5] = f5;
+        stack[6] = f6;
+        stack[7] = f7;
+        int off = 0x12540;
+        Xiii_func_00143D7C((int)&D_006E9840 + off, stack, 0);
+        M2C_FIELD(arg0, int *, 0x14)++;
+        return 0;
+    }
+    return 1;
+}
 
 extern "C" int func_001F3D90()
 {
