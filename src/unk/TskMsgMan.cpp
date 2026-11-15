@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "ror.h"
 struct Ecbe0Targets { char pad[0x10]; int targets[128]; };
 extern "C" void ecbe0Stop(int, int) asm("func_001D8964");
 extern "C" void ecbe0Move(int, int, int, int, int, int, float) asm("func_001F6308");
@@ -561,7 +562,6 @@ extern "C" void TskMoveTypeRound__vfunc_05(void) {
 
 // NON_MATCHING: 96/125 differ, 4 relocs differ (size 0x1F4, game 0x200), 54 edits
 #ifdef NON_MATCHING
-#include "ror.h"
 struct TskRoundObj { char pad[0x60]; int (TskRoundObj::*method)(); };
 extern const char roundHitText[] asm("D_002FDBF0");
 extern "C" int roundCheck(int, unsigned int, int *, int) asm("func_001D544C");
@@ -1178,19 +1178,65 @@ extern "C" int TskMoveAdj__vfunc_04(int arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveAdj__vfunc_04);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EE4A8);
+extern "C" void func_001EE4A8(int arg0, int arg1, int arg2, float fparg0)
+{
+    float temp_f0;
+    float var_f20;
+    float var_f20_2;
+    double temp_v0;
+    double temp_v0_3;
+    double temp_v0_4;
+    double temp_s4;
+    double temp_s5;
+    int temp_s2;
+    int temp_v0_2;
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEC0);
+    var_f20 = fparg0;
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$9TskRotAdj;
+    temp_s5 = -3.14159265358979323846;
+    M2C_FIELD(arg0, int *, 4) = arg1;
+    if ((double)fparg0 < temp_s5) {
+        var_f20 = (float)((double)fparg0 + 6.28318530717958647692);
+    }
+    temp_s4 = 3.14159265358979323846;
+    temp_v0 = (double)var_f20;
+    if (temp_v0 > temp_s4) {
+        var_f20 = (float)(temp_v0 - 6.28318530717958647692);
+    }
+    M2C_FIELD(arg0, float *, 8) = var_f20;
+    temp_s2 = arg0 + 0x20;
+    temp_v0_2 = (int)&D_006FE6A0 + (arg1 * 0x4D0);
+    M2C_FIELD(temp_s2, float *, 0) = (float) M2C_FIELD(temp_v0_2, float *, 0x50);
+    M2C_FIELD(temp_s2, float *, 4) = (float) M2C_FIELD(temp_v0_2, float *, 0x54);
+    M2C_FIELD(temp_s2, float *, 8) = (float) M2C_FIELD(temp_v0_2, float *, 0x58);
+    if (arg2 <= 0) {
+        M2C_FIELD(arg0, float *, 0x24) += fparg0;
+        var_f20_2 = M2C_FIELD(arg0, float *, 0x24);
+        temp_v0_3 = (double)var_f20_2;
+        if (temp_v0_3 < temp_s5) {
+            var_f20_2 = (float)(temp_v0_3 + 6.28318530717958647692);
+        }
+        temp_v0_4 = (double)var_f20_2;
+        if (temp_v0_4 > temp_s4) {
+            var_f20_2 = (float)(temp_v0_4 - 6.28318530717958647692);
+        }
+        M2C_FIELD(arg0, float *, 0x24) = var_f20_2;
+        Xv_setActorRot__9MagSystemiPCf((int)&D_006E9840, M2C_FIELD(arg0, int *, 4), temp_s2);
+        M2C_FIELD(arg0, float *, 0xC) = 0.0f;
+        M2C_FIELD(arg0, int *, 0x10) = 0;
+        M2C_FIELD(arg0, int *, 0x14) = 0;
+        return;
+    }
+    M2C_FIELD(arg0, int *, 0x14) = arg2;
+    M2C_FIELD(arg0, int *, 0x10) = arg2;
+    M2C_FIELD(arg0, float *, 0xC) = (float) (fparg0 / (float) arg2);
+}
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEC8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDED0);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDED8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEE0);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEE8);
+
 
 extern "C" void TskRotAdj__vfunc_06(int arg0, int arg1)
 {
