@@ -293,7 +293,30 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_02);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_03);
 
+// NON_MATCHING: 20/21 differ, 1 reloc differs (size 0x54, game 0x50), 15 edits
+#ifdef NON_MATCHING
+extern "C" int func_00196E54(int arg0, int arg1)
+{
+    int *p;
+    int v;
+
+    for (p = &D_0029C0F8; ; p += 0x0C) {
+        M2C_FIELD(arg0, int **, 0x110) = p;
+        v = *p;
+        if (v == -1)
+            return 0;
+        if (v == arg1)
+            break;
+    }
+    if (*(int *)M2C_FIELD(arg0, int **, 0x110) != -1) {
+        M2C_FIELD(arg0, int *, 0x114) = arg1;
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196E54);
+#endif
 
 extern "C" void func_00196EA4(int arg0)
 {
