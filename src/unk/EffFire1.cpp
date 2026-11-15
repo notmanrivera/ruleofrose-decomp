@@ -92,7 +92,29 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFire1__vfunc_08);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", updateZDepth__8EffFire1);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", liveActivateExec__8EffFire1);
+extern "C" void liveActivateExec__8EffFire1(int arg0)
+{
+    int temp_a2;
+    int temp_v0;
+    int temp_v0_2;
+    unsigned short temp_a1;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x5C);
+    temp_a1 = M2C_FIELD(arg0, unsigned short *, 0);
+    temp_v0_2 = temp_v0 - 1;
+    temp_a2 = temp_v0 + 1;
+    if (temp_a1 & 4) {
+        M2C_FIELD(arg0, int *, 0x5C) = temp_a2;
+        if (temp_a2 >= 5) {
+            M2C_FIELD(arg0, unsigned short *, 0) = (unsigned short) (temp_a1 & 0xFFF7);
+        }
+    } else {
+        M2C_FIELD(arg0, int *, 0x5C) = temp_v0_2;
+        if (temp_v0_2 <= 0) {
+            M2C_FIELD(arg0, unsigned short *, 0) = (unsigned short) (temp_a1 & 0xFFF7);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFire1Ex__vfunc_02);
 
