@@ -561,7 +561,31 @@ extern "C" void func_001D9F40(int arg0)
     }
 }
 
+// NON_MATCHING: 13/52 differ (size 0xD0, game 0xD8), 7 edits
+#ifdef NON_MATCHING
+extern "C" float Xfii_func_00133440(int, int) asm("func_00133440");
+extern "C" int Xii_func_0010A834__8DogActor(int) asm("func_0010A834__8DogActor");
+extern int D_006FBD80;
+static inline int getDogActor_d9f84(void *base, int idx) { return (int)(((char *)base + idx * 0x4D0) + 0x2920); }
+extern "C" int func_001D9F84(int arg0)
+{
+    int temp_s2 = Xii_func_0010A834__8DogActor(getDogActor_d9f84(&D_006FBD80, M2C_FIELD(arg0, int *, 0x108))) == 0;
+    if (M2C_FIELD(arg0, int *, 0x120) & 0x100) {
+        if (Xfii_func_00133440((int)&D_006FBD80, M2C_FIELD(arg0, int *, 0x108)) < 0.0f) {
+            if (Xfii_func_00133440((int)&D_006FBD80, M2C_FIELD(arg0, int *, 0x108)) >= -0.0000001f) {
+                return 0;
+            }
+        } else {
+            if (Xfii_func_00133440((int)&D_006FBD80, M2C_FIELD(arg0, int *, 0x108)) <= 0.0000001f) {
+                return 0;
+            }
+        }
+    }
+    return temp_s2;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D9F84);
+#endif
 
 extern "C" int func_001DA05C(int arg0)
 {
