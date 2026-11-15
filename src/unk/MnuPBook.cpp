@@ -1,4 +1,19 @@
 #include "include_asm.h"
+struct m2c_v10C_50_i {
+    char pad[268];
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+};
+extern "C" void X_func_00192BA4(int, int, int, int, int, int) asm("func_00192BA4");
+extern "C" void X_func_001949BC(int) asm("func_001949BC");
 extern "C" float Xff_cosf(float) asm("cosf");
 extern "C" int Xii_func_0019381C(int) asm("func_0019381C");
 extern "C" int Xiiff_func_00192E94(int, float, float) asm("func_00192E94");
@@ -199,7 +214,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001947A4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuMap__vfunc_01);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuMap__vfunc_02);
+extern "C" void MnuMap__vfunc_02(int arg0, int arg1)
+{
+    X_func_00192BA4(arg0, arg1, 0x1B, 0, 0, 0x1A);
+    M2C_FIELD(arg0, int *, 0x14) = 0;
+    ((m2c_v10C_50_i *)arg0)->v10();
+    X_func_001949BC(arg0);
+}
 
 extern "C" void MnuMap__vfunc_03(int arg0)
 {
