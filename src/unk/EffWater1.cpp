@@ -1,4 +1,17 @@
 #include "include_asm.h"
+extern "C" int X_9C30_func_0016AD94() asm("func_0016AD94");
+extern "C" void X_9C30_func_00176CC8(int, void *) asm("func_00176CC8");
+extern "C" void X_9C30_func_00237340(void *) asm("func_00237340");
+extern "C" void X_9C30_func_00237830(void *, void *, float) asm("func_00237830");
+struct Steam2Param {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+    float pos[4];
+    float unk20;
+    char pad24[0x5C];
+};
 extern "C" {
 extern char D_002F2E10[];
 extern char D_002F2E28[];
@@ -605,7 +618,33 @@ extern "C" int EffSteam2__vfunc_02(int arg0, int arg1)
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam2__vfunc_05);
+extern "C" int EffSteam2__vfunc_05(int arg0)
+{
+    Steam2Param param;
+    float mat[16];
+    if (M2C_FIELD(arg0, unsigned char *, 0x38) == 0) {
+        param.unk00 = 0x2C;
+        param.unk08 = 0;
+        X_9C30_func_00237340(mat);
+        mat[12] = (M2C_FIELD(arg0, float *, 0x30) * (float)X_9C30_func_0016AD94()) / 510.0f;
+        X_9C30_func_00237830(mat, mat, (((float)X_9C30_func_0016AD94() * 6.2831853f) / 255.0f) - 3.14159265f);
+        float x = M2C_FIELD(arg0, float *, 0x24) + mat[12];
+        float s = M2C_FIELD(arg0, float *, 0x30);
+        float y = M2C_FIELD(arg0, float *, 0x28) + mat[13] + (-s * 0.5f);
+        float z = M2C_FIELD(arg0, float *, 0x2C) + mat[14];
+        param.pos[3] = s;
+        param.pos[0] = x;
+        param.pos[2] = z;
+        param.pos[1] = y;
+        int rnd = X_9C30_func_0016AD94();
+        param.unk20 = M2C_FIELD(arg0, float *, 0x34) * (1.0 - (float)rnd / 510.0f);
+        X_9C30_func_00176CC8(D_00298E08 + 0x837E0, &param);
+        M2C_FIELD(arg0, unsigned char *, 0x38) = (X_9C30_func_0016AD94() * 0x1E) / 255 - 0x4C;
+    } else {
+        M2C_FIELD(arg0, unsigned char *, 0x38)--;
+    }
+    return 1;
+}
 
 extern "C" int EffSteam2Prim__vfunc_02(int arg0, int arg1)
 {
