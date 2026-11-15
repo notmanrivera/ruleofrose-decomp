@@ -1655,7 +1655,49 @@ extern "C" int func_001F2A84(int arg0)
     return 0;
 }
 
+// NON_MATCHING: 12/91 differ, 10 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_001311F4_2bcc(int, int *) asm("func_001311F4");
+extern "C" int X_func_00131184_2bcc(int, int, int, int) asm("func_00131184");
+extern "C" int func_001F2BCC(int arg0)
+{
+    int arr[8];
+    switch (M2C_FIELD(arg0, int *, 0x10)) {
+    case 0:
+    {
+        int t = M2C_FIELD(arg0, int *, 0x20) / 4;
+        int off = 0x12540;
+        arr[0] = 2;
+        arr[2] = t;
+        arr[1] = 6;
+        X_func_001311F4_2bcc((int)&D_006E9840 + off, arr);
+        M2C_FIELD(arg0, int *, 0x10)++;
+        M2C_FIELD(arg0, int *, 0x14) = M2C_FIELD(arg0, int *, 0x20) / 2;
+        break;
+    }
+    case 1:
+        if (M2C_FIELD(arg0, int *, 0x14)-- > 0) {
+            return 0;
+        } else {
+            int off = 0x12540;
+            int p = (int)&D_006E9840 + off;
+            M2C_FIELD(arg0, int *, 0x14) = M2C_FIELD(arg0, int *, 0x20) / 2;
+            arr[0] = 2;
+            arr[1] = 0;
+            arr[2] = 0;
+            X_func_001311F4_2bcc(p, arr);
+            X_func_00131184_2bcc(p, M2C_FIELD(arg0, int *, 0x14), 7, 0);
+            M2C_FIELD(arg0, int *, 0x10) = 0x63;
+        }
+        break;
+    case 0x63:
+        return M2C_FIELD(arg0, int *, 0x14)-- <= 0;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2BCC);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2D38);
 
