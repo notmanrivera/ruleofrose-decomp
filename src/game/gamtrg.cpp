@@ -1,4 +1,9 @@
 #include "include_asm.h"
+struct GamTrgCopy_dd558 {
+    long data[0xB0 / 8];
+};
+extern "C" int Xiiiiiii_alloc__9BedMemoryiPCciii(int, int, int, int, int, int) asm("alloc__9BedMemoryiPCciii");
+extern int D_006E9800;
 struct GamTrg0_d8778 {
     unsigned int count;
     unsigned short *unk04;
@@ -769,7 +774,12 @@ extern "C" void func_001DD3EC(void *arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD414);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD558);
+extern "C" GamTrgCopy_dd558 *func_001DD558(int arg0, const GamTrgCopy_dd558 *arg1)
+{
+    GamTrgCopy_dd558 *p = (GamTrgCopy_dd558 *)Xiiiiiii_alloc__9BedMemoryiPCciii((int)&D_006E9800, 0xB0, (int)"game/gamtrg.cpp", 0x62, 0, 1);
+    *p = *arg1;
+    return p;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD5E8);
 
