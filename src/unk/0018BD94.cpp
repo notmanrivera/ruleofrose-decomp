@@ -618,7 +618,29 @@ extern "C" void func_0018CC54(int arg0, int arg1, int arg2, Vec3i_CC54 *arg3, Ve
     M2C_FIELD(temp_a0, Vec3i_CC54 *, 0xAC) = *arg4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018CD88);
+extern "C" void func_0018CD88(int arg0, int arg1, int arg2, float *arg3, float *arg4)
+{
+    int half;
+
+    M2C_FIELD(arg1, int *, 0xF8) = arg2;
+    M2C_FIELD(arg1, int *, 0xFC) = arg2;
+    half = arg2 >> 1;
+    M2C_FIELD(arg1, float *, 0x7C) = arg3[0];
+    M2C_FIELD(arg1, float *, 0x80) = arg3[1];
+    M2C_FIELD(arg1, float *, 0x84) = arg3[2];
+    M2C_FIELD(arg1, float *, 0x94) = func_0018CA98(arg0, half, (arg4[0] - arg3[0]) * 0.5f);
+    M2C_FIELD(arg1, float *, 0x98) = func_0018CA98(arg0, half, (arg4[1] - arg3[1]) * 0.5f);
+    M2C_FIELD(arg1, float *, 0x9C) = func_0018CA98(arg0, half, (arg4[2] - arg3[2]) * 0.5f);
+    M2C_FIELD(arg1, int *, 0x88) = 0;
+    M2C_FIELD(arg1, int *, 0x8C) = 0;
+    M2C_FIELD(arg1, int *, 0x90) = 0;
+    M2C_FIELD(arg1, int *, 0xA0) = (int)arg3[0] * 16;
+    M2C_FIELD(arg1, int *, 0xA4) = (int)arg3[1] * 16;
+    M2C_FIELD(arg1, int *, 0xA8) = (int)arg3[2] * 16;
+    M2C_FIELD(arg1, int *, 0xAC) = (int)arg4[0] * 16;
+    M2C_FIELD(arg1, int *, 0xB0) = (int)arg4[1] * 16;
+    M2C_FIELD(arg1, int *, 0xB4) = (int)arg4[2] * 16;
+}
 
 extern "C" void func_0018CEEC(int arg0, int arg1, int arg2, float *arg3, float *arg4)
 {
