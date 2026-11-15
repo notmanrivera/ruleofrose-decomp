@@ -1,6 +1,13 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+#include "bed/bedpfh.h"
+extern int D_007A3210;
+struct Fog3Entry {
+    int id;
+    char pad[0x1C];
+};
+extern Fog3Entry *X_Fog3_D_00298E18 asm("D_00298E18");
 extern char X_27EC_D_007B2140[] asm("D_007B2140");
 extern "C" int X_27EC_func_00163BE4(void *, int) asm("func_00163BE4");
 extern "C" int X_27EC_func_00163B20(void *, int) asm("func_00163B20");
@@ -641,7 +648,30 @@ extern "C" void dtor_7EffFog3(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog3__vfunc_02);
+extern "C" int EffFog3__vfunc_02(int arg0, int arg1)
+{
+    if (!Xiii_Eff0__vfunc_02(arg0, arg1)) {
+        return 0;
+    }
+    BedPfh pfh;
+    int target = D_007A3210;
+    pfh.setTop(M2C_FIELD(M2C_FIELD(arg0, char **, 0x14), void **, 0x28));
+    char *unk14 = M2C_FIELD(arg0, char **, 0x14);
+    X_Fog3_D_00298E18 = (Fog3Entry *)pfh.getFileTop(
+        M2C_FIELD(unk14, int *, 0x50) + M2C_FIELD(unk14, int *, 0x54) + M2C_FIELD(unk14, int *, 0x58)
+    );
+    while (X_Fog3_D_00298E18->id != -1 && X_Fog3_D_00298E18->id != target) {
+        X_Fog3_D_00298E18++;
+    }
+    D_00298E14 = 0;
+    M2C_FIELD(arg0, int *, 0x28) = 0x1E;
+    M2C_FIELD(arg0, int *, 0x24) = 0;
+    if (Xi_func_001726B4()) {
+        D_00298E14 |= 1;
+        Xiii_func_00172934(1, 0);
+    }
+    return 1;
+}
 
 extern "C" int EffFog3__vfunc_05(int arg0)
 {
