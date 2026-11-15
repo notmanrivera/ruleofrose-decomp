@@ -1,4 +1,16 @@
 #include "include_asm.h"
+struct TskMoveSectaFindPathObj {
+    char pad0[0x20C];
+    int m_unk20C;
+    char pad210[0x8];
+    int m_unk218;
+    int m_unk21C;
+    char pad220[0x70];
+    int *m_unk290;
+    char pad294[0x24];
+    int (TskMoveSectaFindPathObj::*m_func)();
+};
+extern "C" int X_func_001ED1D0(TskMoveSectaFindPathObj *) asm("func_001ED1D0");
 struct TskVec4 {
     float f[4];
 } __attribute__((aligned(16)));
@@ -482,7 +494,20 @@ extern "C" int func_001ECEBC(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001ECF3C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveSectaFindPath__vfunc_04);
+extern "C" int TskMoveSectaFindPath__vfunc_04(TskMoveSectaFindPathObj *arg0)
+{
+    if (arg0->m_unk21C > 0) {
+        return (arg0->*(arg0->m_func))();
+    }
+    if (arg0->m_unk218++ >= arg0->m_unk20C - 1) {
+        if (arg0->m_unk290 != 0) {
+            *arg0->m_unk290 |= 2;
+        }
+        return 1;
+    }
+    X_func_001ED1D0(arg0);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001ED1D0);
 
