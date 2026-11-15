@@ -2068,7 +2068,140 @@ extern "C" void func_001DD5E8(List_dd5e8 *arg0, Elem_dd5e8 *arg1, int arg2)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD7BC);
 
+// NON_MATCHING: 74/117 differ (size 0x1D4, game 0x1D8), 41 edits
+#ifdef NON_MATCHING
+struct Elem0_ddaa8 { unsigned char pad[0xB0]; } __attribute__((aligned(16)));
+struct Node0_ddaa8 { Node0_ddaa8 *m_prev; Node0_ddaa8 *m_next; Elem0_ddaa8 m_data; };
+struct Chain0_ddaa8 {
+    Node0_ddaa8 m_head;
+    int m_num;
+    void push_back(Node0_ddaa8 *theNode) {
+        if (m_num == 0) {
+            m_head.m_next = theNode;
+            theNode->m_prev = &m_head;
+        } else {
+            m_head.m_prev->m_next = theNode;
+            theNode->m_prev = m_head.m_prev;
+        }
+        theNode->m_next = &m_head;
+        m_head.m_prev = theNode;
+        ++m_num;
+    }
+    void unlink(Node0_ddaa8 *theNode) {
+        if (theNode == m_head.m_next) {
+            Node0_ddaa8 *next = theNode->m_next;
+            m_head.m_next = next;
+            next->m_prev = &m_head;
+        } else {
+            Node0_ddaa8 *p = theNode->m_prev;
+            if (theNode == m_head.m_prev) {
+                m_head.m_prev = p;
+                p->m_next = &m_head;
+            } else {
+                p->m_next = theNode->m_next;
+                theNode->m_next->m_prev = theNode->m_prev;
+            }
+        }
+        --m_num;
+    }
+    void splice(Chain0_ddaa8 &theOther) {
+        if (theOther.m_num != 0) {
+            m_head.m_prev->m_next = theOther.m_head.m_next;
+            Node0_ddaa8 *last = m_head.m_prev;
+            last->m_next->m_prev = last;
+            Node0_ddaa8 *tail = theOther.m_head.m_prev;
+            m_head.m_prev = tail;
+            tail->m_next = &m_head;
+            m_num += theOther.m_num;
+            theOther.m_num = 0;
+            theOther.m_head.m_prev = &theOther.m_head;
+            theOther.m_head.m_next = &theOther.m_head;
+        }
+    }
+};
+struct Iter0_ddaa8 {
+    Node0_ddaa8 *m_node;
+    Iter0_ddaa8() : m_node(0) {}
+    Iter0_ddaa8(Node0_ddaa8 *theNode) : m_node(theNode) {}
+    Iter0_ddaa8(const Iter0_ddaa8 &theIt) : m_node(theIt.m_node) {}
+    Elem0_ddaa8 &operator*() const { return m_node->m_data; }
+    Iter0_ddaa8 &operator++() {
+        m_node = m_node->m_next;
+        return *this;
+    }
+    bool operator!=(const Iter0_ddaa8 &theIt) const { return m_node != theIt.m_node; }
+};
+struct List0_ddaa8 {
+    Chain0_ddaa8 m_free;
+    Chain0_ddaa8 m_used;
+    int m_max;
+    Iter0_ddaa8 begin() { return Iter0_ddaa8(m_used.m_head.m_next); }
+    Iter0_ddaa8 end() { return Iter0_ddaa8(&m_used.m_head); }
+    int size() const { return m_used.m_num; }
+    void clear() { m_free.splice(m_used); }
+    Iter0_ddaa8 erase(Iter0_ddaa8 thePos) {
+        Iter0_ddaa8 next = thePos;
+        ++next;
+        Node0_ddaa8 *n = thePos.m_node;
+        m_used.unlink(n);
+        m_free.push_back(n);
+        return next;
+    }
+};
+struct Elem2_ddaa8 { unsigned char pad[0x30]; } __attribute__((aligned(16)));
+struct Node2_ddaa8 { Node2_ddaa8 *m_prev; Node2_ddaa8 *m_next; Elem2_ddaa8 m_data; };
+struct Chain2_ddaa8 {
+    Node2_ddaa8 m_head;
+    int m_num;
+    void splice(Chain2_ddaa8 &theOther) {
+        if (theOther.m_num != 0) {
+            m_head.m_prev->m_next = theOther.m_head.m_next;
+            Node2_ddaa8 *last = m_head.m_prev;
+            last->m_next->m_prev = last;
+            Node2_ddaa8 *tail = theOther.m_head.m_prev;
+            m_head.m_prev = tail;
+            tail->m_next = &m_head;
+            m_num += theOther.m_num;
+            theOther.m_num = 0;
+            theOther.m_head.m_prev = &theOther.m_head;
+            theOther.m_head.m_next = &theOther.m_head;
+        }
+    }
+};
+struct List2_ddaa8 {
+    Chain2_ddaa8 m_free;
+    Chain2_ddaa8 m_used;
+    int m_max;
+    int size() const { return m_used.m_num; }
+    void clear() { m_free.splice(m_used); }
+};
+struct Mgr_ddaa8 {
+    List0_ddaa8 m_list0;
+    unsigned char pad1B0[0xC1C0 - 0x1B0];
+    List0_ddaa8 m_list1;
+    unsigned char padC370[0x18B40 - (0xC1C0 + 0x1B0)];
+    List2_ddaa8 *m_pool2;
+};
+extern "C" void X_func_001DDAA8(Mgr_ddaa8 *) asm("func_001DDAA8");
+extern "C" void X_func_001DDAA8(Mgr_ddaa8 *arg0)
+{
+    Iter0_ddaa8 it;
+    Iter0_ddaa8 last;
+    it = arg0->m_list0.begin();
+    last = arg0->m_list0.end();
+    if (arg0->m_list1.size() != 0) {
+        arg0->m_list1.clear();
+    }
+    if (arg0->m_pool2->size() != 0) {
+        arg0->m_pool2->clear();
+    }
+    while (it != last) {
+        it = arg0->m_list0.erase(it);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DDAA8);
+#endif
 
 // NON_MATCHING: 11/75 differ, 12 edits
 #ifdef NON_MATCHING
