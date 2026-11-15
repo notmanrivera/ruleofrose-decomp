@@ -236,7 +236,17 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog3__vfunc_02);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog3__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog3Dark__vfunc_02);
+extern "C" int EffFog3Dark__vfunc_02(int arg0, int arg1)
+{
+    if (!Xiii_Eff0__vfunc_02(arg0, arg1)) {
+        return 0;
+    }
+    if (!(D_00298E14 & 1)) {
+        D_00298E14 |= 1;
+        Xiii_func_00172934(1, 0x1E);
+    }
+    return 1;
+}
 
 extern "C" int EffFog3WeakUp__vfunc_02()
 {
