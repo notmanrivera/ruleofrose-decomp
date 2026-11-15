@@ -1,4 +1,13 @@
 #include "include_asm.h"
+extern "C" int X_func_00131184(...) asm("func_00131184");
+extern "C" int X_func_001311BC(...) asm("func_001311BC");
+extern "C" int X_func_00131550(...) asm("func_00131550");
+extern "C" int X_func_00131608(...) asm("func_00131608");
+extern "C" int X_func_00190D90(...) asm("func_00190D90");
+extern "C" int X_func_00190E98(...) asm("func_00190E98");
+extern "C" void loadingSetValue(int, int) asm("func_001D3A38");
+extern int D_006E9840;
+extern int D_006FBD80;
 extern "C" int X_func_001CC044(...) asm("func_001CC044");
 extern "C" int X_func_001CC250(...) asm("func_001CC250");
 extern "C" int X_func_001DC48C(...) asm("func_001DC48C");
@@ -367,7 +376,87 @@ extern "C" int func_00208DBC()
 
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00208DC4);
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00208E24);
+extern "C" int func_00208E24(unsigned int arg0, int arg1)
+{
+    struct { int sp10; } stack;
+    int var_a1;
+    register int data6 PS2_REG("$6");
+    register int base2 PS2_REG("$2");
+    register int base4 PS2_REG("$4");
+    register int base11 PS2_REG("$11");
+    float var_f1;
+    int temp_v0;
+    int temp_v0_2;
+    int var_v0;
+    int temp_s1;
+    int temp_s1_2;
+
+    switch (arg0) {
+    case 1:
+        base2 = (int)&D_006E9840;
+        temp_s1 = base2 + 0x12540;
+        temp_v0 = X_func_00131550(temp_s1);
+        if ((temp_v0 != 3) && (temp_v0 != 5) && (temp_v0 != 0)) {
+            X_func_00131184(temp_s1, arg1, 7, 0);
+            return 1;
+        }
+        break;
+    case 2:
+        base2 = (int)&D_006E9840;
+        temp_s1_2 = base2 + 0x12540;
+        temp_v0_2 = X_func_00131550(temp_s1_2);
+        if ((temp_v0_2 != 4) && (temp_v0_2 != 6)) {
+            X_func_001311BC(temp_s1_2, arg1, 7, 0);
+            return 1;
+        }
+        break;
+    case 3:
+        base4 = (int)&D_006E9840;
+        return X_func_00131608(base4 + 0x12540) - 1;
+    case 4:
+        base4 = (int)&D_006E9840;
+        return (unsigned int) (X_func_00131550(base4 + 0x12540) - 3) < 2U;
+    case 5:
+        loadingSetValue((int)&D_007812C0, (int)((float)(unsigned int)arg1 * 0.5f));
+        break;
+    case 6:
+        base4 = (int)&D_006FBD80;
+        X_func_00190D90(base4 + 0x41930, arg1);
+        break;
+    case 7:
+        base4 = (int)&D_006FBD80;
+        X_func_00190E98(base4 + 0x41930, arg1);
+        break;
+    case 10:
+        stack.sp10 = arg1;
+        var_v0 = X___builtin_new(0x80);
+        var_a1 = 2;
+        goto block_21;
+    case 11:
+        stack.sp10 = arg1;
+        var_v0 = X___builtin_new(0x80);
+        var_a1 = 3;
+        goto block_21;
+    case 12:
+        stack.sp10 = arg1;
+        var_v0 = X___builtin_new(0x80);
+        var_a1 = 4;
+        goto block_21;
+    case 13:
+        stack.sp10 = arg1;
+        var_v0 = X___builtin_new(0x80);
+        var_a1 = 5;
+block_21:
+        data6 = (int)&stack.sp10;
+        X_func_001F184C(var_v0, var_a1, data6, 0);
+        base11 = (int)&D_007812C0;
+        base11 += 0x222AC;
+        X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, var_v0, 0, base11, 0x11);
+        break;
+    case 0: default: break;
+    }
+    return 0;
+}
 
 extern "C" int func_00209090()
 {
