@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xiiii_func_0017B7CC(int, int, int) asm("func_0017B7CC");
+extern "C" int Xiiii_func_0017B918(int, int, int) asm("func_0017B918");
 extern "C" int Xiii_free__9BedMemoryPv(int, int) asm("free__9BedMemoryPv");
 extern "C" int Xiii_releaseTex__10DogTexInfoi(int, int) asm("releaseTex__10DogTexInfoi");
 struct Unk87B0 {
@@ -442,6 +444,36 @@ extern "C" void dtor_9EffWater3(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffWater3__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffWater3__vfunc_05);
+extern "C" int EffWater3__vfunc_05(int arg0)
+{
+    int var_s3;
+    int var_s0;
+    int var_s4;
+    int var_s2;
+
+    var_s4 = 0;
+    var_s3 = M2C_FIELD(arg0, int *, 0x24);
+    if (M2C_FIELD(arg0, int *, 0x28) > 0) {
+        do {
+            var_s0 = var_s3 + 0x10;
+            for (var_s2 = 7; var_s2 >= 0; var_s2--, var_s0 += 0x10) {
+                M2C_FIELD(var_s0, float *, 4) += M2C_FIELD(arg0, float *, 0x38);
+                if (M2C_FIELD(arg0, float *, 0x30) < M2C_FIELD(var_s0, float *, 4)) {
+                    Xiiii_func_0017B7CC(arg0, var_s0, var_s3);
+                }
+            }
+            var_s0 = var_s3 + 0x90;
+            for (var_s2 = 3; var_s2 >= 0; var_s2--, var_s0 += 0x10) {
+                M2C_FIELD(var_s0, float *, 4) += -0.5f;
+                if (M2C_FIELD(var_s0, float *, 4) < -3.0f) {
+                    Xiiii_func_0017B918(arg0, var_s0, var_s3);
+                }
+            }
+            var_s4 += 1;
+            var_s3 += 0xD0;
+        } while (var_s4 < M2C_FIELD(arg0, int *, 0x28));
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffWater3__vfunc_08);
