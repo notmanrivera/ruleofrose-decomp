@@ -1,4 +1,21 @@
 #include "include_asm.h"
+struct Entry_844C {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+    int unk10;
+    int unk14;
+    int unk18;
+    int unk1C;
+};
+struct Obj_844C {
+    unsigned char pad00[0x12C];
+    Entry_844C *m_12C;
+};
+extern "C" int X_func_00279C98_844C(char *, const char *, int) asm("func_00279C98");
+extern "C" int X_func_00194404_844C(void *, int, int) asm("func_00194404");
+extern "C" void X_func_0019397C_844C(void *, char *, int, int) asm("func_0019397C");
 extern "C" int X_func_00279C98_A290(char *, const char *, int) asm("func_00279C98");
 extern "C" int X_func_0019A24C_A290(void *, int) asm("func_0019A24C");
 extern "C" int X_func_00194404_A290(void *, int, int) asm("func_00194404");
@@ -291,7 +308,32 @@ extern "C" int func_00198420(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019844C);
+extern "C" void func_0019844C(Obj_844C *arg0, int arg1, int arg2, int arg3)
+{
+    char buf[32];
+    Entry_844C *e = &arg0->m_12C[arg1];
+    int page = (arg1 >= 0) ? (arg1 * 2) : -1;
+    int var_a1 = 2;
+    if (arg2 != 0 && e->unk04 == -1 && !(e->unk00 & 4)) {
+        e->unk04 = X_func_00194404_844C(arg0, 2, 0x21);
+        if (e->unk00 & 0x10) {
+            X_func_00279C98_844C(buf, "pb_pagebrk%02d_tcc", page);
+        } else {
+            X_func_00279C98_844C(buf, "pb_page%02d_tcc", page);
+        }
+        X_func_0019397C_844C(arg0, buf, 4, e->unk04);
+        var_a1 = e->unk04 + 1;
+    }
+    if (arg3 != 0 && e->unk08 == -1 && !(e->unk00 & 8)) {
+        e->unk08 = X_func_00194404_844C(arg0, var_a1, 0x21);
+        if (e->unk00 & 0x20) {
+            X_func_00279C98_844C(buf, "pb_pagebrk%02d_tcc", page + 1);
+        } else {
+            X_func_00279C98_844C(buf, "pb_page%02d_tcc", page + 1);
+        }
+        X_func_0019397C_844C(arg0, buf, 4, e->unk08);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_001985B0);
 
