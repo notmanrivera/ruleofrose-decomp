@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void X_2F10_180EA8(void *, int) asm("func_00180EA8");
+extern "C" void X_2F10_1640AC(void *, int, int) asm("func_001640AC");
 struct S_002006B0 {
     int *vt;
     int f04;
@@ -216,7 +218,13 @@ extern "C" void TskEnemyMove__vfunc_02(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202F10);
+extern "C" void func_00202F10(void *arg0)
+{
+    M2C_FIELD(arg0, int *, 4) = 0;
+    X_2F10_180EA8(&D_007B2580, M2C_FIELD(arg0, int *, 0xAB8));
+    M2C_FIELD(arg0, int *, 0xAB8) = -1;
+    X_2F10_1640AC(&D_007B2140, M2C_FIELD(arg0, int *, 8), 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202F60);
 
