@@ -141,7 +141,41 @@ extern "C" int EffFire1__vfunc_02(int arg0, int arg1)
     return 1;
 }
 
+// NON_MATCHING: 6/52 differ, 8 edits
+#ifdef NON_MATCHING
+extern int D_002F23E0;
+extern "C" int EffFire1__vfunc_05(int arg0)
+{
+    unsigned int bits[3];
+    float temp_f0;
+    float var_f0;
+    float var_f2;
+    unsigned int temp_hi;
+
+    var_f2 = 0.0f;
+    temp_f0 = M2C_FIELD(arg0, float *, 0x54) + -0.25f;
+    M2C_FIELD(arg0, unsigned int *, 0x50) = (unsigned int) (M2C_FIELD(arg0, unsigned int *, 0x50) + 1);
+    M2C_FIELD(arg0, float *, 0x54) = temp_f0;
+    if (!(temp_f0 < 0.0f)) {
+        var_f2 = temp_f0;
+    }
+    M2C_FIELD(arg0, float *, 0x54) = var_f2;
+    temp_hi = (unsigned int) ((unsigned int) M2C_FIELD(arg0, volatile unsigned int *, 0x50) >> 1) % 96U;
+    *(m2c_block12 *)bits = *(m2c_block12 *)&D_002F23E0;
+    if (bits[temp_hi >> 5] & (1 << temp_hi)) {
+        var_f0 = 1.0f;
+        var_f2 += 0.75f;
+        M2C_FIELD(arg0, float *, 0x54) = var_f2;
+        if (!(var_f2 > 1.0f)) {
+            var_f0 = var_f2;
+        }
+        M2C_FIELD(arg0, float *, 0x54) = var_f0;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFire1__vfunc_05);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFire1__vfunc_08);
 
