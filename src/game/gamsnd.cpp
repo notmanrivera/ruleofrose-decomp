@@ -1,4 +1,47 @@
 #include "include_asm.h"
+struct SndMsg17B4 {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+    int unk10;
+    int unk14;
+    char pad18[0x40 - 0x18];
+};
+struct Ent15A0 {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+    char pad10[0x24 - 0x10];
+};
+struct Ent1654 {
+    int unk00;
+    int unk04;
+    int unk08;
+};
+struct Ent1680 {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+};
+struct Obj17B4 {
+    char pad0000[0x15A0];
+    Ent15A0 arr15A0[5];     // +0x15A0
+    Ent1654 arr1654[3];     // +0x1654
+    char pad1678[0x1680 - 0x1678];
+    Ent1680 arr1680[8];     // +0x1680 (arr1680[0].unk04 is +0x1684)
+    int unk1700;
+    int unk1704;
+    int unk1708;            // +0x1708
+    char pad170C[0x1870 - 0x170C];
+    int unk1870;            // +0x1870
+};
+extern "C" void X_17B4_func_001E111C(Obj17B4 *, int) asm("func_001E111C");
+extern "C" int X_17B4_func_001E5660(Obj17B4 *, int, int, SndMsg17B4 *) asm("func_001E5660");
+extern "C" int X_17B4_func_001E5E58(Obj17B4 *, int, int, SndMsg17B4 *) asm("func_001E5E58");
+extern "C" void X_17B4_func_001E4120(Obj17B4 *) asm("func_001E4120");
 struct VObj71FC {
     virtual int v1();
     virtual void v2();
@@ -570,7 +613,43 @@ extern "C" void func_001E15D0(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E1620);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E17B4);
+extern "C" void func_001E17B4(Obj17B4 *arg0, int arg1)
+{
+    SndMsg17B4 msg;
+
+    X_17B4_func_001E111C(arg0, 0);
+    int val = arg0->arr15A0[arg0->arr1680[0].unk04].unk0C;
+    if (val != -1 && arg1 != 1) {
+        msg.unk14 = 0x1E;
+        msg.unk04 = 0;
+        msg.unk08 = 0;
+        X_17B4_func_001E5660(arg0, val, 0x1B, &msg);
+    }
+    if (arg1 != 2) {
+        int val2 = arg0->arr15A0[arg0->arr1680[0].unk04].unk00;
+        if (val2 != 0) {
+            msg.unk14 = 0x1E;
+            msg.unk04 = 0;
+            msg.unk08 = 0;
+            X_17B4_func_001E5E58(arg0, val2, 0x13, &msg);
+        }
+        int val3 = arg0->arr1654[arg0->arr1680[0].unk04].unk00;
+        if (val3 != 0) {
+            msg.unk14 = 0x1E;
+            msg.unk04 = 0;
+            msg.unk08 = 0;
+            X_17B4_func_001E5E58(arg0, val3, 0x14, &msg);
+        }
+    }
+    for (int i = 0; i < arg0->unk1708; i++) {
+        msg.unk14 = 0x1E;
+        msg.unk04 = 0;
+        msg.unk08 = 0;
+        X_17B4_func_001E5E58(arg0, arg0->arr1680[i].unk08, 0x15, &msg);
+    }
+    X_17B4_func_001E4120(arg0);
+    arg0->unk1870 |= 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E1920);
 
