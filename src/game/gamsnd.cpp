@@ -1,4 +1,13 @@
 #include "include_asm.h"
+struct Sub7D7C {
+    char pad[0x280];
+    int arr[0x100];
+};
+struct TskLogger7D7C {
+    void *vt;
+    int unk04;
+    Sub7D7C sub;
+};
 struct Node76B8 {
     void *obj;
     Node76B8 *next;
@@ -1236,7 +1245,18 @@ extern "C" void func_001E7C7C(void *arg0, Node7C7C *arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E7D08);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E7D7C);
+extern "C" int func_001E7D7C(TskLogger7D7C *arg0, int arg1)
+{
+    if (arg1 == -1) {
+        return 0;
+    }
+    for (int i = 0; i < 0x100 && arg0->sub.arr[i] != -1; i++) {
+        if (arg0->sub.arr[i] == arg1) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 extern "C" void func_001E7DE8(TskLogger7DE8 *arg0, int arg1)
 {
