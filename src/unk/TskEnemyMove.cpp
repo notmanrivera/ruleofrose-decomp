@@ -1,4 +1,12 @@
 #include "include_asm.h"
+extern "C" int X_2FE4_1640E8(void *) asm("func_001640E8");
+extern "C" int X_2FE4_180CA8(void *, int) asm("func_00180CA8");
+extern "C" int X_2FE4_10423C(int, int) asm("func_0010423C");
+extern "C" int X_2FE4_16A8A4(int, int) asm("func_0016A8A4");
+extern "C" int X_2FE4_169A98(void *, void *, float) asm("func_00169A98");
+extern "C" void X_2FE4_1640AC(void *, int, int) asm("func_001640AC");
+extern int D_002FF5C0[];
+extern int D_002FF600[];
 extern "C" int Xiii_func_0010423C(int, int) asm("func_0010423C");
 extern "C" int X_2234_1D5A0C(void *, float *, int, int, int, void *) asm("func_001D5A0C");
 extern "C" void X_2234_16A594(unsigned int, void *) asm("func_0016A594");
@@ -596,7 +604,44 @@ extern "C" void func_00202FBC(int arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202FE4);
+extern "C" void func_00202FE4(void *arg0, float *arg1)
+{
+    if (M2C_FIELD(arg0, int *, 0xAB8) >= 0) {
+        int r = X_2FE4_180CA8(&D_007B2580, M2C_FIELD(arg0, int *, 0xAB8));
+        if (r != -1) {
+            return;
+        }
+        M2C_FIELD(arg0, int *, 0xAB8) = r;
+        X_2FE4_1640AC(&D_007B2140, M2C_FIELD(arg0, int *, 8), 0);
+    }
+    if (--M2C_FIELD(arg0, int *, 0xABC) > 0) {
+        return;
+    }
+    if (X_2FE4_169A98(arg1, (char *)arg0 + 0x78, 60.0f) != 0) {
+        return;
+    }
+    M2C_FIELD(arg0, int *, 0xABC) = X_2FE4_10423C(0x1E, 0x50);
+    if (X_2FE4_1640E8(&D_007B2140) >= 4) {
+        return;
+    }
+    switch (M2C_FIELD(arg0, int *, 0xAC0)) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+        M2C_FIELD(arg0, int *, 0xAB8) = X_2FE4_16A8A4(M2C_FIELD(arg0, int *, 8), 0xC);
+        break;
+    case 6:
+        M2C_FIELD(arg0, int *, 0xAB8) = X_2FE4_16A8A4(M2C_FIELD(arg0, int *, 8), D_002FF5C0[X_2FE4_10423C(0, 0xF)]);
+        break;
+    case 10:
+        M2C_FIELD(arg0, int *, 0xAB8) = X_2FE4_16A8A4(M2C_FIELD(arg0, int *, 8), D_002FF600[X_2FE4_10423C(0, 3)]);
+        break;
+    }
+    X_2FE4_1640AC(&D_007B2140, M2C_FIELD(arg0, int *, 8), 1);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF4F8);
 
