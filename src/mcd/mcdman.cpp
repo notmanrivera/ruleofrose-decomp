@@ -416,4 +416,12 @@ extern "C" int func_0018B9B8(const McdMgr *arg0, const char *arg1)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018BA68);
+extern "C" int func_0018BA68(const McdMgr *arg0, const char *arg1, int arg2)
+{
+    for (int i = 0; i < arg0->m_num; i++) {
+        if (X_matchName(arg0, arg0->getName(i), arg1) == 0) {
+            return (arg0->getSize(i) == arg2) ? 1 : 2;
+        }
+    }
+    return 0;
+}
