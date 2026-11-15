@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_0018C990(int, int) asm("func_0018C990");
 extern "C" int Xii_func_0018F824(int) asm("func_0018F824");
 extern "C" int Xii_heapFree__FPv(int) asm("heapFree__FPv");
 extern "C" int Xiii_func_0018D08C(int, int) asm("func_0018D08C");
@@ -169,7 +170,25 @@ INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C794);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C814);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C910);
+extern "C" int func_0018C910(int arg0, char *arg1)
+{
+    int n = 0;
+
+    if (arg1 == 0) {
+        return 0;
+    }
+    if (*(int *)arg1 != -1) {
+        char *p = arg1;
+        do {
+            if (M2C_FIELD(p, int *, 4) < 0) {
+                M2C_FIELD(p, int *, 4) = Xiii_func_0018C990(arg0, M2C_FIELD(p, int *, 8));
+            }
+            p += 0xC;
+            n += 1;
+        } while (*(int *)p != -1);
+    }
+    return n;
+}
 
 extern "C" int func_0018C990(int arg0, char *arg1)
 {
