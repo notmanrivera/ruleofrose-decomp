@@ -129,7 +129,37 @@ extern "C" void func_001D5DA0(void *arg0, int arg1) {
     }
 }
 
+// NON_MATCHING: 26/109 differ, 38 edits
+#ifdef NON_MATCHING
+extern "C" void func_001D5EC4(void *arg0, int arg1) {
+    GamList<StatElem16>::iterator it;
+    GamList<StatElem16>::iterator last;
+    if ((*(GamList<StatElem16> **)((char *)arg0 + 0x2246C))->size() != 0 && arg1 >= 0) {
+        switch (arg1) {
+        case 3:
+            it = (*(GamList<StatElem16> **)((char *)arg0 + 0x2246C))->begin();
+            last = (*(GamList<StatElem16> **)((char *)arg0 + 0x2246C))->end();
+            while (it != last) {
+                if (((unsigned int)(*it).m_unk00 >> 30) == 3) {
+                    it = (*(GamList<StatElem16> **)((char *)arg0 + 0x2246C))->erase(it);
+                } else {
+                    ++it;
+                }
+            }
+            break;
+        case 0:
+        case 1:
+        case 2:
+            if ((*(GamList<StatElem16> **)((char *)arg0 + 0x2246C))->size() != 0) {
+                (*(GamList<StatElem16> **)((char *)arg0 + 0x2246C))->clear();
+            }
+            break;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D5EC4);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D6078);
 
