@@ -325,6 +325,9 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F2400);
 #ifdef NON_MATCHING
 #ifdef TARGET_PS2
 #include "dog/dogactor.h"
+struct m2c_block16 { int w[4]; };
+struct m2c_block8 { int w[2]; };
+struct m2c_ulong { long v; } __attribute__((packed));
 extern "C" int X_04A4_func_00170624(int, int) asm("func_00170624");
 struct m2c_block12 { int w[3]; };
 struct m2c_block16 { int w[4]; };
@@ -404,7 +407,25 @@ extern "C" void updateZDepth__8EffFire2(int arg0)
     M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, arg0 + 0x60);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog1__vfunc_02);
+extern "C" int EffFog1__vfunc_02(int arg0, int arg1)
+{
+    if (!Xiii_Eff0__vfunc_02(arg0, arg1)) {
+        return 0;
+    }
+    M2C_FIELD(arg0, float *, 0x50) = M2C_FIELD(arg1, float *, 0x1C);
+    M2C_FIELD(arg0, float *, 0x54) = M2C_FIELD(arg1, float *, 0x20);
+    M2C_FIELD(arg0, float *, 0x58) = M2C_FIELD(arg0, float *, 0x5C) = 1.0f;
+    *(m2c_block16 *)((char *)(arg0) + 0x30) = *(m2c_block16 *)((char *)(arg1) + 0x10);
+    M2C_FIELD(arg0, float *, 0x3C) = 1.0f;
+    if (M2C_FIELD(arg1, int *, 0x2C) != 0) {
+        M2C_FIELD(arg0, float *, 0x34) -= M2C_FIELD(arg0, float *, 0x54) * 0.5f;
+    }
+    *(Fire1Vec4 *)((char *)(arg0) + 0x40) = *(Fire1Vec4 *)((char *)(arg0) + 0x30);
+    M2C_FIELD(arg0, float *, 0x60) = M2C_FIELD(arg1, float *, 0x24);
+    M2C_FIELD(arg0, float *, 0x64) = M2C_FIELD(arg1, float *, 0x28);
+    M2C_FIELD(arg0, int *, 0x68) = (Xi_func_0016AD94() * 540) / 255;
+    return 1;
+}
 
 extern "C" int EffFog1__vfunc_05(int arg0)
 {
