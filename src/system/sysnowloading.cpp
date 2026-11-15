@@ -1820,7 +1820,220 @@ extern "C" int func_00209D44()
 
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00209D4C);
 
+// NON_MATCHING: 146/272 differ, 26 relocs differ (size 0x440, game 0x458), 93 edits
+#ifdef NON_MATCHING
+extern int A368_actors asm("D_006FE6A0");
+extern double D_00301070;
+extern double D_00301078;
+extern double D_00301080;
+extern double D_00301088;
+extern "C" int A368_func_001CBE38(...) asm("func_001CBE38");
+extern "C" int A368_func_001D046C(...) asm("func_001D046C");
+extern "C" int A368_func_001D1720(...) asm("func_001D1720");
+extern "C" int A368_func_001D17C8(...) asm("func_001D17C8");
+extern "C" int A368_func_001D1A5C(...) asm("func_001D1A5C");
+extern "C" int A368_func_001D1BEC(...) asm("func_001D1BEC");
+extern "C" int A368_func_001D1C80(...) asm("func_001D1C80");
+extern "C" int A368_func_001D217C(...) asm("func_001D217C");
+extern "C" int A368_func_001DC48C(...) asm("func_001DC48C");
+extern "C" int A368_func_001DD00C(...) asm("func_001DD00C");
+extern "C" int A368_func_001DD194(...) asm("func_001DD194");
+extern "C" void A368_rotate(int, float, float) asm("func_001F6B28");
+extern "C" int A368_func_00213E78(...) asm("func_00213E78");
+extern "C" long long fptodp(float);
+extern "C" float dptofp(long long);
+extern "C" long long dpadd(long long, long long);
+extern "C" long long dpsub(long long, long long);
+extern "C" int dpcmp(long long, long long);
+extern "C" int func_0020A368(unsigned int arg0, int arg1, int arg2, int arg3, int arg4, unsigned int arg5) {
+    struct { int sp0, sp4, pad[2]; } stack;
+    float vec[4];
+    float vec2[4];
+    float temp_f0_2;
+    float var_f12;
+    float var_f13;
+    float temp_f0;
+    float temp_f1;
+    float temp_f1_2;
+    float temp_f2;
+    float temp_f2_2;
+    float var_f20;
+    int temp_a1;
+    register int base4 PS2_REG("$4");
+    double temp_v0_5;
+    double temp_v0_6;
+    int var_a0;
+    int var_v0;
+    double temp_s2;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+    int temp_v0_4;
+    int temp_v0_7;
+    int temp_v0_8;
+
+    var_a0 = 0;
+    stack.sp0 = arg2;
+    stack.sp4 = arg3;
+    if ((unsigned int) (arg0 - 0x19) >= 2U) {
+        var_v0 = A368_func_001D046C((int)&D_007812C0, arg5);
+        if (var_v0 != 0) {
+            var_a0 = A368_func_001CBE38((int)&D_007812C0, arg5);
+            goto block_3;
+        }
+        /* Duplicate return node #28. Try simplifying control flow for better match */
+        return var_v0;
+    }
+block_3:
+    var_v0 = 0;
+    switch (arg0) {
+    case 1:
+        temp_v0 = (int)&A368_actors + (var_a0 * 0x4D0);
+        M2C_FIELD(arg1, float *, 0) = (float) M2C_FIELD(temp_v0, float *, 0x40);
+        M2C_FIELD(arg1, float *, 4) = (float) M2C_FIELD(temp_v0, float *, 0x44);
+        M2C_FIELD(arg1, float *, 8) = (float) M2C_FIELD(temp_v0, float *, 0x48);
+    case 0:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+    case 13:
+    case 14:
+    case 15:
+    case 16:
+    case 17:
+    case 18:
+    case 19:
+    case 23:
+    case 24:
+    case 27:
+    case 28:
+    case 29:
+    case 31:
+    case 32:
+    case 33:
+    case 34:
+    case 35:
+    case 36:
+    case 37:
+    case 38:
+    case 39:
+    case 45:
+    case 46:
+    case 47:
+    case 48:
+    case 49:
+block_27:
+    default:
+        break;
+    case 2:
+        temp_v0_2 = (int)&A368_actors + (var_a0 * 0x4D0);
+        M2C_FIELD(arg1, float *, 0) = (float) M2C_FIELD(temp_v0_2, float *, 0x50);
+        M2C_FIELD(arg1, float *, 4) = (float) M2C_FIELD(temp_v0_2, float *, 0x54);
+        M2C_FIELD(arg1, float *, 8) = (float) M2C_FIELD(temp_v0_2, float *, 0x58);
+        break;
+    case 3:
+        temp_v0_3 = (int)&A368_actors + (arg5 * 0x4D0);
+        M2C_FIELD(arg1, float *, 0) = (float) M2C_FIELD(temp_v0_3, float *, 0x60);
+        M2C_FIELD(arg1, float *, 4) = (float) M2C_FIELD(temp_v0_3, float *, 0x64);
+        M2C_FIELD(arg1, float *, 8) = (float) M2C_FIELD(temp_v0_3, float *, 0x68);
+        break;
+    case 20:
+        A368_func_001D1C80((int)&D_007812C0, arg5, arg1, stack.sp0);
+        break;
+    case 21:
+        return A368_func_001D1720((int)&D_007812C0, arg5, arg1);
+    case 22:
+        return A368_func_001D17C8((int)&D_007812C0, arg5, stack.sp0);
+    case 25:
+        base4 = (int)&D_007812C0;
+        A368_func_001DC48C(base4 + 0x22220, arg5 & 0xFFFF, arg1, stack.sp0);
+        break;
+    case 26:
+        temp_a1 = arg5 & 0xFFFF;
+        if (arg1 == 0) {
+            base4 = (int)&D_007812C0;
+            return A368_func_001DD00C(base4 + 0x22220, temp_a1, stack.sp0, stack.sp0);
+        }
+        base4 = (int)&D_007812C0;
+        return A368_func_001DD194(base4 + 0x22220, temp_a1, (int) arg1 & 0xFFFF, stack.sp0);
+    case 30:
+        return A368_func_001D217C((int)&D_007812C0, arg5, arg1);
+    case 40:
+        temp_s2 = D_00301070;
+        temp_v0_4 = (int)&A368_actors + (var_a0 * 0x4D0);
+        temp_f0 = M2C_FIELD(temp_v0_4, float *, 0x40);
+        temp_f1 = M2C_FIELD(temp_v0_4, float *, 0x44);
+        temp_f2 = M2C_FIELD(temp_v0_4, float *, 0x48);
+        vec[0] = temp_f0;
+        vec2[0] = temp_f0;
+        vec2[2] = temp_f2;
+        vec[1] = temp_f1;
+        vec[2] = temp_f2;
+        vec2[1] = temp_f1;
+        var_f20 = (float)((double)temp_f1 + temp_s2);
+        temp_v0_5 = (double)var_f20;
+        if (temp_v0_5 < D_00301078) {
+            var_f20 = (float)(temp_v0_5 + D_00301080);
+        }
+        temp_v0_6 = (double)var_f20;
+        if (temp_v0_6 > temp_s2) {
+            var_f20 = (float)(temp_v0_6 - D_00301088);
+        }
+        vec2[1] = var_f20;
+        A368_rotate((int)&vec[0], var_f20, *(float *)&stack.sp0);
+        M2C_FIELD(arg1, float *, 4) = vec[1];
+        M2C_FIELD(arg1, float *, 0) = vec[0];
+        M2C_FIELD(arg1, float *, 0xC) = 1.0f;
+        M2C_FIELD(arg1, float *, 8) = vec[2];
+        break;
+    case 41:
+        temp_v0_7 = (int)&A368_actors + (var_a0 * 0x4D0);
+        temp_f1_2 = M2C_FIELD(temp_v0_7, float *, 0x40);
+        temp_f0_2 = M2C_FIELD(temp_v0_7, float *, 0x44);
+        vec[0] = temp_f1_2;
+        var_f12 = temp_f0_2;
+        temp_f2_2 = M2C_FIELD(temp_v0_7, float *, 0x48);
+        var_f13 = *(float *)&stack.sp0;
+        vec2[0] = temp_f1_2;
+        vec2[2] = temp_f2_2;
+        vec[1] = temp_f0_2;
+        vec[2] = temp_f2_2;
+        vec2[1] = temp_f0_2;
+block_23:
+        A368_rotate((int)&vec[0], var_f12, var_f13);
+        M2C_FIELD(arg1, float *, 4) = vec[1];
+        M2C_FIELD(arg1, float *, 0xC) = 1.0f;
+        M2C_FIELD(arg1, float *, 0) = vec[0];
+        M2C_FIELD(arg1, float *, 8) = vec[2];
+        break;
+    case 42:
+        temp_v0_8 = (int)&A368_actors + (var_a0 * 0x4D0);
+        vec[0] = M2C_FIELD(temp_v0_8, float *, 0x40);
+        var_f12 = *(float *)&stack.sp0;
+        var_f13 = *(float *)&stack.sp4;
+        vec[1] = M2C_FIELD(temp_v0_8, float *, 0x44);
+        vec[2] = M2C_FIELD(temp_v0_8, float *, 0x48);
+        goto block_23;
+    case 43:
+        A368_func_001D1A5C((int)&D_007812C0, arg5, arg1, stack.sp0);
+        break;
+    case 44:
+        A368_func_001D1BEC((int)&D_007812C0, arg5, arg1);
+        break;
+    case 50:
+        return A368_func_00213E78((int)&D_007A4440, (unsigned int) arg1);
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_0020A368);
+#endif
 
 extern "C" int func_0020A7C0()
 {
