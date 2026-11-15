@@ -1,4 +1,7 @@
 #include "include_asm.h"
+#define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
+struct m2c_block12 { int w[3]; };
+struct m2c_ulong { long v; } __attribute__((packed));
 extern "C" float Xii_func_0016FF18(int, int) asm("func_0016FF18");
 extern "C" int Xii_func_0016A914(int) asm("func_0016A914");
 extern "C" int Xii_func_00173DF8(int) asm("func_00173DF8");
@@ -298,7 +301,23 @@ INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay3__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016D8E8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay3Prim__vfunc_02);
+extern "C" int EffBloodStay3Prim__vfunc_02(int arg0, int arg1)
+{
+    int temp_v1;
+
+    if (Xiii_Eff0__vfunc_02(arg0, arg1) == 0) {
+        return 0;
+    }
+    M2C_FIELD(arg0, int *, 0x24) = (int) M2C_FIELD(arg1, int *, 0x10);
+    M2C_FIELD(arg0, int *, 0x28) = (int) M2C_FIELD(arg1, int *, 0x14);
+    temp_v1 = M2C_FIELD(arg1, int *, 0x18);
+    *(m2c_block12 *)((char *)(arg0) + 48) = *(m2c_block12 *)((char *)(temp_v1) + 0);
+    M2C_FIELD(arg0, float *, 0x3C) = 1.0f;
+    M2C_FIELD(arg0, float *, 0x40) = (float) M2C_FIELD(arg1, float *, 0x1C);
+    M2C_FIELD(arg0, float *, 0x44) = (float) M2C_FIELD(arg1, float *, 0x20);
+    M2C_FIELD(arg0, int *, 0x48) = 0;
+    return 1;
+}
 
 extern "C" int EffBloodStay3Prim__vfunc_05(int arg0)
 {
