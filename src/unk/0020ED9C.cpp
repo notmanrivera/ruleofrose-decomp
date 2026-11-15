@@ -1,4 +1,16 @@
 #include "include_asm.h"
+extern "C" void func_002120AC(int, int, int, int, int, int, const char *);
+struct RevIter2129B8 {
+    int *m_node;
+    RevIter2129B8() : m_node(0) {}
+    RevIter2129B8(int *n) : m_node(n) {}
+    RevIter2129B8(const RevIter2129B8 &other) : m_node(other.m_node) {}
+    bool operator!=(const RevIter2129B8 &rhs) const { return m_node != rhs.m_node; }
+    RevIter2129B8 &operator--() {
+        m_node = (int *)m_node[1];
+        return *this;
+    }
+};
 struct NodeItem212920 {
     int a;
     int b;
@@ -870,7 +882,25 @@ extern "C" void func_00212920(char *arg0, int arg1, int arg2)
 
 INCLUDE_RODATA("asm/nonmatchings/unk/0020ED9C", D_00301710);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002129B8);
+extern "C" void func_002129B8(int arg0, int arg1, int arg2, int arg3)
+{
+    int *used = (int *)(arg0 + 0xC3DC);
+    int *tail = *(int **)(arg0 + 0xC3E0);
+    RevIter2129B8 it;
+    RevIter2129B8 end;
+
+    it = RevIter2129B8(tail);
+    end = RevIter2129B8(used);
+    while (it != end) {
+        int *sub = (int *)((char *)it.m_node + 8);
+        int val = sub[1];
+        if (sub[0] == arg1) {
+            func_002120AC(arg0, arg1, val, arg2, 2, arg3, "none");
+            return;
+        }
+        --it;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00212A5C);
 
