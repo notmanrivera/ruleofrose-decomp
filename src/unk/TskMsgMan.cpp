@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern int D_006FE6A0;
+extern "C" int Xiiu_func_001CBE38(void *, unsigned int) asm("func_001CBE38");
 extern "C" int X_func_001311F4_loc(int, int *) asm("func_001311F4");
 extern "C" int Xiiiii_func_001311BC_loc(int, int, int, int) asm("func_001311BC");
 struct DogVtblEntry {
@@ -2059,7 +2061,34 @@ extern "C" int func_001F5350(unsigned int arg0, unsigned int arg1, float fparg0)
     return Xi_func_0010456C(&hit) != 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F5410);
+extern "C" int func_001F5410(unsigned int arg0, unsigned int arg1, int arg2, float fparg0)
+{
+    TskVec4 pos0;
+    TskVec4 pos1;
+    TskHitCheck hit;
+    char *actor = (char *)&D_006FE6A0 + Xiiu_func_001CBE38(&D_007812C0, arg0) * 0x4D0;
+
+    if (M2C_FIELD(actor, int *, 0x11C) == 0) {
+        X_ror_assert(D_002FE698, 0x131, D_002FE6A8);
+    }
+    if (arg2 == 0) {
+        X_ror_assert(D_002FE698, 0x131, D_002FE6B8);
+    }
+    int idx = Xiii_func_0022B3D8(M2C_FIELD(actor, int *, 0x11C), arg2);
+    pos0.f[0] = pos0.f[1] = pos0.f[2] = 0.0f;
+    pos0.f[3] = 1.0f;
+    struct DogVtblEntry *vt = (struct DogVtblEntry *)((char *)M2C_FIELD(actor, char **, 0x94) + 0x90);
+    vt->fn((void *)(actor + vt->delta), pos0.f, idx);
+    Xv_func_001D05F4(&D_007812C0, arg1, &pos1);
+    pos1.f[3] = 50.0f;
+    pos0.f[3] = fparg0;
+    hit.m_origin_pos = &pos0;
+    hit.m_rotate = 0;
+    hit.m_angle = 0.0f;
+    hit.m_target_pos = &pos1;
+    hit.m_scale = 0.0f;
+    return Xi_func_0010456C(&hit) != 0;
+}
 
 extern "C" int func_001F5558(unsigned int arg0, float *arg1, int arg2)
 {
