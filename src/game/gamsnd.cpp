@@ -1,4 +1,13 @@
 #include "include_asm.h"
+struct Node7184 {
+    void *obj;
+    Node7184 *next;
+    char pad08[0x2C];
+    unsigned int prio;
+};
+struct List7184 {
+    Node7184 *head;
+};
 struct Sub7D7C {
     char pad[0x280];
     int arr[0x100];
@@ -1044,7 +1053,35 @@ Obj70DC::~Obj70DC()
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E7184);
+extern "C" void func_001E7184(List7184 *arg0, Node7184 *arg1)
+{
+    Node7184 *cur = arg0->head;
+    if (cur == 0) {
+        arg1->next = 0;
+        arg0->head = arg1;
+        return;
+    }
+    if (cur->prio > arg1->prio) {
+        arg1->next = cur;
+        arg0->head = arg1;
+        return;
+    }
+    Node7184 *p = cur;
+    while (p != 0) {
+        Node7184 *next = p->next;
+        if (next == 0) {
+            arg1->next = 0;
+            p->next = arg1;
+            return;
+        }
+        if (next->prio > arg1->prio) {
+            arg1->next = next;
+            p->next = arg1;
+            break;
+        }
+        p = next;
+    }
+}
 
 extern "C" void func_001E71F4(void) {
 }
