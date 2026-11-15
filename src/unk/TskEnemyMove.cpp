@@ -524,7 +524,40 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_002019D0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00201D58);
 
+// NON_MATCHING: 6/101 differ, 4 edits
+#ifdef NON_MATCHING
+extern "C" float Xfi_func_0010A650__8DogActor(void *) asm("func_0010A650__8DogActor");
+extern "C" int func_00201FA4(void *arg0, float *arg1)
+{
+    float v1[4];
+    float v2[4];
+    float yaw;
+    float dist = 70.0f;
+
+    yaw = Xfi_func_0010A650__8DogActor(M2C_FIELD(arg0, void **, 0x28));
+    v1[1] = v2[1] = arg1[1];
+    v1[0] = arg1[0] + sinf(yaw) * dist;
+    v1[2] = arg1[2] + cosf(yaw) * dist;
+    v2[0] = D_006E97D8[0] + sinf(yaw) * dist;
+    v2[2] = D_006E97D8[2] + cosf(yaw) * dist;
+    if (Xiiiii_func_00202E20(arg0, v1, v2, M2C_FIELD(arg0, int *, 0x38)) != 0) {
+        Xiiif_func_00202900(arg0, arg1, yaw);
+        return 1;
+    }
+    dist = 30.0f;
+    v1[0] = arg1[0] + sinf(yaw) * dist;
+    v1[2] = arg1[2] + cosf(yaw) * dist;
+    v2[0] = D_006E97D8[0] + sinf(yaw) * dist;
+    v2[2] = D_006E97D8[2] + cosf(yaw) * dist;
+    if (Xiiiii_func_00202E20(arg0, v1, v2, M2C_FIELD(arg0, int *, 0x38)) != 0) {
+        Xiiif_func_00202900(arg0, arg1, yaw);
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00201FA4);
+#endif
 
 extern "C" int func_00202138(void *arg0, float *arg1)
 {
