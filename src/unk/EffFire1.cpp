@@ -1,4 +1,13 @@
 #include "include_asm.h"
+extern "C" int X_1548_func_0021B260(int, int) asm("func_0021B260");
+extern "C" int X_1548_func_0021B4F8(int, int) asm("func_0021B4F8");
+extern "C" int X_1548_func_0021B550(int, int, int) asm("func_0021B550");
+extern "C" int X_1548_func_0021B5A0(int, int) asm("func_0021B5A0");
+extern "C" int X_1548_func_0021E428(int, void *) asm("func_0021E428");
+extern "C" int X_1548_func_0021E488(int, void *) asm("func_0021E488");
+extern "C" int X_1548_func_0021E5A0(int, int, int) asm("func_0021E5A0");
+extern "C" void X_1548_func_0021E688(int) asm("func_0021E688");
+extern "C" int X_1548_func_0021E690(int, void *, void *) asm("func_0021E690");
 struct EffFog3Param {
     int unk00;
     int unk04;
@@ -324,18 +333,7 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F2400);
 // NON_MATCHING: 2/57 differ, 4 edits
 #ifdef NON_MATCHING
 #ifdef TARGET_PS2
-#include "dog/dogactor.h"
-struct m2c_block16 { int w[4]; };
-struct m2c_block8 { int w[2]; };
-struct m2c_ulong { long v; } __attribute__((packed));
-extern "C" int X_04A4_func_00170624(int, int) asm("func_00170624");
-struct m2c_block12 { int w[3]; };
-struct m2c_block16 { int w[4]; };
-struct m2c_ulong { long v; } __attribute__((packed));
-struct Dust2Layout {
-    char pad00[0x88];
-    int unk88[12];
-};
+ #include "dog/dogactor.h"
 #else
 struct DogVector {
     float m_x, m_y, m_z, m_w;
@@ -400,7 +398,34 @@ extern "C" int EffFire2__vfunc_05(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFire2__vfunc_08);
+extern "C" void EffFire2__vfunc_08(int arg0, int arg1, int arg2, int arg3)
+{
+    int s0 = X_1548_func_0021B5A0(X_1548_func_0021B550(arg3, 0x42, 0x44), M2C_FIELD(arg1, int *, 8));
+    s0 = X_1548_func_0021B4F8(s0, X_1548_func_0021B260(arg2, 0));
+    int s1 = X_1548_func_0021E5A0(s0, M2C_FIELD(arg1, int *, 8), 1);
+    unsigned int idx = ((unsigned int)M2C_FIELD(arg0, unsigned int *, 0x24) >> 2) & 3;
+    unsigned int row = idx / 2;
+    unsigned int col = idx - row * 2;
+    struct { float u0, v0, u1, v1; } uv;
+    uv.v0 = (float)(int)row * 0.5f;
+    uv.u0 = (float)(int)col * 0.5f;
+    uv.v1 = uv.v0 + 0.5f;
+    uv.u1 = uv.u0 + 0.5f;
+    int t = X_1548_func_0021E488(s1, &uv);
+    struct Color4 {
+        float x, y, z, w;
+        static inline Color4 make(float x, float y, float z, float w) {
+            Color4 r;
+            r.x = x;
+            r.y = y;
+            r.z = z;
+            r.w = w;
+            return r;
+        }
+    } __attribute__((aligned(8)));
+    Color4 color = Color4::make(1.0f, 1.0f, 1.0f, M2C_FIELD(arg0, float *, 0x28));
+    X_1548_func_0021E688(X_1548_func_0021E690(X_1548_func_0021E428(t, (void *)(arg0 + 0x30)), (void *)(arg0 + 0x60), &color));
+}
 
 extern "C" void updateZDepth__8EffFire2(int arg0)
 {
