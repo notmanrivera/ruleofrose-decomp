@@ -508,7 +508,149 @@ extern "C" int func_00206944()
 
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_0020694C);
 
+// NON_MATCHING: 165/265 differ, 2 relocs differ (size 0x424, game 0x41C), 49 edits
+#ifdef NON_MATCHING
+extern "C" void loadingGetStick(int, float *, float *) asm("getStick__C6BedPadPfT1");
+extern "C" float loadingRightX(int) asm("getRightX__C6BedPad");
+extern "C" float loadingRightY(int) asm("getRightY__C6BedPad");
+inline unsigned short loadingPadBit(unsigned short value, int bit) { return (value >> bit) & 1; }
+extern "C" unsigned int func_002076CC(unsigned int arg0, int arg1, int *arg2)
+{
+    float x, y;
+    unsigned int result;
+    unsigned short buttonBits;
+    unsigned int fullBits;
+    bool condition;
+    register unsigned int bits PS2_REG("$3");
+    register float f0 PS2_REG("$f0");
+    register float f1 PS2_REG("$f1");
+    register float f2 PS2_REG("$f2");
+    register int base PS2_REG("$2") = (int)&D_006E9840;
+    int *padSlot = (int *)(base + 0x97A40);
+    loadingGetStick(*padSlot, &x, &y);
+    int pad = *padSlot;
+    int state = M2C_FIELD(pad, int *, 0x70);
+    switch (arg0) {
+    case 0: return (M2C_FIELD(pad, unsigned short *, 120) >> 0) & 1;
+    case 1: return (M2C_FIELD(pad, unsigned short *, 120) >> 1) & 1;
+    case 2: return (M2C_FIELD(pad, unsigned short *, 120) >> 2) & 1;
+    case 3: return (M2C_FIELD(pad, unsigned short *, 120) >> 3) & 1;
+    case 8: return (M2C_FIELD(pad, unsigned short *, 120) >> 8) & 1;
+    case 9: return (M2C_FIELD(pad, unsigned short *, 120) >> 9) & 1;
+    case 10: return (M2C_FIELD(pad, unsigned short *, 120) >> 10) & 1;
+    case 11: return (M2C_FIELD(pad, unsigned short *, 120) >> 11) & 1;
+    case 12: return (M2C_FIELD(pad, unsigned short *, 120) >> 12) & 1;
+    case 13: return (M2C_FIELD(pad, unsigned short *, 120) >> 14) & 1;
+    case 14: return (M2C_FIELD(pad, unsigned short *, 120) >> 13) & 1;
+    case 15: return (M2C_FIELD(pad, unsigned short *, 120) >> 15) & 1;
+    case 16: return (M2C_FIELD(pad, unsigned short *, 124) >> 0) & 1;
+    case 17: return (M2C_FIELD(pad, unsigned short *, 124) >> 1) & 1;
+    case 18: return (M2C_FIELD(pad, unsigned short *, 124) >> 2) & 1;
+    case 19: return (M2C_FIELD(pad, unsigned short *, 124) >> 3) & 1;
+    case 24: return (M2C_FIELD(pad, unsigned short *, 124) >> 8) & 1;
+    case 25: return (M2C_FIELD(pad, unsigned short *, 124) >> 9) & 1;
+    case 26: return (M2C_FIELD(pad, unsigned short *, 124) >> 10) & 1;
+    case 27: return (M2C_FIELD(pad, unsigned short *, 124) >> 11) & 1;
+    case 28: return (M2C_FIELD(pad, unsigned short *, 124) >> 12) & 1;
+    case 29: return (M2C_FIELD(pad, unsigned short *, 124) >> 14) & 1;
+    case 30: return (M2C_FIELD(pad, unsigned short *, 124) >> 13) & 1;
+    case 31: return (M2C_FIELD(pad, unsigned short *, 124) >> 15) & 1;
+    case 4: f1 = x; goto negative;
+    case 5: condition = y > 0.5f; goto conditionCheck;
+    case 6: condition = x > 0.5f; goto conditionCheck;
+    case 7: f1 = y;
+negative:
+        condition = f1 < -0.5f;
+conditionCheck:
+        result = 1;
+        if (condition) return result;
+        result = 0;
+        break;
+    case 20: return (state >> 4) & 1;
+    case 21: return (state >> 5) & 1;
+    case 22: return (state >> 6) & 1;
+    case 23: return (state >> 7) & 1;
+    case 64: return (M2C_FIELD(pad, unsigned short *, 0x78) & arg1) == arg1;
+    case 65: return (M2C_FIELD(pad, unsigned short *, 0x7A) & arg1) == arg1;
+    case 66:
+        buttonBits = M2C_FIELD(pad, unsigned short *, 0x78);
+        result = 1;
+        if (!loadingPadBit(buttonBits, 0)) {
+            fullBits = buttonBits;
+            result = 1;
+            if (!loadingPadBit(fullBits, 1)) {
+            result = 1;
+            if (!loadingPadBit(fullBits, 2)) {
+            result = 1;
+            if (!loadingPadBit(fullBits, 3)) {
+            result = 1;
+            if (!loadingPadBit(fullBits, 4)) {
+            result = 1;
+            if (!loadingPadBit(fullBits, 5)) {
+            result = 1;
+            if (!loadingPadBit(fullBits, 6)) {
+            result = 1;
+            if (!loadingPadBit(fullBits, 7)) {
+            result = 1;
+            if (!loadingPadBit(fullBits, 8)) {
+            result = 1;
+            if (!loadingPadBit(fullBits, 9)) {
+            result = 1;
+            if (!loadingPadBit(fullBits, 10)) {
+            result = 1;
+            if (!loadingPadBit(fullBits, 11)) {
+            result = 1;
+            if (!loadingPadBit(fullBits, 12)) {
+            result = 1;
+            if (!loadingPadBit(fullBits, 14)) {
+            result = 1;
+            if (!loadingPadBit(fullBits, 13)) {
+                bits = fullBits >> 15;
+                goto boolean;
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+        }
+        return result;
+    case 128:
+        if (arg1 == 0) {
+            if (arg2) {
+                f0 = x;
+                f2 = 128.0f;
+                f1 = y;
+                f0 *= f2;
+                f1 *= f2;
+                arg2[0] = (int)f0;
+                arg2[1] = (int)f1;
+            }
+        } else {
+            arg2[0] = (int)loadingRightX(pad) << 7;
+            arg2[1] = (int)loadingRightY(*padSlot) << 7;
+        }
+        result = 1; if (arg2[0]) return result;
+        bits = arg2[1];
+boolean:
+        result = 0;
+        if (bits != 0) { result = 1; }
+        break;
+    default: result = 0; break;
+    }
+    return result;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_002076CC);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00207AE8);
 
