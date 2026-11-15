@@ -1,5 +1,14 @@
 #include "include_asm.h"
 #include "bed/bedpfh.h"
+extern "C" int *X_magCurrentSystem asm("_9MagSystem$m_current_system");
+extern "C" int X_BEF8_func_0021B550(int, int, unsigned long long) asm("func_0021B550");
+extern "C" int X_BEF8_func_0021B5A0(int, int) asm("func_0021B5A0");
+extern "C" int X_BEF8_func_0021C1A0(int, int, int, int, int, int) asm("func_0021C1A0");
+extern "C" int X_BEF8_func_0021C8C8(int, int, int, int, float) asm("func_0021C8C8");
+extern "C" int X_BEF8_func_0021C928(int, int) asm("func_0021C928");
+extern "C" int X_BEF8_func_0021C940(int, int, int) asm("func_0021C940");
+extern "C" int Xiii_func_0018EF40(int, int) asm("func_0018EF40");
+extern "C" void X_BEF8_func_0018EFF0(int, int) asm("func_0018EFF0");
 extern void *D_006E93D4;
 extern "C" int X_C2E4_func_0018FE8C(void *, const char *) asm("func_0018FE8C");
 extern "C" void X_C2E4_func_001BEBEC(void *, void *) asm("func_001BEBEC");
@@ -204,7 +213,31 @@ extern "C" int func_0018BD94(Obj_BD94 *arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018BEF8);
+extern "C" void func_0018BEF8(int arg0)
+{
+    int temp_s0;
+    int temp_s3;
+    int temp_s2;
+    int temp_s1;
+    int temp_s0_2;
+    int c;
+
+    if ((M2C_FIELD(arg0, int *, 0x4D4) != 0) && (Xiii_func_0018EF40(arg0, 1) == 0)) {
+        temp_s0 = (*X_magCurrentSystem & 1) ? 0 : 0xE00;
+        M2C_FIELD(arg0, int *, 0x4D8) = X_BEF8_func_0021B550(M2C_FIELD(arg0, int *, 0x4D8), 0x42, 0x44);
+        M2C_FIELD(arg0, int *, 0x4D8) = X_BEF8_func_0021B5A0(M2C_FIELD(arg0, int *, 0x4D8), M2C_FIELD(arg0, int *, 0x4D4));
+        M2C_FIELD(arg0, int *, 0x4D8) = X_BEF8_func_0021B550(M2C_FIELD(arg0, int *, 0x4D8), 6, (0x24020000 | temp_s0) | ((unsigned long long)0x9000 << 18));
+        M2C_FIELD(arg0, int *, 0x4D8) = X_BEF8_func_0021B550(M2C_FIELD(arg0, int *, 0x4D8), 0x14, 0x60);
+        M2C_FIELD(arg0, int *, 0x4D8) = X_BEF8_func_0021B550(M2C_FIELD(arg0, int *, 0x4D8), 0x42, 0x44);
+        temp_s3 = X_BEF8_func_0021C940(0x7000, 0x7200, 0x80000);
+        temp_s2 = X_BEF8_func_0021C940(0x9000, 0x8E00, 0x80000);
+        temp_s1 = X_BEF8_func_0021C928(8, 7);
+        temp_s0_2 = X_BEF8_func_0021C928(0x2008, 0x1C07);
+        c = M2C_FIELD(arg0, int *, 0x4C4);
+        M2C_FIELD(arg0, int *, 0x4D8) = X_BEF8_func_0021C1A0(M2C_FIELD(arg0, int *, 0x4D8), temp_s3, temp_s2, temp_s1, temp_s0_2, X_BEF8_func_0021C8C8(c, c, c, 0x80, 1.0f));
+        X_BEF8_func_0018EFF0(arg0, 1);
+    }
+}
 
 extern "C" int func_0018C068(Obj_C068 *arg0)
 {
