@@ -1,4 +1,13 @@
 #include "include_asm.h"
+struct Sub7DE8 {
+    char pad[0x280];
+    int arr[0x100];
+};
+struct TskLogger7DE8 {
+    void *vt;
+    int unk04;
+    Sub7DE8 sub;
+};
 struct Node7414 {
     void *obj;
     Node7414 *next;
@@ -1204,7 +1213,17 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E7D08);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E7D7C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E7DE8);
+extern "C" void func_001E7DE8(TskLogger7DE8 *arg0, int arg1)
+{
+    if (arg1 == -1) {
+        return;
+    }
+    for (int i = 0; i < 0x100 && arg0->sub.arr[i] != -1; i++) {
+        if (arg0->sub.arr[i] == arg1) {
+            arg0->sub.arr[i] = -2;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E7E50);
 
