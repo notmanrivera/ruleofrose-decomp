@@ -1,4 +1,27 @@
 #include "include_asm.h"
+struct Arg223558 {
+    float unk00;
+    void *unk04;
+    int unk08;
+    int unk0C;
+    int unk10;
+    int unk14;
+};
+struct Sub4D0_EF40 {
+    int a[2];
+    int b;
+    int c[2];
+};
+struct Obj_EF40 {
+    unsigned char pad000[0x130];
+    int unk130;
+    int unk134;
+    unsigned char pad138[0x4D0 - 0x138];
+    Sub4D0_EF40 unk4D0;
+};
+extern "C" int Xii_func_00223558(int, Arg223558 *) asm("func_00223558");
+extern "C" void Xii_func_00223228(int, int) asm("func_00223228");
+extern "C" int Xif_func_00223298(int, float) asm("func_00223298");
 extern "C" void Xv_func_0018D7EC(int, int, int, int, int, int) asm("func_0018D7EC");
 extern "C" int Xiiiiii_func_001BEDC0(int, int, int, int, int) asm("func_001BEDC0");
 extern "C" int Xiiiiii_func_001BEF24(int, int, int, int, int) asm("func_001BEF24");
@@ -455,7 +478,29 @@ INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018EC58);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018ED44);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018EF40);
+extern "C" int func_0018EF40(Obj_EF40 *arg0, int arg1)
+{
+    Arg223558 q;
+    int v;
+
+    if (arg0->unk4D0.a[arg1] == 0) {
+        return 1;
+    }
+    q.unk00 = 1.0f;
+    q.unk04 = &arg0->unk134;
+    q.unk08 = arg0->unk130;
+    q.unk0C = 0;
+    q.unk10 = 0;
+    q.unk14 = 0;
+    v = Xii_func_00223558(arg0->unk4D0.a[arg1], &q);
+    arg0->unk4D0.c[arg1] = v;
+    if (v == 0) {
+        return 1;
+    }
+    Xii_func_00223228(arg0->unk4D0.a[arg1], v);
+    arg0->unk4D0.b = Xif_func_00223298(arg0->unk4D0.a[arg1], 0.0f);
+    return 0;
+}
 
 extern "C" void func_0018EFF0(int arg0, int arg1)
 {
