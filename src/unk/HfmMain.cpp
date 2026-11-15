@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_00180EA8(int, int) asm("func_00180EA8");
+extern "C" int Xiii_func_0010423C(int, int) asm("func_0010423C");
+extern "C" int Xiuiiiiui_func_001FAC60(unsigned int, int, int, int, int, unsigned int, int) asm("func_001FAC60");
 struct HfmRect { float f[8]; } __attribute__((aligned(8)));
 struct HfmObj { char pad[0x2AB40]; HfmRect rect; };
 extern "C" int Xii_func_00118FEC__9MagSystem(int) asm("func_00118FEC__9MagSystem");
@@ -1007,7 +1010,28 @@ extern "C" void func_00148AF0(int arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00148BD0);
+extern "C" void func_00148BD0(int arg0)
+{
+    int temp_v0;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x48) + 1;
+    M2C_FIELD(arg0, int *, 0x48) = temp_v0;
+    if (temp_v0 == 0x12) {
+        Xiii_func_00180EA8((int)&D_007B2580, M2C_FIELD(arg0, int *, 0x2C));
+        Xiii_func_001694CC(arg0, 0x10);
+        if (M2C_FIELD(arg0, int *, 0x60) == 0) {
+            Xiuiiiiui_func_001FAC60(0xBU, M2C_FIELD(arg0, int *, 0), 0, 0, 0x29, M2C_FIELD(arg0, unsigned int *, 0x14), 0);
+        } else {
+            Xiuiiiiui_func_001FAC60(0xBU, M2C_FIELD(arg0, int *, 0), 0, 0, 0x2A, M2C_FIELD(arg0, unsigned int *, 0x14), 0);
+        }
+        M2C_FIELD(arg0, int *, 0x68) = Xiii_func_0010423C(0x14, 0x28);
+    }
+    if (check_001D19A8(arg0, (int)&D_007812C0) != 0) {
+        Xiiii_func_001680A0(arg0, 0x1A, 0x100);
+        M2C_FIELD(arg0, int *, 0x48) = 0;
+        M2C_FIELD(arg0, int *, 4) = 2;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00148CB4);
 
