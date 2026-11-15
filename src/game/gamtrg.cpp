@@ -418,7 +418,36 @@ extern "C" void func_001D8EA8(int arg0)
     }
 }
 
+// NON_MATCHING: 16/58 differ, 2 relocs differ, 8 edits
+#ifdef NON_MATCHING
+typedef unsigned int u_long128_d8f04 __attribute__((mode(TI)));
+extern "C" void func_001D8F04(int arg0, u_long128_d8f04 *arg1)
+{
+    int temp_a3;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+    float temp_f1;
+    float temp_f1_2;
+
+    temp_v0 = (int)&D_006FE6A0 + (M2C_FIELD(arg0, int *, 0x108) * 0x4D0);
+    temp_a3 = arg0 + 0x190;
+    M2C_FIELD(temp_a3, float *, 0) = M2C_FIELD(temp_v0, float *, 0x40);
+    M2C_FIELD(temp_a3, float *, 4) = M2C_FIELD(temp_v0, float *, 0x44);
+    M2C_FIELD(temp_a3, float *, 8) = M2C_FIELD(temp_v0, float *, 0x48);
+    *arg1 = *(u_long128_d8f04 *)temp_a3;
+    temp_v0_2 = M2C_FIELD(arg0, int *, 0x114);
+    int mgr = (int)&D_007812C0;
+    if ((temp_v0_2 == 0) || (temp_f1 = *(float *)temp_a3, !(M2C_FIELD(temp_v0_2, float *, 0x1C) <= temp_f1)) || !(temp_f1 <= M2C_FIELD(temp_v0_2, float *, 0x24)) || (temp_f1_2 = M2C_FIELD(arg0, float *, 0x198), !(M2C_FIELD(temp_v0_2, float *, 0x20) <= temp_f1_2)) || !(temp_f1_2 <= M2C_FIELD(temp_v0_2, float *, 0x28))) {
+        temp_v0_3 = Xiiiii_func_001D8064(mgr, temp_a3, temp_v0_2, (((unsigned int)M2C_FIELD(arg0, unsigned int *, 0x100) >> 0x17) & 0x1F) == 2);
+        if (temp_v0_3 != 0) {
+            Xiii_func_001D8D28(arg0, temp_v0_3);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8F04);
+#endif
 
 extern "C" void func_001D8FEC(int arg0, int arg1)
 {
