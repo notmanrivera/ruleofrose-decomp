@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xiiii_func_0018C448(int, int, int) asm("func_0018C448");
+extern "C" int Xiiii_func_0018C4D8(int, int, int) asm("func_0018C4D8");
 struct Vec3i_CC54 {
     int x;
     int y;
@@ -190,7 +192,36 @@ extern "C" int func_0018C130(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C190);
+extern "C" void func_0018C190(int arg0, int arg1)
+{
+    int var_s0;
+    int temp_a1;
+    int temp_a2;
+    int temp_v1;
+    int x, y, z;
+
+    if ((*(int *)(arg1)) != -1) {
+        var_s0 = arg1;
+        do {
+            Xiiii_func_0018C448(arg0, M2C_FIELD(var_s0, int *, 0), M2C_FIELD(var_s0, int *, 0x30));
+            M2C_FIELD(((M2C_FIELD(var_s0, int *, 0) * 0x154) + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0xC) = (int) M2C_FIELD(var_s0, int *, 0x14);
+            M2C_FIELD(((M2C_FIELD(var_s0, int *, 0) * 0x154) + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x10) = (int) M2C_FIELD(var_s0, int *, 0x1C);
+            M2C_FIELD(((M2C_FIELD(var_s0, int *, 0) * 0x154) + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0xD8) = (int) M2C_FIELD(var_s0, int *, 4);
+            *(int *)((M2C_FIELD(var_s0, int *, 0) * 0x154) + M2C_FIELD(arg0, int *, 0x4AC)) = M2C_FIELD(var_s0, int *, 8);
+            temp_v1 = M2C_FIELD(var_s0, int *, 0) * 0x154;
+            x = M2C_FIELD(var_s0, int *, 0x24);
+            y = M2C_FIELD(var_s0, int *, 0x28);
+            z = M2C_FIELD(var_s0, int *, 0x2C);
+            M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x64) = x;
+            M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x68) = y;
+            M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x6C) = z;
+            temp_a1 = M2C_FIELD(var_s0, int *, 0);
+            temp_a2 = M2C_FIELD(var_s0, int *, 0x18);
+            var_s0 += 0x34;
+            Xiiii_func_0018C4D8(arg0, temp_a1, temp_a2);
+        } while ((*(int *)(var_s0)) != -1);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C2E4);
 
