@@ -1229,7 +1229,7 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DA228);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DA740);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamtrg", D_002FC418);
+// D_002FC418 (0x2FC418): the end of game/gamstat's .rodata now (config/splits_manual.tsv)
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamtrg", D_002FC420);
 
@@ -1512,8 +1512,6 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamtrg", D_002FC6E8);
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamtrg", D_002FC700);
 
-// NON_MATCHING: 1 reloc differs, 1 edits
-#ifdef NON_MATCHING
 extern "C" int func_001DB8E8(int arg0, unsigned int arg1, int arg2)
 {
     int var_v0;
@@ -1540,9 +1538,6 @@ extern "C" int func_001DB8E8(int arg0, unsigned int arg1, int arg2)
     }
     return D_002D8F60;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB8E8);
-#endif
 
 extern "C" float func_001DB9C4()
 {
@@ -1776,8 +1771,6 @@ extern "C" void func_001DBEF8(int arg0, int arg1)
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamtrg", D_002FC748);
 
-// NON_MATCHING: 1 reloc differs, 1 edits
-#ifdef NON_MATCHING
 extern "C" int func_001DBFA0(int *arg0, unsigned short arg1)
 {
     int idx = arg1 & 0x1FF;
@@ -1806,9 +1799,6 @@ extern "C" int func_001DBFA0(int *arg0, unsigned short arg1)
         return 0;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBFA0);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DC070);
 
@@ -1879,8 +1869,6 @@ extern "C" void func_001DCD38(Mgr_dcd38 *arg0, unsigned short arg1, int arg2)
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DCD38);
 #endif
 
-// NON_MATCHING: 1 reloc differs, 1 edits
-#ifdef NON_MATCHING
 struct S_A0_dce30 { char pad[0x90]; int val; char pad2[0xC]; };
 struct S_C0_90_dce30 { char pad[0x90]; int val; char pad2[0x2C]; };
 struct S_E0_dce30 { char pad[0x90]; int val; char pad2[0x4C]; };
@@ -1904,9 +1892,6 @@ extern "C" void func_001DCE30(Mgr_dce30 *arg0, unsigned short arg1, int arg2)
     case 9: { S_C0_B0_dce30 *p = arg0->a9; p += idx; p->val &= ~arg2; return; }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DCE30);
-#endif
 
 // NON_MATCHING: 24/55 differ, 1 reloc differs (size 0xDC, game 0xE4), 19 edits
 #ifdef NON_MATCHING
