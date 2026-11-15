@@ -123,7 +123,10 @@ extern "C" int EffFire2__vfunc_05(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFire2__vfunc_08);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", updateZDepth__8EffFire2);
+extern "C" void updateZDepth__8EffFire2(int arg0)
+{
+    M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, arg0 + 0x60);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog1__vfunc_02);
 
