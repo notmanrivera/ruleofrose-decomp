@@ -1,4 +1,14 @@
 #include "include_asm.h"
+struct HfmRect3 { float f[8]; } __attribute__((aligned(8)));
+struct HfmObj3 {
+    char pad[0x2AAE0];
+    HfmRect3 prev;
+    HfmRect3 pad2;
+    HfmRect3 saved;
+    HfmRect3 rect;
+    int unk60;
+    int unk64;
+};
 extern "C" void Xvi_func_0016947C(int) asm("func_0016947C");
 extern "C" int Xiiiii_func_001693EC(int, int, int, int) asm("func_001693EC");
 extern int D_002EF418[];
@@ -149,7 +159,22 @@ extern "C" void func_00143D3C(int arg0, HfmSub *arg1, int arg2, float f0, float 
     Xii_func_00143D7C(arg0, (int)&local, arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00143D7C);
+extern "C" void func_00143D7C(HfmObj3 *arg0, HfmRect3 *arg1, int arg2)
+{
+    HfmRect3 *p = (HfmRect3 *)((int)arg0 + 0x2AB40);
+
+    if (arg2 > 0) {
+        arg0->saved = arg0->prev;
+        arg0->rect = *arg1;
+        arg0->unk64 = arg2;
+        arg0->unk60 = 0;
+        return;
+    }
+    arg0->rect = *arg1;
+    arg0->prev = *p;
+    arg0->unk64 = 0;
+    arg0->unk60 = 0;
+}
 
 extern "C" void func_00143EEC(HfmObj *arg0, float *arg1, int arg2)
 {
