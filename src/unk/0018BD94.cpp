@@ -329,7 +329,67 @@ extern "C" int func_0018C794(int arg0, int arg1, int arg2)
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C794);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C814);
+extern "C" void func_0018C814(int arg0, int arg1)
+{
+    M2C_FIELD(arg1, int *, 0x0) = -1;
+    M2C_FIELD(arg1, int *, 0x4) = 1;
+    M2C_FIELD(arg1, int *, 0x8) = 0;
+    M2C_FIELD(arg1, int *, 0xC) = 0;
+    M2C_FIELD(arg1, int *, 0x10) = 0;
+    M2C_FIELD(arg1, int *, 0x14) = 0;
+    M2C_FIELD(arg1, int *, 0x58) = 0;
+    M2C_FIELD(arg1, int *, 0x5C) = 0;
+    M2C_FIELD(arg1, int *, 0x60) = 0;
+    M2C_FIELD(arg1, int *, 0x64) = 0;
+    M2C_FIELD(arg1, int *, 0x68) = 0;
+    M2C_FIELD(arg1, int *, 0x6C) = 0;
+    M2C_FIELD(arg1, int *, 0x70) = 0;
+    M2C_FIELD(arg1, int *, 0x74) = 0;
+    M2C_FIELD(arg1, int *, 0x78) = 0;
+    M2C_FIELD(arg1, int *, 0x88) = 0;
+    M2C_FIELD(arg1, int *, 0x8C) = 0;
+    M2C_FIELD(arg1, int *, 0x90) = 0;
+    M2C_FIELD(arg1, int *, 0x94) = 0;
+    M2C_FIELD(arg1, int *, 0x98) = 0;
+    M2C_FIELD(arg1, int *, 0x9C) = 0;
+    M2C_FIELD(arg1, int *, 0xA0) = 0;
+    M2C_FIELD(arg1, int *, 0xA4) = 0;
+    M2C_FIELD(arg1, int *, 0xA8) = 0;
+    M2C_FIELD(arg1, int *, 0xAC) = 0;
+    M2C_FIELD(arg1, int *, 0xB0) = 0;
+    M2C_FIELD(arg1, int *, 0xB4) = 0;
+    M2C_FIELD(arg1, int *, 0xB8) = 0;
+    M2C_FIELD(arg1, int *, 0xBC) = 0;
+    M2C_FIELD(arg1, int *, 0xC0) = 0;
+    M2C_FIELD(arg1, int *, 0xC4) = 0;
+    M2C_FIELD(arg1, int *, 0xC8) = 0x10;
+    M2C_FIELD(arg1, int *, 0xCC) = 0x10;
+    M2C_FIELD(arg1, int *, 0xD0) = -1;
+    M2C_FIELD(arg1, int *, 0xD4) = -1;
+    M2C_FIELD(arg1, int *, 0x18) = 0x80;
+    M2C_FIELD(arg1, int *, 0x1C) = 0x80;
+    M2C_FIELD(arg1, int *, 0x20) = 0x80;
+    M2C_FIELD(arg1, int *, 0x24) = 0x80;
+    M2C_FIELD(arg1, int *, 0x11C) = 0;
+    M2C_FIELD(arg1, int *, 0x120) = 0;
+    M2C_FIELD(arg1, int *, 0x124) = 0;
+    M2C_FIELD(arg1, int *, 0x128) = 0;
+    M2C_FIELD(arg1, int *, 0x12C) = 0;
+    M2C_FIELD(arg1, int *, 0x130) = 0;
+    M2C_FIELD(arg1, int *, 0x118) = 0;
+    M2C_FIELD(arg1, int *, 0xD8) = 0;
+    M2C_FIELD(arg1, int *, 0xF4) = 0;
+    M2C_FIELD(arg1, int *, 0xF8) = 0;
+    M2C_FIELD(arg1, int *, 0x10C) = -1;
+    M2C_FIELD(arg1, int *, 0x110) = -1;
+    M2C_FIELD(arg1, int *, 0x114) = -1;
+    M2C_FIELD(arg1, int *, 0x138) = 0;
+    M2C_FIELD(arg1, int *, 0x104) = -1;
+    M2C_FIELD(arg1, int *, 0x140) = 0;
+    M2C_FIELD(arg1, int *, 0x108) = -1;
+    M2C_FIELD(arg1, int *, 0x14C) = 0;
+    M2C_FIELD(arg1, int *, 0x150) = 0;
+}
 
 extern "C" int func_0018C910(int arg0, char *arg1)
 {
