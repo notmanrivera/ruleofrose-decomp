@@ -1,4 +1,30 @@
 #include "include_asm.h"
+struct Block80_47E0 {
+    unsigned char b[0x80];
+};
+struct Block780_47E0 {
+    unsigned char b[0x780];
+};
+struct Inner47E0 {
+    int flags;
+    unsigned char unk04[0x28];
+    Block80_47E0 unk2C;
+    Block780_47E0 *unkAC;
+};
+struct Obj47E0 {
+    unsigned char pad0000[0xDC24];
+    int unkDC24;
+    unsigned char padDC28[8];
+    Inner47E0 unkDC30;
+};
+struct Global47E0_b {
+    unsigned char unk00[0x70];
+    Block780_47E0 *unk70;
+    unsigned char unk74[0x0C];
+};
+extern int X47E0_D_007B4640 asm("D_007B4640");
+extern Global47E0_b X47E0_D_007B4700 asm("D_007B4700");
+extern "C" int func_002149A8();
 struct Block80_4310 {
     unsigned char b[0x80];
 };
@@ -1621,7 +1647,19 @@ extern "C" void func_00214664(void)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002147E0);
+extern "C" void func_002147E0(Obj47E0 *arg0)
+{
+    Inner47E0 *inner = (Inner47E0 *)(X47E0_D_007B4640 + 0x10);
+    if (arg0->unkDC24 & 0x100) {
+        inner = &arg0->unkDC30;
+    }
+    inner->unk2C = *(Block80_47E0 *)&X47E0_D_007B4700;
+    inner->flags |= 0x200;
+    if (inner->unkAC == 0) {
+        inner->unkAC = (Block780_47E0 *)func_002149A8();
+    }
+    *inner->unkAC = *X47E0_D_007B4700.unk70;
+}
 
 extern "C" int func_002149A8()
 {
