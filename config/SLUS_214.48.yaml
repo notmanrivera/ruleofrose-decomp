@@ -151,7 +151,7 @@ segments:
       - [0x0A066C, cpp, mnu/mnuselect] # .text (likely)
       - [0x0A0950, cpp, mnu/mnudlg] # .text (likely)
       - [0x0A4E88, cpp, mnu/mnusvld] # .text (manual)
-      - [0x0A6830, cpp, unk/001A6830] # .text (likely)
+      - [0x0A90EC, cpp, unk/001A6830] # .text (manual)
       - [0x0B64C4, cpp, game/gamman] # .text (likely)
       - [0x0D1BEC, cpp, unk/001D1BEC] # .text (likely)
       - [0x0D5610, cpp, game/gamstat] # .text (conflict)
@@ -1679,7 +1679,7 @@ segments:
       - [0x19C368, data, unk/MnuDiary] # .data (likely)
       - [0x1A4524, data, mnu/mnudlg] # .data (likely)
       - [0x1A4530, data, mnu/mnusvld] # .data (manual)
-      - [0x1A4DA8, data, unk/001A6830] # .data (likely)
+      - [0x1A7798, data, unk/001A6830] # .data (manual)
       - [0x1B8598, data, game/gamman] # .data (likely)
       - [0x1C0000, data, game/gamstat] # .data (conflict)
       - [0x1D8F60, data, game/gamtrg] # .data (manual)
@@ -2084,7 +2084,7 @@ segments:
       - [0x1F8500, .rodata, mnu/mnuselect] # .rodata (likely)
       - [0x1F8530, .rodata, mnu/mnudlg] # .rodata (likely)
       - [0x1F9100, .rodata, mnu/mnusvld] # .rodata (manual)
-      - [0x1F9248, .rodata, unk/001A6830] # .rodata (likely)
+      - [0x1F9820, .rodata, unk/001A6830] # .rodata (manual)
       - [0x1FB050, .rodata, game/gamman] # .rodata (likely)
       - [0x1FC0B8, .rodata, unk/001D1BEC] # .rodata (likely)
       - [0x1FC1D8, .rodata, game/gamstat] # .rodata (conflict)
@@ -2143,7 +2143,7 @@ segments:
       - { type: bss, vram: 0x006E92D0, name: msg/msgman } # .bss
       - { type: bss, vram: 0x006E93D4, name: unk/0018BD94 } # .bss
       - { type: bss, vram: 0x006E9408, name: unk/MnuDiary } # .bss
-      - { type: bss, vram: 0x006E9450, name: unk/001A6830 } # .bss
+      - { type: bss, vram: 0x006E9450, name: mnu/mnusvld } # .bss
       - { type: bss, vram: 0x006E9640, name: game/gamman } # .bss
       - { type: bss, vram: 0x007811AC, name: game/gamstat } # .bss
       - { type: bss, vram: 0x00781280, name: unk/TskMsgMan } # .bss

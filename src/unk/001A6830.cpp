@@ -81,6 +81,7 @@ struct ObjAD72C {
 };
 extern int D_007A3210;
 extern int D_007A4440;
+// declarations from the code that moved to mnu/mnusvld (0x1A6830-0x1A90EC):
 static inline int *sysFlags_F130()
 {
     char *p = (char *)&D_007A4440;
@@ -342,252 +343,6 @@ extern int D_007B205C;
 extern int D_007B2060;
 extern int D_007B2580;
 
-extern "C" int func_001A6830(int arg0, int arg1)
-{
-    return (unsigned int) ~(*(int *)(int *)((char *)(((arg1 * 0x2C) + arg0)) + 0x2508)) >> 0x1F;
-}
-
-
-extern "C" void func_001A6858(Obj6858 *arg0, int arg1, char *arg2)
-{
-    X_func_00279C98_1(
-        arg2, D_002F9248, D_002F9268, D_002F9278,
-        arg1,
-        arg0->sub.arr[arg1].f0,
-        arg0->sub.arr[arg1].f4,
-        arg0->sub.arr[arg1].f8,
-        arg0->sub.arr[arg1].fC,
-        arg0->sub.arr[arg1].f10
-    );
-}
-
-extern "C" void func_001A68E0(Obj68E0 *arg0, int arg1, char *arg2)
-{
-    X_func_00279C98_68E0(
-        arg2, D_002F9248, D_002F9268, D_002F9278,
-        arg1,
-        arg0->sub.arr[arg1].f0,
-        arg0->sub.arr[arg1].f4,
-        arg0->sub.arr[arg1].f8,
-        arg0->sub.arr[arg1].fC,
-        arg0->sub.arr[arg1].f10
-    );
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A6968);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9248);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9268);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9278);
-
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A6AB8);
-
-extern "C" void func_001A6BF8(int arg0)
-{
-    int temp_a0;
-    int temp_a1;
-    int temp_a2;
-    int temp_a3;
-    int temp_t0;
-    int temp_t1;
-    int temp_v1;
-    int var_t8;
-    int var_t9;
-
-    var_t8 = 0;
-    var_t9 = 0xB;
-    do {
-        temp_v1 = var_t8 + 0x2500;
-        temp_t0 = var_t8 + 0x2510;
-        temp_t1 = var_t8 + 0x2520;
-        var_t8 += 0x2C;
-        temp_a1 = arg0 + 8;
-        temp_a2 = arg0 + 0xC;
-        temp_a3 = arg0 + 0x10;
-        temp_a0 = arg0 + 0x14;
-        var_t9 -= 1;
-        *(int *)(temp_a1 + temp_v1) = -1;
-        *(int *)(temp_a2 + temp_v1) = -1;
-        *(int *)(temp_a3 + temp_v1) = -1;
-        *(int *)(temp_a0 + temp_v1) = -1;
-        *(int *)(temp_a1 + temp_t0) = -1;
-        *(int *)(temp_a2 + temp_t0) = -1;
-        *(int *)(temp_a3 + temp_t0) = -1;
-        *(int *)(temp_a0 + temp_t0) = -1;
-        *(int *)(temp_a1 + temp_t1) = -1;
-        *(int *)(temp_a2 + temp_t1) = -1;
-        *(int *)(temp_a3 + temp_t1) = -1;
-    } while (var_t9 >= 0);
-}
-
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F92A0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F92A8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F92B0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F92B8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F92C0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F92C8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F92D0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F92D8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F92E0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F92E8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F92F0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F92F8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9300);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9318);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9330);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9340);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9350);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9360);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9370);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9380);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9390);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F93A0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F93B0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F93C0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F93D0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F93E0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F93F0);
-
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A6C90);
-
-extern "C" void func_001A6FE8(int arg0)
-{
-    int i;
-
-    for (i = 0; i < M2C_FIELD(arg0, int *, 0x142C); i++) {
-        Xiiii_func_001A6C90(arg0, i, i);
-    }
-}
-
-extern "C" int func_001A7040(unsigned char arg0)
-{
-    unsigned int temp_v0;
-
-    temp_v0 = arg0 & 0xFF;
-    return ((temp_v0 >> 4) * 0xA) + (temp_v0 & 0xF);
-}
-
-extern "C" int func_001A7060(int arg0)
-{
-    return ((arg0 / 10) * 0x10) + (arg0 % 10);
-}
-
-
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A7088);
-
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A7418);
-
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A7498);
-
-extern "C" void *func_001A7B90(void *arg0, const unsigned char *arg1)
-{
-    char buf[64];
-    int count = 0;
-
-    while (arg1[0] == 0x81 && arg1[1] == 0x40) {
-        arg1 += 2;
-        count++;
-    }
-    buf[0] = '\0';
-    for (int i = 0; i < count; i++) {
-        const char *s = (const char *)&D_002F9428;
-        Xvp_strcpy(buf + Xvp_strlen(buf), s);
-    }
-    Xvp_snprintf(arg0, 0x40, (const char *)&D_002F9430, buf, arg1, 0);
-    return arg0;
-}
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9428);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9430);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9440);
-
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A7C54);
-
-extern "C" int func_001A7F40(int arg0, int arg1)
-{
-    int temp_v1;
-    int var_s2;
-
-    temp_v1 = M2C_FIELD(arg0, int *, 0x1454);
-    var_s2 = 0;
-    switch (temp_v1) {                              
-    case 13:
-        break;
-    case 0:
-        M2C_FIELD(arg0, int *, 0x1404) = 0;
-        M2C_FIELD(arg0, int *, 0x1454) = 0xD;
-        X_func_001A6BF8();
-        X_func_001A6FE8(arg0);
-        break;
-    case 17:
-        M2C_FIELD(arg0, int *, 0x1454) = 0;
-        break;
-    case 1:
-        M2C_FIELD(arg0, int *, 0x1454) = 0xD;
-        break;
-    }
-    if ((padTrigU_F40(arg1) >> 0xD) & 1) {
-        var_s2 = 2;
-        X_func_0017F8FC((int)&D_007B2580, 2);
-    }
-    return var_s2;
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A8000);
-
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A8730);
-
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A891C);
-
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A8B7C);
-
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A8D44);
-
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A8E84);
-
-extern "C" int func_001A90DC()
-{
-    return 0;
-}
-
-
-extern "C" int func_001A90E4()
-{
-    return 0;
-}
-
-
 extern "C" void func_001A90EC(int arg0)
 {
     int temp_s1;
@@ -648,77 +403,41 @@ extern "C" int func_001A9298(int arg0)
 }
 
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F95D8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F95E8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F95F8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9608);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9618);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9628);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9638);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9648);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9658);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9668);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9678);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9688);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9698);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F96A8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F96B8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F96C8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F96D8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F96E8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F96F8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9708);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9718);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9728);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9738);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9748);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9758);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9768);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9778);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9788);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9798);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F97A8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F97B8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F97C8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F97D8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F97E8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F97F8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9808);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002F9820);
 

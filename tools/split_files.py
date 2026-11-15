@@ -572,7 +572,8 @@ def apply_manual(rows, starts, lo, hi):
     """Merge the config/splits_manual.tsv rows in [lo, hi) into `rows`
     ([text, rodata, name, conf]). A row makes a file start at `text`; a
     generated start with the same name elsewhere is dropped (its functions
-    join the file before it), so a row can also move a file's start."""
+    join the file before it), so a row can also move a file's start; a row
+    named "-" drops the generated start at `text`."""
     path = ROOT / "config/splits_manual.tsv"
     if not path.exists():
         return rows
@@ -585,6 +586,9 @@ def apply_manual(rows, starts, lo, hi):
             continue
         if a not in starts:
             raise SystemExit(f"splits_manual.tsv: 0x{a:08X} is not a function start")
+        if name == "-":                 # no file starts here: its functions join the file before
+            rows[:] = [r for r in rows if r[0] != a or r[3] == "manual"]
+            continue
         rows[:] = [r for r in rows if r[2] != name or r[0] == a or r[3] == "manual"]
         for r in rows:
             if r[0] == a:

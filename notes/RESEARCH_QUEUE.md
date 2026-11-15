@@ -13,14 +13,6 @@ where to look.
 
 ## Open
 
-- [ ] R3 unk/001A6830: split point. Its first jump table (0x2F9410, used by
-  func_001A7498) is 8 mod 16 from its .rodata start 0x2F9248, so the file
-  is two: the first part (rodata 0x2F9248-0x2F9410, no tables, needs
-  func_001A6C90 which uses D_002F9400) ends somewhere in (0x1A6C90,
-  0x1A7498], most likely 0x1A7418 or 0x1A7498. Find the exact first
-  function of the second part (calls, shared data, asserts, vtables),
-  and whether the first part belongs to mnu/mnusvld (func_001A5ED0 calls
-  func_001A6FE8). 30 jump tables wait on this.
 - [ ] R4 unk/TskMtnMove: where game/gamsnd really ends. 0x1E46B8-~0x1E5428
   looks like gamsnd's tail ("data/snd/xv/%s", "s%06d.str", D_007B2580);
   the first table (0x2FD7B0) is used at 0x1E5660. Find the first
@@ -63,3 +55,13 @@ where to look.
   of 16 (2026-11-15): 11 started on the previous file's RTTI names
   (08bd270), EventTestTask on padding and mnusvld three functions early
   (5cac105). The other 7 are R3-R6.
+- [x] R3 unk/001A6830 (2026-11-15, Sonnet, high confidence for the main
+  point): no split inside it; 0x1A6830-0x1A90EC is mnu/mnusvld's (one
+  this layout, cross calls, its .data table points at those strings, all
+  tables 16-aligned from mnusvld's 0x2F9100). The next file starts at
+  0x1A90EC, MagLifeMenuTitle's constructor, rodata 0x2F9820: still
+  called unk/001A6830 (likely mnu/mnutitle, from "mnutitle.rpk"; no
+  assert names it). Applied: 507 lines of C++ and 36 .rodata pieces moved
+  to mnusvld.cpp, split_files.py rows named '-' drop a generated start.
+  Open from it: where the title file ends (around func_001AB474, the
+  MagLifeMenuOpt constructor, or func_001AB04C), and its real name.

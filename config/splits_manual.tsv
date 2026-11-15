@@ -2,7 +2,8 @@
 # A row forces a file to start at `text` with this name (renaming the
 # generated file if one already starts there); if the generator started a
 # file with this name elsewhere, that start is dropped, so a row can move a
-# file's start. `rodata` forces where its .rodata starts ('-': inferred).
+# file's start; a row named '-' drops the generated start at `text`.
+# `rodata` forces where its .rodata starts ('-': inferred).
 # Give the evidence.
 text	rodata	file	evidence
 00102490	-	utl/utlgame	Moves the start from 0x101CCC. 0x101CCC-0x102488 read the pad through BedPad's socket (+0x20: scePad2GetState, scePad2Read) and fill or read BedPad fields (sticks at +0x7E..+0x81, floats at +0x4C..+0x58), calling each other: BedPad methods, so they end bed/bedpad. 0x102490 is the first function that touches no BedPad (looks up a game table, like the utl/utlgame.cpp functions after it).
@@ -41,3 +42,5 @@ text	rodata	file	evidence
 001E9A34	002FDAC0	unk/TskMsgMan	Keeps the start; moves .rodata from 0x002FDA88. Compiled, ee-gcc aligns jump tables to 16 (all 267 of the game's are at multiples of 16), so this file, which has tables, starts its .rodata at a multiple of 16: the RTTI names before 0x002FDAC0 (D_002FDA88, D_002FDA98) are the end of unk/TskMtnMove, which emits them last, as mag/maglife does.
 00216828	00301B00	unk/EventTestTask	Keeps the start; moves .rodata from 0x301AF8. The file has jump tables, so its .rodata starts at a multiple of 16 (DECOMPILING.md); 0x301AF8-0x301AFF are zeros, the padding after debug/naga_debug's last string (ends 0x301AF5), and the file's first string starts at 0x301B00 (found by a Sonnet 5.5 subagent).
 001A4E88	002F9100	mnu/mnusvld	Moves the start from 0x1A5034 and .rodata from 0x2F9118. The file has jump tables, so its .rodata starts at a multiple of 16: jtbl_002F9100 (6 entries) is its first, used only by func_001A4E88, a state machine on +0x3C that calls func_001A557C and func_001A5584 (mnusvld); func_001A4F60 and func_001A4FF0 set up and clear the +0x7D0/+0x7F4 areas as mnusvld does. mnudlg ends with its assert string (0x2F90F0), used by func_001A4DB8 (found by a Sonnet 5.5 subagent).
+001A90EC	002F9820	unk/001A6830	Moves the start from 0x1A6830 and .rodata from 0x2F9248: 0x1A6830-0x1A90EC is mnu/mnusvld's (one this layout, +0x1474/+0x4AC/+0x2500, func_001A5ED0 and func_001A8000 call across 0x1A6830; D_002A64E0, used by mnusvld's func_001A665C, points at the 0x2F92A0-0x2F93F0 strings; save/load strings and memory-card commands; all its jump tables are at multiples of 16 from mnusvld's 0x2F9100). 0x1A90EC is MagLifeMenuTitle's constructor (__16MagLifeMenuTitle jumps to it; dtor 0x1A9150, term 0x1A9258, isInit 0x1A9298), its .rodata from 0x2F9820 ("titlebg.tm2", "data/mnurpk/mnutitle.rpk"). Found by a Sonnet 5.5 subagent (R3).
+001A6830	-	-	No file starts here: 0x1A6830-0x1A90EC is mnu/mnusvld (see the 0x1A90EC row).
