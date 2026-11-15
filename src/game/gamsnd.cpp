@@ -782,7 +782,108 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E239C);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2704);
 
+// NON_MATCHING: 22/104 differ, 25 edits
+#ifdef NON_MATCHING
+struct ALIGNED(16) Ent2AA0 { // 2AA0
+    char pad00[0x20]; // 2AA0
+    unsigned int unk20; // 2AA0
+    int unk24; // 2AA0
+    char pad28[0x08]; // 2AA0
+    int unk30; // 2AA0
+    char pad34[0x1C]; // 2AA0
+}; // Ent2AA0
+struct SndNode2AA0 {
+    SndNode2AA0 *m_prev; // 2AA0
+    SndNode2AA0 *m_next; // 2AA0
+    Ent2AA0 m_data; // 2AA0
+}; // SndNode2AA0
+struct SndChain2AA0 {
+    SndNode2AA0 m_head; // 2AA0
+    int m_num; // 2AA0
+    void push_back(SndNode2AA0 *theNode) {
+        if (m_num == 0) { // 2AA0
+            m_head.m_next = theNode; // 2AA0
+            theNode->m_prev = &m_head; // 2AA0
+        } else { // 2AA0
+            m_head.m_prev->m_next = theNode; // 2AA0
+            theNode->m_prev = m_head.m_prev; // 2AA0
+        } // push_back 2AA0
+        theNode->m_next = &m_head; // 2AA0
+        m_head.m_prev = theNode; // 2AA0
+        ++m_num; // 2AA0
+    } // push_back end 2AA0
+    void unlink(SndNode2AA0 *theNode) {
+        if (theNode == m_head.m_next) { // 2AA0
+            SndNode2AA0 *next = theNode->m_next; // 2AA0
+            m_head.m_next = next; // 2AA0
+            next->m_prev = &m_head; // 2AA0
+        } else { // unlink 2AA0
+            SndNode2AA0 *p = theNode->m_prev; // 2AA0
+            if (theNode == m_head.m_prev) { // 2AA0
+                m_head.m_prev = p; // 2AA0
+                p->m_next = &m_head; // 2AA0
+            } else { // unlink mid 2AA0
+                p->m_next = theNode->m_next; // 2AA0
+                SndNode2AA0 *prev = theNode->m_prev; // 2AA0
+                p = theNode->m_next; // 2AA0
+                p->m_prev = prev; // 2AA0
+            } // unlink mid end 2AA0
+        } // unlink else end 2AA0
+        --m_num; // 2AA0
+    } // unlink end 2AA0
+}; // SndChain2AA0
+class SndIt2AA0 {
+public: // SndIt2AA0
+    SndNode2AA0 *m_node; // 2AA0
+    SndIt2AA0() : m_node(0) {}
+    SndIt2AA0(SndNode2AA0 *theNode) : m_node(theNode) {}
+    SndIt2AA0(const SndIt2AA0 &theIt) : m_node(theIt.m_node) {}
+    Ent2AA0 &operator*() const { return m_node->m_data; }
+    SndIt2AA0 &operator++() { // 2AA0
+        m_node = m_node->m_next; // 2AA0
+        return *this; // 2AA0
+    } // op++ 2AA0
+    bool operator!=(const SndIt2AA0 &theIt) const { return m_node != theIt.m_node; }
+}; // SndIt2AA0
+class SndQue2AA0 {
+public: // SndQue2AA0
+    SndChain2AA0 m_free; // 2AA0
+    SndChain2AA0 m_used; // 2AA0
+    int m_max; // 2AA0
+    SndIt2AA0 begin() { return SndIt2AA0(m_used.m_head.m_next); }
+    SndIt2AA0 end() { return SndIt2AA0(&m_used.m_head); }
+    SndIt2AA0 erase(SndIt2AA0 thePos) {
+        SndIt2AA0 next = thePos; // 2AA0
+        ++next; // 2AA0
+        SndNode2AA0 *n = thePos.m_node; // 2AA0
+        m_used.unlink(n); // 2AA0
+        m_free.push_back(n); // 2AA0
+        return next; // 2AA0
+    } // erase 2AA0
+}; // SndQue2AA0
+struct Obj2AA0 {
+    char pad00[0x40]; // 2AA0
+    SndQue2AA0 m_que; // 2AA0
+}; // Obj2AA0
+extern "C" void X_2AA0_func_001E649C(Obj2AA0 *, unsigned int, int) asm("func_001E649C");
+extern "C" void func_001E2AA0(Obj2AA0 *arg0, unsigned int arg1, int arg2) {
+    SndIt2AA0 it;
+    SndIt2AA0 last;
+    it = arg0->m_que.begin();
+    last = arg0->m_que.end();
+    while (it != last) {
+        if ((*it).unk20 == arg1 && (arg2 == -1 || (*it).unk30 == arg2)) {
+            X_2AA0_func_001E649C(arg0, (*it).unk20, (*it).unk24);
+            (*it).unk24 = -1;
+            it = arg0->m_que.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2AA0);
+#endif
 
 // NON_MATCHING: 22/93 differ, 25 edits
 #ifdef NON_MATCHING
