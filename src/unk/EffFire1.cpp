@@ -1,4 +1,19 @@
 #include "include_asm.h"
+struct Fire2Vec4 {
+    float x, y, z, w;
+} __attribute__((aligned(8)));
+static inline Fire2Vec4 MakeFire2Vec4(float x, float y, float z, float w)
+{
+    Fire2Vec4 r;
+    r.y = y;
+    r.z = z;
+    r.x = x;
+    r.w = w;
+    return r;
+}
+extern "C" void X_Fire2_func_00237340(void *) asm("func_00237340");
+extern "C" void X_Fire2_func_002378B0(void *, void *, void *) asm("func_002378B0");
+extern "C" void X_Fire2_func_00237A40(void *, void *, void *) asm("func_00237A40");
 struct m2c_block32 { int w[8]; };
 extern "C" int Xi_func_0016AD94() asm("func_0016AD94");
 extern "C" float Xff_func_0016FE88(float) asm("func_0016FE88");
@@ -241,7 +256,34 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F2400);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", updateZDepth__10EffFire1Ex);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFire2__vfunc_02);
+extern "C" int EffFire2__vfunc_02(int arg0, int arg1)
+{
+    int var_v0;
+
+    void *mat = (void *)(arg0 + 0x30);
+    var_v0 = Xiii_Eff0__vfunc_02(arg0, arg1);
+    if (var_v0 != 0) {
+        Fire2Vec4 v = MakeFire2Vec4(
+            M2C_FIELD(arg1, float *, 0x1C),
+            M2C_FIELD(arg1, float *, 0x20),
+            M2C_FIELD(arg1, float *, 0x24),
+            0.0f
+        );
+        X_Fire2_func_00237340(mat);
+        X_Fire2_func_002378B0(mat, mat, &v);
+        float s = M2C_FIELD(arg1, float *, 0x28);
+        v.w = 1.0f;
+        v.z = 1.0f;
+        v.y = s;
+        v.x = s;
+        X_Fire2_func_00237A40(mat, mat, &v);
+        *(m2c_block12 *)((char *)(arg0) + 96) = *(m2c_block12 *)((char *)(arg1) + 16);
+        var_v0 = 1;
+        M2C_FIELD(arg0, float *, 0x28) = (float) M2C_FIELD(arg1, float *, 0x2C);
+        M2C_FIELD(arg0, int *, 0x24) = 0;
+    }
+    return var_v0;
+}
 
 extern "C" int EffFire2__vfunc_05(int arg0)
 {
