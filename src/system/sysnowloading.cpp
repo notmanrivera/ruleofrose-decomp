@@ -286,7 +286,62 @@ INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00208640);
 
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00208B10);
 
+// NON_MATCHING: 113/133 differ, 11 relocs differ (size 0x214, game 0x21C), 58 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_001CD044(...) asm("func_001CD044");
+extern "C" int func_00208B98(unsigned int arg0, int arg1, int arg2)
+{
+    struct { unsigned int sp10; int sp14; int sp18; int sp1C; } stack;
+    int temp_v0;
+    int var_a1;
+    int base;
+    switch (arg0) {
+    case 1:
+        base = (int)&D_007812C0;
+        if (!(M2C_FIELD(base, int *, 0x21F48) & 0x800) ||
+            X_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(base, int *, 0x222BC)) == 0) {
+            var_a1 = (int)&D_007812C0 + 0x222DC;
+            if (M2C_FIELD(var_a1, int *, 4)) {
+                stack.sp10 = M2C_FIELD(var_a1, unsigned int *, 0);
+                stack.sp14 = M2C_FIELD(var_a1, int *, 4);
+                stack.sp18 = arg1;
+                stack.sp1C = 0xCCCCCCCC;
+                goto create;
+            }
+            X_func_001CD044((int)&D_007812C0, 2, arg1, 0, -1, 0xCCCCCCCC);
+            break;
+        }
+        return 0xCCCCCCCC;
+    case 2:
+        base = (int)&D_007812C0;
+        if (!(M2C_FIELD(base, int *, 0x21F48) & 0x800) ||
+            X_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(base, int *, 0x222BC)) == 0) {
+            var_a1 = (int)&D_007812C0 + 0x222DC;
+            if (M2C_FIELD(var_a1, int *, 4)) {
+                stack.sp10 = M2C_FIELD(var_a1, unsigned int *, 0);
+                stack.sp14 = M2C_FIELD(var_a1, int *, 4);
+                stack.sp18 = arg1;
+                stack.sp1C = arg2;
+create:
+                temp_v0 = X___builtin_new(0x80, var_a1, arg1);
+                X_func_001F184C(temp_v0, 0xB, (int)&stack.sp10, 0);
+                X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0, 0, 0, 1);
+            } else {
+                X_func_001CD044((int)&D_007812C0, 2, arg1, 0, -1, arg2);
+            }
+            break;
+        }
+        return 0xCCCCCCCC;
+    case 10:
+        X_func_001CD044((int)&D_007812C0, 1, -1, -1, arg1, 0xCCCCCCCC);
+        break;
+    case 0: default: break;
+    }
+    return 0xCCCCCCCA;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00208B98);
+#endif
 
 extern "C" int func_00208DB4()
 {
