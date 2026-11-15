@@ -363,7 +363,28 @@ extern "C" int EffCloud1__vfunc_02(int arg0, int arg1)
     return 0;
 }
 
+// NON_MATCHING: 5/73 differ, 5 edits
+#ifdef NON_MATCHING
+extern "C" void Xpp_func_00237818(void *, void *, float) asm("func_00237818");
+extern "C" void func_0017A410(int arg0)
+{
+    float mat[16];
+
+    Xp_func_00237340(mat);
+    mat[12] = (M2C_FIELD(arg0, float *, 0x58) * (float) Xi_func_0016AD94()) / 510.0f;
+    Xpp_func_00237818(mat, mat, (((float) Xi_func_0016AD94() * 6.283185124397278f) / 255.0f) - 3.141592562198639f);
+    Xpp_func_00237830(mat, mat, (((float) Xi_func_0016AD94() * 6.283185124397278f) / 255.0f) - 3.141592562198639f);
+    float x = M2C_FIELD(arg0, float *, 0x40) + mat[12];
+    float y = mat[13] + M2C_FIELD(arg0, float *, 0x44);
+    float z = M2C_FIELD(arg0, float *, 0x48) + mat[14];
+    M2C_FIELD(arg0, float *, 0x30) = x;
+    M2C_FIELD(arg0, float *, 0x34) = y;
+    M2C_FIELD(arg0, float *, 0x38) = z;
+    M2C_FIELD(arg0, int *, 0x5C) = Xi_func_0016AD94();
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_0017A410);
+#endif
 
 extern "C" int EffCloud1__vfunc_05(int arg0)
 {
