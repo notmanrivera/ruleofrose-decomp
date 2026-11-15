@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int X_func_001E71FC(int, int, int, int, int, int, int, int, int) asm("func_001E71FC");
+extern "C" int Xii___builtin_new(int) asm("__builtin_new");
+extern "C" int Xiii_func_001E7724(int, int) asm("func_001E7724");
+extern "C" int Xiii_func_001E7D7C_2(int, int) asm("func_001E7D7C");
+extern "C" int Xfunc_001F0434(int, unsigned int, int, int, float, float, float, int, int) asm("func_001F0434");
 extern "C" void Xv_func_001CFE78(int, unsigned int, int) asm("func_001CFE78");
 extern "C" int Xiu_func_001EE7F0(unsigned int, unsigned short, int, float, float, int, float) asm("func_001EE7F0");
 extern "C" void Xv_setActorRot__9MagSystemiPCf(int, int, int) asm("setActorRot__9MagSystemiPCf");
@@ -969,7 +974,22 @@ block_4:
     return var_v0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0E90);
+extern "C" void func_001F0E90(unsigned int arg0, int arg1, float fparg0)
+{
+    int *slot;
+    int temp_v0_2;
+
+    slot = (int *)(Xiiu_func_001D2B8C((int)&D_007812C0, arg0) + 0x3D8);
+    if (Xiii_func_001E7D7C_2((int)&D_007A3D80, *slot) != 0) {
+        Xiii_func_001E7724((int)&D_007A3D80, *slot);
+        *slot = -1;
+    }
+    if (fparg0 != 0.0f) {
+        temp_v0_2 = Xii___builtin_new(0x80);
+        Xfunc_001F0434(temp_v0_2, arg0, arg1, -1, fparg0, 32769.0f, 1.0f, 1, 1);
+        X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0_2, 0, (int)slot, 0x11);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF10);
 
