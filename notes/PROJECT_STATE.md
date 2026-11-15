@@ -149,6 +149,8 @@ Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
 | `xerpi/libvita2d` | Posible para la UI en Vita; sin cambios desde 2022, vitaGL cubre lo mismo |
 | Scripts de Noesis | No hay scripts públicos para Rule of Rose (búsqueda sin resultados) |
 | `ran-j/PS2Recomp` | **En uso su base de firmas del SDK** (vía `tools/sce_symbols.py`). Su recompilador estático queda como opción para arrancar el port antes de terminar la decompilación |
+| `N64Recomp/N64Recomp` | Mismo enfoque para N64 (el port de Zelda 64). Idea para nosotros: un port híbrido, todo el juego recompilado y cada función decompilada sustituyendo a la recompilada. `tools/export_recomp.py` da a PS2Recomp nuestro mapa de funciones; PS2Recomp es GPL-3.0 y experimental (GS/VU lentos) |
+| `n64decomp/sm64` | Decomp de referencia: de ella vienen `include/target.h` (TARGET_PS2/TARGET_PC), `tools/host_check.py` y la idea de una compilación NON_MATCHING jugable |
 | `jhuapl/codecut` | No: guarda el archivo de cada función en el *Namespace* de Ghidra, que usamos para las clases C++; nuestras pistas (asserts + orden de `.rodata`) son más exactas que su heurística |
 | `astrelsky/ghidra_MIPSR5900` | Archivado (2020); reemplazado por ghidra-emotionengine-reloaded |
 | `Rinnegatamante/vitaGL` | Sí, en la etapa Vita: capa OpenGL sobre sceGxm, muy activa |

@@ -114,6 +114,8 @@ tags functions with their source files (about a minute). Open the project with
 | `src/`, `include/ror.h` | Decompiled C++ (compiled from `src/` so `__FILE__` matches) and shared definitions |
 | `tools/split_files.py` | Infers where each original file starts in `.text`/`.rodata` → `config/splits.tsv` |
 | `tools/sce_symbols.py` | Names SDK functions with PS2Recomp's signature database (downloaded to `build/cache`, GPL, not committed) |
+| `tools/export_recomp.py` | Function map (8,963 functions from the matching ELF, real names where known) and config for the PS2Recomp static recompiler, into `build/recomp/` |
+| `tools/host_check.py` | Checks every source with a modern g++ and clang++ for a 32-bit PC (`TARGET_PC`), against `config/host_check.tsv` |
 | `config/` | splat config (generated), `splits.tsv` (generated file boundaries), `splits_manual.tsv` (hand-made boundaries/names with evidence), manual symbol overrides, extra linker script |
 | `docker/` | Shared build image: all EE-GCC 2.9x builds, binutils, splat; `ee-cc` compiler front end |
 | `include/` | splat's assembler macros and `INCLUDE_ASM` header |
