@@ -509,7 +509,7 @@ extern "C" void func_001D8EA8(int arg0)
 
 // NON_MATCHING: 16/58 differ, 2 relocs differ, 8 edits
 #ifdef NON_MATCHING
-typedef unsigned int u_long128_d8f04 __attribute__((mode(TI)));
+typedef u_long128 u_long128_d8f04;
 extern "C" void func_001D8F04(int arg0, u_long128_d8f04 *arg1)
 {
     int temp_a3;
@@ -1139,7 +1139,7 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBB38);
 
 // NON_MATCHING: 44/56 differ, 1 reloc differs (size 0xE0, game 0xE8), 30 edits
 #ifdef NON_MATCHING
-typedef unsigned int u_long128_dbb74 __attribute__((mode(TI)));
+typedef u_long128 u_long128_dbb74;
 typedef float Vec4_dbb74[4] __attribute__((aligned(16)));
 struct MapBounds_dbb74 {
     float unk0;
@@ -1176,7 +1176,7 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBB74);
 
 // NON_MATCHING: 31/34 differ, 1 reloc differs (size 0x88, game 0x94), 29 edits
 #ifdef NON_MATCHING
-typedef unsigned int u_long128_dbc5c __attribute__((mode(TI)));
+typedef u_long128 u_long128_dbc5c;
 union Vec4_dbc5c {
     u_long128_dbc5c q;
     float f[4];
@@ -1235,7 +1235,7 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBD90);
 
 // NON_MATCHING: 61/66 differ, 5 relocs differ (size 0x108, game 0x100), 43 edits
 #ifdef NON_MATCHING
-typedef unsigned int u_long128_dbdf0 __attribute__((mode(TI)));
+typedef u_long128 u_long128_dbdf0;
 struct GamMan_dbdf0 {
     unsigned char pad0[0x21F4C];
     unsigned int m_sysFlg2;
