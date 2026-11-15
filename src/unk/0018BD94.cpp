@@ -398,7 +398,38 @@ INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018D7EC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018DAFC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018DF20);
+extern "C" void func_0018DF20(int arg0, int arg1)
+{
+    int temp_a1;
+    int temp_v0;
+    int temp_v0_2;
+
+    if (M2C_FIELD(arg1, int *, 0x10) == 0) {
+        return;
+    }
+    switch (M2C_FIELD(arg1, int *, 0x10)) {
+    case 1:
+    case 3:
+    case 4:
+    case 5:
+        temp_a1 = M2C_FIELD(arg1, int *, 0x10C);
+        if ((temp_a1 != -1) && (M2C_FIELD(arg1, int *, 0x130) != 0) && (Xiii_func_0018F734(arg0 + 8, temp_a1) != 0)) {
+            temp_v0 = M2C_FIELD(arg1, int *, 0x120);
+            if (temp_v0 <= 0) {
+                temp_v0_2 = M2C_FIELD(arg1, int *, 0x11C) + M2C_FIELD(arg1, int *, 0x124);
+                M2C_FIELD(arg1, int *, 0x11C) = temp_v0_2;
+                M2C_FIELD(arg1, int *, 0x120) = M2C_FIELD(arg1, int *, 0x130);
+                if (temp_v0_2 >= M2C_FIELD(arg1, int *, 0x12C)) {
+                    M2C_FIELD(arg1, int *, 0x130) = 0;
+                    return;
+                }
+            } else {
+                M2C_FIELD(arg1, int *, 0x120) = temp_v0 - 1;
+            }
+        }
+        break;
+    }
+}
 
 extern "C" int func_0018DFDC(int arg0, int arg1)
 {
