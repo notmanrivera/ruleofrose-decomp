@@ -824,7 +824,37 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamtrg", D_002FC6E8);
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamtrg", D_002FC700);
 
+// NON_MATCHING: 1 reloc differs, 1 edits
+#ifdef NON_MATCHING
+extern "C" int func_001DB8E8(int arg0, unsigned int arg1, int arg2)
+{
+    int var_v0;
+
+    if (Xii_func_001C6C28((int)&D_007812C0) != -1) {
+        if (arg2 == -1) {
+            var_v0 = Xiii_func_0017EA44((int)&D_00298EE0, Xii_func_001C6C28((int)&D_007812C0));
+        } else {
+            var_v0 = Xiii_func_0017EA44((int)&D_00298EE0, arg2);
+        }
+        if (var_v0 != 0) {
+            switch (arg1) {
+            case 0:
+                return M2C_FIELD(var_v0, int *, 8);
+            case 2:
+                return M2C_FIELD(var_v0, int *, 0x10);
+            case 3:
+                return M2C_FIELD(var_v0, int *, 0x14);
+            case 1:
+            case 4:
+                return M2C_FIELD(var_v0, int *, 0xC);
+            }
+        }
+    }
+    return D_002D8F60;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB8E8);
+#endif
 
 extern "C" float func_001DB9C4()
 {
