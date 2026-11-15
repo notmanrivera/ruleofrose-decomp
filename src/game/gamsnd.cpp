@@ -1,5 +1,34 @@
 #include "include_asm.h"
 #include "utl/filereader.h"
+struct Vec5250 { // 5250
+    float x, y, z, w; // 5250
+}; // 5250
+struct Ent5250 { // 5250
+    int unk00; // 5250
+    int unk04; // 5250
+    int unk08; // 5250
+    char pad0C[8]; // 5250
+    int unk14; // 5250
+    int unk18; // 5250
+    char pad1C[0xC]; // 5250
+}; // 5250
+struct Sub5250 { // 5250
+    Ent5250 *arr; // 5250
+}; // 5250
+struct Obj5250 { // 5250
+    int unk0; // 5250
+    char pad4[0xD40 - 4]; // 5250
+    Sub5250 sub; // 5250
+}; // 5250
+extern "C" { // 5250
+extern int X_5250_D_007B2580 asm("D_007B2580"); // 5250
+int X_5250_snprintf(char *, unsigned int, const char *, ...) asm("snprintf"); // 5250
+int X_5250_func_001E4C1C(Obj5250 *, int, void **) asm("func_001E4C1C"); // 5250
+void X_5250_func_001E6E00(int, Vec5250 *, void *, int *, int *, float) asm("func_001E6E00"); // 5250
+int X_5250_func_0017FD58(int *, char *, int, int, int) asm("func_0017FD58"); // 5250
+void X_5250_func_00180078(int *, int, int) asm("func_00180078"); // 5250
+void X_5250_func_0017FF58(int *, float, int, int, int, int) asm("func_0017FF58"); // 5250
+} // 5250
 struct Ent6570 { // 6570
     unsigned int flags; // 6570
     char pad4[0x10]; // 6570
@@ -2039,7 +2068,41 @@ extern "C" int func_001E50C8(int arg0, int arg1, int arg2, int arg3, float fparg
 
 // ---- end
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5250);
+extern "C" int func_001E5250(Obj5250 *arg0, int arg1, int arg2, Vec5250 *arg3, int arg4, int arg5) {
+    char buf[0x40];
+    int sp40;
+    int sp44;
+    void *sp48;
+    int s1;
+
+    X_5250_snprintf(buf, 0x40, "s%06d.str", arg1);
+    if (arg3 != 0) {
+        if (!X_5250_func_001E4C1C(arg0, arg1, &sp48)) {
+            return -1;
+        }
+        Vec5250 v;
+        v.x = arg3->x;
+        v.y = arg3->y;
+        v.z = arg3->z;
+        v.w = arg3->w;
+        X_5250_func_001E6E00(arg0->unk0, &v, sp48, &sp40, &sp44, 100.0f);
+        s1 = X_5250_func_0017FD58(&X_5250_D_007B2580, buf, arg1 > 0x1869F, arg2, (arg5 >> 8) & 1);
+        X_5250_func_00180078(&X_5250_D_007B2580, s1, 0);
+        X_5250_func_0017FF58(&X_5250_D_007B2580, -1024.0f, s1, sp40, sp44, 0);
+    } else {
+        s1 = X_5250_func_0017FD58(&X_5250_D_007B2580, buf, arg1 > 0x1869F, arg2, (arg5 >> 8) & 1);
+        sp40 = 0x80;
+        sp44 = 0x80;
+    }
+    Sub5250 *sub = &arg0->sub;
+    int off = s1 * sizeof(Ent5250);
+    ((Ent5250 *)((char *)sub->arr + off))->unk00 = (arg4 != 0) ? (arg5 | 9) : (arg5 | 1);
+    ((Ent5250 *)((char *)sub->arr + off))->unk14 = arg1;
+    ((Ent5250 *)((char *)sub->arr + off))->unk18 = s1;
+    ((Ent5250 *)((char *)sub->arr + off))->unk04 = sp40;
+    ((Ent5250 *)((char *)sub->arr + off))->unk08 = sp44;
+    return s1;
+}
 
 extern "C" int func_001E5428(Obj5428 *arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, float fparg0)
 {
