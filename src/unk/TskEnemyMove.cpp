@@ -1,4 +1,18 @@
 #include "include_asm.h"
+extern "C" int X_2874_DogActor(void *, int, int, float, int, int) asm("func_0010B1B0__8DogActoriifii");
+struct S_00202874 {
+    char pad00[0x28];
+    void *f28;      // 0x28
+    int f2C;        // 0x2C
+    char pad30[0x1C];
+    float f4C;      // 0x4C
+    char pad50[0x0C];
+    int f5C;        // 0x5C
+    char pad60[0x10];
+    int f70;        // 0x70
+    char pad74[0xA0C];
+    int fA80;       // 0xA80
+};
 struct v94_1FF25C { char pad[148]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16(); virtual void call(void *, int); };
 extern "C" void X_2F60_180EA8(void *, int) asm("func_00180EA8");
 extern "C" void X_2F10_180EA8(void *, int) asm("func_00180EA8");
@@ -215,7 +229,25 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202380);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202638);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202874);
+extern "C" void func_00202874(struct S_00202874 *arg0, float fparg0)
+{
+    int temp_s1;
+    int f70 = arg0->f70;
+    int f5C = arg0->f5C;
+
+    if (fparg0 > 0.0f) {
+        temp_s1 = (f70 != 0) ? 0xF : 9;
+        arg0->fA80 = 0;
+    } else {
+        temp_s1 = (f70 != 0) ? 0xE : 8;
+        arg0->fA80 = 1;
+    }
+    if (f5C != temp_s1) {
+        X_2874_DogActor(arg0->f28, temp_s1, 1, arg0->f4C, -1, -1);
+        arg0->f5C = temp_s1;
+    }
+    arg0->f2C = 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202900);
 
