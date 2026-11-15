@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void X_2F60_180EA8(void *, int) asm("func_00180EA8");
 extern "C" void X_2F10_180EA8(void *, int) asm("func_00180EA8");
 extern "C" void X_2F10_1640AC(void *, int, int) asm("func_001640AC");
 struct S_002006B0 {
@@ -226,7 +227,20 @@ extern "C" void func_00202F10(void *arg0)
     X_2F10_1640AC(&D_007B2140, M2C_FIELD(arg0, int *, 8), 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202F60);
+extern "C" void func_00202F60(void *arg0)
+{
+    void *temp_a0;
+
+    M2C_FIELD(arg0, int *, 0xAC4) = 1;
+    X_2F60_180EA8(&D_007B2580, M2C_FIELD(arg0, int *, 0xAB8));
+    if (M2C_FIELD(arg0, int *, 4) == 0) {
+        return;
+    }
+    temp_a0 = M2C_FIELD(arg0, void **, 0x28);
+    if (temp_a0 != 0) {
+        M2C_FIELD(temp_a0, float *, 0x1E8) = 9.999999583953922e-08f;
+    }
+}
 
 extern "C" void func_00202FBC(int arg0)
 {
