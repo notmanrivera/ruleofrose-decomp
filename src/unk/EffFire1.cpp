@@ -528,7 +528,55 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F2580);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F25C0);
 
+// NON_MATCHING: 26/67 differ, 2 relocs differ, 17 edits
+#ifdef NON_MATCHING
+ #include "game/gamtrg.h"
+ #include "game/gamman.h"
+extern char D_007B2140[];
+extern "C" int X_26B4_func_00163BE4(void *, int) asm("func_00163BE4");
+extern "C" int X_26B4_func_00163B20(void *, int) asm("func_00163B20");
+extern "C" int func_001726B4()
+{
+    GamList<ACHRstat *> *list = D_007812C0.getAchrListPtr();
+    GamList<ACHRstat *>::iterator last = list->end();
+    for (GamList<ACHRstat *>::iterator it = list->begin(); it != last; ++it) {
+        int oid = (*it)->getOID();
+        if (((unsigned int)oid >> 23 & 0x1F) == 2) {
+            switch (X_26B4_func_00163BE4(D_007B2140, oid)) {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                if (X_26B4_func_00163B20(D_007B2140, oid) != 4) {
+                    return 1;
+                }
+                break;
+            case 4:
+                if (X_26B4_func_00163B20(D_007B2140, oid) != 6) {
+                    return 1;
+                }
+                break;
+            case 5:
+                if (X_26B4_func_00163B20(D_007B2140, oid) == 6) {
+                    continue;
+                }
+                return 1;
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+                break;
+            default:
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_001726B4);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_001727EC);
 
