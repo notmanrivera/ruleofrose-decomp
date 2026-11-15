@@ -1,5 +1,15 @@
 #include "include_asm.h"
 #include "game/gamman.h"
+struct StatElem16_7C20 {
+    unsigned int m_unk00;
+    int m_pad[3];
+};
+struct GamMan_7C20 {
+};
+typedef int (GamMan_7C20::*StatCb_7C20)(unsigned int, unsigned int);
+extern int D_002D8F58;
+extern int D_006E9840;
+extern "C" int X_func_00119090__9MagSystem(void *) asm("func_00119090__9MagSystem");
 struct StatElem16 {
     int m_unk00;
     int m_pad[3];
@@ -268,7 +278,33 @@ extern "C" int func_001D7B08(void *arg0, unsigned int arg1, int arg2)
     return **p;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D7C20);
+extern "C" int func_001D7C20(void *arg0, int arg1, unsigned int arg2, unsigned int arg3, void *arg4) {
+    GamList<StatElem16_7C20>::iterator it;
+    GamList<StatElem16_7C20>::iterator last;
+    GamList<StatElem16_7C20> *list = *(GamList<StatElem16_7C20> **)((char *)arg0 + 0x2246C);
+
+    (void)arg1;
+    it = list->begin();
+    last = list->end();
+    if (list->size() != 0) {
+        D_002D8F58 = 0;
+        while (it != last) {
+            if (D_002D8F58++ >= 0x401) {
+                return 0;
+            }
+            unsigned int id = (*it).m_unk00;
+            if (id != arg2 && (arg4 == 0 || id != (unsigned int)(unsigned long)arg4)) {
+                if (((id >> 23) & 0x1F) != 1 || X_func_00119090__9MagSystem(&D_006E9840) != 0xD) {
+                    if ((((GamMan_7C20 *)arg0)->**(StatCb_7C20 *)((char *)arg0 + 0x225D0))((*it).m_unk00, arg3) != 0) {
+                        return 1;
+                    }
+                }
+            }
+            ++it;
+        }
+    }
+    return 0;
+}
 
 extern "C" float func_001D7DE4(void *arg0, void *arg1)
 {
