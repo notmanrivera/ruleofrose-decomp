@@ -1,4 +1,22 @@
 #include "include_asm.h"
+struct Ent5C40 {
+    int unk00;
+    int unk04;
+    int unk08;
+    char pad0C[0x14 - 0x0C];
+    int unk14;
+    char pad18[0x28 - 0x18];
+};
+struct Sub5C40 {
+    Ent5C40 *arr;
+};
+struct Obj5C40 {
+    char pad0[0xD40];
+    Sub5C40 sub;
+};
+extern int X_5C40_D_007B2580 asm("D_007B2580");
+extern "C" int X_5C40_func_001800D0(int *, int) asm("func_001800D0");
+extern "C" void X_5C40_func_0017FF58(int *, int, int, int, int, float) asm("func_0017FF58");
 struct Ent6CAC {
     unsigned int flags;
     char pad4[0x10];
@@ -994,7 +1012,24 @@ extern "C" int func_001E5BE0(Obj5BE0 *arg0, int arg1)
     return ((Ent5BE0 *)((char *)sub->arr + off))->unk14;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5C40);
+extern "C" int func_001E5C40(Obj5C40 *arg0, int arg1, int arg2, int arg3, int arg4)
+{
+    if (arg2 < 0) {
+        return 0;
+    }
+    if (X_5C40_func_001800D0(&X_5C40_D_007B2580, arg2) == -1) {
+        return 0;
+    }
+    Sub5C40 *sub = &arg0->sub;
+    int off = arg2 * sizeof(Ent5C40);
+    if (((Ent5C40 *)((char *)sub->arr + off))->unk14 != arg1) {
+        return 0;
+    }
+    ((Ent5C40 *)((char *)sub->arr + off))->unk04 = arg3;
+    ((Ent5C40 *)((char *)sub->arr + off))->unk08 = arg4;
+    X_5C40_func_0017FF58(&X_5C40_D_007B2580, arg2, arg3, arg4, 0, -1024.0f);
+    return 1;
+}
 
 extern "C" int func_001E5D1C(Obj5D1C *arg0, int arg1, int arg2)
 {
