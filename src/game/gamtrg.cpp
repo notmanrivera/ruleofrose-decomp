@@ -1,4 +1,62 @@
 #include "include_asm.h"
+extern "C" void *X_memset_de6fc(void *, int, __SIZE_TYPE__) asm("memset");
+struct Elem_de6fc {
+    int key;
+    int vals[8];
+};
+struct Node_de6fc {
+    Node_de6fc *m_prev;
+    Node_de6fc *m_next;
+    Elem_de6fc m_data __attribute__((aligned(16)));
+};
+struct Chain_de6fc {
+    Node_de6fc m_head;
+    int m_num;
+    void push_back(Node_de6fc *theNode) {
+        if (m_num == 0) {
+            m_head.m_next = theNode;
+            theNode->m_prev = &m_head;
+        } else {
+            m_head.m_prev->m_next = theNode;
+            theNode->m_prev = m_head.m_prev;
+        }
+        theNode->m_next = &m_head;
+        m_head.m_prev = theNode;
+        ++m_num;
+    }
+    Node_de6fc *pop_back() {
+        Node_de6fc *node = m_head.m_prev;
+        Node_de6fc *prev = node->m_prev;
+        m_head.m_prev = prev;
+        prev->m_next = &m_head;
+        --m_num;
+        return node;
+    }
+};
+struct Iter_de6fc {
+    Node_de6fc *m_node;
+    Iter_de6fc() : m_node(0) {}
+    Iter_de6fc(Node_de6fc *n) : m_node(n) {}
+    Iter_de6fc(const Iter_de6fc &o) : m_node(o.m_node) {}
+    Elem_de6fc &operator*() const { return m_node->m_data; }
+    Iter_de6fc &operator++() { m_node = m_node->m_next; return *this; }
+    bool operator!=(const Iter_de6fc &o) const { return m_node != o.m_node; }
+};
+struct Pool_de6fc {
+    Chain_de6fc m_free;
+    Chain_de6fc m_used;
+    Iter_de6fc begin() { return Iter_de6fc(m_used.m_head.m_next); }
+    Iter_de6fc end() { return Iter_de6fc(&m_used.m_head); }
+    void push_back(const Elem_de6fc &data) {
+        Node_de6fc *node = m_free.pop_back();
+        node->m_data = data;
+        m_used.push_back(node);
+    }
+};
+struct Mgr_de6fc {
+    unsigned char pad[0x18B40];
+    Pool_de6fc *m_pool;
+};
 struct Vec2_de8ac {
     float x, y;
 } __attribute__((aligned(16)));
@@ -2007,7 +2065,37 @@ extern "C" void func_001DE5DC(Mgr_de5dc *arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DE6FC);
+extern "C" void func_001DE6FC(Mgr_de6fc *arg0, int arg1, unsigned int arg2)
+{
+    Iter_de6fc it;
+    Iter_de6fc last;
+    Elem_de6fc elem;
+
+    if (arg2 & 0x80000000) {
+        arg2 |= 0x80000000;
+    }
+    it = arg0->m_pool->begin();
+    last = arg0->m_pool->end();
+    while (it != last) {
+        if ((*it).key == arg1) {
+            int i = 1;
+            do {
+                if ((*it).vals[i] == (int)arg2) {
+                    return;
+                }
+                if ((*it).vals[i] == 0) {
+                    (*it).vals[i] = (int)arg2;
+                    return;
+                }
+            } while (i++ < 8);
+        }
+        ++it;
+    }
+    X_memset_de6fc(&elem, 0, sizeof(elem));
+    elem.key = arg1;
+    elem.vals[0] = (int)arg2;
+    arg0->m_pool->push_back(elem);
+}
 
 extern "C" bool func_001DE8AC(int arg0, const float *arg1, const Vec2_de8ac *const *arg2)
 {
