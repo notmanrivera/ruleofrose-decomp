@@ -1,4 +1,12 @@
 #include "include_asm.h"
+struct TskVec4_ee954 {
+    float f[4];
+};
+extern "C" float X_func_001333E4_ee954(int, int, int) asm("func_001333E4");
+extern "C" void X_func_001331F4_ee954(int, int, int, int, int, int, float) asm("func_001331F4");
+extern "C" int X_func_00118E6C_ee954(void *, int, float, float, TskVec4_ee954 *, float *, TskVec4_ee954 *) asm("func_00118E6C__9MagSystemiffR9DogVectorPfP9DogVector");
+extern "C" float X_func_001F6C14_ee954(int, float) asm("func_001F6C14");
+extern "C" int X_func_001F59B4_ee954(unsigned int, int, int, int, int, float, float) asm("func_001F59B4");
 extern "C" void X_func_0018741C_50b8(int) asm("func_0018741C");
 extern "C" int X_func_00187464_50b8(int) asm("func_00187464");
 extern "C" void X_func_001874F4_50b8(int, int, int, int) asm("func_001874F4");
@@ -979,7 +987,29 @@ extern "C" int func_001EE7F0(unsigned int arg0, unsigned short arg1, int *arg2, 
     return (int)(ratio * time * 25.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EE954);
+extern "C" void func_001EE954(unsigned int arg0, unsigned short arg1, int *arg2, int arg3, int arg4, float f0, float f1)
+{
+    TskVec4_ee954 vec;
+    int off = 0x12540;
+    char *sys = (char *)&D_006E9840;
+    int scene = (int)(sys + off);
+    float time;
+    float dist;
+    float ratio;
+
+    time = X_func_001333E4_ee954(scene, arg1, arg3);
+    X_func_001331F4_ee954(scene, arg1, arg3, 0, 0x100, 0, 0.016666694f);
+    X_func_00118E6C_ee954(sys, arg1, 0.0f, time * 50.0f, &vec, &f0, 0);
+    dist = sqrtf(vec.f[0] * vec.f[0] + vec.f[2] * vec.f[2]);
+    if (dist <= 0.0f || arg4 == 0) {
+        dist = 0.0f;
+    } else {
+        dist = X_func_001F6C14_ee954(arg4, f1 / dist);
+    }
+    if (*arg2 == 0) {
+        *arg2 = X_func_001F59B4_ee954(arg0, arg3, -1, 0x100, 0, dist, 32769.0f);
+    }
+}
 
 extern "C" void func_001EEAEC(int arg0, unsigned int arg1)
 {
