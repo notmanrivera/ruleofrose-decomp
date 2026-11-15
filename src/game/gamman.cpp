@@ -975,7 +975,33 @@ do_add:
     return total;
 }
 
+// NON_MATCHING: 32/32 differ, 2 relocs differ (size 0x80, game 0x8C), 31 edits
+#ifdef NON_MATCHING
+struct C0534Entry { unsigned short m_start; unsigned short m_unk02; unsigned short m_num; unsigned short m_unk06; };
+extern C0534Entry D_002B8DE8[] asm("D_002B8DE8");
+extern "C" int func_001C0534(int arg0, unsigned int arg1)
+{
+    unsigned int key = arg1 & 0xFFFF;
+    int total = 0;
+
+    if (D_002B8DE8[1].m_start != 0) {
+        int i = 1;
+        do {
+            if (key >= D_002B8DE8[i].m_start) {
+                unsigned short start = D_002B8DE8[i].m_start;
+                if ((int)key < start + D_002B8DE8[i].m_num) {
+                    return total + (key - start);
+                }
+            }
+            total = (total + D_002B8DE8[i].m_num) & 0xFFFF;
+            i++;
+        } while (D_002B8DE8[i].m_start != 0);
+    }
+    return -1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C0534);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C05C0);
 
