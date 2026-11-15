@@ -1,4 +1,7 @@
 #include "include_asm.h"
+struct Vec2_de8ac {
+    float x, y;
+} __attribute__((aligned(16)));
 struct Elem_dddbc {
     unsigned int u0[11];
     unsigned int flg2C;
@@ -2006,7 +2009,43 @@ extern "C" void func_001DE5DC(Mgr_de5dc *arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DE6FC);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DE8AC);
+extern "C" bool func_001DE8AC(int arg0, const float *arg1, const Vec2_de8ac *const *arg2)
+{
+    int count = 0;
+    while (arg2[1] != 0) {
+        const Vec2_de8ac *p0 = arg2[0];
+        const Vec2_de8ac *p1 = arg2[1];
+        Vec2_de8ac v0, v1, v2;
+        if (p0->y == p1->y && p0->y == arg1[2]) {
+            if (p0->x < p1->x && p0->x < arg1[0]) {
+                count++;
+            } else if (p1->x < p0->x && p1->x < arg1[0]) {
+                count++;
+            }
+        } else if (p0->y < p1->y && p0->y <= arg1[2] && arg1[2] < p1->y) {
+            v0.x = p1->x - p0->x;
+            v0.y = p1->y - p0->y;
+            v1.x = arg1[0] - p0->x;
+            v1.y = arg1[2] - p0->y;
+            if ((v0.x * v1.y - v0.y * v1.x) > 0.0f) {
+                count++;
+            }
+        } else if (p1->y < p0->y && p1->y < arg1[2] && arg1[2] <= p0->y) {
+            v0.x = p0->x - p1->x;
+            v0.y = p0->y - p1->y;
+            v2.x = arg1[0] - p1->x;
+            v2.y = arg1[2] - p1->y;
+            if ((v0.x * v2.y - v0.y * v2.x) > 0.0f) {
+                count++;
+            }
+        }
+        arg2++;
+    }
+    if (count & 1) {
+        return true;
+    }
+    return false;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DEA40);
 
