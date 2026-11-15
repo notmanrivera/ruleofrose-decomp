@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern char D_006FBD80[];
+extern "C" void X_func_001D83C0_v(void *, int) asm("func_001D83C0");
+extern "C" void func_0017C340(void *, void *, void *, int, float, float);
 extern "C" float func_0017DD5C(float, void *, int, void *);
 extern "C" int Xiiiiii_func_001D81F0(int, int, int, int, int) asm("func_001D81F0");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
@@ -43,7 +46,14 @@ extern "C" void func_001D7EB8()
 
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D7ED4);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D7F48);
+extern "C" int func_001D7F48(void *arg0, void *arg1, int arg2)
+{
+    int sp[4];
+    int off = 0x8542C;
+    X_func_001D83C0_v(arg0, arg2);
+    func_0017C340(D_006FBD80 + off, arg1, sp, 0, 40.0f, 0.0f);
+    return sp[arg2];
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D7FB8);
 
