@@ -1,4 +1,27 @@
 #include "include_asm.h"
+struct Sub_FADC {
+    int m_00;
+    inline void func0() {
+        int v = m_00;
+        if (v >= 0 && v <= 3) {
+            m_00 = 0;
+        } else if (v >= 4 && v <= 7) {
+            m_00 = 4;
+        } else if (v >= 8 && v <= 11) {
+            m_00 = 8;
+        }
+    }
+    inline void func1() {
+        int v = m_00;
+        if (v >= 0 && v <= 3) {
+            m_00 = 3;
+        } else if (v >= 4 && v <= 7) {
+            m_00 = 7;
+        } else if (v >= 8 && v <= 11) {
+            m_00 = 11;
+        }
+    }
+};
 extern "C" int X_func_0019A20C_9A08(void *, int) asm("func_0019A20C");
 struct Elem20_9A08 {
     char *unk00;
@@ -715,7 +738,17 @@ extern "C" int func_0019E43C(int arg0, int arg1, int arg2)
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019E474);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019FADC);
+extern "C" void func_0019FADC(char *arg0, int arg1)
+{
+    switch (arg1) {
+    case 0:
+        ((Sub_FADC *)(arg0 + 0xC))->func0();
+        break;
+    case 1:
+        ((Sub_FADC *)(arg0 + 0xC))->func1();
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019FB88);
 
