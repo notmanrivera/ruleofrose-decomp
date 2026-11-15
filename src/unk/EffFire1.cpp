@@ -202,3 +202,10 @@ extern "C" int EffFog3WeakUp__vfunc_05()
     }
     return 0;
 }
+
+INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F2698);
+INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F26A8);
+INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F26B8);
+INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F26C8);
+INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F26D8);
+INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F26E8);

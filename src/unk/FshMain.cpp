@@ -401,3 +401,6 @@ extern "C" void FshOutDead__vfunc_04(int arg0)
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutDead__vfunc_02);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/FshMain", D_002F0D08);
+INCLUDE_RODATA("asm/nonmatchings/unk/FshMain", D_002F0D18);

@@ -108,17 +108,17 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot2__vfunc_02);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot2__vfunc_05);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F2698);
+// D_002F2698: the end of unk/EffFire1's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F26A8);
+// D_002F26A8: the end of unk/EffFire1's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F26B8);
+// D_002F26B8: the end of unk/EffFire1's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F26C8);
+// D_002F26C8: the end of unk/EffFire1's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F26D8);
+// D_002F26D8: the end of unk/EffFire1's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F26E8);
+// D_002F26E8: the end of unk/EffFire1's .rodata now (config/splits_manual.tsv)
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F2700);
 

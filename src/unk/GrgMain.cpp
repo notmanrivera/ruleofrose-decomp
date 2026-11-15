@@ -148,23 +148,23 @@ extern "C" void GrgOutDisappear__vfunc_02(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgOutDisappear__vfunc_03);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/GrgMain", D_002EFBC8);
+// D_002EFBC8: the end of unk/NorOutAttack's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/GrgMain", D_002EFBD8);
+// D_002EFBD8: the end of unk/NorOutAttack's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/GrgMain", D_002EFBE8);
+// D_002EFBE8: the end of unk/NorOutAttack's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/GrgMain", D_002EFBF8);
+// D_002EFBF8: the end of unk/NorOutAttack's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/GrgMain", D_002EFC08);
+// D_002EFC08: the end of unk/NorOutAttack's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/GrgMain", D_002EFC18);
+// D_002EFC18: the end of unk/NorOutAttack's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/GrgMain", D_002EFC28);
+// D_002EFC28: the end of unk/NorOutAttack's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/GrgMain", D_002EFC38);
+// D_002EFC38: the end of unk/NorOutAttack's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/GrgMain", D_002EFC48);
+// D_002EFC48: the end of unk/NorOutAttack's .rodata now (config/splits_manual.tsv)
 
 INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", func_00154D78);
 

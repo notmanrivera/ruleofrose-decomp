@@ -132,9 +132,9 @@ extern "C" int func_00158EB4(int arg0)
 }
 
 
-INCLUDE_RODATA("asm/nonmatchings/unk/GotMain", D_002F0D08);
+// D_002F0D08: the end of unk/FshMain's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/GotMain", D_002F0D18);
+// D_002F0D18: the end of unk/FshMain's .rodata now (config/splits_manual.tsv)
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00158F2C);
 
@@ -333,3 +333,7 @@ extern "C" void GotOutTest__vfunc_02(int arg0)
 
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", GotOutTest__vfunc_03);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/GotMain", D_002F0D68);
+INCLUDE_RODATA("asm/nonmatchings/unk/GotMain", D_002F0D78);
+INCLUDE_RODATA("asm/nonmatchings/unk/GotMain", D_002F0D88);

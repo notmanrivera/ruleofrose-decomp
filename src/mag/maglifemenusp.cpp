@@ -39,35 +39,35 @@ extern "C" int MagLifeMenuSpecial__vfunc_11(MagMenuSp *self)
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifemenusp", MagLifeMenuSpecial__vfunc_12);
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ECEF8);
+// D_002ECEF8: the end of mag/maglifemenu's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ECF08);
+// D_002ECF08: the end of mag/maglifemenu's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ECF20);
+// D_002ECF20: the end of mag/maglifemenu's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ECF38);
+// D_002ECF38: the end of mag/maglifemenu's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ECF50);
+// D_002ECF50: the end of mag/maglifemenu's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ECF68);
+// D_002ECF68: the end of mag/maglifemenu's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ECF80);
+// D_002ECF80: the end of mag/maglifemenu's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ECF98);
+// D_002ECF98: the end of mag/maglifemenu's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ECFB0);
+// D_002ECFB0: the end of mag/maglifemenu's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ECFC8);
+// D_002ECFC8: the end of mag/maglifemenu's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ECFE0);
+// D_002ECFE0: the end of mag/maglifemenu's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ECFF8);
+// D_002ECFF8: the end of mag/maglifemenu's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ED010);
+// D_002ED010: the end of mag/maglifemenu's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ED028);
+// D_002ED028: the end of mag/maglifemenu's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ED040);
+// D_002ED040: the end of mag/maglifemenu's .rodata now (config/splits_manual.tsv)
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ED070);
 
@@ -127,3 +127,7 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifemenusp", MagLifeMenuSpecial2__vfunc_06)
 INCLUDE_ASM("asm/nonmatchings/mag/maglifemenusp", func_0012EEF0);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifemenusp", MagLifeMenuSpecial2__vfunc_01);
+
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ED148);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ED158);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ED170);

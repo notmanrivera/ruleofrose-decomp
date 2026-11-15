@@ -276,3 +276,8 @@ INCLUDE_RODATA("asm/nonmatchings/unk/MrtMain", D_002EF7A0);
 INCLUDE_RODATA("asm/nonmatchings/unk/MrtMain", D_002EF7A8);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MrtMain", D_002EF7B0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/MrtMain", D_002EF7B8);
+INCLUDE_RODATA("asm/nonmatchings/unk/MrtMain", D_002EF7C8);
+INCLUDE_RODATA("asm/nonmatchings/unk/MrtMain", D_002EF7D8);
+INCLUDE_RODATA("asm/nonmatchings/unk/MrtMain", D_002EF7E8);

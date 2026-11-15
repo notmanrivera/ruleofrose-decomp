@@ -158,13 +158,13 @@ extern "C" void ClrOutDeathUp__vfunc_02(int arg0)
 }
 
 
-INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF7B8);
+// D_002EF7B8: the end of unk/MrtMain's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF7C8);
+// D_002EF7C8: the end of unk/MrtMain's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF7D8);
+// D_002EF7D8: the end of unk/MrtMain's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF7E8);
+// D_002EF7E8: the end of unk/MrtMain's .rodata now (config/splits_manual.tsv)
 
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrOutDeathUp__vfunc_03);
 

@@ -313,3 +313,19 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifemenu", MagLifeMenuBoard3D__vfunc_12);
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ECEB8);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifemenu", MagLifeMenuBoard3D__vfunc_06);
+
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ECEF8);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ECF08);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ECF20);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ECF38);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ECF50);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ECF68);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ECF80);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ECF98);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ECFB0);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ECFC8);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ECFE0);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ECFF8);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ED010);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ED028);
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenu", D_002ED040);

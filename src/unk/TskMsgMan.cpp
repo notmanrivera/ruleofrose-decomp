@@ -333,9 +333,9 @@ extern "C" void TskMoveTypeGen__vfunc_06(int arg0, int arg1)
 extern "C" void TskMoveTypeGen__vfunc_05(void) {
 }
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDA88);
+// D_002FDA88: the end of unk/TskMtnMove's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDA98);
+// D_002FDA98: the end of unk/TskMtnMove's .rodata now (config/splits_manual.tsv)
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDAC0);
 

@@ -28,3 +28,5 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifetest", D_002ED408);
 INCLUDE_ASM("asm/nonmatchings/mag/maglifetest", live__11MagLifeTest);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifetest", MagLifeTest__vfunc_16);
+
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifetest", D_002ED478);

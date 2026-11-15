@@ -296,6 +296,6 @@ INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_00180168);
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_001801C8);
 
-INCLUDE_RODATA("asm/nonmatchings/snd/sndman", D_002F3148);
+// D_002F3148: the end of unk/WrdSrv's .rodata now (config/splits_manual.tsv)
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_00180230);

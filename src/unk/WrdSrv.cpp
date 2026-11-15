@@ -233,3 +233,4 @@ extern "C" void func_0017F0B0()
     X_func_0017F038(0, 0xFFFF);
 }
 
+INCLUDE_RODATA("asm/nonmatchings/unk/WrdSrv", D_002F3148);

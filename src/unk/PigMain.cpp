@@ -149,11 +149,11 @@ extern "C" int func_0015ACA0(int arg0)
 }
 
 
-INCLUDE_RODATA("asm/nonmatchings/unk/PigMain", D_002F0D68);
+// D_002F0D68: the end of unk/GotMain's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/PigMain", D_002F0D78);
+// D_002F0D78: the end of unk/GotMain's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/PigMain", D_002F0D88);
+// D_002F0D88: the end of unk/GotMain's .rodata now (config/splits_manual.tsv)
 
 INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015AD18);
 
@@ -369,3 +369,8 @@ extern "C" void PigOutTest__vfunc_02(int arg0)
 
 
 INCLUDE_ASM("asm/nonmatchings/unk/PigMain", PigOutTest__vfunc_03);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/PigMain", D_002F0DD8);
+INCLUDE_RODATA("asm/nonmatchings/unk/PigMain", D_002F0DE8);
+INCLUDE_RODATA("asm/nonmatchings/unk/PigMain", D_002F0DF8);
+INCLUDE_RODATA("asm/nonmatchings/unk/PigMain", D_002F0E08);

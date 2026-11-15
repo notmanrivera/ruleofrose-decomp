@@ -64,11 +64,11 @@ extern "C" void func_0012F080(MagFader *self)
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifefadekey", MagLifeFader__vfunc_02);
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifefadekey", D_002ED148);
+// D_002ED148: the end of mag/maglifemenusp's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifefadekey", D_002ED158);
+// D_002ED158: the end of mag/maglifemenusp's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifefadekey", D_002ED170);
+// D_002ED170: the end of mag/maglifemenusp's .rodata now (config/splits_manual.tsv)
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifefadekey", MagLifeFader__vfunc_06);
 

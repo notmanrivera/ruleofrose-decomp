@@ -52,7 +52,7 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131184);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001311BC);
 
-INCLUDE_RODATA("asm/nonmatchings/mag/magscene", D_002ED478);
+// D_002ED478: the end of mag/maglifetest's .rodata now (config/splits_manual.tsv)
 
 INCLUDE_RODATA("asm/nonmatchings/mag/magscene", D_002ED4A0);
 

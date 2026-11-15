@@ -285,3 +285,13 @@ extern "C" void NorOutTest__vfunc_02(int arg0)
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", NorOutTest__vfunc_03);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFBC8);
+INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFBD8);
+INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFBE8);
+INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFBF8);
+INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFC08);
+INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFC18);
+INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFC28);
+INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFC38);
+INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFC48);

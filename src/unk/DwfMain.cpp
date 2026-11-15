@@ -115,13 +115,13 @@ extern "C" int func_0015CE88(int arg0)
     return Xii_func_00165794((int) arg0);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfMain", D_002F0DD8);
+// D_002F0DD8: the end of unk/PigMain's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfMain", D_002F0DE8);
+// D_002F0DE8: the end of unk/PigMain's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfMain", D_002F0DF8);
+// D_002F0DF8: the end of unk/PigMain's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfMain", D_002F0E08);
+// D_002F0E08: the end of unk/PigMain's .rodata now (config/splits_manual.tsv)
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015CF30);
 

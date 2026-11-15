@@ -903,3 +903,6 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMtnMove", D_002FDA68);
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMtnMove", D_002FDA70);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E9614);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMtnMove", D_002FDA88);
+INCLUDE_RODATA("asm/nonmatchings/unk/TskMtnMove", D_002FDA98);
