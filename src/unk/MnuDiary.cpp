@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void X_func_001DC48C(void *, int, int, void *) asm("func_001DC48C");
 extern "C" int Xii_func_0019A780(int) asm("func_0019A780");
 extern "C" int Xiii_func_0018BCC0(int, int) asm("func_0018BCC0");
 extern "C" int Xii_func_0018741C(int) asm("func_0018741C");
@@ -374,7 +375,23 @@ extern "C" int func_0019AF08(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019AF34);
+extern "C" int func_0019AF34(int arg0, int arg1)
+{
+    struct { unsigned short sp0; } stack;
+    int temp_v0;
+
+    (void)arg0;
+    if ((arg1 == 0xA00) || (arg1 == 0xB3B)) {
+        return 0;
+    }
+    char *base = (char *)&D_007812C0;
+    X_func_001DC48C(base + 0x22220, arg1 & 0xFFFF, 0xD, &stack);
+    if (stack.sp0 != 0) {
+        stack.sp0 += 0xFFFF;
+    }
+    temp_v0 = (stack.sp0 * 4) + 0x6D;
+    return (temp_v0 >= 0x24F) ? 0x6D : temp_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019AFB0);
 
