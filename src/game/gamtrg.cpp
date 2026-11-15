@@ -1576,7 +1576,87 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD7BC);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DDAA8);
 
+// NON_MATCHING: 11/75 differ, 12 edits
+#ifdef NON_MATCHING
+struct Elem_ddc80 { unsigned int u0[8]; unsigned int flg; unsigned int u24[2]; int id; unsigned int u30[(0xB0 - 0x30) / 4]; } __attribute__((aligned(16)));
+struct Node_ddc80 { Node_ddc80 *m_prev; Node_ddc80 *m_next; Elem_ddc80 m_data; };
+struct Chain_ddc80 {
+    Node_ddc80 m_head;
+    int m_num;
+    void push_back(Node_ddc80 *theNode) {
+        if (m_num == 0) {
+            m_head.m_next = theNode;
+            theNode->m_prev = &m_head;
+        } else {
+            m_head.m_prev->m_next = theNode;
+            theNode->m_prev = m_head.m_prev;
+        }
+        theNode->m_next = &m_head;
+        m_head.m_prev = theNode;
+        ++m_num;
+    }
+    void unlink(Node_ddc80 *theNode) {
+        if (theNode == m_head.m_next) {
+            Node_ddc80 *next = theNode->m_next;
+            m_head.m_next = next;
+            next->m_prev = &m_head;
+        } else {
+            Node_ddc80 *p = theNode->m_prev;
+            if (theNode == m_head.m_prev) {
+                m_head.m_prev = p;
+                p->m_next = &m_head;
+            } else {
+                p->m_next = theNode->m_next;
+                theNode->m_next->m_prev = theNode->m_prev;
+            }
+        }
+        --m_num;
+    }
+};
+struct Iter_ddc80 {
+    Node_ddc80 *m_node;
+    Iter_ddc80() : m_node(0) {}
+    Iter_ddc80(Node_ddc80 *n) : m_node(n) {}
+    Iter_ddc80(const Iter_ddc80 &o) : m_node(o.m_node) {}
+    Elem_ddc80 &operator*() const { return m_node->m_data; }
+    Iter_ddc80 &operator++() { m_node = m_node->m_next; return *this; }
+    bool operator!=(const Iter_ddc80 &o) const { return m_node != o.m_node; }
+};
+struct List_ddc80 {
+    Chain_ddc80 m_free;
+    Chain_ddc80 m_used;
+    int m_max;
+    Iter_ddc80 begin() { return Iter_ddc80(m_used.m_head.m_next); }
+    Iter_ddc80 end() { return Iter_ddc80(&m_used.m_head); }
+    int size() const { return m_used.m_num; }
+    Iter_ddc80 erase(Iter_ddc80 it) {
+        Iter_ddc80 next(it);
+        ++next;
+        Node_ddc80 *node = it.m_node;
+        m_used.unlink(node);
+        m_free.push_back(node);
+        return next;
+    }
+};
+struct Mgr_ddc80 { char pad[0xC1C0]; List_ddc80 list; };
+extern "C" void Xii_func_001DDDAC(int) asm("func_001DDDAC");
+extern "C" void X_func_001DDC80(Mgr_ddc80 *) asm("func_001DDC80");
+extern "C" void X_func_001DDC80(Mgr_ddc80 *arg0)
+{
+    Iter_ddc80 it;
+    Iter_ddc80 last;
+    if (arg0->list.size() != 0) {
+        it = arg0->list.begin();
+        last = arg0->list.end();
+        while (it != last) {
+            it = arg0->list.erase(it);
+        }
+    }
+    Xii_func_001DDDAC((int)arg0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DDC80);
+#endif
 
 extern "C" void func_001DDDAC(int arg0)
 {
