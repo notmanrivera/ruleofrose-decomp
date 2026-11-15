@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xiiu_func_001D2BA8(int, unsigned int) asm("func_001D2BA8");
+extern int D_002FDFB0;
 extern "C" float Xfi_func_001E9CB4(int) asm("func_001E9CB4");
 extern "C" int Xiiff_func_001F0F9C(int, float, float) asm("func_001F0F9C");
 extern "C" int Xiifff_func_001F11A0(int, float, float, float) asm("func_001F11A0");
@@ -884,7 +886,41 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EE7F0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EE954);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EEAEC);
+extern "C" void func_001EEAEC(int arg0, unsigned int arg1)
+{
+    int kind = (arg1 >> 28) & 3;
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$13TskMovePhysic;
+    M2C_FIELD(arg0, unsigned int *, 0xC) = arg1;
+    M2C_FIELD(arg0, int *, 0x58) = 0;
+    switch (kind) {
+    case 1:
+        break;
+    case 2:
+        M2C_FIELD(arg0, int *, 8) = Xiiu_func_001D2BA8((int)&D_007812C0, arg1);
+        *(m2c_block8 *)((char *)arg0 + 0x70) = *(m2c_block8 *)&D_002FDFB0;
+        M2C_FIELD(arg0, int *, 0x10) = M2C_FIELD(M2C_FIELD(arg0, int *, 8), int *, 0x108);
+        break;
+    }
+    {
+        struct DogActorStub *d = getDogActor(&D_006FBD80, M2C_FIELD(arg0, int *, 0x10));
+        float *p20 = (float *)(arg0 + 0x20);
+        p20[0] = d->unk40[0];
+        p20[1] = d->unk40[1];
+        p20[2] = d->unk40[2];
+    }
+    {
+        struct DogActorStub *d = getDogActor(&D_006FBD80, M2C_FIELD(arg0, int *, 0x10));
+        float *p30 = (float *)(arg0 + 0x30);
+        p30[0] = d->unk50[0];
+        p30[1] = d->unk50[1];
+        p30[2] = d->unk50[2];
+    }
+    float s = Xff_sinf(M2C_FIELD(arg0, float *, 0x34));
+    M2C_FIELD(arg0, float *, 0x44) = 1.0f;
+    M2C_FIELD(arg0, float *, 0x40) = s;
+    M2C_FIELD(arg0, float *, 0x48) = Xff_cosf(M2C_FIELD(arg0, float *, 0x34));
+    M2C_FIELD(arg0, int *, 0x5C) |= 1;
+}
 
 extern "C" void TskMovePhysic__vfunc_06(int arg0, int arg1)
 {
