@@ -1094,7 +1094,54 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamtrg", jtbl_002FD3A0);
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamtrg", jtbl_002FD480);
 
+// NON_MATCHING: 12/62 differ, 1 reloc differs, 13 edits
+#ifdef NON_MATCHING
+struct S_A0_dcd38 { char pad[0x90]; int val; char pad2[0xC]; };
+struct S_C0_90_dcd38 { char pad[0x90]; int val; char pad2[0x2C]; };
+struct S_E0_dcd38 { char pad[0x90]; int val; char pad2[0x4C]; };
+struct S_C0_B0_dcd38 { char pad[0xB0]; int val; char pad2[0xC]; };
+struct S_200_dcd38 { char pad[0xB0]; int val; char pad2[0x14C]; };
+struct Mgr_dcd38 { S_A0_dcd38 *a0; S_A0_dcd38 *a1; S_C0_90_dcd38 *a2; S_E0_dcd38 *a3; S_C0_B0_dcd38 *a4; S_200_dcd38 *a5; S_C0_B0_dcd38 *a6; S_C0_B0_dcd38 *a7; S_C0_B0_dcd38 *a8; S_C0_B0_dcd38 *a9; };
+extern "C" void func_001DCD38(Mgr_dcd38 *arg0, unsigned short arg1, int arg2)
+{
+    unsigned int idx = arg1 & 0x1FF;
+
+    switch (arg1 >> 9) {
+    case 0:
+        arg0->a0[idx].val |= arg2;
+        return;
+    case 1:
+        arg0->a1[idx].val |= arg2;
+        return;
+    case 2:
+        arg0->a2[idx].val |= arg2;
+        return;
+    case 3:
+        arg0->a3[idx].val |= arg2;
+        return;
+    case 4:
+        arg0->a4[idx].val |= arg2;
+        return;
+    case 5:
+        arg0->a5[idx].val |= arg2;
+        return;
+    case 6:
+        arg0->a6[idx].val |= arg2;
+        return;
+    case 7:
+        arg0->a7[idx].val |= arg2;
+        return;
+    case 8:
+        arg0->a8[idx].val |= arg2;
+        return;
+    case 9:
+        arg0->a9[idx].val |= arg2;
+        return;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DCD38);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DCE30);
 
