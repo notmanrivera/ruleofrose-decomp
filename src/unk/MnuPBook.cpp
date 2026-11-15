@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiii_func_00193FEC(int, int, int) asm("func_00193FEC");
 struct m2c_v10C_50_i {
     char pad[268];
     virtual void v1();
@@ -366,7 +367,22 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00197D28);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00197E68);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00197F18);
+extern "C" void func_00197F18(int arg0, int arg1, int arg2)
+{
+    int t;
+    int v;
+    int base;
+
+    base = M2C_FIELD(arg0, int *, 0x12C) + arg1 * 0x20;
+    v = arg1 * 2;
+    t = v;
+    if (arg2 != 0)
+        t = v + 1;
+    M2C_FIELD(base, int *, 0x10) = 0;
+    M2C_FIELD(base, int *, 0xC) = t;
+    Xiiii_func_00193FEC(arg0, arg1, t);
+    M2C_FIELD(arg0, int *, 0x124) = 0xA;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_06);
 
