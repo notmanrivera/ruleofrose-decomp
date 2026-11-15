@@ -399,7 +399,21 @@ extern "C" void func_00210748(unsigned int arg0, unsigned int arg1, int arg2)
 
 RESET_AT_STATE;
 
+// NON_MATCHING: 6/32 differ, 1 reloc differs, 4 edits
+#ifdef NON_MATCHING
+extern "C" void func_002107AC(unsigned int arg0, unsigned int arg1, int arg2)
+{
+    if (arg1 != 1) {
+        if ((arg1 == 0) && (((int *)&D_007B4700)[arg0] < 0)) {
+            (*(int *)&D_007B47C0) = ((short) (arg2 * 4) + ((*(int *)&D_007B4780) - (*(int *)&D_007B47D0)) + 0x8164) | 0x80000000;
+        }
+    } else if (((int *)&D_007B4700)[arg0] >= 0) {
+        (*(int *)&D_007B47C0) = ((short) (arg2 * 4) + ((*(int *)&D_007B4780) - (*(int *)&D_007B47D0)) + 0x8164) | 0x80000000;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002107AC);
+#endif
 
 extern "C" void func_0021082C(int arg0, int arg1, int arg2, int arg3)
 {
