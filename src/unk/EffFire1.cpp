@@ -498,7 +498,62 @@ extern "C" int EffFog2__vfunc_02(int arg0, int arg1)
     return 1;
 }
 
+// NON_MATCHING: 29/101 differ, 1 reloc differs, 20 edits
+#ifdef NON_MATCHING
+extern "C" void X_Fog2_func_00237830(void *, void *, float) asm("func_00237830");
+struct EffFog2Mat {
+    float x, y, z, w;
+    float m[12];
+};
+struct EffFog2Block16 {
+    int w[4];
+};
+struct EffFog2Param {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+    float x;
+    float y;
+    float z;
+    float angle;
+    float scale;
+    EffFog2Block16 unk24;
+    char pad34[0x4C];
+};
+extern "C" int EffFog2__vfunc_05(int arg0)
+{
+    int t = M2C_FIELD(arg0, int *, 0x24) + 1;
+    M2C_FIELD(arg0, int *, 0x24) = t;
+    if ((t % 30) == 0) {
+        EffFog2Mat mat;
+        float r = (float)((Xi_func_0016AD94() + M2C_FIELD(arg0, int *, 0x24)) % 255) / 255.0f - 0.5f;
+        X_Fire2_func_00237340(&mat);
+        X_Fog2_func_00237830(&mat, &mat, M2C_FIELD(arg0, float *, 0x34));
+        float ang = M2C_FIELD(arg0, float *, 0x34) + (r * 90.0f * 3.1415926f) / 180.0f;
+        float f = M2C_FIELD(arg0, float *, 0x38);
+        float mx = mat.x;
+        float my = mat.y;
+        float mz = mat.z;
+        float x = M2C_FIELD(arg0, float *, 0x28) + mx * f * r;
+        float z = M2C_FIELD(arg0, float *, 0x30) + mz * f * r;
+        float y = M2C_FIELD(arg0, float *, 0x2C) + my * f * r;
+        EffFog2Param param;
+        param.unk00 = 0x19;
+        param.unk08 = 0;
+        param.x = x;
+        param.z = z;
+        param.y = y;
+        param.angle = Xff_func_0016FE88(ang);
+        param.scale = M2C_FIELD(arg0, float *, 0x3C);
+        param.unk24 = *(EffFog2Block16 *)((char *)arg0 + 0x40);
+        X_func_00176CC8((void *)(D_00298E08 + 0x837E0), &param);
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog2__vfunc_05);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog2Prim__vfunc_02);
 
