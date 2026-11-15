@@ -1,4 +1,88 @@
 #include "include_asm.h"
+extern "C" void *X20F1FC_memset(void *, int, unsigned int) asm("memset");
+struct Item20F1FC {
+    unsigned int a;
+    int b;
+    int c;
+    int d;
+};
+struct List20F1FC {
+    struct Node {
+        Node *m_prev;
+        Node *m_next;
+        Item20F1FC m_data;
+    };
+    struct Chain {
+        Node m_head;
+        int m_num;
+        void push_back(Node *theNode)
+        {
+            if (m_num == 0) {
+                m_head.m_next = theNode;
+                theNode->m_prev = &m_head;
+            } else {
+                m_head.m_prev->m_next = theNode;
+                theNode->m_prev = m_head.m_prev;
+            }
+            theNode->m_next = &m_head;
+            m_head.m_prev = theNode;
+            ++m_num;
+        }
+        void unlink(Node *theNode)
+        {
+            if (theNode == m_head.m_next) {
+                Node *next = theNode->m_next;
+                m_head.m_next = next;
+                next->m_prev = &m_head;
+            } else {
+                Node *p = theNode->m_prev;
+                if (theNode == m_head.m_prev) {
+                    m_head.m_prev = p;
+                    p->m_next = &m_head;
+                } else {
+                    p->m_next = theNode->m_next;
+                    Node *prev = theNode->m_prev;
+                    p = theNode->m_next;
+                    p->m_prev = prev;
+                }
+            }
+            --m_num;
+        }
+    };
+    struct iterator {
+        Node *m_node;
+        iterator() : m_node(0) {}
+        iterator(Node *theNode) : m_node(theNode) {}
+        iterator(const iterator &theIt) : m_node(theIt.m_node) {}
+        Item20F1FC &operator*() const { return m_node->m_data; }
+        iterator &operator++()
+        {
+            m_node = m_node->m_next;
+            return *this;
+        }
+        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; }
+    };
+    Chain m_free;
+    Chain m_used;
+    iterator begin() { return iterator(m_used.m_head.m_next); }
+    iterator end() { return iterator(&m_used.m_head); }
+    iterator erase(iterator thePos)
+    {
+        iterator next = thePos;
+        ++next;
+        Node *n = thePos.m_node;
+        m_used.unlink(n);
+        m_free.push_back(n);
+        return next;
+    }
+};
+struct Obj20F1FC {
+    unsigned char pad0000[0xC3C0];
+    List20F1FC m_list;
+    unsigned char padC3F8[0xDC1C - (0xC3C0 + sizeof(List20F1FC))];
+    char *m_state;
+    char *m_flags;
+};
 extern int D_007B4770;
 struct Block80_4664 {
     unsigned char b[0x80];
@@ -384,7 +468,20 @@ extern "C" void func_0020F1A8(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020F1FC);
+extern "C" void func_0020F1FC(Obj20F1FC *arg0)
+{
+    X20F1FC_memset(arg0->m_state + 0x300, 0, 0x200);
+    X20F1FC_memset(arg0->m_flags + 0x20, 0, 0x200);
+    List20F1FC::iterator it;
+    List20F1FC::iterator end;
+    it = arg0->m_list.begin();
+    end = arg0->m_list.end();
+    for (; it != end; ++it) {
+        if (((*it).a >> 30) == 1) {
+            it = arg0->m_list.erase(it);
+        }
+    }
+}
 
 extern "C" void func_0020F37C(int arg0)
 {
