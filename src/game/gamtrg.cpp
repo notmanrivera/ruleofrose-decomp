@@ -1,4 +1,83 @@
 #include "include_asm.h"
+struct ObjStat_ddf48 {
+    unsigned char pad0[0x100];
+    int m_oid;
+    unsigned char pad104[0x24];
+    unsigned short m_uid;
+};
+template <class T> class GamPoolList_ddf48 {
+public:
+    struct Node {
+        Node *m_prev;
+        Node *m_next;
+        T m_data;
+    };
+    class iterator {
+    public:
+        Node *m_node;
+        iterator() : m_node(0) {}
+        iterator(Node *theNode) : m_node(theNode) {}
+        iterator(const iterator &theIt) : m_node(theIt.m_node) {}
+        T &operator*() const { return m_node->m_data; }
+        iterator &operator++()
+        {
+            m_node = m_node->m_next;
+            return *this;
+        }
+        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; }
+    };
+    struct SubList {
+        Node m_head;
+        int m_count;
+        SubList()
+        {
+            m_count = 0;
+            m_head.m_prev = &m_head;
+            m_head.m_next = &m_head;
+        }
+        void clear()
+        {
+            m_count = 0;
+            m_head.m_prev = &m_head;
+            m_head.m_next = &m_head;
+        }
+        iterator begin() { return iterator(m_head.m_next); }
+        iterator end() { return iterator(&m_head); }
+    };
+    SubList m_free;
+    SubList m_used;
+    int m_max;
+    int m_pad[7];
+    Node *m_pool;
+    int m_pad2[15];
+    GamPoolList_ddf48(int theMax) : m_max(0)
+    {
+        Node *pool = new Node[theMax];
+        m_max = theMax;
+        m_pool = pool;
+        GamPoolList_ddf48 *self = this;
+        for (int i = 0; i < self->m_max; i++) {
+            pool[i].m_prev = &pool[i - 1];
+            pool[i].m_next = &pool[i + 1];
+        }
+        self->m_used.clear();
+        self->m_free.m_head.m_next = pool;
+        self->m_free.m_count = self->m_max;
+        pool[0].m_prev = &self->m_free.m_head;
+        Node *last = &self->m_free.m_head.m_next[self->m_free.m_count - 1];
+        self->m_free.m_head.m_prev = last;
+        last->m_next = &self->m_free.m_head;
+    }
+    ~GamPoolList_ddf48()
+    {
+        delete[] m_pool;
+    }
+    int size() const { return m_used.m_count; }
+    iterator begin() { return m_used.begin(); }
+    iterator end() { return m_used.end(); }
+};
+extern int D_007812C0_ddf48 asm("D_007812C0");
+extern "C" void X_func_001D35AC_ddf48(void *, void *, void *, int, int, int, float) asm("func_001D35AC");
 extern "C" void *X_memset_de6fc(void *, int, __SIZE_TYPE__) asm("memset");
 struct Elem_de6fc {
     int key;
@@ -2028,7 +2107,29 @@ extern "C" void func_001DDDBC(Mgr_dddbc *arg0, int arg1)
     Xii_func_001DDDAC_dddbc((int)arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DDF48);
+extern "C" int func_001DDF48(int arg0, float *arg1, unsigned short arg2)
+{
+    GamPoolList_ddf48<ObjStat_ddf48 *> list(8);
+    X_func_001D35AC_ddf48(&D_007812C0_ddf48, arg1, &list, 5, 0x8000, 0x04000001, 50.0f);
+    if (list.size() != 0) {
+        GamPoolList_ddf48<ObjStat_ddf48 *>::iterator last = list.end();
+        int count = 0;
+        GamPoolList_ddf48<ObjStat_ddf48 *>::iterator it = list.begin();
+        while (it != last) {
+            unsigned short uid = (*it)->m_uid;
+            if (uid != 0xFFFF) {
+                if (uid == arg2) {
+                    return (*it)->m_oid;
+                }
+                if (count++ >= 8) {
+                    break;
+                }
+            }
+            ++it;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DE104);
 
