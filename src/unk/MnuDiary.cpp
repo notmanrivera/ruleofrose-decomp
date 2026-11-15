@@ -1,4 +1,23 @@
 #include "include_asm.h"
+struct Sub110_A3C0 {
+    int unk00;
+    int unk04;
+};
+struct Obj_A3C0 {
+    unsigned char pad00[0x110];
+    Sub110_A3C0 *m_110;
+    unsigned char pad114[0x134 - 0x114];
+    int m_134;
+    char *m_138;
+    unsigned char m_13C[4];
+};
+extern "C" void *X_memset_A3C0(void *, int, unsigned int) asm("memset");
+extern "C" void *X_memcpy_A3C0(void *, const void *, unsigned int) asm("memcpy");
+extern "C" unsigned int X_strlen_A3C0(const char *) asm("strlen");
+extern "C" int X_strcmp_A3C0(const char *, const char *) asm("strcmp");
+extern "C" char *X_func_001832E8_A3C0(int) asm("func_001832E8");
+extern "C" void X_func_001874F4_A3C0(void *, int, char *, int) asm("func_001874F4");
+extern "C" char D_002F8228[];
 struct Entry_844C {
     int unk00;
     int unk04;
@@ -704,7 +723,26 @@ extern "C" void func_0019A290(MnuDiary *arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A3C0);
+extern "C" void func_0019A3C0(Obj_A3C0 *arg0, int arg1)
+{
+    X_memset_A3C0(arg0->m_138, 0, 0x4C8);
+    __builtin_memcpy(arg0->m_138, "#r#L#T#[50#]50#f00#w001#F20", 28);
+    if (arg1 >= -1) {
+        char *s1 = X_func_001832E8_A3C0(arg0->m_110->unk04 + arg1 - 1);
+        if (s1 != 0 && X_strcmp_A3C0(s1, D_002F8228) != 0) {
+            X_strlen_A3C0(s1);
+            char *dst = arg0->m_138 + X_strlen_A3C0(arg0->m_138);
+            X_memcpy_A3C0(dst, s1, X_strlen_A3C0(s1));
+        }
+        char *s2 = X_func_001832E8_A3C0(arg0->m_110->unk04 + arg1);
+        if (s2 != 0) {
+            X_strlen_A3C0(s2);
+            char *dst = arg0->m_138 + X_strlen_A3C0(arg0->m_138);
+            X_memcpy_A3C0(dst, s2, X_strlen_A3C0(s2));
+        }
+    }
+    X_func_001874F4_A3C0(arg0->m_13C, arg0->m_134, arg0->m_138, 0);
+}
 
 extern "C" void func_0019A52C(int arg0)
 {
