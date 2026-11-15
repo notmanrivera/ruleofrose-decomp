@@ -1,4 +1,26 @@
 #include "include_asm.h"
+extern "C" {
+extern char D_002F2E10[];
+extern char D_002F2E28[];
+extern char D_002F2E50[];
+void ror_assert(const char *file, int line, const char *expr);
+void func_00178C54(int arg0, int arg1, short arg2, float fparg0);
+void X_freeID__12DogLightPoolii(void *, int, int) asm("freeID__12DogLightPoolii");
+}
+struct MfLightPoint {
+    float m_pos[4];
+    float m_color[4];
+};
+class MfLightPool {
+public:
+    void *m_light[6];
+    int m_num[6];
+    MfLightPoint *getPoint(int n) {
+        ((n >= 0 && n < m_num[2]) ? (void)0 : ror_assert(D_002F2E10, 0x83, D_002F2E28));
+        ((m_light[2]) ? (void)0 : ror_assert(D_002F2E10, 0x83, D_002F2E50));
+        return &((MfLightPoint *)m_light[2])[n];
+    }
+};
 extern "C" void X_func_0021A5B0(int, int, int) asm("func_0021A5B0");
 extern "C" void X_func_0021A700(int, int) asm("func_0021A700");
 extern "C" int X_func_0022B370(int) asm("func_0022B370");
@@ -143,7 +165,32 @@ extern "C" void func_00178894(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffMuzzleFlash1__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffMuzzleFlash1__vfunc_05);
+extern "C" int EffMuzzleFlash1__vfunc_05(int arg0)
+{
+    if (M2C_FIELD(arg0, short *, 0x4C) >= 0x100) {
+        func_00178C54(arg0, arg0 + 0x40, -0x180, 20.0f);
+        MfLightPool *pool = (MfLightPool *)(D_00298E08 + 0x2050);
+        MfLightPoint *pt = pool->getPoint(M2C_FIELD(arg0, int *, 0x60));
+        float c = (float)M2C_FIELD(arg0, short *, 0x4C) * 150.0f * (1.0f / 32768.0f);
+        pt->m_color[3] = 0.0f;
+        pt->m_color[0] = pt->m_color[1] = pt->m_color[2] = c;
+    } else {
+        int id = M2C_FIELD(arg0, int *, 0x60);
+        if (id != -1) {
+            X_freeID__12DogLightPoolii((void *)(D_00298E08 + 0x2050), 2, id);
+            M2C_FIELD(arg0, int *, 0x60) = -1;
+        }
+    }
+    if (M2C_FIELD(arg0, short *, 0x5C) >= 0x100) {
+        func_00178C54(arg0, arg0 + 0x50, 0x40, 2.5f);
+        M2C_FIELD(arg0, float *, 0x58) -= 2.25f;
+        M2C_FIELD(arg0, float *, 0x50) += 0.026179936f;
+    }
+    if (M2C_FIELD(arg0, short *, 0x5C) >= 0x100 || M2C_FIELD(arg0, short *, 0x4C) >= 0x100) {
+        return 1;
+    }
+    return 0;
+}
 
 extern "C" void func_00178C54(int arg0, int arg1, short arg2, float fparg0)
 {
