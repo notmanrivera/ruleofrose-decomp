@@ -1,4 +1,29 @@
 #include "include_asm.h"
+struct Block80_4310 {
+    unsigned char b[0x80];
+};
+struct Elem48_4310 {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+    int unk10;
+    int unk14;
+    int unk18;
+    int unk1C;
+    int unk20;
+    int unk24;
+    int unk28;
+    int unk2C;
+};
+extern Block80_4310 D_002D9C08[];
+extern Elem48_4310 D_007B4850[];
+extern int X4310_D_007B4700[32] asm("D_007B4700");
+extern int D_007B47E0;
+extern int D_007B47F0;
+extern int D_007B4800;
+extern int D_007B4820;
+extern int D_007B4830;
 struct Block80_44CC {
     unsigned char b[0x80];
 };
@@ -1553,7 +1578,20 @@ extern "C" void func_002142C0(void)
     } while (i >= 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00214310);
+extern "C" void func_00214310(unsigned int arg0)
+{
+    D_007B47D0 = D_007B4850[arg0].unk00;
+    D_007B47E0 = D_007B4850[arg0].unk04;
+    D_007B4800 = D_007B4850[arg0].unk08;
+    D_007B47F0 = D_007B4850[arg0].unk0C;
+    D_007B4820 = D_007B4850[arg0].unk10;
+    D_007B4830 = D_007B4850[arg0].unk14;
+    X4310_D_007B4700[28] = D_007B4850[arg0].unk20;
+    X4310_D_007B4700[29] = D_007B4850[arg0].unk24;
+    D_007B4810 = D_007B4850[arg0].unk18;
+    *(Block80_4310 *)X4310_D_007B4700 = D_002D9C08[arg0];
+    X4310_D_007B4700[31] = 0;
+}
 
 extern "C" void func_002144C4(void) {
 }
