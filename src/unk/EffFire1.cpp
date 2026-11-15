@@ -123,7 +123,30 @@ extern "C" void func_001703C0(int arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffDust2__vfunc_02);
+extern "C" int EffDust2__vfunc_02(int arg0, int arg1)
+{
+    if (!Xiii_Eff0__vfunc_02(arg0, arg1)) {
+        return 0;
+    }
+    *(m2c_block12 *)((char *)(arg0) + 0x30) = *(m2c_block12 *)((char *)(arg1) + 0x10);
+    M2C_FIELD(arg0, float *, 0x3C) = 1.0f;
+    M2C_FIELD(arg0, float *, 0x40) = (float) M2C_FIELD(arg1, float *, 0x1C);
+    *(m2c_block12 *)((char *)(arg0) + 0x50) = *(m2c_block12 *)((char *)(arg1) + 0x20);
+    M2C_FIELD(arg0, float *, 0x5C) = 1.0f;
+    M2C_FIELD(arg0, float *, 0x60) = (float) M2C_FIELD(arg1, float *, 0x2C);
+    *(m2c_block16 *)((char *)(arg0) + 0x70) = *(m2c_block16 *)((char *)(arg1) + 0x30);
+    M2C_FIELD(arg0, float *, 0x80) = (float) M2C_FIELD(arg1, float *, 0x40);
+    M2C_FIELD(arg0, short *, 0x84) = 0;
+    struct Dust2Layout {
+        char pad00[0x88];
+        int unk88[12];
+    };
+    Dust2Layout *self = (Dust2Layout *)arg0;
+    for (int i = 0; i < 12; i++) {
+        self->unk88[i] = X_func_00170624(arg0, i * 8);
+    }
+    return 1;
+}
 
 // NON_MATCHING: 4/36 differ, 5 edits
 #ifdef NON_MATCHING
@@ -302,6 +325,14 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F2400);
 #ifdef NON_MATCHING
 #ifdef TARGET_PS2
 #include "dog/dogactor.h"
+extern "C" int X_04A4_func_00170624(int, int) asm("func_00170624");
+struct m2c_block12 { int w[3]; };
+struct m2c_block16 { int w[4]; };
+struct m2c_ulong { long v; } __attribute__((packed));
+struct Dust2Layout {
+    char pad00[0x88];
+    int unk88[12];
+};
 #else
 struct DogVector {
     float m_x, m_y, m_z, m_w;
