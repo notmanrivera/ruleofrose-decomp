@@ -1,4 +1,8 @@
 #include "include_asm.h"
+struct Ecbe0Targets { char pad[0x10]; int targets[128]; };
+extern "C" void ecbe0Stop(int, int) asm("func_001D8964");
+extern "C" void ecbe0Move(int, int, int, int, int, int, float) asm("func_001F6308");
+extern "C" void ecbe0Yaw(int, float, float) asm("func_001F0F9C");
 struct TskVec4_f1670 {
     float f[4];
 } __attribute__((aligned(16)));
@@ -810,7 +814,46 @@ extern "C" void TskMoveSectaFindPath__vfunc_06(int arg0, int arg1)
 extern "C" void TskMoveSectaFindPath__vfunc_05(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001ECBE0);
+extern "C" int func_001ECBE0(int arg0)
+{
+    float dist, angle;
+    if (X_func_001E7D7C_ecf3c((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0x3D8)) != 0 || M2C_FIELD(arg0, unsigned int *, 0x21C) == 1) {
+        ecbe0Stop(M2C_FIELD(arg0, int *, 4), arg0 + 0x260);
+        M2C_FIELD(arg0, int *, 0x21C) = 2;
+    } else {
+        M2C_FIELD(arg0, int *, 0x294) = 0;
+        DogActorStub *d = getDogActor(&D_006FBD80, M2C_FIELD(arg0, int *, 0xC));
+        float *pos = (float *)(arg0 + 0x250);
+        pos[0] = d->unk40[0]; pos[1] = d->unk40[1]; pos[2] = d->unk40[2];
+        M2C_FIELD(arg0, int *, 0x260) = 0;
+        M2C_FIELD(arg0, float *, 0x264) = Xfi_func_0010A650__8DogActor((int)getDogActor(&D_006FBD80, M2C_FIELD(arg0, int *, 0xC)));
+        M2C_FIELD(arg0, int *, 0x268) = 0;
+        register int target PS2_REG("$2") = arg0;
+        target += M2C_FIELD(arg0, int *, 0x218)*4;
+        target = M2C_FIELD(target, int *, 0x10);
+        angle = X_func_002180E4_ecf3c(&dist, M2C_FIELD(target, float *, 0x10) - pos[0], M2C_FIELD(target, float *, 0x18) - M2C_FIELD(arg0, float *, 0x258));
+        if (M2C_FIELD(arg0, int *, 0x298) <= 0) {
+            float speed0 = M2C_FIELD(arg0, float *, 0x230);
+            float zero = 0.0f;
+            if (speed0 == zero) M2C_FIELD(arg0, float *, 0x230) = 1.0f;
+            float sn = Xff_sinf(angle) * M2C_FIELD(arg0, float *, 0x230);
+            M2C_FIELD(arg0, float *, 0x274) = zero;
+            M2C_FIELD(arg0, float *, 0x270) = sn;
+            float cs = Xff_cosf(angle) * M2C_FIELD(arg0, float *, 0x230);
+            float frames = dist / M2C_FIELD(arg0, float *, 0x230);
+            M2C_FIELD(arg0, float *, 0x278) = cs;
+            M2C_FIELD(arg0, int *, 0x21C) = (int)frames;
+            ecbe0Move(M2C_FIELD(arg0, int *, 0xC), M2C_FIELD(arg0, int *, 0x29C), 0, 0x100, M2C_FIELD(arg0, int *, 8), 0, M2C_FIELD(arg0, float *, 0x2A0));
+        } else {
+            M2C_FIELD(arg0, int *, 0x21C) = X_func_001EE7F0_ecf3c(M2C_FIELD(arg0, unsigned int *, 8), (unsigned short)M2C_FIELD(arg0, int *, 0xC), angle, dist, (int *)(arg0+0x294), M2C_FIELD(arg0, int *, 0x29C), M2C_FIELD(arg0, float *, 0x2A0));
+        }
+        int actor = M2C_FIELD(arg0, int *, 8);
+        float speed = M2C_FIELD(arg0, float *, 0x2A4);
+        if (M2C_FIELD(arg0, int *, 0x298) <= 0) { ecbe0Yaw(actor, angle, speed); return 0; }
+        else X_func_001F11A0_ecf3c(actor, M2C_FIELD(arg0, float *, 0x264), angle, speed);
+    }
+    return 0;
+}
 
 // NON_MATCHING: 2/58 differ, 1 reloc differs, 4 edits
 #ifdef NON_MATCHING
