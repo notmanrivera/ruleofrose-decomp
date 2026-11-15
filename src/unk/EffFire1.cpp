@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xi_func_0016AD94() asm("func_0016AD94");
 extern "C" float Xff_func_0016FE88(float) asm("func_0016FE88");
 struct Fire1Vec4 {
     float x, y, z, w;
@@ -121,7 +122,23 @@ extern "C" void updateZDepth__12EffDust2Prim(int arg0)
     M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, arg0 + 0x30);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFire1__vfunc_02);
+extern "C" int EffFire1__vfunc_02(int arg0, int arg1)
+{
+    if (!Xiii_Eff0__vfunc_02(arg0, arg1)) {
+        return 0;
+    }
+    M2C_FIELD(arg0, float *, 0x30) = (float) M2C_FIELD(arg1, float *, 0x10);
+    M2C_FIELD(arg0, float *, 0x34) = (float) M2C_FIELD(arg1, float *, 0x14);
+    M2C_FIELD(arg0, float *, 0x38) = (float) M2C_FIELD(arg1, float *, 0x18);
+    M2C_FIELD(arg0, float *, 0x3C) = 1.0f;
+    *(m2c_block16 *)((char *)(arg0) + 64) = *(m2c_block16 *)((char *)(arg1) + 28);
+    M2C_FIELD(arg0, float *, 0x58) = (float) M2C_FIELD(arg1, float *, 0x2C);
+    int rnd = Xi_func_0016AD94();
+    M2C_FIELD(arg0, float *, 0x54) = 1.0f;
+    M2C_FIELD(arg0, int *, 0x5C) = 0;
+    M2C_FIELD(arg0, int *, 0x50) = rnd;
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFire1__vfunc_05);
 
