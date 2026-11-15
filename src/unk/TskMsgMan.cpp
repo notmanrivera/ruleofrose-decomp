@@ -1,4 +1,14 @@
 #include "include_asm.h"
+struct TskVec4_f1670 {
+    float f[4];
+} __attribute__((aligned(16)));
+extern "C" int X_func_001D2B8C_f1670(int, unsigned int) asm("func_001D2B8C");
+extern "C" int X_func_001E7D7C_f1670(int, int) asm("func_001E7D7C");
+extern "C" void X_func_001E7724_f1670(int, int) asm("func_001E7724");
+extern "C" void X_func_001D06B8_f1670(void *, unsigned int, TskVec4_f1670 *) asm("func_001D06B8");
+extern "C" int X___builtin_new_f1670(int) asm("__builtin_new");
+extern "C" void X_func_001F0434_f1670(int, unsigned int, int, int, float, float, float, int, int) asm("func_001F0434");
+extern "C" int X_func_001E71FC_f1670(int, int, int, int, int, int, int, int *, int) asm("func_001E71FC");
 extern "C" void X_func_00191F44_v2(int, int) asm("func_00191F44");
 extern "C" void X_func_00191F98_v2(int, int) asm("func_00191F98");
 extern "C" void X_func_001351B0_v2(int, unsigned int, int) asm("func_001351B0");
@@ -1711,15 +1721,35 @@ extern "C" void func_001F14CC(unsigned int arg0, int arg1, int arg2, int arg3, f
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F14CC);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F1670);
+extern "C" void func_001F1670(unsigned int arg0, int arg1, int arg2, float fparg0, float fparg1, float fparg2)
+{
+    TskVec4_f1670 rot;
+    int *slot;
+    float diff;
+    int task;
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE280);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE288);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE290);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE298);
+    slot = (int *)(X_func_001D2B8C_f1670((int)&D_007812C0, arg0) + 0x3D8);
+    if (X_func_001E7D7C_f1670((int)&D_007A3D80, *slot) != 0) {
+        X_func_001E7724_f1670((int)&D_007A3D80, *slot);
+        *slot = -1;
+    }
+    if (fparg2 >= 32769.0f) {
+        X_func_001D06B8_f1670(&D_007812C0, arg0, &rot);
+        fparg2 = rot.f[1];
+    }
+    diff = fparg0 - fparg2;
+    if (diff < -3.14159265358979323846) {
+        diff += 2.0 * 3.14159265358979323846;
+    }
+    if (diff > 3.14159265358979323846) {
+        diff -= 2.0 * 3.14159265358979323846;
+    }
+    if (diff != 0.0f) {
+        task = X___builtin_new_f1670(0x80);
+        X_func_001F0434_f1670(task, arg0, 0, arg1, diff, fparg2, fparg1, arg2, 1);
+        X_func_001E71FC_f1670((int)&D_007A3D80, 1, -1, 1, 0, task, 0, slot, 0x11);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE2A0);
 
