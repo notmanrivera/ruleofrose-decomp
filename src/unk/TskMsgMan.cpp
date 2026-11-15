@@ -1,4 +1,23 @@
 #include "include_asm.h"
+struct TskMovePointPathObj {
+    char pad0[4];
+    int m_unk04;
+    int m_unk08;
+    char pad0C[0x14];
+    int m_unk20;
+    char pad24[0xC];
+    int m_unk30;
+    char pad34[0xC];
+    float m_unk40[4];
+    char pad50[0x10];
+    float m_unk60[4];
+    int (TskMovePointPathObj::*m_func)();
+    char pad78[0x8];
+    float m_unk80;
+};
+extern "C" int Xiii_func_001D8ADC_mpp(int, int) asm("func_001D8ADC");
+extern "C" void Xv_func_001EC834_mpp(TskMovePointPathObj *) asm("func_001EC834");
+extern "C" void Xv_func_001F59B4_mpp(int, int, int, int, int, float, float) asm("func_001F59B4");
 extern "C" int X_func_001E71FC(int, int, int, int, int, int, int, int, int) asm("func_001E71FC");
 extern "C" int Xii___builtin_new(int) asm("__builtin_new");
 extern "C" int Xiii_func_001E7724(int, int) asm("func_001E7724");
@@ -499,7 +518,26 @@ extern "C" void TskMovePointPath__vfunc_06(int arg0, int arg1)
 extern "C" void TskMovePointPath__vfunc_05(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovePointPath__vfunc_04);
+extern "C" int TskMovePointPath__vfunc_04(TskMovePointPathObj *arg0)
+{
+    if (arg0->m_unk20 > 0) {
+        if (arg0->m_unk30 < 4) {
+            Xv_func_0025B878(arg0->m_unk40, arg0->m_unk40, arg0->m_unk60);
+        } else {
+            Xvp_func_001D890C(arg0->m_unk04, (int)arg0->m_unk40);
+        }
+        if (Xiii_func_001D8ADC_mpp(arg0->m_unk04, (int)arg0->m_unk40) != 0) {
+            arg0->m_unk20--;
+        }
+        return 0;
+    }
+    if ((arg0->*(arg0->m_func))() != 0) {
+        Xv_func_001F59B4_mpp(arg0->m_unk08, 1, -1, 0x100, 0, arg0->m_unk80, 32769.0f);
+        return 1;
+    }
+    Xv_func_001EC834_mpp(arg0);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC6E8);
 
