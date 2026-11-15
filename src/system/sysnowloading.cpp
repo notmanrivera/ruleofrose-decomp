@@ -2204,7 +2204,265 @@ extern "C" int func_00209D44()
 }
 
 
+// NON_MATCHING: 26/391 differ, 27 edits
+#ifdef NON_MATCHING
+struct Loading9DData { float x; int mode; float z, width, height, depth, angle, pad; };
+extern int loading9DActors asm("D_006FE6A0");
+extern "C" int loading9D_func_001CBE38(...) asm("func_001CBE38");
+extern "C" void loading9D_func_001CFBE4(...) asm("func_001CFBE4");
+extern "C" void loading9D_func_001CFDA4(...) asm("func_001CFDA4");
+extern "C" void loading9D_func_001CFE78(...) asm("func_001CFE78");
+extern "C" void loading9D_func_001D024C(int, unsigned int, float) asm("func_001D024C");
+extern "C" int loading9D_func_001D046C(...) asm("func_001D046C");
+extern "C" void loading9D_func_001D080C(...) asm("func_001D080C");
+extern "C" void loading9D_func_001D091C(...) asm("func_001D091C");
+extern "C" void loading9D_func_001D0C64(...) asm("func_001D0C64");
+extern "C" void loading9D_func_001D10D0(...) asm("func_001D10D0");
+extern "C" void loading9D_func_001D1410(...) asm("func_001D1410");
+extern "C" void loading9D_func_001D1838(...) asm("func_001D1838");
+extern "C" void loading9D_func_001D18C4(...) asm("func_001D18C4");
+extern "C" void loading9D_func_001D1C80(...) asm("func_001D1C80");
+extern "C" void loading9D_func_001D1D5C(...) asm("func_001D1D5C");
+extern "C" void loading9D_func_001D1E88(int, unsigned int, float) asm("func_001D1E88");
+extern "C" void loading9D_func_001D1F74(...) asm("func_001D1F74");
+extern "C" void loading9D_func_001D1FD8(...) asm("func_001D1FD8");
+extern "C" void loading9D_func_001D2270(...) asm("func_001D2270");
+extern "C" void loading9D_func_001D2334(...) asm("func_001D2334");
+extern "C" void loading9D_func_001D2428(...) asm("func_001D2428");
+extern "C" void loading9D_func_001D480C(...) asm("func_001D480C");
+extern "C" float loading9D_func_001D4A3C(int, unsigned int, int) asm("func_001D4A3C");
+extern "C" void loading9D_func_001D5BC8(...) asm("func_001D5BC8");
+extern "C" void loading9D_func_001DC070(...) asm("func_001DC070");
+extern "C" void loading9D_func_001DCD38(...) asm("func_001DCD38");
+extern "C" void loading9D_func_001DCE30(...) asm("func_001DCE30");
+extern "C" void loading9D_func_001DD118(...) asm("func_001DD118");
+extern "C" void loading9D_func_001DD154(...) asm("func_001DD154");
+extern "C" void loading9D_setBillboard__8DogModeli(...) asm("setBillboard__8DogModeli");
+extern "C" float cosf(float);
+extern "C" float sinf(float);
+extern "C" int func_00209D4C(unsigned int arg0, int arg1, int arg2, int arg3, int arg4, unsigned int arg5) {
+    struct { int sp0, sp4, pad[2]; Loading9DData data; int pad30[4]; float points[8]; } stack;
+    int temp_s0, temp_s0_2, temp_s0_3, temp_s0_4;
+    register float temp_f0 PS2_REG("$f0");
+    float temp_f0_2;
+    register float temp_f10 PS2_REG("$f10");
+    register float temp_f1 PS2_REG("$f1");
+    float temp_f1_2;
+    register float temp_f20 PS2_REG("$f20");
+    float temp_f20_2;
+    register float temp_f21 PS2_REG("$f21");
+    register float temp_f2 PS2_REG("$f2");
+    register float temp_f3 PS2_REG("$f3");
+    register float temp_f4 PS2_REG("$f4");
+    register float temp_f5 PS2_REG("$f5");
+    register float temp_f6 PS2_REG("$f6");
+    int temp_a1;
+    int temp_a1_2;
+    int var_v0;
+    int temp_a0;
+    register int base4 PS2_REG("$4");
+    int output;
+    float half;
+    register float temp_f7 PS2_REG("$f7");
+    register float temp_f8 PS2_REG("$f8");
+    register float temp_f9 PS2_REG("$f9");
+
+    stack.sp0 = arg1;
+    stack.sp4 = arg2;
+    var_v0 = loading9D_func_001D046C((int)&D_007812C0, arg5);
+    if (var_v0 == 0) return var_v0;
+    switch (arg0) {
+        case 0x1:
+        case 0x6:
+            loading9D_func_001CFBE4((int)&D_007812C0, arg5, stack.sp0);
+            break;
+        case 0x2:
+            loading9D_func_001CFE78((int)&D_007812C0, arg5, stack.sp0);
+            break;
+        case 0x3:
+            loading9D_func_001D1E88((int)&D_007812C0, arg5, *(float *)&stack.sp0);
+            break;
+        case 0x5:
+            loading9D_func_001D024C((int)&D_007812C0, arg5, M2C_FIELD(stack.sp0, float *, 0));
+            break;
+        case 0xA:
+            loading9D_func_001D1D5C((int)&D_007812C0, arg5, stack.sp0, stack.sp4);
+            break;
+        case 0xB:
+            loading9D_func_001D1F74((int)&D_007812C0, arg5, stack.sp0, stack.sp4);
+            break;
+        case 0xC:
+            loading9D_func_001D10D0((int)&D_007812C0, arg5, stack.sp0);
+            break;
+        case 0xD:
+            loading9D_func_001D1410((int)&D_007812C0, arg5, stack.sp0);
+            break;
+        case 0xF:
+            base4 = (int)&D_007812C0;
+            loading9D_func_001DC070(base4 + 0x22220, arg5 & 0xFFFF, stack.sp0, stack.sp4);
+            break;
+        case 0x10:
+            temp_a1 = arg5 & 0xFFFF;
+            if (stack.sp0 == 0) {
+                base4 = (int)&D_007812C0;
+                loading9D_func_001DCD38(base4 + 0x22220, temp_a1, stack.sp4, stack.sp4);
+            } else {
+                base4 = (int)&D_007812C0;
+                loading9D_func_001DD118(base4 + 0x22220, temp_a1, (unsigned short) stack.sp0, stack.sp4);
+            }
+            break;
+        case 0x11:
+            temp_a1_2 = arg5 & 0xFFFF;
+            if (stack.sp0 == 0) {
+                base4 = (int)&D_007812C0;
+                loading9D_func_001DCE30(base4 + 0x22220, temp_a1_2, stack.sp4, stack.sp4);
+            } else {
+                base4 = (int)&D_007812C0;
+                loading9D_func_001DD154(base4 + 0x22220, temp_a1_2, (unsigned short) stack.sp0, stack.sp4);
+            }
+            break;
+        case 0x12:
+            loading9D_func_001D1838((int)&D_007812C0, arg5, stack.sp0);
+            break;
+        case 0x13:
+            loading9D_func_001D18C4((int)&D_007812C0, arg5, stack.sp0);
+            break;
+        case 0x14:
+            loading9D_func_001CFDA4((int)&D_007812C0, arg5, stack.sp0);
+            break;
+        case 0x19:
+            loading9D_func_001D1FD8((int)&D_007812C0, (unsigned short) stack.sp0, stack.sp4, 1);
+            break;
+        case 0x1A:
+            loading9D_func_001D1FD8((int)&D_007812C0, (unsigned short) stack.sp0, stack.sp4, 0);
+            break;
+        case 0x1E:
+            loading9D_func_001D2270((int)&D_007812C0, arg5, stack.sp0, stack.sp4);
+            break;
+        case 0x1F:
+            loading9D_func_001D2334((int)&D_007812C0, arg5, stack.sp0, stack.sp4);
+            break;
+        case 0x28:
+            temp_a0 = (int)&D_007812C0;
+            if (stack.sp0 != 0) {
+                loading9D_func_001D10D0(temp_a0, arg5, (int)1);
+            } else {
+                loading9D_func_001D1410(temp_a0, arg5, (int)1);
+            }
+            break;
+        case 0x29:
+            loading9D_func_001D2428((int)&D_007812C0, arg5, stack.sp0);
+            break;
+        case 0x2A:
+            loading9D_setBillboard__8DogModeli((int)&loading9DActors + (loading9D_func_001CBE38((int)&D_007812C0, arg5) * 0x4D0), stack.sp0);
+            break;
+        case 0x32:
+            temp_s0 = (int)&D_007812C0;
+            loading9D_func_001D1C80(temp_s0, arg5, (void *)0x18, &stack.data.x);
+            stack.data.mode = stack.sp0;
+            loading9D_func_001D1D5C(temp_s0, arg5, (int)0x18, &stack.data.x);
+            break;
+        case 0x33:
+            temp_s0_2 = (int)&D_007812C0;
+            loading9D_func_001D1C80(temp_s0_2, arg5, (void *)0x18, &stack.data.x);
+            stack.data.mode = stack.sp0;
+            if (stack.sp0 == (int)4) {
+                stack.data.height = *(float *)&stack.sp4;
+            }
+            loading9D_func_001D1D5C(temp_s0_2, arg5, (int)0x18, &stack.data.x);
+            break;
+        case 0x34:
+            temp_s0_3 = (int)&D_007812C0;
+            loading9D_func_001D1D5C(temp_s0_3, arg5, (int)0x18, stack.sp0);
+            if (M2C_FIELD(stack.sp0, int *, 0) == 1) {
+                loading9D_func_001D480C(temp_s0_3, arg5);
+            }
+            break;
+        case 0x35:
+            output = stack.sp0;
+            stack.data = *(Loading9DData *)stack.sp4;
+            temp_s0_4 = (int)&D_007812C0;
+            M2C_FIELD(output, int *, 4) = 4;
+            M2C_FIELD(output, float *, 0x10) = (stack.data.width + stack.data.height + stack.data.depth) / 3.0f;
+            half = 0.5f;
+            loading9D_func_001D1D5C(temp_s0_4, arg5, 0x18, output);
+            temp_f20 = cosf(stack.data.angle);
+            temp_f21 = stack.data.width;
+            temp_f0 = sinf(stack.data.angle);
+            temp_f21 *= half;
+            temp_f1 = stack.data.depth * half;
+            temp_f3 = -temp_f0;
+            temp_f9 = stack.data.x;
+            temp_f8 = stack.data.z;
+            temp_f2 = -temp_f21;
+            temp_f5 = temp_f0 * temp_f21;
+            temp_f4 = -temp_f1;
+            temp_f6 = temp_f20 * temp_f1;
+            temp_f2 = temp_f20 * temp_f2;
+            temp_f1 = temp_f0 * temp_f1;
+            temp_f10 = temp_f20 * temp_f4;
+            temp_f0 = temp_f0 * temp_f4;
+            temp_f3 = temp_f3 * temp_f21;
+            temp_f20 = temp_f20 * temp_f21;
+            stack.points[4] = temp_f20 + temp_f1 + temp_f9;
+            stack.points[5] = temp_f3 + temp_f6 + temp_f8;
+            stack.points[0] = temp_f2 + temp_f0 + temp_f9;
+            stack.points[1] = temp_f5 + temp_f10 + temp_f8;
+            stack.points[2] = temp_f20 + temp_f0 + temp_f9;
+            stack.points[3] = temp_f3 + temp_f10 + temp_f8;
+            stack.points[6] = temp_f2 + temp_f1 + temp_f9;
+            stack.points[7] = temp_f5 + temp_f6 + temp_f8;
+            loading9D_func_001D1D5C(temp_s0_4, arg5, (int)0x1003, &stack.points[0]);
+            loading9D_func_001CFBE4(temp_s0_4, arg5, &stack.data.x);
+            loading9D_func_001D5BC8(temp_s0_4, 0, arg5);
+            break;
+        case 0x36:
+            M2C_FIELD(stack.sp0, float *, 0) = loading9D_func_001D4A3C((int)&D_007812C0, arg5, 0);
+            break;
+        case 0x37:
+            loading9D_func_001D080C((int)&D_007812C0, arg5, stack.sp0);
+            break;
+        case 0x38:
+            loading9D_func_001D091C((int)&D_007812C0, arg5, stack.sp0);
+            break;
+        case 0x39:
+            loading9D_func_001D0C64((int)&D_007812C0, arg5, stack.sp0);
+            break;
+        case 0:
+        case 4:
+        case 7:
+        case 8:
+        case 9:
+        case 14:
+        case 21:
+        case 22:
+        case 23:
+        case 24:
+        case 27:
+        case 28:
+        case 29:
+        case 32:
+        case 33:
+        case 34:
+        case 35:
+        case 36:
+        case 37:
+        case 38:
+        case 39:
+        case 43:
+        case 44:
+        case 45:
+        case 46:
+        case 47:
+        case 48:
+        case 49:
+        default: break;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00209D4C);
+#endif
 
 // NON_MATCHING: 146/272 differ, 26 relocs differ (size 0x440, game 0x458), 93 edits
 #ifdef NON_MATCHING
