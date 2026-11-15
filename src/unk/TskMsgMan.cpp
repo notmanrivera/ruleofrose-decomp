@@ -1,4 +1,10 @@
 #include "include_asm.h"
+struct TskVec4;
+extern "C" float sqrtf(float);
+extern "C" int X_func_001F59B4_ee7f0(unsigned int, int, int, int, int, float, float) asm("func_001F59B4");
+extern "C" float Xf_func_001333E4_ee7f0(int, int, int) asm("func_001333E4");
+extern "C" int X_func_00118E6C__9MagSystemiffR9DogVectorPfP9DogVector(
+    void *, int, float, float, TskVec4 *, float *, TskVec4 *) asm("func_00118E6C__9MagSystemiffR9DogVectorPfP9DogVector");
 extern "C" int Xiii_func_00143D7C(int, float *, int) asm("func_00143D7C");
 extern int D_006FE6A0;
 extern "C" int Xiiu_func_001CBE38(void *, unsigned int) asm("func_001CBE38");
@@ -936,7 +942,30 @@ extern "C" int TskRotAdj__vfunc_04(int arg0)
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EE7F0);
+extern "C" int func_001EE7F0(unsigned int arg0, unsigned short arg1, int *arg2, float f0, float f1, int arg3, float f2)
+{
+    TskVec4 vec;
+    float time;
+    float dist;
+    float speed;
+    float ratio;
+    char *sys;
+
+    if (*arg2 == 0) {
+        *arg2 = X_func_001F59B4_ee7f0(arg0, arg3, -1, 0x100, 0, f2, f0);
+    }
+    sys = (char *)&D_006E9840;
+    time = Xf_func_001333E4_ee7f0((int)(sys + 0x12540), arg1, arg3);
+    X_func_00118E6C__9MagSystemiffR9DogVectorPfP9DogVector(sys, arg1, 0.0f, time * 50.0f, &vec, &f0, 0);
+    dist = sqrtf(vec.f[0] * vec.f[0] + vec.f[2] * vec.f[2]);
+    speed = dist * (f2 / 0.016666666f);
+    if (speed <= 0.0f) {
+        ratio = 0.0f;
+    } else {
+        ratio = f1 / speed;
+    }
+    return (int)(ratio * time * 25.0f);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EE954);
 
