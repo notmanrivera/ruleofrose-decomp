@@ -78,7 +78,7 @@ def main():
         else:
             base = {f: len(e) for f, e in res.items()}
         BASELINE.write_text("# file\terrors with a modern g++ -m32 (tools/host_check.py --update)\n"
-                            + "".join(f"{f}\t{n}\n" for f, n in sorted(base.items())))
+                            + "".join(f"{f}\t{n}\n" for f, n in sorted(base.items())), newline="\n")
         clean = sum(1 for n in base.values() if n == 0)
         print(f"baseline: {clean} of {len(base)} files clean, {sum(base.values())} errors in all")
         return
