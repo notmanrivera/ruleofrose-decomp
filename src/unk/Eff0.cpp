@@ -1,5 +1,15 @@
 #include "include_asm.h"
 #include "dog/doglightpool.h"
+struct Obj_Stay1_v5 {
+    unsigned short m_00;
+    unsigned char pad02[0x06];
+    int m_08;
+    int m_0C;
+    unsigned char pad10[0xA4];
+    int m_B4;
+    float m_B8;
+    int m_BC;
+};
 struct Scene_AF20 {
     unsigned char unk[0x2050];
     DogLightPool m_light_pool;
@@ -371,7 +381,29 @@ INCLUDE_ASM("asm/nonmatchings/unk/Eff0", updateZDepth__14EffBloodSpray2);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay1__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay1__vfunc_05);
+extern "C" int EffBloodStay1__vfunc_05(Obj_Stay1_v5 *arg0)
+{
+    int step = ++arg0->m_B4;
+    switch (arg0->m_08 = arg0->m_0C) {
+    case 0:
+        if (step >= 121) {
+            arg0->m_0C = 10;
+        }
+        break;
+    case 10:
+        if ((arg0->m_BC >= 0 && step >= arg0->m_BC) || (arg0->m_00 & 2)) {
+            arg0->m_0C = 20;
+        }
+        break;
+    case 20:
+        arg0->m_B8 -= 0.01f;
+        if (arg0->m_B8 <= 0.0f) {
+            return 0;
+        }
+        break;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay1__vfunc_08);
 
