@@ -235,7 +235,48 @@ extern int D_006E9840;
 extern int D_007812C0;
 extern int D_007B2060;
 
+// NON_MATCHING: 57/62 differ, 2 relocs differ (size 0xF8, game 0x108), 41 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_00198420_8318(void *, int) asm("func_00198420");
+extern "C" int func_00198318(MnuDiary *arg0, int arg1)
+{
+    int m128 = arg0->m_128;
+    int idx;
+    if (arg1 != 0) {
+        int page = (m128 >= 0) ? (m128 / 2) : -1;
+        idx = page + 1;
+        if (idx >= arg0->m_130) {
+            return 0;
+        }
+        if (X_func_00198420_8318(arg0, idx) != 0) {
+            return 0;
+        }
+        idx = page + 2;
+        if (idx >= arg0->m_130) {
+            return 1;
+        }
+    } else {
+        int page = (m128 >= 0) ? (m128 / 2) : -1;
+        if (page < 0) {
+            return 0;
+        }
+        if (X_func_00198420_8318(arg0, page) != 0) {
+            return 0;
+        }
+        idx = page - 1;
+        if (idx < 0) {
+            return 1;
+        }
+    }
+    int flags = *(int *)(arg0->m_12C + idx * 0x20);
+    if ((flags & 5) != 1 && (flags & 0xA) != 2) {
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00198318);
+#endif
 
 extern "C" int func_00198420(int arg0, int arg1)
 {
