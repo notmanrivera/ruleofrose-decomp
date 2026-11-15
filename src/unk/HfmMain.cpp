@@ -48,6 +48,9 @@ extern "C" int X_func_00104394(...) asm("func_00104394");
 extern "C" void Xiif_func_00166F50(int, int, float) asm("func_00166F50");
 extern "C" void Xvif_func_00146C8C(int, float) asm("func_00146C8C");
 extern "C" int Xh_func_001D19A8(...) asm("func_001D19A8");
+extern "C" int Xii_func_00145760(int) asm("func_00145760");
+extern "C" int Xii_func_00145788(int) asm("func_00145788");
+extern "C" int Xii_func_00166108(int) asm("func_00166108");
 static inline int check_001D19A8(int arg0, int d)
 {
     int ret = Xh_func_001D19A8(d, (*(int *)(arg0 + 0)));
@@ -552,7 +555,51 @@ extern "C" void func_001452FC(int arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmMain__vfunc_04);
+extern "C" void HfmMain__vfunc_04(int arg0)
+{
+    int temp_s1;
+    int temp_v1;
+
+    if ((M2C_FIELD(arg0, int *, 0x28) != 0) && (temp_s1 = M2C_FIELD(arg0, int *, 0x24), (temp_s1 == -1))) {
+        if ((M2C_FIELD(arg0, int *, 0x208) != 0) && (Xii_func_001442DC(M2C_FIELD(arg0, int *, 0)) != temp_s1)) {
+            M2C_FIELD(arg0, int *, 0x24) = 1;
+            M2C_FIELD(arg0, int *, 0x234) = X_func_0010423C(0x3C, 0x78);
+            return;
+        }
+        if ((M2C_FIELD(arg0, int *, 0x20C) != 0) && ((M2C_FIELD(arg0, int *, 0x30) & 0x11) == 1)) {
+            M2C_FIELD(arg0, unsigned char *, 0x22A) = M2C_FIELD(arg0, unsigned char *, 0x22A) + 1;
+            const int tbl[6] = { 0, 10, 30, 50, 70, 100 };
+            if (X_func_0010423C(0, 0x63) < tbl[M2C_FIELD(arg0, unsigned char *, 0x22A)]) {
+                M2C_FIELD(arg0, unsigned char *, 0x22A) = 0;
+                M2C_FIELD(arg0, int *, 0x24) = 2;
+                return;
+            }
+        }
+        if (M2C_FIELD(arg0, int *, 0x2C) != 0) {
+            temp_v1 = Xii_func_00145788(arg0);
+            if (M2C_FIELD(arg0, unsigned char *, 0x228) != 0) {
+                if (temp_v1 == 0) {
+                    M2C_FIELD(arg0, unsigned char *, 0x228) = 0;
+                    if (M2C_FIELD(arg0, int *, 0x214) != 0) {
+                        M2C_FIELD(arg0, int *, 0x24) = 4;
+                        return;
+                    }
+                }
+            } else if (temp_v1 != 0) {
+                M2C_FIELD(arg0, unsigned char *, 0x228) = 1;
+                if (M2C_FIELD(arg0, int *, 0x210) != 0) {
+                    M2C_FIELD(arg0, int *, 0x24) = 3;
+                    return;
+                }
+            }
+            if ((M2C_FIELD(arg0, int *, 0x218) != 0) && (Xii_func_00166108(arg0) != 0)) {
+                M2C_FIELD(arg0, int *, 0x24) = 5;
+            } else if ((M2C_FIELD(arg0, int *, 0x21C) != 0) && (Xii_func_00145760(arg0) != 0)) {
+                M2C_FIELD(arg0, int *, 0x24) = 6;
+            }
+        }
+    }
+}
 
 extern "C" void HfmMain__vfunc_05(int arg0)
 {
@@ -1025,8 +1072,6 @@ extern "C" void func_00146C8C(int arg0, float fparg0)
         }
     }
 }
-
-INCLUDE_RODATA("asm/nonmatchings/unk/HfmMain", D_002EF300);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/HfmMain", D_002EF318);
 
