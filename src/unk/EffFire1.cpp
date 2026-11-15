@@ -1,4 +1,13 @@
 #include "include_asm.h"
+struct EffFog3Param {
+    int unk00;
+    int unk04;
+    int unk08;
+    char pad0C[0x74];
+};
+extern "C" void X_func_00176CC8(void *, void *) asm("func_00176CC8");
+extern "C" int Xi_func_001726B4() asm("func_001726B4");
+extern "C" int Xi_func_001727EC() asm("func_001727EC");
 struct Fire1702E4Vec3 {
     float x, y, z;
 };
@@ -430,7 +439,37 @@ extern "C" void dtor_7EffFog3(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog3__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog3__vfunc_05);
+extern "C" int EffFog3__vfunc_05(int arg0)
+{
+    EffFog3Param param;
+    unsigned int temp_v0;
+    int var_v0;
+
+    temp_v0 = M2C_FIELD(arg0, unsigned int *, 0x24) + 1;
+    M2C_FIELD(arg0, unsigned int *, 0x24) = temp_v0;
+    if ((temp_v0 % M2C_FIELD(arg0, unsigned int *, 0x28)) == 0) {
+        if (D_00298E14 & 1) {
+            if (Xi_func_001727EC()) {
+                param.unk00 = 0x1C;
+                param.unk08 = 0x96;
+                X_func_00176CC8((void *)(D_00298E08 + 0x837E0), &param);
+                var_v0 = 0xB4;
+                goto done;
+            }
+        } else {
+            if (Xi_func_001726B4()) {
+                param.unk08 = 0;
+                param.unk00 = 0x1B;
+                X_func_00176CC8((void *)(D_00298E08 + 0x837E0), &param);
+            }
+        }
+        var_v0 = 0x1E;
+    done:
+        M2C_FIELD(arg0, int *, 0x28) = var_v0;
+        M2C_FIELD(arg0, int *, 0x24) = 0;
+    }
+    return 1;
+}
 
 extern "C" int EffFog3Dark__vfunc_02(int arg0, int arg1)
 {
