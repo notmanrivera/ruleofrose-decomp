@@ -1,4 +1,5 @@
 #include "include_asm.h"
+struct Block30000_1 { char b[0x30000]; };
 struct Elem214AC4 {
     unsigned char b[0x80];
 };
@@ -156,7 +157,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020EEA8);
 extern "C" void func_0020EFA4(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020EFAC);
+extern "C" void func_0020EFAC(int arg0, int arg1, int arg2)
+{
+    switch (arg1) {
+    case 1:
+        break;
+    case 2:
+        *(Block30000_1 *)*(int *)(arg0 + 8) = *(Block30000_1 *)arg2;
+        func_00213F48(arg0, *(int *)(arg0 + 8), 2);
+        func_00211E84(arg0, 0x84000000, D_007B47D0 - 0xA4);
+        break;
+    }
+}
 
 extern "C" void func_0020F0C8(int arg0, int arg1)
 {
