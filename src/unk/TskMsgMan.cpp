@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" float Xff_cosf(float) asm("cosf");
+extern "C" float Xff_sinf(float) asm("sinf");
+extern "C" float Xfpff_func_002180E4(float *, float, float) asm("func_002180E4");
 struct TskMoveSectaFindPathObj {
     char pad0[0x20C];
     int m_unk20C;
@@ -705,7 +708,26 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EFAB8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EFEB8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0288);
+extern "C" void func_001F0288(int arg0, int arg1, float *arg2, float *arg3, int arg4)
+{
+    float dist;
+    float ang;
+    float spd;
+
+    M2C_FIELD(arg0, int *, 0x64) = 0;
+    ang = Xfpff_func_002180E4(&dist, arg3[0] - arg2[0], arg3[2] - arg2[2]);
+    spd = (dist * 1.5f) / (float) arg4;
+    if (spd > (1.0f / 30.0f)) {
+        spd = 1.0f / 30.0f;
+    }
+    float s = Xff_sinf(ang);
+    M2C_FIELD(arg0, int *, 0x34) = 0;
+    M2C_FIELD(arg0, float *, 0x30) = s * spd;
+    float c = Xff_cosf(ang);
+    M2C_FIELD(arg0, int *, 0x60) = 0;
+    M2C_FIELD(arg0, int *, 0x50) = arg4;
+    M2C_FIELD(arg0, float *, 0x38) = c * spd;
+}
 
 extern "C" void func_001F0358(int arg0, int arg1, int arg2, int arg3)
 {
