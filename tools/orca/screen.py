@@ -31,6 +31,9 @@ def model(tail):
         m = re.search(r"Build · (.+?) OpenCode", line)             # OpenCode
         if m:
             return m.group(1).strip()
+        m = re.search(r"^\s*(GPT[\w.\-]+(?: \w+)?) · ", line)                # Codex
+        if m:
+            return m.group(1).strip()
         m = re.search(r"(\S.*?) · (low|medium|high|xhigh)\s*$", line)  # Antigravity
         if m:
             return f"{m.group(1).split('  ')[-1].strip()} {m.group(2)}"
@@ -58,7 +61,8 @@ def wait(tail, now=None):
         secs = (at - now).total_seconds()
     else:
         # "resets in 152h", "Resets in 2h 5m", "Resets in" + newline + "48m54s"
-        m = re.search(r"resets in\s+(?:(\d+)h)?\s*(?:(\d+)m)?\s*(?:(\d+)s)?", text, re.I)
+        m = re.search(r"(?:resets|try again) in\s+(?:(\d+)\s*h\w*)?\s*(?:(\d+)\s*m\w*)?\s*(?:(\d+)\s*s\w*)?",
+                      text, re.I)
         if not m or not any(m.groups()):
             return ""
         secs = int(m.group(1) or 0) * 3600 + int(m.group(2) or 0) * 60 + int(m.group(3) or 0)

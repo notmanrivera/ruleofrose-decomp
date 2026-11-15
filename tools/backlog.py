@@ -74,6 +74,7 @@ def skipped():
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--max", type=int, default=30, help="largest function counted as small (instructions)")
+    ap.add_argument("--min", type=int, default=0, help="smallest function listed (instructions)")
     ap.add_argument("--file", help="list one file's small functions")
     ap.add_argument("--names", type=int, metavar="N", help="with --file: print the first N names, comma-separated")
     ap.add_argument("--exclude", default="", help="comma-separated files to leave out (taken by a worker)")
@@ -106,7 +107,7 @@ def main():
                     continue
             elif (f, name) in skip:
                 continue
-            if n is not None and n <= args.max and (args.nonmatching or args.retry or not nm):
+            if n is not None and args.min <= n <= args.max and (args.nonmatching or args.retry or not nm):
                 rows.setdefault(f, []).append((n, name, nm))
 
     if args.file:

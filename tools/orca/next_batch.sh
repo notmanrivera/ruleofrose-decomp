@@ -12,6 +12,7 @@
 #   --avoid P             never pick a file under this prefix (e.g. mag/;
 #                         remembered; --avoid - clears it)
 #   --max N               largest function handed out, in instructions (30)
+#   --min N               smallest one (0): a worker for the big functions only
 #   --names N             functions per batch (20)
 #   --budget I            ... and at most about I instructions in all (0: no limit)
 #   --tries T             tries before skipping a function (5)
@@ -79,7 +80,7 @@ HANDLE=""; BUSY=""; FILE=""; AVOID=""; BATCH=""; STATUS=""; RETRY=""; MODEL=""; 
 ZERO=0; SINCE_NEW=0; AGENT=""; PRIMARY=""; RESERVE=""; ON_RESERVE=""
 # shellcheck disable=SC1090
 [ -f "$ENV" ] && . "./$ENV"
-NEWFILE=""; MAX=30; NAMES=20; BUDGET=0; TRIES=5; NEW=""; MERGE=1; DRY=""; WATCH=""; LOOP=""; ROUND=""
+NEWFILE=""; MAX=30; MIN=0; NAMES=20; BUDGET=0; TRIES=5; NEW=""; MERGE=1; DRY=""; WATCH=""; LOOP=""; ROUND=""
 while [ $# -gt 0 ]; do
   case $1 in
     --handle) HANDLE=$2; shift ;;
@@ -87,6 +88,7 @@ while [ $# -gt 0 ]; do
     --file) NEWFILE=$2; shift ;;
     --avoid) AVOID=$2; [ "$AVOID" = - ] && AVOID=""; shift ;;
     --max) MAX=$2; shift ;;
+    --min) MIN=$2; shift ;;
     --names) NAMES=$2; shift ;;
     --budget) BUDGET=$2; shift ;;
     --tries) TRIES=$2; shift ;;
@@ -200,16 +202,16 @@ others=$(for e in "$ST"/*.env; do
 funcs=""
 R=${RETRY:+--retry $NAME}
 # shellcheck disable=SC2086
-[ -n "$FILE" ] && funcs=$("$PY" tools/backlog.py $R --file "$FILE" --max "$MAX" --names "$NAMES" --budget "$BUDGET")
+[ -n "$FILE" ] && funcs=$("$PY" tools/backlog.py $R --file "$FILE" --min "$MIN" --max "$MAX" --names "$NAMES" --budget "$BUDGET")
 if [ -z "$funcs" ]; then
   [ -z "$NEWFILE" ] || { echo "$NEWFILE has no functions of up to $MAX instructions left"; exit 1; }
   # shellcheck disable=SC2086
-  FILE=$("$PY" tools/backlog.py $R --by-yield --max "$MAX" --top 200 --exclude "${others:-}${FILE:+,$FILE}" |
+  FILE=$("$PY" tools/backlog.py $R --by-yield --min "$MIN" --max "$MAX" --top 200 --exclude "${others:-}${FILE:+,$FILE}" |
          awk 'NF == 5 && $2 == "functions" {print $5}' |
          { if [ -n "$AVOID" ]; then grep -v "^$AVOID" || true; else cat; fi; } | head -1)
   [ -n "$FILE" ] || { echo "no file left with functions of up to $MAX instructions"; exit 1; }
   # shellcheck disable=SC2086
-  funcs=$("$PY" tools/backlog.py $R --file "$FILE" --max "$MAX" --names "$NAMES" --budget "$BUDGET")
+  funcs=$("$PY" tools/backlog.py $R --file "$FILE" --min "$MIN" --max "$MAX" --names "$NAMES" --budget "$BUDGET")
 fi
 
 # 4. The brief: the first one for a fresh session, the follow-up otherwise.
