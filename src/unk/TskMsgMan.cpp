@@ -2051,7 +2051,37 @@ extern "C" int func_001F090C(int arg0) {
     return 1;
 }
 
+// NON_MATCHING: 122/176 differ, 24 relocs differ (size 0x2C0, game 0x2C4), 15 edits
+#ifdef NON_MATCHING
+static inline float wrap0B50(float a) { if(a < -3.14159265358979323846) a += 6.28318530717958647692; if(a > 3.14159265358979323846) a -= 6.28318530717958647692; return a; }
+extern "C" int stop0B50(unsigned int, int, int, int, int, float, float) asm("func_001F5BDC");
+extern "C" int func_001F0B50(int arg0) {
+    float yaw = Xfi_func_0010A650__8DogActor(M2C_FIELD(arg0, int *, 0x50));
+    float diff = yaw - M2C_FIELD(arg0, float *, 0x30);
+    if(wrap0B50(diff) < 0.0f) {
+        if(!(wrap0B50(diff) >= -0.1f)) return 0;
+        goto ready;
+    }
+    if(wrap0B50(diff) <= 0.1f) {
+ready:
+        if(M2C_FIELD(arg0, int *, 0x40)) stop0B50(M2C_FIELD(arg0, unsigned int *, 0x20), 1, 0, 0, 0, 1.0f / 60.0f, 32769.0f);
+        int *slot = (int *)(M2C_FIELD(arg0, int *, 0x54) + 0x3DC);
+        if(X_func_001E7D7C_f1670((int)&D_007A3D80, *slot)) {
+            X_func_001E7724_f1670((int)&D_007A3D80, *slot);
+            *slot = -1;
+        }
+        M2C_FIELD(arg0, float *, 0x14) = yaw;
+        M2C_FIELD(arg0, float *, 0x1C) = 1.0f;
+        M2C_FIELD(arg0, int *, 0x10) = 0;
+        M2C_FIELD(arg0, int *, 0x18) = 0;
+        Xv_func_001CFE78((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0x20), arg0 + 0x10);
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0B50);
+#endif
 
 extern "C" int func_001F0E14(int arg0)
 {
