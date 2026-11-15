@@ -443,14 +443,3 @@ extern "C" void func_001A4E34(int arg0, int arg1, int arg2)
         } while (var_s1 != 0);
     }
 }
-
-
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A4E88);
-
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A4F60);
-
-extern "C" void func_001A4FF0(int arg0)
-{
-    Xiiiii_func_001A4DB8((int) arg0, arg0 + 0x7F4, 0x10, 0x100);
-    Xiiiii_func_001A4DB8((int) arg0, arg0 + 0x834, 0x10, 0x100);
-}

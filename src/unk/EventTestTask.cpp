@@ -28,7 +28,7 @@ extern "C" void EventTestTask__vfunc_03(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", EventTestTask__vfunc_04);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301AF8);
+INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301B00);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00216AD0);
 

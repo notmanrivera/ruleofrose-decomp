@@ -101,7 +101,7 @@ text	rodata	data	bss	file	confidence
 00198318	002F8150	0029C368	006E9408	unk/MnuDiary	likely
 001A066C	002F8500	-	-	mnu/mnuselect	likely
 001A0950	002F8530	002A4524	-	mnu/mnudlg	likely
-001A5034	002F9118	002A4530	-	mnu/mnusvld	likely
+001A4E88	002F9100	002A4530	-	mnu/mnusvld	manual
 001A6830	002F9248	002A4DA8	006E9450	unk/001A6830	likely
 001B64C4	002FB050	002B8598	006E9640	game/gamman	likely
 001D1BEC	002FC0B8	-	-	unk/001D1BEC	likely
@@ -132,7 +132,7 @@ text	rodata	data	bss	file	confidence
 002162E0	00301A38	-	-	debug/motnamecnv	likely
 00216690	00301AA0	-	-	unk/00216690	likely
 00216728	00301AC0	-	-	debug/naga_debug	certain
-00216828	00301AF8	002DB2A0	007B4E08	unk/EventTestTask	likely
+00216828	00301B00	002DB2A0	007B4E08	unk/EventTestTask	manual
 00218500	00301E78	002DB330	-	mw/i3d	manual
 00237D00	00303CB0	002DB638	007B5AC0	mw/sound	manual
 0024B490	00305048	002DC2D0	00818680	sdk/libcdvd	signature

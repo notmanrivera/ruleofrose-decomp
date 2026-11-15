@@ -479,11 +479,11 @@ def compare(name, source=None, extra="", diff=False, sync=True):
                 want = rom[lo - BASE:(hi or lo + len(mine)) - BASE]
                 # Zeros after the object's end are the padding that aligns the
                 # next chunk (to the largest power of two dividing its start,
-                # up to 8, as in tools/configure.py); with no bytes at all
+                # up to 16: a file with jump tables is 16-aligned); with no bytes at all
                 # there is nothing to pad.
                 pad_ok = True
                 if hi is not None:
-                    align = min(8, hi & -hi)
+                    align = min(16, hi & -hi)   # up to 16: the next object may hold jump tables
                     pad_ok = (lo + len(mine) + align - 1) & -align == hi
                 size_ok = (len(mine) <= len(want) and not any(want[len(mine):])
                            and pad_ok and (len(mine) > 0 or not want))

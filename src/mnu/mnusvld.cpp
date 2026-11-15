@@ -60,6 +60,18 @@ extern int D_006E9840;
 extern int D_007812C0;
 extern int D_007B2060;
 
+// func_001A4E88 .. func_001A4FF0 were game/mnudlg's: config/splits_manual.tsv
+extern "C" int Xiiiii_func_001A4DB8(int, int, int, int) asm("func_001A4DB8");
+INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A4E88);
+
+INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A4F60);
+
+extern "C" void func_001A4FF0(int arg0)
+{
+    Xiiiii_func_001A4DB8((int) arg0, arg0 + 0x7F4, 0x10, 0x100);
+    Xiiiii_func_001A4DB8((int) arg0, arg0 + 0x834, 0x10, 0x100);
+}
+
 extern "C" void func_001A5034(int arg0)
 {
     Xiiii_func_001A4E34(arg0, arg0 + 0x7F4, 0x10);
