@@ -808,7 +808,63 @@ angle_part:
     M2C_FIELD(arg0, float *, 0x48) += z;
 }
 
+// NON_MATCHING: 108/190 differ, 14 relocs differ (size 0x2F8, game 0x2FC), 25 edits
+#ifdef NON_MATCHING
+extern unsigned int tickBDE8 asm("D_007A3220");
+static inline int actorAddrBDE8(int base, int n) { return n * 0x4D0 + base + 0x2920; }
+extern "C" void func_001EBDE8(int arg0) {
+    register int manBase PS2_REG("$18") = (int)&D_006FBD80;
+    volatile float predicted[4];
+    float dist;
+    float *pos = (float *)(arg0 + 0x30);
+    int actor = (int)&D_006FE6A0 + M2C_FIELD(arg0, int *, 0x14) * 0x4D0;
+    pos[0] = M2C_FIELD(actor, float *, 0x40);
+    pos[1] = M2C_FIELD(actor, float *, 0x44);
+    pos[2] = M2C_FIELD(actor, float *, 0x48);
+    float angle = Xfpff_func_002180E4(&dist, pos[0] - M2C_FIELD(arg0, float *, 0x40), M2C_FIELD(arg0, float *, 0x38) - M2C_FIELD(arg0, float *, 0x48));
+    float x, z;
+    float c;
+    if (dist < M2C_FIELD(arg0, float *, 0x1C) - 10.0f) {
+        x = -Xff_sinf(angle) * M2C_FIELD(arg0, float *, 0x28);
+        z = -Xff_cosf(angle) * M2C_FIELD(arg0, float *, 0x28);
+    } else if (M2C_FIELD(arg0, float *, 0x1C) + 10.0f < dist) {
+        x = Xff_sinf(angle) * M2C_FIELD(arg0, float *, 0x28);
+        z = Xff_cosf(angle) * M2C_FIELD(arg0, float *, 0x28);
+    } else {
+        x = z = 0.0f;
+    }
+angle_part:
+    angle = M2C_FIELD(arg0, float *, 0x24) < 0.0f ? angle + 1.57079632679489661923 : angle - 1.57079632679489661923;
+    int addr = M2C_FIELD(arg0, int *, 0xC) * 0x4D0 + manBase;
+    addr += 0x2920;
+    DogActorStub *other = (DogActorStub *)addr;
+    float pz = other->unk40[2] + z;
+    float px = other->unk40[0] + x;
+    predicted[1] = other->unk40[1];
+    predicted[2] = pz;
+    predicted[0] = px;
+    if(angle < -3.14159265358979323846) angle += 6.28318530717958647692;
+    if(angle > 3.14159265358979323846) angle -= 6.28318530717958647692;
+    if((x != 0.0f || z != 0.0f) && !(M2C_FIELD(arg0, int *, 0x18) & 4)) {
+        angle = yawC0(M2C_FIELD(arg0, float *, 0x30) - px, M2C_FIELD(arg0, float *, 0x38) - pz);
+        M2C_FIELD(arg0, int *, 0x18) |= 4;
+    } else {
+        unsigned int period = 180;
+        if((*(unsigned int *)&tickBDE8 % period) == 0) M2C_FIELD(arg0, int *, 0x18) &= ~4;
+    }
+    M2C_FIELD(arg0, float *, 0x54) = angle;
+    M2C_FIELD(M2C_FIELD(arg0, int *, 0x68), float *, 0x6C) = angle;
+    float *out = (float *)(arg0 + 0x40);
+    addr = M2C_FIELD(arg0, int *, 0xC) * 0x4D0 + manBase;
+    addr += 0x2920;
+    other = (DogActorStub *)addr;
+    out[0] = other->unk40[0];
+    out[1] = other->unk40[1];
+    out[2] = other->unk40[2];
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EBDE8);
+#endif
 
 
 
