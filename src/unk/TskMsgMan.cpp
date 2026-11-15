@@ -524,7 +524,49 @@ extern "C" void TskMoveSectaFindPath__vfunc_05(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001ECBE0);
 
+// NON_MATCHING: 2/58 differ, 1 reloc differs, 4 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_00260110(const char *fmt, ...) asm("func_00260110");
+extern "C" int Xiii_func_001D8ADC(int a, int b) asm("func_001D8ADC");
+extern "C" int Xiiuii_func_001D544C(int a, unsigned int b, int c, int d) asm("func_001D544C");
+extern "C" int func_001ECDD4(int arg0)
+{
+    extern const char D_002FDBF0[];
+    int out[8];
+    int temp_s1;
+
+    temp_s1 = arg0 + 0x250;
+    if ((M2C_FIELD(arg0, int *, 0x2A8) & 1) != 0) {
+        if (X_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0x3D8)) != 0) {
+            return 0;
+        }
+    }
+    if (Xiiuii_func_001D544C((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 8), (int)out, 0) != 0) {
+        u_long128 *p1 = (u_long128 *)(arg0 + 0x280);
+        asm volatile("" : "+r"(p1));
+        register u_long128 tmp1 asm("$6") = *p1;
+        asm volatile("" : "+r"(tmp1));
+        *(u_long128 *)temp_s1 = tmp1;
+        X_func_00260110(D_002FDBF0, out[4]);
+        return 0;
+    }
+    Xv_func_0025B878(temp_s1, temp_s1, arg0 + 0x270);
+    if (Xiii_func_001D8ADC(M2C_FIELD(arg0, int *, 4), temp_s1) != 0) {
+        register u_long128 *p2 asm("$3") = (u_long128 *)(arg0 + 0x280);
+        asm volatile("" : "+r"(p2));
+        M2C_FIELD(arg0, int *, 0x21C)--;
+        register u_long128 tmp2 asm("$6") = *(u_long128 *)temp_s1;
+        asm volatile("" : "+r"(tmp2));
+        *p2 = tmp2;
+        asm volatile("" ::: "memory");
+        return 0;
+    }
+    X_func_001ED1D0((TskMoveSectaFindPathObj *)arg0);
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001ECDD4);
+#endif
 
 extern "C" int func_001ECEBC(int arg0)
 {
