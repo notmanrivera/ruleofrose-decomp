@@ -1,4 +1,5 @@
 #include "include_asm.h"
+struct v94_1FF25C { char pad[148]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16(); virtual void call(void *, int); };
 extern "C" void X_2F60_180EA8(void *, int) asm("func_00180EA8");
 extern "C" void X_2F10_180EA8(void *, int) asm("func_00180EA8");
 extern "C" void X_2F10_1640AC(void *, int, int) asm("func_001640AC");
@@ -79,7 +80,24 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF110);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FEB38);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FF25C);
+extern "C" void func_001FF25C(void *arg0)
+{
+    struct {
+        float m[4][4];
+    } stack;
+    v94_1FF25C *temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, v94_1FF25C **, 0x50);
+    temp_v1->call(&stack, M2C_FIELD(arg0, int *, 0x54));
+    M2C_FIELD(arg0, float *, 0x58) = stack.m[3][0];
+    M2C_FIELD(arg0, float *, 0x5C) = stack.m[3][1];
+    M2C_FIELD(arg0, float *, 0x60) = stack.m[3][2];
+    M2C_FIELD(arg0, float *, 0x64) = stack.m[3][3];
+    M2C_FIELD(arg0, float *, 0x68) = stack.m[2][0];
+    M2C_FIELD(arg0, float *, 0x6C) = stack.m[2][1];
+    M2C_FIELD(arg0, float *, 0x70) = stack.m[2][2];
+    M2C_FIELD(arg0, float *, 0x74) = stack.m[2][3];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FF2E0);
 
