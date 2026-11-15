@@ -148,7 +148,24 @@ extern "C" int func_0018C738(int arg0, char *arg1, int arg2)
     return 0;
 }
 
+// NON_MATCHING: 1/32 differ, 1 edits
+#ifdef NON_MATCHING
+extern "C" int func_0018C794(int arg0, int arg1, int arg2)
+{
+    char *p = (char *)M2C_FIELD(arg0, int *, 0x4AC) + arg1 * 0x154;
+    char *q = (char *)M2C_FIELD(p, int *, 0x140) + M2C_FIELD(p, int *, 0x104) * 0xC;
+
+    if (arg2 >= M2C_FIELD(q, int *, 4)) {
+        return 1;
+    }
+    M2C_FIELD(p, int *, 0x108) = arg2;
+    M2C_FIELD(p, int *, 0xF8) = *(int *)(arg2 * 0x20 + M2C_FIELD(q, unsigned int *, 8) + 4);
+    Xiii_func_0018D08C(arg0, (int)p);
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C794);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C814);
 
