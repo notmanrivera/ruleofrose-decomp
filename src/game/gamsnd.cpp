@@ -1,4 +1,15 @@
 #include "include_asm.h"
+struct Node76B8 {
+    void *obj;
+    Node76B8 *next;
+    int state;
+    int unk0C;
+};
+struct List76B8 {
+    Node76B8 *head;
+};
+extern "C" void X_76B8_func_001E7698(List76B8 *, Node76B8 *) asm("func_001E7698");
+extern "C" int X_def_func_001E76B8(List76B8 *arg0, int arg1) asm("func_001E76B8");
 struct Sub7DE8 {
     char pad[0x280];
     int arr[0x100];
@@ -1103,7 +1114,21 @@ extern "C" void func_001E7698(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E76B8);
+extern "C" int X_def_func_001E76B8(List76B8 *arg0, int arg1)
+{
+    Node76B8 *p = arg0->head;
+    int ret = 0;
+    while (p != 0) {
+        if (p->unk0C == arg1 && p->state != 2) {
+            p->state = 2;
+            X_76B8_func_001E7698(arg0, p);
+            ret = 1;
+            break;
+        }
+        p = p->next;
+    }
+    return ret;
+}
 
 extern "C" void func_001E7724(Obj7724 *arg0, int arg1)
 {
