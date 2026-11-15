@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" int X_func_0021A760(int, int, int) asm("func_0021A760");
+extern "C" int X_func_0022E960(int, int, int, float) asm("func_0022E960");
+extern "C" int X_func_0022F7A0(int, int, int) asm("func_0022F7A0");
+extern "C" int Xiiiiii_i3dCallLocked__FPvN40(int, int, int, int, int) asm("i3dCallLocked__FPvN40");
 extern "C" int Xi_func_0016AD94() asm("func_0016AD94");
 struct Stack8DD8 {
     int unk00;
@@ -143,7 +147,15 @@ extern "C" int EffReload1__vfunc_05(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", renderPreMain__10EffReload1PQ24Eff011RENDERPARAM);
+extern "C" void renderPreMain__10EffReload1PQ24Eff011RENDERPARAM(int arg0, int arg1)
+{
+    if (M2C_FIELD(arg0, int *, 0x24) != 0) {
+        X_func_0022E960(M2C_FIELD(arg0, int *, 0x28), M2C_FIELD(arg0, int *, 0x2C), 0x111, (float) M2C_FIELD(arg0, int *, 0x80) / 60.0f);
+        X_func_0022F7A0(M2C_FIELD(arg0, int *, 0x2C), M2C_FIELD(arg0, int *, 0x30), M2C_FIELD(arg0, int *, 0x38));
+        X_func_0021A760(M2C_FIELD(arg0, int *, 0x24), M2C_FIELD(arg0, int *, 0x34), M2C_FIELD(arg0, int *, 0x30));
+        Xiiiiii_i3dCallLocked__FPvN40(M2C_FIELD(arg1, int *, 8), M2C_FIELD(arg0, int *, 0x24), M2C_FIELD(arg0, int *, 0x34), arg0 + 0x40, 0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1__vfunc_02);
 
