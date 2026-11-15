@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int X_func_001311F4_loc(int, int *) asm("func_001311F4");
+extern "C" int Xiiiii_func_001311BC_loc(int, int, int, int) asm("func_001311BC");
 struct DogVtblEntry {
     short delta;
     short unk2;
@@ -1544,7 +1546,40 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F27E0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2920);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2A84);
+extern "C" int func_001F2A84(int arg0)
+{
+    int arr[8];
+    switch (M2C_FIELD(arg0, int *, 0x10)) {
+    case 0:
+    {
+        int t = M2C_FIELD(arg0, int *, 0x20) / 2;
+        int off = 0x12540;
+        M2C_FIELD(arg0, int *, 0x14) = t;
+        Xiiiii_func_001311BC_loc((int)&D_006E9840 + off, t, 7, 0);
+        M2C_FIELD(arg0, int *, 0x10)++;
+        break;
+    }
+    case 1:
+        if (M2C_FIELD(arg0, int *, 0x14)-- > 0) {
+            return 0;
+        } else {
+            int off = 0x12540;
+            int p = (int)&D_006E9840 + off;
+            X_func_00131184(p, 0, 7, 0);
+            int t = M2C_FIELD(arg0, int *, 0x20) / 2;
+            arr[0] = 2;
+            arr[1] = 2;
+            M2C_FIELD(arg0, int *, 0x14) = t;
+            arr[2] = t;
+            X_func_001311F4_loc(p, arr);
+            M2C_FIELD(arg0, int *, 0x10) = 0x63;
+        }
+        break;
+    case 0x63:
+        return M2C_FIELD(arg0, int *, 0x14)-- <= 0;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2BCC);
 
