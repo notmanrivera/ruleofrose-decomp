@@ -1,4 +1,66 @@
 #include "include_asm.h"
+struct Elem_dd5e8 {
+    unsigned int u0[8];
+    unsigned int m_flg;
+    unsigned int u24[2];
+    int m_id;
+    unsigned int u30[(0x70 - 0x30) / 4];
+    int m_70;
+    unsigned int u74[(0xB0 - 0x74) / 4];
+} __attribute__((aligned(16)));
+struct Node_dd5e8 {
+    Node_dd5e8 *m_prev;
+    Node_dd5e8 *m_next;
+    Elem_dd5e8 m_data;
+};
+struct Chain_dd5e8 {
+    Node_dd5e8 m_head;
+    int m_num;
+    void push_back(Node_dd5e8 *theNode) {
+        if (m_num == 0) {
+            m_head.m_next = theNode;
+            theNode->m_prev = &m_head;
+        } else {
+            m_head.m_prev->m_next = theNode;
+            theNode->m_prev = m_head.m_prev;
+        }
+        theNode->m_next = &m_head;
+        m_head.m_prev = theNode;
+        ++m_num;
+    }
+    Node_dd5e8 *pop_back() {
+        Node_dd5e8 *node = m_head.m_prev;
+        Node_dd5e8 *prev = node->m_prev;
+        m_head.m_prev = prev;
+        prev->m_next = &m_head;
+        --m_num;
+        return node;
+    }
+};
+struct Iter_dd5e8 {
+    Node_dd5e8 *m_node;
+    Iter_dd5e8() : m_node(0) {}
+    Iter_dd5e8(Node_dd5e8 *n) : m_node(n) {}
+    Iter_dd5e8(const Iter_dd5e8 &o) : m_node(o.m_node) {}
+    Elem_dd5e8 &operator*() const { return m_node->m_data; }
+    Iter_dd5e8 &operator++() { m_node = m_node->m_next; return *this; }
+    bool operator!=(const Iter_dd5e8 &o) const { return m_node != o.m_node; }
+};
+struct List_dd5e8 {
+    Chain_dd5e8 m_free;
+    Chain_dd5e8 m_used;
+    int m_max;
+    Iter_dd5e8 begin() { return Iter_dd5e8(m_used.m_head.m_next); }
+    Iter_dd5e8 end() { return Iter_dd5e8(&m_used.m_head); }
+    void push_back(const Elem_dd5e8 &data) {
+        Node_dd5e8 *node = m_free.pop_back();
+        node->m_data = data;
+        m_used.push_back(node);
+    }
+};
+extern int D_007812C0_dd5e8 asm("D_007812C0");
+extern "C" int X_func_001C6FE0_dd5e8(void *, int, int) asm("func_001C6FE0");
+extern "C" void X_func_001DE104_dd5e8(List_dd5e8 *, Elem_dd5e8) asm("func_001DE104");
 struct ObjStat_ddf48 {
     unsigned char pad0[0x100];
     int m_oid;
@@ -1980,7 +2042,29 @@ extern "C" GamTrgCopy_dd558 *func_001DD558(int arg0, const GamTrgCopy_dd558 *arg
     return p;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD5E8);
+extern "C" void func_001DD5E8(List_dd5e8 *arg0, Elem_dd5e8 *arg1, int arg2)
+{
+    Iter_dd5e8 it;
+    Iter_dd5e8 last;
+    if (arg1->m_70 != 0) {
+        arg1->m_flg |= 0x400000;
+    }
+    if (arg2 != 0) {
+        arg1->m_id = X_func_001C6FE0_dd5e8(&D_007812C0_dd5e8, 0, 0xD);
+    }
+    it = arg0->begin();
+    last = arg0->end();
+    while (it != last) {
+        if ((*it).m_id == arg1->m_id) {
+            return;
+        }
+        ++it;
+    }
+    arg0->push_back(*arg1);
+    if (arg1->m_flg & 0x01000000) {
+        X_func_001DE104_dd5e8(arg0, *arg1);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD7BC);
 
