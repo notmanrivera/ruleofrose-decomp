@@ -1,4 +1,20 @@
 #include "include_asm.h"
+struct Block80_44CC {
+    unsigned char b[0x80];
+};
+struct Block780_44CC {
+    unsigned char b[0x780];
+};
+struct Inner44CC {
+    int flags;
+    unsigned char unk04[0x28];
+    Block80_44CC unk2C;
+    Block780_44CC *unkAC;
+};
+struct Obj44CC {
+    unsigned char pad[0xDCE0];
+    Inner44CC *unkDCE0;
+};
 extern "C" void *X20F1FC_memset(void *, int, unsigned int) asm("memset");
 struct Item20F1FC {
     unsigned int a;
@@ -1542,7 +1558,19 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00214310);
 extern "C" void func_002144C4(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002144CC);
+extern "C" void func_002144CC(Obj44CC *arg0)
+{
+    Inner44CC *inner = arg0->unkDCE0;
+    if (inner != 0) {
+        if (inner->flags & 0x200) {
+            *(Block80_44CC *)&D_007B4700 = inner->unk2C;
+        }
+        if (arg0->unkDCE0->unkAC != 0) {
+            **(Block780_44CC **)&D_007B4770 = *arg0->unkDCE0->unkAC;
+        }
+    }
+    arg0->unkDCE0 = 0;
+}
 
 extern "C" void func_00214664(void)
 {
