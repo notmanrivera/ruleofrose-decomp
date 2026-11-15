@@ -1,4 +1,72 @@
 #include "include_asm.h"
+struct Elem_dddbc {
+    unsigned int u0[11];
+    unsigned int flg2C;
+    unsigned int u30[(0xB0 - 0x30) / 4];
+} __attribute__((aligned(16)));
+struct Node_dddbc { Node_dddbc *m_prev; Node_dddbc *m_next; Elem_dddbc m_data; };
+struct Chain_dddbc {
+    Node_dddbc m_head;
+    int m_num;
+    void push_back(Node_dddbc *theNode) {
+        if (m_num == 0) {
+            m_head.m_next = theNode;
+            theNode->m_prev = &m_head;
+        } else {
+            m_head.m_prev->m_next = theNode;
+            theNode->m_prev = m_head.m_prev;
+        }
+        theNode->m_next = &m_head;
+        m_head.m_prev = theNode;
+        ++m_num;
+    }
+    void unlink(Node_dddbc *theNode) {
+        if (theNode == m_head.m_next) {
+            Node_dddbc *next = theNode->m_next;
+            m_head.m_next = next;
+            next->m_prev = &m_head;
+        } else {
+            Node_dddbc *p = theNode->m_prev;
+            if (theNode == m_head.m_prev) {
+                m_head.m_prev = p;
+                p->m_next = &m_head;
+            } else {
+                p->m_next = theNode->m_next;
+                Node_dddbc *prev = theNode->m_prev;
+                p = theNode->m_next;
+                p->m_prev = prev;
+            }
+        }
+        --m_num;
+    }
+};
+struct Iter_dddbc {
+    Node_dddbc *m_node;
+    Iter_dddbc() : m_node(0) {}
+    Iter_dddbc(Node_dddbc *n) : m_node(n) {}
+    Iter_dddbc(const Iter_dddbc &o) : m_node(o.m_node) {}
+    Elem_dddbc &operator*() const { return m_node->m_data; }
+    Iter_dddbc &operator++() { m_node = m_node->m_next; return *this; }
+    bool operator!=(const Iter_dddbc &o) const { return m_node != o.m_node; }
+};
+struct List_dddbc {
+    Chain_dddbc m_free;
+    Chain_dddbc m_used;
+    int m_max;
+    Iter_dddbc begin() { return Iter_dddbc(m_used.m_head.m_next); }
+    Iter_dddbc end() { return Iter_dddbc(&m_used.m_head); }
+    int size() const { return m_used.m_num; }
+    Iter_dddbc erase(Iter_dddbc it) {
+        Iter_dddbc next(it);
+        ++next;
+        Node_dddbc *node = it.m_node;
+        m_used.unlink(node);
+        m_free.push_back(node);
+        return next;
+    }
+};
+struct Mgr_dddbc { char pad[0xC1C0]; List_dddbc list; };
+extern "C" void Xii_func_001DDDAC_dddbc(int) asm("func_001DDDAC");
 struct Elem_deaac {
     float minX;
     float minZ;
@@ -1866,7 +1934,38 @@ extern "C" void func_001DDDAC(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DDDBC);
+extern "C" void func_001DDDBC(Mgr_dddbc *arg0, int arg1)
+{
+    Iter_dddbc it;
+    Iter_dddbc last;
+
+    if (arg0->list.size() != 0) {
+        it = arg0->list.begin();
+        last = arg0->list.end();
+        while (it != last) {
+            switch (arg1) {
+            case 0:
+            case 1:
+            default:
+                break;
+            case 2:
+                if (((*it).flg2C >> 30) == 1) {
+                    ++it;
+                    continue;
+                }
+                break;
+            case 3:
+                if (((*it).flg2C >> 30) != 3) {
+                    ++it;
+                    continue;
+                }
+                break;
+            }
+            it = arg0->list.erase(it);
+        }
+    }
+    Xii_func_001DDDAC_dddbc((int)arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DDF48);
 
