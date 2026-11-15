@@ -10,6 +10,11 @@ extern "C" int Xii_func_0016A914(int) asm("func_0016A914");
 extern "C" float Xii_func_0016FF18(int, int) asm("func_0016FF18");
 extern int D_00298E08;
 extern int _vt$9EffWater1;
+extern int D_006E9800;
+extern "C" void X_free__9BedMemoryPv(void *, void *) asm("free__9BedMemoryPv");
+extern "C" void X_dtor_4Eff0(void *, int) asm("_$_4Eff0");
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void dtor_9EffWater1(int, int) asm("_$_9EffWater1");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_001787B0);
@@ -146,7 +151,17 @@ extern "C" void func_0017A918(int arg0)
     M2C_FIELD(arg0, int *, 0x20) = (int)&_vt$9EffWater1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", _$_9EffWater1);
+extern "C" void dtor_9EffWater1(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x20) = (int)&_vt$9EffWater1;
+    if (M2C_FIELD(arg0, void **, 0x60) != 0) {
+        X_free__9BedMemoryPv(&D_006E9800, M2C_FIELD(arg0, void **, 0x60));
+    }
+    X_dtor_4Eff0((void *)arg0, 0);
+    if (arg1 & 1) {
+        return X___builtin_delete((void *)arg0);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2E10);
 
