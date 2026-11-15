@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void Xv_func_001CFE78(int, unsigned int, int) asm("func_001CFE78");
+extern "C" int Xiu_func_001EE7F0(unsigned int, unsigned short, int, float, float, int, float) asm("func_001EE7F0");
 extern "C" void Xv_setActorRot__9MagSystemiPCf(int, int, int) asm("setActorRot__9MagSystemiPCf");
 extern "C" void Xv_func_001E6734(int, int, int, int, int, int) asm("func_001E6734");
 extern "C" void Xv_func_0017F5E8(int, int) asm("func_0017F5E8");
@@ -516,7 +518,37 @@ extern "C" int func_001EC7E8(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC834);
+extern "C" void func_001EC834(int arg0)
+{
+    float dist;
+    float angle;
+    float *p;
+    int pos = arg0 + 0x40;
+
+    Xv_func_001D05F4(&D_007812C0, M2C_FIELD(arg0, unsigned int *, 8), (TskVec4 *)pos);
+    p = M2C_FIELD(arg0, float **, 0x10);
+    angle = Xfpff_func_002180E4(&dist, p[0] - *(float *)pos, p[1] - M2C_FIELD(arg0, float *, 0x48));
+    if (M2C_FIELD(arg0, int *, 0x30) < 4) {
+        float s = Xff_sinf(angle);
+        M2C_FIELD(arg0, int *, 0x64) = 0;
+        M2C_FIELD(arg0, float *, 0x60) = s * M2C_FIELD(arg0, float *, 0x2C);
+        float c = Xff_cosf(angle) * M2C_FIELD(arg0, float *, 0x2C);
+        int steps = (int)(dist / M2C_FIELD(arg0, float *, 0x2C));
+        M2C_FIELD(arg0, float *, 0x54) = angle;
+        M2C_FIELD(arg0, float *, 0x68) = c;
+        M2C_FIELD(arg0, int *, 0x20) = steps;
+        Xv_func_001CFE78((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 8), arg0 + 0x50);
+    } else {
+        M2C_FIELD(arg0, int *, 0x20) = Xiu_func_001EE7F0(
+            M2C_FIELD(arg0, unsigned int *, 8),
+            M2C_FIELD(arg0, unsigned short *, 0x14),
+            arg0 + 0x78,
+            angle,
+            dist,
+            M2C_FIELD(arg0, int *, 0x7C),
+            M2C_FIELD(arg0, float *, 0x80));
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC940);
 
