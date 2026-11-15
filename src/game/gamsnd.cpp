@@ -1,4 +1,12 @@
 #include "include_asm.h"
+#include "utl/filereader.h"
+extern "C" void *X_4540_alloc__BedMemory(int, int, const char *, int, int, int) asm("alloc__9BedMemoryiPCciii");
+extern "C" void X_4540_heapFree(void *) asm("heapFree__FPv");
+extern "C" char *X_4540_strcpy(char *, const char *) asm("strcpy");
+extern "C" int X_4540_snprintf(char *, int, const char *, ...) asm("snprintf");
+extern "C" void X_4540_func_001E43E0(int, char *, int *, int *) asm("func_001E43E0");
+extern "C" void X_4540_func_001E44B4(int, int, int, void *, int) asm("func_001E44B4");
+extern "C" int X_4540_func_001E6734(int, int, int, int, int, int) asm("func_001E6734");
 struct SndMsg17B4 {
     int unk00;
     int unk04;
@@ -933,7 +941,39 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamsnd", D_002FD770);
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamsnd", D_002FD780);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E4540);
+extern "C" void func_001E4540(int arg0, char *arg1, int arg2) {
+    char path[0x40];
+    int bank;
+    int val;
+    void *buf;
+    char *name;
+
+    X_4540_func_001E6734(arg0, 0x11, 0, 0, 0, -1);
+    FileReader reader;
+    buf = X_4540_alloc__BedMemory((int)&D_006E9800, 0x80040, &D_002FD770, 0x616, 0, 1);
+    X_4540_func_001E43E0(arg0, arg1, &bank, &val);
+    name = (char *)(arg0 + 0x182C);
+    X_4540_strcpy(name, arg1);
+    *(char *)(arg0 + 0x1830) = '.';
+    *(char *)(arg0 + 0x1831) = 's';
+    *(char *)(arg0 + 0x1832) = 'e';
+    *(char *)(arg0 + 0x1833) = '\0';
+    X_4540_snprintf(path, 0x40, "data/snd/xv/%s", name);
+    FileReadReq req;
+    req.m_unk08 = 1;
+    req.m_name = path;
+    req.m_unk14 = 0;
+    req.m_offset = 0;
+    req.m_buf = buf;
+    req.m_size = 0x80000;
+    req.m_unk20 = 1;
+    reader.func_001BE524(&req, 0);
+    X_4540_func_001E44B4(arg0, bank, val, buf, arg2);
+    *(int *)(arg0 + bank * 4 + 0x1728) = val;
+    X_4540_heapFree(buf);
+}
+
+// ---- end
 
 // ---- once unk/TskMtnMove's head, the same file as the code above (config/splits_manual.tsv);
 // its declarations as they were there:
