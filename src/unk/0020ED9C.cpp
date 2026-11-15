@@ -774,7 +774,24 @@ extern "C" void func_002112D8(unsigned int arg0, unsigned int arg1, unsigned int
     *(int *)(base + ((arg3 >> 9) & 0x7C)) = x * y;
 };
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00211318);
+extern "C" int func_00211318(int arg0, int arg1)
+{
+    int temp_a0 = (*(int *)&D_007B4640) + 0x10;
+    int temp_v1 = M2C_FIELD(temp_a0, int *, 0x1C);
+    if (temp_v1 == -1 || (M2C_FIELD(arg0, int *, 0xDC24) & 0x400)) {
+        M2C_FIELD(arg0, int *, 0xDC24) &= ~0x400;
+        M2C_FIELD((*(int *)&D_007B4640), int *, 0x2C) = arg1;
+        return 1;
+    } else {
+        int temp_v0 = temp_v1 - 1;
+        M2C_FIELD(temp_a0, int *, 0x1C) = temp_v0;
+        if (temp_v0 == 0) {
+            M2C_FIELD((*(int *)&D_007B4640), int *, 0x2C) = -1;
+            return 0;
+        }
+        return 1;
+    }
+}
 
 extern "C" void func_002113A4(int arg0, int arg1)
 {
