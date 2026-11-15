@@ -1,4 +1,10 @@
 #include "include_asm.h"
+struct GamTrg0_d8778 {
+    unsigned int count;
+    unsigned short *unk04;
+    unsigned short *unk08;
+    int unk0C;
+};
 struct GamTrg0_d85f8 {
     unsigned int count;
     unsigned short *unk04;
@@ -105,7 +111,22 @@ extern "C" void func_001D85F8(GamTrg0_d85f8 *arg0, unsigned short arg1, unsigned
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8674);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8778);
+extern "C" int func_001D8778(GamTrg0_d8778 *arg0, int arg1)
+{
+    unsigned int i;
+    int ret = arg0->unk0C;
+
+    for (i = 0; i < arg0->count; i++) {
+        if (arg0->unk08[i] == 0) {
+            break;
+        }
+        if (arg1 == arg0->unk04[i]) {
+            ret = arg0->unk08[i];
+            break;
+        }
+    }
+    return (i == arg0->count) ? 0 : ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D87F4);
 
