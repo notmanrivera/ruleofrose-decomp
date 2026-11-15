@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int X2D08_func_00213C6C(int arg0, int arg1, int arg2, int arg3) asm("func_00213C6C");
 extern "C" int func_00213D90(int arg0, int arg1, int arg2);
 struct Data212E64 {
     unsigned char b[0xB0];
@@ -1157,7 +1158,13 @@ extern "C" void func_002129B8(int arg0, int arg1, int arg2, int arg3)
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00212A5C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00212D08);
+extern "C" void func_00212D08(int arg0, int arg1, int arg2)
+{
+    List212E64::Node *p = 0;
+    if (X2D08_func_00213C6C(arg0, arg1, (int)&p, arg2) != 0) {
+        ((Obj212E64 *)arg0)->m_list.push_back(p->m_data);
+    }
+}
 
 extern "C" void func_00212E64(int arg0, int arg1)
 {
