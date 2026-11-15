@@ -1,4 +1,10 @@
 #include "include_asm.h"
+struct TskAvoidMoveObj {
+    char pad0[0xC];
+    unsigned int m_unk0C;
+    char pad10[0x6C];
+    int (TskAvoidMoveObj::*m_func)();
+};
 struct TskMoveTypeGenObj {
     char pad0[0x60];
     int m_unk60;
@@ -631,7 +637,13 @@ extern "C" void func_001F0358(int arg0, int arg1, int arg2, int arg3)
     M2C_FIELD(arg0, float *, 0x38) = (float) (-M2C_FIELD(arg2, float *, 8) / temp_f1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskAvoidMove__vfunc_04);
+extern "C" int TskAvoidMove__vfunc_04(TskAvoidMoveObj *arg0)
+{
+    if (Xiiu_func_001D046C((int)&D_007812C0, arg0->m_unk0C) == 0) {
+        return 1;
+    }
+    return (arg0->*(arg0->m_func))();
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0434);
 
