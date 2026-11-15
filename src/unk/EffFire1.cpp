@@ -298,7 +298,37 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F23F0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F2400);
 
+// NON_MATCHING: 2/57 differ, 4 edits
+#ifdef NON_MATCHING
+#ifdef TARGET_PS2
+#include "dog/dogactor.h"
+#else
+struct DogVector {
+    float m_x, m_y, m_z, m_w;
+    DogVector() { m_x = m_y = m_z = 0.0f; m_w = 1.0f; }
+};
+struct DogActor {
+    int getNodeIndexByName(const char *);
+    virtual void vfunc18(DogVector &theOut, int theNode);
+};
+#endif
+extern "C" void X_updateZDepth__8EffFire1(int) asm("updateZDepth__8EffFire1");
+extern "C" void updateZDepth__10EffFire1Ex(int arg0)
+{
+    DogVector pos;
+    int node = M2C_FIELD(arg0, DogActor **, 0x60)->getNodeIndexByName((const char *)(arg0 + 0x64));
+    M2C_FIELD(arg0, DogActor **, 0x60)->vfunc18(pos, node);
+    float x = pos.m_x;
+    float y = pos.m_y;
+    float z = pos.m_z;
+    M2C_FIELD(arg0, float *, 0x30) = x;
+    M2C_FIELD(arg0, float *, 0x34) = y;
+    M2C_FIELD(arg0, float *, 0x38) = z;
+    X_updateZDepth__8EffFire1(arg0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", updateZDepth__10EffFire1Ex);
+#endif
 
 extern "C" int EffFire2__vfunc_02(int arg0, int arg1)
 {
