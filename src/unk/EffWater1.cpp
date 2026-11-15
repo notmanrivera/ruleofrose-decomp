@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" void X_func_0021A5B0(int, int, int) asm("func_0021A5B0");
+extern "C" void X_func_0021A700(int, int) asm("func_0021A700");
+extern "C" int X_func_0022B370(int) asm("func_0022B370");
+extern "C" int Xiii_func_0016FFEC(int, int) asm("func_0016FFEC");
+extern "C" int Xiiii_alloc__9BedMemoryii(int, int, int) asm("alloc__9BedMemoryii");
 extern "C" int X_func_0022AEC0(int) asm("func_0022AEC0");
 extern "C" int *X_func_0022AED8(int, int) asm("func_0022AED8");
 extern "C" int X_func_0022AAD0(int *, int) asm("func_0022AAD0");
@@ -236,7 +241,59 @@ extern "C" void dtor_10EffReload1(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffReload1__vfunc_02);
+extern "C" int EffReload1__vfunc_02(int arg0, int arg1)
+{
+    struct { float x, y, z; int w; } stack;
+    int temp_a0;
+    int n;
+    int temp_s0;
+    int temp_v0;
+    int temp_s2;
+    int temp_a1;
+    int temp_v0_2;
+    int temp_v1;
+
+    if (!Xiii_Eff0__vfunc_02(arg0, arg1)) {
+        return 0;
+    }
+    n = M2C_FIELD(arg1, int *, 0x28);
+    if (n > 6) {
+        n = 6;
+    }
+    if (n <= 0) {
+        M2C_FIELD(arg0, int *, 0x24) = 0;
+        return 1;
+    }
+    temp_s2 = arg0 + 0x40;
+    temp_a0 = M2C_FIELD(M2C_FIELD(arg1, int *, 0xC), int *, 0x30);
+    temp_v1 = (*(int *)&D_00298E08) + 0x29520;
+    M2C_FIELD(arg0, int *, 0x24) = temp_a0;
+    temp_a1 = M2C_FIELD(arg1, int *, 0xC);
+    M2C_FIELD(arg0, int *, 0x28) = M2C_FIELD(((M2C_FIELD(temp_a1, int *, 0x50) + n) * 4) + temp_a1, int *, 0x2C);
+    X_func_0021A5B0(temp_a0, M2C_FIELD(temp_v1, int *, 8), M2C_FIELD(temp_v1, int *, 4));
+    M2C_FIELD(arg0, int *, 0x38) = Xiii_func_0016FFEC(M2C_FIELD(arg0, int *, 0x24), M2C_FIELD(arg0, int *, 0x28));
+    temp_v0 = X_func_0022B370(M2C_FIELD(arg0, int *, 0x24));
+    temp_v0_2 = Xiiii_alloc__9BedMemoryii((int)&D_006E9800, temp_v0 * 0xB0, -1);
+    temp_s0 = temp_v0_2 + (temp_v0 * 0x30);
+    M2C_FIELD(arg0, int *, 0x2C) = temp_v0_2;
+    M2C_FIELD(arg0, int *, 0x30) = temp_s0;
+    M2C_FIELD(arg0, int *, 0x34) = temp_s0 + (temp_v0 << 6);
+    X_func_0021A700(M2C_FIELD(arg0, int *, 0x24), temp_s0);
+    Xp_func_00237340((void *)temp_s2);
+    float fx = M2C_FIELD(arg1, float *, 0x1C);
+    float fy = M2C_FIELD(arg1, float *, 0x20);
+    float fz = M2C_FIELD(arg1, float *, 0x24);
+    stack.y = fy;
+    stack.x = fx;
+    stack.z = fz;
+    stack.w = 0;
+    Xppp_func_002378B0((void *)temp_s2, (void *)temp_s2, &stack);
+    M2C_FIELD(arg0, float *, 0x70) = M2C_FIELD(arg1, float *, 0x10);
+    M2C_FIELD(arg0, float *, 0x74) = M2C_FIELD(arg1, float *, 0x14);
+    M2C_FIELD(arg0, float *, 0x78) = M2C_FIELD(arg1, float *, 0x18);
+    M2C_FIELD(arg0, int *, 0x80) = 0;
+    return 1;
+}
 
 extern "C" int EffReload1__vfunc_05(int arg0)
 {
