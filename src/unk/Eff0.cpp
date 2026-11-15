@@ -1,4 +1,10 @@
 #include "include_asm.h"
+#include "dog/doglightpool.h"
+struct Scene_AF20 {
+    unsigned char unk[0x2050];
+    DogLightPool m_light_pool;
+};
+extern Scene_AF20 *D_00298E08_AF20 asm("D_00298E08");
 struct m2c_v20_28_i { char pad[32]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual int call(); };
 struct m2c_v20_58_i { char pad[32]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual int call(); };
 struct Vec3_E65C {
@@ -240,7 +246,13 @@ INCLUDE_RODATA("asm/nonmatchings/unk/Eff0", D_002F1EC0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/Eff0", D_002F1ED0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016AF20);
+extern "C" void func_0016AF20(float *arg0)
+{
+    DogLightAmbient *amb = D_00298E08_AF20->m_light_pool.getAmbient(0);
+    arg0[0] *= amb->m_color[0];
+    arg0[1] *= amb->m_color[1];
+    arg0[2] *= amb->m_color[2];
+}
 
 extern "C" void func_0016AFCC(int arg0)
 {
