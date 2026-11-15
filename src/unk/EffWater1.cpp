@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" int X_func_0022AEC0(int) asm("func_0022AEC0");
+extern "C" int *X_func_0022AED8(int, int) asm("func_0022AED8");
+extern "C" int X_func_0022AAD0(int *, int) asm("func_0022AAD0");
+extern "C" int X_func_0021AB30(int, int) asm("func_0021AB30");
 struct MfVec { int w[4]; } __attribute__((aligned(8)));
 extern "C" int Xip_func_0021E488(int, void *) asm("func_0021E488");
 extern "C" int func_00178DD8(int, int, int, int);
@@ -550,7 +554,37 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffWater1", D_002F2FF8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffWater1__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffWater1__vfunc_05);
+extern "C" int EffWater1__vfunc_05(int arg0)
+{
+    int s4;
+    int n;
+    int i;
+    int *p;
+    float f;
+
+    s4 = M2C_FIELD(arg0, int *, 0x60) + 0x10;
+    n = X_func_0022AEC0(s4);
+    float d = M2C_FIELD(arg0, float *, 0x64) / 30.0f;
+    f = M2C_FIELD(arg0, float *, 0x70) + d;
+    M2C_FIELD(arg0, float *, 0x70) = f;
+    if (f >= 1.0f || f <= -1.0f) {
+        M2C_FIELD(arg0, float *, 0x70) = f - (float)(int)f;
+    }
+    M2C_FIELD(arg0, float *, 0x74) += M2C_FIELD(arg0, float *, 0x68) / 30.0f;
+    f = M2C_FIELD(arg0, float *, 0x74);
+    if (f >= 1.0f || f <= -1.0f) {
+        M2C_FIELD(arg0, float *, 0x74) = f - (float)(int)f;
+    }
+    i = 0;
+    if (n > 0) {
+        do {
+            p = X_func_0022AED8(s4, i++);
+            X_func_0021AB30(X_func_0022AAD0(p, 0), arg0 + 0x70);
+            M2C_FIELD(*p, unsigned short *, 8) = M2C_FIELD(*p, unsigned short *, 8) + 1;
+        } while (i < n);
+    }
+    return 1;
+}
 
 extern "C" void liveActivateExec__9EffWater1(int arg0)
 {
