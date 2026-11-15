@@ -344,7 +344,43 @@ INCLUDE_RODATA("asm/nonmatchings/unk/HfmMain", D_002EF238);
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001445D8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001446B8);
+extern "C" int Xi_func_00103DE4(void) asm("func_00103DE4");
+extern "C" void Xviii_func_001357B0(int, int, int) asm("func_001357B0");
+extern "C" int func_001446B8(int arg0)
+{
+    const int tbl[26] = {
+        0x4B4C434B, 0x0001000B,
+        0x4256494C, 0x0001000C,
+        0x424C4E44, 0x0001000D,
+        0x42464D4C, 0x0001000E,
+        0x4243504C, 0x0001000F,
+        0x53504D30, 0x0001000B,
+        0x73706D30, 0x0001000B,
+        0x00000000, 0x0001000B,
+        0x0001000B, 0x0001000B,
+        0x53504D31, 0x0001000C,
+        0x73706D31, 0x0001000C,
+        0x00000001, 0x0001000C,
+        0x0001000C, 0x0001000C,
+    };
+    unsigned int i;
+
+    if (Xi_func_00103DE4() == 0) {
+        return 0;
+    }
+    for (i = 0; i < 26; i += 2) {
+        if (tbl[i] == M2C_FIELD(arg0, int *, 4)) {
+            int off = 0x12540;
+            Xviii_func_001357B0((int)&D_006E9840 + off, tbl[i + 1], M2C_FIELD(arg0, int *, 8));
+            return 0;
+        }
+    }
+    {
+        int off = 0x12540;
+        Xviii_func_001357B0((int)&D_006E9840 + off, 0x1000B, M2C_FIELD(arg0, int *, 8));
+    }
+    return 0;
+}
 
 // NON_MATCHING: 50/64 differ, 6 relocs differ (size 0x100, game 0x104), 28 edits
 #ifdef NON_MATCHING
@@ -915,8 +951,6 @@ extern "C" void func_00146C8C(int arg0, float fparg0)
         }
     }
 }
-
-INCLUDE_RODATA("asm/nonmatchings/unk/HfmMain", D_002EF298);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/HfmMain", D_002EF300);
 
