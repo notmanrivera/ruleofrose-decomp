@@ -108,8 +108,8 @@ text	rodata	data	bss	file	confidence
 001D5610	002FC1D8	002C0000	007811AC	game/gamstat	conflict
 001D859C	002FC420	002D8F60	-	game/gamtrg	manual
 001E0BB0	002FD750	-	-	game/gamsnd	likely
-001E46B8	002FD798	-	-	unk/TskMtnMove	likely
-001E9A34	002FDAC0	-	00781280	unk/TskMsgMan	manual
+001E7F28	002FD940	-	-	unk/TskMtnMove	manual
+001E9A3C	002FDAC0	-	00781280	unk/TskMsgMan	manual
 001F59AC	-	002D8F68	-	unk/DisplayMessage	likely
 001F6CB8	002FE738	-	-	unk/SeManager	family
 001F6F4C	002FE7D8	-	-	unk/VoiceManager	family

@@ -314,11 +314,7 @@ extern int D_007A3D80;
 extern int D_007A4440;
 extern int D_007B2580;
 
-extern "C" int func_001E9A34()
-{
-    return 1;
-}
-
+// declarations from the code that moved to unk/TskMtnMove:
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001E9A3C);
 

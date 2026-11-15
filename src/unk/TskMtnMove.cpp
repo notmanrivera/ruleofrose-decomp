@@ -260,485 +260,7 @@ extern "C" int X_strcmp(...) asm("strcmp");
 extern int D_006FE6A0;
 extern int D_007B2580;
 
-extern "C" void func_001E46B8(int arg0, int arg1)
-{
-    X_func_00180B30((int)&D_007B2580);
-    (*(int *)(int *)((char *)(((arg1 * 4) + arg0)) + 0x1728)) = -1;
-}
-
-
-extern "C" void func_001E4700(int arg0)
-{
-    X_func_0017F5E8((int)&D_007B2580, 8);
-    X_func_001E46B8(arg0, 0);
-    X_func_001E46B8(arg0, 0xA);
-    X_func_001E46B8(arg0, 0xB);
-    X_func_001E46B8(arg0, 0xC);
-    X_func_001E46B8(arg0, 0x1F);
-    X_func_001E46B8(arg0, 0x20);
-    X_func_001E46B8(arg0, 0x21);
-    X_func_001E46B8(arg0, 0x40);
-}
-
-
-extern "C" void func_001E4790(Obj4790 *arg0, int arg1, const Big4790 *arg2)
-{
-    *arg0->unk1540 = *arg2;
-}
-
-extern "C" void func_001E484C(Obj484C *arg0, int arg1, const Big484C *arg2)
-{
-    *arg0->unk1544 = *arg2;
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4908);
-
-extern "C" int func_001E4970(Obj4970 *arg0, const char *arg1, Ent4970 **arg2)
-{
-    Ent4970 *p = arg0->list;
-    if (p == 0) {
-        return 0;
-    }
-    int i = 0;
-    while (i++ < 0x400 && p->unk1C != 0) {
-        if (strcmp(arg1, p->name) == 0) {
-            *arg2 = p;
-            return 1;
-        }
-        p++;
-    }
-    *arg2 = 0;
-    return 0;
-}
-
-extern "C" int func_001E4A0C(Obj4A0C *arg0, const char *arg1)
-{
-    Ent4A0C *p = arg0->list;
-    if (*arg1 == '.' || *arg1 == '*') {
-        arg1++;
-    }
-    if (p == 0) {
-        return 0;
-    }
-    int i = 0;
-    while (i++ < 0x400 && p->id != -1) {
-        if (strcmp(arg1, p->name) == 0) {
-            return p->id;
-        }
-        p++;
-    }
-    return 0;
-}
-
-extern "C" int func_001E4AB8(void *arg0, const char *arg1)
-{
-    Ent4AB8 *p = *(Ent4AB8 **)((char *)arg0 + 0x1544);
-    if (p == 0) {
-        return 0;
-    }
-    int i = 0;
-    while (i++ < 0x384 && p->id != -1) {
-        if (strcmp(arg1, p->name) == 0) {
-            return p->id;
-        }
-        p++;
-    }
-    return 0;
-}
-
-extern "C" int func_001E4B48(Obj4B48 *arg0, int arg1, Ent4B48 *arg2)
-{
-    int idx = (arg1 % 100000) / 2;
-    for (int i = 0; i < 0x384; i++, idx++) {
-        if (arg0->list[idx].id == -1 || idx >= 0x385) {
-            idx = 0;
-        }
-        if (arg0->list[idx].id == arg1) {
-            arg2->id = arg1;
-            arg0->list[idx] = *arg2;
-            return 1;
-        }
-    }
-    return 0;
-}
-
-extern "C" int func_001E4C1C(Obj4C1C *arg0, int arg1, Ent4C1C **arg2)
-{
-    int idx = (arg1 % 100000) / 2;
-    for (int i = 0; i < 0x384; i++, idx++) {
-        if (arg0->list[idx].id == -1 || idx >= 0x385) {
-            idx = 0;
-        }
-        if (arg0->list[idx].id == arg1) {
-            *arg2 = &arg0->list[idx];
-            return 1;
-        }
-    }
-    *arg2 = 0;
-    return 0;
-}
-
-extern "C" int func_001E4CBC()
-{
-    return 0;
-}
-
-
-extern "C" void func_001E4CC4(int arg0, int arg1, int arg2, int arg3)
-{
-    (*(int *)(int *)((char *)(arg0) + 0x1720)) = arg2;
-    (*(int *)(int *)((char *)(arg0) + 0x1724)) = arg3;
-    (*(int *)(int *)((char *)(arg0) + 0x171C)) = arg1;
-    X_func_0023A080(arg1);
-    X_func_0023A0B8((*(int *)(int *)((char *)(arg0) + 0x1720)), (*(int *)(int *)((char *)(arg0) + 0x1724)));
-}
-
-
-extern "C" int func_001E4D04()
-{
-    return X_func_001E4A0C();
-}
-
-
-extern "C" void func_001E4D18(Obj4D18 *arg0, int arg1)
-{
-    if (arg1 == 0) {
-        return;
-    }
-    if (arg1 == 1) {
-        for (int i = 0; i < 0x30; i++) {
-            if (arg1 == 1) {
-                Ent4D18 *e = &arg0->arr[i];
-                if ((e->unk0C >> 24) != 0xB) {
-                    func_001E649C(arg0, e->unk0C, e->unk18);
-                }
-            }
-        }
-    }
-}
-
-extern "C" int func_001E4DB0(int arg0, int arg1, int arg2, int arg3)
-{
-    int temp_v0;
-
-    temp_v0 = Xii_func_001E4D04((int) arg0);
-    if (temp_v0 != 0) {
-        return Xiiiiii_func_001E4EBC(arg0, temp_v0, arg2, arg3, 0);
-    }
-    return -1;
-}
-
-extern "C" int func_001E4E20(int arg0, int arg1, int arg2, int arg3, int arg4, float fparg0)
-{
-    int temp_v0 = X4E20_func_001E4D04(arg0, arg1);
-    if (temp_v0 != 0) {
-        return func_001E50C8(arg0, temp_v0, arg2, arg3, fparg0, arg4, 0, 0);
-    }
-    return -1;
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E4EBC);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E50C8);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5250);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5428);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5540);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5660);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5B60);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5BE0);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5C40);
-
-extern "C" int func_001E5D1C(Obj5D1C *arg0, int arg1, int arg2)
-{
-    if (arg2 < 0) {
-        return 0;
-    }
-    if (func_001800D0(&D_007B2580, arg2) == -1) {
-        return 0;
-    }
-    Sub5D1C *sub = &arg0->sub;
-    int off = arg2 * sizeof(Ent5D1C);
-    if (((Ent5D1C *)((char *)sub->arr + off))->unk14 != arg1) {
-        return 0;
-    }
-    func_001801C8(&D_007B2580, arg2);
-    ((Ent5D1C *)((char *)sub->arr + off))->unk14 = -1;
-    ((Ent5D1C *)((char *)sub->arr + off))->unk18 = -1;
-    return 1;
-}
-
-extern "C" void func_001E5DE4(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
-{
-    int p[4];
-
-    if (Xiiii_func_001E4908(arg0, arg1, (int)p, 1) != 0) {
-        *(short *)(p[0] + 0x2A) = arg2;
-        *(short *)(p[0] + 0x2C) = arg3;
-        *(short *)(p[0] + 0x2E) = arg4;
-        *(short *)(p[0] + 0x30) = arg5;
-    }
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E5E58);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E6368);
-
-extern "C" int func_001E63C0(Obj63C0 *arg0, int arg1, int arg2, int arg3, int arg4)
-{
-    if (arg2 < 0) {
-        return 0;
-    }
-    Sub63C0 *sub = &arg0->sub;
-    int off = arg2 * sizeof(Ent63C0);
-    if (((Ent63C0 *)((char *)sub->arr + off))->unk0C != arg1) {
-        return 0;
-    }
-    if (func_00180CA8(&D_007B2580, arg2) == -1) {
-        return 0;
-    }
-    ((Ent63C0 *)((char *)sub->arr + off))->unk4 = arg3;
-    ((Ent63C0 *)((char *)sub->arr + off))->unk8 = arg4;
-    func_00180CE0(&D_007B2580, arg2, arg3, arg4, 0, -1024.0f);
-    return 1;
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E649C);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E6570);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E6734);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E6CAC);
-
-extern "C" float func_001E6D54(Obj6D54 *arg0)
-{
-    char mat[0x40];
-    char vec[0x10];
-
-    func_00237340(mat);
-    func_00237830(mat, mat, arg0->unk8);
-    func_002378B0(mat, mat, arg0->unk4);
-    func_00237408(vec, arg0->unkC, arg0->unk0);
-    func_002375D8(vec, vec);
-    return ((func_00237580(mat + 0x20, vec) + 1.0f) * 0.5f * 0.7f) + 0.3f;
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E6E00);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7094);
-
-Obj70DC::~Obj70DC()
-{
-    Node70DC *p = head4;
-    while (p != 0) {
-        Node70DC *cur = p;
-        p = p->next;
-        X70DC_func_001E7C7C(this, cur);
-    }
-    p = head0;
-    while (p != 0) {
-        Node70DC *cur = p;
-        p = p->next;
-        X70DC_func_001E7C7C(this, cur);
-    }
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7184);
-
-extern "C" void func_001E71F4(void) {
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E71FC);
-
-extern "C" void func_001E7340(void *arg0, Node7340 *arg1, int arg2)
-{
-    int id = arg1->obj->vfunc1();
-    if ((id == 0x10 || id == 5 || id == 0x13 || id == 0x14) && arg1->state != arg2) {
-        if (arg2 == 1) {
-            arg1->obj->vfunc2(1);
-        } else if (arg2 == 0) {
-            arg1->obj->vfunc2(0);
-        }
-    }
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7414);
-
-extern "C" void func_001E747C(List747C *arg0, int *arg1, int arg2)
-{
-    for (Node747C *node = arg0->head; node != 0; node = node->next) {
-        for (int *p = arg1; *p != -1; p++) {
-            if (node->obj->vfunc1() == *p && node->state != 2) {
-                X747C_func_001E7340(arg0, node, arg2);
-                node->state = arg2;
-            }
-        }
-    }
-}
-
-extern "C" void func_001E7544(List7544 *arg0, int arg1)
-{
-    for (Node7544 *node = arg0->head; node != 0; node = node->next) {
-        int id = node->obj->vfunc1();
-        if ((node->obj == 0 || (id != 1 && id != 0x12 && id != 2 && id != 7 && id != 0xF && id != 0x17 && id != 0x11 && id != 5)) && node->state != 2) {
-            X7544_func_001E7340(arg0, node, arg1);
-            node->state = arg1;
-        }
-    }
-}
-
-extern "C" void func_001E7618(TskNode7618 **arg0, int arg1)
-{
-    TskNode7618 *p = *arg0;
-    if (p != 0) {
-        do {
-            int res = p->obj->vfunc1(arg1);
-            arg1 = 2;
-            if (p->obj == 0 || ((unsigned int)(res - 1) >= 3U && res != 0x11)) {
-                p->state = 2;
-            }
-            p = p->next;
-        } while (p != 0);
-    }
-}
-
-extern "C" void func_001E7698(int arg0, int arg1)
-{
-    if (arg1 != 0) {
-        Xiii_func_001E7DE8((int) arg0, M2C_FIELD(arg1, int *, 0xC));
-    }
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E76B8);
-
-extern "C" void func_001E7724(Obj7724 *arg0, int arg1)
-{
-    if (arg1 != -1 && func_001E76B8(arg0) == 0) {
-        for (int *p = arg0->arr; p != arg0->end; p++) {
-            if (*p == arg1) {
-                return;
-            }
-        }
-        *arg0->end = arg1;
-        arg0->end++;
-    }
-}
-
-extern "C" void func_001E77B4(List77B4 *arg0, int arg1)
-{
-    Node77B4 *p = arg0->head;
-    while (p != 0) {
-        if (p->state != 2) {
-            VObj77B4 *obj = p->obj;
-            if (obj != 0 && arg1 == obj->vfunc1()) {
-                X77B4_func_001E7D08(arg0, p);
-                p->state = 2;
-                X77B4_func_001E7698(arg0, p);
-            }
-        }
-        p = p->next;
-    }
-}
-
-extern "C" void func_001E785C(Obj785C *arg0)
-{
-    Node785C *node = arg0->head;
-    while (node != 0 && arg0->end != arg0->arr) {
-        int *p = arg0->arr;
-        if (node->state != 2) {
-            do {
-                if (node->id == *p) {
-                    X785C_func_001E7D08(arg0, node);
-                    node->state = 2;
-                    if (--arg0->end == arg0->arr) {
-                        return;
-                    }
-                }
-                p++;
-            } while (p < arg0->end);
-        }
-        node = node->next;
-    }
-}
-
-extern "C" void func_001E7908(void) {
-}
-
-extern "C" void func_001E7910(List7910 *arg0, int *arg1)
-{
-    Node7910 *node = arg0->head;
-    while (node != 0) {
-        Node7910 *next = node->next;
-        for (int *p = arg1; *p != -1; p++) {
-            if (node->obj->vfunc1() == *p) {
-                X7910_func_001E7724(arg0, node->id);
-            }
-        }
-        node = next;
-    }
-}
-
-extern "C" int func_001E79C0(char *arg0, int arg1)
-{
-    char *n = M2C_FIELD(arg0, char **, 4);
-
-    while (n != 0) {
-        if (M2C_FIELD(n, int *, 0xC) == arg1) {
-            return M2C_FIELD(n, int *, 0);
-        }
-        n = M2C_FIELD(n, char **, 4);
-    }
-    n = M2C_FIELD(arg0, char **, 0);
-    while (n != 0) {
-        if (M2C_FIELD(n, int *, 0xC) == arg1) {
-            return M2C_FIELD(n, int *, 0);
-        }
-        n = M2C_FIELD(n, char **, 4);
-    }
-    return 0;
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7A20);
-
-extern "C" void func_001E7C7C(void *arg0, Node7C7C *arg1)
-{
-    X_func_001E7698(arg0, arg1);
-    if (arg1->obj != 0) {
-        arg1->obj->v5();
-        if (arg1->flags & 1) {
-            X___builtin_delete(arg1->obj);
-            arg1->flags &= ~1;
-        }
-        arg1->obj = 0;
-    }
-    X_memset(arg1, 0, 0x40);
-    X___builtin_delete(arg1);
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7D08);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7D7C);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7DE8);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7E50);
-
-extern "C" int TskTest__vfunc_04()
-{
-    return 0;
-}
-
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7ED8);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", TskLogger__vfunc_04);
+// declarations from the code that moved to game/gamsnd:
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E7F28);
 
@@ -818,11 +340,8 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", TskMtnMove2__vfunc_02);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E93EC);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMtnMove", D_002FD900);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMtnMove", D_002FD910);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMtnMove", D_002FD920);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMtnMove", D_002FD940);
 
@@ -906,3 +425,327 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMtnMove", func_001E9614);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMtnMove", D_002FDA88);
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMtnMove", D_002FDA98);
+
+// ---- once unk/TskMsgMan's head, the same file as the code above (config/splits_manual.tsv);
+// its declarations as they were there:
+struct TskVec4_f1670 {
+    float f[4];
+} __attribute__((aligned(16)));
+extern "C" int X_func_001D2B8C_f1670(int, unsigned int) asm("func_001D2B8C");
+extern "C" int X_func_001E7D7C_f1670(int, int) asm("func_001E7D7C");
+extern "C" void X_func_001E7724_f1670(int, int) asm("func_001E7724");
+extern "C" void X_func_001D06B8_f1670(void *, unsigned int, TskVec4_f1670 *) asm("func_001D06B8");
+extern "C" int X___builtin_new_f1670(int) asm("__builtin_new");
+extern "C" void X_func_001F0434_f1670(int, unsigned int, int, int, float, float, float, int, int) asm("func_001F0434");
+extern "C" int X_func_001E71FC_f1670(int, int, int, int, int, int, int, int *, int) asm("func_001E71FC");
+extern "C" void X_func_00191F44_v2(int, int) asm("func_00191F44");
+extern "C" void X_func_00191F98_v2(int, int) asm("func_00191F98");
+extern "C" void X_func_001351B0_v2(int, unsigned int, int) asm("func_001351B0");
+static inline void pause_v2(unsigned int no, char *base)
+{
+    X_func_001351B0_v2((int)(base + 0x12540), no, 1);
+    int s = (int)(base + 0x550F0);
+    X_func_00191F44_v2(s, 0);
+    X_func_00191F44_v2(s, 2);
+    X_func_00191F44_v2(s, 1);
+    X_func_00191F44_v2(s, 3);
+    X_func_00191F44_v2(s, 5);
+    X_func_00191F44_v2(s, 4);
+    X_func_00191F44_v2(s, 6);
+    X_func_00191F44_v2(s, 7);
+    X_func_00191F44_v2(s, 8);
+    X_func_00191F44_v2(s, 9);
+    X_func_00191F44_v2(s, 0xA);
+    X_func_00191F44_v2(s, 0xB);
+    X_func_00191F44_v2(s, 0xC);
+    X_func_00191F44_v2(s, 0xD);
+}
+static inline void resume_v2(unsigned int no, char *base)
+{
+    X_func_001351B0_v2((int)(base + 0x12540), no, 0);
+    int s = (int)(base + 0x550F0);
+    X_func_00191F98_v2(s, 0);
+    X_func_00191F98_v2(s, 2);
+    X_func_00191F98_v2(s, 1);
+    X_func_00191F98_v2(s, 3);
+    X_func_00191F98_v2(s, 5);
+    X_func_00191F98_v2(s, 4);
+    X_func_00191F98_v2(s, 6);
+    X_func_00191F98_v2(s, 7);
+    X_func_00191F98_v2(s, 8);
+    X_func_00191F98_v2(s, 9);
+    X_func_00191F98_v2(s, 0xA);
+    X_func_00191F98_v2(s, 0xB);
+    X_func_00191F98_v2(s, 0xC);
+    X_func_00191F98_v2(s, 0xD);
+}
+extern "C" float X_func_002180E4_ecf3c(float *, float, float) asm("func_002180E4");
+extern "C" void X_func_001F11A0_ecf3c(int, float, float, float) asm("func_001F11A0");
+extern "C" int X_func_001E7D7C_ecf3c(int, int) asm("func_001E7D7C");
+extern "C" int X_func_001EE7F0_ecf3c(unsigned int, unsigned short, float, float, int *, int, float) asm("func_001EE7F0");
+extern "C" float X_func_002180E4_eacb8(float *, float, float) asm("func_002180E4");
+extern "C" void X_func_001F11A0_eacb8(int, float, float, float) asm("func_001F11A0");
+extern "C" int X_func_001E7D7C_eacb8(int, int) asm("func_001E7D7C");
+extern "C" int X_func_001EE7F0_eacb8(unsigned int, unsigned short, float, float, int *, int, float) asm("func_001EE7F0");
+struct TskVec4_ee954 {
+    float f[4];
+};
+extern "C" float X_func_001333E4_ee954(int, int, int) asm("func_001333E4");
+extern "C" void X_func_001331F4_ee954(int, int, int, int, int, int, float) asm("func_001331F4");
+extern "C" int X_func_00118E6C_ee954(void *, int, float, float, TskVec4_ee954 *, float *, TskVec4_ee954 *) asm("func_00118E6C__9MagSystemiffR9DogVectorPfP9DogVector");
+extern "C" float X_func_001F6C14_ee954(int, float) asm("func_001F6C14");
+extern "C" int X_func_001F59B4_ee954(unsigned int, int, int, int, int, float, float) asm("func_001F59B4");
+extern "C" void X_func_0018741C_50b8(int) asm("func_0018741C");
+extern "C" int X_func_00187464_50b8(int) asm("func_00187464");
+extern "C" void X_func_001874F4_50b8(int, int, int, int) asm("func_001874F4");
+extern "C" char *X_strncpy_50b8(char *, const char *, int) asm("strncpy");
+extern "C" int X_func_00134730_50b8(int, int, int, int, int) asm("func_00134730");
+extern "C" void X_func_00118980__9MagSystemiiiiii(void *, int, int, int, int, int, int) asm("func_00118980__9MagSystemiiiiii");
+extern "C" int X_func_001348B0_50b8(int, unsigned int) asm("func_001348B0");
+extern "C" int X_func_00135594_50b8(int, unsigned int) asm("func_00135594");
+extern "C" int X_func_001351B0_50b8(int, unsigned int, int) asm("func_001351B0");
+extern "C" void X_func_00135418_50b8(int, unsigned int, int) asm("func_00135418");
+extern "C" void X_func_00135494_50b8(int, unsigned int, int) asm("func_00135494");
+extern "C" void X_func_00134CD0_50b8(int, unsigned int, int, int, int, int) asm("func_00134CD0");
+struct TskVec4;
+extern "C" float sqrtf(float);
+extern "C" int X_func_001F59B4_ee7f0(unsigned int, int, int, int, int, float, float) asm("func_001F59B4");
+extern "C" float Xf_func_001333E4_ee7f0(int, int, int) asm("func_001333E4");
+extern "C" int X_func_00118E6C__9MagSystemiffR9DogVectorPfP9DogVector(
+    void *, int, float, float, TskVec4 *, float *, TskVec4 *) asm("func_00118E6C__9MagSystemiffR9DogVectorPfP9DogVector");
+extern "C" int Xiii_func_00143D7C(int, float *, int) asm("func_00143D7C");
+extern int D_006FE6A0;
+extern "C" int Xiiu_func_001CBE38(void *, unsigned int) asm("func_001CBE38");
+extern "C" int X_func_001311F4_loc(int, int *) asm("func_001311F4");
+extern "C" int Xiiiii_func_001311BC_loc(int, int, int, int) asm("func_001311BC");
+struct DogVtblEntry {
+    short delta;
+    short unk2;
+    void (*fn)(void *, float *, int);
+};
+extern "C" int Xipu_func_001CBDB8(void *, unsigned int) asm("func_001CBDB8");
+extern "C" void X_ror_assert(const char *, int, const char *) asm("ror_assert");
+extern "C" int Xiii_func_0022B3D8(int, int) asm("func_0022B3D8");
+extern const char D_002FE698[];
+extern const char D_002FE6A8[];
+extern const char D_002FE6B8[];
+extern "C" int Xiiu_func_001D2BA8(int, unsigned int) asm("func_001D2BA8");
+extern int D_002FDFB0;
+extern "C" float Xfi_func_001E9CB4(int) asm("func_001E9CB4");
+extern "C" int Xiiff_func_001F0F9C(int, float, float) asm("func_001F0F9C");
+extern "C" int Xiifff_func_001F11A0(int, float, float, float) asm("func_001F11A0");
+extern "C" int Xiii_func_001D8964(int, int) asm("func_001D8964");
+struct DogActorStub {
+    char pad0[0x40];
+    float unk40[3];
+    char pad4C[4];
+    float unk50[3];
+    char pad5C[0x4D0 - 0x5C];
+};
+struct DogManStub {
+    char pad0[0x2920];
+    struct DogActorStub actors[1];
+};
+static inline struct DogActorStub *getDogActor(void *base, int idx)
+{
+    return (struct DogActorStub *)(((char *)base + idx * 0x4D0) + 0x2920);
+}
+struct TskMovePointPathObj {
+    char pad0[4];
+    int m_unk04;
+    int m_unk08;
+    char pad0C[0x14];
+    int m_unk20;
+    char pad24[0xC];
+    int m_unk30;
+    char pad34[0xC];
+    float m_unk40[4];
+    char pad50[0x10];
+    float m_unk60[4];
+    int (TskMovePointPathObj::*m_func)();
+    char pad78[0x8];
+    float m_unk80;
+};
+extern "C" int Xiii_func_001D8ADC_mpp(int, int) asm("func_001D8ADC");
+extern "C" void Xv_func_001EC834_mpp(TskMovePointPathObj *) asm("func_001EC834");
+extern "C" void Xv_func_001F59B4_mpp(int, int, int, int, int, float, float) asm("func_001F59B4");
+extern "C" int X_func_001E71FC(int, int, int, int, int, int, int, int, int) asm("func_001E71FC");
+extern "C" int Xii___builtin_new(int) asm("__builtin_new");
+extern "C" int Xiii_func_001E7724(int, int) asm("func_001E7724");
+extern "C" int Xiii_func_001E7D7C_2(int, int) asm("func_001E7D7C");
+extern "C" int Xfunc_001F0434(int, unsigned int, int, int, float, float, float, int, int) asm("func_001F0434");
+extern "C" void Xv_func_001CFE78(int, unsigned int, int) asm("func_001CFE78");
+extern "C" int Xiu_func_001EE7F0(unsigned int, unsigned short, int, float, float, int, float) asm("func_001EE7F0");
+extern "C" void Xv_setActorRot__9MagSystemiPCf(int, int, int) asm("setActorRot__9MagSystemiPCf");
+extern "C" void Xv_func_001E6734(int, int, int, int, int, int) asm("func_001E6734");
+extern "C" void Xv_func_0017F5E8(int, int) asm("func_0017F5E8");
+extern "C" void Xv_strncpy(char *, const char *, int) asm("strncpy");
+extern "C" void Xv_func_00191E58(int, int, int) asm("func_00191E58");
+extern "C" void Xv_func_00192834(int, char *) asm("func_00192834");
+extern "C" void Xv_func_001F0E90(unsigned int, float, int) asm("func_001F0E90");
+extern "C" int Xiff_func_001F6B8C(float, float) asm("func_001F6B8C");
+extern "C" void Xv_func_001F1298(int, float, int, float) asm("func_001F1298");
+struct GamHitInfo {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+    int unk10;
+    int unk14;
+    int unk18;
+    int unk1C;
+    GamHitInfo() { unk10 = 0; }
+};
+extern "C" void Xvp_func_001D890C(int, int) asm("func_001D890C");
+extern "C" int Xiii_func_001D8B5C(int, int) asm("func_001D8B5C");
+extern "C" void Xvp_func_001D89C4(int, int) asm("func_001D89C4");
+extern "C" float Xff_cosf(float) asm("cosf");
+extern "C" float Xff_sinf(float) asm("sinf");
+extern "C" float Xfpff_func_002180E4(float *, float, float) asm("func_002180E4");
+struct TskMoveSectaFindPathObj {
+    char pad0[0x20C];
+    int m_unk20C;
+    char pad210[0x8];
+    int m_unk218;
+    int m_unk21C;
+    char pad220[0x70];
+    int *m_unk290;
+    char pad294[0x24];
+    int (TskMoveSectaFindPathObj::*m_func)();
+};
+extern "C" int X_func_001ED1D0(TskMoveSectaFindPathObj *) asm("func_001ED1D0");
+struct TskVec4 {
+    float f[4];
+} __attribute__((aligned(16)));
+struct TskHitCheck {
+    void *m_origin_pos;
+    int m_rotate;
+    float m_angle;
+    void *m_target_pos;
+    float m_scale;
+};
+extern "C" void Xv_func_001D05F4(void *, unsigned int, TskVec4 *) asm("func_001D05F4");
+extern "C" void Xv_func_001D06B8(void *, unsigned int, TskVec4 *) asm("func_001D06B8");
+extern "C" float Xf_func_001D4A3C(void *, unsigned int, int) asm("func_001D4A3C");
+extern "C" int Xi_func_0010456C(TskHitCheck *) asm("func_0010456C");
+extern "C" float Xfi_func_001EA5EC(int) asm("func_001EA5EC");
+extern "C" int Xiif_func_001EAFB0(int, float) asm("func_001EAFB0");
+extern "C" int Xiu_func_001F61EC(unsigned int) asm("func_001F61EC");
+extern "C" void Xv_TskMsgMan__vfunc_05(int) asm("TskMsgMan__vfunc_05");
+extern "C" void Xvii_func_00183B24(int, int) asm("func_00183B24");
+extern int _vt$9TskMsgMan;
+struct TskAvoidMoveObj {
+    char pad0[0xC];
+    unsigned int m_unk0C;
+    char pad10[0x6C];
+    int (TskAvoidMoveObj::*m_func)();
+};
+struct TskMoveTypeGenObj {
+    char pad0[0x60];
+    int m_unk60;
+    char pad64[0x18];
+    void (TskMoveTypeGenObj::*m_func)();
+};
+extern "C" void Xv_func_001EAF00(void *) asm("func_001EAF00");
+extern "C" void Xv_func_0025B878(...) asm("func_0025B878");
+extern "C" void Xvii_func_001D8B9C(int, int) asm("func_001D8B9C");
+extern "C" int Xii_func_00187464(int) asm("func_00187464");
+extern "C" int Xiiu_func_001348B0(int, unsigned int) asm("func_001348B0");
+extern "C" int Xiiu_func_00135594(int, unsigned int) asm("func_00135594");
+extern "C" int Xiiui_func_001351B0(int, unsigned int, int) asm("func_001351B0");
+extern int D_002FE590;
+extern "C" int Xi_rand() asm("rand");
+struct MagGameFlags2 {
+    int m_unk00;
+    int m_flags;
+};
+extern MagGameFlags2 *D_007B2060;
+extern "C" int Xii_func_00192920(int) asm("func_00192920");
+extern "C" int Xii_func_001CF95C(int) asm("func_001CF95C");
+extern int _9MagSystem$m_v_rate;
+extern int _vt$8TskMovie;
+extern "C" void TskMovie__vfunc_05();
+extern "C" int Xii_func_001A06D4(int, int) asm("func_001A06D4");
+extern "C" int Xii_func_001A0BA0(int) asm("func_001A0BA0");
+extern int D_007B205C;
+extern int _9MagSystem$m_current_system;
+extern "C" int Xiiu_func_001D19A8(int, unsigned int) asm("func_001D19A8");
+// u_long128: include/target.h
+extern int _vt$10TskSysFunc;
+extern int _vt$9TskRotAdj;
+extern int _vt$16TskMoveTypeRound;
+extern int _vt$14TskMoveTypeGen;
+extern int _vt$12TskMoveSecta;
+extern int _vt$20TskMoveSectaFindPath;
+extern int _vt$16TskMovePointPath;
+extern int _vt$13TskMovePhysic;
+extern int _vt$10TskMoveAdj;
+extern int _vt$12TskFrameFunc;
+extern int _vt$9TskChrRot;
+extern int _vt$12TskAvoidMove;
+extern "C" void Xv___builtin_delete(int) asm("__builtin_delete");
+extern int _vt$9TskAttach;
+struct m2c_block8 { int w[2]; };
+struct m2c_ulong { long v; } __attribute__((packed));
+#define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
+extern "C" int Xiiu_func_001D2B8C(int, unsigned int) asm("func_001D2B8C");
+extern int D_002FE588;
+extern int D_002FE5E0;
+extern int D_002FE5E8;
+extern int _vt$11TskSeqEvent;
+extern int _vt$15TskGenFrameFunc;
+extern "C" float Xfi_func_0010A650__8DogActor(int) asm("func_0010A650__8DogActor");
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiii_func_001C5D08(int, int) asm("func_001C5D08");
+extern "C" int Xiii_func_001CB57C(int, int) asm("func_001CB57C");
+extern "C" int Xiiii_memset(int, int, int) asm("memset");
+extern "C" int Xiiiii_getActorNodeMatrix__9MagSystemiP19tag_I3dMatrixF4x4_sPCc(int, int, int, int) asm("getActorNodeMatrix__9MagSystemiP19tag_I3dMatrixF4x4_sPCc");
+extern "C" int Xiiiiiii_func_0013F980__8MagSceneiiiPfi(int, int, int, int, int, int) asm("func_0013F980__8MagSceneiiiPfi");
+extern "C" int Xiiiiiii_func_001CD044(int, int, int, int, int, int) asm("func_001CD044");
+extern "C" int Xiiu_func_001D046C(int, unsigned int) asm("func_001D046C");
+extern "C" int Xiiui_func_00213D00(int, unsigned int, int) asm("func_00213D00");
+extern "C" int Xiiuiii_func_00211BE4(int, unsigned int, int, int, int) asm("func_00211BE4");
+// Translated mechanically from m2c drafts: only what matches byte for byte.
+extern "C" int X_func_00131184(...) asm("func_00131184");
+extern "C" int X_func_001348B0(...) asm("func_001348B0");
+extern "C" int X_func_001351B0(...) asm("func_001351B0");
+extern "C" int X_func_00135594(...) asm("func_00135594");
+extern "C" int X_func_0017F8FC(...) asm("func_0017F8FC");
+extern "C" int X_func_00187464(...) asm("func_00187464");
+extern "C" int X_func_001913C4(...) asm("func_001913C4");
+extern "C" int X_func_0019143C(...) asm("func_0019143C");
+extern "C" int X_func_00191478(...) asm("func_00191478");
+extern "C" int X_func_00191F44(...) asm("func_00191F44");
+extern "C" int X_func_00191F98(...) asm("func_00191F98");
+extern "C" int X_func_001A0684(...) asm("func_001A0684");
+extern "C" int X_func_001A074C(...) asm("func_001A074C");
+extern "C" int X_func_001C5D08(...) asm("func_001C5D08");
+extern "C" int X_func_001C65E8(...) asm("func_001C65E8");
+extern "C" int X_func_001C6A40(...) asm("func_001C6A40");
+extern "C" int X_func_001CD044(...) asm("func_001CD044");
+extern "C" int X_func_001CF9D4(...) asm("func_001CF9D4");
+extern "C" int X_func_001CFA5C(...) asm("func_001CFA5C");
+extern "C" int X_func_001D046C(...) asm("func_001D046C");
+extern "C" int X_func_001D19A8(...) asm("func_001D19A8");
+extern "C" int X_func_001E7724(...) asm("func_001E7724");
+extern "C" int X_func_001E7D7C(...) asm("func_001E7D7C");
+extern "C" int X_func_001EA5EC(...) asm("func_001EA5EC");
+extern "C" int X_func_001EAFB0(...) asm("func_001EAFB0");
+extern "C" int X_func_001F61EC(...) asm("func_001F61EC");
+extern "C" int X_func_00211BE4(...) asm("func_00211BE4");
+extern "C" int X_func_00213D00(...) asm("func_00213D00");
+extern "C" int X_rand(...) asm("rand");
+extern int D_006E9840;
+extern int D_006FBD80;
+extern int D_0073E91C;
+extern int D_007812C0;
+extern int D_007A3D80;
+extern int D_007A4440;
+extern int D_007B2580;
+
+extern "C" int func_001E9A34()
+{
+    return 1;
+}
+
+

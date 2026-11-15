@@ -13,10 +13,6 @@ where to look.
 
 ## Open
 
-- [ ] R4 unk/TskMtnMove: where game/gamsnd really ends. 0x1E46B8-~0x1E5428
-  looks like gamsnd's tail ("data/snd/xv/%s", "s%06d.str", D_007B2580);
-  the first table (0x2FD7B0) is used at 0x1E5660. Find the first
-  TskMtnMove function.
 - [ ] R5 unk/HfmMain: the small file before it. 0x2EF238-0x2EF260
   ("18MagLifeWindowDebug", "8MagLife0") ends at HfmMain's first table;
   the MagLifeWindowDebug code (constructor func_00144214, wrappers
@@ -65,3 +61,13 @@ where to look.
   to mnusvld.cpp, split_files.py rows named '-' drop a generated start.
   Open from it: where the title file ends (around func_001AB474, the
   MagLifeMenuOpt constructor, or func_001AB04C), and its real name.
+- [x] R4 game/gamsnd / unk/TskMtnMove (2026-11-15, Sonnet, high
+  confidence): TskMtnMove starts at its constructor 0x1E7F28 (.rodata
+  0x2FD940, after a second "8CmnITask" that ends the previous unit);
+  0x1E46B8-0x1E7F27 is gamsnd's (GamMan's funcStr/playStr inlines jump
+  into it, gamsnd calls 0x1E5660 15 times, D_007B2580 and the snd API,
+  its tables 16-aligned from 0x2FD750). func_001E9A34 is TskMtnMove2's
+  last method (D_002FDA60 points at it), so TskMsgMan starts at
+  0x1E9A3C. Applied: 480 lines (36 C++ functions) moved to gamsnd.cpp.
+  Open from it: TskTest/TskLogger (to 0x1E7F27) may be a small file of
+  their own, start at most 0x1E7E50 (medium-low).
