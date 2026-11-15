@@ -1648,7 +1648,87 @@ extern "C" float func_001EF100(float fparg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovePhysic__vfunc_04);
 
+// NON_MATCHING: 151/163 differ, 19 relocs differ (size 0x28C, game 0x290), 20 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_001D1720(...) asm("func_001D1720");
+extern "C" int X_func_001D890C(...) asm("func_001D890C");
+extern "C" int X_func_001EFAB8(...) asm("func_001EFAB8");
+extern "C" int X_func_001EFEB8(...) asm("func_001EFEB8");
+extern "C" int X_func_001F0288(...) asm("func_001F0288");
+extern "C" int X_func_001F5558(...) asm("func_001F5558");
+extern const char avoidSpine184[] asm("D_002FDFE0");
+extern int D_002FDFD8;
+extern int D_002FDFF0;
+extern int D_002FDFF8;
+extern int D_002FE000;
+struct AvoidCopy184 { int w[2]; };
+static inline int playerId184(void *man) { int id = 0; int p = *(int *)((char *)man + 0x22090); if(p) id = *(int *)((char *)p + 0x100); return id; }
+static inline int flags184(void *man) { return *(int *)((char *)man + 0x21F4C); }
+extern "C" void func_001EF184(int arg0, unsigned int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+{
+    int temp_s2;
+    int var_v1;
+    unsigned int temp_a1;
+    int temp_v0;
+    int temp_v1;
+
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$12TskAvoidMove;
+    M2C_FIELD(arg0, int *, 0x6C) = arg3;
+    M2C_FIELD(arg0, int *, 0x68) = arg4;
+    M2C_FIELD(arg0, unsigned int *, 0xC) = arg1;
+    M2C_FIELD(arg0, int *, 0x58) = 0;
+    M2C_FIELD(arg0, int *, 0x70) = 0;
+    var_v1 = 0;
+    if (M2C_FIELD((int)&D_007812C0, int *, 0x22090) != 0) {
+        var_v1 = M2C_FIELD(M2C_FIELD((int)&D_007812C0, int *, 0x22090), int *, 0x100);
+    }
+    if (arg1 == var_v1) {
+        *(AvoidCopy184 *)((char *)(arg0) + 124) = *(AvoidCopy184 *)((char *)(&D_002FDFD8) + 0);
+        return;
+    }
+    if (((arg1 >> 0x1C) & 3) == 1) {
+        temp_v0 = X_func_001D2B8C_f1670((int)&D_007812C0, arg1);
+        M2C_FIELD(arg0, int *, 4) = temp_v0;
+        M2C_FIELD(arg0, int *, 0x14) = (int) M2C_FIELD(temp_v0, int *, 0x108);
+    }
+    temp_s2 = arg0 + 0x20;
+    if (flags184(&D_007812C0) & 0x3000) {
+        *(AvoidCopy184 *)((char *)(arg0) + 124) = *(AvoidCopy184 *)((char *)(&D_002FDFD8) + 0);
+        return;
+    }
+    if (X_func_001F5558(M2C_FIELD(arg0, unsigned int *, 0xC), temp_s2, (int) avoidSpine184) == 0) {
+        X_func_001D890C(M2C_FIELD(arg0, int *, 4), temp_s2);
+    }
+    if (arg2 != 0) {
+        if ((arg6 != 0) && ((unsigned int) ((((unsigned int) M2C_FIELD(arg2, unsigned int *, 0x10) >> 0x17) & 0x1F) - 1) < 2U)) {
+            *(AvoidCopy184 *)((char *)(arg0) + 124) = *(AvoidCopy184 *)((char *)(&D_002FDFD8) + 0);
+            return;
+        }
+        temp_a1 = M2C_FIELD(arg2, unsigned int *, 0x10);
+        if ((((temp_a1 >> 0x1C) & 3) == 1) && (X_func_001D1720((int)&D_007812C0, temp_a1, 0x4000) != 0)) {
+            *(AvoidCopy184 *)((char *)(arg0) + 124) = *(AvoidCopy184 *)((char *)(&D_002FDFD8) + 0);
+            return;
+        }
+        if (arg6 != 0) {
+            *(AvoidCopy184 *)((char *)(arg0) + 124) = *(AvoidCopy184 *)((char *)(&D_002FDFF0) + 0);
+            X_func_001EFEB8(arg0, M2C_FIELD(arg2, unsigned int *, 0x10), temp_s2, M2C_FIELD(arg0, int *, 0x6C));
+        } else {
+            *(AvoidCopy184 *)((char *)(arg0) + 124) = *(AvoidCopy184 *)((char *)(&D_002FDFF8) + 0);
+            X_func_001EFAB8(arg0, M2C_FIELD(arg2, unsigned int *, 0x10), temp_s2, M2C_FIELD(arg0, int *, 0x6C));
+        }
+        goto block_22;
+    }
+    if (arg5 != 0) {
+        *(AvoidCopy184 *)((char *)(arg0) + 124) = *(AvoidCopy184 *)((char *)(&D_002FE000) + 0);
+        X_func_001F0288(arg0, M2C_FIELD(arg0, unsigned int *, 0xC), temp_s2, arg5, M2C_FIELD(arg0, int *, 0x6C));
+    }
+block_22:
+    temp_v1 = M2C_FIELD(arg0, int *, 4);
+    M2C_FIELD(temp_v1, int *, 0x120) = (int) (M2C_FIELD(temp_v1, int *, 0x120) | 0x4000);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF184);
+#endif
 
 extern "C" void TskAvoidMove__vfunc_06(int arg0, int arg1)
 {
