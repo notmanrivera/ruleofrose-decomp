@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_001959EC(int, int) asm("func_001959EC");
 extern "C" int Xiiii_func_00193FEC(int, int, int) asm("func_00193FEC");
 struct m2c_v10C_50_i {
     char pad[268];
@@ -274,7 +275,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00195430);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_0019586C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00195958);
+extern "C" int func_00195958(int arg0, float fparg0, float fparg1)
+{
+    float sp[2];
+    int var_v0;
+
+    Xiii_func_001959EC(arg0, (int)sp);
+    var_v0 = 0;
+    if (!(fparg0 < 0.0f) && !(((float) M2C_FIELD(arg0, int *, 0x114) - sp[0]) < fparg0) && !(fparg1 < 0.0f) && !(((float) M2C_FIELD(arg0, int *, 0x118) - sp[1]) < fparg1)) {
+        var_v0 = 1;
+    }
+    return var_v0;
+}
 
 extern "C" void func_001959EC(int arg0, int arg1)
 {
