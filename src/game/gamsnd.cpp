@@ -1,4 +1,18 @@
 #include "include_asm.h"
+struct Ent5B60 {
+    char pad0[0x14];
+    int unk14;
+    char pad18[0x28 - 0x18];
+};
+struct Sub5B60 {
+    Ent5B60 *arr;
+};
+struct Obj5B60 {
+    char pad0[0xD40];
+    Sub5B60 sub;
+};
+extern int X_5B60_D_007B2580 asm("D_007B2580");
+extern "C" int X_5B60_func_001800D0(int *, int) asm("func_001800D0");
 struct Obj7D08 {
     virtual void v1();
     virtual void v2();
@@ -937,7 +951,18 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5540);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5660);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5B60);
+extern "C" int func_001E5B60(Obj5B60 *arg0, int arg1, int arg2)
+{
+    if (arg2 < 0) {
+        return 0;
+    }
+    if (X_5B60_func_001800D0(&X_5B60_D_007B2580, arg2) == -1) {
+        return 0;
+    }
+    Sub5B60 *sub = &arg0->sub;
+    int off = arg2 * sizeof(Ent5B60);
+    return ((Ent5B60 *)((char *)sub->arr + off))->unk14 == arg1;
+}
 
 extern "C" int func_001E5BE0(Obj5BE0 *arg0, int arg1)
 {
