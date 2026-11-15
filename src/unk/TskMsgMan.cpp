@@ -1,4 +1,15 @@
 #include "include_asm.h"
+struct DogVtblEntry {
+    short delta;
+    short unk2;
+    void (*fn)(void *, float *, int);
+};
+extern "C" int Xipu_func_001CBDB8(void *, unsigned int) asm("func_001CBDB8");
+extern "C" void X_ror_assert(const char *, int, const char *) asm("ror_assert");
+extern "C" int Xiii_func_0022B3D8(int, int) asm("func_0022B3D8");
+extern const char D_002FE698[];
+extern const char D_002FE6A8[];
+extern const char D_002FE6B8[];
 extern "C" int Xiiu_func_001D2BA8(int, unsigned int) asm("func_001D2BA8");
 extern int D_002FDFB0;
 extern "C" float Xfi_func_001E9CB4(int) asm("func_001E9CB4");
@@ -1896,7 +1907,36 @@ extern "C" int func_001F5350(unsigned int arg0, unsigned int arg1, float fparg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F5410);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F5558);
+extern "C" int func_001F5558(unsigned int arg0, float *arg1, int arg2)
+{
+    int actor = Xipu_func_001CBDB8(&D_007812C0, arg0);
+    if (actor == 0) {
+        return 0;
+    }
+    if (M2C_FIELD(&D_007812C0, int *, 0x21F4C) & 0x3000) {
+        return 0;
+    }
+    if (M2C_FIELD(actor, int *, 0x11C) == 0) {
+        X_ror_assert(D_002FE698, 0x131, D_002FE6A8);
+    }
+    if (arg2 == 0) {
+        X_ror_assert(D_002FE698, 0x131, D_002FE6B8);
+    }
+    int idx = Xiii_func_0022B3D8(M2C_FIELD(actor, int *, 0x11C), arg2);
+    if (idx < 0) {
+        return 0;
+    }
+    float vec[4];
+    vec[0] = vec[1] = vec[2] = 0.0f;
+    vec[3] = 1.0f;
+    struct DogVtblEntry *vt = (struct DogVtblEntry *)((char *)M2C_FIELD(actor, char **, 0x94) + 0x90);
+    vt->fn((void *)(actor + vt->delta), vec, idx);
+    arg1[0] = vec[0];
+    arg1[1] = vec[1];
+    arg1[2] = vec[2];
+    arg1[3] = vec[3];
+    return 1;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE698);
 
