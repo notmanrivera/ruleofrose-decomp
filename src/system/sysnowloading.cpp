@@ -1,4 +1,14 @@
 #include "include_asm.h"
+extern "C" float Xf_func_0010FBD4__9DogCamera(...) asm("func_0010FBD4__9DogCamera");
+extern "C" void loadingSetCamera(int, float) asm("func_0010FC08__9DogCameraf");
+extern "C" void loadingSetTime(int, float) asm("func_0013D240");
+extern "C" int X_func_001C5FFC(...) asm("func_001C5FFC");
+extern "C" int X_func_001C621C(...) asm("func_001C621C");
+extern "C" int X_func_001C7210(...) asm("func_001C7210");
+extern "C" int X_func_001CBE38(...) asm("func_001CBE38");
+extern "C" int loadingRemoveTask(...) asm("func_001E7724");
+extern "C" int X_func_001FBC0C(...) asm("func_001FBC0C");
+extern "C" int X_normalizeRot__9DogEntity(...) asm("normalizeRot__9DogEntity");
 extern "C" int X_func_001C53E0(...) asm("func_001C53E0");
 extern "C" int X_func_001C65E8(...) asm("func_001C65E8");
 extern "C" int X_func_001C6A40(...) asm("func_001C6A40");
@@ -269,7 +279,103 @@ extern "C" int func_00206638()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00206640);
+extern "C" int func_00206640(unsigned int arg0, int arg1, int arg2)
+{
+    float var_f12;
+    register int base4 PS2_REG("$4");
+    register int base11 PS2_REG("$11");
+    int *field;
+    int temp_v0_4;
+    int var_a2;
+    register int temp_s0 PS2_REG("$16");
+    register int temp_v0 PS2_REG("$2");
+    register int temp_v0_2 PS2_REG("$2");
+    register int temp_v0_3 PS2_REG("$2");
+
+    switch (arg0) {
+    case 0x1:
+        temp_v0 = (int)&D_006FBD80;
+        temp_v0 += 0x2AB70;
+        M2C_FIELD(temp_v0, float *, 0x40) = (float) M2C_FIELD(arg1, float *, 0);
+        M2C_FIELD(temp_v0, float *, 0x44) = (float) M2C_FIELD(arg1, float *, 4);
+        M2C_FIELD(temp_v0, float *, 0x48) = (float) M2C_FIELD(arg1, float *, 8);
+        M2C_FIELD(temp_v0, int *, 0x90) = 1;
+        break;
+    case 0x2:
+        temp_s0 = (int)&D_006FBD80;
+        temp_s0 += 0x2AB70;
+        M2C_FIELD(temp_s0, float *, 0x50) = (float) M2C_FIELD(arg1, float *, 0);
+        M2C_FIELD(temp_s0, float *, 0x54) = (float) M2C_FIELD(arg1, float *, 4);
+        M2C_FIELD(temp_s0, float *, 0x58) = (float) M2C_FIELD(arg1, float *, 8);
+        X_normalizeRot__9DogEntity(temp_s0);
+        M2C_FIELD(temp_s0, int *, 0x90) = 1;
+        break;
+    case 0x3:
+        temp_v0_2 = (int)&D_006FBD80;
+        temp_v0_2 += 0x2AB70;
+        M2C_FIELD(arg1, float *, 0) = (float) M2C_FIELD(temp_v0_2, float *, 0x40);
+        M2C_FIELD(arg1, float *, 4) = (float) M2C_FIELD(temp_v0_2, float *, 0x44);
+        M2C_FIELD(arg1, float *, 8) = (float) M2C_FIELD(temp_v0_2, float *, 0x48);
+        break;
+    case 0x4:
+        temp_v0_3 = (int)&D_006FBD80;
+        temp_v0_3 += 0x2AB70;
+        M2C_FIELD(arg1, float *, 0) = (float) M2C_FIELD(temp_v0_3, float *, 0x50);
+        M2C_FIELD(arg1, float *, 4) = (float) M2C_FIELD(temp_v0_3, float *, 0x54);
+        M2C_FIELD(arg1, float *, 8) = (float) M2C_FIELD(temp_v0_3, float *, 0x58);
+        break;
+    case 0x5:
+        base4 = (int)&D_006FBD80;
+        loadingSetCamera(base4 + 0x2AB70, M2C_FIELD(arg1, float *, 0));
+        break;
+    case 0x6:
+        base4 = (int)&D_006FBD80;
+        M2C_FIELD(arg1, float *, 0) = Xf_func_0010FBD4__9DogCamera(base4 + 0x2AB70);
+        break;
+    case 0x7:
+        if (!((*(int *)&D_007A3208) & 0x20000)) {
+            var_f12 = (float)(unsigned int)arg1;
+            base4 = (int)&D_006E9840;
+            loadingSetTime(base4 + 0x12540, var_f12);
+        }
+        break;
+    case 0x8:
+        temp_s0 = (int)&D_007812C0;
+        M2C_FIELD(temp_s0, int *, 0x21F70) = X_func_001CBE38(temp_s0, (unsigned int) arg1);
+        break;
+    case 0xA:
+        var_a2 = 0;
+        X_func_001C7210((int)&D_007812C0, arg1, var_a2, 0);
+        break;
+    case 0xB:
+        var_a2 = arg2 & 0xFFFF;
+        X_func_001C7210((int)&D_007812C0, arg1, var_a2, 0);
+        break;
+    case 0x14:
+        X_func_001C5FFC((int)&D_007812C0);
+        break;
+    case 0x15:
+        X_func_001C621C((int)&D_007812C0);
+        break;
+    case 0x32:
+        temp_v0_4 = X___builtin_new(0xC0);
+        X_func_001FBC0C(temp_v0_4, arg2, arg1);
+        base11 = (int)&D_007812C0;
+        base11 += 0x222B8;
+        X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0_4, 0, base11, 0x11);
+        break;
+    case 0x33:
+        temp_v0 = (int)&D_007812C0;
+        field = (int *)(temp_v0 + 0x222B8);
+        if (X_func_001E7D7C((int)&D_007A3D80, *field) != 0) {
+            loadingRemoveTask((int)&D_007A3D80, *field);
+            *field = -1;
+        }
+        break;
+    case 0: default: break;
+    }
+    return 0;
+}
 
 extern "C" int func_00206944()
 {
