@@ -1,4 +1,12 @@
 #include "include_asm.h"
+struct S_002006B0 {
+    int *vt;
+    int f04;
+    char pad08[0x20];
+    int f28;
+    char pad2c[0xA98];
+    int fAC4;
+};
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
 extern "C" int X_vt_12TskEnemyMove asm("_vt$12TskEnemyMove");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -138,7 +146,13 @@ extern "C" void TskEnemyMove__vfunc_05(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_002006B0);
+extern "C" void func_002006B0(struct S_002006B0 *arg0)
+{
+    arg0->vt = &X_vt_12TskEnemyMove;
+    arg0->f04 = 0;
+    arg0->f28 = 0;
+    arg0->fAC4 = 0;
+}
 
 extern "C" void TskEnemyMove__vfunc_06(void *arg0, int arg1)
 {
