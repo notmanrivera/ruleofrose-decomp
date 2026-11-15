@@ -1,4 +1,12 @@
 #include "include_asm.h"
+extern "C" int X_func_0021B260(int, int) asm("func_0021B260");
+extern "C" int X_func_0021B4F8(int, int) asm("func_0021B4F8");
+extern "C" int X_func_0021B5A0(int, int) asm("func_0021B5A0");
+extern "C" int X_func_0021E5A0(int, int, int) asm("func_0021E5A0");
+extern "C" void X_func_0021E688(int) asm("func_0021E688");
+extern "C" int X_func_00223290(int) asm("func_00223290");
+extern "C" int Xiiii_func_0017BA54(int, int, int) asm("func_0017BA54");
+extern "C" int Xiiii_func_0017BB50(int, int, int) asm("func_0017BB50");
 extern "C" int Xiiii_func_0017B7CC(int, int, int) asm("func_0017B7CC");
 extern "C" int Xiiii_func_0017B918(int, int, int) asm("func_0017B918");
 extern "C" int Xiii_free__9BedMemoryPv(int, int) asm("free__9BedMemoryPv");
@@ -476,4 +484,26 @@ extern "C" int EffWater3__vfunc_05(int arg0)
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffWater3__vfunc_08);
+extern "C" void EffWater3__vfunc_08(int arg0, int arg1, int arg2, int arg3)
+{
+    int temp_s1;
+    int var_s2;
+    int var_s4;
+    int var_s0;
+
+    var_s4 = 0;
+    var_s2 = X_func_0021B5A0(X_func_0021B550(arg3, 0x42, 0x44), M2C_FIELD(arg1, int *, 8));
+    var_s2 = X_func_0021E5A0(X_func_0021B4F8(var_s2, X_func_0021B260(arg2, 0)), M2C_FIELD(arg1, int *, 8), 1);
+    temp_s1 = X_func_00223290(M2C_FIELD(arg1, int *, 8));
+    var_s0 = M2C_FIELD(arg0, int *, 0x24);
+    if (M2C_FIELD(arg0, int *, 0x28) > 0) {
+        do {
+            if (Xiiii_func_0017BA54(arg0, var_s0, temp_s1) != 0) {
+                var_s2 = Xiiii_func_0017BB50(arg0, var_s2, var_s0);
+            }
+            var_s0 += 0xD0;
+            var_s4 += 1;
+        } while (var_s4 < M2C_FIELD(arg0, int *, 0x28));
+    }
+    return X_func_0021E688(var_s2);
+}
