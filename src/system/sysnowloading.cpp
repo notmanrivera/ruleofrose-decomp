@@ -667,7 +667,190 @@ boolean:
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_002076CC);
 #endif
 
+// NON_MATCHING: 278/404 differ, 11 relocs differ (size 0x650, game 0x624), 142 edits
+#ifdef NON_MATCHING
+#include "ror.h"
+struct Loading7AVec { float x, y, z, w; } ALIGNED(8);
+static inline void loading7A_set(void *dst, const float *src) { float *v = (float *)dst; v[0] = src[0]; v[1] = src[1]; v[2] = src[2]; v[3] = 0; }
+extern double D_00300598 ALIGNED(8);
+extern double D_003005A0 ALIGNED(8);
+extern double D_003005A8 ALIGNED(8);
+extern double D_003005B0 ALIGNED(8);
+extern "C" { float sinf(float angle); }
+extern "C" { float cosf(float angle); }
+extern "C" { float sqrtf(float value); }
+extern "C" float loading7A_atan(float, float) asm("func_0026CB00");
+extern "C" float loading7A_mod(float, float) asm("func_0026CB18");
+extern "C" void loading7A_add(Loading7AVec *, Loading7AVec *, Loading7AVec *) asm("func_0025B878");
+extern "C" void loading7A_sub(Loading7AVec *, Loading7AVec *, Loading7AVec *) asm("func_0025B890");
+extern "C" void loading7A_norm(Loading7AVec *, Loading7AVec *) asm("sceVu0Normalize");
+extern "C" float loading7A_dot(Loading7AVec *, Loading7AVec *) asm("sceVu0InnerProduct");
+extern "C" void loading7A_cross(Loading7AVec *, Loading7AVec *, Loading7AVec *) asm("sceVu0OuterProduct");
+extern "C" void loading7A_scale(Loading7AVec *, Loading7AVec *, float) asm("func_0025C1F0");
+extern "C" int loading7A_rand() asm("rand");
+extern "C" int func_00207AE8(unsigned int arg0, int arg1, float *param2, float *param3, float *arg4)
+{
+    struct { int sp0, pad[3]; Loading7AVec v[5]; } stack;
+    float angle, a, b, y;
+    register float value PS2_REG("$f12");
+    register float *arg2 PS2_REG("$17") = param2;
+    register float *arg3 PS2_REG("$18") = param3;
+    register float *out PS2_REG("$16");
+    Loading7AVec *input;
+    stack.sp0 = arg1;
+    switch (arg0) {
+    case 1:
+        value = (float)((double)*(float *)&stack.sp0 * D_00300598 / D_003005A0);
+        goto sine;
+    case 2:
+        value = (float)((double)*(float *)&stack.sp0 * D_003005A8 / D_003005B0);
+        goto cosine;
+    case 3:
+        value = *(float *)&stack.sp0;
+    sine:
+        *arg2 = sinf(value); break;
+    case 4:
+        value = *(float *)&stack.sp0;
+    cosine:
+        *arg2 = cosf(value); break;
+    case 5:
+        value = loading7A_atan(*arg2, *arg3);
+        goto scalar;
+    case 10: *(float *)stack.sp0 = *arg2 + *arg3; break;
+    case 11: *(float *)stack.sp0 = *arg2 - *arg3; break;
+    case 12: *(float *)stack.sp0 = *arg2 / *arg3; break;
+    case 13: *(float *)stack.sp0 = *arg2 * *arg3; break;
+    case 20: *(int *)stack.sp0 = (int)*arg2; break;
+    case 21: value = (float)*(int *)arg2; goto scalar;
+    case 30: value = sqrtf(*arg2 + *arg3); goto scalar;
+    case 50:
+        out = (float *)stack.sp0;
+        angle = *arg4;
+        a = cosf(angle) * arg3[0];
+        a = a + sinf(angle) * arg3[2];
+        stack.v[0].x = a + arg2[0];
+        stack.v[0].y = arg3[1] + arg2[1];
+        b = -sinf(angle) * arg3[0];
+        b = b + cosf(angle) * arg3[2];
+        stack.v[0].z = b + arg2[2];
+        out[0] = stack.v[0].x;
+        out[1] = stack.v[0].y;
+        out[2] = stack.v[0].z;
+        break;
+    case 51:
+        out = (float *)stack.sp0;
+        loading7A_set(&stack.v[3], arg2);
+        stack.v[2] = stack.v[3];
+        loading7A_set(&stack.v[4], arg3);
+        stack.v[3] = stack.v[4];
+        loading7A_add(&stack.v[1], &stack.v[2], &stack.v[3]);
+        out[0] = stack.v[1].x; out[1] = stack.v[1].y; out[2] = stack.v[1].z; out[3] = stack.v[1].w;
+        break;
+    case 52:
+        out = (float *)stack.sp0;
+        loading7A_set(&stack.v[2], arg2);
+        stack.v[1] = stack.v[2];
+        loading7A_set(&stack.v[3], arg3);
+        stack.v[2] = stack.v[3];
+        loading7A_sub(&stack.v[0], &stack.v[1], &stack.v[2]);
+        goto vector;
+    case 53:
+        out = (float *)stack.sp0;
+        input = &stack.v[1];
+        loading7A_set(&stack.v[2], arg2);
+        stack.v[1] = stack.v[2];
+        goto normalize;
+    case 54:
+        stack.v[1].x = ((float *)stack.sp0)[0]; stack.v[1].y = ((float *)stack.sp0)[1]; stack.v[1].z = ((float *)stack.sp0)[2]; stack.v[1].w = 0;
+        stack.v[0] = stack.v[1];
+        loading7A_set(&stack.v[2], arg2);
+        stack.v[1] = stack.v[2];
+        value = loading7A_dot(&stack.v[0], &stack.v[1]);
+    scalar:
+        *(float *)stack.sp0 = value; break;
+    case 55:
+        out = (float *)stack.sp0;
+        loading7A_set(&stack.v[2], arg2);
+        stack.v[1] = stack.v[2];
+        loading7A_set(&stack.v[3], arg3);
+        stack.v[2] = stack.v[3];
+        loading7A_cross(&stack.v[0], &stack.v[1], &stack.v[2]);
+        goto vector;
+    case 56:
+        out = (float *)stack.sp0;
+        value = sqrtf(arg2[0]*arg2[0] + arg2[1]*arg2[1] + arg2[2]*arg2[2]);
+        *out = value; break;
+    case 57:
+        out = (float *)stack.sp0;
+        loading7A_set(&stack.v[2], arg2);
+        stack.v[1] = stack.v[2];
+        loading7A_scale(&stack.v[0], &stack.v[1], *arg3);
+        goto vector;
+    case 58:
+        ((float *)stack.sp0)[0] = arg2[0]; ((float *)stack.sp0)[1] = arg2[1]; ((float *)stack.sp0)[2] = arg2[2]; ((float *)stack.sp0)[3] = arg2[3]; break;
+    case 59:
+        ((float *)stack.sp0)[0] = arg2[0]; ((float *)stack.sp0)[1] = arg3[0]; ((float *)stack.sp0)[2] = *arg4; ((float *)stack.sp0)[3] = 0; break;
+    case 60:
+        out = (float *)stack.sp0;
+        *out = loading7A_mod(*arg2, 6.283185307179586f); break;
+    case 61:
+        out = (float *)stack.sp0;
+        stack.v[1].x = (float)loading7A_rand() - 1073741760.0f;
+        stack.v[1].y = (float)loading7A_rand() - 1073741760.0f;
+        stack.v[1].z = (float)loading7A_rand() - 1073741760.0f;
+        stack.v[1].w = 0;
+        stack.v[0] = stack.v[1];
+        input = &stack.v[0];
+    normalize:
+        loading7A_norm(&stack.v[0], input);
+    vector:
+        out[0] = stack.v[0].x; out[1] = stack.v[0].y; out[2] = stack.v[0].z; out[3] = stack.v[0].w;
+        break;
+    case 0:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 14:
+    case 15:
+    case 16:
+    case 17:
+    case 18:
+    case 19:
+    case 22:
+    case 23:
+    case 24:
+    case 25:
+    case 26:
+    case 27:
+    case 28:
+    case 29:
+    case 31:
+    case 32:
+    case 33:
+    case 34:
+    case 35:
+    case 36:
+    case 37:
+    case 38:
+    case 39:
+    case 40:
+    case 41:
+    case 42:
+    case 43:
+    case 44:
+    case 45:
+    case 46:
+    case 47:
+    case 48:
+    case 49:
+    default: break;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00207AE8);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/system/sysnowloading", D_00300598);
 
