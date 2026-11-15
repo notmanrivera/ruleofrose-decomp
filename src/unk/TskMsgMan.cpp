@@ -2310,7 +2310,59 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE520);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2F0C);
 
+// NON_MATCHING: 132/141 differ, 10 relocs differ (size 0x234, game 0x244), 58 edits
+#ifdef NON_MATCHING
+struct MsgState34 { char pad[0x93C]; int state; };
+struct MsgOwner34 { char pad[0x42260]; MsgState34 msg; };
+extern MsgOwner34 owner34 asm("D_006FBD80");
+extern "C" void msgStart34(MsgState34 *, int, int) asm("func_001913C4");
+extern "C" void msgEnd34(MsgState34 *, int, int) asm("func_0019143C");
+extern "C" void msgWait34(MsgState34 *, int, int) asm("func_00191478");
+static inline int start34(MsgState34 *p) { int r; if(p->state != 0) { r = 0; } else { r = 1; p->state = 1; } return r; }
+static inline int next34(MsgState34 *p) { int r; if(p->state != 2) { r = 0; } else { r = 1; p->state = 3; } return r; }
+static inline MsgState34 *get34(MsgOwner34 *p) { return &p->msg; }
+static inline int check34(MsgState34 *p, int v) { return (p->state ^ v) == 0; }
+static inline void finish34(MsgState34 *p) { if(p->state == 5) p->state = 6; }
+static inline void finishWait34(MsgState34 *p) { if(p->state == 6) p->state = 7; }
+extern "C" int func_001F34C8(int arg0) {
+    switch (M2C_FIELD(arg0, int *, 0x10)) {
+    case 202: break;
+    case 100:
+        if(start34(get34(&owner34)) == 1) M2C_FIELD(arg0, int *, 0x10) = 101;
+        break;
+    case 101:
+        if (check34(get34(&owner34), 2)) {
+            msgStart34(get34(&owner34), 0, arg0 + 0x20);
+            M2C_FIELD(arg0, int *, 0x10) = 102;
+        }
+        break;
+    case 102:
+        if(next34(get34(&owner34)) == 1) M2C_FIELD(arg0, int *, 0x10) = 103;
+        break;
+    case 103:
+        if ((D_0073E91C ^ 5) == 0) M2C_FIELD(arg0, int *, 0x10) = 104;
+        break;
+    case 104:
+        finish34(get34(&owner34));
+        msgEnd34(get34(&owner34), 0, M2C_FIELD(arg0, int *, 0x44));
+        return 1;
+    case 200:
+        msgWait34(get34(&owner34), 0, M2C_FIELD(arg0, int *, 0x44));
+        M2C_FIELD(arg0, int *, 0x10) = 201;
+        M2C_FIELD(arg0, int *, 0x14) = M2C_FIELD(arg0, int *, 0x44);
+        break;
+    case 201:
+        if(M2C_FIELD(arg0, int *, 0x14)-- <= 0) {
+            finishWait34(get34(&owner34));
+            return 1;
+        }
+        break;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F34C8);
+#endif
 
 extern "C" int func_001F370C(int arg0)
 {
