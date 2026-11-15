@@ -1,4 +1,31 @@
 #include "include_asm.h"
+struct GamTrgCopy_d96ec {
+    int data[0xB0 / 4];
+};
+struct ObjStat_d96ec {
+    unsigned char pad0[0x100];
+    GamTrgCopy_d96ec data;
+    // +0x100: copy struct (0xB0 bytes), +0x108: m_chrID, +0x190: pos, +0x1A0: rot
+};
+struct DogActor_d96ec {
+    unsigned char pad0[0x40];
+    float pos[4];
+    float rot[4];
+    void getPos(float *out) {
+        out[0] = pos[0];
+        out[1] = pos[1];
+        out[2] = pos[2];
+    }
+    void getRot(float *out) {
+        out[0] = rot[0];
+        out[1] = rot[1];
+        out[2] = rot[2];
+    }
+};
+extern int D_006FBD80_d96ec asm("D_006FBD80");
+static inline DogActor_d96ec *getDogActor_d96ec(void *base, int idx) {
+    return (DogActor_d96ec *)(((char *)base + idx * 0x4D0) + 0x2920);
+}
 struct Elem_de5dc { unsigned int u0[8]; unsigned int flg; unsigned int u24[2]; int id; unsigned int u30[(0xB0 - 0x30) / 4]; } __attribute__((aligned(16))); // de5dc
 struct Node_de5dc { Node_de5dc *m_prev; Node_de5dc *m_next; Elem_de5dc m_data; }; // de5dc
 struct Chain_de5dc {
@@ -597,7 +624,15 @@ extern "C" void func_001D96E0(int arg0)
     M2C_FIELD(arg0, int *, 0x110) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D96EC);
+extern "C" int func_001D96EC(ObjStat_d96ec *arg0, GamTrgCopy_d96ec *arg1)
+{
+    if (*(int *)((char *)arg0 + 0x108) != -1) {
+        getDogActor_d96ec(&D_006FBD80_d96ec, *(int *)((char *)arg0 + 0x108))->getPos((float *)((char *)arg0 + 0x190));
+        getDogActor_d96ec(&D_006FBD80_d96ec, *(int *)((char *)arg0 + 0x108))->getRot((float *)((char *)arg0 + 0x1A0));
+    }
+    *arg1 = arg0->data;
+    return 0xB0;
+}
 
 extern "C" int func_001D9830(int arg0, const GamTrgCopy_d9830 *arg1)
 {
