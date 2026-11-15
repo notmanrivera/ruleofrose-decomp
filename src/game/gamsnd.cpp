@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int func_001E4908(int, int, int *, int) asm("func_001E4908");
+extern "C" int func_001E43A4(int, unsigned int, int, unsigned int);
 struct m2c_block36 { int w[9]; };
 struct m2c_ulong { long v; } __attribute__((packed));
 #define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
@@ -71,7 +73,18 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E4120);
 extern "C" void func_001E4354(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E435C);
+extern "C" int func_001E435C(int arg0, int arg1)
+{
+    int *p;
+    int r;
+
+    r = func_001E4908(arg0, arg1, (int *) &p, 1);
+    if (r != 0) {
+        r = func_001E43A4(arg0, *(unsigned short *) ((char *) p + 0x20),
+                          *(unsigned short *) ((char *) p + 0x32), 1);
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E43A4);
 
