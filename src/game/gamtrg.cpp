@@ -204,7 +204,17 @@ extern "C" void func_001D8A8C(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8ADC);
+extern "C" int func_001D8ADC(int arg0, int arg1)
+{
+    int a = Xiiiii_func_001D8064((int)&D_007812C0, arg1, M2C_FIELD(arg0, int *, 0x114), (((unsigned int)M2C_FIELD(arg0, unsigned int *, 0x100) >> 0x17) & 0x1F) == 2);
+    if (a != 0) {
+        Xiii_func_001D8D28(arg0, a);
+        M2C_FIELD(arg1, float *, 4) = M2C_FIELD(arg0, float *, 0x194);
+        Xiii_func_001D89C4(arg0, arg1);
+        return 1;
+    }
+    return 0;
+}
 
 extern "C" int func_001D8B5C(int arg0, int arg1)
 {
