@@ -1338,7 +1338,22 @@ extern "C" void func_001F1298(unsigned int arg0, int arg1, float fparg0, float f
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F13A8);
+extern "C" void func_001F13A8(unsigned int arg0, int arg1, int arg2, float fparg0, float fparg1, float fparg2)
+{
+    int *slot;
+    int temp_v0_2;
+
+    slot = (int *)(Xiiu_func_001D2B8C((int)&D_007812C0, arg0) + 0x3D8);
+    if (Xiii_func_001E7D7C_2((int)&D_007A3D80, *slot) != 0) {
+        Xiii_func_001E7724((int)&D_007A3D80, *slot);
+        *slot = -1;
+    }
+    if (fparg0 != 0.0f) {
+        temp_v0_2 = Xii___builtin_new(0x80);
+        Xfunc_001F0434(temp_v0_2, arg0, 0, arg1, fparg0, fparg2, fparg1, arg2, 1);
+        X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0_2, 0, (int)slot, 0x11);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F14CC);
 
