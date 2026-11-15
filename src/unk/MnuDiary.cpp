@@ -1,4 +1,26 @@
 #include "include_asm.h"
+extern "C" void Xvp_func_0019A6B8(void *) asm("func_0019A6B8");
+extern "C" void Xvp_func_0019A7D8(void *) asm("func_0019A7D8");
+struct Msg_9A598 {
+    unsigned char m_unk[0x3BC];
+    ~Msg_9A598() asm("func_00183B24");
+};
+struct Spr_9A598 {
+    unsigned char m_unk[0xD70];
+    ~Spr_9A598() asm("func_0018BC18");
+};
+struct Pad_9A598 {
+    unsigned char m_pad[0x58];
+};
+struct Base_9A598 {
+    Msg_9A598 m_msg[2];
+    inline ~Base_9A598() {}
+};
+struct Obj_9A598 : public Pad_9A598, public Base_9A598 {
+    Spr_9A598 m_spr;
+    int m_1540;
+    ~Obj_9A598() asm("func_0019A598");
+};
 extern "C" void X_func_001DC48C(void *, int, int, void *) asm("func_001DC48C");
 extern "C" int Xii_func_0019A780(int) asm("func_0019A780");
 extern "C" int Xiii_func_0018BCC0(int, int) asm("func_0018BCC0");
@@ -221,7 +243,12 @@ extern "C" void func_0019A52C(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A598);
+Obj_9A598::~Obj_9A598() {
+    Xvp_func_0019A7D8(this);
+    if (m_1540 == 1) {
+        Xvp_func_0019A6B8(this);
+    }
+}
 
 extern "C" void func_0019A650(int arg0, int arg1)
 {
