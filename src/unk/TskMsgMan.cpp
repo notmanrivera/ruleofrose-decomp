@@ -1,4 +1,18 @@
 #include "include_asm.h"
+struct TskVec4 {
+    float f[4];
+} __attribute__((aligned(16)));
+struct TskHitCheck {
+    void *m_origin_pos;
+    int m_rotate;
+    float m_angle;
+    void *m_target_pos;
+    float m_scale;
+};
+extern "C" void Xv_func_001D05F4(void *, unsigned int, TskVec4 *) asm("func_001D05F4");
+extern "C" void Xv_func_001D06B8(void *, unsigned int, TskVec4 *) asm("func_001D06B8");
+extern "C" float Xf_func_001D4A3C(void *, unsigned int, int) asm("func_001D4A3C");
+extern "C" int Xi_func_0010456C(TskHitCheck *) asm("func_0010456C");
 extern "C" float Xfi_func_001EA5EC(int) asm("func_001EA5EC");
 extern "C" int Xiif_func_001EAFB0(int, float) asm("func_001EAFB0");
 extern "C" int Xiu_func_001F61EC(unsigned int) asm("func_001F61EC");
@@ -1367,7 +1381,24 @@ extern "C" int TskAttach__vfunc_04(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F5350);
+extern "C" int func_001F5350(unsigned int arg0, unsigned int arg1, float fparg0)
+{
+    TskHitCheck hit;
+    TskVec4 pos1;
+    TskVec4 pos0;
+    TskVec4 rot0;
+
+    Xv_func_001D05F4(&D_007812C0, arg1, &pos1);
+    Xv_func_001D06B8(&D_007812C0, arg0, &rot0);
+    Xv_func_001D05F4(&D_007812C0, arg0, &pos0);
+    pos1.f[3] = Xf_func_001D4A3C(&D_007812C0, arg1, 0);
+    pos0.f[3] = fparg0;
+    hit.m_origin_pos = &pos0;
+    hit.m_rotate = 0;
+    hit.m_angle = fparg0;
+    hit.m_target_pos = &pos1;
+    return Xi_func_0010456C(&hit) != 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F5410);
 
