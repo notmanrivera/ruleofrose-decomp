@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "ror.h"
+extern "C" float yawC0(float, float) asm("func_00217F10");
 extern "C" int rotGet(int, int) asm("func_001E79C0");
 struct Ecbe0Targets { char pad[0x10]; int targets[128]; };
 extern "C" void ecbe0Stop(int, int) asm("func_001D8964");
@@ -673,7 +674,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EBB80);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EBDE8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC0E4);
+
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB20);
 
@@ -789,6 +790,18 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCF0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCF8);
 
+
+
+
+
+
+
+
+
+
+
+
+
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD00);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD08);
@@ -801,17 +814,34 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD20);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD28);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD30);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD38);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD40);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD48);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD50);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD58);
+extern "C" void func_001EC0E4(int arg0) {
+    float dist;
+    float *pos = (float *)(arg0 + 0x30);
+    int actor = (int)&D_006FE6A0 + M2C_FIELD(arg0, int *, 0x14) * 0x4D0;
+    pos[0] = M2C_FIELD(actor, float *, 0x40);
+    pos[1] = M2C_FIELD(actor, float *, 0x44);
+    pos[2] = M2C_FIELD(actor, float *, 0x48);
+    float angle = Xfpff_func_002180E4(&dist, pos[0] - M2C_FIELD(arg0, float *, 0x40), M2C_FIELD(arg0, float *, 0x38) - M2C_FIELD(arg0, float *, 0x48));
+    float x, z;
+    float c;
+    if (dist < M2C_FIELD(arg0, float *, 0x1C) - 10.0f) {
+        x = -Xff_sinf(angle) * M2C_FIELD(arg0, float *, 0x28);
+        z = -Xff_cosf(angle) * M2C_FIELD(arg0, float *, 0x28);
+    } else if (M2C_FIELD(arg0, float *, 0x1C) + 10.0f < dist) {
+        x = Xff_sinf(angle) * M2C_FIELD(arg0, float *, 0x28);
+        z = Xff_cosf(angle) * M2C_FIELD(arg0, float *, 0x28);
+    } else {
+        x = z = 0.0f;
+    }
+angle_part:
+    angle = M2C_FIELD(arg0, float *, 0x24) < 0.0f ? angle + 1.57079632679489661923 : angle - 1.57079632679489661923;
+    if(angle < -3.14159265358979323846) angle += 6.28318530717958647692;
+    if(angle > 3.14159265358979323846) angle -= 6.28318530717958647692;
+    M2C_FIELD(arg0, float *, 0x54) = angle;
+    M2C_FIELD(arg0, float *, 0x40) += Xff_sinf(angle) * M2C_FIELD(arg0, float *, 0x28) + x;
+    M2C_FIELD(arg0, float *, 0x48) += Xff_cosf(angle) * M2C_FIELD(arg0, float *, 0x28) + z;
+    if(x != 0.0f && z != 0.0f) M2C_FIELD(arg0, float *, 0x54) = yawC0(M2C_FIELD(arg0, float *, 0x30) - M2C_FIELD(arg0, float *, 0x40), M2C_FIELD(arg0, float *, 0x38) - M2C_FIELD(arg0, float *, 0x48));
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD60);
 
