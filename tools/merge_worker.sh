@@ -100,7 +100,7 @@ else
   # shellcheck disable=SC2086
   if ! hc=$("$PY" tools/host_check.py $FILES 2>&1); then
     git reset -q --hard "$BEFORE"
-    echo "refusing: the host check (modern g++ for a PC) got worse:"; echo "$hc" | grep -v "^host check:" | head -12
+    echo "refusing: the host check (modern g++ and clang++ for a PC) got worse:"; echo "$hc" | grep -v "^host check:" | head -12
     exit 1
   fi
   if [ -n "$DEFER" ]; then

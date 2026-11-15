@@ -592,10 +592,10 @@ for a 32-bit PC (and the PS Vita's 32-bit ARM). As sm64 does with
   with `-DNON_MATCHING`); a behaviour difference that only undefined
   behaviour explains goes under `#ifdef AVOID_UB`, as in sm64.
 
-`tools/host_check.py [<file>...]` compiles files with a modern g++
+`tools/host_check.py [<file>...]` compiles files with a modern g++ and clang++
 (`-m32`, `TARGET_PC`, `NON_MATCHING`, `AVOID_UB`, syntax only; image
 `docker/host/`). `config/host_check.tsv` is each file's error count when it
-was last updated (old code has some, mostly integers assigned to
+was last updated, per compiler (old code has some, mostly integers assigned to
 `u_long128`); a merge that makes a file worse is refused, and `--update
 <file>` records a file that got better.
 

@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
 """Check that the sources are valid C++ for a PC too (as sm64 does with its
-host gcc pass): every file is compiled again with a modern g++ for a 32-bit
+host gcc pass, and N64Recomp by testing its output with several compilers):
+every file is compiled again with a modern g++ and clang++ for a 32-bit
 target, syntax only, with TARGET_PC, NON_MATCHING and AVOID_UB defined.
 
     tools/.venv/bin/python tools/host_check.py                  # all files, against the baseline
     tools/.venv/bin/python tools/host_check.py game/gamman      # some files
     tools/.venv/bin/python tools/host_check.py --errors game/gamman   # and print their errors
-    tools/.venv/bin/python tools/host_check.py --update         # write the baseline
+    tools/.venv/bin/python tools/host_check.py --update [<file>...]   # write the baseline
 
 It runs in the ror-host image (docker/host/: `docker build --platform
 linux/amd64 -t ror-host docker/host/`). config/host_check.tsv holds the
-number of errors each file had when it was last updated: code written
-before this check has some (inline asm, 2.96-only C++), and they are
-paid down over time. A file with more errors than its baseline fails the
-check (exit 1): tools/merge_worker.sh runs it on the files a merge
-touches, so new code stays portable. 32-bit (-m32) because the ports keep
-the game's 32-bit pointers (the PS Vita is 32-bit ARM).
+number of errors each file had, per compiler, when it was last updated:
+code written before this check has some (2.96-only C++, integers assigned
+to u_long128), and they are paid down over time. A file with more errors
+than its baseline for either compiler fails the check (exit 1):
+tools/merge_worker.sh runs it on the files a merge touches, so new code
+stays portable. 32-bit (-m32) because the ports keep the game's 32-bit
+pointers (the PS Vita is 32-bit ARM).
 """
 import argparse
 import re
@@ -26,7 +28,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 BASELINE = ROOT / "config/host_check.tsv"
 IMAGE = "ror-host"
-FLAGS = "-m32 -std=gnu++98 -fsyntax-only -w -fno-exceptions -DTARGET_PC -DNON_MATCHING -DAVOID_UB -I. -I../include"
+COMMON = "-m32 -std=gnu++98 -fsyntax-only -w -fno-exceptions -DTARGET_PC -DNON_MATCHING -DAVOID_UB -I. -I../include"
+COMPILERS = {"gcc": "g++", "clang": "clang++ -Wno-everything"}
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import match  # noqa: E402  (docker's path)
 
@@ -37,30 +40,35 @@ def all_files():
 
 
 def check(files, jobs=8):
-    """{file: [error lines]} from one container."""
+    """{file: {compiler: [error lines]}} from one container."""
     names = " ".join(f"{f}.cpp" for f in files)
-    # One g++ per file, several at once; each file's output is framed so it
-    # can be told apart.
-    script = (f"cd /work/src && printf '%s\\n' {names} | xargs -P {jobs} -I{{}} sh -c "
-              f"'out=$(g++ {FLAGS} {{}} 2>&1); printf \"@@@ %s\\n%s\\n\" {{}} \"$out\"'")
+    runs = "; ".join(f'out=$({cmd} {COMMON} "$1" 2>&1); printf "@@@ %s {tag}\\n%s\\n" "$1" "$out"'
+                     for tag, cmd in COMPILERS.items())
+    script = f"cd /work/src && printf '%s\\n' {names} | xargs -P {jobs} -I{{}} sh -c '{runs}' _ {{}}"
     r = subprocess.run([match.docker(), "run", "--rm", "--platform", "linux/amd64", "-v", f"{ROOT}:/work",
                         IMAGE, "sh", "-c", script], capture_output=True, text=True)
-    if r.returncode and "@@@" not in r.stdout:
+    if "@@@" not in r.stdout:
         sys.exit(f"host check could not run (is the {IMAGE} image built?):\n{r.stderr[-2000:]}")
-    out, cur = {f: [] for f in files}, None
+    out = {f: {tag: [] for tag in COMPILERS} for f in files}
+    cur = None
     for line in r.stdout.splitlines():
-        if line.startswith("@@@ "):
-            cur = line[4:].removesuffix(".cpp")
-        elif cur and re.search(r"\berror:", line):
-            out[cur].append(line)
+        m = re.match(r"^@@@ (\S+)\.cpp (\w+)$", line)
+        if m:
+            cur = (m.group(1), m.group(2))
+        elif cur and cur[0] in out and re.search(r"\berror:", line):
+            out[cur[0]][cur[1]].append(line)
     return out
 
 
 def load_baseline():
-    if not BASELINE.exists():
-        return {}
-    rows = [ln.split("\t") for ln in BASELINE.read_text().splitlines() if ln and not ln.startswith("#")]
-    return {r[0]: int(r[1]) for r in rows if len(r) >= 2}
+    """{file: {compiler: count}}; a line from before clang counts for gcc only."""
+    base = {}
+    if BASELINE.exists():
+        for ln in BASELINE.read_text().splitlines():
+            w = ln.split("\t")
+            if ln and not ln.startswith("#") and len(w) >= 2:
+                base[w[0]] = {"gcc": int(w[1]), "clang": int(w[2]) if len(w) > 2 else int(w[1])}
+    return base
 
 
 def main():
@@ -73,29 +81,32 @@ def main():
     res = check(files)
     base = load_baseline()
     if a.update:
-        if a.files:
-            base.update({f: len(e) for f, e in res.items()})
-        else:
-            base = {f: len(e) for f, e in res.items()}
-        BASELINE.write_text("# file\terrors with a modern g++ -m32 (tools/host_check.py --update)\n"
-                            + "".join(f"{f}\t{n}\n" for f, n in sorted(base.items())), newline="\n")
-        clean = sum(1 for n in base.values() if n == 0)
-        print(f"baseline: {clean} of {len(base)} files clean, {sum(base.values())} errors in all")
+        counts = {f: {t: len(e) for t, e in r.items()} for f, r in res.items()}
+        base = {**base, **counts} if a.files else counts
+        BASELINE.write_text("# file\tg++ errors\tclang++ errors (tools/host_check.py --update)\n"
+                            + "".join(f"{f}\t{c['gcc']}\t{c['clang']}\n" for f, c in sorted(base.items())),
+                            newline="\n")
+        clean = sum(1 for c in base.values() if not any(c.values()))
+        print(f"baseline: {clean} of {len(base)} files clean for both compilers; "
+              + ", ".join(f"{t} {sum(c[t] for c in base.values())} errors" for t in COMPILERS))
         return
     worse = []
-    for f, errs in res.items():
-        b = base.get(f, 0)
-        mark = "WORSE" if len(errs) > b else ("better" if len(errs) < b else "")
-        if mark == "WORSE":
+    for f, r in res.items():
+        b = base.get(f, {t: 0 for t in COMPILERS})
+        marks = {t: "WORSE" if len(r[t]) > b[t] else ("better" if len(r[t]) < b[t] else "") for t in COMPILERS}
+        line = f"{f}: " + ", ".join(f"{t} {len(r[t])} (baseline {b[t]}){' ' + marks[t] if marks[t] else ''}"
+                                    for t in COMPILERS)
+        if "WORSE" in marks.values():
             worse.append(f)
-        if a.errors or mark == "WORSE":
-            print(f"{f}: {len(errs)} errors (baseline {b}) {mark}")
-            for e in errs[: 20 if a.errors else 5]:
-                print("    " + e)
-        elif mark:
-            print(f"{f}: {len(errs)} errors (baseline {b}) {mark}: run --update {f}")
-    total = sum(len(e) for e in res.values())
-    print(f"host check: {len(files)} files, {total} errors, {len(worse)} worse than the baseline")
+        if a.errors or "WORSE" in marks.values():
+            print(line)
+            for t in COMPILERS:
+                for e in r[t][: 20 if a.errors else 5]:
+                    print(f"    [{t}] {e}")
+        elif any(marks.values()):
+            print(line + f": run --update {f}")
+    totals = ", ".join(f"{t} {sum(len(r[t]) for r in res.values())}" for t in COMPILERS)
+    print(f"host check: {len(files)} files, errors {totals}, {len(worse)} worse than the baseline")
     sys.exit(1 if worse else 0)
 
 

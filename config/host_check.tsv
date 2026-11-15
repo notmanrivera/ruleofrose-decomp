@@ -1,118 +1,118 @@
-# file	errors with a modern g++ -m32 (tools/host_check.py --update)
-bed/bedmemory	1
-bed/bedpad	0
-bed/bedpfh	0
-bed/bedsubmode	1
-debug/motnamecnv	0
-debug/motnamecnv0	0
-debug/naga_debug	0
-dog/dogactor	1
-dog/dogcamera	0
-dog/dogentity	0
-dog/doglight	0
-dog/doglightpool	0
-dog/dogmodel	1
-dog/dogmotionblend	0
-dog/dogtexinfo	1
-emy/emy_main	0
-game/gamman	0
-game/gamsnd	0
-game/gamstat	0
-game/gamtrg	0
-mag/maglife	5
-mag/maglifebwn	2
-mag/maglifebwnctrl	0
-mag/maglifebwnmode	0
-mag/maglifefadekey	0
-mag/maglifeman	2
-mag/maglifemenu	0
-mag/maglifemenusp	0
-mag/maglifepc	4
-mag/maglifepc2	1
-mag/maglifepc3	0
-mag/maglifepcbtl	2
-mag/maglifepceff	1
-mag/maglifepcmode	0
-mag/maglifepcmove	0
-mag/maglifetest	0
-mag/maglifewindow	2
-mag/magloader	0
-mag/magscene	2
-mag/magscene2	1
-mag/magscenecamera	0
-mag/magscenedebug	2
-mag/magscenefocus	0
-mag/magsceneif	1
-mag/magscenelight	1
-mag/magsceneoption	2
-mag/magscenerender	0
-mag/magscenetenkyu	1
-mag/magsystem	1
-mcd/mcdman	0
-mnu/mnudlg	0
-mnu/mnuselect	0
-mnu/mnusvld	0
-msg/msgman	0
-sequence/sequence	0
-snd/rxmpeg	0
-snd/sndman	0
-spr/sprman	0
-spr/sprtexture	3
-system/sysnowloading	0
-task/naga_chunk	0
-task/tsk_bg_load	0
-task/tsk_scene	0
-unk/001056E8	0
-unk/00106658	0
-unk/0010F3A4	1
-unk/0013E2EC	1
-unk/00166AD0	0
-unk/001693A4	0
-unk/0018BD94	0
-unk/001A6830	0
-unk/001D1BEC	0
-unk/002039A4	0
-unk/002043DC	0
-unk/0020ED9C	0
-unk/002155F4	0
-unk/BdlMain	0
-unk/BdsMain	0
-unk/ClrMain	0
-unk/DisplayMessage	0
-unk/DwfMain	0
-unk/DwfOutAtkFar	0
-unk/Eff0	0
-unk/EffBreath2Prim	0
-unk/EffFindItem1	0
-unk/EffFire1	0
-unk/EffLight2	0
-unk/EffWater1	0
-unk/EmyOut	0
-unk/EventTestTask	0
-unk/FshMain	0
-unk/GotMain	0
-unk/GrgMain	0
-unk/HfmMain	0
-unk/MagLifeBwnModeSit	0
-unk/MnuDiary	0
-unk/MnuPBook	0
-unk/MrtMain	0
-unk/NorMain	0
-unk/NorOutAttack	0
-unk/PigMain	0
-unk/SctLayer	0
-unk/SeManager	0
-unk/TskCamera	0
-unk/TskEnemyMove	0
-unk/TskEnemyTurn	0
-unk/TskMsgMan	0
-unk/TskMtnMove	0
-unk/VoiceManager	0
-unk/WrdSrv	0
-unk/mnuBase	0
-utl/utlbtl	0
-utl/utlfile	0
-utl/utlfind	0
-utl/utlgame	0
-utl/utlmisc	0
-utl/utltm2	0
+# file	g++ errors	clang++ errors (tools/host_check.py --update)
+bed/bedmemory	1	1
+bed/bedpad	0	0
+bed/bedpfh	0	0
+bed/bedsubmode	1	1
+debug/motnamecnv	0	0
+debug/motnamecnv0	0	0
+debug/naga_debug	0	0
+dog/dogactor	1	2
+dog/dogcamera	0	0
+dog/dogentity	0	0
+dog/doglight	0	0
+dog/doglightpool	0	0
+dog/dogmodel	1	1
+dog/dogmotionblend	0	0
+dog/dogtexinfo	1	1
+emy/emy_main	0	0
+game/gamman	0	0
+game/gamsnd	0	0
+game/gamstat	0	0
+game/gamtrg	0	0
+mag/maglife	5	5
+mag/maglifebwn	2	2
+mag/maglifebwnctrl	0	0
+mag/maglifebwnmode	0	0
+mag/maglifefadekey	0	0
+mag/maglifeman	2	2
+mag/maglifemenu	0	0
+mag/maglifemenusp	0	0
+mag/maglifepc	4	4
+mag/maglifepc2	1	1
+mag/maglifepc3	0	0
+mag/maglifepcbtl	2	2
+mag/maglifepceff	1	1
+mag/maglifepcmode	0	0
+mag/maglifepcmove	0	0
+mag/maglifetest	0	0
+mag/maglifewindow	2	2
+mag/magloader	0	0
+mag/magscene	2	2
+mag/magscene2	1	1
+mag/magscenecamera	0	0
+mag/magscenedebug	2	2
+mag/magscenefocus	0	0
+mag/magsceneif	1	1
+mag/magscenelight	1	1
+mag/magsceneoption	2	2
+mag/magscenerender	0	0
+mag/magscenetenkyu	1	1
+mag/magsystem	1	1
+mcd/mcdman	0	0
+mnu/mnudlg	0	0
+mnu/mnuselect	0	0
+mnu/mnusvld	0	0
+msg/msgman	0	0
+sequence/sequence	0	0
+snd/rxmpeg	0	0
+snd/sndman	0	0
+spr/sprman	0	0
+spr/sprtexture	3	3
+system/sysnowloading	0	0
+task/naga_chunk	0	0
+task/tsk_bg_load	0	0
+task/tsk_scene	0	0
+unk/001056E8	0	1
+unk/00106658	0	0
+unk/0010F3A4	1	1
+unk/0013E2EC	1	1
+unk/00166AD0	0	0
+unk/001693A4	0	0
+unk/0018BD94	0	0
+unk/001A6830	0	0
+unk/001D1BEC	0	0
+unk/002039A4	0	0
+unk/002043DC	0	0
+unk/0020ED9C	0	0
+unk/002155F4	0	0
+unk/BdlMain	0	0
+unk/BdsMain	0	0
+unk/ClrMain	0	0
+unk/DisplayMessage	0	0
+unk/DwfMain	0	0
+unk/DwfOutAtkFar	0	0
+unk/Eff0	0	0
+unk/EffBreath2Prim	0	0
+unk/EffFindItem1	0	0
+unk/EffFire1	0	0
+unk/EffLight2	0	0
+unk/EffWater1	0	0
+unk/EmyOut	0	0
+unk/EventTestTask	0	1
+unk/FshMain	0	0
+unk/GotMain	0	0
+unk/GrgMain	0	0
+unk/HfmMain	0	0
+unk/MagLifeBwnModeSit	0	0
+unk/MnuDiary	0	0
+unk/MnuPBook	0	0
+unk/MrtMain	0	0
+unk/NorMain	0	0
+unk/NorOutAttack	0	0
+unk/PigMain	0	0
+unk/SctLayer	0	0
+unk/SeManager	0	0
+unk/TskCamera	0	0
+unk/TskEnemyMove	0	0
+unk/TskEnemyTurn	0	0
+unk/TskMsgMan	0	1
+unk/TskMtnMove	0	0
+unk/VoiceManager	0	0
+unk/WrdSrv	0	0
+unk/mnuBase	0	0
+utl/utlbtl	0	0
+utl/utlfile	0	0
+utl/utlfind	0	0
+utl/utlgame	0	0
+utl/utlmisc	0	0
+utl/utltm2	0	0
