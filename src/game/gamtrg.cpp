@@ -1331,7 +1331,35 @@ extern "C" int func_001DCF28(char **arg0, unsigned short arg1)
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DCF28);
 #endif
 
+// NON_MATCHING: 1 reloc differs, 1 edits
+#ifdef NON_MATCHING
+struct S_A0_dd00c { char pad[0x90]; int val; char pad2[0xC]; }; // dd00c
+struct S_C0_90_dd00c { char pad[0x90]; int val; char pad2[0x2C]; }; // dd00c
+struct S_E0_dd00c { char pad[0x90]; int val; char pad2[0x4C]; }; // dd00c
+struct S_C0_B0_dd00c { char pad[0xB0]; int val; char pad2[0xC]; }; // dd00c
+struct S_200_dd00c { char pad[0xB0]; int val; char pad2[0x14C]; }; // dd00c
+struct Mgr_dd00c { S_A0_dd00c *a0; S_A0_dd00c *a1; S_C0_90_dd00c *a2; S_E0_dd00c *a3; S_C0_B0_dd00c *a4; S_200_dd00c *a5; S_C0_B0_dd00c *a6; S_C0_B0_dd00c *a7; S_C0_B0_dd00c *a8; S_C0_B0_dd00c *a9; }; // dd00c
+extern "C" int func_001DD00C(Mgr_dd00c *arg0, unsigned short arg1, int arg2)
+{
+    int idx = arg1 & 0x1FF;
+
+    switch (arg1 >> 9) {
+    case 0: { S_A0_dd00c *p = arg0->a0; p += idx; return (p->val & arg2) != 0; }
+    case 1: { S_A0_dd00c *p = arg0->a1; p += idx; return (p->val & arg2) != 0; }
+    case 2: { S_C0_90_dd00c *p = arg0->a2; p += idx; return (p->val & arg2) != 0; }
+    case 3: { S_E0_dd00c *p = arg0->a3; p += idx; return (p->val & arg2) != 0; }
+    case 4: { S_C0_B0_dd00c *p = arg0->a4; p += idx; return (p->val & arg2) != 0; }
+    case 5: { S_200_dd00c *p = arg0->a5; p += idx; return (p->val & arg2) != 0; }
+    case 6: { S_C0_B0_dd00c *p = arg0->a6; p += idx; return (p->val & arg2) != 0; }
+    case 7: { S_C0_B0_dd00c *p = arg0->a7; p += idx; return (p->val & arg2) != 0; }
+    case 8: { S_C0_B0_dd00c *p = arg0->a8; p += idx; return (p->val & arg2) != 0; }
+    case 9: { S_C0_B0_dd00c *p = arg0->a9; p += idx; return (p->val & arg2) != 0; }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD00C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD118);
 
