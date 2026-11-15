@@ -574,7 +574,56 @@ extern "C" void func_0018CFF0(int arg0, int arg1, int arg2, int arg3, int arg4)
     M2C_FIELD(temp_v1, float *, 0x90) = (float) M2C_FIELD(arg3, float *, 8);
 }
 
+// NON_MATCHING: 67/88 differ, 4 relocs differ (size 0x160, game 0x15C), 19 edits
+#ifdef NON_MATCHING
+extern "C" void X_D08C_func_0018CD88(int, int, int, float *, float *) asm("func_0018CD88");
+extern "C" void X_D08C_func_0018CEEC(int, int, int, float *, float *) asm("func_0018CEEC");
+extern "C" void func_0018D08C(int arg0, int arg1)
+{
+    float vec[3];
+    int temp_a7;
+    int temp_a3;
+    int temp_a6;
+
+    temp_a7 = M2C_FIELD(arg1, int *, 0x108) << 5;
+    temp_a6 = M2C_FIELD(arg1, int *, 0x140) + (M2C_FIELD(arg1, int *, 0x104) * 0xC);
+    temp_a3 = temp_a7 + M2C_FIELD(temp_a6, int *, 8);
+    switch (M2C_FIELD(temp_a3, int *, 0)) {
+    case 0:
+        X_D08C_func_0018CD88(arg0, arg1, M2C_FIELD(temp_a3, int *, 4), (float *)(temp_a3 + 8), (float *)(temp_a3 + 0x14));
+        break;
+    case 1:
+        {
+            float x = (float)((int)M2C_FIELD(arg1, int *, 0x64) >> 4);
+            float y = (float)((int)M2C_FIELD(arg1, int *, 0x68) >> 4);
+            float z = (float)((int)M2C_FIELD(arg1, int *, 0x6C) >> 4);
+            vec[0] = x;
+            vec[1] = y;
+            vec[2] = z;
+            int e = M2C_FIELD(temp_a6, int *, 8) + temp_a7;
+            X_D08C_func_0018CD88(arg0, arg1, M2C_FIELD(e, int *, 4), vec, (float *)(e + 0x14));
+        }
+        break;
+    case 2:
+        X_D08C_func_0018CEEC(arg0, arg1, M2C_FIELD(temp_a3, int *, 4), (float *)(temp_a3 + 8), (float *)(temp_a3 + 0x14));
+        break;
+    case 3:
+        {
+            float x = (float)((int)M2C_FIELD(arg1, int *, 0x64) >> 4);
+            float y = (float)((int)M2C_FIELD(arg1, int *, 0x68) >> 4);
+            float z = (float)((int)M2C_FIELD(arg1, int *, 0x6C) >> 4);
+            vec[0] = x;
+            vec[1] = y;
+            vec[2] = z;
+            int e = M2C_FIELD(temp_a6, int *, 8) + temp_a7;
+            X_D08C_func_0018CEEC(arg0, arg1, M2C_FIELD(e, int *, 4), vec, (float *)(e + 0x14));
+        }
+        break;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018D08C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018D1E8);
 
