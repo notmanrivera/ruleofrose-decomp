@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_0018C910(int, int) asm("func_0018C910");
 struct Entry28_C5A8 {
     unsigned short unk00;
     unsigned char unk02[0x1A];
@@ -103,7 +104,25 @@ INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C190);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C2E4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C448);
+extern "C" int func_0018C448(int arg0, int arg1, int arg2)
+{
+    char *p;
+
+    if (M2C_FIELD(arg0, int *, 0x4AC) == 0) {
+        return 1;
+    }
+    if (arg1 >= M2C_FIELD(arg0, int *, 0x4B4)) {
+        return 1;
+    }
+    p = (char *)M2C_FIELD(arg0, int *, 0x4AC) + arg1 * 0x154;
+    M2C_FIELD(p, int *, 0x138) = arg2;
+    M2C_FIELD(p, int *, 0x110) = 0;
+    M2C_FIELD(p, int *, 0x114) = 0;
+    M2C_FIELD(p, int *, 0xF4) = *(unsigned short *)M2C_FIELD(arg2, int *, 8);
+    M2C_FIELD(p, int *, 0x118) = *(int *)M2C_FIELD(arg2, int *, 8) & 0xFF0000;
+    M2C_FIELD(p, int *, 0x134) = Xiii_func_0018C910(arg0, arg2);
+    return 0;
+}
 
 extern "C" int func_0018C4D8(int arg0, int arg1, int arg2)
 {
