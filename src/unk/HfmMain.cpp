@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int Xii_func_00118FEC__9MagSystem(int) asm("func_00118FEC__9MagSystem");
+extern "C" int Xii_func_001442DC(int) asm("func_001442DC");
+extern "C" int Xii_func_00144308(int) asm("func_00144308");
+extern "C" void Xv_func_00148A00(int) asm("func_00148A00");
+extern "C" int Xiif_func_00146C8C(int, float) asm("func_00146C8C");
 extern "C" int Xiii_func_0013166C(int, int, int) asm("func_0013166C");
 extern "C" int Xii_func_0016947C(int) asm("func_0016947C");
 extern "C" int Xiiui_func_001D1410(int, unsigned int, int) asm("func_001D1410");
@@ -958,7 +963,35 @@ INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00148620);
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00148A00);
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00148AF0);
+extern "C" void func_00148AF0(int arg0)
+{
+    int temp_v0;
+    int temp_v0_2;
+
+    if (Xii_func_001442DC(M2C_FIELD(arg0, int *, 0)) != -1) {
+        Xii_func_00144308(1);
+        return Xv_func_00148A00(arg0);
+    }
+    Xiif_func_00146C8C(arg0, 15.0f);
+    temp_v0 = Xii_func_00118FEC__9MagSystem((int)&D_006E9840);
+    if (temp_v0 != 9) {
+        temp_v0_2 = M2C_FIELD(arg0, int *, 0x68) - 1;
+        M2C_FIELD(arg0, int *, 0x68) = temp_v0_2;
+        if (temp_v0_2 <= 0) {
+            M2C_FIELD(arg0, int *, 0x48) = 0;
+            Xiiii_func_001680A0(arg0, 0x35, 0);
+            Xiii_func_001694CC(arg0, 0x13);
+            M2C_FIELD(arg0, int *, 4) = 3;
+            return;
+        }
+        if (temp_v0 == 3) {
+            M2C_FIELD(arg0, int *, 0x58) = 0;
+            if (Xii_func_001457F0(M2C_FIELD(arg0, int *, 0xC)) != 0) {
+                Xv_func_00148A00(arg0);
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00148BD0);
 
