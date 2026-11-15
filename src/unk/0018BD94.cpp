@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_001C0254(int, int) asm("func_001C0254");
+extern "C" int Xiii_func_001BFFCC(int, int) asm("func_001BFFCC");
 struct Sub0C_F60C {
     unsigned char pad00[0x120];
     int a[60];
@@ -601,7 +603,32 @@ extern "C" void func_0018EBA4(int arg0, unsigned char *arg1, unsigned char *arg2
     *arg2 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018EC58);
+extern "C" int func_0018EC58(int arg0, unsigned char *arg1)
+{
+    int width = 0;
+
+    while (*arg1 != 0) {
+        unsigned int c = *arg1++;
+        c &= 0xFF;
+        if ((unsigned int)(c - 0x81) < 0x1F || (unsigned int)(c - 0xE0) < 0x1D) {
+            c = (c << 8) | *arg1++;
+        }
+        if (c == 0x23 && *arg1 == 0x30) {
+            arg1++;
+            continue;
+        }
+        if (c != 0xA) {
+            int sub = arg0 + 0x440;
+            if (M2C_FIELD(sub, int *, 0x24) != 0) {
+                width += Xiii_func_001C0254(sub, Xiii_func_001BFFCC(sub, c));
+                width += 2;
+            } else {
+                width += Xiii_func_001C0254(sub, c);
+            }
+        }
+    }
+    return width;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018ED44);
 
