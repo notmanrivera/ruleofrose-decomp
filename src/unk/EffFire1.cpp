@@ -1,4 +1,12 @@
 #include "include_asm.h"
+struct Eff2678Param {
+    int unk00;
+    int unk04;
+    int unk08;
+    char pad0C[0x74];
+};
+extern "C" void X_2678_func_00176CC8(void *, void *) asm("func_00176CC8");
+extern char D_006FBD80[];
 extern "C" float Xii_func_0016FF18(int, int) asm("func_0016FF18");
 struct m2c_block12 { int w[3]; };
 struct m2c_block16 { int w[4]; };
@@ -187,7 +195,14 @@ extern "C" void updateZDepth__11EffFog2Prim(int arg0)
     M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, arg0 + 0x30);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_00172678);
+extern "C" void func_00172678()
+{
+    Eff2678Param param;
+    param.unk00 = 0x1A;
+    param.unk08 = 0;
+    unsigned int off = 0x837E0;
+    X_2678_func_00176CC8(D_006FBD80 + off, &param);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F2438);
 
