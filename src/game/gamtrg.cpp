@@ -1,4 +1,65 @@
 #include "include_asm.h"
+struct Elem_dd414 {
+    unsigned char pad[0x30];
+} __attribute__((aligned(16)));
+struct Node_dd414 {
+    Node_dd414 *m_prev;
+    Node_dd414 *m_next;
+    Elem_dd414 m_data;
+};
+struct Chain_dd414 {
+    Node_dd414 m_head;
+    int m_num;
+    void init() {
+        m_num = 0;
+        m_head.m_prev = &m_head;
+        m_head.m_next = &m_head;
+    }
+    Chain_dd414() { init(); }
+    void splice(Chain_dd414 &theOther) {
+        if (theOther.m_num != 0) {
+            m_head.m_prev->m_next = theOther.m_head.m_next;
+            Node_dd414 *last = m_head.m_prev;
+            last->m_next->m_prev = last;
+            Node_dd414 *tail = theOther.m_head.m_prev;
+            m_head.m_prev = tail;
+            tail->m_next = &m_head;
+            m_num += theOther.m_num;
+            theOther.init();
+        }
+    }
+};
+struct Pool_dd414 {
+    Chain_dd414 m_free;
+    Chain_dd414 m_used;
+    int m_max;
+    unsigned char padA4[0x1C];
+    Node_dd414 *m_nodes;
+    unsigned char padC4[0x3C];
+    Pool_dd414(int n) : m_max(0) {
+        Node_dd414 *nodes = new Node_dd414[64];
+        m_max = n;
+        m_nodes = nodes;
+        Node_dd414 *p = nodes;
+        for (int i = 0; i < m_max; i++) {
+            p->m_prev = p - 1;
+            p->m_next = p + 1;
+            p++;
+        }
+        m_used.init();
+        m_free.m_head.m_next = nodes;
+        m_free.m_num = m_max;
+        nodes[0].m_prev = &m_free.m_head;
+        m_free.m_head.m_prev = (Node_dd414 *)((char *)m_free.m_head.m_next + m_free.m_num * sizeof(Node_dd414) - sizeof(Node_dd414));
+        m_free.m_head.m_prev->m_next = &m_free.m_head;
+    }
+    int size() const { return m_used.m_num; }
+    void clear() { m_free.splice(m_used); }
+};
+struct Mgr_dd414 {
+    unsigned char pad[0x18B40];
+    Pool_dd414 *m_pool;
+};
 struct GamTrgCopy_d96ec {
     int data[0xB0 / 4];
 };
@@ -1596,7 +1657,14 @@ extern "C" void func_001DD3EC(void *arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD414);
+extern "C" void func_001DD414(Mgr_dd414 *arg0)
+{
+    Pool_dd414 *p = new Pool_dd414(64);
+    arg0->m_pool = p;
+    if (p->size() != 0) {
+        p->clear();
+    }
+}
 
 extern "C" GamTrgCopy_dd558 *func_001DD558(int arg0, const GamTrgCopy_dd558 *arg1)
 {
