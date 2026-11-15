@@ -8,8 +8,10 @@
 # 1. Lists the worker's commits not yet in the current branch (by patch, so
 #    commits already cherry-picked are skipped) and refuses any that touch
 #    something other than src/**.cpp.
-#    Commits that add inline assembly (__asm__, asm volatile) are refused
-#    too: a function must be C++ to count.
+#    Commits that add inline assembly statements with instructions in them
+#    are refused too: a function must be C++ to count. Empty barriers
+#    (asm volatile("" ::: "memory")), register hints (register int x
+#    asm("$6")) and symbol aliases (... asm("D_002B8DE8")) are fine.
 # 2. Runs tools/match.py on every touched file (here, with this checkout's
 #    compile server), on the file as committed (a worker's uncommitted edits are not what is
 #    merged); all must report a matching object (functions left as
@@ -67,7 +69,7 @@ if [ -z "$COMMITS" ]; then
 else
   BAD="$(for c in $COMMITS; do git show --name-only --format= "$c"; done | sort -u | grep -v '^src/.*\.cpp$' || true)"
   [ -z "$BAD" ] || { echo "refusing: commits touch files outside src/*.cpp:"; echo "$BAD"; exit 1; }
-  ASM="$(for c in $COMMITS; do git show --format= "$c"; done | grep -E '^\+.*(__asm__|\basm[[:space:]]+(volatile|goto))' || true)"
+  ASM="$(for c in $COMMITS; do git show --format= "$c"; done | grep -E '^\+([^"]*[;{])?[[:space:]]*(__asm__|asm)([[:space:]]+(volatile|goto)|__volatile__)*[[:space:]]*\([[:space:]]*"[^"]' || true)"
   [ -z "$ASM" ] || { echo "refusing: commits add inline assembly:"; echo "$ASM" | head -5; exit 1; }
   FILES="$(for c in $COMMITS; do git show --name-only --format= "$c"; done | sort -u | sed 's|^src/||; s|\.cpp$||')"
   echo "wt/$NAME: $(echo "$COMMITS" | wc -l | tr -d ' ') commits on: $(echo $FILES)"
