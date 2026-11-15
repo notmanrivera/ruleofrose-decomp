@@ -15,7 +15,43 @@ extern "C" int X_memset(...) asm("memset");
 extern int D_006E9800;
 extern int D_007811B4;
 
+// NON_MATCHING: 4/57 differ, 6 edits
+#ifdef NON_MATCHING
+struct Cb8 {
+    int w0;
+    int w1;
+};
+
+extern const Cb8 D_002FC1D8;
+extern "C" int func_001D046C(void *, unsigned int);
+extern "C" char *func_001D2B8C(void *, unsigned int);
+extern "C" void func_001D890C(void *, void *);
+extern "C" float func_001D4A3C(void *, unsigned int, int);
+extern "C" int func_001D7C20(void *, int, unsigned int, unsigned int, void *);
+
+extern "C" int func_001D5610(void *arg0, unsigned int arg1)
+{
+    if (func_001D046C(arg0, arg1) == 0) {
+        return 0;
+    }
+    char *obj = func_001D2B8C(arg0, arg1);
+    int unk114 = *(int *)(obj + 0x114);
+    if (*(int *)(obj + 0x120) & 0x80) {
+        return 0;
+    }
+    u_long128 pos;
+    func_001D890C(obj, &pos);
+    int off = 0x225B0;
+    u_long128 *dst = (u_long128 *)((char *)arg0 + off);
+    register u_long128 tmp PS2_REG("$6") = pos;
+    *dst = tmp;
+    *(float *)((char *)arg0 + 0x225A0) = func_001D4A3C(arg0, arg1, 0);
+    *(Cb8 *)((char *)arg0 + 0x225D0) = D_002FC1D8;
+    return func_001D7C20(arg0, unk114, arg1, 0, 0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D5610);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D56F4);
 
