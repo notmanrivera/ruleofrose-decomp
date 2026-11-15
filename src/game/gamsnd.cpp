@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" void __builtin_delete(void *);
+extern int _vt$9GamSndMan;
+struct Elem28 { int a[10]; };
+struct Range { char *m_begin; char *m_end; };
 extern "C" void func_001E43E0(int, char *, int *, int *);
 extern "C" void func_001E44B4(int, int, int, int, int);
 extern "C" int func_001E4908(int, int, int *, int) asm("func_001E4908");
@@ -20,7 +24,24 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E0D70);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E0DF0);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", GamSndMan__vfunc_01);
+extern "C" void GamSndMan__vfunc_01(char *arg0, int arg1)
+{
+    Range *r;
+    Elem28 *p;
+    Elem28 *e;
+
+    *(int **)(arg0 + 0x1874) = &_vt$9GamSndMan;
+    r = (Range *)(arg0 + 0xD40);
+    e = (Elem28 *)r->m_end;
+    p = (Elem28 *)r->m_begin;
+    while (p != e) {
+        p->~Elem28();
+        p++;
+    }
+    if (arg1 & 1) {
+        return __builtin_delete(arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E0F1C);
 
