@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xiff_func_001F6B8C(float, float) asm("func_001F6B8C");
+extern "C" void Xv_func_001F1298(int, float, int, float) asm("func_001F1298");
 struct GamHitInfo {
     int unk00;
     int unk04;
@@ -902,18 +904,6 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0E90);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0F9C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F10A4);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F11A0);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F1298);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F13A8);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F14CC);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F1670);
-
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEC0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDEC8);
@@ -1096,6 +1086,8 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE230);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE238);
 
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F10A4);
+
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE240);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE248);
@@ -1104,13 +1096,29 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE250);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE258);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE260);
+extern "C" void func_001F11A0(int arg0, float fparg0, float fparg1, float fparg2)
+{
+    float diff;
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE268);
+    if (fparg0 != fparg1) {
+        diff = fparg1 - fparg0;
+        if (diff < -3.14159265358979323846) {
+            diff += 2.0 * 3.14159265358979323846;
+        }
+        if (diff > 3.14159265358979323846) {
+            diff -= 2.0 * 3.14159265358979323846;
+        }
+        Xv_func_001F1298(arg0, diff, Xiff_func_001F6B8C(diff, fparg2), fparg0);
+    }
+}
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE270);
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F1298);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE278);
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F13A8);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F14CC);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F1670);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE280);
 
