@@ -898,7 +898,39 @@ extern "C" int func_00213BFC(int arg0, int arg1, int arg2, int arg3)
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213C6C);
 
+// NON_MATCHING: 32/35 differ, 1 reloc differs (size 0x8C, game 0x90), 13 edits
+#ifdef NON_MATCHING
+extern "C" int func_00213ADC(int arg0, int arg1, int arg2, int arg3, int arg4);
+extern "C" int func_00213D00(int arg0, unsigned int arg1, int arg2)
+{
+    NodeIter beg;
+    NodeIter end0;
+    NodeIter end1;
+    NodeIter end2;
+    NodeIter *end_ptr;
+    int *p;
+    switch ((int)(arg1 >> 30)) {
+    case 0:
+        p = *(int **)(arg0 + 0x10);
+        end_ptr = &end0;
+        goto do_call;
+    case 1:
+        p = *(int **)(arg0 + 0x14);
+        end_ptr = &end1;
+        goto do_call;
+    case 2:
+        p = *(int **)(arg0 + 0x18);
+        end_ptr = &end2;
+    do_call:
+        beg.m_node = (int *)p[0xD4 / 4];
+        end_ptr->m_node = &p[0xD0 / 4];
+        return func_00213ADC(arg0, arg1, (int)&beg, (int)end_ptr, arg2);
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213D00);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213D90);
 
