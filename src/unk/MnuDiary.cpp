@@ -465,7 +465,63 @@ extern "C" void MnuDiary__vfunc_07(void *arg0, int arg1)
     X_func_00223228_v7(arg1, v);
 }
 
+// NON_MATCHING: 13/72 differ, 1 reloc differs, 15 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_0019A1D0_A054(void *) asm("func_0019A1D0");
+extern "C" int X_func_0019A174_A054(void *, int) asm("func_0019A174");
+extern "C" int X_func_0019A24C_A054(void *, int) asm("func_0019A24C");
+extern "C" int X_func_001943D8_A054(void *, int) asm("func_001943D8");
+static inline int tail_A054(MnuDiary *arg0, int id)
+{
+    int i = X_func_0019A24C_A054(arg0, id);
+    if (i != -1) {
+        if (X_func_001943D8_A054(arg0, i) != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+extern "C" int func_0019A054(MnuDiary *arg0, int arg1)
+{
+    int idx;
+    int page;
+
+    if (X_func_0019A1D0_A054(arg0) == -1) {
+        return 0;
+    }
+    if (arg1 != 0) {
+        idx = (arg0->m_124 + 1) / 2;
+        if (idx >= arg0->m_12C) {
+            return 0;
+        }
+        if (X_func_0019A174_A054(arg0, idx) != 0) {
+            return 0;
+        }
+        idx++;
+        if (idx >= arg0->m_12C) {
+            return 1;
+        }
+        return tail_A054(arg0, idx * 2 + 1);
+    } else {
+        page = (arg0->m_124 + 1) / 2;
+        idx = page - 1;
+        if (idx < 0) {
+            return 0;
+        }
+        if (X_func_0019A174_A054(arg0, idx) != 0) {
+            return 0;
+        }
+        idx = page - 2;
+        if (idx < -1) {
+            return 1;
+        }
+        return tail_A054(arg0, idx * 2 + 2);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A054);
+#endif
 
 extern "C" int func_0019A174(int arg0)
 {
