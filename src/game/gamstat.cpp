@@ -44,7 +44,19 @@ extern "C" void func_001D7EB8()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D7ED4);
+extern "C" void *func_001D7ED4(void *arg0, int arg1, int arg2)
+{
+    X_func_001D83C0_v(arg0, arg2);
+    char *entry = (char *)&D_007811B4 + arg2 * 0x18;
+    char *ptr = 0;
+    if (*(int *)(entry + 4) != 0) {
+        char *base = *(char **)(entry + 0xC);
+        if (base != 0) {
+            ptr = base + arg1 * 0x90;
+        }
+    }
+    return ptr;
+}
 
 extern "C" int func_001D7F48(void *arg0, void *arg1, int arg2)
 {
