@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" float cosf(float);
+extern "C" float Xf_func_0010A650__8DogActor(void *) asm("func_0010A650__8DogActor");
+extern "C" float sinf(float);
+extern "C" int Xiiif_func_00202900(void *, float *, float) asm("func_00202900");
+extern "C" int Xiiiii_func_00202E20(void *, float *, float *, int) asm("func_00202E20");
 extern "C" int Xii_func_001FBB04(int) asm("func_001FBB04");
 extern "C" int Xiiiiiif_func_001F5BDC(int, int, int, int, int, float, float) asm("func_001F5BDC");
 extern "C" int Xiiu_func_001D19A8(int, unsigned int) asm("func_001D19A8");
@@ -281,7 +286,26 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00201D58);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00201FA4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202138);
+extern "C" int func_00202138(void *arg0, float *arg1)
+{
+    float v1[4];
+    float v2[4];
+    float yaw;
+    int var_v0;
+
+    v1[1] = v2[1] = arg1[1];
+    yaw = Xf_func_0010A650__8DogActor(M2C_FIELD(arg0, void **, 0x28));
+    v1[0] = arg1[0] + sinf(yaw) * M2C_FIELD(arg0, float *, 0x50);
+    v1[2] = arg1[2] + cosf(yaw) * M2C_FIELD(arg0, float *, 0x50);
+    v2[0] = D_006E97D8[0] + sinf(yaw) * M2C_FIELD(arg0, float *, 0x50);
+    v2[2] = D_006E97D8[2] + cosf(yaw) * M2C_FIELD(arg0, float *, 0x50);
+    var_v0 = Xiiiii_func_00202E20(arg0, v1, v2, M2C_FIELD(arg0, int *, 0x38));
+    if (var_v0 != 0) {
+        Xiiif_func_00202900(arg0, arg1, yaw);
+        var_v0 = 1;
+    }
+    return var_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202234);
 
