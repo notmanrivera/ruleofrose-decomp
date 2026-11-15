@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int X_v4_200988(void *, void *) asm("func_00200988");
+extern "C" void X_v4_200D18(void *, void *) asm("func_00200D18");
+extern "C" void X_v4_202FE4(void *, void *) asm("func_00202FE4");
+extern "C" void X_v4_16A594(unsigned int, void *) asm("func_0016A594");
+extern float D_006E97D8[];
 extern "C" int X_2874_DogActor(void *, int, int, float, int, int) asm("func_0010B1B0__8DogActoriifii");
 struct S_00202874 {
     char pad00[0x28];
@@ -199,7 +204,28 @@ extern "C" void TskEnemyMove__vfunc_06(void *arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00200700);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", TskEnemyMove__vfunc_04);
+extern "C" int TskEnemyMove__vfunc_04(void *arg0)
+{
+    struct { float v[4]; } stack;
+    void *temp_v1;
+
+    if (M2C_FIELD(arg0, int *, 0xAC4) != 0) {
+        return 0;
+    }
+    if (M2C_FIELD(arg0, int *, 4) == 0) {
+        return 0;
+    }
+    temp_v1 = M2C_FIELD(arg0, void **, 0x28);
+    D_006E97D8[0] = M2C_FIELD(temp_v1, float *, 0x40);
+    D_006E97D8[1] = M2C_FIELD(temp_v1, float *, 0x44);
+    D_006E97D8[2] = M2C_FIELD(temp_v1, float *, 0x48);
+    X_v4_16A594(M2C_FIELD(arg0, unsigned int *, 8), &stack);
+    if (X_v4_200988(arg0, &stack) != 0) {
+        X_v4_200D18(arg0, &stack);
+    }
+    X_v4_202FE4(arg0, &stack);
+    return 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF2F0);
 
