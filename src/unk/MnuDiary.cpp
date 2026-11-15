@@ -848,7 +848,71 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019B384);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019B7F4);
 
+// NON_MATCHING: 25/80 differ, 1 reloc differs (size 0x140, game 0x144), 8 edits
+#ifdef NON_MATCHING
+struct Base1_BD6C {
+    int m_00;
+};
+struct Base2_BD6C {
+    int m_00;
+    int m_04;
+    int m_08;
+    int m_0C;
+    int m_10;
+    int m_14;
+    int m_18;
+    int m_1C;
+    int m_20;
+    int m_24;
+    int m_28;
+    inline int getCount() { return m_20; }
+};
+struct Obj_BD6C : public Base1_BD6C, public Base2_BD6C {
+    unsigned char pad30[0x10C4 - 0x30];
+    int m_10C4[1];
+};
+extern "C" void X_func_0019B384_BD6C(void *, int) asm("func_0019B384");
+extern "C" void X_func_0019DBC8_BD6C(void *, int, int) asm("func_0019DBC8");
+extern "C" void X_func_0019DCBC_BD6C(void *, int, int, int) asm("func_0019DCBC");
+
+extern "C" void func_0019BD6C(Obj_BD6C *arg0)
+{
+    int a = arg0->m_04;
+    int idx = 0;
+
+    if (a == 0) {
+        idx = arg0->m_0C;
+    } else if (arg0->m_28 >= arg0->m_20) {
+        int *p10 = &arg0->m_0C;
+        idx = *p10 - a;
+        if (idx < 0) {
+            *p10 = a;
+            idx = 0;
+        }
+    }
+
+    int i = 0;
+    if (arg0->m_20 > 0) {
+        do {
+            if (i == 0) {
+                int *p = &arg0->m_10C4[0];
+                idx++;
+                X_func_0019DBC8_BD6C(arg0, *p, 0);
+                X_func_0019DCBC_BD6C(arg0, *p + 9, 0, 0);
+            } else {
+                int *p = &arg0->m_10C4[i];
+                X_func_0019DBC8_BD6C(arg0, *p, idx);
+                X_func_0019DCBC_BD6C(arg0, *p + 9, i, idx++);
+            }
+            i++;
+        } while (i < arg0->getCount());
+    }
+
+    X_func_0019B384_BD6C(arg0, -2);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019BD6C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019BEB0);
 
