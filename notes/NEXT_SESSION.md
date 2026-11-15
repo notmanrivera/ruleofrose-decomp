@@ -232,3 +232,21 @@ Pendiente de la revisión, para el coordinador:
   Claude para lo que quede (8/10 en segundos intentos frente a 2/10 de
   DeepSeek V4 Pro e Hydrogen). Medir Kimi con un lote antes de darle más.
 - Integrar por archivo (que un archivo malo no frene los demás).
+
+## Estado (2026-11-15, mañana)
+
+- Avance: 23.68 % (271,796 / 1,147,560 B), subido a GitHub (rama de
+  seguimiento y `main`). Fable ya no está disponible.
+- Workers: `gemini` (Gemini 4 Hydrogen · high) es el que más rinde: lotes
+  de hasta 120 instrucciones salen casi enteros (stats.tsv). `opencode`
+  (Flash) y `oc2` (Kimi K3.1 Pro, segundos intentos) quedaron parados por el
+  límite semanal de OpenCode Go (reinicio 15-nov 17:59); dos OpenCode a la
+  vez agotan el plan Go antes de la semana.
+- Gemini tiende a escribir copias de 128 bits con `asm volatile("lq ...")`:
+  la integración lo rechaza y el brief ya dice cómo hacerlo en C++.
+- De sm64: `include/target.h` (TARGET_PS2/TARGET_PC, PS2_REG,
+  STATIC_ASSERT), `tools/host_check.py` (g++ moderno -m32, línea base en
+  `config/host_check.tsv`, la integración no deja empeorar un archivo) y la
+  sección "Portability" de DECOMPILING. Pendiente de sm64: una compilación
+  NON_MATCHING enlazada que arranque en un emulador (hace falta que el
+  enlazado acepte funciones de otro tamaño).
