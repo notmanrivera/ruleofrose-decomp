@@ -42,16 +42,6 @@ where to look.
   inside the range, a function using data of a file it does not belong
   to) and list suspects with evidence.
 
-- [ ] R10 Chulip (Punchline, 2002) vs Rule of Rose: shared engine code?
-  aaaaaaaaaaway/chulip-decomp is ~41 % matched; its game code is built
-  with SN Systems GNU C 2.95.3-EE (-O2 -G8), its libraries with Sony
-  EE-GCC 2.9-ee-991111. Our mw/i3d (the engine graphics library, C,
-  0x218500-0x237D00, 0 % done) is built "with other flags than the game"
-  (every function 8-aligned): if Chulip links the same i3d (look for
-  I3D_BIN/I3D_I3M/I3D_I3C, i3d function shapes, MagLife/Dog*/GamMan
-  names), its decompiled C and compiler settings may carry over. Needs the
-  owner's Chulip ELF (ask for its path) and a read of the chulip-decomp
-  repo (config, compiler flags, matched i3d files if any).
 - [ ] R11 C++ matching lessons from other ee-gcc decomps: read the
   docs/CONTRIBUTING of TheOnlyZac/Sly1, Komasia/sly2-decomp, ethteck/kh1
   and denzi-gh/crashwoc-decomp-ps2 (web), note each one's exact compiler
@@ -100,3 +90,11 @@ where to look.
   source names, 0x800 bytes less code; one inline differs
   (MagLifeBwnCtrlModeHug::setMode only in retail). No names to gain.
   Kept in disc/demo/ (ignored by git).
+- [x] R10 Chulip (SLUS-20742, owner's disc, 2026-11-15, coordinator): no
+  shared engine. Its ELF is stripped, C only (no .cpp), and has none of
+  I3D_BIN/I3D_I3M/I3D_I3C, i3d, MagLife, Dog*, GamMan. Instruction-shape
+  24-grams (opcode/funct only) shared with it: mw/i3d 13 of 28,166 (noise),
+  mw/sound 0, game code 0, but the Sony SDK libraries 6,315 of 28,064: the
+  same SDK versions in part. So chulip-decomp can only help with our sdk/
+  files (0 %, and the ports replace the SDK anyway): low priority. ELF kept
+  in disc/chulip/ (ignored by git).
