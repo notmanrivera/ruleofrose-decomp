@@ -991,7 +991,113 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2DB4);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3138);
 
+// NON_MATCHING: 22/107 differ, 25 edits
+#ifdef NON_MATCHING
+struct ALIGNED(16) Ent34EC { // 34EC
+    char pad00[0x20]; // 34EC
+    int unk20; // 34EC
+    char pad24[0x0C]; // 34EC
+    int unk30; // 34EC
+    char pad34[0x1C]; // 34EC
+}; // Ent34EC
+template <class T> class GamList34EC {
+public: // GamList34EC
+    struct Node { // GamList34EC
+        Node *m_prev; // 34EC
+        Node *m_next; // 34EC
+        T m_data; // 34EC
+    }; // Node 34EC
+    struct Chain { // GamList34EC
+        Node m_head; // 34EC
+        int m_num; // 34EC
+        void push_back(Node *theNode) { // 34EC
+            if (m_num == 0) { // 34EC
+                m_head.m_next = theNode; // 34EC
+                theNode->m_prev = &m_head; // 34EC
+            } else { // 34EC
+                m_head.m_prev->m_next = theNode; // 34EC
+                theNode->m_prev = m_head.m_prev; // 34EC
+            } // push_back 34EC
+            theNode->m_next = &m_head; // 34EC
+            m_head.m_prev = theNode; // 34EC
+            ++m_num; // 34EC
+        } // push_back end 34EC
+        void unlink(Node *theNode) { // 34EC
+            Node *head = &m_head; // 34EC
+            if (theNode == head->m_next) { // 34EC
+                Node *next = theNode->m_next; // 34EC
+                head->m_next = next; // 34EC
+                next->m_prev = head; // 34EC
+            } else { // unlink 34EC
+                Node *p = theNode->m_prev; // 34EC
+                if (theNode == head->m_prev) { // 34EC
+                    head->m_prev = p; // 34EC
+                    p->m_next = head; // 34EC
+                } else { // unlink mid 34EC
+                    p->m_next = theNode->m_next; // 34EC
+                    Node *prev = theNode->m_prev; // 34EC
+                    p = theNode->m_next; // 34EC
+                    p->m_prev = prev; // 34EC
+                } // unlink mid end 34EC
+            } // unlink else end 34EC
+            --m_num; // 34EC
+        } // unlink end 34EC
+    }; // Chain 34EC
+    class iterator { // GamList34EC
+    public: // iterator 34EC
+        Node *m_node; // 34EC
+        iterator() : m_node(0) {} // 34EC
+        iterator(Node *theNode) : m_node(theNode) {} // 34EC
+        iterator(const iterator &theIt) : m_node(theIt.m_node) {} // 34EC
+        T &operator*() const { return m_node->m_data; } // 34EC
+        iterator &operator++() { // 34EC
+            m_node = m_node->m_next; // 34EC
+            return *this; // 34EC
+        } // op++ 34EC
+        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; } // 34EC
+    }; // iterator 34EC
+    Chain m_free; // 34EC
+    Chain m_used; // 34EC
+    int m_max; // 34EC
+    iterator begin() { return iterator(m_used.m_head.m_next); } // 34EC
+    iterator end() { return iterator(&m_used.m_head); } // 34EC
+    iterator erase(iterator thePos) { // 34EC
+        iterator next = thePos; // 34EC
+        ++next; // 34EC
+        Node *n = thePos.m_node; // 34EC
+        m_used.unlink(n); // 34EC
+        m_free.push_back(n); // 34EC
+        return next; // 34EC
+    } // erase 34EC
+}; // GamList34EC
+template <class T, int N> class GamPool34EC : public GamList34EC<T> { // 34EC
+public: // GamPool34EC
+    typename GamList34EC<T>::Node m_nodes[N] ALIGNED(64); // 34EC
+}; // GamPool34EC
+struct Obj34EC { // 34EC
+    char pad00[0x40]; // 34EC
+    GamPool34EC<Ent34EC, 6> m_que; // 34EC
+}; // Obj34EC
+extern "C" int X_34EC_func_001E5660(Obj34EC *, int, int, int) asm("func_001E5660");
+extern "C" int X_34EC_func_001E4CBC(Obj34EC *, int) asm("func_001E4CBC");
+extern "C" void func_001E34EC(Obj34EC *arg0, int arg1, int arg2) {
+    GamList34EC<Ent34EC>::iterator it;
+    GamList34EC<Ent34EC>::iterator last;
+    it = arg0->m_que.begin();
+    last = arg0->m_que.end();
+    while (it != last) {
+        if ((*it).unk20 == arg1 && (arg2 == -1 || (*it).unk30 == arg2)) {
+            X_34EC_func_001E5660(arg0, arg1, 1, 0);
+            it = arg0->m_que.erase(it);
+            X_34EC_func_001E4CBC(arg0, arg1);
+        } else {
+            ++it;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E34EC);
+#endif
 
 // NON_MATCHING: 24/91 differ, 27 edits
 #ifdef NON_MATCHING
