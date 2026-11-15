@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void X_FFFC0_163EE4(int, int, int) asm("func_00163EE4");
 extern "C" int X_2FE4_1640E8(void *) asm("func_001640E8");
 extern "C" int X_2FE4_180CA8(void *, int) asm("func_00180CA8");
 extern "C" int X_2FE4_10423C(int, int) asm("func_0010423C");
@@ -229,7 +230,46 @@ block_6:
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FFCE0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FFFC0);
+extern "C" int func_001FFFC0(int arg0)
+{
+    if (Xiiu_func_001D19A8((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0x10)) != 0) {
+        if (Xii_func_001FBB04(arg0) != 0) {
+            X_FFFC0_163EE4((int)&D_007B2140, M2C_FIELD(arg0, unsigned int *, 0x10), Xiii_func_0010423C(8, 0x10));
+            return 1;
+        }
+        goto block_6;
+    }
+    if (M2C_FIELD(arg0, int *, 0xC) & 4) {
+block_6:
+        switch (M2C_FIELD(arg0, int *, 0x20)) {
+        case 0:
+        case 10:
+            M2C_FIELD(arg0, int *, 0x24) = 0x13;
+            M2C_FIELD(arg0, int *, 0xC) |= 8;
+            break;
+        case 20:
+            M2C_FIELD(arg0, int *, 0x24) = 0x12;
+            M2C_FIELD(arg0, int *, 0xC) |= 8;
+            break;
+        case 30:
+            M2C_FIELD(arg0, int *, 0x24) = 0xF;
+            M2C_FIELD(arg0, int *, 0xC) |= 8;
+            break;
+        case 10000:
+        case 10010:
+        case 10020:
+        case 10030:
+            M2C_FIELD(arg0, int *, 0x24) = 0x31;
+            M2C_FIELD(arg0, int *, 0xC) |= 8;
+            break;
+        }
+        M2C_FIELD(arg0, int *, 0x20)++;
+        Xiiiiiif_func_001F5BDC(M2C_FIELD(arg0, unsigned int *, 0x10), M2C_FIELD(arg0, int *, 0x24), -1, 0, 0, 1.0f / 60.0f, 32769.0f);
+        M2C_FIELD(arg0, int *, 0xC) &= ~4;
+    }
+    M2C_FIELD(arg0, int *, 0x1C)++;
+    return 0;
+}
 
 extern "C" int func_0020014C(int arg0)
 {
