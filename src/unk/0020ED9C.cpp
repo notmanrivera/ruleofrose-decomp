@@ -1,4 +1,22 @@
 #include "include_asm.h"
+struct Block40_B8 {
+    unsigned char b[0x40];
+};
+struct Block544 {
+    unsigned char b[0x544];
+};
+struct State2152B8 {
+    unsigned char pad[0x504];
+    Block40_B8 lang[13];
+};
+struct Src2152B8 {
+    unsigned char unk0[0x504];
+    Block40_B8 unk504;
+};
+struct Obj2152B8 {
+    unsigned char pad[0xDC1C];
+    State2152B8 *m_state;
+};
 extern int D_007A3210;
 struct Block360 {
     unsigned char b[0x360];
@@ -1435,7 +1453,16 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00214E98);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002150B0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002152B8);
+extern "C" int func_002152B8(Obj2152B8 *arg0, Src2152B8 *arg1)
+{
+    int lang = D_007A3210;
+    if (lang < 1 || lang > 13) {
+        lang = 9;
+    }
+    *(Block544 *)arg0->m_state = *(Block544 *)arg1;
+    arg0->m_state->lang[lang - 1] = arg1->unk504;
+    return 0x544;
+}
 
 extern "C" int func_00215430(Obj215430 *arg0, Src215430 *arg1)
 {
