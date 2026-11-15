@@ -2804,7 +2804,77 @@ extern "C" int func_001F3D90()
 }
 
 
+// NON_MATCHING: 109/188 differ, 15 relocs differ, 29 edits
+#ifdef NON_MATCHING
+extern "C" void *clear3d(void *, int, unsigned int) asm("memset");
+extern "C" int actorEvent3d(int, int, int, int, int) asm("func_001E4EBC");
+extern "C" int sceneEvent3d(int, int, int *, int) asm("func_0013F280");
+extern "C" int sceneBusy3d(int, int) asm("func_0013F444");
+extern "C" int actorBusy3d(int) asm("func_001D1A48");
+extern "C" int actorUse3d(int, int, int) asm("func_001C7E40");
+extern "C" int fade3d(int, int) asm("func_00190E98");
+extern "C" int flags3d(int, int, int, int) asm("func_001357B0");
+extern "C" int func_001F3D98(int arg0) {
+    int data[16];
+    int sceneOff = 0x12540;
+    int actorOff = 0x18E00;
+    int fadeOff = 0x53E70;
+    switch(M2C_FIELD(arg0, int *, 0x10)) {
+    case 100:
+        clear3d(data, 0, 0x40);
+        actorEvent3d((int)&D_007812C0 + actorOff, 17, 0, 0, 0);
+        data[0] = M2C_FIELD(arg0, unsigned short *, 0x20);
+        data[1] = 1;
+        M2C_FIELD(arg0, int *, 0x28) = sceneEvent3d((int)&D_006E9840 + sceneOff, 17, data, 1);
+        M2C_FIELD(arg0, int *, 0x10) = 101;
+        break;
+    case 101:
+        if(sceneBusy3d((int)&D_006E9840 + sceneOff, M2C_FIELD(arg0, int *, 0x28)) != 0) return 0;
+    case 150:
+        actorUse3d((int)&D_007812C0, M2C_FIELD(arg0, unsigned short *, 0x20), 0);
+        return 1;
+    case 200:
+        clear3d(data, 0, 0x40);
+        actorEvent3d((int)&D_007812C0 + actorOff, 17, 0, 0, 0);
+        data[0] = M2C_FIELD(arg0, unsigned short *, 0x20);
+        M2C_FIELD(arg0, int *, 0x28) = sceneEvent3d((int)&D_006E9840 + sceneOff, 19, data, 1);
+        M2C_FIELD(arg0, int *, 0x10) = 201;
+        break;
+    case 201: {
+        int base = (int)&D_006E9840;
+        int scene = base + sceneOff;
+        if(sceneBusy3d(scene, M2C_FIELD(arg0, int *, 0x28)) == 0) {
+            fade3d(base + fadeOff, 0);
+            char *owner = (char *)&D_007A4440;
+            int *flags = (int *)(M2C_FIELD(owner, int *, 0xDC20) + 4);
+            *flags |= 0x10000000;
+            flags3d(scene, 0x10000, 0, 0x10000000);
+            M2C_FIELD(owner, int *, 0xDC24) |= 1;
+            M2C_FIELD(arg0, int *, 0x10) = 202;
+        }
+        break;
+    }
+    case 202: {
+        int r = actorBusy3d((int)&D_007812C0);
+        if(r) { M2C_FIELD(arg0, int *, 0x10) = 203; return 0; }
+        return r;
+    }
+    case 203:
+        if(!actorBusy3d((int)&D_007812C0)) {
+            char *owner = (char *)&D_007A4440;
+            M2C_FIELD(owner, int *, 0xDC24) &= ~1;
+            actorUse3d((int)&D_007812C0, M2C_FIELD(arg0, unsigned short *, 0x20), 0);
+            return 1;
+        }
+        break;
+    case 300:
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3D98);
+#endif
 
 extern "C" void func_001F4088(int arg0, int arg1, int arg2)
 {
