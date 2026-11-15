@@ -26,7 +26,10 @@
 #                         build, a content-filter or unknown stop, a batch with
 #                         no match, or no functions left. A quota stop whose
 #                         screen gives the reset time (within 8 h) is waited
-#                         out. A fresh session starts when a batch leaves 8 or
+#                         out, or, with a reserve model (RESERVE in <name>.env,
+#                         see tools/orca/switch_model.sh), worked through on
+#                         it until the main model (PRIMARY) resets.
+#                         A fresh session starts when a batch leaves 8 or
 #                         more skipped, when the agent's context passes 60 %,
 #                         or every 4 batches when its screen shows no context.
 #                         A --retry loop stops after 2 batches in a row with no
@@ -73,7 +76,7 @@ done
 ST=build/workers; mkdir -p "$ST"; ENV="$ST/$NAME.env"; SKIP="$ST/skipped.txt"; touch "$SKIP"
 STATS="$ST/stats.tsv"
 HANDLE=""; BUSY=""; FILE=""; AVOID=""; BATCH=""; STATUS=""; RETRY=""; MODEL=""; SENT=""; LOOPARGS=""
-ZERO=0; SINCE_NEW=0
+ZERO=0; SINCE_NEW=0; AGENT=""; PRIMARY=""; RESERVE=""; ON_RESERVE=""
 # shellcheck disable=SC1090
 [ -f "$ENV" ] && . "./$ENV"
 NEWFILE=""; MAX=30; NAMES=20; BUDGET=0; TRIES=5; NEW=""; MERGE=1; DRY=""; WATCH=""; LOOP=""; ROUND=""
@@ -104,7 +107,8 @@ done
 save() {
   { echo "HANDLE='$HANDLE'"; echo "BUSY='$BUSY'"; echo "FILE='$FILE'"; echo "AVOID='$AVOID'"
     echo "BATCH='$BATCH'"; echo "STATUS='$STATUS'"; echo "RETRY='$RETRY'"; echo "MODEL='$MODEL'"
-    echo "SENT='$SENT'"; echo "LOOPARGS='$LOOPARGS'"; echo "ZERO='$ZERO'"; echo "SINCE_NEW='$SINCE_NEW'"; } > "$ENV"
+    echo "SENT='$SENT'"; echo "LOOPARGS='$LOOPARGS'"; echo "ZERO='$ZERO'"; echo "SINCE_NEW='$SINCE_NEW'"
+    echo "AGENT='$AGENT'"; echo "PRIMARY='$PRIMARY'"; echo "RESERVE='$RESERVE'"; echo "ON_RESERVE='$ON_RESERVE'"; } > "$ENV"
 }
 # The agent's screen as JSON; Orca may be away for a minute (it updates
 # itself), so a failed read is retried for 5 minutes. Empty if it never came.
@@ -120,6 +124,13 @@ WT="$(dirname "$MAIN")/ror-wt-$NAME"
 
 if [ -e "$ST/BUILD_FAILED" ]; then
   echo "stopped: $(cat "$ST/BUILD_FAILED")"; echo "(fix it, then delete $ST/BUILD_FAILED)"; exit 1
+fi
+
+# On the reserve model past the main one's reset: back to the main model.
+if [ -z "$DRY" ] && [ -n "$ON_RESERVE" ] && [ "$(date +%s)" -ge "$ON_RESERVE" ] && [ -n "$PRIMARY" ]; then
+  HANDLE=$(runcopy orca/switch_model.sh "$NAME" "$PRIMARY" | tail -1)
+  ON_RESERVE=""; NEW=1; save
+  echo "$NAME: the main model's quota is back: $PRIMARY"
 fi
 
 # A worker still busy gets nothing new (its TUI would queue the text).
@@ -238,11 +249,25 @@ save
 [ -n "$LOOP" ] || exit $code
 again=""
 if [ $code -eq 3 ]; then
-  # Out of quota: wait for the reset when the screen says when it is.
   secs=$(screen | "$PY" tools/orca/screen.py wait)
-  [ -n "$secs" ] || { echo "$NAME: out of quota, no reset time on screen; loop stopped"; exit 3; }
-  echo "$NAME: out of quota; waiting $((secs / 60)) min for the reset"
-  sleep "$secs"
+  if [ -n "$RESERVE" ] && [ -z "$ON_RESERVE" ]; then
+    # Out of quota on the main model: go on with the reserve one until the
+    # main one resets (4 h if the screen does not say).
+    ON_RESERVE=$(( $(date +%s) + ${secs:-14400} ))
+    HANDLE=$(runcopy orca/switch_model.sh "$NAME" "$RESERVE" | tail -1)
+    save
+    echo "$NAME: out of quota; on the reserve model $RESERVE until $(date -d "@$ON_RESERVE" '+%H:%M' 2>/dev/null)"
+  else
+    # No reserve, or the reserve is out too: wait for the reset (the main
+    # model's, if that comes first), when the screen says when it is.
+    if [ -n "$ON_RESERVE" ]; then
+      left=$(( ON_RESERVE - $(date +%s) )); [ "$left" -gt 0 ] || left=60
+      [ -n "$secs" ] && [ "$secs" -lt "$left" ] || secs=$left
+    fi
+    [ -n "$secs" ] || { echo "$NAME: out of quota, no reset time on screen; loop stopped"; exit 3; }
+    echo "$NAME: out of quota; waiting $((secs / 60)) min for the reset"
+    sleep "$secs"
+  fi
   again="--new"
 elif [ $code -ne 0 ]; then
   exit $code
