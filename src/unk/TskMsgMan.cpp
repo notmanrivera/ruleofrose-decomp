@@ -939,8 +939,6 @@ block_4:
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0E90);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0F9C);
-
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF10);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF28);
@@ -1095,13 +1093,23 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE210);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE218);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE220);
+extern "C" void func_001F0F9C(unsigned int arg0, float fparg0, float fparg1)
+{
+    TskVec4 rot;
+    float diff;
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE228);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE230);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE238);
+    Xv_func_001D06B8(&D_007812C0, arg0, &rot);
+    if (rot.f[1] != fparg0) {
+        diff = fparg0 - rot.f[1];
+        if (diff < -3.14159265358979323846) {
+            diff += 2.0 * 3.14159265358979323846;
+        }
+        if (diff > 3.14159265358979323846) {
+            diff -= 2.0 * 3.14159265358979323846;
+        }
+        Xv_func_001F0E90(arg0, diff, Xiff_func_001F6B8C(diff, fparg1));
+    }
+}
 
 extern "C" void func_001F10A4(unsigned int arg0, int arg1, float fparg0)
 {
