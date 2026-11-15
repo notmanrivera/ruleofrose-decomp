@@ -1,4 +1,14 @@
 #include "include_asm.h"
+struct Stack8DD8 {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+    float unk10;
+    short unk14;
+};
+extern "C" void X_func_00178EEC(int, Stack8DD8 *) asm("func_00178EEC");
+extern "C" int X_func_0021B550(int, int, int) asm("func_0021B550");
 struct Stack8E68 {
     int unk00;
     int unk04;
@@ -55,7 +65,22 @@ extern "C" void func_00178C54(int arg0, int arg1, short arg2, float fparg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffMuzzleFlash1__vfunc_08);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_00178DD8);
+extern "C" int func_00178DD8(int arg0, int arg1, int arg2, int arg3)
+{
+    Stack8DD8 stack;
+
+    if (M2C_FIELD(arg0, short *, 0x5C) < 0x100) {
+        return arg3;
+    }
+    stack.unk08 = arg2;
+    stack.unk04 = (*(int *)&D_00298E08) + 0x2AB70;
+    stack.unk0C = X_func_0021B550(arg3, 0x42, 0x44);
+    stack.unk00 = arg0 + 0x50;
+    stack.unk10 = 1.0f;
+    stack.unk14 = 1;
+    X_func_00178EEC(arg0, &stack);
+    return stack.unk0C;
+}
 
 extern "C" int func_00178E68(int arg0, int arg1, int arg2, int arg3)
 {
