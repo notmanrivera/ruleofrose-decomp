@@ -821,7 +821,76 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD70);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDD78);
 
+// NON_MATCHING: 3/150 differ, 2 edits
+#ifdef NON_MATCHING
+struct PathFnCopy { int w[2]; };
+extern const PathFnCopy D_002FDD60, D_002FDD68, D_002FDD70, D_002FDD78;
+extern "C" void func_001EC344(int arg0, int arg1, unsigned int arg2, int arg3, int arg4, void *arg5, float fparg0, float fparg1) {
+    int temp_a0_2;
+    int temp_a1;
+    unsigned int temp_v1;
+    int temp_a0;
+    int temp_a2;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$16TskMovePointPath;
+    M2C_FIELD(arg0, int *, 8) = arg1;
+    temp_v0 = X_func_001D2B8C_f1670((int)&D_007812C0, arg1);
+    temp_a0 = arg0 + 0x40;
+    M2C_FIELD(arg0, int *, 4) = temp_v0;
+    temp_a2 = arg0 + 0x50;
+    temp_a1 = M2C_FIELD(temp_v0, int *, 0x108);
+    M2C_FIELD(arg0, unsigned int *, 0x30) = arg2;
+    M2C_FIELD(arg0, int *, 0x14) = temp_a1;
+    M2C_FIELD(arg0, int *, 0xC) = arg4;
+    M2C_FIELD(arg0, int *, 0x7C) = (int)arg5;
+    M2C_FIELD(arg0, int *, 0x18) = arg3;
+    M2C_FIELD(arg0, float *, 0x2C) = fparg0;
+    M2C_FIELD(arg0, float *, 0x80) = fparg1;
+    temp_v0_2 = (int)getDogActor(&D_006FBD80, temp_a1);
+    M2C_FIELD(arg0, int *, 0x1C) = 0;
+    M2C_FIELD(arg0, int *, 0x78) = 0;
+    M2C_FIELD(arg0, float *, 0x40) = (float) M2C_FIELD(temp_v0_2, float *, 0x40);
+    M2C_FIELD(temp_a0, float *, 4) = (float) M2C_FIELD(temp_v0_2, float *, 0x44);
+    M2C_FIELD(temp_a0, float *, 8) = (float) M2C_FIELD(temp_v0_2, float *, 0x48);
+    temp_a0_2 = M2C_FIELD(arg0, int *, 0x14) * 0x4D0;
+    temp_v0_3 = (int)getDogActor(&D_006FBD80, M2C_FIELD(arg0, int *, 0x14));
+    M2C_FIELD(arg0, float *, 0x50) = (float) M2C_FIELD(temp_v0_3, float *, 0x50);
+    M2C_FIELD(temp_a2, float *, 4) = (float) M2C_FIELD(temp_v0_3, float *, 0x54);
+    M2C_FIELD(temp_a2, float *, 8) = (float) M2C_FIELD(temp_v0_3, float *, 0x58);
+    temp_v1 = M2C_FIELD(arg0, unsigned int *, 0x30);
+    switch (temp_v1) {
+    case 0:
+    case 4:
+        M2C_FIELD(arg0, int *, 0x10) = (int) M2C_FIELD(arg0, int *, 0xC);
+        M2C_FIELD(arg0, PathFnCopy *, 0x70) = D_002FDD60;
+        break;
+    case 1:
+    case 5:
+        M2C_FIELD(arg0, int *, 0x10) = (int) M2C_FIELD(arg0, int *, 0xC);
+        M2C_FIELD(arg0, PathFnCopy *, 0x70) = D_002FDD68;
+        break;
+    case 2:
+    case 6:
+        M2C_FIELD(arg0, int *, 0x10) = (int) (M2C_FIELD(arg0, int *, 0xC) + ((Xi_rand() % (int) M2C_FIELD(arg0, int *, 0x18)) * 8));
+        M2C_FIELD(arg0, PathFnCopy *, 0x70) = D_002FDD70;
+        break;
+    case 3:
+    case 7:
+        M2C_FIELD(arg0, int *, 0x10) = (int) (M2C_FIELD(arg0, int *, 0xC) + ((Xi_rand() % (int) M2C_FIELD(arg0, int *, 0x18)) * 8));
+        M2C_FIELD(arg0, PathFnCopy *, 0x70) = D_002FDD78;
+        break;
+    }
+    if ((int) M2C_FIELD(arg0, unsigned int *, 0x30) < 4) {
+        ecbe0Move(M2C_FIELD(arg0, int *, 0x14), M2C_FIELD(arg0, int *, 0x7C), 0, 0x100, arg1, 0, M2C_FIELD(arg0, float *, 0x80));
+    }
+    return Xv_func_001EC834_mpp((TskMovePointPathObj *)arg0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC344);
+#endif
 
 extern "C" void TskMovePointPath__vfunc_06(int arg0, int arg1)
 {
