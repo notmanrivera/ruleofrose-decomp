@@ -327,7 +327,39 @@ INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F7DC0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196878);
 
+// NON_MATCHING: 6/36 differ, 5 edits
+#ifdef NON_MATCHING
+extern "C" int Xii_func_0018330C(int) asm("func_0018330C");
+extern "C" int Xii_func_00192AC0(int) asm("func_00192AC0");
+extern int _vt$8MnuPBook;
+extern "C" void func_00196A9C(int arg0)
+{
+    int i;
+    int p;
+
+    p = arg0 + 0x140;
+    i = 1;
+    Xii_func_00192AC0(arg0);
+    M2C_FIELD(arg0, int *, 0x10C) = (int)&_vt$8MnuPBook;
+    do {
+        Xii_func_0018330C(p);
+        p += 0x3BC;
+        i -= 1;
+    } while (i != -1);
+    M2C_FIELD(arg0, int *, 0x120) = i;
+    M2C_FIELD(arg0, int *, 0) = 7;
+    M2C_FIELD(arg0, int *, 0x134) = i;
+    M2C_FIELD(arg0, int *, 0x138) = i;
+    M2C_FIELD(arg0, int *, 0x114) = i;
+    M2C_FIELD(arg0, int *, 0x118) = i;
+    M2C_FIELD(arg0, int *, 0x11C) = -1;
+    M2C_FIELD(arg0, int *, 0x12C) = 0;
+    M2C_FIELD(arg0, int *, 0x13C) = 0;
+    M2C_FIELD(arg0, int *, 0x110) = 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196A9C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_01);
 
