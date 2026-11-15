@@ -1,4 +1,7 @@
 #include "include_asm.h"
+struct Fire1Vec4 {
+    float x, y, z, w;
+} __attribute__((aligned(8)));
 struct Eff2678Param {
     int unk00;
     int unk04;
@@ -103,7 +106,12 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFire1__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFire1__vfunc_08);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", updateZDepth__8EffFire1);
+extern "C" void updateZDepth__8EffFire1(int arg0)
+{
+    Fire1Vec4 v = *(Fire1Vec4 *)((char *)arg0 + 0x30);
+    v.y += -1.9999999f;
+    M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, (int)&v) - (M2C_FIELD(arg0, float *, 0x58) + 10.0f);
+}
 
 extern "C" void liveActivateExec__8EffFire1(int arg0)
 {
