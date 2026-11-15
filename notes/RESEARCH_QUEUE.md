@@ -42,6 +42,29 @@ where to look.
   inside the range, a function using data of a file it does not belong
   to) and list suspects with evidence.
 
+- [ ] R10 Chulip (Punchline, 2002) vs Rule of Rose: shared engine code?
+  aaaaaaaaaaway/chulip-decomp is ~41 % matched; its game code is built
+  with SN Systems GNU C 2.95.3-EE (-O2 -G8), its libraries with Sony
+  EE-GCC 2.9-ee-991111. Our mw/i3d (the engine graphics library, C,
+  0x218500-0x237D00, 0 % done) is built "with other flags than the game"
+  (every function 8-aligned): if Chulip links the same i3d (look for
+  I3D_BIN/I3D_I3M/I3D_I3C, i3d function shapes, MagLife/Dog*/GamMan
+  names), its decompiled C and compiler settings may carry over. Needs the
+  owner's Chulip ELF (ask for its path) and a read of the chulip-decomp
+  repo (config, compiler flags, matched i3d files if any).
+- [ ] R11 C++ matching lessons from other ee-gcc decomps: read the
+  docs/CONTRIBUTING of TheOnlyZac/Sly1, Komasia/sly2-decomp, ethteck/kh1
+  and denzi-gh/crashwoc-decomp-ps2 (web), note each one's exact compiler
+  and flags, and extract what applies to ee-gcc 2.96 C++ here (vtables,
+  RTTI and key methods, pointers to members, jump tables and .rodata
+  boundaries, inline emission, permuter use with C++, objdiff setup) as
+  ready-to-paste bullets for docs/DECOMPILING.md, marking what is already
+  there.
+- [ ] R12 objdiff for this project: can encounter/objdiff compare our
+  build/match objects against the game's per function (its config for a
+  splat PS2 project, e.g. Sly 2's), and would it beat tools/match.py's
+  diff for workers? A short how-to if yes.
+
 ## Done
 
 - [x] R1 game/gamtrg's .rodata start (2026-11-15, Sonnet + coordinator):
@@ -71,3 +94,9 @@ where to look.
   0x1E9A3C. Applied: 480 lines (36 C++ functions) moved to gamsnd.cpp.
   Open from it: TskTest/TskLogger (to 0x1E7F27) may be a small file of
   their own, start at most 0x1E7E50 (medium-low).
+- [x] Trade demo SLUS_280.63 (owner's disc "SLUS-28064 TRADE DEMO",
+  2026-11-15, coordinator): stripped like the retail (no .symtab, .mdebug,
+  .pdr, DWARF or .comment; only the VU overlay sections), the same 86
+  source names, 0x800 bytes less code; one inline differs
+  (MagLifeBwnCtrlModeHug::setMode only in retail). No names to gain.
+  Kept in disc/demo/ (ignored by git).
