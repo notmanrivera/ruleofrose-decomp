@@ -1,4 +1,18 @@
 #include "include_asm.h"
+struct Ent5540 {
+    char pad00[0x2A];
+    short unk2A;
+    short unk2C;
+    short unk2E;
+    short unk30;
+    char pad32[0x38 - 0x32];
+};
+struct Obj5540 {
+    char pad00[0x1550];
+    Ent5540 unk1550;
+};
+extern "C" int X_5540_func_001E4C1C(Obj5540 *, int, Ent5540 **) asm("func_001E4C1C");
+extern "C" int X_5540_func_001E4B48(Obj5540 *, int, Ent5540 *) asm("func_001E4B48");
 struct Ent5428 {
     int unk00;
     int unk04;
@@ -1015,7 +1029,25 @@ extern "C" int func_001E5428(Obj5428 *arg0, int arg1, int arg2, int arg3, int ar
     return idx;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5540);
+extern "C" void func_001E5540(Obj5540 *arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
+{
+    Ent5540 *p;
+    Ent5540 tmp;
+
+    if (X_5540_func_001E4C1C(arg0, arg1, &p) != 0) {
+        p->unk2A = arg2;
+        p->unk2C = arg3;
+        p->unk2E = arg4;
+        p->unk30 = arg5;
+        return;
+    }
+    tmp = arg0->unk1550;
+    tmp.unk2A = arg2;
+    tmp.unk2C = arg3;
+    tmp.unk2E = arg4;
+    tmp.unk30 = arg5;
+    X_5540_func_001E4B48(arg0, arg1, &tmp);
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5660);
 
