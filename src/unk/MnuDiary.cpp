@@ -1,4 +1,58 @@
 #include "include_asm.h"
+struct Sub110_v2 {
+    int unk00;
+    int unk04;
+    int unk08;
+};
+struct Obj_v2 {
+    unsigned char unk00[0x04];
+    int m_04;
+    unsigned char unk08[0x0C];
+    int m_14;
+    unsigned char unk18[0x0C];
+    char m_24[0x40];
+    unsigned char unk64[0xA8];
+    void *m_10C;
+    Sub110_v2 *m_110;
+    int m_114;
+    int m_118;
+    int m_11C;
+    int m_120;
+    int m_124;
+    int m_128;
+    int m_12C;
+    int m_130;
+    int m_134;
+    void *m_138;
+    unsigned char unk13C[0x778];
+    int m_8B4;
+    void *m_8B8;
+};
+struct VBase_v2 {
+    unsigned char pad[0x10C];
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+};
+struct SysWork_v2 {
+    unsigned char unk[0xDC1C];
+    int *m_dc1c;
+};
+extern int D_007812C0_v2 asm("D_007812C0");
+extern SysWork_v2 D_007A4440_v2 asm("D_007A4440");
+static inline int *sysWork_v2() { return D_007A4440_v2.m_dc1c; }
+extern "C" void X_func_00192BA4_v2(void *, int, int, int, int, int) asm("func_00192BA4");
+extern "C" int X_func_001D83D0_v2(void *, int, int, int) asm("func_001D83D0");
+extern "C" void *X_func_00194588_v2(int) asm("func_00194588");
+extern "C" void *X_memset_v2(void *, int, int) asm("memset");
+extern "C" void X_func_0019397C_v2(void *, const char *, int, int) asm("func_0019397C");
 struct Item_BEB0 {
     int m_unq;
     int m_oid;
@@ -468,7 +522,27 @@ extern "C" void MnuDiary__vfunc_01(char *arg0, int arg1)
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuDiary", D_002F8190);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", MnuDiary__vfunc_02);
+extern "C" void MnuDiary__vfunc_02(Obj_v2 *arg0, int arg1) {
+    X_func_00192BA4_v2(arg0, arg1, 0x10, 6, 2, 0x13);
+    arg0->m_118 = X_func_001D83D0_v2(&D_007812C0_v2, 1, arg0->m_114, 0);
+    int v = sysWork_v2()[X_func_001D83D0_v2(&D_007812C0_v2, 1, arg0->m_114, 4)];
+    arg0->m_04 |= 0x40000;
+    arg0->m_11C = v;
+    arg0->m_124 = sysWork_v2()[X_func_001D83D0_v2(&D_007812C0_v2, 1, arg0->m_114, 7)] & ~1;
+    arg0->m_8B8 = X_func_00194588_v2(0x4C);
+    X_memset_v2(arg0->m_8B8, -1, 0x4C);
+    int pages = (arg0->m_110->unk08 / 2) + 1;
+    arg0->m_8B4 = 0;
+    arg0->m_04 |= 2;
+    arg0->m_120 = 0;
+    arg0->m_14 = 0;
+    arg0->m_12C = pages;
+    arg0->m_138 = X_func_00194588_v2(0x4C8);
+    __builtin_memcpy(arg0->m_24, "data/mnurpk/mnupbook/mnupbook.rpk", 34);
+    ((VBase_v2 *)arg0)->v10();
+    X_func_0019397C_v2(arg0, "ehonbg", 4, 1);
+    X_func_0019397C_v2(arg0, "ehontex01_tcc", 4, 0);
+}
 
 extern "C" void MnuDiary__vfunc_03(MnuDiary *arg0)
 {
