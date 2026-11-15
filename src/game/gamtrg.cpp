@@ -188,7 +188,27 @@ extern "C" void func_001D85F8(GamTrg0_d85f8 *arg0, unsigned short arg1, unsigned
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D8674);
+extern "C" void func_001D8674(GamTrg0_d85f8 *arg0, int arg1)
+{
+    unsigned int i;
+
+    for (i = 0; i < arg0->count; i++) {
+        if (arg0->unk08[i] == arg1) {
+            break;
+        }
+    }
+    if (i < arg0->count) {
+        arg0->unk04[i] = 0;
+        arg0->unk08[i] = 0;
+        while (i < arg0->count - 1 && arg0->unk08[i] == 0) {
+            arg0->unk04[i] = arg0->unk04[i + 1];
+            arg0->unk08[i] = arg0->unk08[i + 1];
+            i++;
+        }
+        arg0->unk04[i] = 0;
+        arg0->unk08[i] = 0;
+    }
+}
 
 extern "C" int func_001D8778(GamTrg0_d8778 *arg0, int arg1)
 {
