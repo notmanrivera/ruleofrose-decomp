@@ -1,4 +1,22 @@
 #include "include_asm.h"
+struct Elem10_9AB4 {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+};
+struct UnkHdr_9AB4 {
+    int unk00;
+    int unk04;
+    unsigned short unk08;
+};
+struct UnkItem_9AB4 {
+    int pad[7];
+    int unk1C;
+};
+extern "C" int X_func_0019A24C_9AB4(void *, int) asm("func_0019A24C");
+extern "C" UnkHdr_9AB4 **X_func_0022AED8_9AB4(void *, int) asm("func_0022AED8");
+extern "C" UnkItem_9AB4 **func_0022AAD0(UnkHdr_9AB4 **, int);
 struct SubA4_v7 {
     int unk00;
     int unk04;
@@ -176,7 +194,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00199714);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00199A08);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00199AB4);
+extern "C" void func_00199AB4(void *arg0, int arg1, int arg2)
+{
+    int idx = X_func_0019A24C_9AB4(arg0, arg1);
+    UnkHdr_9AB4 **p = X_func_0022AED8_9AB4(*(char **)(*(char **)((char *)arg0 + 0x94) + 0xA0) + 0x10, arg2 != 0);
+    (*func_0022AAD0(p, 0))->unk1C = (*(Elem10_9AB4 **)((char *)arg0 + 0xA4))[idx].unk08;
+    (*p)->unk08++;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00199B3C);
 
