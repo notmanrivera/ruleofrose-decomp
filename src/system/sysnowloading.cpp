@@ -1,4 +1,19 @@
 #include "include_asm.h"
+extern "C" int loadingA7_func_001C6CCC(...) asm("func_001C6CCC");
+extern "C" int loadingA7_func_001C6FE0(...) asm("func_001C6FE0");
+extern "C" int loadingA7_func_001C7DA8(...) asm("func_001C7DA8");
+extern "C" int loadingA7_func_001C98C0(...) asm("func_001C98C0");
+extern "C" int loadingA7_func_001CAA14(...) asm("func_001CAA14");
+extern "C" int loadingA7_func_001CABD4(...) asm("func_001CABD4");
+extern "C" int loadingA7_func_001CC044(...) asm("func_001CC044");
+extern "C" int loadingA7_func_001CC970(...) asm("func_001CC970");
+extern "C" int loadingA7_func_001CEA44(...) asm("func_001CEA44");
+extern "C" int loadingA7_func_001D1C80(...) asm("func_001D1C80");
+extern "C" int loadingA7_func_001D2D00(...) asm("func_001D2D00");
+extern "C" int loadingA7_func_001D2D7C(...) asm("func_001D2D7C");
+extern "C" int loadingA7_func_001DB520(...) asm("func_001DB520");
+extern "C" int loadingA7_func_001DBA3C(...) asm("func_001DBA3C");
+extern "C" int loadingA7_func_001DC48C(...) asm("func_001DC48C");
 extern "C" float Xf_func_0010FBD4__9DogCamera(...) asm("func_0010FBD4__9DogCamera");
 extern "C" void loadingSetCamera(int, float) asm("func_0010FC08__9DogCameraf");
 extern "C" void loadingSetTime(int, float) asm("func_0013D240");
@@ -1827,7 +1842,114 @@ INCLUDE_RODATA("asm/nonmatchings/system/sysnowloading", D_00301080);
 
 INCLUDE_RODATA("asm/nonmatchings/system/sysnowloading", D_00301088);
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_0020A7D0);
+extern "C" int func_0020A7D0(unsigned int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
+{
+    struct { int sp0, sp4, sp8, spC, sp10, sp14; } stack;
+    int temp_v0;
+    int temp_v0_2;
+    int var_v0;
+    int temp_v0_3;
+    int temp_s0;
+    unsigned short tid;
+    int base;
+    int base20;
+    register int p8 PS2_REG("$20");
+    register int p14 PS2_REG("$21");
+    register int base4 PS2_REG("$4");
+    register int value2 PS2_REG("$18") = arg2;
+    register int value3 PS2_REG("$19") = arg3;
+    register int value5 PS2_REG("$17") = arg5;
+    stack.sp0 = arg1;
+    stack.sp4 = arg4;
+    switch (arg0) {
+    case 1:
+        loadingA7_func_001DB520(loadingA7_func_001D2D00((int)&D_007812C0, value5), stack.sp0, value2);
+        break;
+    case 2:
+        base = (int)&D_007812C0;
+        if (loadingA7_func_001D2D00(base, value2) == 0) {
+            loadingA7_func_001CC044(base, -1U, value2, stack.sp4, value3 & 0xFFFF, value5);
+            loadingA7_func_001DB520(loadingA7_func_001D2D00(base, value2), (int)0x1000, (int)&stack);
+        }
+        break;
+    case 3:
+        base = (int)&D_007812C0;
+        var_v0 = 0;
+        if (loadingA7_func_001D2D00(base, value2) == 0) {
+            loadingA7_func_001CC044(base, -1U, value2, (*(int *)stack.sp4), value3 & 0xFFFF, value5);
+            temp_v0 = loadingA7_func_001D2D00(base, value2);
+            loadingA7_func_001DB520(temp_v0, (int)0x1000, (int)&stack);
+            loadingA7_func_001DB520(temp_v0, (int)0x40, stack.sp4 + 4);
+            break;
+        }
+        /* Duplicate return node #25. Try simplifying control flow for better match */
+        return var_v0;
+    case 4:
+        base = (int)&D_007812C0;
+        if ((loadingA7_func_001D2D00(base, value2) == 0) && (loadingA7_func_001C7DA8(base, value2) == 0)) {
+            var_v0 = loadingA7_func_001C98C0(base, value3);
+            if (var_v0 != 0) {
+                p8 = (int)&stack.sp8;
+                loadingA7_func_001DC48C(base + 0x22220, (int) (unsigned short) stack.sp0, (int)0xF, p8);
+                if ((int) stack.sp8 == 0xFFFF) {
+                    stack.sp8 = 0x800;
+                }
+                loadingA7_func_001CC044(base, -1U, value2, value3, (unsigned short) stack.sp0, value5);
+                loadingA7_func_001C6CCC(base, (int)5, (int)&stack.spC);
+                if (value3 == stack.spC) {
+                    loadingA7_func_001CAA14(base, (unsigned short)stack.sp8, value2, value5);
+                    loadingA7_func_001D1C80(base, (unsigned int) value2, (int)3, (int)&stack.sp10);
+                }
+                temp_v0_2 = loadingA7_func_001D2D00(base, value2);
+                loadingA7_func_001DB520(temp_v0_2, (int)0x1000, p8);
+                loadingA7_func_001DB520(temp_v0_2, (int)0x40, (int) (int)&stack.sp4);
+                break;
+            }
+        } else {
+            break;
+        }
+        /* Duplicate return node #25. Try simplifying control flow for better match */
+        return var_v0;
+    case 5:
+        base20 = (int)&D_007812C0;
+        tid = (unsigned short)stack.sp0;
+        p14 = (int)&stack.sp14;
+        temp_s0 = base20 + 0x22220;
+        stack.sp10 = value2;
+        loadingA7_func_001DC48C(temp_s0, tid, (int)0xF, p14);
+        loadingA7_func_001DC48C(temp_s0, tid, (int)0xB, (int) (int)&stack.spC);
+        temp_v0_3 = loadingA7_func_001C6FE0(base20, 0, 5, value3);
+        loadingA7_func_001CC044(base20, -1U, temp_v0_3, stack.sp10, tid, (int) stack.sp4);
+        loadingA7_func_001C6CCC(base20, (int)5, (int) (int)&stack.sp10);
+        if (value2 == stack.sp10) {
+            loadingA7_func_001CABD4(base20, (unsigned short)stack.sp14, stack.spC, temp_v0_3, stack.sp4);
+        }
+        loadingA7_func_001DB520(loadingA7_func_001D2D00(base20, temp_v0_3), (int)0x1000, p14);
+        break;
+    case 10:
+        loadingA7_func_001CEA44((int)&D_007812C0, 0);
+        break;
+    case 11:
+        loadingA7_func_001CC970((int)&D_007812C0, value2);
+        break;
+    case 20:
+        base4 = (int)&D_007812C0;
+        loadingA7_func_001DBA3C(base4 + 0x18C00, 1, value2, stack.sp0);
+        break;
+    case 21:
+        base4 = (int)&D_007812C0;
+        loadingA7_func_001DBA3C(base4 + 0x18C00, 0, value2, stack.sp0);
+        break;
+    case 22:
+        base4 = (int)&D_007812C0;
+        loadingA7_func_001DBA3C(base4 + 0x18C00, 2, stack.sp0, 0);
+        break;
+    case 23:
+        return loadingA7_func_001D2D7C((int)&D_007812C0, 2, stack.sp0);
+    case 0: default: break;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_0020ABFC);
 
