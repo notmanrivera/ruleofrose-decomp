@@ -1172,7 +1172,128 @@ extern "C" int func_00209520()
 }
 
 
+// NON_MATCHING: 23/228 differ, 22 edits
+#ifdef NON_MATCHING
+extern int loadingActors asm("D_006FE6A0");
+extern "C" float Xf_func_0010D9EC__8DogActor(...) asm("func_0010D9EC__8DogActor");
+extern "C" float Xf_func_001333E4(...) asm("func_001333E4");
+extern "C" int X_func_0010AA5C__8DogActorPCc(...) asm("func_0010AA5C__8DogActorPCc");
+extern "C" int loadingActorState(...) asm("func_001330F4");
+extern "C" void X_func_00133144(int, int, int, int, int, int, float) asm("func_00133144");
+extern "C" void X_func_00133324(int, int, int, int, int, int, float) asm("func_00133324");
+extern "C" int loadingActorExists(int, unsigned int) asm("func_001D046C");
+extern "C" int X_func_001D0758(...) asm("func_001D0758");
+extern "C" int X_func_001F59B4(int, int, int, int, int, float, float) asm("func_001F59B4");
+extern "C" int X_func_001F5BDC(int, int, int, int, int, float, float) asm("func_001F5BDC");
+extern "C" int X_func_001F5D90(int, int, int, int, float, float) asm("func_001F5D90");
+extern "C" int X_func_001F61EC(...) asm("func_001F61EC");
+extern "C" int X_func_001F6308(int, int, int, int, int, int, float) asm("func_001F6308");
+extern "C" int func_00209528(unsigned int arg0, unsigned int arg1, int arg2, int arg3, int arg4, int arg5)
+{
+    struct { float sp0; } stack;
+    int base = (int)&D_007812C0;
+    register int base4 PS2_REG("$4");
+    float var_f0;
+    int temp_s1;
+
+    int temp_v0;
+    int var_a0;
+    int var_a3;
+    int var_v0;
+    int var_a0_2;
+
+    register int data PS2_REG("$18") = arg2;
+    register int mode PS2_REG("$20") = arg3;
+    register int weight PS2_REG("$19") = arg4;
+    register int flags PS2_REG("$21");
+    var_v0 = loadingActorExists(base, arg1);
+    if (var_v0 != 0) {
+        temp_s1 = X_func_001CBE38(base, arg1);
+        flags = (arg5 << 7) & 0x100;
+        switch (arg0) {
+        case 2:
+            X_func_001F61EC(arg1);
+            base4 = (int)&D_006E9840;
+            base4 += 0x12540;
+            X_func_00133144(base4, temp_s1, data, mode, flags, 0, 0.016666695f);
+            break;
+        case 4:
+            if (((arg1 >> 0x1C) & 3) == 1) {
+                X_func_001D0758((int)&D_007812C0, arg1, (int)&stack);
+                X_func_001F59B4(arg1, data, mode, flags, 0, (*(float *)(weight)), stack.sp0);
+            } else {
+                goto block_16;
+            }
+            break;
+        case 5:
+            X_func_001F6308(temp_s1, 0, mode, flags, arg1, data, (*(float *)(weight)));
+            break;
+        case 6:
+            if (((arg1 >> 0x1C) & 3) == 1) {
+                X_func_001D0758((int)&D_007812C0, arg1, (int)&stack);
+                X_func_001F59B4(arg1, 0, mode, flags, data, (*(float *)(weight)), stack.sp0);
+            } else {
+                X_func_001F61EC(arg1);
+                base4 = (int)&D_006E9840;
+                base4 += 0x12540;
+                X_func_00133324(base4, temp_s1, data, mode, flags, arg1, (*(float *)(weight)));
+            }
+            break;
+        case 7:
+            X_func_001D0758((int)&D_007812C0, arg1, (int)&stack);
+            X_func_001F5D90(arg1, data, mode, flags, (*(float *)(weight)), stack.sp0);
+            break;
+        case 8:
+            temp_v0 = X_func_001CBE38((int)&D_007812C0, arg1);
+            var_a0 = 0;
+            if (temp_v0 != -1) {
+                var_a0 = X_func_0010AA5C__8DogActorPCc((int)&loadingActors + (temp_v0 * 0x4D0), data);
+            }
+            return var_a0;
+        case 9:
+            if (((arg1 >> 0x1C) & 3) == 1) {
+                X_func_001D0758((int)&D_007812C0, arg1, (int)&stack);
+                X_func_001F5BDC(arg1, data, mode, flags, 0, (*(float *)(weight)), stack.sp0);
+            } else {
+                goto block_16;
+            }
+            break;
+        case 3:
+block_16:
+            X_func_001F6308(temp_s1, data, mode, flags, arg1, 0, (*(float *)(weight)));
+            break;
+        case 1:
+        case 10:
+        case 12:
+            X_func_001F61EC(arg1);
+            base4 = (int)&D_006E9840;
+            base4 += 0x12540;
+            X_func_00133144(base4, temp_s1, data, 0, flags, 0, 0.016666695f);
+            break;
+        case 30:
+            base4 = (int)&D_006E9840;
+            base4 += 0x12540;
+            return loadingActorState(base4, temp_s1);
+        case 31:
+            var_f0 = Xf_func_0010D9EC__8DogActor((int)&loadingActors + (temp_s1 * 0x4D0));
+            (*(float *)(data)) = var_f0;
+            break;
+        case 32:
+            base4 = (int)&D_006E9840;
+            base4 += 0x12540;
+            var_f0 = Xf_func_001333E4(base4, temp_s1, -1);
+            (*(float *)(data)) = var_f0;
+            break;
+        case 0: default: break;
+        }
+        return 0;
+    } else {
+        return var_v0;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00209528);
+#endif
 
 extern "C" int func_002098B8()
 {
