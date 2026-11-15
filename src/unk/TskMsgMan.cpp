@@ -1520,7 +1520,39 @@ extern "C" void func_001F13A8(unsigned int arg0, int arg1, int arg2, float fparg
     }
 }
 
+// NON_MATCHING: 5/105 differ, 5 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_001E71FC_f14cc(int, int, int, int, int, int, int, int *, int) asm("func_001E71FC");
+extern "C" int X___builtin_new_f14cc(int) asm("__builtin_new");
+extern "C" int X_func_001E7724_f14cc(int, int) asm("func_001E7724");
+extern "C" int X_func_001E7D7C_f14cc(int, int) asm("func_001E7D7C");
+extern "C" int X_func_001F0434_f14cc(int, unsigned int, int, int, float, float, float, int, int) asm("func_001F0434");
+extern "C" int X_func_001D2B8C_f14cc(int, unsigned int) asm("func_001D2B8C");
+extern "C" void func_001F14CC(unsigned int arg0, int arg1, int arg2, int arg3, float fparg0, float fparg1, float fparg2)
+{
+    int *slot = (int *)(X_func_001D2B8C_f14cc((int)&D_007812C0, arg0) + 0x3D8);
+    int task;
+
+    if (X_func_001E7D7C_f14cc((int)&D_007A3D80, *slot) != 0) {
+        X_func_001E7724_f14cc((int)&D_007A3D80, *slot);
+        *slot = -1;
+    }
+    if (fparg0 != 0.0f) {
+        int a3 = arg3;
+        if (fparg0 < 0.0f) {
+            task = X___builtin_new_f14cc(0x80);
+            X_func_001F0434_f14cc(task, arg0, 0, arg1, fparg0, fparg2, fparg1, a3, 1);
+            X_func_001E71FC_f14cc((int)&D_007A3D80, 1, -1, 1, 0, task, 0, slot, 0x11);
+        } else {
+            task = X___builtin_new_f14cc(0x80);
+            X_func_001F0434_f14cc(task, arg0, 0, arg2, fparg0, fparg2, fparg1, a3, 1);
+            X_func_001E71FC_f14cc((int)&D_007A3D80, 1, -1, 1, 0, task, 0, slot, 0x11);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F14CC);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F1670);
 
