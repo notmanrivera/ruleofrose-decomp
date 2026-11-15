@@ -1,4 +1,24 @@
 #include "include_asm.h"
+struct Vec3_E65C {
+    float x;
+    float y;
+    float z;
+};
+struct Sub50_E65C {
+    unsigned char pad[0x40];
+    Vec3_E65C pos;
+};
+struct Obj_E65C {
+    unsigned char pad00[0x24];
+    float minX;
+    float minY;
+    float minZ;
+    float maxX;
+    float maxY;
+    float maxZ;
+    unsigned char pad3C[0x14];
+    Sub50_E65C *sub;
+};
 #define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
 struct m2c_block12 { int w[3]; };
 struct m2c_ulong { long v; } __attribute__((packed));
@@ -345,7 +365,20 @@ extern "C" void updateZDepth__10EffBreath1(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016E438);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016E65C);
+extern "C" int func_0016E65C(Obj_E65C *arg0)
+{
+    float p[3];
+    Sub50_E65C *sub = arg0->sub;
+    p[0] = sub->pos.x;
+    p[1] = sub->pos.y;
+    p[2] = sub->pos.z;
+    if (arg0->minX <= p[0] && p[0] <= arg0->maxX &&
+        arg0->minZ <= p[2] && p[2] <= arg0->maxZ &&
+        arg0->minY <= p[1] && p[1] <= arg0->maxY) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBreath1Space__vfunc_02);
 
