@@ -1034,7 +1034,60 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DCD38);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DCE30);
 
+// NON_MATCHING: 24/55 differ, 1 reloc differs (size 0xDC, game 0xE4), 19 edits
+#ifdef NON_MATCHING
+extern "C" int func_001DCF28(char **arg0, unsigned short arg1)
+{
+    int idx = arg1 & 0x1FF;
+
+    switch (arg1 >> 9) {
+    case 0: {
+        char *p = arg0[0];
+        return *(int *)(p + idx * 0xA0 + 0x90);
+    }
+    case 1: {
+        char *p = arg0[1];
+        return *(int *)(p + idx * 0xA0 + 0x90);
+    }
+    case 2: {
+        char *p = arg0[2];
+        return *(int *)(p + idx * 0xC0 + 0x90);
+    }
+    case 3: {
+        char *p = arg0[3];
+        return *(int *)(p + idx * 0xE0 + 0x90);
+    }
+    case 4: {
+        char *p = arg0[4];
+        return *(int *)(p + idx * 0xC0 + 0xB0);
+    }
+    case 5: {
+        char *p = arg0[5];
+        return *(int *)(p + idx * 0x200 + 0xB0);
+    }
+    case 6: {
+        char *p = arg0[6];
+        return *(int *)(p + idx * 0xC0 + 0xB0);
+    }
+    case 7: {
+        char *p = arg0[7];
+        return *(int *)(p + idx * 0xC0 + 0xB0);
+    }
+    case 8: {
+        char *p = arg0[8];
+        return *(int *)(p + idx * 0xC0 + 0xB0);
+    }
+    case 9: {
+        char *p = arg0[9];
+        return *(int *)(p + idx * 0xC0 + 0xB0);
+    }
+    default:
+        return 0;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DCF28);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD00C);
 
