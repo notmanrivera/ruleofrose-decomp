@@ -107,7 +107,37 @@ extern "C" void func_0020ED9C(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020EDA4);
 
+// NON_MATCHING: 28/61 differ, 3 relocs differ (size 0xF4, game 0xFC), 14 edits
+#ifdef NON_MATCHING
+extern "C" int Xiiii_func_00211E84(int, int, int) asm("func_00211E84");
+extern "C" int Xiiii_func_00213F48(int, int, int) asm("func_00213F48");
+struct Block32_4 { int w[8]; };
+struct Block32_8 { int w[8]; } ALIGNED(8);
+extern "C" void func_0020EEA8(int arg0, int arg1)
+{
+    int src = arg1;
+    int dst = *(int *)arg0;
+    if ((src | dst) & 7) {
+        int end = src + 0x20000;
+        do {
+            *(Block32_4 *)dst = *(Block32_4 *)src;
+            src += 0x20;
+            dst += 0x20;
+        } while (src != end);
+    } else {
+        int end = src + 0x20000;
+        do {
+            *(Block32_8 *)dst = *(Block32_8 *)src;
+            src += 0x20;
+            dst += 0x20;
+        } while (src != end);
+    }
+    Xiiii_func_00213F48(arg0, *(int *)arg0, 0);
+    Xiiii_func_00211E84(arg0, 0x04000000, D_007B47D0 - 0xA4);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020EEA8);
+#endif
 
 extern "C" void func_0020EFA4(void) {
 }
