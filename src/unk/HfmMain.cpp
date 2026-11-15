@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" void Xvii_func_00146628(int, int) asm("func_00146628");
+extern "C" float Xfi_func_00169A14(int) asm("func_00169A14");
+extern "C" void Xviif_func_001670DC(int, int, float) asm("func_001670DC");
+extern "C" void Xvii_func_001468E0(int, int) asm("func_001468E0");
 extern "C" int Xiiii_func_00104394(int, int, int) asm("func_00104394");
 extern "C" int Xiiif_func_00167D88(int, int, float) asm("func_00167D88");
 extern "C" int Xiii_func_00166B74(int, int) asm("func_00166B74");
@@ -698,7 +702,48 @@ extern "C" void HfmOutWalk2__vfunc_02(int arg0)
     M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x150) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmOutWalk2__vfunc_03);
+extern "C" int HfmOutWalk2__vfunc_03(int arg0)
+{
+    float sp[4];
+    int step;
+    int state;
+    int r;
+
+    state = M2C_FIELD(arg0, int *, 4);
+    step = M2C_FIELD(arg0, int *, 0x38) + 1;
+    M2C_FIELD(arg0, int *, 0x38) = step;
+    switch (state) {
+    case 0:
+        r = X_func_0010423C(1, 0x5F);
+        if (r < 0x51) {
+            Xvii_func_00146628(arg0, (int)sp);
+            if (Xfi_func_00169A14((int)sp) >= 114.9999924f) {
+                Xviif_func_001670DC(arg0, (int)sp, 0.0f);
+                Xv_func_001469CC(arg0, 1);
+                break;
+            }
+        }
+        Xvii_func_001468E0(arg0, r);
+        break;
+    case 1:
+        if (M2C_FIELD(arg0, int *, 0x24) != 0) {
+            X_func_00202F10(M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1F0));
+            Xv_func_001469CC(arg0, 0);
+        }
+        break;
+    case 2:
+        if (step >= 0x1E) {
+            Xv_func_001469CC(arg0, 0);
+        }
+        break;
+    case 3:
+        if (check_001D19A8(arg0, (int)&D_007812C0) != 0) {
+            Xv_func_001469CC(arg0, 0);
+        }
+        break;
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00146628);
 
