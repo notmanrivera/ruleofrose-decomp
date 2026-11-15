@@ -1,4 +1,5 @@
 #include "include_asm.h"
+struct m2c_block32 { int w[8]; };
 extern "C" int Xi_func_0016AD94() asm("func_0016AD94");
 extern "C" float Xff_func_0016FE88(float) asm("func_0016FE88");
 struct Fire1Vec4 {
@@ -175,7 +176,20 @@ extern "C" void liveActivateExec__8EffFire1(int arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFire1Ex__vfunc_02);
+extern "C" int EffFire1Ex__vfunc_02(int arg0, int arg1)
+{
+    if (!Xiii_Eff0__vfunc_02(arg0, arg1)) {
+        return 0;
+    }
+    M2C_FIELD(arg0, int *, 0x60) = (int) M2C_FIELD(arg1, int *, 0x10);
+    *(m2c_block32 *)((char *)(arg0) + 100) = *(m2c_block32 *)((char *)(arg1) + 20);
+    *(m2c_block16 *)((char *)(arg0) + 64) = *(m2c_block16 *)((char *)(arg1) + 52);
+    M2C_FIELD(arg0, float *, 0x3C) = 1.0f;
+    M2C_FIELD(arg0, int *, 0x50) = 0;
+    M2C_FIELD(arg0, int *, 0x5C) = 0;
+    M2C_FIELD(arg0, int *, 0x58) = 0;
+    return 1;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffFire1", D_002F2390);
 
