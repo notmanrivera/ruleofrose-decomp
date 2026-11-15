@@ -1,4 +1,20 @@
 #include "include_asm.h"
+struct Ent6368 {
+    int unk0;
+    int unk4;
+    int unk8;
+    int unk0C;
+    char pad10[0x28 - 0x10];
+};
+struct Sub6368 {
+    Ent6368 *arr;
+};
+struct Obj6368 {
+    char pad0[0xD40];
+    Sub6368 sub;
+};
+extern int X_6368_D_007B2580 asm("D_007B2580");
+extern "C" int X_6368_func_00180CA8(int *, int) asm("func_00180CA8");
 struct Sub7094 {
     char pad[0x44];
     Sub7094() asm("func_00203D94");
@@ -858,7 +874,18 @@ extern "C" void func_001E5DE4(int arg0, int arg1, int arg2, int arg3, int arg4, 
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5E58);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E6368);
+extern "C" int func_001E6368(Obj6368 *arg0, int arg1, int arg2)
+{
+    if (arg2 < 0) {
+        return 0;
+    }
+    Sub6368 *sub = &arg0->sub;
+    int off = arg2 * sizeof(Ent6368);
+    if (((Ent6368 *)((char *)sub->arr + off))->unk0C != arg1) {
+        return 0;
+    }
+    return X_6368_func_00180CA8(&X_6368_D_007B2580, arg2) != -1;
+}
 
 extern "C" int func_001E63C0(Obj63C0 *arg0, int arg1, int arg2, int arg3, int arg4)
 {
