@@ -782,7 +782,33 @@ extern "C" int func_0018F0B4(int arg0)
 }
 
 
+// NON_MATCHING: 44/66 differ, 1 reloc differs, 18 edits
+#ifdef NON_MATCHING
+extern "C" void Xv_func_0018C4D8(int, int, int) asm("func_0018C4D8");
+extern "C" void Xv_func_0018C6C4(int, int, int) asm("func_0018C6C4");
+extern "C" void func_0018F0EC(int arg0, int arg1, int arg2, int arg3)
+{
+    int ids[2] = { arg2, arg3 };
+    int temp_v1;
+
+    if (arg2 != -1) {
+        Xv_func_0018C4D8(arg0, arg1, arg2);
+        temp_v1 = arg1 * 0x154;
+        M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0xC) = 1;
+        M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x18) = 0x80;
+        M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x1C) = 0x80;
+        M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x20) = 0x80;
+        M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x24) = 0x80;
+    }
+    if (ids[1] != -1) {
+        Xv_func_0018C6C4(arg0, arg1, ids[1]);
+        M2C_FIELD(((arg1 * 0x154) + M2C_FIELD(arg0, int *, 0x4AC)), int *, 8) = 5;
+    }
+    M2C_FIELD(((arg1 * 0x154) + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x10) = 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018F0EC);
+#endif
 
 extern "C" void func_0018F1F4(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int *arg6, int arg7)
 {
