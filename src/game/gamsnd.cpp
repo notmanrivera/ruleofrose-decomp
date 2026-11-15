@@ -1,4 +1,14 @@
 #include "include_asm.h"
+struct Node7414 {
+    void *obj;
+    Node7414 *next;
+    int state;
+    int unk0C;
+};
+struct List7414 {
+    Node7414 *head;
+};
+extern "C" void X_7414_func_001E7340(void *, Node7414 *, int) asm("func_001E7340");
 struct Ent4908 {
     char name[0x1C];
     int unk1C;
@@ -1024,7 +1034,20 @@ extern "C" void func_001E7340(void *arg0, Node7340 *arg1, int arg2)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E7414);
+extern "C" void func_001E7414(List7414 *arg0, int arg1, int arg2)
+{
+    if (arg1 != -1) {
+        Node7414 *p = arg0->head;
+        while (p != 0) {
+            if (p->unk0C == arg1) {
+                X_7414_func_001E7340(arg0, p, arg2);
+                p->state = arg2;
+                break;
+            }
+            p = p->next;
+        }
+    }
+}
 
 extern "C" void func_001E747C(List747C *arg0, int *arg1, int arg2)
 {
