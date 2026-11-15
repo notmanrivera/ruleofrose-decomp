@@ -1,4 +1,11 @@
 #include "include_asm.h"
+struct TskMoveTypeGenObj {
+    char pad0[0x60];
+    int m_unk60;
+    char pad64[0x18];
+    void (TskMoveTypeGenObj::*m_func)();
+};
+extern "C" void Xv_func_001EAF00(void *) asm("func_001EAF00");
 extern "C" void Xv_func_0025B878(...) asm("func_0025B878");
 extern "C" void Xvii_func_001D8B9C(int, int) asm("func_001D8B9C");
 extern "C" int Xii_func_00187464(int) asm("func_00187464");
@@ -160,7 +167,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAC38);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EACB8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveTypeGen__vfunc_04);
+extern "C" void TskMoveTypeGen__vfunc_04(TskMoveTypeGenObj *arg0)
+{
+    if (arg0->m_unk60 > 0) {
+        (arg0->*(arg0->m_func))();
+    } else {
+        return Xv_func_001EAF00(arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAF00);
 
