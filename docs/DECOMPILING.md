@@ -569,6 +569,13 @@ From recovering `game/gamman`'s types (2026-11-12):
   order among the 16-byte iterator slots; iterators declared inside the
   `if`, after a call, are zeroed after that call.
 
+- **Jump tables are 16-aligned** (all 267 of the game's): a file with
+  tables starts its `.rodata` at a multiple of 16. A switch that matches
+  but whose table reference is 8 bytes off ("1 reloc differs ... .rodata
+  +8") means the file's `.rodata` boundary in `config/splits.tsv` is 8
+  off; `tools/configure.py` lists the files where that is so, and gives
+  the asm tables `.align 4` everywhere else.
+
 ### Portability (the PC and Vita ports)
 
 The matching build is one target; the ports will build the same sources
