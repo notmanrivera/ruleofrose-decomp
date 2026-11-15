@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void X_F1F4_func_0018F0EC(int, int, int, int) asm("func_0018F0EC");
+extern "C" void X_F1F4_func_0018D7EC(int, int, int, int, int *, int) asm("func_0018D7EC");
 extern "C" int Xiii_func_001C0254(int, int) asm("func_001C0254");
 extern "C" int Xiii_func_001BFFCC(int, int) asm("func_001BFFCC");
 struct Sub0C_F60C {
@@ -703,7 +705,25 @@ extern "C" int func_0018F0B4(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018F0EC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018F1F4);
+extern "C" void func_0018F1F4(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int *arg6, int arg7)
+{
+    int temp_v1;
+    int r, g, b, a;
+
+    X_F1F4_func_0018F0EC(arg0, arg1, arg4, arg5);
+    r = arg6[0];
+    g = arg6[1];
+    b = arg6[2];
+    a = arg6[3];
+    temp_v1 = arg1 * 0x154;
+    M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x18) = r;
+    M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x1C) = g;
+    M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x20) = b;
+    M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x24) = a;
+    M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x10) = 2;
+    M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x100) = arg2;
+    X_F1F4_func_0018D7EC(arg0, arg1, 4, arg3, arg6, arg7);
+}
 
 extern "C" void func_0018F2E8(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
 {
