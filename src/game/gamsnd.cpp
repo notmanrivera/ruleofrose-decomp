@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int atoi(const char *);
 struct Vec3 {
     float m_x;
     float m_y;
@@ -175,7 +176,19 @@ extern "C" int func_001E435C(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E43A4);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E43E0);
+extern "C" void func_001E43E0(int arg0, char *arg1, int *arg2, int *arg3)
+{
+    char buf[4];
+
+    buf[0] = arg1[2];
+    buf[1] = arg1[3];
+    buf[2] = 0;
+    *arg3 = atoi(buf);
+    buf[2] = 0;
+    buf[0] = arg1[0];
+    buf[1] = arg1[1];
+    *arg2 = atoi(buf);
+}
 
 extern "C" void func_001E4458(int arg0, char *arg1, int arg2, int arg3)
 {
