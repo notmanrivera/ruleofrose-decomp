@@ -819,7 +819,39 @@ extern "C" void func_001DBEF8(int arg0, int arg1)
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamtrg", D_002FC748);
 
+// NON_MATCHING: 1 reloc differs, 1 edits
+#ifdef NON_MATCHING
+extern "C" int func_001DBFA0(int *arg0, unsigned short arg1)
+{
+    int idx = arg1 & 0x1FF;
+    switch (arg1 >> 9) {
+    case 0:
+        return arg0[0] + idx * 0xA0;
+    case 1:
+        return arg0[1] + idx * 0xA0;
+    case 2:
+        return arg0[2] + idx * 0xC0;
+    case 3:
+        return arg0[3] + idx * 0xE0;
+    case 4:
+        return arg0[4] + idx * 0xC0;
+    case 5:
+        return arg0[5] + idx * 0x200;
+    case 6:
+        return arg0[6] + idx * 0xC0;
+    case 7:
+        return arg0[7] + idx * 0xC0;
+    case 8:
+        return arg0[8] + idx * 0xC0;
+    case 9:
+        return arg0[9] + idx * 0xC0;
+    default:
+        return 0;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBFA0);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DC070);
 
