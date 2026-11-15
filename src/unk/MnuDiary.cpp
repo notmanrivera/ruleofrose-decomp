@@ -1,4 +1,37 @@
 #include "include_asm.h"
+struct SprElem_DBC8 {
+    unsigned char unk00[0x144];
+    int unk144;
+    int unk148;
+    char *unk14C;
+    void *unk150;
+};
+struct Spr_DBC8 {
+    unsigned char unk00[0x4AC];
+    SprElem_DBC8 *m_4AC;
+    inline void set(int idx, char *str) {
+        m_4AC[idx].unk144 = 0x20;
+        m_4AC[idx].unk148 = 0;
+        m_4AC[idx].unk14C = str;
+    }
+};
+struct Item_DBC8 {
+    char *unk00;
+    int unk04;
+    unsigned short unk08;
+};
+struct Obj_DBC8 {
+    unsigned char unk000[0x7D0];
+    Spr_DBC8 m_spr;
+    unsigned char unkC80[0x1110 - 0xC80];
+    Item_DBC8 *m_1110[1];
+    unsigned char unk1114[0x1544 - 0x1114];
+    int m_1544;
+};
+extern int D_002A42C0;
+extern int D_007812C0_DBC8 asm("D_007812C0");
+extern "C" void X_func_001DC48C_DBC8(void *, int, int, void *) asm("func_001DC48C");
+static inline void *gamSub22220_DBC8() { void *p = &D_007812C0_DBC8; return (char *)p + 0x22220; }
 extern "C" void X_func_00194688_v3(int) asm("func_00194688");
 extern "C" void X_func_00193868_v3(void *) asm("func_00193868");
 extern "C" void X_func_001348B0_v3(int, int) asm("func_001348B0");
@@ -738,7 +771,20 @@ extern "C" int func_0019CEAC(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019CF48);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019DBC8);
+extern "C" void func_0019DBC8(Obj_DBC8 *arg0, int arg1, int arg2)
+{
+    char *str = 0;
+    Spr_DBC8 *spr = &arg0->m_spr;
+    spr->m_4AC[arg1].unk150 = &D_002A42C0;
+    if (arg2 < arg0->m_1544) {
+        if (arg2 == 0) {
+            str = arg0->m_1110[0]->unk00;
+        } else {
+            X_func_001DC48C_DBC8(gamSub22220_DBC8(), arg0->m_1110[arg2]->unk08, 0xC, &str);
+        }
+        spr->set(arg1, str);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019DCBC);
 
