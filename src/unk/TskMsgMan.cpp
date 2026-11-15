@@ -1617,7 +1617,43 @@ extern "C" int func_001F4910()
 }
 
 
+// NON_MATCHING: 29/67 differ, 29 edits
+#ifdef NON_MATCHING
+struct __attribute__((aligned(8))) TskSeq48 {
+    int unk0;
+    int unk4;
+    long long unk8;
+    float unk10;
+    int unk14;
+    long long unk18;
+    long long unk20;
+    long long unk28;
+};
+static inline void setSeq48(int ptr, struct TskSeq48 val)
+{
+    *(struct TskSeq48 *)(ptr + 0x150) = val;
+}
+extern "C" int func_001F4918(int arg0)
+{
+    int *p3C = (int *)(arg0 + 0x3C);
+    int prev = (*p3C)++;
+    if (prev < M2C_FIELD(arg0, int *, 0x20)) {
+        if (Xiiu_func_001D046C((int)&D_007812C0, M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), unsigned int *, 0x100)) != 0) {
+            float ratio = (float)*p3C / (float)M2C_FIELD(arg0, int *, 0x20);
+            M2C_FIELD(arg0, float *, 0x4C) = ratio;
+            struct TskSeq48 s;
+            s.unk0 = 2;
+            s.unk4 = 4;
+            s.unk10 = M2C_FIELD(arg0, float *, 0x48) * ratio;
+            setSeq48(M2C_FIELD(arg0, int *, 0x1C), s);
+            return 0;
+        }
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F4918);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE5E0);
 
