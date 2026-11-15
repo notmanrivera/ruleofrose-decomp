@@ -1084,7 +1084,55 @@ INCLUDE_RODATA("asm/nonmatchings/unk/HfmMain", D_002EF410);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/HfmMain", D_002EF418);
 
+// NON_MATCHING: .text MATCH (0x134); blocked by .rodata split 0x2EF238 (8 mod 16) vs switch jtbl .align 4 (0x338 vs 0x330)
+#ifdef NON_MATCHING
+extern "C" void Xv_func_00146BF0(int) asm("func_00146BF0");
+extern "C" void Xv_func_00148620(int) asm("func_00148620");
+extern "C" void Xv_func_00148AF0(int) asm("func_00148AF0");
+extern "C" void Xv_func_00148BD0(int) asm("func_00148BD0");
+extern "C" void Xv_func_00148CB4(int) asm("func_00148CB4");
+extern "C" int func_001484EC(int arg0)
+{
+    struct { float vec[4]; int sp10; int sp14; } stack;
+    int off = 0x8542C;
+
+    switch (M2C_FIELD(arg0, int *, 4)) {
+    case 0:
+        if (M2C_FIELD(arg0, int *, 0x24) != 0) {
+            X_func_00202F10(M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1F0));
+            if (M2C_FIELD(arg0, int *, 0x24) == 2) {
+                return 8;
+            }
+            Xiiif_func_00167D88(arg0, (int)stack.vec, 98.0f);
+            Xiiiiiff_func_0017C340((int)&D_006FBD80 + off, (int)stack.vec, (int)&stack.sp10, 0, 40.0f, 0.0f);
+            if (stack.sp14 == 0) {
+                Xv_func_00146BF0(arg0);
+            } else {
+                M2C_FIELD(arg0, int *, 0x48) = 0;
+                Xiiii_func_001680A0(arg0, 0x18, 0);
+                Xiii_func_001694CC(arg0, 0x13);
+                M2C_FIELD(arg0, unsigned int *, 4) = 1U;
+            }
+        }
+        break;
+    case 1:
+        Xv_func_00148620(arg0);
+        break;
+    case 2:
+        Xv_func_00148AF0(arg0);
+        break;
+    case 3:
+        Xv_func_00148BD0(arg0);
+        break;
+    case 4:
+        Xv_func_00148CB4(arg0);
+        break;
+    }
+    return -1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001484EC);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00148620);
 
