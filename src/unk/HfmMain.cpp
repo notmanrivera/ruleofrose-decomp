@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" void Xvii_func_00145A10(int, int) asm("func_00145A10");
+extern "C" void Xvii_func_00145CC8(int, int) asm("func_00145CC8");
+extern "C" void Xv_func_00145D44(int, int) asm("func_00145D44");
 struct HfmRect3 { float f[8]; } __attribute__((aligned(8)));
 struct HfmObj3 {
     char pad[0x2AAE0];
@@ -679,7 +682,53 @@ extern "C" void HfmOutWalk__vfunc_02(int arg0)
     M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x150) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmOutWalk__vfunc_03);
+extern "C" int HfmOutWalk__vfunc_03(int arg0)
+{
+    float sp[4];
+    int step;
+    int state;
+    int r;
+    int v;
+
+    state = M2C_FIELD(arg0, int *, 4);
+    step = M2C_FIELD(arg0, int *, 0x38) + 1;
+    M2C_FIELD(arg0, int *, 0x38) = step;
+    switch (state) {
+    case 0:
+        r = X_func_0010423C(1, 0x5F);
+        if (r < 0x51) {
+            Xvii_func_00145A10(arg0, (int)sp);
+            v = 0;
+            if (D_007A3350 != 0) {
+                v = M2C_FIELD(D_007A3350, int *, 0x100);
+            }
+            if (Xff_iii_func_00169BAC(114.9999924f, 6.283185124397278f, 0, v, M2C_FIELD(arg0, int *, 8)) == 0) {
+                Xviif_func_001670DC(arg0, (int)sp, 0.0f);
+                Xv_func_00145D44(arg0, 1);
+                break;
+            }
+        }
+        Xvii_func_00145CC8(arg0, r);
+        break;
+    case 1:
+        if (M2C_FIELD(arg0, int *, 0x24) != 0) {
+            X_func_00202F10(M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1F0));
+            Xv_func_00145D44(arg0, 0);
+        }
+        break;
+    case 2:
+        if (step >= 0x1E) {
+            Xv_func_00145D44(arg0, 0);
+        }
+        break;
+    case 3:
+        if (check_001D19A8(arg0, (int)&D_007812C0) != 0) {
+            Xv_func_00145D44(arg0, 0);
+        }
+        break;
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00145A10);
 
