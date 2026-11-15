@@ -100,7 +100,22 @@ extern "C" int func_001E0BB0(char *arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E0C2C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E0D70);
+extern "C" int func_001E0D70(char *arg0, int arg1)
+{
+    SndIt it;
+    SndIt last;
+
+    if (*(int *)(arg0 + 0x190) == 0)
+        return 0;
+    it = SndIt(*(SndNode **)(arg0 + 0xD4));
+    last = ((SndChain *)(arg0 + 0xD0))->end();
+    while (it != last) {
+        if ((*it).m_unk34 == arg1)
+            return 1;
+        ++it;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E0DF0);
 
