@@ -37,6 +37,12 @@ public:
 struct SndChain {
     SndNode m_head;         // +0x00
     int m_num;              // +0x60
+    void init()
+    {
+        m_num = 0;
+        m_head.m_prev = &m_head;
+        m_head.m_next = &m_head;
+    }
     SndIt begin() { return SndIt(m_head.m_next); }
     SndIt end() { return SndIt(&m_head); }
     void splice(SndChain &theOther)
@@ -57,9 +63,29 @@ struct SndChain {
 };
 struct SndQue {
     SndChain m_free;        // +0x00
-    char m_pad00[0x0C];
+    char m_pad64[0x0C];
     SndChain m_used;        // +0x70
+    char m_padD4[0x0C];
     int m_max;              // +0xE0
+    void init(SndNode *theNodes, int theMax)
+    {
+        m_free.init();
+        m_used.init();
+        m_max = theMax;
+        int i = 0;
+        SndNode *p = theNodes;
+        for (; i < m_max; i++) {
+            p->m_prev = p - 1;
+            p->m_next = p + 1;
+            p++;
+        }
+        m_used.init();
+        m_free.m_head.m_next = theNodes;
+        m_free.m_num = m_max;
+        theNodes[0].m_prev = &m_free.m_head;
+        m_free.m_head.m_prev = &m_free.m_head.m_next[m_free.m_num - 1];
+        m_free.m_head.m_prev->m_next = &m_free.m_head;
+    }
     void clear()
     {
         if (m_used.m_num != 0)
@@ -69,7 +95,7 @@ struct SndQue {
 extern "C" void __builtin_delete(void *);
 extern int _vt$9GamSndMan;
 struct Elem28 { int a[10]; };
-struct Range { char *m_begin; char *m_end; };
+struct Range { char *m_begin; char *m_end; int m_max; };
 extern "C" void func_001E43E0(int, char *, int *, int *);
 extern "C" void func_001E44B4(int, int, int, int, int);
 extern "C" int func_001E4908(int, int, int *, int) asm("func_001E4908");
@@ -117,7 +143,17 @@ extern "C" int func_001E0D70(char *arg0, int arg1)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E0DF0);
+extern "C" void func_001E0DF0(char *arg0)
+{
+    Range *r;
+
+    *(int **)(arg0 + 0x1874) = &_vt$9GamSndMan;
+    ((SndQue *)(arg0 + 0x40))->init((SndNode *)(arg0 + 0x140), 0x20);
+    r = (Range *)(arg0 + 0xD40);
+    r->m_end = (char *)(arg0 + 0xD80);
+    r->m_max = 0x30;
+    r->m_begin = (char *)(arg0 + 0xD80);
+}
 
 extern "C" void GamSndMan__vfunc_01(char *arg0, int arg1)
 {
