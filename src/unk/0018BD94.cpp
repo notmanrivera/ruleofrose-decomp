@@ -1,4 +1,25 @@
 #include "include_asm.h"
+struct Sub0C_F60C {
+    unsigned char pad00[0x120];
+    int a[60];
+    int b[60];
+    int c[60];
+};
+struct Obj_F60C {
+    int unk00;
+    int unk04;
+    int unk08;
+    Sub0C_F60C unk0C;
+    int unk3FC;
+    int unk400;
+    unsigned char pad404[0x10];
+    int unk414;
+    unsigned char pad418[0x18];
+    int unk430;
+    int unk434;
+};
+extern "C" int Xiii_func_001905A0(int, int) asm("func_001905A0");
+extern "C" int Xiii_func_001905A8(int, int) asm("func_001905A8");
 struct Sub154_C068 {
     int unk00;
     unsigned char pad04[0x150];
@@ -740,4 +761,29 @@ extern "C" void func_0018F5E4(void *self, int theFlags)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018F60C);
+extern "C" void func_0018F60C(Obj_F60C *arg0)
+{
+    int i;
+
+    Xiii_func_001905A0((int)arg0, 0);
+    Xiii_func_001905A8((int)arg0, 0);
+    arg0->unk3FC = 0;
+    arg0->unk00 = 0;
+    arg0->unk400 = 0x40;
+    *(int *)((char *)arg0 + 0x128) = 0;
+    *(int *)((char *)arg0 + 0x124) = 0;
+    arg0->unk414 = 0;
+    arg0->unk04 = 0;
+    arg0->unk08 = 0;
+    arg0->unk434 = 0;
+    for (i = 0; i < 60; i++) {
+        arg0->unk0C.a[i] = 0;
+    }
+    for (i = 0; i < 60; i++) {
+        arg0->unk0C.b[i] = -1;
+    }
+    for (i = 0; i < 60; i++) {
+        arg0->unk0C.c[i] = 0;
+    }
+    arg0->unk430 = 0;
+}
