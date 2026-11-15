@@ -108,7 +108,78 @@ extern "C" int func_001D58D8(void *arg0, void *arg1, float fparg0) {
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D58D8);
 #endif
 
+// NON_MATCHING: 6/111 differ, 3 edits
+#ifdef NON_MATCHING
+struct Cb8_5A0C {
+    int w0;
+    int w1;
+};
+
+struct StatOut5A0C {
+    int m_unk00;
+    int m_unk04;
+    int m_unk08;
+    int m_unk0C;
+    unsigned int m_unk10;
+    int m_unk14;
+    int m_unk18;
+    int m_unk1C;
+} __attribute__((aligned(8)));
+
+struct BufC0_5A0C {
+    char m_data[0xC0];
+};
+
+extern const Cb8_5A0C X_D_002FC1D8_5A0C asm("D_002FC1D8");
+extern int D_007A3D80;
+extern "C" int func_001D1720(void *, unsigned int, int);
+extern "C" float X_func_001D4A3C_5A0C(void *, unsigned int, int) asm("func_001D4A3C");
+extern "C" int X_func_001D7C20_5A0C(void *, int, unsigned int, StatOut5A0C *, void *) asm("func_001D7C20");
+extern "C" char *X_func_001D2B8C_5A0C(void *, unsigned int) asm("func_001D2B8C");
+extern "C" int func_001E7D7C(void *, int);
+extern "C" void func_001EF184(void *, unsigned int, StatOut5A0C *, int, int, int, int);
+extern "C" int X_func_001E71FC_5A0C(void *, int, int, int, int, void *, int, int *, int) asm("func_001E71FC");
+
+extern "C" int func_001D5A0C(void *arg0, const u_long128 *arg1, unsigned int arg2, void *arg3, int arg4, StatOut5A0C *arg5) {
+    StatOut5A0C sp10;
+    int ret;
+
+    (void)arg4;
+    if (func_001D1720(arg0, arg2, 0x80) != 0) {
+        return 0;
+    }
+
+    {
+        register u_long128 *dst PS2_REG("$2") = (u_long128 *)((char *)arg0 + 0x225B0);
+        register u_long128 tmp PS2_REG("$6") = *arg1;
+        *dst = tmp;
+    }
+
+    *(float *)((char *)arg0 + 0x225A0) = (arg2 != 0) ? X_func_001D4A3C_5A0C(arg0, arg2, 0) : 25.0f;
+    *(Cb8_5A0C *)((char *)arg0 + 0x225D0) = X_D_002FC1D8_5A0C;
+
+    ret = X_func_001D7C20_5A0C(arg0, 0, arg2, &sp10, arg3);
+    if (arg5 != 0 && ret != 0) {
+        *arg5 = sp10;
+        {
+            unsigned int oid = arg5->m_unk10;
+            if (((oid >> 23) & 0x1F) == 2) {
+                char *chr = X_func_001D2B8C_5A0C(arg0, oid);
+                arg5->m_unk10 = arg2;
+                int *slot = (int *)(chr + 0x3E8);
+                if (func_001E7D7C(&D_007A3D80, *slot) == 0) {
+                    void *obj = (void *)new BufC0_5A0C;
+                    func_001EF184(obj, oid, arg5, 8, 0x1E, 0, 0);
+                    X_func_001E71FC_5A0C(&D_007A3D80, 1, -1, 1, 0, obj, 0, slot, 0x11);
+                }
+            }
+        }
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D5A0C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D5BC8);
 
