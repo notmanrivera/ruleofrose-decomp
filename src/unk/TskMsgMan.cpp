@@ -846,7 +846,45 @@ extern "C" void TskMoveAdj__vfunc_06(int arg0, int arg1)
 extern "C" void TskMoveAdj__vfunc_05(void) {
 }
 
+// NON_MATCHING: 21/79 differ, 1 reloc differs, 10 edits
+#ifdef NON_MATCHING
+static inline char *getDogBase(void *base, int idx)
+{
+    return (char *)base + idx * 0x4D0;
+}
+
+extern "C" int TskMoveAdj__vfunc_04(int arg0)
+{
+    float sp[4];
+    float *p10 = (float *)(arg0 + 0x10);
+    int steps = M2C_FIELD(arg0, int *, 0x30);
+    if (steps >= 0) {
+        int val = M2C_FIELD(getDogBase(&D_006FBD80, M2C_FIELD(arg0, int *, 0x20)), int *, 0x2AF8);
+        M2C_FIELD(arg0, int *, 0x2C) = val;
+        float h = M2C_FIELD(M2C_FIELD(arg0, float **, 0x28), float *, 8);
+        sp[0] = 0.0f;
+        sp[2] = 0.0f;
+        sp[1] = h * ((float)steps / (float)val) - 7.5f;
+        Xv_func_0025B878(sp, sp, p10);
+        struct DogActorStub *d = getDogActor(&D_006FBD80, M2C_FIELD(arg0, int *, 0x20));
+        d->unk40[0] = sp[0];
+        d->unk40[1] = sp[1];
+        d->unk40[2] = sp[2];
+        M2C_FIELD(d, int *, 0x90) = 1;
+        M2C_FIELD(arg0, int *, 0x30)--;
+        return 0;
+    }
+    Xv_func_0025B878(sp, sp, p10);
+    struct DogActorStub *d = getDogActor(&D_006FBD80, M2C_FIELD(arg0, int *, 0x20));
+    d->unk40[0] = p10[0];
+    d->unk40[1] = p10[1];
+    d->unk40[2] = p10[2];
+    M2C_FIELD(d, int *, 0x90) = 1;
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveAdj__vfunc_04);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EE4A8);
 
