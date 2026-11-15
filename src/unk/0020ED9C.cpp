@@ -1,4 +1,18 @@
 #include "include_asm.h"
+extern int D_007B4770;
+struct Block80_4664 {
+    unsigned char b[0x80];
+};
+struct Block780_4664 {
+    unsigned char b[0x780];
+};
+struct Obj4640 {
+    unsigned char unk00[0x10];
+    int flags;
+    unsigned char unk14[0x28];
+    Block80_4664 unk3C;
+    Block780_4664 *unkBC;
+};
 struct Block40_B8 {
     unsigned char b[0x40];
 };
@@ -1394,7 +1408,16 @@ extern "C" void func_002144C4(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002144CC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00214664);
+extern "C" void func_00214664(void)
+{
+    Obj4640 *obj = *(Obj4640 **)&D_007B4640;
+    if (obj->flags & 0x200) {
+        *(Block80_4664 *)&D_007B4700 = obj->unk3C;
+    }
+    if ((*(Obj4640 **)&D_007B4640)->unkBC != 0) {
+        **(Block780_4664 **)&D_007B4770 = *(*(Obj4640 **)&D_007B4640)->unkBC;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002147E0);
 
