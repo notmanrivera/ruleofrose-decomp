@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" void X_func_00194688_v3(int) asm("func_00194688");
+extern "C" void X_func_00193868_v3(void *) asm("func_00193868");
+extern "C" void X_func_001348B0_v3(int, int) asm("func_001348B0");
+extern "C" void X_func_00187464_v3(void *) asm("func_00187464");
+extern "C" void X_mnuBase__vfunc_03_v3(void *) asm("mnuBase__vfunc_03");
 extern "C" void X_MnuDiary__vfunc_03_v1(void *) asm("MnuDiary__vfunc_03");
 extern "C" void X___builtin_delete_v1(void *) asm("__builtin_delete");
 extern "C" void X_func_00183B24_v1(void *, int) asm("func_00183B24");
@@ -253,7 +258,37 @@ INCLUDE_RODATA("asm/nonmatchings/unk/MnuDiary", D_002F8190);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", MnuDiary__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", MnuDiary__vfunc_03);
+extern "C" void MnuDiary__vfunc_03(MnuDiary *arg0)
+{
+    if (arg0->m_138 != 0) {
+        X_func_00194688_v3(arg0->m_138);
+        arg0->m_138 = 0;
+    }
+    if (arg0->m_128 != 0) {
+        X_func_00194688_v3(arg0->m_128);
+        arg0->m_128 = 0;
+    }
+    arg0->m_12C = 0;
+    if (arg0->m_8B8 != 0) {
+        X_func_00194688_v3(arg0->m_8B8);
+        arg0->m_8B8 = 0;
+    }
+    X_func_00193868_v3(arg0);
+    if (arg0->m_130 != -1) {
+        X_func_001348B0_v3(*(int *)((char *)arg0 + 8), arg0->m_130);
+        arg0->m_130 = -1;
+    }
+    if (arg0->m_134 != -1) {
+        X_func_001348B0_v3(*(int *)((char *)arg0 + 8), arg0->m_134);
+        arg0->m_134 = -1;
+    }
+    X_func_00187464_v3(arg0->m_msgs);
+    arg0->m_110 = 0;
+    arg0->m_114 = -1;
+    arg0->m_118 = -1;
+    arg0->m_11C = -1;
+    X_mnuBase__vfunc_03_v3(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00198B04);
 
