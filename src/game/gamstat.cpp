@@ -1,5 +1,9 @@
 #include "include_asm.h"
 #include "game/gamman.h"
+struct StatElem16_5BC8 {
+    int m_unk00;
+    int m_pad[3];
+};
 struct StatElem16_7C20 {
     unsigned int m_unk00;
     int m_pad[3];
@@ -191,7 +195,28 @@ extern "C" int func_001D5A0C(void *arg0, const u_long128 *arg1, unsigned int arg
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D5A0C);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D5BC8);
+extern "C" void func_001D5BC8(void *arg0, int arg1, int arg2) {
+    GamList<StatElem16_5BC8>::iterator it;
+    GamList<StatElem16_5BC8>::iterator last;
+    StatElem16_5BC8 elem;
+    GamList<StatElem16_5BC8> *list = *(GamList<StatElem16_5BC8> **)((char *)arg0 + 0x2246C);
+
+    it = list->begin();
+    last = list->end();
+    while (it != last) {
+        if ((*it).m_unk00 == arg2) {
+            it = list->erase(it);
+            break;
+        }
+        ++it;
+    }
+    if (!(it != last)) {
+        it = (*(GamList<StatElem16_5BC8> **)((char *)arg0 + 0x2246C))->begin();
+    }
+    elem.m_pad[0] = arg1;
+    elem.m_unk00 = arg2;
+    (*(GamList<StatElem16_5BC8> **)((char *)arg0 + 0x2246C))->push_back(elem);
+}
 
 extern "C" void func_001D5DA0(void *arg0, int arg1) {
     GamList<StatElem16>::iterator it;
