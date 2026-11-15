@@ -1,4 +1,11 @@
 #include "include_asm.h"
+#include "utl/filereader.h"
+#include "bed/bedmemory.h"
+extern BedMemory D_006E9800;
+extern const char *D_0029993C;
+extern const char D_002F7728[];
+extern "C" void Xv_heapFree(void *) asm("heapFree__FPv");
+extern "C" int Xc_func_001BE768(const char *) asm("func_001BE768");
 extern "C" int Xii_func_00189068(int) asm("func_00189068");
 extern "C" const char *Xcc_strstr(const char *, const char *) asm("strstr");
 extern "C" int X_matchName(const struct McdMgr *, const char *, const char *) asm("func_0018B918");
@@ -256,7 +263,33 @@ extern "C" int func_001879E0(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00187A28);
+extern "C" int func_00187A28(int arg0)
+{
+    FileReader reader;
+    void *buf = M2C_FIELD(arg0, void **, 0x6E0);
+
+    if (buf != 0) {
+        Xv_heapFree(buf);
+        M2C_FIELD(arg0, int *, 0x6E0) = 0;
+        M2C_FIELD(arg0, int *, 0x6E4) = 0;
+    }
+    M2C_FIELD(arg0, int *, 0x6E4) = Xc_func_001BE768(D_0029993C);
+    int attr = 2;
+    M2C_FIELD(arg0, void **, 0x6E0) = D_006E9800.alloc(M2C_FIELD(arg0, int *, 0x6E4), D_002F7728, 0x119, 0, attr);
+    FileReadReq req;
+    const char *name = D_0029993C;
+    int rsize = M2C_FIELD(arg0, int *, 0x6E4);
+    void *rbuf = M2C_FIELD(arg0, void **, 0x6E0);
+    req.m_name = name;
+    req.m_size = rsize;
+    req.m_buf = rbuf;
+    req.m_unk08 = 1;
+    req.m_unk20 = 1;
+    req.m_unk14 = 0;
+    req.m_offset = 0;
+    reader.func_001BE524(&req, 0);
+    return 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mcd/mcdman", D_002F7728);
 
