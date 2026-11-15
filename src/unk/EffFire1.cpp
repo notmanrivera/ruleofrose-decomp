@@ -1,4 +1,9 @@
 #include "include_asm.h"
+#include "game/gamtrg.h"
+#include "game/gamman.h"
+extern char X_27EC_D_007B2140[] asm("D_007B2140");
+extern "C" int X_27EC_func_00163BE4(void *, int) asm("func_00163BE4");
+extern "C" int X_27EC_func_00163B20(void *, int) asm("func_00163B20");
 extern "C" int X_1548_func_0021B260(int, int) asm("func_0021B260");
 extern "C" int X_1548_func_0021B4F8(int, int) asm("func_0021B4F8");
 extern "C" int X_1548_func_0021B550(int, int, int) asm("func_0021B550");
@@ -578,7 +583,51 @@ extern "C" int func_001726B4()
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_001726B4);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_001727EC);
+extern "C" int func_001727EC()
+{
+    GamList<ACHRstat *> *list = D_007812C0.getAchrListPtr();
+    GamList<ACHRstat *>::iterator last = list->end();
+    for (GamList<ACHRstat *>::iterator it = list->begin(); it != last; ++it) {
+        int oid = (*it)->getOID();
+        if (((unsigned int)oid >> 23 & 0x1F) == 2) {
+            switch (X_27EC_func_00163BE4(X_27EC_D_007B2140, oid)) {
+            case 0:
+                if (X_27EC_func_00163B20(X_27EC_D_007B2140, oid) != 4) {
+                    return 0;
+                }
+                break;
+            case 1:
+                if (X_27EC_func_00163B20(X_27EC_D_007B2140, oid) != 4) {
+                    return 0;
+                }
+                break;
+            case 2:
+                if (X_27EC_func_00163B20(X_27EC_D_007B2140, oid) != 4) {
+                    return 0;
+                }
+                break;
+            case 3:
+                if (X_27EC_func_00163B20(X_27EC_D_007B2140, oid) != 4) {
+                    return 0;
+                }
+                break;
+            case 4:
+            case 5:
+                if (X_27EC_func_00163B20(X_27EC_D_007B2140, oid) != 6) {
+                    return 0;
+                }
+                break;
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+                break;
+            }
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_00172934);
 
