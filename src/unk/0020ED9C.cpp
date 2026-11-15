@@ -641,7 +641,15 @@ extern "C" void func_00211024(int arg0, int arg1)
     D_007B4840 = ((float *)&D_007B4680)[arg0] <= ((float *)&D_007B4680)[arg1];
 };
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00211064);
+extern "C" void func_00211064(int arg0, int arg1, int arg2)
+{
+    float *dst = &((float *)&D_007B4680)[arg2];
+    double d = ((float *)&D_007B4680)[arg1];
+    if (d < 0.0) {
+        d = -d;
+    }
+    *dst = d;
+}
 
 extern "C" void func_002110E4(int arg0, int arg1, int arg2)
 {
