@@ -1,4 +1,28 @@
 #include "include_asm.h"
+struct Item_BEB0 {
+    int m_unq;
+    int m_oid;
+    unsigned short m_uid;
+    unsigned short m_num;
+    int m_unk0C;
+};
+struct Obj_BEB0 {
+    unsigned char unk00[0x04];
+    int m_04;
+    unsigned char unk08[0x04];
+    int m_0C;
+    unsigned char unk10[0x1100];
+    Item_BEB0 *m_1110[0x100];
+    Item_BEB0 *m_1510[0x100];
+};
+extern int D_007812C0_BEB0 asm("D_007812C0");
+extern "C" int X_func_001C9198_BEB0(void *, Item_BEB0) asm("func_001C9198");
+extern "C" void X_func_001C8214_BEB0(void *, int) asm("func_001C8214");
+extern "C" void X_func_001C94D8_BEB0(void *, int, int) asm("func_001C94D8");
+extern "C" void X_func_001C812C_BEB0(void *, int, Item_BEB0 *) asm("func_001C812C");
+extern "C" void X_func_0019B020_BEB0(void *, int) asm("func_0019B020");
+extern "C" void X_func_0019B384_BEB0(void *, int) asm("func_0019B384");
+extern "C" void X_func_0019BD6C_BEB0(void *) asm("func_0019BD6C");
 struct Sub110_85B0 {
     int unk00;
     int unk04;
@@ -1108,7 +1132,34 @@ extern "C" void func_0019BD6C(Obj_BD6C *arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019BD6C);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019BEB0);
+extern "C" int func_0019BEB0(Obj_BEB0 *arg0, int arg1, int arg2) {
+    int ret = 0;
+    Item_BEB0 *p1110 = arg0->m_1110[arg2];
+    if (p1110->m_uid == 0xA00) {
+        Item_BEB0 *p1510 = arg0->m_1510[arg1];
+        if (p1510->m_uid != 0xA00) {
+            X_func_001C9198_BEB0(&D_007812C0_BEB0, *p1510);
+            ret = 1;
+            X_func_001C8214_BEB0(&D_007812C0_BEB0, arg1);
+        }
+    } else {
+        Item_BEB0 item = *p1110;
+        Item_BEB0 *p1510 = arg0->m_1510[arg1];
+        if (p1510->m_uid != 0xA00) {
+            if (p1110->m_uid != p1510->m_uid) {
+                X_func_001C9198_BEB0(&D_007812C0_BEB0, *p1510);
+                X_func_001C8214_BEB0(&D_007812C0_BEB0, arg1);
+            }
+        }
+        ret = 1;
+        X_func_001C94D8_BEB0(&D_007812C0_BEB0, arg0->m_1110[arg2]->m_uid, 0);
+        X_func_001C812C_BEB0(&D_007812C0_BEB0, arg1, &item);
+    }
+    X_func_0019B020_BEB0(arg0, arg0->m_04);
+    X_func_0019B384_BEB0(arg0, arg0->m_0C);
+    X_func_0019BD6C_BEB0(arg0);
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019C048);
 
