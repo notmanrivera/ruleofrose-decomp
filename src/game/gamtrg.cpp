@@ -915,7 +915,42 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBA3C);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBB38);
 
+// NON_MATCHING: 44/56 differ, 1 reloc differs (size 0xE0, game 0xE8), 30 edits
+#ifdef NON_MATCHING
+typedef unsigned int u_long128_dbb74 __attribute__((mode(TI)));
+typedef float Vec4_dbb74[4] __attribute__((aligned(16)));
+struct MapBounds_dbb74 {
+    float unk0;
+    float unk4;
+    float unk8;
+    float unkC;
+    float unk10;
+    float unk14;
+};
+extern MapBounds_dbb74 X_D_002FC748[] asm("D_002FC748");
+extern "C" float Xfi_func_001DBA00(int) asm("func_001DBA00");
+extern "C" void func_001DBB74(int arg0, int arg1, const Vec4_dbb74 arg2, Vec4_dbb74 arg3)
+{
+    Vec4_dbb74 v;
+    float temp_f20;
+    float temp_f0;
+    MapBounds_dbb74 *p;
+
+    temp_f20 = func_001DB9C4();
+    temp_f0 = Xfi_func_001DBA00(arg0);
+    do {
+        *(u_long128_dbb74 *)v = *(const u_long128_dbb74 *)arg2;
+    } while (0);
+    p = &X_D_002FC748[arg1];
+    v[2] = ((p->unkC * (v[2] + temp_f0)) / p->unk4) + p->unk14;
+    v[0] = ((p->unk8 * -(v[0] + temp_f20)) / p->unk0) + p->unk10;
+    do {
+        *(u_long128_dbb74 *)arg3 = *(u_long128_dbb74 *)v;
+    } while (0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBB74);
+#endif
 
 // NON_MATCHING: 31/34 differ, 1 reloc differs (size 0x88, game 0x94), 29 edits
 #ifdef NON_MATCHING
