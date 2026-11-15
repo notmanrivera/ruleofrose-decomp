@@ -20,7 +20,7 @@ H=$1; BUSY=$2
 [ -n "$H" ] && [ -n "$BUSY" ] || { sed -n '6p' "$0" | sed 's/^# *//'; exit 2; }
 MAIN="$(cd "$(git -C "$(dirname "$0")" rev-parse --path-format=absolute --git-common-dir)/.." && pwd)"
 PY="$MAIN/tools/.venv/Scripts/python.exe"; [ -x "$PY" ] || PY="$MAIN/tools/.venv/bin/python"
-QUOTA='quota (reached|exceeded)|[Rr]ate.?limit|resets in [0-9]+h|(HTTP|status|error) 429|[Ii]nsufficient (balance|credits)|out of credits|[Uu]sage limit reached|Resets [0-9]+:[0-9]+'
+QUOTA='quota (reached|exceeded)|[Rr]ate.?limit|resets in [0-9]+h|(HTTP|status|error) 429|[Ii]nsufficient (balance|credits)|out of credits|[Uu]sage limit reached|Resets [0-9]+:[0-9]+|used today.s free messages|[Tt]hey reset at [0-9]'
 FILTER='[Cc]ontent (filter|policy)|blocked by (safety|the filter)|SAFETY|[Rr]esponse was blocked|blocked by Gemini.s filters'
 DEADLINE=$(( $(date +%s) + ${WATCH_MAX_MIN:-150} * 60 ))
 sleep 60
@@ -49,7 +49,7 @@ while :; do
   tail12=$(echo "$last" | tail -12)
   # A usage-limit box stays above whatever is queued under it in the input
   # (OpenCode), so that one counts anywhere in the last 40 lines.
-  if echo "$tail12" | grep -qE "$QUOTA" || echo "$scr" | tail -40 | grep -qE "[Uu]sage limit reached"; then st=quota; code=3
+  if echo "$tail12" | grep -qE "$QUOTA" || echo "$scr" | tail -40 | grep -qE "[Uu]sage limit reached|used today.s free messages"; then st=quota; code=3
   elif echo "$tail12" | grep -qE "$FILTER"; then st=filter; code=4
   else st=idle; code=0; fi
   echo "STATUS: $st"

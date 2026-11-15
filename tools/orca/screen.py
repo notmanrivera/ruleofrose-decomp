@@ -48,9 +48,10 @@ def context(tail):
 def wait(tail, now=None):
     now = now or datetime.datetime.now()
     text = "\n".join(tail[-40:])
-    m = re.search(r"Resets (\d{1,2}):(\d{2}) ?([AP]M)", text)
+    # "Resets 11:56 PM today" (OpenCode Go), "They reset at 6:43 p.m." (its free tier)
+    m = re.search(r"[Rr]esets? (?:at )?(\d{1,2}):(\d{2}) ?([AaPp])\.?[Mm]", text)
     if m:
-        h = int(m.group(1)) % 12 + (12 if m.group(3) == "PM" else 0)
+        h = int(m.group(1)) % 12 + (12 if m.group(3).upper() == "P" else 0)
         at = now.replace(hour=h, minute=int(m.group(2)), second=0, microsecond=0)
         if at <= now:
             at += datetime.timedelta(days=1)
