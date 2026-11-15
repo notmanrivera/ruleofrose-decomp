@@ -59,6 +59,28 @@ judgement and go to Sonnet.
   splat PS2 project, e.g. Sly 2's), and would it beat tools/match.py's
   diff for workers? A short how-to if yes.
 
+- [ ] R13 mw/i3d's architecture (the owner's outside brief, 2026-11-15),
+  READ-ONLY: (A) MagSystem's version check is known (src/mag/magsystem.cpp
+  ~250-275: 36 i3d type sizes checked through func_0021F1A8(i), message
+  "i3d_package_version 050121-stable-050826"); (B) inventory every call
+  from game code into 0x218500-0x237D00 (address, callers, known or
+  provisional name, prototype evidence); (C) classify them (resource
+  loading, node hierarchies, matrices, animation, lighting, textures,
+  render state, DMA/VIF/VU, memory); (D) compare the structures/offsets
+  DogModel, DogTexInfo, DogLightPool and MagSystem use with the public
+  model parsers (Murugo's Misc-Game-Research PS2/Rule of Rose/mdl2obj.py,
+  Durik256's Noesis fmt_i3dg.py: 0x10-byte nodes, types 0x25 materials,
+  0x2A bones, 0x2D meshes, 0x59 instances, VIF) and the 36 sizes; (E) map
+  i3d functions to Ape Escape 3's copy (disc/ape3/SCPS_150.96, see the
+  Done entry below) to find which of its strings/asserts name them; (F) a
+  minimal compatibility API for the PC/Vita ports (not just "replace the
+  renderer"). Needs Sonnet (judgement) plus [web] for the parsers.
+- [ ] R14 **[web]** Other games built on SCE Japan's "i3d package" (2005-
+  2006, i3d_package_version 0501xx; formats I3D_BIN/I3D_I3M/I3D_I3C; VU
+  overlays .DVP.overlay..0x0.3420215670.9.0): which ones, and does any
+  have symbols (debug ELF, prototype, .map) or a decompilation? Ape
+  Escape 3 is one; Rule of Rose was published in Japan by SCE.
+
 ## Done
 
 - [x] R1 game/gamtrg's .rodata start (2026-11-15, Sonnet + coordinator):
@@ -102,3 +124,12 @@ judgement and go to Sonnet.
   same SDK versions in part. So chulip-decomp can only help with our sdk/
   files (0 %, and the ports replace the SDK anyway): low priority. ELF kept
   in disc/chulip/ (ignored by git).
+- [x] Ape Escape 3 / Saru! Get You! 3 (SCPS-15096, owner's disc, 2026-11-15,
+  coordinator): it links the same i3d library. Instruction-shape 24-grams
+  of our mw/i3d found in its ELF: 19,152 of 28,166 (68 %; Chulip: 13);
+  game code 0 %, sound 0 %, SDK 93 %. Its strings: "i3d_package_version
+  050121" (ours: "050121-stable-050826", a later stable branch of the same
+  package), I3D_BIN/I3D_I3M/I3D_I3C, I3DROOT_NODE, "I3D Trash", I3dRender,
+  I3mPosture_s; the same VU overlay sections. So i3d is SCE Japan's
+  "i3d package", not Punchline's own. Its ELF is stripped too (no
+  .symtab). Kept in disc/ape3/ (ignored by git).
