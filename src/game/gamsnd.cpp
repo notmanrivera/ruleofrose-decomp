@@ -1,5 +1,21 @@
 #include "include_asm.h"
 #include "utl/filereader.h"
+struct Ent6570 { // 6570
+    unsigned int flags; // 6570
+    char pad4[0x10]; // 6570
+    int unk14; // 6570
+    int unk18; // 6570
+    char pad1C[0x28 - 0x1C]; // 6570
+    Ent6570() { unk14 = -1; unk18 = -1; } // 6570
+    bool isFree() const { return (flags & 1) == 0; } // 6570
+}; // Ent6570
+struct Sub6570 { // 6570
+    Ent6570 *arr; // 6570
+}; // Sub6570
+struct Obj6570 { // 6570
+    char pad0[0xD40]; // 6570
+    Sub6570 sub; // 6570
+}; // Obj6570
 struct Msg50C8 {
     int unk00;
     int unk04;
@@ -1983,7 +1999,33 @@ extern "C" int X_def_func_001E649C(Obj649C *arg0, unsigned int arg1, int arg2)
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E649C);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E6570);
+extern "C" void func_001E6570(Obj6570 *arg0, int arg1) {
+    Ent6570 def;
+    int i;
+    switch (arg1) {
+    case 0:
+        for (i = 0; i < 0x30; i++) {
+            Ent6570 *p = arg0->sub.arr + i;
+            *p = def;
+        }
+        break;
+    case 1:
+        for (i = 0; i < 0x30; i++) {
+            Ent6570 *p = arg0->sub.arr + i;
+            if ((p->flags & 1) == 0) {
+                *p = def;
+            }
+        }
+        break;
+    case 2:
+        for (i = 0; i < 0x30; i++) {
+            if (!arg0->sub.arr[i].isFree()) {
+                arg0->sub.arr[i] = def;
+            }
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E6734);
 
