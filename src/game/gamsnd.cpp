@@ -1,4 +1,11 @@
 #include "include_asm.h"
+struct Vec3 {
+    float m_x;
+    float m_y;
+    float m_z;
+};
+extern char D_006FBD80;
+extern "C" void func_001E3C24(int, Vec3 *);
 struct SndChain;
 struct SndNode {
     SndNode *m_prev;        // +0x00
@@ -81,7 +88,25 @@ extern "C" void GamSndMan__vfunc_01(char *arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E0F1C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E100C);
+extern "C" void func_001E100C(int arg0, Vec3 *v)
+{
+    Vec3 tmp;
+    char *base;
+    float *src;
+
+    if (*(int *)(arg0 + 0x110) != 0) {
+        if (*(int *)(arg0 + 0) == 1) {
+            base = &D_006FBD80;
+            src = (float *)(base + 0x2AB70);
+            tmp.m_x = src[0x10];
+            tmp.m_y = src[0x11];
+            tmp.m_z = src[0x12];
+            func_001E3C24(arg0, &tmp);
+        } else {
+            func_001E3C24(arg0, v);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E107C);
 
