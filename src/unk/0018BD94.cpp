@@ -1,4 +1,9 @@
 #include "include_asm.h"
+struct Vec3i_CC54 {
+    int x;
+    int y;
+    int z;
+};
 extern "C" void X_F1F4_func_0018F0EC(int, int, int, int) asm("func_0018F0EC");
 extern "C" void X_F1F4_func_0018D7EC(int, int, int, int, int *, int) asm("func_0018D7EC");
 extern "C" int Xiii_func_001C0254(int, int) asm("func_001C0254");
@@ -473,7 +478,28 @@ extern "C" float func_0018CA98(int arg0, int arg1, float fparg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018CAC8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018CC54);
+extern "C" void func_0018CC54(int arg0, int arg1, int arg2, Vec3i_CC54 *arg3, Vec3i_CC54 *arg4)
+{
+    float temp_f1;
+    int temp_a0;
+
+    temp_f1 = (float)arg2;
+    temp_a0 = M2C_FIELD(arg0, int *, 0x4AC) + (arg1 * 0x154);
+    M2C_FIELD(temp_a0, int *, 8) = 1;
+    M2C_FIELD(temp_a0, int *, 0xFC) = arg2;
+    M2C_FIELD(temp_a0, int *, 0xF8) = arg2;
+    M2C_FIELD(temp_a0, float *, 0x7C) = (float)(arg3->x >> 4);
+    M2C_FIELD(temp_a0, float *, 0x80) = (float)(arg3->y >> 4);
+    M2C_FIELD(temp_a0, float *, 0x84) = (float)(arg3->z >> 4);
+    M2C_FIELD(temp_a0, float *, 0x88) = (float)((arg4->x >> 4) - (arg3->x >> 4)) / temp_f1;
+    M2C_FIELD(temp_a0, float *, 0x8C) = (float)((arg4->y >> 4) - (arg3->y >> 4)) / temp_f1;
+    M2C_FIELD(temp_a0, float *, 0x90) = (float)((arg4->z >> 4) - (arg3->z >> 4)) / temp_f1;
+    M2C_FIELD(temp_a0, int *, 0x94) = 0;
+    M2C_FIELD(temp_a0, int *, 0x98) = 0;
+    M2C_FIELD(temp_a0, int *, 0x9C) = 0;
+    M2C_FIELD(temp_a0, Vec3i_CC54 *, 0xA0) = *arg3;
+    M2C_FIELD(temp_a0, Vec3i_CC54 *, 0xAC) = *arg4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018CD88);
 
