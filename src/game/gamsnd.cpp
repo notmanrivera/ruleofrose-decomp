@@ -1,4 +1,9 @@
 #include "include_asm.h"
+struct Ent4908 {
+    char name[0x1C];
+    int unk1C;
+    char pad[0x38 - 0x20];
+};
 struct Ent5BE0 {
     char pad0[0x14];
     int unk14;
@@ -691,7 +696,28 @@ extern "C" void func_001E484C(Obj484C *arg0, int arg1, const Big484C *arg2)
     *arg0->unk1544 = *arg2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E4908);
+extern "C" int func_001E4908(int arg0, int arg1, int *arg2, int arg3)
+{
+    Ent4908 *e = *(Ent4908 **)(arg0 + 0x1540);
+    if (e == 0) {
+        return 0;
+    }
+    int i = 1;
+    if (e->unk1C != 0) {
+        do {
+            if (arg1 == e->unk1C) {
+                *(Ent4908 **)arg2 = e;
+                return 1;
+            }
+            e++;
+            if (i++ >= 0x400) {
+                break;
+            }
+        } while (e->unk1C != 0);
+    }
+    *(Ent4908 **)arg2 = 0;
+    return 0;
+}
 
 extern "C" int func_001E4970(Obj4970 *arg0, const char *arg1, Ent4970 **arg2)
 {
