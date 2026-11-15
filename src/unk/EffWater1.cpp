@@ -1,4 +1,6 @@
 #include "include_asm.h"
+struct SteamV4 { float x; float y; int z; int w; } __attribute__((aligned(8)));
+extern "C" void Xppp_func_002378B0(void *, void *, void *) asm("func_002378B0");
 extern "C" void Xp_func_00237340(void *) asm("func_00237340");
 extern "C" void Xpp_func_00237830(void *, void *, float) asm("func_00237830");
 extern float D_002F2FB0;
@@ -224,7 +226,43 @@ extern "C" void renderPreMain__10EffReload1PQ24Eff011RENDERPARAM(int arg0, int a
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1__vfunc_02);
+extern "C" int EffSteam1__vfunc_02(int arg0, int arg1)
+{
+    SteamV4 w;
+    SteamV4 v;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_s2;
+
+    temp_s2 = arg0 + 0x30;
+    if (Xiii_Eff0__vfunc_02(arg0, arg1) != 0) {
+        M2C_FIELD(arg0, float *, 0x70) = M2C_FIELD(arg1, float *, 0x24);
+        M2C_FIELD(arg0, float *, 0x74) = M2C_FIELD(arg1, float *, 0x28);
+        temp_v0 = M2C_FIELD(arg1, int *, 0x3C);
+        M2C_FIELD(arg0, int *, 0x28) = temp_v0;
+        int lo = (temp_v0 >= 0) ? temp_v0 : 0;
+        temp_v0_2 = temp_v0 + M2C_FIELD(arg1, int *, 0x40);
+        M2C_FIELD(arg0, int *, 0x28) = lo;
+        M2C_FIELD(arg0, int *, 0x2C) = (temp_v0_2 >= 1) ? temp_v0_2 : 1;
+        int rnd = Xi_func_0016AD94();
+        float c2 = (float)M2C_FIELD(arg0, int *, 0x2C);
+        v.z = 0;
+        v.w = 0;
+        *(long long *)&w.z = *(long long *)&v.z;
+        M2C_FIELD(arg0, int *, 0x24) = (int)((c2 * (float) rnd) / 255.0f);
+        float fx = M2C_FIELD(arg1, float *, 0x1C);
+        float fy = M2C_FIELD(arg1, float *, 0x20);
+        v.x = fx;
+        v.y = fy;
+        *(long long *)&w.x = *(long long *)&v.x;
+        Xp_func_00237340((void *)temp_s2);
+        Xppp_func_002378B0((void *)temp_s2, (void *)temp_s2, &w);
+        *(m2c_block12 *)((char *)(arg0) + 0x60) = *(m2c_block12 *)((char *)(arg1) + 0x10);
+        *(m2c_block16 *)((char *)(arg0) + 0x78) = *(m2c_block16 *)((char *)(arg1) + 0x2C);
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1__vfunc_05);
 
