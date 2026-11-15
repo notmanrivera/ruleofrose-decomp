@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" void X_func_0019B384_C0E4(void *, int) asm("func_0019B384");
+extern "C" int func_0019C048(void *, unsigned short);
+extern "C" void func_0019B020(void *, int);
 struct Elem10_9AB4 {
     int unk00;
     int unk04;
@@ -511,7 +514,17 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019C048);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019C09C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019C0E4);
+extern "C" void func_0019C0E4(void *arg0, int arg1)
+{
+    if (arg1 != 0) {
+        return;
+    }
+    char *base = (char *)&D_007812C0;
+    X_func_0019B384_C0E4(arg0, -1);
+    *(int *)((char *)arg0 + 0x154C) = func_0019C048(arg0, *(unsigned short *)(base + 0x2220C));
+    *(int *)((char *)arg0 + 0x1550) = func_0019C048(arg0, *(unsigned short *)(base + 0x2220E));
+    return func_0019B020(arg0, 0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019C16C);
 
