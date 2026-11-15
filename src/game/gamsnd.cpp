@@ -673,7 +673,102 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3138);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E34EC);
 
+// NON_MATCHING: 24/91 differ, 27 edits
+#ifdef NON_MATCHING
+struct ALIGNED(16) Ent3698 {
+    char pad00_3698[0x20];
+    int unk20; // 3698
+    char pad24_3698[0x08];
+    int unk2C; // 3698
+    char pad30_3698[0x20];
+}; // Ent3698
+struct SndNode3698 {
+    SndNode3698 *m_prev3698;
+    SndNode3698 *m_next3698;
+    Ent3698 m_data3698;
+}; // SndNode3698
+struct SndChain3698 {
+    SndNode3698 m_head3698;
+    int m_num3698;
+    void push_back(SndNode3698 *theNode) {
+        if (m_num3698 == 0) {
+            m_head3698.m_next3698 = theNode;
+            theNode->m_prev3698 = &m_head3698;
+        } else { // 3698
+            m_head3698.m_prev3698->m_next3698 = theNode;
+            theNode->m_prev3698 = m_head3698.m_prev3698;
+        } // push_back else 3698
+        theNode->m_next3698 = &m_head3698;
+        m_head3698.m_prev3698 = theNode;
+        ++m_num3698;
+    } // push_back 3698
+    void unlink(SndNode3698 *theNode) {
+        if (theNode == m_head3698.m_next3698) {
+            SndNode3698 *next = theNode->m_next3698;
+            m_head3698.m_next3698 = next;
+            next->m_prev3698 = &m_head3698;
+        } else { // unlink not front 3698
+            SndNode3698 *prev = theNode->m_prev3698;
+            if (theNode == m_head3698.m_prev3698) {
+                m_head3698.m_prev3698 = prev;
+                prev->m_next3698 = &m_head3698;
+            } else { // unlink mid 3698
+                prev->m_next3698 = theNode->m_next3698;
+                theNode->m_next3698->m_prev3698 = theNode->m_prev3698;
+            } // unlink mid end 3698
+        } // unlink else end 3698
+        --m_num3698;
+    } // unlink 3698
+}; // SndChain3698
+class SndIt3698 {
+public: // SndIt3698
+    SndNode3698 *m_node3698;
+    SndIt3698() : m_node3698(0) {}
+    SndIt3698(SndNode3698 *node) : m_node3698(node) {}
+    SndIt3698(const SndIt3698 &rhs) : m_node3698(rhs.m_node3698) {}
+    Ent3698 &operator*() { return m_node3698->m_data3698; }
+    SndIt3698 &operator++() { m_node3698 = m_node3698->m_next3698; return *this; }
+    bool operator!=(const SndIt3698 &rhs) const { return m_node3698 != rhs.m_node3698; }
+}; // SndIt3698
+class SndQue3698 {
+public: // SndQue3698
+    SndChain3698 m_free3698;
+    SndChain3698 m_used3698;
+    SndIt3698 begin() { return SndIt3698(m_used3698.m_head3698.m_next3698); }
+    SndIt3698 end() { return SndIt3698(&m_used3698.m_head3698); }
+    SndIt3698 erase(SndIt3698 thePos) {
+        SndIt3698 next = thePos; // 3698
+        ++next; // 3698
+        SndNode3698 *n = thePos.m_node3698;
+        m_used3698.unlink(n);
+        m_free3698.push_back(n);
+        return next; // 3698
+    } // erase 3698
+}; // SndQue3698
+struct Obj3698 {
+    char pad00_3698[0x40];
+    SndQue3698 m_que3698;
+}; // Obj3698
+extern "C" int X_3698_func_001E5660(Obj3698 *, int, int, int) asm("func_001E5660");
+extern "C" void func_001E3698(Obj3698 *arg0, int arg1) {
+    SndIt3698 it;
+    SndIt3698 last;
+    it = arg0->m_que3698.begin();
+    last = arg0->m_que3698.end();
+    while (it != last) {
+        if ((*it).unk2C == arg1) {
+            X_3698_func_001E5660(arg0, (*it).unk20, 1, 0);
+            it = arg0->m_que3698.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+// ---- end
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3698);
+#endif
 
 extern "C" void func_001E3804(char *arg0)
 {
