@@ -1,4 +1,40 @@
 #include "include_asm.h"
+struct SndChain;
+struct SndNode {
+    SndNode *m_prev;        // +0x00
+    SndNode *m_next;        // +0x04
+    char m_data[0x58];      // +0x08
+};
+struct SndChain {
+    SndNode m_head;         // +0x00
+    int m_num;              // +0x60
+    void splice(SndChain &theOther)
+    {
+        if (theOther.m_num != 0) {
+            m_head.m_prev->m_next = theOther.m_head.m_next;
+            SndNode *last = m_head.m_prev;
+            last->m_next->m_prev = last;
+            SndNode *tail = theOther.m_head.m_prev;
+            m_head.m_prev = tail;
+            tail->m_next = &m_head;
+            m_num += theOther.m_num;
+            theOther.m_num = 0;
+            theOther.m_head.m_prev = &theOther.m_head;
+            theOther.m_head.m_next = &theOther.m_head;
+        }
+    }
+};
+struct SndQue {
+    SndChain m_free;        // +0x00
+    char m_pad00[0x0C];
+    SndChain m_used;        // +0x70
+    int m_max;              // +0xE0
+    void clear()
+    {
+        if (m_used.m_num != 0)
+            m_free.splice(m_used);
+    }
+};
 extern "C" void __builtin_delete(void *);
 extern int _vt$9GamSndMan;
 struct Elem28 { int a[10]; };
@@ -85,7 +121,10 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E34EC);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3698);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3804);
+extern "C" void func_001E3804(char *arg0)
+{
+    ((SndQue *)(arg0 + 0x40))->clear();
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E386C);
 
