@@ -1,4 +1,8 @@
 #include "include_asm.h"
+#include "bed/bedpfh.h"
+extern void *D_006E93D4;
+extern "C" int X_C2E4_func_0018FE8C(void *, const char *) asm("func_0018FE8C");
+extern "C" void X_C2E4_func_001BEBEC(void *, void *) asm("func_001BEBEC");
 struct Sub154_BD94 {
     int unk00;
     int unk04;
@@ -275,7 +279,37 @@ extern "C" void func_0018C190(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C2E4);
+extern "C" int func_0018C2E4(char *arg0, const char *arg1, int arg2)
+{
+    void **p;
+
+    if (arg2 == 0) {
+        return 1;
+    }
+    if (arg2 == 1) {
+        arg2 = 0;
+    }
+    p = (void **)(((arg2 * 4) + (int)arg0) + 0x4E4);
+    if (*p != 0) {
+        return 0;
+    }
+    if (*(int *)(arg0 + 0x8E8) == 1) {
+        char *sub = arg0 + 8;
+        int n = X_C2E4_func_0018FE8C(sub, arg1);
+        if (n < 0) {
+            return 1;
+        }
+        BedPfh *pfh = *(BedPfh **)(sub + 0x430);
+        void *top = pfh->getFileTop(n);
+        *p = top;
+        D_006E93D4 = top;
+        X_C2E4_func_001BEBEC(arg0 + arg2 * 0x6C + 0x440, *p);
+    } else {
+        *p = D_006E93D4;
+        X_C2E4_func_001BEBEC(arg0 + arg2 * 0x6C + 0x440, *p);
+    }
+    return 0;
+}
 
 extern "C" int func_0018C448(int arg0, int arg1, int arg2)
 {
