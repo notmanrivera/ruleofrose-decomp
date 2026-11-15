@@ -248,7 +248,75 @@ extern "C" void func_001D81C4(int arg0, int arg1, int arg2, int arg3, int arg4, 
     Xiiiiii_func_001D81F0(arg0, arg6, arg1, arg2, (int)&stack);
 }
 
+#ifdef NON_MATCHING
+extern int D_007811AC;
+extern "C" int func_0017D298(void *, void *);
+
+struct StatTblEntry81F0 {
+    int m_unk00;
+    int m_unk04;
+    int m_unk08;
+    int m_unk0C;
+    int m_unk10;
+    int m_unk14;
+};
+
+struct StatCallParam81F0 {
+    int m_unk00;
+    int *m_unk04;
+    int *m_unk08;
+    void *m_unk0C;
+};
+
+extern "C" int func_001D81F0(int arg0, int arg1, int arg2, int arg3, int arg4) {
+    StatCallParam81F0 param;
+    int sp10[4];
+    int sp20[4];
+    int ptr1;
+    int ptr2;
+    int off;
+    StatTblEntry81F0 *e1;
+    StatTblEntry81F0 *e2;
+    int ret;
+
+    (void)arg0;
+    X_memset_p(sp10, 0, sizeof(sp10));
+    X_memset_p(sp20, 0, sizeof(sp20));
+
+    ptr2 = 0;
+    off = arg1 * 0x18;
+    ptr1 = 0;
+    e1 = (StatTblEntry81F0 *)((char *)&D_007811B4 + off);
+    e2 = (StatTblEntry81F0 *)((unsigned int)((char *)&D_007811AC + off) + 8);
+
+    if (e1->m_unk04 != 0 && e1->m_unk0C != 0) {
+        ptr1 = e1->m_unk0C + arg2 * 0x90;
+    }
+    sp10[arg1] = ptr1;
+
+    if (e2->m_unk04 != 0) {
+        int base2 = e2->m_unk0C;
+        ptr2 = 0;
+        if (base2 != 0) {
+            ptr2 = base2 + arg3 * 0x90;
+        }
+    }
+    sp20[arg1] = ptr2;
+
+    param.m_unk00 = arg1;
+    param.m_unk04 = sp10;
+    param.m_unk08 = sp20;
+    param.m_unk0C = (void *)arg4;
+
+    ret = func_0017D298(e2, &param);
+    if (ret != 0) {
+        ret = *(int *)((char *)arg4 + 0x1FC);
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D81F0);
+#endif
 
 extern "C" int func_001D831C()
 {
