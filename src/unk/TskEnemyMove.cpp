@@ -290,7 +290,52 @@ extern "C" int func_001FF664(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FF830);
+extern "C" int func_001FF830(int arg0)
+{
+    switch (M2C_FIELD(arg0, int *, 0x20)) {
+    case 0: {
+        float rot[3];
+        int a0 = M2C_FIELD(arg0, int *, 0x10);
+        int a1 = M2C_FIELD(arg0, int *, 0x24);
+        ((struct DogActor_1FF664 *)((char *)&D_006FE6A0 + M2C_FIELD(arg0, int *, 0x14) * 0x4D0))->getRot(rot);
+        Xiiiiiif_func_001F5BDC(a0, a1, -1, 0, 0, 1.0f / 60.0f, rot[1]);
+        M2C_FIELD(arg0, int *, 0x1C) = 0;
+        M2C_FIELD(arg0, int *, 0x20) = 1;
+        break;
+    }
+    case 1:
+        if (M2C_FIELD(arg0, int *, 0x1C) >= M2C_FIELD(arg0, int *, 0x44)) {
+            M2C_FIELD(arg0, int *, 0x20) = 2;
+        }
+        break;
+    case 2:
+        if (Xiiu_func_001D19A8((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0x10)) == 0) {
+            if (M2C_FIELD(arg0, int *, 0x1C) <= M2C_FIELD(arg0, int *, 0x48)) {
+                if (Xiiiif_func_001F5410(M2C_FIELD(arg0, int *, 0x10), M2C_FIELD(arg0, int *, 0x34), (int)D_002FF2F0, M2C_FIELD(arg0, float *, 0x40)) != 0 ||
+                    Xiiiif_func_001F5410(M2C_FIELD(arg0, int *, 0x10), M2C_FIELD(arg0, int *, 0x34), (int)D_002FF2F8, M2C_FIELD(arg0, float *, 0x40)) != 0) {
+                    Xiuiiiiui_func_001FAC60(0xBU, M2C_FIELD(arg0, int *, 0x10), 0, 0, M2C_FIELD(arg0, int *, 0x3C), M2C_FIELD(arg0, unsigned int *, 0x34), 0);
+                }
+            }
+        } else {
+            M2C_FIELD(arg0, int *, 0x20) = 4;
+        }
+        break;
+    case 3:
+        if (M2C_FIELD(arg0, int *, 0x1C) == 0x1E) {
+            return 1;
+        }
+        break;
+    case 4:
+        if (Xiiu_func_001D19A8((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0x10)) != 0) {
+            return 1;
+        }
+        break;
+    case 0x3E7:
+        return 1;
+    }
+    M2C_FIELD(arg0, int *, 0x1C)++;
+    return 0;
+}
 
 extern "C" int func_001FF9FC(int arg0)
 {
