@@ -1,4 +1,14 @@
 #include "include_asm.h"
+extern "C" int X_func_001CC044(...) asm("func_001CC044");
+extern "C" int X_func_001CC250(...) asm("func_001CC250");
+extern "C" int X_func_001DC48C(...) asm("func_001DC48C");
+extern "C" int X_func_002120AC(...) asm("func_002120AC");
+extern "C" int X_func_00212920(...) asm("func_00212920");
+extern "C" int X_func_002129B8(...) asm("func_002129B8");
+extern "C" int X_func_00212A5C(...) asm("func_00212A5C");
+extern "C" int X_func_00212D08(...) asm("func_00212D08");
+extern "C" int X_func_00212E64(...) asm("func_00212E64");
+extern int D_002D9900;
 extern "C" int X___builtin_new(...) asm("__builtin_new");
 extern "C" int X_func_001CF6BC(...) asm("func_001CF6BC");
 extern "C" int X_func_001CF854(...) asm("func_001CF854");
@@ -795,7 +805,81 @@ extern "C" int func_002099B4()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_002099BC);
+extern "C" int func_002099BC(unsigned int arg0, unsigned int arg1, unsigned int arg2, int arg3)
+{
+    struct { unsigned short sp0; } stack;
+    int var_a6;
+    register int base PS2_REG("$4");
+    int var_a3_2;
+    int var_a3;
+    unsigned int var_a1;
+    unsigned int var_a2;
+
+    switch (arg0) {
+    case 0x1:
+        X_func_002120AC((int)&D_007A4440, (int) arg2, arg1, 0, 0, 0, (int)"none");
+        break;
+    case 0x2:
+        var_a1 = arg1;
+        var_a2 = arg2;
+        var_a3 = 0xFFFF;
+        X_func_001CC250((int)&D_007812C0, var_a1, var_a2, var_a3, 0U, 0);
+        break;
+    case 0x3:
+        var_a2 = arg1;
+        var_a1 = -1U;
+        var_a3 = 0xC00;
+        X_func_001CC250((int)&D_007812C0, var_a1, var_a2, var_a3, 0U, 0);
+        break;
+    case 0x4:
+        if (arg1 != 0xFFFF) {
+            base = (int)&D_007812C0;
+            X_func_001DC48C(base + 0x22220, arg1 & 0xFFFF, (int) 0xF, (int)&stack);
+        } else {
+            stack.sp0 = -1U;
+        }
+        X_func_001CC044((int)&D_007812C0, stack.sp0, (int) arg2, arg3, arg1 & 0xFFFF, 0);
+        break;
+    case 0xB:
+        X_func_00212920((int)&D_007A4440, (int) arg2, arg1);
+        break;
+    case 0xD:
+        var_a3_2 = 0;
+        X_func_002129B8((int)&D_007A4440, arg1, 0, var_a3_2);
+        return 0xCCCCCCCD;
+    case 0xE:
+        var_a3_2 = 1;
+        X_func_002129B8((int)&D_007A4440, arg1, 0, 1);
+        return 0xCCCCCCCD;
+    case 0xF:
+        X_func_00212A5C((int)&D_007A4440, arg1, 0, 1);
+        return 0xCCCCCCC9;
+    case 0x14:
+        var_a1 = arg1;
+        var_a2 = arg2;
+        var_a3 = arg3 & 0xFFFF;
+        X_func_001CC250((int)&D_007812C0, var_a1, var_a2, var_a3, 0U, 0);
+        break;
+    case 0x15:
+        M2C_FIELD((int)&D_002D9900, float *, 0) = (float) M2C_FIELD(arg2, float *, 0);
+        M2C_FIELD((int)&D_002D9900, float *, 4) = (float) M2C_FIELD(arg2, float *, 4);
+        M2C_FIELD((int)&D_002D9900, float *, 8) = (float) M2C_FIELD(arg2, float *, 8);
+        X_func_001CC250((int)&D_007812C0, -1U, arg1, 0x1200, (unsigned int) (int)&D_002D9900, 0);
+        break;
+    case 0x1E:
+        var_a6 = (int) arg3;
+        X_func_002120AC((int)&D_007A4440, (int)arg2, arg1, 0, 0, 0, arg3);
+        break;
+    case 0x1F:
+        X_func_00212E64((int)&D_007A4440, arg1);
+        break;
+    case 0x63:
+        X_func_00212D08((int)&D_007A4440, (int) arg2, 0);
+        break;
+    case 0: default: break;
+    }
+    return 0;
+}
 
 extern "C" int func_00209C0C()
 {
