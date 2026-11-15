@@ -1,4 +1,21 @@
 #include "include_asm.h"
+struct NodeItem212920 {
+    int a;
+    int b;
+    int c;
+    int d;
+};
+struct Node212920 {
+    Node212920 *next;
+    Node212920 *prev;
+    NodeItem212920 item;
+};
+struct List212920 {
+    Node212920 *head;
+    Node212920 *tail;
+    int pad[4];
+    int count;
+};
 extern "C" void func_002127F4(int arg0);
 extern "C" void func_00213450(int arg0, int arg1, int arg2);
 // A one-pointer iterator class with a copy constructor: BLKmode, so a local
@@ -814,7 +831,33 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00212598);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002127F4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00212920);
+extern "C" void func_00212920(char *arg0, int arg1, int arg2)
+{
+    List212920 *freeList = (List212920 *)(arg0 + 0xC3C0);
+    List212920 *usedList = (List212920 *)(arg0 + 0xC3DC);
+    NodeItem212920 item;
+    item.a = arg1;
+    item.b = arg2;
+
+    Node212920 *node = freeList->head;
+    Node212920 *next = node->next;
+    freeList->head = next;
+    next->prev = (Node212920 *)freeList;
+    freeList->count--;
+
+    node->item = item;
+
+    if (usedList->count == 0) {
+        usedList->tail = node;
+        node->next = (Node212920 *)usedList;
+    } else {
+        usedList->head->prev = node;
+        node->next = usedList->head;
+    }
+    node->prev = (Node212920 *)usedList;
+    usedList->head = node;
+    usedList->count++;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/0020ED9C", D_00301710);
 
