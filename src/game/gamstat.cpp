@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern const int D_002FC1F8[][8];
 extern "C" float func_001D817C(int, int *, void *, int);
 extern "C" void *X_memset_p(void *, int, unsigned int) asm("memset");
 extern "C" int func_0017DED0(void *, int, void *, float);
@@ -235,7 +236,32 @@ extern "C" void func_001D83C0(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D83D0);
+extern "C" int func_001D83D0(int arg0, int arg1, int arg2, int arg3)
+{
+    int ret = -1;
+    switch (arg1) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 6:
+    case 7:
+        for (int i = 0; D_002FC1F8[i][arg1] != -1; i++) {
+            if (arg2 == D_002FC1F8[i][arg1]) {
+                ret = D_002FC1F8[i][arg3];
+                break;
+            }
+        }
+        break;
+    case 5:
+        break;
+    case 0x63:
+        ret = D_002FC1F8[arg2][arg3];
+        break;
+    }
+    return ret;
+}
 
 extern "C" int func_001D84A8()
 {
