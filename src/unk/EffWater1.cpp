@@ -1,4 +1,5 @@
 #include "include_asm.h"
+struct m2c_block16 { int w[4]; };
 extern "C" int X_func_0021B260(int, int) asm("func_0021B260");
 extern "C" int X_func_0021B4F8(int, int) asm("func_0021B4F8");
 extern "C" int X_func_0021B5A0(int, int) asm("func_0021B5A0");
@@ -224,7 +225,30 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1__vfunc_02);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1Prim__vfunc_02);
+extern "C" int EffSteam1Prim__vfunc_02(int arg0, int arg1)
+{
+    float temp_f2;
+    int temp_v1;
+
+    if (!Xiii_Eff0__vfunc_02(arg0, arg1)) {
+        return 0;
+    }
+    M2C_FIELD(arg0, float *, 0x58) = M2C_FIELD(arg1, float *, 0x20);
+    temp_v1 = M2C_FIELD(arg1, int *, 0x10);
+    *(m2c_block16 *)((char *)(arg0) + 48) = *(m2c_block16 *)((char *)(temp_v1) + 0);
+    M2C_FIELD(arg0, float *, 0x3C) = 1.0f;
+    temp_f2 = M2C_FIELD(arg1, float *, 0x24) * 15.0f;
+    M2C_FIELD(arg0, float *, 0x40) = M2C_FIELD(arg1, float *, 0x14) * temp_f2;
+    M2C_FIELD(arg0, float *, 0x44) = M2C_FIELD(arg1, float *, 0x18) * temp_f2;
+    M2C_FIELD(arg0, float *, 0x48) = M2C_FIELD(arg1, float *, 0x1C) * temp_f2;
+    M2C_FIELD(arg0, float *, 0x54) = 20.0f;
+    M2C_FIELD(arg0, float *, 0x5C) = 0.3999999836087227f;
+    M2C_FIELD(arg0, float *, 0x60) = 0.029999999795109034f;
+    M2C_FIELD(arg0, int *, 0x4C) = 0;
+    M2C_FIELD(arg0, float *, 0x64) = M2C_FIELD(arg1, float *, 0x28);
+    *(m2c_block16 *)((char *)(arg0) + 104) = *(m2c_block16 *)((char *)(arg1) + 44);
+    return 1;
+}
 
 extern "C" int EffSteam1Prim__vfunc_05(int arg0)
 {
