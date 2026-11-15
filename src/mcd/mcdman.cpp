@@ -1,4 +1,22 @@
 #include "include_asm.h"
+extern "C" int Xi_strcmp(const char *, const char *) asm("strcmp");
+struct McdDirEntry {
+    int size;
+    char pad[0xC];
+    char name[0x30];
+};
+struct McdMgr {
+    char pad0[0x90];
+    int m_num;
+    char pad1[0x13C];
+    McdDirEntry m_dir[16];
+    const char *getName(int i) const {
+        return (i < m_num) ? m_dir[i].name : 0;
+    }
+    int getSize(int i) const {
+        return (i < m_num) ? m_dir[i].size : 0;
+    }
+};
 struct McdSlot {
     int f0;
     int f4;
@@ -353,7 +371,15 @@ INCLUDE_RODATA("asm/nonmatchings/mcd/mcdman", D_002F78F8);
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018B2BC);
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018B874);
+extern "C" int func_0018B874(const McdMgr *arg0)
+{
+    for (int i = 0; i < arg0->m_num; i++) {
+        if (Xi_strcmp(arg0->getName(i), D_002F78C8) == 0 && arg0->getSize(i) == 0x3C4) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 extern "C" int func_0018B918(int arg0, const char *s1, const char *s2)
 {
