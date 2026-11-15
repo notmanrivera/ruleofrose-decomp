@@ -2927,7 +2927,82 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE588);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE590);
 
+// NON_MATCHING: 21/169 differ, 4 relocs differ, 15 edits
+#ifdef NON_MATCHING
+extern "C" int movieReady04(int) asm("func_001928B8");
+extern "C" int movieStatus04(int) asm("func_001928D4");
+extern "C" int movieEnd04(int) asm("func_00181780");
+extern "C" int movieStop04(int) asm("func_00192920");
+extern "C" int movieFade04(int, int, int, int) asm("func_00131184");
+extern "C" int movieSkip04(int, int, int, int) asm("func_001311BC");
+extern int D_0079A0C0;
+extern int D_007B40C0;
+extern "C" int movieParam04(int, int, int, int, int, int) asm("func_001E6734");
+extern "C" int TskMovie__vfunc_04(int arg0) {
+    int movieOff = 0x84AA8;
+    int sceneOff = 0x12540;
+    int actorOff = 0x18E00;
+    int padOff = 0x97A40;
+    switch(M2C_FIELD(arg0, int *, 8)) {
+    case 100:
+        if(movieReady04((int)&D_006FBD80 + movieOff) == 1) M2C_FIELD(arg0, int *, 8) = 101;
+        break;
+    case 101:
+        if(movieStatus04((int)&D_006FBD80 + movieOff) >= 0) {
+            M2C_FIELD(arg0, int *, 0xC) = 2;
+            M2C_FIELD(arg0, int *, 8) = 102;
+        }
+        break;
+    case 102:
+        if(M2C_FIELD(arg0, int *, 0xC)-- <= 0) {
+            movieFade04((int)&D_006E9840 + sceneOff, 10, 7, 0);
+            M2C_FIELD(arg0, int *, 8) = 103;
+        }
+        break;
+    case 103: {
+        int one = 1;
+        int *pad = (int *)((char *)&D_006E9840 + padOff);
+        if(!(~M2C_FIELD(*pad, unsigned short *, 0x78) & 8)) {
+            movieSkip04((int)&D_006E9840 + sceneOff, 0, 7, 0);
+            M2C_FIELD(arg0, int *, 8) = 104;
+        } else if(movieEnd04((int)&D_007B40C0) == one) {
+            M2C_FIELD(arg0, int *, 8) = 104;
+        }
+        break;
+    }
+    case 104: {
+        char *p = (char *)&D_0079A0C0;
+        M2C_FIELD(arg0, int *, 0x50) = M2C_FIELD(p, int *, 0x1588);
+        M2C_FIELD(arg0, int *, 0x54) = M2C_FIELD(p, int *, 0x158C);
+        movieParam04((int)p, 13, 0, 0, 20, -1);
+        M2C_FIELD(arg0, int *, 0xC) = 0;
+        M2C_FIELD(arg0, int *, 8) = 105;
+        break;
+    }
+    case 105:
+        if(M2C_FIELD(arg0, int *, 0xC)++ >= 31) {
+            int *flags = &D_007B2060->m_flags;
+            if(*flags >= 0) movieFade04((int)&D_006E9840 + sceneOff, 30, 7, 0);
+            else *flags &= 0x7FFFFFFF;
+            int actor = (int)&D_007812C0 + actorOff;
+            int rate = 2;
+            movieStop04((int)&D_006FBD80 + movieOff);
+            _9MagSystem$m_v_rate = rate;
+            M2C_FIELD(arg0, int *, 8) = 106;
+            movieParam04(actor, 13, M2C_FIELD(arg0, int *, 0x50), M2C_FIELD(arg0, int *, 0x54), 10, -1);
+            movieParam04(actor, 30, 1, 64, 0, -1);
+        }
+        break;
+    case 106:
+        return 1;
+    default:
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovie__vfunc_04);
+#endif
 
 extern "C" void func_001F47F0(int arg0, int arg1, int arg2, int arg3)
 {
