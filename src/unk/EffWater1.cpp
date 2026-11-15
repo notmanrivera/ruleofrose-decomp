@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int X_func_00237360(int, int, float) asm("func_00237360");
+extern "C" int X_func_002373D8(int, int, int) asm("func_002373D8");
 extern "C" int Xii_func_0017A410(int) asm("func_0017A410");
 extern "C" int X_func_0021A760(int, int, int) asm("func_0021A760");
 extern "C" int X_func_0022E960(int, int, int, float) asm("func_0022E960");
@@ -164,7 +166,30 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1Prim__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1Prim__vfunc_05);
+extern "C" int EffSteam1Prim__vfunc_05(int arg0)
+{
+    float temp_f1;
+    int var_v0;
+    int temp_a0;
+    int temp_s1;
+
+    temp_s1 = arg0 + 0x40;
+    var_v0 = 0;
+    temp_f1 = M2C_FIELD(arg0, float *, 0x5C) + M2C_FIELD(arg0, float *, 0x60);
+    M2C_FIELD(arg0, float *, 0x5C) = temp_f1;
+    if (!(temp_f1 <= 0.0f)) {
+        if (temp_f1 >= 1.0f) {
+            M2C_FIELD(arg0, float *, 0x5C) = 1.0f;
+            M2C_FIELD(arg0, float *, 0x60) = (float) (M2C_FIELD(arg0, float *, 0x64) * -0.06999999471008778f);
+        }
+        X_func_00237360(temp_s1, temp_s1, 0.95f);
+        temp_a0 = arg0 + 0x30;
+        X_func_002373D8(temp_a0, temp_a0, temp_s1);
+        M2C_FIELD(arg0, float *, 0x54) = (float) (M2C_FIELD(arg0, float *, 0x54) + 4.5f);
+        var_v0 = 1;
+    }
+    return var_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1Prim__vfunc_08);
 
