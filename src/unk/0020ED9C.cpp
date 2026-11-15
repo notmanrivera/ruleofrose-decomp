@@ -389,7 +389,16 @@ extern "C" void func_002105C0(unsigned int arg0, unsigned int arg1, unsigned int
     }
 };
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002105FC);
+extern "C" void func_002105FC(unsigned int arg0, unsigned int arg1, int arg2)
+{
+    if (arg0 == 0) {
+        (*(int *)&D_007B47C0) = ((short) (arg2 * 4) + ((*(int *)&D_007B4780) - (*(int *)&D_007B47D0)) + 0x8164) | 0x80000000;
+        return;
+    }
+    if (((int *)&D_007B4700)[arg0] == ((int *)&D_007B4700)[arg1]) {
+        (*(int *)&D_007B47C0) = ((short) (arg2 * 4) + ((*(int *)&D_007B4780) - (*(int *)&D_007B47D0)) + 0x8164) | 0x80000000;
+    }
+}
 
 extern "C" void func_002106A0(unsigned int arg0, int arg1, unsigned int arg2)
 {
