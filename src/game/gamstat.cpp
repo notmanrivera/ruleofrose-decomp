@@ -277,6 +277,23 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamstat", D_002FC3E8);
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamstat", D_002FC3F8);
 
+// NON_MATCHING: func_001D84C8 itself is MATCH (0xd4), blocked on .rodata alignment of D_002FC418 (.align 3 before D_002FC418)
+#ifdef NON_MATCHING
+extern "C" void *X_alloc__9BedMemoryiPCciii_p(void *, int, const char *, int, int, int) asm("alloc__9BedMemoryiPCciii");
+extern "C" void func_001D84C8(void *arg0, int arg1, int arg2)
+{
+    int size = arg2 * 2;
+    *(void **)((char *)arg0 + 4) = X_alloc__9BedMemoryiPCciii_p(&D_006E9800, size, "game/gamstat.cpp", 0x1F, 0, 2);
+    *(void **)((char *)arg0 + 8) = X_alloc__9BedMemoryiPCciii_p(&D_006E9800, size, "game/gamstat.cpp", 0x21, 0, 2);
+    X_memset_p(*(void **)((char *)arg0 + 4), 0, size);
+    X_memset_p(*(void **)((char *)arg0 + 8), 0, size);
+    *(int *)((char *)arg0 + 0xC) = arg1;
+    *(int *)arg0 = arg2;
+    *(int *)((char *)arg0 + 0x14) = 0;
+    *(int *)((char *)arg0 + 0x10) = 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D84C8);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamstat", D_002FC418);
