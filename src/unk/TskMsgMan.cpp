@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" float Xfi_func_001EA5EC(int) asm("func_001EA5EC");
+extern "C" int Xiif_func_001EAFB0(int, float) asm("func_001EAFB0");
+extern "C" int Xiu_func_001F61EC(unsigned int) asm("func_001F61EC");
 extern "C" void Xv_TskMsgMan__vfunc_05(int) asm("TskMsgMan__vfunc_05");
 extern "C" void Xvii_func_00183B24(int, int) asm("func_00183B24");
 extern int _vt$9TskMsgMan;
@@ -185,7 +188,42 @@ extern "C" void TskMoveTypeGen__vfunc_04(TskMoveTypeGenObj *arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAF00);
+extern "C" int func_001EAF00(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x1C);
+    if (temp_v1 < 3) {
+        goto fail;
+    }
+    if (temp_v1 >= 5) {
+        if (temp_v1 >= 0xD) {
+            goto fail;
+        }
+        if (temp_v1 < 0xB) {
+            goto fail;
+        }
+    }
+    if ((unsigned int) M2C_FIELD(arg0, unsigned int *, 0xC) >= 0x201U) {
+        M2C_FIELD(arg0, unsigned int *, 0xC) = (unsigned int) M2C_FIELD(M2C_FIELD(arg0, int *, 4), unsigned int *, 0x108);
+    }
+    Xiif_func_001EAFB0(arg0, Xfi_func_001EA5EC(arg0));
+    temp_v0 = M2C_FIELD(arg0, int *, 0x68);
+    if (temp_v0 > 0) {
+        M2C_FIELD(arg0, int *, 0x60) = temp_v0;
+    }
+    if (M2C_FIELD(arg0, int *, 0x60) == 0) {
+        M2C_FIELD(arg0, int *, 0x50) = 0;
+        M2C_FIELD(arg0, int *, 0x54) = 0;
+        M2C_FIELD(arg0, int *, 0x58) = 0;
+    }
+    return 0;
+
+fail:
+    Xiu_func_001F61EC(M2C_FIELD(arg0, unsigned int *, 8));
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAFB0);
 
