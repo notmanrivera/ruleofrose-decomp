@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" float func_001D817C(int, int *, void *, int);
 extern "C" void *X_memset_p(void *, int, unsigned int) asm("memset");
 extern "C" int func_0017DED0(void *, int, void *, float);
 extern char D_006FBD80[];
@@ -38,7 +39,26 @@ INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D7B08);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D7C20);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D7DE4);
+extern "C" float func_001D7DE4(void *arg0, void *arg1)
+{
+    int *sp[4];
+    int off = 0x8542C;
+    func_0017C340(D_006FBD80 + off, arg1, sp, 0, 40.0f, 0.0f);
+    int i = *(int *)((char *)arg0 + 0x22AB0);
+    int *p = sp[i];
+    if (p == 0) {
+        for (i = 0; i < 4; i++) {
+            if (sp[i] != 0) {
+                break;
+            }
+        }
+        if (i == 4) {
+            return 0.0f;
+        }
+        p = sp[i];
+    }
+    return func_001D817C((int)arg0, p, arg1, i);
+}
 
 extern "C" void func_001D7EB8()
 {
