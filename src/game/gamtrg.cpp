@@ -315,7 +315,42 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D9044);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D932C);
 
+// NON_MATCHING: 18/41 differ, 1 reloc differs (size 0xA4, game 0xA8), 11 edits
+#ifdef NON_MATCHING
+extern "C" int Xii_func_001D8EA8(int) asm("func_001D8EA8");
+extern "C" int Xiii_func_001D5DA0(int, int) asm("func_001D5DA0");
+struct DogEntityStub_d95c4 {
+    char pad0[0x94];
+    virtual void vf1();
+    virtual void vf2();
+    virtual void vf3();
+    virtual void vf4();
+    virtual void vf5();
+    virtual void vf6();
+    virtual void vf7();
+    virtual void vf8(int);
+};
+extern "C" void func_001D95C4(int arg0, int arg1)
+{
+    int idx;
+
+    if (arg1 != 0) {
+        if (M2C_FIELD(arg0, int *, 0x120) & 0x40) {
+            Xiii_func_001D5DA0((int)&D_007812C0, M2C_FIELD(arg0, int *, 0x100));
+        }
+    } else {
+        if (M2C_FIELD(arg0, int *, 0x120) & 0x40) {
+            Xii_func_001D8EA8(arg0);
+        }
+    }
+    idx = M2C_FIELD(arg0, int *, 0x108);
+    if (idx != -1) {
+        ((DogEntityStub_d95c4 *)((idx * 0x4D0) + (int)&D_006FE6A0))->vf8(arg1 != 0);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D95C4);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D966C);
 
