@@ -234,7 +234,7 @@ struct SndQue {
             m_free.splice(m_used);
     }
 };
-extern "C" void __builtin_delete(void *);
+extern "C" void X_237___builtin_delete(void *) asm("__builtin_delete");
 extern int _vt$9GamSndMan;
 struct Elem28 { int a[10]; };
 struct Range { char *m_begin; char *m_end; int m_max; };
@@ -312,7 +312,7 @@ extern "C" void GamSndMan__vfunc_01(char *arg0, int arg1)
         p++;
     }
     if (arg1 & 1) {
-        return __builtin_delete(arg0);
+        return X_237___builtin_delete(arg0);
     }
 }
 
@@ -1357,7 +1357,22 @@ extern "C" void func_001E7DE8(TskLogger7DE8 *arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E7E50);
+extern "C" void func_001E7E50(TskLogger7DE8 *arg0, int arg1)
+{
+    if (arg1 == -1) {
+        return;
+    }
+    int i;
+    for (i = 0; i < 0x100 && arg0->sub.arr[i] != -1; i++) {
+        if (arg0->sub.arr[i] == arg1) {
+            return;
+        }
+    }
+    if (i < 0xFE) {
+        arg0->sub.arr[i] = arg1;
+        arg0->sub.arr[i + 1] = -1;
+    }
+}
 
 extern "C" int TskTest__vfunc_04()
 {
