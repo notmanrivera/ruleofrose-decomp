@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xii_func_001FBB04(int) asm("func_001FBB04");
+extern "C" int Xiiiiiif_func_001F5BDC(int, int, int, int, int, float, float) asm("func_001F5BDC");
+extern "C" int Xiiu_func_001D19A8(int, unsigned int) asm("func_001D19A8");
 extern "C" int X_2E20_1D5A0C(void *, float *, int, int, int, void *) asm("func_001D5A0C");
 extern "C" void X_2E20_17C340(void *, float *, void *, int, float, float) asm("func_0017C340");
 extern char D_006FBD80[];
@@ -184,7 +187,24 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_002002CC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00200444);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_002005B8);
+extern "C" int func_002005B8(int arg0)
+{
+    if (Xiiu_func_001D19A8((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0x10)) != 0) {
+        if (Xii_func_001FBB04(arg0) != 0) {
+            return 1;
+        }
+        goto block_4;
+    }
+    if (M2C_FIELD(arg0, int *, 0xC) & 4) {
+block_4:
+        M2C_FIELD(arg0, int *, 0x24) = 0x19;
+        M2C_FIELD(arg0, int *, 0xC) = M2C_FIELD(arg0, int *, 0xC) | 8;
+        Xiiiiiif_func_001F5BDC((int) M2C_FIELD(arg0, unsigned int *, 0x10), 0x19, 1, 0, 0, 1.0f / 60.0f, 32769.0f);
+        M2C_FIELD(arg0, int *, 0xC) = M2C_FIELD(arg0, int *, 0xC) & ~4;
+    }
+    M2C_FIELD(arg0, int *, 0x1C) = M2C_FIELD(arg0, int *, 0x1C) + 1;
+    return 0;
+}
 
 extern "C" void TskEnemyMove__vfunc_03(void) {
 }
