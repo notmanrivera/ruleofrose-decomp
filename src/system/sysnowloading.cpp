@@ -174,7 +174,130 @@ INCLUDE_RODATA("asm/nonmatchings/system/sysnowloading", D_002FF8F0);
 
 INCLUDE_RODATA("asm/nonmatchings/system/sysnowloading", D_002FF900);
 
+// NON_MATCHING: 139/224 differ, 37 relocs differ, 41 edits
+#ifdef NON_MATCHING
+extern int loadingTask asm("D_007A3574");
+extern "C" int X_func_0010A834__8DogActor(...) asm("func_0010A834__8DogActor");
+extern "C" int X_func_001330F4(...) asm("func_001330F4");
+extern "C" int X_func_0013F444(...) asm("func_0013F444");
+extern "C" int X_func_001CB1C0(...) asm("func_001CB1C0");
+extern "C" int X_func_001CF9D4(...) asm("func_001CF9D4");
+extern "C" int X_func_001D046C(...) asm("func_001D046C");
+extern "C" int X_func_001D1A48(...) asm("func_001D1A48");
+extern "C" int X_func_001D1C80(...) asm("func_001D1C80");
+extern "C" int X_func_001D2B8C(...) asm("func_001D2B8C");
+extern "C" int X_func_00211318(...) asm("func_00211318");
+extern "C" int X_func_00213D00(...) asm("func_00213D00");
+extern "C" int X_func_00213E78(...) asm("func_00213E78");
+extern int D_006FE6A0;
+extern int D_00781280;
+extern int D_007A353C;
+extern int D_007A3564;
+extern int D_007A356C;
+extern int D_007A3578;
+extern int D_007A357C;
+extern "C" int func_00205570(unsigned int arg0, unsigned int arg1, int arg2)
+{
+    struct { int sp0; } stack;
+    int base;
+    register int base4 PS2_REG("$4");
+    int id;
+    int pad;
+    int temp_a0;
+    int temp_v1;
+    int var_v0;
+    int var_v0_2;
+    int var_v0_3;
+
+    switch (arg0) {
+    case 0:
+        var_v0 = 0;
+        if (arg1 != 0) {
+            return (X_func_00211318((int)&D_007A4440, arg1) == 0) ? 0 : 0xCCCCCCCC;
+        }
+        return var_v0;
+    case 1:
+        return (X_func_001CB1C0((int)&D_007812C0) == 0) ? 0 : 0xCCCCCCCC;
+    case 2:
+        base = (int)&D_007812C0;
+        var_v0 = X_func_001D046C(base, arg1);
+        if (var_v0 != 0) {
+            id = X_func_001CBE38(base, arg1);
+            base4 = (int)&D_006E9840;
+            return ((X_func_001330F4(base4 + 0x12540, id) ^ arg2) != 0) ? 0 : 0xCCCCCCCC;
+        }
+        
+        return var_v0;
+    case 3:
+        X_func_001D1C80((int)&D_007812C0, arg1, (int) 0x19, (int)&stack);
+        return (X_func_001E7D7C((int)&D_007A3D80, stack.sp0) == 0) ? 0 : 0xCCCCCCCC;
+    case 4:
+        return (X_func_00213D00((int)&D_007A4440, arg1, 0) == 0) ? 0 : 0xCCCCCCCC;
+    case 5:
+        base = (int)&D_007812C0;
+        var_v0 = X_func_001D046C(base, arg1);
+        if (var_v0 != 0) {
+            return (~M2C_FIELD(X_func_001D2B8C(base, arg1), int *, 0x3E0) == 0) ? 0 : 0xCCCCCCCC;
+        }
+        
+        return var_v0;
+    case 6:
+        if (X_func_00211318((int)&D_007A4440, 0x11U) == 0) {
+            return (X_func_001D1A48((int)&D_007812C0) == 0) ? 0 : 0xCCCCCCCC;
+        }
+        return 0xCCCCCCCC;
+    case 7:
+        return (X_func_001CF9D4((int)&D_007812C0) == 0) ? 0 : 0xCCCCCCCC;
+    case 8:
+        return (X_func_001E7D7C((int)&D_007A3D80, (*(int *)&D_007A356C)) == 0) ? 0 : 0xCCCCCCCC;
+    case 9:
+        pad = D_00781280;
+        if (arg1 < 0x11U) {
+            temp_a0 = 1 << arg1;
+            return (((M2C_FIELD(pad, unsigned short *, 0x78) & temp_a0) ^ temp_a0) == 0) ? 0 : 0xCCCCCCCC;
+        }
+        temp_v1 = 1 << (arg1 - 0x10);
+        return (((M2C_FIELD(pad, unsigned short *, 0x7A) & temp_v1) ^ temp_v1) == 0) ? 0 : 0xCCCCCCCC;
+    case 10:
+        return (X_func_001E7D7C((int)&D_007A3D80, (*(int *)&D_007A3564)) == 0) ? 0 : 0xCCCCCCCC;
+    case 11:
+        return (X_func_001E7D7C((int)&D_007A3D80, (*(int *)&loadingTask)) == 0) ? 0 : 0xCCCCCCCC;
+    case 12:
+        base = (int)&D_007812C0;
+        var_v0 = X_func_001D046C(base, arg1);
+        if (var_v0 != 0) {
+            return (~M2C_FIELD(X_func_001D2B8C(base, arg1), int *, 0x3D8) == 0) ? 0 : 0xCCCCCCCC;
+        }
+        
+        return var_v0;
+    case 13:
+        return (X_func_001E7D7C((int)&D_007A3D80, (*(int *)&D_007A3578)) == 0) ? 0 : 0xCCCCCCCC;
+    case 14:
+        return (X_func_001E7D7C((int)&D_007A3D80, (*(int *)&D_007A357C)) == 0) ? 0 : 0xCCCCCCCC;
+    case 15:
+        base4 = (int)&D_006E9840;
+        return (X_func_0013F444(base4 + 0x12540, (*(int *)((int)&D_007A353C))) == 0) ? 0 : 0xCCCCCCCC;
+    case 16:
+        return (X_func_00213E78((int)&D_007A4440, arg1) == 0) ? 0 : 0xCCCCCCCC;
+    case 17:
+        base = (int)&D_007812C0;
+        var_v0 = X_func_001D046C(base, arg1);
+        if (var_v0 != 0) {
+            return (X_func_0010A834__8DogActor((int)&D_006FE6A0 + (X_func_001CBE38(base, arg1) * 0x4D0)) == 0) ? 0 : 0xCCCCCCCC;
+        }
+        
+        return var_v0;
+    case 18:
+        return (M2C_FIELD((*(int *)&D_007B2060), int *, 4) & 0x40000000) ? 0 : 0xCCCCCCCC;
+    default:
+        var_v0 = 0;
+        
+        return var_v0;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00205570);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_002058F0);
 
