@@ -1066,7 +1066,56 @@ extern "C" int func_001DBD54(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBD90);
 
+// NON_MATCHING: 61/66 differ, 5 relocs differ (size 0x108, game 0x100), 43 edits
+#ifdef NON_MATCHING
+typedef unsigned int u_long128_dbdf0 __attribute__((mode(TI)));
+struct GamMan_dbdf0 {
+    unsigned char pad0[0x21F4C];
+    unsigned int m_sysFlg2;
+    unsigned char pad1[0x22020 - 0x21F50];
+    float m_pcPos[4] __attribute__((aligned(16)));
+    float m_pcRot[4] __attribute__((aligned(16)));
+    bool chkSysFlg2(unsigned int theFlg) const { return (m_sysFlg2 & theFlg) != 0; }
+    void getPcPos(float (&thePos)[4]) const { *(u_long128_dbdf0 *)thePos = *(const u_long128_dbdf0 *)m_pcPos; }
+    void getPcRot(float (&theRot)[4]) const { *(u_long128_dbdf0 *)theRot = *(const u_long128_dbdf0 *)m_pcRot; }
+}; // dbdf0
+struct Marker_dbdf0 {
+    int unk00;
+    int unk04;
+    int unk08;
+    float unk0C;
+    float vec[4] __attribute__((aligned(16)));
+}; // dbdf0
+extern "C" int Xii_func_001C6C38(GamMan_dbdf0 *) asm("func_001C6C38");
+extern "C" void Xviiiii_func_001DBB74(int, int, float *, float *) asm("func_001DBB74");
+extern "C" void Xvi_func_00144418(float *) asm("func_00144418");
+extern "C" void Xvi_func_0014448C(float *) asm("func_0014448C");
+extern "C" int func_001DBDF0(int arg0, int arg1, Marker_dbdf0 *arg2)
+{
+    int ret = 0;
+    float v0[4] __attribute__((aligned(16)));
+    float v1[4] __attribute__((aligned(16)));
+
+    if (!((GamMan_dbdf0 *)&D_007812C0)->chkSysFlg2(0x40000)) {
+        int s1 = Xii_func_001C6C38((GamMan_dbdf0 *)&D_007812C0);
+        arg2->unk04 = 1;
+        ((GamMan_dbdf0 *)&D_007812C0)->getPcPos(v0);
+        ((GamMan_dbdf0 *)&D_007812C0)->getPcRot(v1);
+        Xviiiii_func_001DBB74(arg0, s1, v0, arg2->vec);
+        arg2->unk0C = v1[1];
+        arg2++;
+        arg2->unk04 = 2;
+        Xvi_func_00144418(v0);
+        Xvi_func_0014448C(v1);
+        Xviiiii_func_001DBB74(arg0, s1, v0, arg2->vec);
+        arg2->unk0C = v1[1];
+        ret = 2;
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBDF0);
+#endif
 
 extern "C" void func_001DBEF0(void) {
 }
