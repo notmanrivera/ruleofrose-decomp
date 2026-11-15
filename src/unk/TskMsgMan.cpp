@@ -1,4 +1,23 @@
 #include "include_asm.h"
+extern "C" float Xfi_func_001E9CB4(int) asm("func_001E9CB4");
+extern "C" int Xiiff_func_001F0F9C(int, float, float) asm("func_001F0F9C");
+extern "C" int Xiifff_func_001F11A0(int, float, float, float) asm("func_001F11A0");
+extern "C" int Xiii_func_001D8964(int, int) asm("func_001D8964");
+struct DogActorStub {
+    char pad0[0x40];
+    float unk40[3];
+    char pad4C[4];
+    float unk50[3];
+    char pad5C[0x4D0 - 0x5C];
+};
+struct DogManStub {
+    char pad0[0x2920];
+    struct DogActorStub actors[1];
+};
+static inline struct DogActorStub *getDogActor(void *base, int idx)
+{
+    return (struct DogActorStub *)(((char *)base + idx * 0x4D0) + 0x2920);
+}
 struct TskMovePointPathObj {
     char pad0[4];
     int m_unk04;
@@ -225,7 +244,38 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001E9CB4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EA5EC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAA38);
+extern "C" int func_001EAA38(int arg0)
+{
+    if (Xiii_func_001E7D7C_2((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0x3D8)) != 0 ||
+        M2C_FIELD(arg0, int *, 0x60) == 1) {
+        Xiii_func_001D8964(M2C_FIELD(arg0, int *, 4), arg0 + 0x40);
+        M2C_FIELD(arg0, int *, 0x60) = 2;
+        return 0;
+    }
+    M2C_FIELD(arg0, int *, 0x84) = 0;
+    {
+        struct DogActorStub *d = getDogActor(&D_006FBD80, M2C_FIELD(arg0, int *, 0xC));
+        float *p30 = (float *)(arg0 + 0x30);
+        p30[0] = d->unk40[0];
+        p30[1] = d->unk40[1];
+        p30[2] = d->unk40[2];
+    }
+    {
+        struct DogActorStub *d = getDogActor(&D_006FBD80, M2C_FIELD(arg0, int *, 0xC));
+        float *p40 = (float *)(arg0 + 0x40);
+        p40[0] = d->unk50[0];
+        p40[1] = d->unk50[1];
+        p40[2] = d->unk50[2];
+    }
+    M2C_FIELD(arg0, float *, 0x44) = Xfi_func_0010A650__8DogActor((int)getDogActor(&D_006FBD80, M2C_FIELD(arg0, int *, 0xC)));
+    float f = Xfi_func_001E9CB4(arg0);
+    if (M2C_FIELD(arg0, int *, 0x1C) < 8) {
+        Xiiff_func_001F0F9C(M2C_FIELD(arg0, int *, 8), f, M2C_FIELD(arg0, float *, 0x78));
+    } else {
+        Xiifff_func_001F11A0(M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, float *, 0x44), f, M2C_FIELD(arg0, float *, 0x78));
+    }
+    return 0;
+}
 
 // NON_MATCHING: 33/55 differ, 5 relocs differ (size 0xDC, game 0xE4), 16 edits
 #ifdef NON_MATCHING
