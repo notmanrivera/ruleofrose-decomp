@@ -1005,7 +1005,46 @@ extern "C" void func_00210CFC(unsigned int arg0, unsigned int arg1, short arg2)
 extern "C" void func_00210D34(void) {
 }
 
+// NON_MATCHING: 6/96 differ, 6 edits
+#ifdef NON_MATCHING
+typedef void (*Cop1Func210D3C)(unsigned int, unsigned int, unsigned int, unsigned int);
+extern Cop1Func210D3C D_002D9B08[];
+extern "C" void func_00210D3C(int arg0, int arg1, int arg2, unsigned int arg3)
+{
+    if ((arg3 & 0xFE000000U) == 0x46000000U) {
+        unsigned int fmt = (arg3 >> 21) & 0xF;
+        unsigned int ft = (arg3 >> 16) & 0x1F;
+        unsigned int fs = (arg3 >> 11) & 0x1F;
+        unsigned int fd = (arg3 >> 6) & 0x1F;
+        D_002D9B08[arg3 & 0x3F](fs, ft, fd, fmt);
+        return;
+    }
+    switch (arg3 & 0xFFE00000U) {
+    case 0x44000000U:
+        *(int *)((char *)&D_007B4700 + ((arg3 >> 14) & 0x7C)) = *(int *)((char *)&D_007B4680 + ((arg3 >> 9) & 0x7C));
+        return;
+    case 0x44800000U:
+        *(int *)((char *)&D_007B4680 + ((arg3 >> 9) & 0x7C)) = *(int *)((char *)&D_007B4700 + ((arg3 >> 14) & 0x7C));
+        break;
+    case 0x45000000U:
+        if ((arg3 & 0x10000) == 0) {
+            if (D_007B4840 == 0) {
+                goto block_branch;
+            }
+            return;
+        } else if (D_007B4840 != 0) {
+block_branch:
+            D_007B47C0 = ((short)(arg2 * 4) + (D_007B4780 - D_007B47D0) + 0x8164) | 0x80000000;
+        }
+        break;
+    case 0x45800000U:
+        D_007B47C0 = 0x80000000;
+        break;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210D3C);
+#endif
 
 extern "C" void func_00210EBC(void) {
 }
