@@ -1,4 +1,17 @@
 #include "include_asm.h"
+struct Fire1702E4Vec3 {
+    float x, y, z;
+};
+struct Fire1702E4Sub {
+    char pad0[0x40];
+    Fire1702E4Vec3 pos;
+};
+struct Fire1702E4Arg {
+    int unk00;
+    Fire1702E4Sub *sub;
+    float cx, cy, cz;
+    float r1, hy, unk1C, r2;
+};
 struct Fire2Vec4 {
     float x, y, z, w;
 } __attribute__((aligned(8)));
@@ -52,7 +65,29 @@ extern "C" void X_dtor_4Eff0(void *, int) asm("_$_4Eff0");
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
 extern "C" void dtor_7EffFog3(int, int) asm("_$_7EffFog3");
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_001702E4);
+extern "C" int func_001702E4(Fire1702E4Arg *arg0)
+{
+    Fire1702E4Sub *p = arg0->sub;
+    float r = arg0->r1 + arg0->r2;
+    Fire1702E4Vec3 pos;
+    pos.x = p->pos.x;
+    pos.y = p->pos.y;
+    pos.z = p->pos.z;
+    Fire1702E4Vec3 half = { r, arg0->hy, r };
+    float cx = arg0->cx;
+    if (pos.x < cx - half.x || cx + half.x < pos.x) {
+        return 0;
+    }
+    float cz = arg0->cz;
+    if (pos.z < cz - half.z || cz + half.z < pos.z) {
+        return 0;
+    }
+    float cy = arg0->cy;
+    if (pos.y < cy - half.y || cy + half.y < pos.y) {
+        return 0;
+    }
+    return 1;
+}
 
 extern "C" void func_001703C0(int arg0)
 {
