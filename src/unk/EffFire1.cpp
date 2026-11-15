@@ -25,6 +25,11 @@ extern "C" int X_func_00170624(...) asm("func_00170624");
 extern "C" int X_func_00172934(...) asm("func_00172934");
 extern int D_00298E08;
 extern int D_00298E14;
+extern int D_00298E18;
+extern int X_vt_7EffFog3 asm("_vt$7EffFog3");
+extern "C" void X_dtor_4Eff0(void *, int) asm("_$_4Eff0");
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void dtor_7EffFog3(int, int) asm("_$_7EffFog3");
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_001702E4);
 
@@ -230,7 +235,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_001727EC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_00172934);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", _$_7EffFog3);
+extern "C" void dtor_7EffFog3(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x20) = (int)&X_vt_7EffFog3;
+    D_00298E18 = 0;
+    X_dtor_4Eff0((void *)arg0, 0);
+    if (arg1 & 1) {
+        return X___builtin_delete((void *)arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog3__vfunc_02);
 
