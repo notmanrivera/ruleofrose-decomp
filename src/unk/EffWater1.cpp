@@ -909,7 +909,83 @@ extern "C" void liveActivateExec__9EffWater1(int arg0)
     }
 }
 
+// NON_MATCHING: 37/117 differ, 50 edits
+#ifdef NON_MATCHING
+struct WaterNodeParam {
+    char unk00[0x10];
+    float unk10;
+    float unk14;
+    float unk18;
+    float unk1C;
+    float unk20;
+    char unk24;
+    char unk25;
+    char pad26[0xA];
+} __attribute__((aligned(8)));
+
+struct WaterVec4 {
+    float x, y, z, w;
+} __attribute__((aligned(8)));
+
+struct WaterMat4 {
+    WaterVec4 row[4];
+};
+
+extern "C" void *X_AE04_memset(void *, int, int) asm("memset");
+extern "C" int X_AE04_func_0022B0D0(int) asm("func_0022B0D0");
+extern "C" int X_AE04_func_0022B0E8(int, int) asm("func_0022B0E8");
+extern "C" int *X_AE04_func_0022AC08(int) asm("func_0022AC08");
+extern "C" void X_AE04_func_00237A40(void *, void *, void *) asm("func_00237A40");
+
+extern "C" void renderPreMain__9EffWater1PQ24Eff011RENDERPARAM(int arg0, int arg1)
+{
+    if ((M2C_FIELD(arg0, unsigned short *, 0) & 0xC) != 4) {
+        WaterNodeParam dst;
+        int i = 0;
+        {
+            WaterNodeParam tmp;
+            X_AE04_memset(&tmp, 0, 0x10);
+            float c0 = M2C_FIELD(arg0, float *, 0x50);
+            float c1 = M2C_FIELD(arg0, float *, 0x54);
+            float c2 = M2C_FIELD(arg0, float *, 0x58);
+            float c3 = M2C_FIELD(arg0, float *, 0x5C);
+            tmp.unk10 = c0;
+            tmp.unk14 = c1;
+            tmp.unk18 = c2;
+            tmp.unk1C = c3;
+            tmp.unk20 = 1.0f;
+            tmp.unk25 = 1;
+            tmp.unk24 = 1;
+            dst = tmp;
+        }
+
+        int model = M2C_FIELD(arg0, int *, 0x60) + 0x10;
+        int n = X_AE04_func_0022B0D0(model);
+        for (; i < n; i++) {
+            *X_AE04_func_0022AC08(X_AE04_func_0022B0E8(model, i)) = (int)&dst;
+        }
+
+        WaterVec4 scale;
+        {
+            float s = M2C_FIELD(arg0, float *, 0x44);
+            WaterVec4 v = { s, s, s, 1.0f };
+            scale = v;
+        }
+        if (M2C_FIELD(arg0, unsigned short *, 0) & 8) {
+            scale.x = scale.z = (scale.x * (float)M2C_FIELD(arg0, int *, 0x80)) / 5.0f;
+        }
+
+        WaterMat4 mat;
+        Xp_func_00237340(&mat);
+        Xpp_func_00237830(&mat, &mat, M2C_FIELD(arg0, float *, 0x40));
+        X_AE04_func_00237A40(&mat, &mat, &scale);
+        mat.row[3] = *(WaterVec4 *)((char *)arg0 + 0x30);
+        Xiiiiii_i3dCallLocked__FPvN40(M2C_FIELD(arg1, int *, 8), M2C_FIELD(arg0, int *, 0x60), 0, (int)&mat, 0);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", renderPreMain__9EffWater1PQ24Eff011RENDERPARAM);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_0017AFD8);
 
