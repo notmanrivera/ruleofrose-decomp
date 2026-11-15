@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int func_0017DED0(void *, int, void *, float);
 extern char D_006FBD80[];
 extern "C" void X_func_001D83C0_v(void *, int) asm("func_001D83C0");
 extern "C" void func_0017C340(void *, void *, void *, int, float, float);
@@ -67,7 +68,23 @@ extern "C" int func_001D7F48(void *arg0, void *arg1, int arg2)
     return sp[arg2];
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D7FB8);
+extern "C" void *func_001D7FB8(void *arg0, void *arg1, int *arg2, int arg3)
+{
+    X_func_001D83C0_v(arg0, arg3);
+    char *entry = (char *)&D_007811B4 + arg3 * 0x18;
+    int idx = func_0017DED0(entry, *arg2, arg1, 40.0f);
+    if (idx == -1) {
+        return 0;
+    }
+    char *ptr = 0;
+    if (*(int *)(entry + 4) != 0) {
+        char *base = *(char **)(entry + 0xC);
+        if (base != 0) {
+            ptr = base + idx * 0x90;
+        }
+    }
+    return ptr;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D8064);
 
