@@ -329,7 +329,49 @@ extern "C" void func_00187E3C(void) {
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00187E44);
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_001880CC);
+extern "C" int func_001880CC(int arg0)
+{
+    int temp_a0;
+    int temp_v1;
+    int var_s2;
+    int var_v0;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x60);
+    var_s2 = 0;
+    switch (temp_v1) {                              
+    case 0:                                         
+        M2C_FIELD(arg0, int *, 0x60) = 3;
+        M2C_FIELD(arg0, int *, 0xBC) = 0;
+    case 3:                                         
+        M2C_FIELD(arg0, int *, 0x60) = 5;
+        temp_a0 = X_sceMcGetSlotMax(M2C_FIELD(arg0, int *, 0x70));
+        M2C_FIELD(arg0, int *, 0x64) = 3;
+        M2C_FIELD(arg0, int *, 0x6C) = temp_a0;
+        if (temp_a0 >= 0) {
+            M2C_FIELD(arg0, int *, 0x58) = 1;
+            M2C_FIELD(arg0, int *, 0x64) = 2;
+            M2C_FIELD(arg0, int *, 0x78) = temp_a0;
+            M2C_FIELD(arg0, int *, 0x60) = 5;
+        } else {
+            if (temp_a0 == -100) {
+                M2C_FIELD(arg0, int *, 0x60) = 5;
+                M2C_FIELD(arg0, int *, 0x58) = 4;
+            } else if (temp_a0 == -200) {
+                M2C_FIELD(arg0, int *, 0x60) = 5;
+                M2C_FIELD(arg0, int *, 0x58) = 6;
+            } else {
+                M2C_FIELD(arg0, int *, 0x60) = 5;
+                M2C_FIELD(arg0, int *, 0x58) = 2;
+            }
+        }
+        M2C_FIELD(arg0, int *, 0xBC) = (int) (M2C_FIELD(arg0, int *, 0xBC) + 1);
+        break;
+    case 5:                                         
+        var_s2 = 1;
+        break;
+    }
+    return (M2C_FIELD(arg0, int *, 0x64) == 1) ? var_s2 : 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_001881C0);
 
