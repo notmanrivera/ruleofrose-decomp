@@ -788,7 +788,134 @@ extern "C" void func_001E17B4(Obj17B4 *arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E1920);
 
+// NON_MATCHING: 37/118 differ (size 0x1D8, game 0x1D4), 27 edits
+#ifdef NON_MATCHING
+struct SndNode1FA4 { // 1FA4
+    SndNode1FA4 *m_prev; // 1FA4
+    SndNode1FA4 *m_next; // 1FA4
+    char m_data[0x58]; // 1FA4
+}; // SndNode1FA4
+struct SndChain1FA4 { // 1FA4
+    SndNode1FA4 m_head; // 1FA4
+    int m_num; // 1FA4
+    void splice(SndChain1FA4 &theOther) { // 1FA4
+        if (theOther.m_num != 0) { // 1FA4
+            m_head.m_prev->m_next = theOther.m_head.m_next; // 1FA4
+            SndNode1FA4 *last = m_head.m_prev; // 1FA4
+            last->m_next->m_prev = last; // 1FA4
+            SndNode1FA4 *tail = theOther.m_head.m_prev; // 1FA4
+            m_head.m_prev = tail; // 1FA4
+            tail->m_next = &m_head; // 1FA4
+            m_num += theOther.m_num; // 1FA4
+            theOther.m_num = 0; // 1FA4
+            theOther.m_head.m_prev = &theOther.m_head; // 1FA4
+            theOther.m_head.m_next = &theOther.m_head; // 1FA4
+        } // 1FA4 splice if
+    } // 1FA4 splice
+}; // SndChain1FA4
+struct SndQue1FA4 { // 1FA4
+    SndChain1FA4 m_free; // 1FA4
+    char m_pad64[0x0C]; // 1FA4
+    SndChain1FA4 m_used; // 1FA4
+    char m_padD4[0x0C]; // 1FA4
+    int m_max; // 1FA4
+    void clear() { // 1FA4
+        if (m_used.m_num != 0) { // 1FA4
+            m_free.splice(m_used); // 1FA4
+        } // 1FA4 clear if
+    } // 1FA4 clear
+}; // SndQue1FA4
+struct Elem1FA4 { // 1FA4
+    int unk00; // 1FA4
+    int unk04; // 1FA4
+    int unk08; // 1FA4
+    int unk0C; // 1FA4
+    char pad10[0x08]; // 1FA4
+    int unk18; // 1FA4
+    char pad1C[0x28 - 0x1C]; // 1FA4
+}; // Elem1FA4
+struct Range1FA4 { // 1FA4
+    Elem1FA4 *m_begin; // 1FA4
+    Elem1FA4 *m_end; // 1FA4
+    int m_max; // 1FA4
+    char pad0C[0x34]; // 1FA4
+    Elem1FA4 m_buf[0x30]; // 1FA4
+    void clear() { // 1FA4
+        for (Elem1FA4 *p = m_begin; p != m_end; p++) { // 1FA4
+            p->~Elem1FA4(); // 1FA4
+        } // 1FA4 loop
+        m_end = m_buf; // 1FA4
+        m_max = 0x30; // 1FA4
+        m_begin = m_buf; // 1FA4
+    } // 1FA4 clear
+}; // Range1FA4
+struct Item1FA4 { // 1FA4
+    int unk00; // 1FA4
+    char pad04[0x08]; // 1FA4
+    int unk0C; // 1FA4
+    char pad10[0x14]; // 1FA4
+}; // Item1FA4
+struct Sub1580_1FA4 { // 1FA4
+    char pad00[0x20]; // 1FA4
+    Item1FA4 arr[4]; // 1FA4
+}; // Sub1580_1FA4
+struct Obj1FA4 { // 1FA4
+    char pad00[0x40]; // 1FA4
+    SndQue1FA4 m_que; // 1FA4
+    char pad124[0xD40 - 0x124]; // 1FA4
+    Range1FA4 m_range; // 1FA4
+    char pad1500[0x1580 - 0x1500]; // 1FA4
+    Sub1580_1FA4 m_sub; // 1FA4
+    char pad1630[0x1684 - 0x1630]; // 1FA4
+    int unk1684; // 1FA4
+    char pad1688[0x1708 - 0x1688]; // 1FA4
+    int unk1708; // 1FA4
+    int unk170C; // 1FA4
+    int unk1710; // 1FA4
+    int unk1714; // 1FA4
+    int unk1718; // 1FA4
+}; // Obj1FA4
+extern int X_1FA4_D_007A3D80 asm("D_007A3D80");
+extern "C" int X_1FA4_func_001E7D7C(void *, int) asm("func_001E7D7C");
+extern "C" void X_1FA4_func_001E7724(void *, int) asm("func_001E7724");
+extern "C" void X_def_func_001E1FA4(Obj1FA4 *arg0) asm("func_001E1FA4"); // 1FA4
+extern "C" void X_def_func_001E1FA4(Obj1FA4 *arg0)
+{
+    Range1FA4 *r;
+    int i;
+
+    arg0->unk1684 = -1;
+    arg0->unk1708 = 0;
+    for (i = 0; i < 4; i++) {
+        arg0->m_sub.arr[i].unk0C = -1;
+        arg0->m_sub.arr[i].unk00 = 0;
+    }
+    r = &arg0->m_range;
+    for (i = 0; i < 0x30; i++) {
+        (r->m_begin + i)->unk00 = 0;
+        (r->m_begin + i)->unk0C = 0;
+        (r->m_begin + i)->unk18 = -1;
+        (r->m_begin + i)->unk04 = 0;
+        (r->m_begin + i)->unk08 = 0;
+    }
+    if (X_1FA4_func_001E7D7C(&X_1FA4_D_007A3D80, arg0->unk170C) != 0) {
+        X_1FA4_func_001E7724(&X_1FA4_D_007A3D80, arg0->unk170C);
+    }
+    if (X_1FA4_func_001E7D7C(&X_1FA4_D_007A3D80, arg0->unk1710) != 0) {
+        X_1FA4_func_001E7724(&X_1FA4_D_007A3D80, arg0->unk1710);
+    }
+    if (X_1FA4_func_001E7D7C(&X_1FA4_D_007A3D80, arg0->unk1718) != 0) {
+        X_1FA4_func_001E7724(&X_1FA4_D_007A3D80, arg0->unk1718);
+    }
+    arg0->unk1718 = -1;
+    arg0->unk170C = -1;
+    arg0->unk1710 = -1;
+    r->clear();
+    arg0->m_que.clear();
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E1FA4);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2178);
 
