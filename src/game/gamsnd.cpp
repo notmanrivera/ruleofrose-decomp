@@ -1,4 +1,19 @@
 #include "include_asm.h"
+struct Sub7094 {
+    char pad[0x44];
+    Sub7094() asm("func_00203D94");
+};
+struct Obj7094 {
+    int head0;
+    int head4;
+    int unk08;
+    char pad0C[0x34];
+    Sub7094 sub40;
+    int arr[0x80];
+    int *end;
+    int unk288;
+    Obj7094() asm("func_001E7094");
+};
 extern char D_007812C0[];
 extern int _vt$9TskLogger;
 extern "C" int X_7ED8_func_001CBE38(void *, unsigned int) asm("func_001CBE38");
@@ -887,7 +902,14 @@ extern "C" float func_001E6D54(Obj6D54 *arg0)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E6E00);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E7094);
+Obj7094::Obj7094()
+{
+    head4 = 0;
+    unk288 = -1;
+    unk08 = 2;
+    end = arr;
+    head0 = 0;
+}
 
 Obj70DC::~Obj70DC()
 {
