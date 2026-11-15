@@ -1,4 +1,54 @@
 #include "include_asm.h"
+struct Elem_deaac {
+    float minX;
+    float minZ;
+    float maxX;
+    float maxZ;
+    unsigned int u10[4];
+    unsigned int flg;
+    unsigned int u24[2];
+    int id;
+    int u30;
+    int u34;
+    unsigned int u38[3];
+    int u44;
+    unsigned int u48[(0xB0 - 0x48) / 4];
+} __attribute__((aligned(16)));
+struct Node_deaac { Node_deaac *m_prev; Node_deaac *m_next; Elem_deaac m_data; };
+struct Chain_deaac { Node_deaac m_head; int m_num; };
+struct Iter_deaac {
+    Node_deaac *m_node;
+    Iter_deaac() : m_node(0) {}
+    Iter_deaac(Node_deaac *n) : m_node(n) {}
+    Iter_deaac(const Iter_deaac &o) : m_node(o.m_node) {}
+    Elem_deaac &operator*() const { return m_node->m_data; }
+    Iter_deaac &operator++() { m_node = m_node->m_next; return *this; }
+    bool operator!=(const Iter_deaac &o) const { return m_node != o.m_node; }
+};
+struct List_deaac {
+    Chain_deaac m_free;
+    Chain_deaac m_used;
+    int m_max;
+    Iter_deaac begin() { return Iter_deaac(m_used.m_head.m_next); }
+    Iter_deaac end() { return Iter_deaac(&m_used.m_head); }
+    int size() const { return m_used.m_num; }
+};
+struct Mgr_deaac {
+    char pad[0xC1C0];
+    List_deaac list;
+};
+struct Pc_deaac {
+    char pad[0x100];
+    int m_oid;
+};
+struct GamMan_deaac {
+    char pad[0x22090];
+    Pc_deaac *m_pc;
+};
+extern GamMan_deaac D_007812C0_deaac asm("D_007812C0");
+extern int D_007A4440_deaac asm("D_007A4440");
+extern const char D_002FD640_deaac[] asm("D_002FD640");
+extern "C" void X_func_002113DC(void *, int, int, int, int, int, int, const char *) asm("func_002113DC");
 struct Elem_dec14 {
     float minX;
     float minZ;
@@ -1861,7 +1911,29 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DE8AC);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DEA40);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DEAAC);
+extern "C" void func_001DEAAC(Mgr_deaac *arg0)
+{
+    Iter_deaac it;
+    Iter_deaac last;
+    float pos[4];
+    int oid = D_007812C0_deaac.m_pc ? D_007812C0_deaac.m_pc->m_oid : 0;
+
+    Xiiui_func_001D05F4(&D_007812C0_deaac, oid, pos);
+    if (arg0->list.size() != 0) {
+        it = arg0->list.begin();
+        last = arg0->list.end();
+        while (it != last) {
+            if (((*it).flg & 0x04000001) == 0x04000001 &&
+                (*it).minX <= pos[0] && pos[0] <= (*it).maxX &&
+                (*it).minZ <= pos[2] && pos[2] <= (*it).maxZ &&
+                (*it).u30 != 0 && (*it).u34 != 0) {
+                X_func_002113DC(&D_007A4440_deaac, (*it).u30, (*it).u34, (*it).u44, 2, 0, (*it).id, D_002FD640_deaac);
+                return;
+            }
+            ++it;
+        }
+    }
+}
 
 extern "C" void func_001DEC14(Mgr_dec14 *arg0)
 {
