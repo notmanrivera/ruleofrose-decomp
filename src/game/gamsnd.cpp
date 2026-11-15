@@ -1061,7 +1061,52 @@ extern "C" int func_001E63C0(Obj63C0 *arg0, int arg1, int arg2, int arg3, int ar
     return 1;
 }
 
+// NON_MATCHING: 13/53 differ, 10 edits
+#ifdef NON_MATCHING
+struct Ent649C {
+    char pad0[4];
+    int unk04;
+    int unk08;
+    unsigned int unk0C;
+    char pad10[0x8];
+    int unk18;
+    char pad1C[0x28 - 0x1C];
+};
+struct Sub649C {
+    char *m_begin;
+};
+struct Obj649C {
+    char pad0[0xD40];
+    Sub649C sub;
+};
+extern int X_649C_D_007B2580 asm("D_007B2580");
+extern "C" int X_649C_func_00180CA8(int *, int) asm("func_00180CA8");
+extern "C" void X_649C_func_00180EA8(int *, int) asm("func_00180EA8");
+extern "C" int X_def_func_001E649C(Obj649C *, unsigned int, int) asm("func_001E649C");
+
+extern "C" int X_def_func_001E649C(Obj649C *arg0, unsigned int arg1, int arg2)
+{
+    int off = arg2 * 0x28;
+    Sub649C *sub = &arg0->sub;
+    if (arg2 < 0) {
+        return 0;
+    }
+    if (((Ent649C *)(sub->m_begin + off))->unk0C != arg1) {
+        return 0;
+    }
+    if (X_649C_func_00180CA8(&X_649C_D_007B2580, arg2) == -1) {
+        return 0;
+    }
+    X_649C_func_00180EA8(&X_649C_D_007B2580, arg2);
+    ((Ent649C *)(sub->m_begin + off))->unk04 = 0;
+    ((Ent649C *)(sub->m_begin + off))->unk08 = 0;
+    ((Ent649C *)(sub->m_begin + off))->unk0C = 0;
+    ((Ent649C *)(sub->m_begin + off))->unk18 = -1;
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E649C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E6570);
 
