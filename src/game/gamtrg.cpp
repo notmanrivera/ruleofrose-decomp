@@ -650,7 +650,36 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBB38);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBB74);
 
+// NON_MATCHING: 31/34 differ, 1 reloc differs (size 0x88, game 0x94), 29 edits
+#ifdef NON_MATCHING
+typedef unsigned int u_long128_dbc5c __attribute__((mode(TI)));
+union Vec4_dbc5c {
+    u_long128_dbc5c q;
+    float f[4];
+};
+struct MapBounds_dbc5c {
+    float unk0;
+    float unk4;
+    float unk8;
+    float unkC;
+    float unk10;
+    float unk14;
+};
+extern MapBounds_dbc5c D_002FC748[];
+extern "C" void func_001DBC5C(int arg0, int arg1, const Vec4_dbc5c *arg2, Vec4_dbc5c *arg3)
+{
+    Vec4_dbc5c v;
+    MapBounds_dbc5c *p;
+
+    v.q = arg2->q;
+    p = &D_002FC748[arg1];
+    v.f[0] = (p->unk8 * -v.f[0]) / p->unk0 + p->unk10;
+    v.f[2] = (p->unkC * v.f[2]) / p->unk4 + p->unk14;
+    arg3->q = v.q;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBC5C);
+#endif
 
 extern "C" void func_001DBCF0(int arg0)
 {
