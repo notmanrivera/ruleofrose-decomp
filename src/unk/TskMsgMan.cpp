@@ -1699,7 +1699,59 @@ extern "C" int func_001F2BCC(int arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2BCC);
 #endif
 
+// NON_MATCHING: 42/110 differ, 6 relocs differ (size 0x1B8, game 0x18C), 22 edits
+#ifdef NON_MATCHING
+extern "C" void X_func_00131184_2d38(int, int, int, int) asm("func_00131184");
+extern "C" void X_func_001CFA5C_2d38(void *, int, int, int, int, int) asm("func_001CFA5C");
+extern "C" int X_func_001CF9D4_2d38(void *) asm("func_001CF9D4");
+extern "C" void X_func_001C65E8_2d38(void *, int) asm("func_001C65E8");
+extern "C" void X_func_001C6A40_2d38(void *, int) asm("func_001C6A40");
+extern "C" int func_001F2D38(int arg0)
+{
+    switch (M2C_FIELD(arg0, int *, 0x10)) {
+    case 0x64:
+    {
+        int off = 0x12540;
+        X_func_00131184_2d38((int)&D_006E9840 + off, 0xA, 7, 0);
+        X_func_001CFA5C_2d38(&D_007812C0, 0xD, -1, -1, -1, -1);
+        int ret = X_func_001CF9D4_2d38(&D_007812C0);
+        if (ret == 0) {
+            return ret;
+        }
+        M2C_FIELD(arg0, int *, 0x10)++;
+        break;
+    }
+    case 0x66:
+        X_func_001C65E8_2d38(&D_007812C0, 0x100000);
+        X_func_001C6A40_2d38(&D_007812C0, 0x8000);
+        return 1;
+    case 0xC8:
+    {
+        int off = 0x12540;
+        X_func_00131184_2d38((int)&D_006E9840 + off, 0xA, 7, 0);
+        X_func_001CFA5C_2d38(&D_007812C0, 0xE, -1, -1, -1, -1);
+        int ret = X_func_001CF9D4_2d38(&D_007812C0);
+        if (ret == 0) {
+            return ret;
+        }
+        M2C_FIELD(arg0, int *, 0x10)++;
+        break;
+    }
+    case 0x65:
+    case 0xC9:
+        if (X_func_001CF9D4_2d38(&D_007812C0) == 0) {
+            M2C_FIELD(arg0, int *, 0x10)++;
+        }
+        break;
+    case 0xCA:
+        X_func_001C65E8_2d38(&D_007812C0, 0x100000);
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2D38);
+#endif
 
 extern "C" int func_001F2EC4(int arg0)
 {
