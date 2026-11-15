@@ -1,4 +1,24 @@
 #include "include_asm.h"
+struct Sub154_BD94 {
+    int unk00;
+    int unk04;
+    unsigned char pad08[0x14C];
+};
+struct Obj_BD94 {
+    unsigned char pad000[4];
+    int unk04;
+    unsigned char pad008[0x4AC - 8];
+    int unk4AC;
+    int unk4B0;
+    int unk4B4;
+};
+extern "C" int Xii_BD94_func_0018EF40(Obj_BD94 *, int) asm("func_0018EF40");
+extern "C" void Xv_BD94_func_0018D1E8(Obj_BD94 *, Sub154_BD94 *) asm("func_0018D1E8");
+extern "C" void Xv_BD94_func_0018D640(Obj_BD94 *, Sub154_BD94 *) asm("func_0018D640");
+extern "C" void Xv_BD94_func_0018DAFC(Obj_BD94 *, Sub154_BD94 *) asm("func_0018DAFC");
+extern "C" void Xv_BD94_func_0018E05C(Obj_BD94 *, Sub154_BD94 *, int) asm("func_0018E05C");
+extern "C" void Xv_BD94_func_0018EFF0(Obj_BD94 *, int) asm("func_0018EFF0");
+extern "C" void Xv_BD94_func_0018BEF8(Obj_BD94 *) asm("func_0018BEF8");
 extern "C" int Xiiii_func_0018C448(int, int, int) asm("func_0018C448");
 extern "C" int Xiiii_func_0018C4D8(int, int, int) asm("func_0018C4D8");
 struct Vec3i_CC54 {
@@ -146,7 +166,39 @@ extern "C" int X_func_002232F0(...) asm("func_002232F0");
 extern "C" int X_heapFree__FPv(...) asm("heapFree__FPv");
 extern int D_007A34D4;
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018BD94);
+extern "C" int func_0018BD94(Obj_BD94 *arg0)
+{
+    int i;
+    Sub154_BD94 *p;
+
+    if (arg0->unk04 == 0) {
+        return 0;
+    }
+    if (Xii_BD94_func_0018EF40(arg0, 0) != 0) {
+        return 1;
+    }
+    for (i = 0; i < arg0->unk4B4; i++) {
+        p = (Sub154_BD94 *)(arg0->unk4AC + i * 0x154);
+        if (p->unk00 == 0 && !(p->unk04 & 2)) {
+            Xv_BD94_func_0018D1E8(arg0, p);
+            Xv_BD94_func_0018D640(arg0, p);
+            Xv_BD94_func_0018DAFC(arg0, p);
+            Xv_BD94_func_0018E05C(arg0, p, 0);
+        }
+    }
+    for (i = 0; i < arg0->unk4B4; i++) {
+        p = (Sub154_BD94 *)(arg0->unk4AC + i * 0x154);
+        if (p->unk00 > 0 && !(p->unk04 & 2)) {
+            Xv_BD94_func_0018D1E8(arg0, p);
+            Xv_BD94_func_0018D640(arg0, p);
+            Xv_BD94_func_0018DAFC(arg0, p);
+            Xv_BD94_func_0018E05C(arg0, p, 0);
+        }
+    }
+    Xv_BD94_func_0018EFF0(arg0, 0);
+    Xv_BD94_func_0018BEF8(arg0);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018BEF8);
 
