@@ -216,3 +216,14 @@ $r,sym($reg)` y deja el R_MIPS_HI16 sobre otra instrucción;
 real de `MagLife*` está en `mag/maglife.h` (los "key methods" deciden qué
 archivo emite los nombres RTTI, y con ello dónde empieza cada `.rodata`).
 
+Estado (2026-11-15, tarde): 28.07 % del `.text` del juego (322,124 /
+1,147,560 B). Equipo: Gemini 4 Hydrogen (funciones de hasta 120
+instrucciones; el que más rinde, ~45 KB en un día), Codex GPT-6.1-Sol
+(funciones de 121 a 400; limitado por el plan Plus a ~1,5-2 h por bloque
+de 5 h), OpenCode GLM-5.3 (61-120) desde las 18:05; investigación de solo
+lectura con Sonnet (criterio) y Flash (rastreo), en notes/RESEARCH_QUEUE.md.
+Hallazgo del día: el compilador alinea a 16 todas las tablas de saltos, y
+eso destapó 15 límites de `.rodata`/archivo mal puestos (corregidos; quedan
+5). Sin símbolos externos: la demo/prototipo SLUS-28064 y Chulip no aportan
+nombres (Chulip no comparte motor; `i3d` parece propio de Punchline).
+

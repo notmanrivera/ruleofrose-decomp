@@ -18,7 +18,7 @@ findings and the roadmap.
 | | |
 |---|---|
 | Matching build | ✅ SHA-1 `fa157dc8…1997` of the load image, with C++ linked in |
-| Decompiled | 271,796 of 1,147,560 bytes of game code (23.68%), byte for byte, in 117 of 125 game files (the rest of their functions still asm); 92 of them also pass a modern 32-bit g++ (`tools/host_check.py`) for the ports; `tools/progress.py` |
+| Decompiled | 322,124 of 1,147,560 bytes of game code (28.07%), byte for byte, in 117 of 125 game files (the rest of their functions still asm); 90 of them also pass a modern 32-bit g++ and clang++ (`tools/host_check.py`) for the ports; `tools/progress.py` |
 | File split | 146 files ([config/splits.tsv](config/splits.tsv)): 125 game files (72 named from assert paths, 53 inferred `unk/...` files), the engine middleware (`mw/i3d` graphics, `mw/sound`) and 19 SDK runs (crt0 included); `.text`, `.rodata`, `.data` and `.bss` each split per file |
 | Compiler | **ee-gcc 2.96 (SCE), `-Os -G0 -fno-exceptions -fno-strict-aliasing`**: 3/3 test functions match byte for byte ([details](matching/compiler_id/README.md)) |
 | Functions found by Ghidra | 7,230 |
