@@ -232,6 +232,18 @@ text=$(printf '%s' "$text" | sed -e "s|<STATE>|$STATE|g" -e "s|<NAME>|$NAME|g" -
 
 echo "$NAME -> $FILE: $funcs"
 if [ -n "$DRY" ]; then echo "$text"; exit 0; fi
+# Codex's /new opens the new chat in a checkout of its own (~/.codex/
+# worktrees/), not in the worker's worktree: its fresh session is a new
+# agent in the same terminal place instead.
+if [ -n "$NEW" ] && [ "$AGENT" = codex ]; then
+  orca terminal close --terminal "$HANDLE" --json >/dev/null 2>&1 || true
+  wtpath=$(cygpath -m "$WT" 2>/dev/null || echo "$WT")
+  HANDLE=$(cd "$WT" && orca agent launch --agent codex --worktree "path:$wtpath" --surface terminal --json |
+           sed -n 's/.*"handle": "\(term_[^"]*\)".*/\1/p' | head -1)
+  [ -n "$HANDLE" ] || { echo "$NAME: relaunching Codex failed"; exit 1; }
+  i=0; until screen | grep -q "GPT-"; do i=$((i + 1)); [ $i -lt 40 ] || break; sleep 3; done
+  save; NEW=""; echo "  fresh Codex session: $HANDLE"
+fi
 sent=""
 for _ in 1 2 3; do
   if runcopy orca/send_brief.sh ${NEW:+--new} "$HANDLE" "$text"; then sent=1; break; fi
