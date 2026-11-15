@@ -1,4 +1,11 @@
 #include "include_asm.h"
+extern "C" float X_FDDB8_10A650(void *) asm("func_0010A650__8DogActor");
+extern "C" int X_FDDB8_1D5A0C(void *, float *, int, int, int, void *) asm("func_001D5A0C");
+extern "C" int X_FDDB8_1D890C(int, float *) asm("func_001D890C");
+extern "C" int X_FDDB8_1D7F48(int, float *, int) asm("func_001D7F48");
+extern float D_002FF230[];
+extern float D_002FF240[];
+extern int D_002FF250[];
 struct DogActor_1FF494 {
     unsigned char pad0[0x50];
     float rot[4];
@@ -113,14 +120,6 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FD6BC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FD9BC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FDDB8);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FDF8C);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FE160);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FE87C);
-
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF040);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF058);
@@ -137,13 +136,38 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF0B8);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF0C8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF0D0);
+extern "C" int func_001FDDB8(int arg0)
+{
+    float pos0[4];
+    float pos1[4];
+    float baseYaw = X_FDDB8_10A650((char *)&D_006FE6A0 + M2C_FIELD(arg0, int *, 0x14) * 0x4D0);
+    X_FDDB8_1D890C(M2C_FIELD(arg0, int *, 0x18), pos0);
+    for (int i = 0; i < 3; i++) {
+        float yaw = baseYaw - D_002FF230[i];
+        if (yaw < -3.14159265358979323846) {
+            yaw += 2.0 * 3.14159265358979323846;
+        }
+        if (yaw > 3.14159265358979323846) {
+            yaw -= 2.0 * 3.14159265358979323846;
+        }
+        float dist = D_002FF240[i];
+        pos1[0] = pos0[0] + sinf(yaw) * dist;
+        pos1[2] = pos0[2] + cosf(yaw) * dist;
+        pos1[1] = 0.0f;
+        if (X_FDDB8_1D7F48((int)&D_007812C0, pos1, 0) != 0 &&
+            X_FDDB8_1D5A0C(&D_007812C0, pos1, M2C_FIELD(arg0, int *, 0x10), 0, 0, 0) == 0) {
+            return D_002FF250[i];
+        }
+    }
+    M2C_FIELD(arg0, int *, 0xC) |= 8;
+    return M2C_FIELD(arg0, int *, 0x20);
+}
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF0D8);
+INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FDF8C);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF0E0);
+INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FE160);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF0E8);
+INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FE87C);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF0F0);
 
