@@ -144,7 +144,61 @@ INCLUDE_ASM("asm/nonmatchings/unk/Eff0", render__4Eff0PQ24Eff011RENDERPARAM);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", renderPreMain__4Eff0PQ24Eff011RENDERPARAM);
 
+// NON_MATCHING: 36/38 differ, 1 reloc differs (size 0x98, game 0xA0), 6 edits
+#ifdef NON_MATCHING
+struct Arg223558_PE {
+    float unk00;
+    void *unk04;
+    int unk08;
+    int unk0C;
+    int unk10;
+    int unk14;
+};
+
+struct Sub14Hdr_PE {
+    unsigned char pad00[0x30];
+    int data[8];
+    int unk50;
+    int unk54;
+    int unk58;
+};
+
+struct Obj_PE {
+    unsigned char pad00[0x14];
+    Sub14Hdr_PE *m_14;
+};
+
+extern "C" int X_func_00223558_PE(int, Arg223558_PE *) asm("func_00223558");
+
+extern "C" int createPacketEntry__4Eff0P20tag_I3dRenderStage_s(Obj_PE *arg0, int arg1)
+{
+    int arr[8];
+    Arg223558_PE q;
+    int ret = 0;
+    Sub14Hdr_PE *sub = arg0->m_14;
+    if (sub->unk58 != 0) {
+        int i = 0;
+        int *src = &sub->data[sub->unk50 + sub->unk54];
+        if (sub->unk58 > 0) {
+            int *dst = arr;
+            do {
+                *dst++ = *src++;
+                i++;
+            } while (i < sub->unk58);
+        }
+        q.unk00 = 1.0f;
+        q.unk04 = arr;
+        q.unk08 = arg0->m_14->unk58;
+        q.unk0C = 0;
+        q.unk10 = 0;
+        q.unk14 = 0;
+        ret = X_func_00223558_PE(arg1, &q);
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", createPacketEntry__4Eff0P20tag_I3dRenderStage_s);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016AC84);
 
