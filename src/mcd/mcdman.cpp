@@ -231,7 +231,20 @@ extern "C" int func_00187E00(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00187E08);
+extern "C" int func_00187E08(int *arg0, int arg1)
+{
+    int *p = &arg0[arg1];
+    int var_a1 = 1;
+
+    if (M2C_FIELD(arg0, int *, 0x5C) == 0) {
+        M2C_FIELD(arg0, int *, 0x5C) = *p;
+        M2C_FIELD(arg0, int *, 0x64) = 1;
+        M2C_FIELD(arg0, int *, 0x68) = 0;
+    } else {
+        var_a1 = 6;
+    }
+    return var_a1;
+}
 
 extern "C" void func_00187E3C(void) {
 }
