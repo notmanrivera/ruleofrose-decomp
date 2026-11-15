@@ -670,12 +670,6 @@ extern "C" int TskMoveTypeRound__vfunc_04(TskRoundObj *obj)
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveTypeRound__vfunc_04);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EBB80);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EBDE8);
-
-
-
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB20);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDB28);
@@ -778,17 +772,57 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCC0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCC8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCD0);
+extern "C" void func_001EBB80(int arg0) {
+    float dist;
+    float angle = Xfpff_func_002180E4(&dist, M2C_FIELD(arg0, float *, 0x30) - M2C_FIELD(arg0, float *, 0x40), M2C_FIELD(arg0, float *, 0x38) - M2C_FIELD(arg0, float *, 0x48));
+    float x, z;
+    float c;
+    if (dist < M2C_FIELD(arg0, float *, 0x1C) - 10.0f) {
+        x = Xff_sinf(angle) * M2C_FIELD(arg0, float *, 0x28);
+        z = Xff_cosf(angle) * M2C_FIELD(arg0, float *, 0x28);
+    } else if (M2C_FIELD(arg0, float *, 0x1C) + 10.0f < dist) {
+        x = -Xff_sinf(angle) * M2C_FIELD(arg0, float *, 0x28);
+        z = -Xff_cosf(angle) * M2C_FIELD(arg0, float *, 0x28);
+    } else {
+        x = z = 0.0f;
+    }
+angle_part:
+    angle = M2C_FIELD(arg0, float *, 0x24) < 0.0f ? angle + 1.57079632679489661923 : angle - 1.57079632679489661923;
+    if(angle < -3.14159265358979323846) angle += 6.28318530717958647692;
+    if(angle > 3.14159265358979323846) angle -= 6.28318530717958647692;
+    M2C_FIELD(arg0, float *, 0x54) = angle;
+    if (M2C_FIELD(arg0, int *, 0x2C) == 3) {
+        float *pos = (float *)(arg0 + 0x40);
+        M2C_FIELD(M2C_FIELD(arg0, int *, 0x68), float *, 0x6C) = angle;
+        int actor = (int)&D_006FE6A0 + M2C_FIELD(arg0, int *, 0xC) * 0x4D0;
+        pos[0] = M2C_FIELD(actor, float *, 0x40);
+        pos[1] = M2C_FIELD(actor, float *, 0x44);
+        pos[2] = M2C_FIELD(actor, float *, 0x48);
+        M2C_FIELD(arg0, float *, 0x40) -= x;
+        M2C_FIELD(arg0, float *, 0x48) -= z;
+        return;
+    }
+    M2C_FIELD(arg0, float *, 0x40) += Xff_sinf(angle) * M2C_FIELD(arg0, float *, 0x28);
+    M2C_FIELD(arg0, float *, 0x48) += Xff_cosf(angle) * M2C_FIELD(arg0, float *, 0x28);
+    M2C_FIELD(arg0, float *, 0x40) += x;
+    M2C_FIELD(arg0, float *, 0x48) += z;
+}
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCD8);
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EBDE8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCE0);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCE8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCF0);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDCF8);
+
+
+
+
+
+
+
+
+
+
 
 
 
