@@ -621,7 +621,25 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019DCBC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019DEDC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019DF78);
+extern "C" void func_0019DF78(char *dst, char *src)
+{
+    char *start = dst;
+    while (*src != 0 && (unsigned int)(dst - start) < 0x100) {
+        char c = *src;
+        if (c == '#') {
+            *dst++ = *src;
+            src++;
+            if (*src++ == 'n') {
+                *dst++ = '0';
+            } else {
+                *dst++ = *src;
+            }
+        } else {
+            *dst++ = *src;
+            src++;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019E010);
 
