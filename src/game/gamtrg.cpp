@@ -1,4 +1,66 @@
 #include "include_asm.h"
+struct Elem_de5dc { unsigned int u0[8]; unsigned int flg; unsigned int u24[2]; int id; unsigned int u30[(0xB0 - 0x30) / 4]; } __attribute__((aligned(16))); // de5dc
+struct Node_de5dc { Node_de5dc *m_prev; Node_de5dc *m_next; Elem_de5dc m_data; }; // de5dc
+struct Chain_de5dc {
+    Node_de5dc m_head;
+    int m_num;
+    void push_back(Node_de5dc *theNode) {
+        if (m_num == 0) {
+            m_head.m_next = theNode;
+            theNode->m_prev = &m_head;
+        } else {
+            m_head.m_prev->m_next = theNode;
+            theNode->m_prev = m_head.m_prev;
+        }
+        theNode->m_next = &m_head;
+        m_head.m_prev = theNode;
+        ++m_num;
+    }
+    void unlink(Node_de5dc *theNode) {
+        if (theNode == m_head.m_next) {
+            Node_de5dc *next = theNode->m_next;
+            m_head.m_next = next;
+            next->m_prev = &m_head;
+        } else {
+            Node_de5dc *p = theNode->m_prev;
+            if (theNode == m_head.m_prev) {
+                m_head.m_prev = p;
+                p->m_next = &m_head;
+            } else {
+                p->m_next = theNode->m_next;
+                Node_de5dc *prev = theNode->m_prev;
+                p = theNode->m_next;
+                p->m_prev = prev;
+            }
+        }
+        --m_num;
+    }
+}; // de5dc
+struct Iter_de5dc {
+    Node_de5dc *m_node;
+    Iter_de5dc() : m_node(0) {}
+    Iter_de5dc(Node_de5dc *n) : m_node(n) {}
+    Iter_de5dc(const Iter_de5dc &o) : m_node(o.m_node) {}
+    Elem_de5dc &operator*() const { return m_node->m_data; }
+    Iter_de5dc &operator++() { m_node = m_node->m_next; return *this; }
+    bool operator!=(const Iter_de5dc &o) const { return m_node != o.m_node; }
+}; // de5dc
+struct List_de5dc {
+    Chain_de5dc m_free;
+    Chain_de5dc m_used;
+    int m_max;
+    Iter_de5dc begin() { return Iter_de5dc(m_used.m_head.m_next); }
+    Iter_de5dc end() { return Iter_de5dc(&m_used.m_head); }
+    Iter_de5dc erase(Iter_de5dc it) {
+        Iter_de5dc next(it);
+        ++next;
+        Node_de5dc *node = it.m_node;
+        m_used.unlink(node);
+        m_free.push_back(node);
+        return next;
+    }
+}; // de5dc
+struct Mgr_de5dc { char pad[0xC1C0]; List_de5dc list; }; // de5dc
 struct Elem_de4e4 { unsigned int u0[8]; unsigned int flg; unsigned int u24[(0xB0 - 0x24) / 4]; } __attribute__((aligned(16)));
 struct Node_de4e4 { Node_de4e4 *m_prev; Node_de4e4 *m_next; Elem_de4e4 m_data; };
 struct Chain_de4e4 { Node_de4e4 m_head; int m_num; };
@@ -1440,7 +1502,21 @@ extern "C" void func_001DE4E4(List_de4e4 *arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DE5DC);
+extern "C" void func_001DE5DC(Mgr_de5dc *arg0, int arg1)
+{
+    Iter_de5dc it;
+    Iter_de5dc last;
+
+    it = arg0->list.begin();
+    last = arg0->list.end();
+    while (it != last) {
+        if ((*it).id == arg1) {
+            arg0->list.erase(it);
+            break;
+        }
+        ++it;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DE6FC);
 
