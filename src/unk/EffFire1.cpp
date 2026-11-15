@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" float Xii_func_0016FF18(int, int) asm("func_0016FF18");
 struct m2c_block12 { int w[3]; };
 struct m2c_block16 { int w[4]; };
 struct m2c_ulong { long v; } __attribute__((packed));
@@ -150,7 +151,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog2Prim__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFog2Prim__vfunc_08);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", updateZDepth__11EffFog2Prim);
+extern "C" void updateZDepth__11EffFog2Prim(int arg0)
+{
+    M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, arg0 + 0x30);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_00172678);
 
