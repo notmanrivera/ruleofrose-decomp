@@ -1,4 +1,29 @@
 #include "include_asm.h"
+struct Entry28_C5A8 {
+    unsigned short unk00;
+    unsigned char unk02[0x1A];
+};
+struct EntryC_C5A8 {
+    int unk00;
+    int unk04;
+    Entry28_C5A8 *unk08;
+};
+struct Sub154_C5A8 {
+    unsigned char pad00[0xF4];
+    int unkF4;
+    int unkF8;
+    unsigned char padFC[0x14];
+    int unk110;
+    int unk114;
+    int unk118;
+    unsigned char pad11C[0x1C];
+    EntryC_C5A8 *unk138;
+    unsigned char pad13C[0x18];
+};
+struct Obj_C5A8 {
+    unsigned char pad000[0x4AC];
+    Sub154_C5A8 *unk4AC;
+};
 extern "C" int Xiii_func_0018CA58(int, int) asm("func_0018CA58");
 extern "C" int Xiii_func_0018C990(int, int) asm("func_0018C990");
 extern "C" int Xii_func_0018F824(int) asm("func_0018F824");
@@ -112,7 +137,20 @@ extern "C" int func_0018C54C(int arg0, char *arg1, int arg2)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C5A8);
+extern "C" int func_0018C5A8(Obj_C5A8 *arg0, int arg1, int arg2)
+{
+    Sub154_C5A8 *p = &arg0->unk4AC[arg1];
+    EntryC_C5A8 *q = &p->unk138[p->unk110];
+    int off = arg2 * 0x1C;
+
+    if (arg2 >= q->unk04) {
+        return 1;
+    }
+    p->unk114 = arg2;
+    p->unkF4 = *(unsigned short *)((char *)q->unk08 + off);
+    p->unk118 = *(int *)((char *)q->unk08 + off) & 0xFF0000;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018C630);
 
