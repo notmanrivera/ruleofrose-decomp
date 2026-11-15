@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" void Xv_func_001E6734(int, int, int, int, int, int) asm("func_001E6734");
+extern "C" void Xv_func_0017F5E8(int, int) asm("func_0017F5E8");
+extern "C" void Xv_strncpy(char *, const char *, int) asm("strncpy");
+extern "C" void Xv_func_00191E58(int, int, int) asm("func_00191E58");
+extern "C" void Xv_func_00192834(int, char *) asm("func_00192834");
 extern "C" void Xv_func_001F0E90(unsigned int, float, int) asm("func_001F0E90");
 extern "C" int Xiff_func_001F6B8C(float, float) asm("func_001F6B8C");
 extern "C" void Xv_func_001F1298(int, float, int, float) asm("func_001F1298");
@@ -1467,7 +1472,24 @@ extern "C" int func_001F42C4(int arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F42C4);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F438C);
+extern "C" void func_001F438C(int arg0, const char *arg1)
+{
+    int off = 0x18E00;
+    int v = 1;
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$8TskMovie;
+    Xv_func_001E6734((int)&D_007812C0 + off, 0x1D, 1, 0x40, 0, -1);
+    Xv_func_0017F5E8((int)&D_007B2580, 8);
+    M2C_FIELD(arg0, int *, 4) = 0;
+    char *s = (char *)arg0 + 0x10;
+    Xv_strncpy(s, arg1, 0x40);
+    char *base = (char *)&D_006FBD80;
+    Xv_func_00191E58((int)(base + 0x42BB0), 3, 0x1E);
+    M2C_FIELD(arg0, int *, 8) = 0x64;
+    int *p = &D_007B2060->m_flags;
+    *p |= 0x08000000;
+    Xv_func_00192834((int)(base + 0x84AA8), s);
+    _9MagSystem$m_v_rate = v;
+}
 
 extern "C" void TskMovie__vfunc_06(int arg0, int arg1)
 {
