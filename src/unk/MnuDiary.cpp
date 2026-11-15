@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" void X_MnuDiary__vfunc_03_v1(void *) asm("MnuDiary__vfunc_03");
+extern "C" void X___builtin_delete_v1(void *) asm("__builtin_delete");
+extern "C" void X_func_00183B24_v1(void *, int) asm("func_00183B24");
+extern "C" void X_mnuBase__vfunc_01_v1(void *, int) asm("mnuBase__vfunc_01");
+extern int vtbl_MnuDiary_v1 asm("_vt$8MnuDiary");
 struct Sub_FADC {
     int m_00;
     inline void func0() {
@@ -224,7 +229,25 @@ MnuDiary::MnuDiary()
     m_8B8 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", MnuDiary__vfunc_01);
+extern "C" void MnuDiary__vfunc_01(char *arg0, int arg1)
+{
+    char *start = arg0 + 0x13C;
+    *(void **)(arg0 + 0x10C) = &vtbl_MnuDiary_v1;
+    X_MnuDiary__vfunc_03_v1(arg0);
+    if (start != 0) {
+        char *p = arg0 + 0x8B4;
+        if (start != p) {
+            do {
+                p -= 0x3BC;
+                X_func_00183B24_v1(p, 2);
+            } while (start != p);
+        }
+    }
+    X_mnuBase__vfunc_01_v1(arg0, 0);
+    if (arg1 & 1) {
+        return X___builtin_delete_v1(arg0);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuDiary", D_002F8190);
 
