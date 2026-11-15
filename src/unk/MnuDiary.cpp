@@ -1,4 +1,20 @@
 #include "include_asm.h"
+struct SubA4_v7 {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+};
+struct Arg223558_v7 {
+    int unk00;
+    void *unk04;
+    int unk08;
+    int unk0C;
+    int unk10;
+    int unk14;
+};
+extern "C" int X_func_00223558_v7(int, Arg223558_v7 *) asm("func_00223558");
+extern "C" void X_func_00223228_v7(int, int) asm("func_00223228");
 extern "C" void Xvp_func_0019A6B8(void *) asm("func_0019A6B8");
 extern "C" void Xvp_func_0019A7D8(void *) asm("func_0019A7D8");
 struct Msg_9A598 {
@@ -166,7 +182,36 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00199B3C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", MnuDiary__vfunc_06);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", MnuDiary__vfunc_07);
+extern "C" void MnuDiary__vfunc_07(void *arg0, int arg1)
+{
+    int arr[16];
+    Arg223558_v7 q;
+    SubA4_v7 *p1;
+    SubA4_v7 *p2;
+    int v;
+
+    p1 = *(SubA4_v7 **)((char *)arg0 + 0xA4);
+    arr[0] = p1[0].unk08;
+    p1[0].unk0C = 0;
+    p2 = *(SubA4_v7 **)((char *)arg0 + 0xA4);
+    arr[1] = p2[1].unk08;
+    {
+        register int one PS2_REG("$6") = 1;
+        p2[1].unk0C = one;
+    }
+    {
+        register int two PS2_REG("$6") = 2;
+        q.unk08 = two;
+    }
+    q.unk00 = 0;
+    q.unk04 = arr;
+    q.unk0C = 0;
+    q.unk10 = 0;
+    q.unk14 = 0;
+    v = X_func_00223558_v7(arg1, &q);
+    *(int *)((char *)arg0 + 0xAC) = v;
+    X_func_00223228_v7(arg1, v);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A054);
 
