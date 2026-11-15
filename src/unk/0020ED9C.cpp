@@ -1,4 +1,14 @@
 #include "include_asm.h"
+extern "C" int func_001E0C2C(void *, int, int, int);
+extern "C" void func_001C6A40(void *, int);
+extern "C" void func_00214A94(int arg0);
+extern "C" void *Xv_memset(void *, int, unsigned int) asm("memset");
+struct GamMan20F428 {
+    unsigned char pad[0x40];
+    unsigned char m_trg[1];
+    unsigned char *getTrg() { return m_trg; }
+};
+extern GamMan20F428 D_007812C0;
 struct NodeIter3E78 {
     int *m_node;
     NodeIter3E78() {}
@@ -168,7 +178,27 @@ extern "C" void func_0020F37C(int arg0)
     M2C_FIELD(arg0, int *, 0x18) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020F428);
+extern "C" void func_0020F428(int arg0, char *arg1)
+{
+    int temp_v0 = *(int *)(arg1 + 0x20);
+    if (temp_v0 != 0) {
+        unsigned char *trg = D_007812C0.getTrg();
+        func_001E0C2C(trg, 2, temp_v0, 0x02000000);
+        if (func_001E0C2C(trg, 4, *(int *)(arg1 + 0x20), 0x10) != 0) {
+            func_001E0C2C(trg, 3, *(int *)(arg1 + 0x20), 0x10000000);
+        }
+        func_001E0C2C(trg, 5, *(int *)(arg1 + 0x20), 0);
+    }
+    if (*(int *)arg1 & 0x40) {
+        func_001C6A40(&D_007812C0, 0x8000);
+    }
+    int temp_a0 = *(int *)(arg1 + 0xAC);
+    if (temp_a0 != 0) {
+        func_00214A94(temp_a0);
+        *(int *)(arg1 + 0xAC) = 0;
+    }
+    Xv_memset(arg1, 0, 0xB0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020F4FC);
 
