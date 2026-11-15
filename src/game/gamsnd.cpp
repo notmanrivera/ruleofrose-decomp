@@ -1,4 +1,13 @@
 #include "include_asm.h"
+extern char D_007812C0[];
+extern int _vt$9TskLogger;
+extern "C" int X_7ED8_func_001CBE38(void *, unsigned int) asm("func_001CBE38");
+struct TskLogger7ED8 {
+    void *vt;
+    int unk04;
+    int unk08;
+    TskLogger7ED8(int arg1) asm("func_001E7ED8");
+};
 static inline void noop(int *) {}
 extern char D_006E9800;
 extern char D_002FD770;
@@ -1082,7 +1091,12 @@ extern "C" int TskTest__vfunc_04()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E7ED8);
+TskLogger7ED8::TskLogger7ED8(int arg1)
+{
+    unk04 = arg1;
+    vt = &_vt$9TskLogger;
+    unk08 = X_7ED8_func_001CBE38(D_007812C0, (unsigned int)arg1);
+}
 
 extern "C" int TskLogger__vfunc_04()
 {
