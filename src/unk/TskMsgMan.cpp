@@ -2052,7 +2052,59 @@ extern "C" void TskMsgMan__vfunc_05(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMsgMan__vfunc_02);
 
+// NON_MATCHING: 38/86 differ, 3 relocs differ (size 0x158, game 0x15C), 15 edits
+#ifdef NON_MATCHING
+extern "C" int Xii_func_001874AC(int) asm("func_001874AC");
+extern "C" int Xiii_func_001875C0(int, int) asm("func_001875C0");
+extern "C" int Xiii_func_0018761C(int, int) asm("func_0018761C");
+static inline unsigned int padTrigU_04(int p) { return *(unsigned short *)((char *)p + 0x7A); }
+extern "C" int TskMsgMan__vfunc_04(int arg0)
+{
+    int var_s1 = 0;
+    int off = 0x97A40;
+    int *pad = (int *)((char *)&D_006E9840 + off);
+    switch (M2C_FIELD(arg0, unsigned int *, 0x204)) {
+    case 0:
+        break;
+    case 1:
+    {
+        int tmp = M2C_FIELD(arg0, int *, 0x21C);
+        M2C_FIELD(arg0, int *, 0x21C) = tmp + 1;
+        var_s1 = M2C_FIELD(arg0, int *, 0x210) < tmp;
+        break;
+    }
+    case 2:
+        if (Xiii_func_001875C0(arg0 + 0x224, M2C_FIELD(arg0, int *, 0x214)) == 0) {
+            int ok = (((padTrigU_04(*pad) >> 0xE) & 1) && (M2C_FIELD(arg0, int *, 0x21C) >= 0xB));
+            var_s1 = ok;
+        }
+        M2C_FIELD(arg0, int *, 0x21C)++;
+        break;
+    case 3:
+        if (Xiii_func_001875C0(arg0 + 0x224, M2C_FIELD(arg0, int *, 0x214)) == 0) {
+            int ok = ((M2C_FIELD(arg0, int *, 0x21C) >= 0xB) && ((padTrigU_04(*pad) >> 0xE) & 1));
+            var_s1 = ok;
+        }
+        if (var_s1 == 0) {
+            var_s1 = M2C_FIELD(arg0, int *, 0x210) < M2C_FIELD(arg0, int *, 0x21C);
+        }
+        M2C_FIELD(arg0, int *, 0x21C)++;
+        break;
+    case 4:
+        var_s1 = Xiii_func_001875C0(arg0 + 0x224, M2C_FIELD(arg0, int *, 0x214)) == 0;
+        M2C_FIELD(arg0, int *, 0x21C)++;
+        break;
+    }
+    if (var_s1 != 0) {
+        Xiii_func_0018761C(arg0 + 0x224, M2C_FIELD(arg0, int *, 0x214));
+        return 1;
+    }
+    Xii_func_001874AC(arg0 + 0x224);
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMsgMan__vfunc_04);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F50B8);
 
