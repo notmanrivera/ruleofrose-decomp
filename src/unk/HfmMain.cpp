@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int Xiiif_func_00167D88(int, int, float) asm("func_00167D88");
+extern "C" int Xiii_func_00166B74(int, int) asm("func_00166B74");
+extern "C" int Xiii_func_00166C8C(int, int) asm("func_00166C8C");
+extern "C" int Xiii_func_001D89C4(int, int) asm("func_001D89C4");
+extern "C" int Xiiiiiff_func_0017C340(int, int, int, int, float, float) asm("func_0017C340");
 extern "C" int Xiiui_func_001D10D0(int, unsigned int, int) asm("func_001D10D0");
 extern "C" int Xiii_func_00180EA8(int, int) asm("func_00180EA8");
 extern "C" int Xiii_func_0010423C(int, int) asm("func_0010423C");
@@ -757,7 +762,28 @@ extern "C" void func_00146BF0(int arg0)
     Xiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), 114.9999924f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00146C8C);
+extern "C" void func_00146C8C(int arg0, float fparg0)
+{
+    struct { float vec[4]; int sp10; int sp14; } stack;
+    int base;
+    int s1;
+
+    Xiii_func_00166B74(arg0, (int)stack.vec);
+    stack.vec[3] = M2C_FIELD(arg0, float *, 0x94);
+    Xiiif_func_00167D88(arg0, (int)stack.vec, fparg0);
+    base = (int)&D_006E9840;
+    s1 = base + 0x12540;
+    if (Xiii_func_0013166C(s1, 0x15, (int)stack.vec) == 0) {
+        Xiiif_func_00167D88(arg0, (int)stack.vec, 30.0f);
+        if (Xiii_func_0013166C(s1, 0x15, (int)stack.vec) == 0) {
+            Xiii_func_00166C8C(arg0, (int)stack.vec);
+            Xiiiiiff_func_0017C340(base + 0x9796C, (int)stack.vec, (int)&stack.sp10, 0, 40.0f, 0.0f);
+            if (stack.sp14 != 0) {
+                Xiii_func_001D89C4(M2C_FIELD(arg0, int *, 8), (int)stack.vec);
+            }
+        }
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/HfmMain", D_002EF298);
 
