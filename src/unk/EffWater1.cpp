@@ -1,4 +1,14 @@
 #include "include_asm.h"
+struct Stack8E68 {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+    int unk10;
+    short unk14;
+};
+extern "C" void X_8E68_func_00178EEC(int, Stack8E68 *) asm("func_00178EEC");
+extern "C" int X_8E68_func_0021B550(int, int, int) asm("func_0021B550");
 extern "C" float Xf_func_0022E958(...) asm("func_0022E958");
 extern "C" int Xiiii_func_001787B0(int, int, int) asm("func_001787B0");
 struct m2c_block12 { int w[3]; };
@@ -45,7 +55,22 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffMuzzleFlash1__vfunc_08);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_00178DD8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_00178E68);
+extern "C" int func_00178E68(int arg0, int arg1, int arg2, int arg3)
+{
+    Stack8E68 stack;
+
+    if (M2C_FIELD(arg0, short *, 0x4C) < 0x100) {
+        return arg3;
+    }
+    stack.unk08 = arg2;
+    stack.unk04 = (*(int *)&D_00298E08) + 0x2AB70;
+    stack.unk0C = X_8E68_func_0021B550(arg3, 0x42, 0x48);
+    stack.unk00 = arg0 + 0x40;
+    stack.unk10 = 0;
+    stack.unk14 = 0;
+    X_8E68_func_00178EEC(arg0, &stack);
+    return stack.unk0C;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_00178EEC);
 
