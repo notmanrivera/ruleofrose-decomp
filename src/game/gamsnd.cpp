@@ -13,9 +13,32 @@ struct SndNode {
     SndNode *m_next;        // +0x04
     char m_data[0x58];      // +0x08
 };
+struct SndElem {
+    char m_pad00[0x34];
+    int m_unk34;            // +0x34 (node +0x3C)
+    char m_pad38[0x20];
+};
+
+class SndIt {
+public:
+    SndNode *m_node;
+    SndIt() : m_node(0) {}
+    SndIt(SndNode *theNode) : m_node(theNode) {}
+    SndIt(const SndIt &theIt) : m_node(theIt.m_node) {}
+    SndElem &operator*() const { return *(SndElem *)((char *)m_node + 0x08); }
+    SndIt &operator++()
+    {
+        m_node = m_node->m_next;
+        return *this;
+    }
+    bool operator!=(const SndIt &theIt) const { return m_node != theIt.m_node; }
+};
+
 struct SndChain {
     SndNode m_head;         // +0x00
     int m_num;              // +0x60
+    SndIt begin() { return SndIt(m_head.m_next); }
+    SndIt end() { return SndIt(&m_head); }
     void splice(SndChain &theOther)
     {
         if (theOther.m_num != 0) {
@@ -60,7 +83,20 @@ extern "C" int Xiiiiiii_func_001E6734(int, int, int, int, int, int) asm("func_00
 extern int D_007B2580;
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E0BB0);
+extern "C" int func_001E0BB0(char *arg0, int arg1)
+{
+    SndIt it;
+    SndIt last;
+
+    it = SndIt(*(SndNode **)(arg0 + 0x18454));
+    last = ((SndChain *)(arg0 + 0x18450))->end();
+    while (it != last) {
+        if ((*it).m_unk34 == arg1)
+            return 1;
+        ++it;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E0C2C);
 
