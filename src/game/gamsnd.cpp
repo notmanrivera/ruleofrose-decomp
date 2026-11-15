@@ -1,4 +1,10 @@
 #include "include_asm.h"
+extern char D_006E9800;
+extern char D_002FD770;
+extern "C" void *alloc__BedMemory(int, int, const char *, int, int, int) asm("alloc__9BedMemoryiPCciii");
+extern "C" void *memset(void *, int, unsigned int);
+extern "C" void func_001E107C(int);
+extern "C" void func_001E1FA4(int);
 extern "C" int atoi(const char *);
 struct Vec3 {
     float m_x;
@@ -174,7 +180,29 @@ extern "C" void GamSndMan__vfunc_01(char *arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E0F1C);
+extern "C" void func_001E0F1C(char *arg0)
+{
+    func_001E107C((int) arg0);
+    func_001E1FA4((int) arg0);
+    *(int *)(arg0 + 0x1540) = (int) alloc__BedMemory((int) &D_006E9800, 0xE000, &D_002FD770, 0x51, 0, 1);
+    *(int *)(arg0 + 0x1544) = (int) alloc__BedMemory((int) &D_006E9800, 0xC4E0, &D_002FD770, 0x52, 0, 1);
+    *(short *)(arg0 + 0x1576) = 0x80;
+    *(short *)(arg0 + 0x1578) = 0x80;
+    *(short *)(arg0 + 0x157A) = 0x6A4;
+    *(short *)(arg0 + 0x157C) = 0x64;
+    *(short *)(arg0 + 0x157E) = 0x80;
+    *(short *)(arg0 + 0x1580) = 0;
+    *(int *)(arg0 + 0x163C) = -1;
+    *(int *)(arg0 + 0x170C) = -1;
+    *(int *)(arg0 + 0x1710) = -1;
+    *(int *)(arg0 + 0x1718) = -1;
+    *(int *)(arg0 + 0x1684) = -1;
+    *(int *)(arg0 + 0x15AC) = -1;
+    *(int *)(arg0 + 0x1630) = 0;
+    *(int *)(arg0 + 0x15A0) = 0;
+    *(float *)(arg0 + 0x186C) = 0.5F;
+    memset(arg0 + 0x1728, -1, 0x104);
+}
 
 extern "C" void func_001E100C(int arg0, Vec3 *v)
 {
