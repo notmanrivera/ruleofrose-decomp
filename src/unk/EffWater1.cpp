@@ -526,7 +526,67 @@ extern "C" int EffSteam1Prim__vfunc_05(int arg0)
     return var_v0;
 }
 
+// NON_MATCHING: 34/113 differ, 1 reloc differs, 30 edits
+#ifdef NON_MATCHING
+struct SteamMat4 {
+    float m[4][4];
+} __attribute__((aligned(8)));
+
+struct SteamVec4 {
+    float x, y, z, w;
+} __attribute__((aligned(8)));
+
+class SteamCam {
+public:
+    SteamMat4 m_mat;
+    char pad40[0x54];
+    virtual void vfunc0();
+    virtual void transform();
+};
+
+extern SteamVec4 D_002F2EB0;
+extern SteamVec4 D_002F2EC0;
+
+extern "C" int X_9998_func_0021B260(int, int) asm("func_0021B260");
+extern "C" int X_9998_func_0021B4F8(int, int) asm("func_0021B4F8");
+extern "C" int X_9998_func_0021B550(int, int, int) asm("func_0021B550");
+extern "C" int X_9998_func_0021B5A0(int, int) asm("func_0021B5A0");
+extern "C" int X_9998_func_0021E428(int, void *) asm("func_0021E428");
+extern "C" int X_9998_func_0021E488(int, void *) asm("func_0021E488");
+extern "C" int X_9998_func_0021E5A0(int, int, int) asm("func_0021E5A0");
+extern "C" void X_9998_func_0021E688(int) asm("func_0021E688");
+extern "C" int X_9998_func_0021E690(int, void *, void *) asm("func_0021E690");
+extern "C" void X_9998_func_00237A40(void *, void *, void *) asm("func_00237A40");
+extern "C" void X_9998_func_0016AF20(void *) asm("func_0016AF20");
+
+extern "C" void EffSteam1Prim__vfunc_08(int arg0, int arg1, int arg2, int arg3)
+{
+    SteamVec4 v;
+    SteamMat4 mat;
+    int s0 = X_9998_func_0021B5A0(X_9998_func_0021B550(arg3, 0x42, 0x44), M2C_FIELD(arg1, int *, 8));
+    s0 = X_9998_func_0021B4F8(s0, X_9998_func_0021B260(arg2, 0));
+    int q = M2C_FIELD(arg1, int *, 8);
+    v = D_002F2EB0;
+    int s3 = X_9998_func_0021E488(X_9998_func_0021E5A0(s0, q, 1), &v);
+    SteamCam *cam = (SteamCam *)(D_00298E08 + 0x2AB70);
+    cam->transform();
+    mat = cam->m_mat;
+    float alpha = M2C_FIELD(arg0, float *, 0x74) * M2C_FIELD(arg0, float *, 0x5C);
+    SteamVec4 color = {
+        M2C_FIELD(arg0, float *, 0x68),
+        M2C_FIELD(arg0, float *, 0x6C),
+        M2C_FIELD(arg0, float *, 0x70),
+        alpha
+    };
+    v = D_002F2EC0;
+    v.x = v.y = M2C_FIELD(arg0, float *, 0x54) * M2C_FIELD(arg0, float *, 0x58);
+    X_9998_func_00237A40(&mat, &mat, &v);
+    X_9998_func_0016AF20(&color);
+    X_9998_func_0021E688(X_9998_func_0021E690(X_9998_func_0021E428(s3, &mat), (void *)(arg0 + 0x30), &color));
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam1Prim__vfunc_08);
+#endif
 
 extern "C" void updateZDepth__13EffSteam1Prim(int arg0)
 {
