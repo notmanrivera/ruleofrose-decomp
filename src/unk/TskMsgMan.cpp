@@ -192,7 +192,40 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EA5EC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAA38);
 
+// NON_MATCHING: 33/55 differ, 5 relocs differ (size 0xDC, game 0xE4), 16 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_00260110(const char *, ...) asm("func_00260110");
+extern "C" int Xii_func_001EAF00(int) asm("func_001EAF00");
+extern "C" int Xiii_func_001D8ADC(int, int) asm("func_001D8ADC");
+extern "C" int Xiiuii_func_001D544C(int, unsigned int, int, int) asm("func_001D544C");
+extern const char D_002FDBF0[];
+extern "C" int func_001EAB54(int arg0)
+{
+    int out[8];
+    int temp_s1;
+
+    temp_s1 = arg0 + 0x30;
+    if ((M2C_FIELD(arg0, int *, 0xA8) & 1) != 0) {
+        if (X_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0x3D8)) != 0) {
+            return 0;
+        }
+    }
+    if (Xiiuii_func_001D544C((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 8), (int)out, 0) != 0) {
+        *(u_long128 *)temp_s1 = *(u_long128 *)(arg0 + 0x90);
+        X_func_00260110(D_002FDBF0, out[4]);
+        return 0;
+    }
+    Xv_func_0025B878(temp_s1, temp_s1, arg0 + 0x50);
+    if (Xiii_func_001D8ADC(M2C_FIELD(arg0, int *, 4), temp_s1) != 0) {
+        M2C_FIELD(arg0, int *, 0x60)--;
+        *(u_long128 *)(arg0 + 0x90) = *(u_long128 *)temp_s1;
+        return 0;
+    }
+    return Xii_func_001EAF00(arg0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAB54);
+#endif
 
 // NON_MATCHING: 4/32 differ, 4 edits
 #ifdef NON_MATCHING
