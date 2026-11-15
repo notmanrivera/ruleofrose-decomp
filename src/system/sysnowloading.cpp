@@ -788,7 +788,393 @@ extern "C" int func_00208510()
 
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00208518);
 
+// NON_MATCHING: 240/306 differ, 36 relocs differ (size 0x4C8, game 0x4D0), 44 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_001C4F38(...) asm("func_001C4F38");
+extern "C" int X_func_001CA0D4(...) asm("func_001CA0D4");
+extern "C" int X_func_001CA0DC(...) asm("func_001CA0DC");
+extern "C" int X_func_001CA72C(...) asm("func_001CA72C");
+extern "C" int X_func_001CA8E8(...) asm("func_001CA8E8");
+extern "C" int X_func_001CAD88(...) asm("func_001CAD88");
+extern "C" void loading8640Set(int, int, int, int, int, int, int, int, float, int, int, int, int) asm("func_001CC560");
+extern "C" int X_func_001CD7C0(...) asm("func_001CD7C0");
+extern "C" int X_func_001D024C(...) asm("func_001D024C");
+extern "C" int X_func_001FBBD0(...) asm("func_001FBBD0");
+extern "C" void loading8640Value(int, int, float) asm("func_001D024C");
+extern "C" int func_00208640(unsigned int arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3, unsigned int arg4, unsigned int arg5)
+{
+    unsigned int saved0 = arg0;
+    register unsigned int saved1 PS2_REG("$17") = arg1;
+    register unsigned int saved5 PS2_REG("$18") = arg5;
+    register unsigned int saved2 PS2_REG("$19") = arg2;
+    register unsigned int saved3 PS2_REG("$20") = arg3;
+    register unsigned int saved4 PS2_REG("$21") = arg4;
+    struct { unsigned short sp20; } stack;
+    int base;
+    int var_a1_2;
+    int var_a1_3;
+    int var_a3;
+    int var_a3_2;
+    int var_a3_3;
+    int var_a5_3;
+    unsigned short var_a1;
+    unsigned int temp_v0;
+    unsigned int var_a2;
+    unsigned int var_a2_2;
+    unsigned int var_a2_3;
+    unsigned int var_a3_4;
+    unsigned int var_a3_5;
+    unsigned int var_a4;
+    unsigned int var_a4_2;
+    unsigned int var_a4_3;
+    unsigned int var_a5;
+    unsigned int var_a5_2;
+    unsigned int var_a6;
+
+    X_func_001FBBD0();
+    switch (saved0) {
+    case 0x2:
+        X_func_001CA0D4((int)&D_007812C0, saved1, 2);
+        break;
+    case 0x3:
+        base = (int)&D_007812C0;
+        var_a1 = saved1 & 0xFFFF;
+        var_a2 = saved2;
+        var_a3 = 0xFFFF;
+        var_a4 = 0; var_a5 = -1U; X_func_001CA8E8(base, var_a1, var_a2, var_a3, var_a4, (int)var_a5, 1); break;
+    case 0x4:
+        base = (int)&D_007812C0;
+        saved1 = saved1 & 0xFFFF;
+        X_func_001DC48C(base + 0x22220, saved1, (int) 0xF, (int)&stack.sp20);
+        if (stack.sp20 != 0xFFFF) {
+            var_a1 = stack.sp20;
+            var_a2 = saved2;
+            var_a3 = saved1;
+            var_a4 = 0; var_a5 = -1U; X_func_001CA8E8(base, var_a1, var_a2, var_a3, var_a4, (int)var_a5, 1); break;
+        }
+        var_a3_2 = saved1;
+        var_a4_2 = 0;
+        X_func_001CC250(base, -1U, saved2, var_a3_2, var_a4_2, 0); break;
+    case 0x5:
+        base = (int)&D_007812C0;
+        saved1 = saved1 & 0xFFFF;
+        X_func_001DC48C(base + 0x22220, saved1, (int) 0xF, (int)&stack.sp20);
+        var_a1 = stack.sp20;
+        if (stack.sp20 != 0xFFFF) {
+            var_a2 = saved2;
+            var_a3 = saved1;
+            var_a4 = saved3;
+            var_a5 = -1U; X_func_001CA8E8(base, var_a1, var_a2, var_a3, var_a4, (int)var_a5, 1); break;
+        }
+        var_a3_2 = saved1;
+        var_a4_2 = saved3;
+        var_a3_3 = var_a3_2;
+        var_a4_3 = var_a4_2;
+        var_a5_2 = 0;
+        X_func_001CC250(base, -1U, saved2, var_a3_3, var_a4_3, (int)var_a5_2); break;
+    case 0x6:
+        base = (int)&D_007812C0;
+        saved1 = saved1 & 0xFFFF;
+        X_func_001DC48C(base + 0x22220, saved1, (int) 0xF, (int)&stack.sp20);
+        if (stack.sp20 != 0xFFFF) {
+            var_a1 = stack.sp20;
+            var_a2 = saved2;
+            var_a3 = saved1;
+            var_a4 = saved4;
+            var_a5 = saved3;
+            X_func_001CA8E8(base, var_a1, var_a2, var_a3, var_a4, (int)var_a5, 1); break;
+        }
+        var_a3_3 = saved1;
+        var_a4_3 = saved4;
+        var_a5_2 = saved3;
+        X_func_001CC250(base, -1U, saved2, var_a3_3, var_a4_3, (int)var_a5_2); break;
+    case 0x7:
+        base = (int)&D_007812C0;
+        saved1 = saved1 & 0xFFFF;
+        X_func_001DC48C(base + 0x22220, saved1, (int) 0xF, (int)&stack.sp20);
+        if (saved3 != 0xFFFF) {
+            var_a1 = stack.sp20;
+            var_a2 = saved2;
+            var_a3 = saved1;
+            var_a4 = saved5;
+            var_a5 = saved4;
+            X_func_001CA8E8(base, var_a1, var_a2, var_a3, var_a4, (int)var_a5, 1); break;
+        }
+        var_a3_3 = saved1;
+        var_a4_3 = saved5;
+        var_a5_2 = saved4;
+        X_func_001CC250(base, -1U, saved2, var_a3_3, var_a4_3, (int) var_a5_2);
+        break;
+    case 0x8:
+        base = (int)&D_007812C0;
+        saved1 = saved1 & 0xFFFF;
+        X_func_001DC48C(base + 0x22220, saved1, (int) 0xF, (int)&stack.sp20);
+        loading8640Set(base, stack.sp20, saved2, M2C_FIELD(saved5, int *, 4), M2C_FIELD(saved5, int *, 8), M2C_FIELD(saved5, int *, 0xC), M2C_FIELD(saved5, int *, 0x10), M2C_FIELD(saved5, int *, 0x14), (float) M2C_FIELD(saved5, int *, 0x1C), M2C_FIELD(saved5, int *, 0x18), saved1, (int) saved4, M2C_FIELD(saved5, int *, 0));
+        break;
+    case 0x9:
+        var_a1_2 = saved1 & 0xFFFF;
+        var_a2_2 = saved2;
+        var_a6 = saved4;
+        var_a3_4 = -1U;
+        var_a5_3 = 0xFFFF;
+        X_func_001CA72C((int)&D_007812C0, var_a1_2, var_a2_2, var_a3_4, saved3, var_a5_3, var_a6, -1); break;
+    case 0xA:
+        X_func_001CA0D4((int)&D_007812C0, saved1, 3);
+        break;
+    case 0xC:
+        X_func_001CA0DC((int)&D_007812C0, saved1, saved2, 2);
+        break;
+    case 0xD:
+        X_func_001CA0DC((int)&D_007812C0, saved1, saved2, 3);
+        break;
+    case 0xE:
+        var_a1_3 = saved1 & 0xFFFF;
+        var_a2_3 = saved2;
+        var_a3_5 = saved3;
+        X_func_001CAD88((int)&D_007812C0, var_a1_3, var_a2_3, var_a3_5, 1); break;
+    case 0xF:
+        var_a1_3 = saved1 & 0xFFFF;
+        var_a3_5 = saved2;
+        var_a2_3 = 0;
+        X_func_001CAD88((int)&D_007812C0, var_a1_3, var_a2_3, var_a3_5, 1);
+        break;
+    case 0x14:
+        X_func_001C4F38((int)&D_007812C0, saved1);
+        break;
+    case 0x23:
+        var_a1_2 = saved5 & 0xFFFF;
+        var_a2_2 = saved1;
+        var_a5_3 = saved2 & 0xFFFF;
+        var_a3_4 = 9;
+        var_a6 = 0;
+        X_func_001CA72C((int)&D_007812C0, var_a1_2, var_a2_2, var_a3_4, saved3, var_a5_3, var_a6, -1);
+        break;
+    case 0x24:
+        base = (int)&D_007812C0;
+        saved1 = saved2 & 0xFFFF;
+        X_func_001DC48C(base + 0x22220, saved1, (int) 0xF, (int)&stack.sp20);
+        var_a1 = stack.sp20;
+        var_a2 = saved3;
+        var_a5 = M2C_FIELD((*(int *)&D_007B205C), unsigned int *, 0xB8);
+        var_a3 = saved1;
+        var_a4 = saved4;
+        X_func_001CA8E8(base, var_a1, var_a2, var_a3, var_a4, (int)var_a5, 1); break;
+    case 0x32:
+        base = (int)&D_007812C0;
+        var_a1 = saved1 & 0xFFFF;
+        var_a2 = saved2;
+        var_a3 = saved3 & 0xFFFF;
+        var_a4 = 0;
+        var_a5 = -1U;
+        X_func_001CA8E8(base, var_a1, var_a2, var_a3, var_a4, (int) var_a5, 1);
+        break;
+    case 0x64:
+        base = (int)&D_007812C0;
+        if (X_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(base, int *, 0x222BC)) == 0) {
+            X_func_001CD7C0(base, saved1);
+        }
+        break;
+    case 0xC8:
+        base = (int)&D_007812C0;
+        temp_v0 = X_func_001CA72C(base, saved1 & 0xFFFF, saved2, saved1 >> 0xA, 0U, 0xFFFF, saved3, -1);
+        M2C_FIELD((*(int *)&D_007B205C), unsigned int *, 0x188) = temp_v0;
+        if (saved4 != 0) {
+            loading8640Value(base, temp_v0, (*(float *)(saved4)));
+        }
+        break;
+    case 0:
+    case 1:
+    case 11:
+    case 16:
+    case 17:
+    case 18:
+    case 19:
+    case 21:
+    case 22:
+    case 23:
+    case 24:
+    case 25:
+    case 26:
+    case 27:
+    case 28:
+    case 29:
+    case 30:
+    case 31:
+    case 32:
+    case 33:
+    case 34:
+    case 37:
+    case 38:
+    case 39:
+    case 40:
+    case 41:
+    case 42:
+    case 43:
+    case 44:
+    case 45:
+    case 46:
+    case 47:
+    case 48:
+    case 49:
+    case 51:
+    case 52:
+    case 53:
+    case 54:
+    case 55:
+    case 56:
+    case 57:
+    case 58:
+    case 59:
+    case 60:
+    case 61:
+    case 62:
+    case 63:
+    case 64:
+    case 65:
+    case 66:
+    case 67:
+    case 68:
+    case 69:
+    case 70:
+    case 71:
+    case 72:
+    case 73:
+    case 74:
+    case 75:
+    case 76:
+    case 77:
+    case 78:
+    case 79:
+    case 80:
+    case 81:
+    case 82:
+    case 83:
+    case 84:
+    case 85:
+    case 86:
+    case 87:
+    case 88:
+    case 89:
+    case 90:
+    case 91:
+    case 92:
+    case 93:
+    case 94:
+    case 95:
+    case 96:
+    case 97:
+    case 98:
+    case 99:
+    case 101:
+    case 102:
+    case 103:
+    case 104:
+    case 105:
+    case 106:
+    case 107:
+    case 108:
+    case 109:
+    case 110:
+    case 111:
+    case 112:
+    case 113:
+    case 114:
+    case 115:
+    case 116:
+    case 117:
+    case 118:
+    case 119:
+    case 120:
+    case 121:
+    case 122:
+    case 123:
+    case 124:
+    case 125:
+    case 126:
+    case 127:
+    case 128:
+    case 129:
+    case 130:
+    case 131:
+    case 132:
+    case 133:
+    case 134:
+    case 135:
+    case 136:
+    case 137:
+    case 138:
+    case 139:
+    case 140:
+    case 141:
+    case 142:
+    case 143:
+    case 144:
+    case 145:
+    case 146:
+    case 147:
+    case 148:
+    case 149:
+    case 150:
+    case 151:
+    case 152:
+    case 153:
+    case 154:
+    case 155:
+    case 156:
+    case 157:
+    case 158:
+    case 159:
+    case 160:
+    case 161:
+    case 162:
+    case 163:
+    case 164:
+    case 165:
+    case 166:
+    case 167:
+    case 168:
+    case 169:
+    case 170:
+    case 171:
+    case 172:
+    case 173:
+    case 174:
+    case 175:
+    case 176:
+    case 177:
+    case 178:
+    case 179:
+    case 180:
+    case 181:
+    case 182:
+    case 183:
+    case 184:
+    case 185:
+    case 186:
+    case 187:
+    case 188:
+    case 189:
+    case 190:
+    case 191:
+    case 192:
+    case 193:
+    case 194:
+    case 195:
+    case 196:
+    case 197:
+    case 198:
+    case 199:
+    case 201:
+    case 202:
+    case 203:
+    case 204:
+    default: break;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00208640);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00208B10);
 
