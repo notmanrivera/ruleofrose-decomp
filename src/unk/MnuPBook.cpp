@@ -205,7 +205,29 @@ extern "C" void func_00194548()
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00194588);
 
+// NON_MATCHING: 18/22 differ (size 0x58, game 0x5C), 5 edits
+#ifdef NON_MATCHING
+extern "C" void func_00194688(int arg0)
+{
+    int i;
+    int v;
+    char *p;
+
+    i = 0;
+    p = (char *)D_0029BFB4;
+    v = *(volatile int *)(p + 8);
+    while ((v & 3) != 3 || M2C_FIELD(p, int *, 0) != arg0) {
+        i += 1;
+        if (i >= 0x80)
+            return;
+        p += 0x10;
+        v = M2C_FIELD(p, int *, 8);
+    }
+    M2C_FIELD(p, int *, 8) = v & -3;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00194688);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001946E4);
 
