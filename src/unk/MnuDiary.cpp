@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" int X_func_00279C98_A290(char *, const char *, int) asm("func_00279C98");
+extern "C" int X_func_0019A24C_A290(void *, int) asm("func_0019A24C");
+extern "C" int X_func_00194404_A290(void *, int, int) asm("func_00194404");
+extern "C" int X_func_0019397C_A290(void *, char *, int, int) asm("func_0019397C");
 struct SprElem_DBC8 {
     unsigned char unk00[0x144];
     int unk144;
@@ -571,7 +575,27 @@ extern "C" int func_0019A24C(int arg0, int arg1)
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuDiary", D_002F8270);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A290);
+extern "C" void func_0019A290(MnuDiary *arg0, int arg1)
+{
+    char buf[32];
+    int page;
+    int idx;
+
+    page = arg1 * 2 + 1;
+    if (page >= 0 && page < (*(int **)((char *)arg0 + 0x110))[2] && X_func_0019A24C_A290(arg0, page) == -1) {
+        idx = X_func_00194404_A290(arg0, 3, 0x12);
+        ((int *)arg0->m_8B8)[idx] = page;
+        X_func_00279C98_A290(buf, "dy_page%02d_tcc", page);
+        X_func_0019397C_A290(arg0, buf, 4, idx);
+    }
+    page++;
+    if (page >= 0 && page < (*(int **)((char *)arg0 + 0x110))[2] && X_func_0019A24C_A290(arg0, page) == -1) {
+        idx = X_func_00194404_A290(arg0, 3, 0x12);
+        ((int *)arg0->m_8B8)[idx] = page;
+        X_func_00279C98_A290(buf, "dy_page%02d_tcc", page);
+        X_func_0019397C_A290(arg0, buf, 4, idx);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A3C0);
 
