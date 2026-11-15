@@ -917,7 +917,116 @@ extern "C" void X_def_func_001E1FA4(Obj1FA4 *arg0)
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E1FA4);
 #endif
 
+// NON_MATCHING: 74/110 differ, 1 reloc differs (size 0x1B8, game 0x1D8), 49 edits
+#ifdef NON_MATCHING
+struct ALIGNED(16) Ent2178 { // 2178
+    char pad00[0x20]; // 2178
+    int unk20; // 2178
+    int unk24; // 2178
+    unsigned int flags; // 2178
+    char pad2C[0x24]; // 2178
+}; // Ent2178
+template <class T> class GamList2178 {
+public: // GamList2178
+    struct Node { // GamList2178
+        Node *m_prev; // 2178
+        Node *m_next; // 2178
+        T m_data; // 2178
+    }; // Node 2178
+    struct Chain { // GamList2178
+        Node m_head; // 2178
+        int m_num; // 2178
+        void push_back(Node *theNode) { // 2178
+            if (m_num == 0) { // 2178
+                m_head.m_next = theNode; // 2178
+                theNode->m_prev = &m_head; // 2178
+            } else { // 2178
+                m_head.m_prev->m_next = theNode; // 2178
+                theNode->m_prev = m_head.m_prev; // 2178
+            } // push_back 2178
+            theNode->m_next = &m_head; // 2178
+            m_head.m_prev = theNode; // 2178
+            ++m_num; // 2178
+        } // push_back end 2178
+        void unlink(Node *theNode) { // 2178
+            Node *head = &m_head; // 2178
+            if (theNode == head->m_next) { // 2178
+                Node *next = theNode->m_next; // 2178
+                head->m_next = next; // 2178
+                next->m_prev = head; // 2178
+            } else { // unlink 2178
+                Node *p = theNode->m_prev; // 2178
+                if (theNode == head->m_prev) { // 2178
+                    head->m_prev = p; // 2178
+                    p->m_next = head; // 2178
+                } else { // unlink mid 2178
+                    p->m_next = theNode->m_next; // 2178
+                    Node *prev = theNode->m_prev; // 2178
+                    p = theNode->m_next; // 2178
+                    p->m_prev = prev; // 2178
+                } // unlink mid end 2178
+            } // unlink else end 2178
+            --m_num; // 2178
+        } // unlink end 2178
+    }; // Chain 2178
+    class iterator { // GamList2178
+    public: // GamList2178 iterator
+        Node *m_node; // 2178
+        iterator() : m_node(0) {} // 2178
+        iterator(Node *theNode) : m_node(theNode) {} // 2178
+        iterator(const iterator &theOther) : m_node(theOther.m_node) {} // 2178
+        T &operator*() { return m_node->m_data; } // 2178
+        bool operator!=(const iterator &theOther) const { return m_node != theOther.m_node; } // 2178
+        iterator &operator++() { m_node = m_node->m_next; return *this; } // 2178
+    }; // iterator 2178
+    Chain m_free; // 2178
+    Chain m_used; // 2178
+    int m_max; // 2178
+    iterator begin() { return iterator(m_used.m_head.m_next); } // 2178
+    iterator end() { return iterator(&m_used.m_head); } // 2178
+    iterator erase(iterator thePos) { // 2178
+        iterator next = thePos; // 2178
+        ++next; // 2178
+        Node *n = thePos.m_node; // 2178
+        m_used.unlink(n); // 2178
+        m_free.push_back(n); // 2178
+        return next; // 2178
+    } // erase 2178
+}; // GamList2178
+template <class T, int N> class GamPool2178 : public GamList2178<T> {
+public: // GamPool2178
+    typename GamList2178<T>::Node m_nodes[N]; // 2178
+}; // GamPool2178
+struct Obj2178 { // 2178
+    char pad00[0x40]; // 2178
+    GamPool2178<Ent2178, 6> m_que; // 2178
+}; // Obj2178
+extern "C" int X_2178_func_001E5660(Obj2178 *, int, int, int) asm("func_001E5660");
+extern "C" void X_2178_func_001E649C(Obj2178 *, unsigned int, int) asm("func_001E649C");
+extern "C" void func_001E2178(Obj2178 *arg0)
+{
+    GamList2178<Ent2178>::iterator it;
+    GamList2178<Ent2178>::iterator last;
+    it = arg0->m_que.begin();
+    last = arg0->m_que.end();
+    while (it != last) {
+        if ((*it).flags & 2) {
+            if ((*it).flags & 1) {
+                X_2178_func_001E5660(arg0, (*it).unk20, 1, 0);
+            }
+            it = arg0->m_que.erase(it);
+        } else if ((*it).flags & 4) {
+            X_2178_func_001E649C(arg0, (*it).unk20, (*it).unk24);
+            (*it).unk24 = -1;
+            it = arg0->m_que.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2178);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2350);
 
