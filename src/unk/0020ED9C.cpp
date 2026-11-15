@@ -1,4 +1,15 @@
 #include "include_asm.h"
+struct NodeIter3E78 {
+    int *m_node;
+    NodeIter3E78() {}
+    NodeIter3E78(const NodeIter3E78 &other) : m_node(other.m_node) {}
+};
+extern "C" int func_00213BFC(int arg0, int arg1, int arg2, int arg3);
+static inline int checkRange3E78(int arg0, int arg1, char *p, NodeIter3E78 *beg, NodeIter3E78 *end) {
+    beg->m_node = *(int **)(p + 0xD4);
+    end->m_node = (int *)(p + 0xD0);
+    return func_00213BFC(arg0, arg1, (int)beg, (int)end);
+}
 extern "C" void func_002120AC(int, int, int, int, int, int, const char *);
 struct RevIter2129B8 {
     int *m_node;
@@ -1050,7 +1061,16 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213D00);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213D90);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213E78);
+extern "C" int func_00213E78(int arg0, int arg1)
+{
+    NodeIter3E78 beg0, end0, beg1, end1, beg2, end2;
+    if ((checkRange3E78(arg0, arg1, *(char **)(arg0 + 0x10), &beg0, &end0) ^ 1) == 0 ||
+        (checkRange3E78(arg0, arg1, *(char **)(arg0 + 0x14), &beg1, &end1) ^ 1) == 0 ||
+        (checkRange3E78(arg0, arg1, *(char **)(arg0 + 0x18), &beg2, &end2) ^ 1) == 0) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213F48);
 
