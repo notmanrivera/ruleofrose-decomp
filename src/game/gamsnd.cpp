@@ -1,4 +1,18 @@
 #include "include_asm.h"
+struct Obj7D08 {
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+};
+struct Node7D08 {
+    Obj7D08 *obj;
+    int pad[4];
+    int flags;
+};
+extern "C" void X_7D08___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void X_7D08_func_001E7698(void *, Node7D08 *) asm("func_001E7698");
 struct Node7184 {
     void *obj;
     Node7184 *next;
@@ -1280,7 +1294,18 @@ extern "C" void func_001E7C7C(void *arg0, Node7C7C *arg1)
     X___builtin_delete(arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E7D08);
+extern "C" void func_001E7D08(void *arg0, Node7D08 *arg1)
+{
+    X_7D08_func_001E7698(arg0, arg1);
+    if (arg1->obj != 0) {
+        arg1->obj->v5();
+        if (arg1->flags & 1) {
+            X_7D08___builtin_delete(arg1->obj);
+            arg1->flags &= ~1;
+        }
+        arg1->obj = 0;
+    }
+}
 
 extern "C" int func_001E7D7C(TskLogger7D7C *arg0, int arg1)
 {
