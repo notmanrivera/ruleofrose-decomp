@@ -321,7 +321,59 @@ extern int D_007B2580;
 
 // declarations from the code that moved to unk/TskMtnMove:
 
+// NON_MATCHING: 9/143 differ, 9 edits
+#ifdef NON_MATCHING
+extern "C" int genGet(int, int, int) asm("func_001DA228");
+extern "C" int genFinish(int, float) asm("func_001EAFB0");
+extern "C" void func_001E9A3C(int param0, unsigned int arg1, int param2, int param3, int param4, float fparg0)
+{
+    register int arg0 PS2_REG("$20") = param0;
+    int arg2 = param2;
+    int arg3 = param3;
+    int arg4 = param4;
+    int rate = arg0+0x74;
+    M2C_FIELD(arg0, unsigned int *, 8) = arg1;
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$14TskMoveTypeGen;
+    int actor = X_func_001D2B8C_f1670((int)&D_007812C0, arg1);
+    M2C_FIELD(arg0, int *, 4) = actor;
+    int no = M2C_FIELD(actor, int *, 0x108);
+    M2C_FIELD(arg0, int *, 0x1C) = arg2;
+    M2C_FIELD(arg0, int *, 0xC) = no;
+    M2C_FIELD(rate, int *, -8) = arg3;
+    M2C_FIELD(arg0, float *, 0xA0) = fparg0;
+    M2C_FIELD(arg0, int *, 0xA4) = arg4;
+    M2C_FIELD(arg0, int *, 0x84) = 0;
+    Xiiii_memset(arg0+0x7C, 0, 8);
+    M2C_FIELD(arg0, int *, 0xA8) = 0;
+    M2C_FIELD(arg0, int *, 0x68) = 0;
+    genGet(M2C_FIELD(arg0, int *, 4), 0x1100, arg0+0x70);
+    genGet(M2C_FIELD(arg0, int *, 4), 0x1103, rate);
+    genGet(M2C_FIELD(arg0, int *, 4), 0x1101, arg0+0xAC);
+    genGet(M2C_FIELD(arg0, int *, 4), 0x1102, arg0+0xB0);
+    genGet(M2C_FIELD(arg0, int *, 4), 0x1105, arg0+0xB4);
+    genGet(M2C_FIELD(arg0, int *, 4), 0x1104, arg0+0x78);
+    float r = M2C_FIELD(rate, float *, 0) * (1.0f/60.0f);
+    M2C_FIELD(rate, float *, 0) = r;
+    register int threshold PS2_REG("$3") = 5;
+    register int flag PS2_REG("$4") = 0;
+    if (threshold < M2C_FIELD(arg0, int *, 0x1C) && (!(r > 0.0001f) || !(r < 1.0f))) flag = 1;
+    if (flag) M2C_FIELD(arg0, float *, 0x74) = (1.0f/60.0f);
+    if (M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0x120) & 0x400000) M2C_FIELD(arg0, int *, 0xA8) |= 1;
+    register float *rot PS2_REG("$5") = (float *)(arg0+0x40);
+    register float *pos PS2_REG("$4") = (float *)(arg0+0x30);
+    DogActorStub *d = getDogActor(&D_006FBD80, M2C_FIELD(arg0, int *, 0xC));
+    rot[0] = d->unk50[0]; rot[1] = d->unk50[1]; rot[2] = d->unk50[2];
+    d = getDogActor(&D_006FBD80, M2C_FIELD(arg0, int *, 0xC));
+    pos[0] = d->unk40[0]; pos[1] = d->unk40[1]; pos[2] = d->unk40[2];
+    *(int *)rot = 0;
+    float yaw = Xfi_func_0010A650__8DogActor((int)getDogActor(&D_006FBD80, M2C_FIELD(arg0, int *, 0xC)));
+    M2C_FIELD(arg0, int *, 0x48) = 0;
+    M2C_FIELD(arg0, float *, 0x44) = yaw;
+    genFinish(arg0, Xfi_func_001E9CB4(arg0));
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001E9A3C);
+#endif
 
 extern "C" void TskMoveTypeGen__vfunc_06(int arg0, int arg1)
 {
