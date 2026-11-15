@@ -1,4 +1,11 @@
 #include "include_asm.h"
+struct McdSlot {
+    int f0;
+    int f4;
+    char pad[0x18];
+    int f20;
+    char pad2[0x398];
+};
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
 extern "C" void Xv_func_001879C4(void *) asm("func_001879C4");
 extern "C" int Xii_heapFree__FPv(int) asm("heapFree__FPv");
@@ -62,7 +69,24 @@ extern const char D_002F7898[];
 extern const char D_002F78A0[];
 extern const char D_002F78C8[];
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_001875C0);
+extern "C" int func_001875C0(struct McdSlot *arg0, int arg1)
+{
+    int i;
+
+    if (arg1 < 0) {
+        return 0;
+    }
+    for (i = 0; i < 2; i++) {
+        if (arg1 == arg0[i].f0) {
+            int res = (arg0[i].f4 == 0);
+            if (arg0[i].f20 == 1) {
+                res |= 2;
+            }
+            return res;
+        }
+    }
+    return 0;
+}
 
 extern "C" void func_0018761C(int arg0, int arg1)
 {
