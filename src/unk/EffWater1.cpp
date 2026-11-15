@@ -1,4 +1,9 @@
 #include "include_asm.h"
+struct MfVec { int w[4]; } __attribute__((aligned(8)));
+extern "C" int Xip_func_0021E488(int, void *) asm("func_0021E488");
+extern "C" int func_00178DD8(int, int, int, int);
+extern "C" int func_00178E68(int, int, int, int);
+extern MfVec D_002F2E70;
 struct SteamV4 { float x; float y; int z; int w; } __attribute__((aligned(8)));
 extern "C" void Xppp_func_002378B0(void *, void *, void *) asm("func_002378B0");
 extern "C" void Xp_func_00237340(void *) asm("func_00237340");
@@ -140,7 +145,34 @@ extern "C" void func_00178C54(int arg0, int arg1, short arg2, float fparg0)
     M2C_FIELD(arg1, float *, 4) = (float) (M2C_FIELD(arg1, float *, 4) + fparg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffMuzzleFlash1__vfunc_08);
+extern "C" void EffMuzzleFlash1__vfunc_08(int arg0, int arg1, int arg2, int arg3)
+{
+    MfVec v;
+    float f20;
+    float f0;
+    int x;
+    int t;
+
+    t = X_func_0021B5A0(arg3, M2C_FIELD(arg1, int *, 8));
+    int q = M2C_FIELD(arg1, int *, 8);
+    v = D_002F2E70;
+    x = Xip_func_0021E488(X_func_0021E5A0(t, q, 1), &v);
+    long long lo = M2C_FIELD(arg0, long long *, 0x30);
+    long long hi = M2C_FIELD(arg0, long long *, 0x38);
+    ((long long *)&v)[0] = lo;
+    ((long long *)&v)[1] = hi;
+    f20 = Xii_func_0016FF18(D_00298E08 + 0x2AB70, (int)&v);
+    ((float *)&v)[1] += M2C_FIELD(arg0, float *, 0x58);
+    f0 = Xii_func_0016FF18(D_00298E08 + 0x2AB70, (int)&v);
+    if (f20 < f0) {
+        x = func_00178DD8(arg0, arg1, arg2, x);
+        x = func_00178E68(arg0, arg1, arg2, x);
+    } else {
+        x = func_00178E68(arg0, arg1, arg2, x);
+        x = func_00178DD8(arg0, arg1, arg2, x);
+    }
+    X_func_0021E688(x);
+}
 
 extern "C" int func_00178DD8(int arg0, int arg1, int arg2, int arg3)
 {
