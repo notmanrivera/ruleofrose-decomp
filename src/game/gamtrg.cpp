@@ -1424,7 +1424,50 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DEAAC);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DEC14);
 
+// NON_MATCHING: 42/68 differ (size 0x110, game 0x108), 23 edits
+#ifdef NON_MATCHING
+struct BedPad_ded70 {
+    unsigned char pad0[0x78];
+    unsigned short m_press;
+    unsigned short m_trigger;
+}; // ded70
+extern "C" int Xii_func_00118FEC__9MagSystem(void *) asm("func_00118FEC__9MagSystem");
+extern "C" int func_001DED70(int arg0, int arg1, int *arg2)
+{
+    char *gm = (char *)&D_007812C0;
+
+    if (!(*(int *)(gm + 0x21F48) & 4)) {
+        return 0;
+    }
+    char *ms = (char *)&D_006E9840;
+    if ((unsigned int)(Xii_func_00118FEC__9MagSystem(ms) - 5) >= 3U) {
+        return 0;
+    }
+    if (Xiii_func_001E7D7C((int)&D_007A3D80, *(int *)(gm + 0x222C0)) != 0) {
+        return 0;
+    }
+    BedPad_ded70 *pad = *(BedPad_ded70 **)(ms + 0x97A40);
+    if ((pad->m_trigger ^ 0x4000) != 0) {
+        return 0;
+    }
+    if (pad->m_press >> 15) {
+        return 0;
+    }
+    if ((pad->m_press >> 12) & 1) {
+        return 0;
+    }
+    if ((pad->m_press >> 13) & 1) {
+        return 0;
+    }
+    if ((pad->m_press >> 3) & 1) {
+        return 0;
+    }
+    *arg2 |= 0x10;
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DED70);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamtrg", D_002FD640);
 
