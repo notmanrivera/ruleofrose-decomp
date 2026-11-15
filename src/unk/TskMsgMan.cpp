@@ -1008,7 +1008,84 @@ extern "C" void func_001EC834(int arg0)
     }
 }
 
+// NON_MATCHING: 38/155 differ, 2 relocs differ (size 0x26C, game 0x264), 23 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_001D2B8C(...) asm("func_001D2B8C");
+extern "C" int X_func_001D7B08(...) asm("func_001D7B08");
+extern "C" int X_func_001D81F0(...) asm("func_001D81F0");
+extern "C" int X_func_001DA228(...) asm("func_001DA228");
+extern "C" int pathInit940(int) asm("func_001ED1D0");
+extern "C" int X_func_001F6878(...) asm("func_001F6878");
+extern int D_002FDDA0;
+extern int D_002FDDA8;
+extern int D_002FDDB0;
+extern "C" void func_001EC940(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, float fparg0)
+{
+    float temp_f1;
+    int temp_v0_3;
+    int temp_v1;
+    int temp_a0;
+    int temp_v0_2;
+    int var_v1;
+    int temp_v0;
+
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$20TskMoveSectaFindPath;
+    M2C_FIELD(arg0, int *, 8) = arg1;
+    temp_v0 = X_func_001D2B8C_f1670((int)&D_007812C0, arg1);
+    M2C_FIELD(arg0, int *, 4) = temp_v0;
+    M2C_FIELD(arg0, int *, 0xC) = (int) M2C_FIELD(temp_v0, int *, 0x108);
+    X_func_001DA228(temp_v0, 0x1100, arg0 + 0x29C);
+    X_func_001DA228(M2C_FIELD(arg0, int *, 4), 0x1103, arg0 + 0x2A0);
+    X_func_001DA228(M2C_FIELD(arg0, int *, 4), 0x1101, arg0 + 0x2AC);
+    X_func_001DA228(M2C_FIELD(arg0, int *, 4), 0x1102, arg0 + 0x2B0);
+    X_func_001DA228(M2C_FIELD(arg0, int *, 4), 0x1105, arg0 + 0x2B4);
+    X_func_001DA228(M2C_FIELD(arg0, int *, 4), 0x1104, arg0 + 0x2A4);
+    temp_v0_2 = X_func_001F6878(M2C_FIELD(arg0, int *, 8));
+    if (temp_v0_2 != 0) {
+        M2C_FIELD(arg0, int *, 0x224) = X_func_001D7B08((int)&D_007812C0, M2C_FIELD(arg0, int *, 8), temp_v0_2);
+    } else {
+        temp_v0_3 = M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0x114);
+        var_v1 = -1;
+        if (temp_v0_3 != 0) {
+            var_v1 = (*(int *)(temp_v0_3));
+        }
+        M2C_FIELD(arg0, int *, 0x224) = var_v1;
+    }
+    M2C_FIELD(arg0, int *, 0x228) = arg2;
+    temp_f1 = M2C_FIELD(arg0, float *, 0x2A0) * (1.0f / 60.0f);
+    M2C_FIELD(arg0, float *, 0x230) = fparg0;
+    M2C_FIELD(arg0, int *, 0x290) = arg3;
+    M2C_FIELD(arg0, int *, 0x218) = 0;
+    M2C_FIELD(arg0, int *, 0x21C) = 0;
+    M2C_FIELD(arg0, int *, 0x298) = arg5;
+    M2C_FIELD(arg0, int *, 0x294) = 0;
+    M2C_FIELD(arg0, float *, 0x2A0) = temp_f1;
+    if ((arg5 > 0) && (!(temp_f1 > 0.0001f) || !(temp_f1 < 1.0f))) {
+        M2C_FIELD(arg0, float *, 0x2A0) = (1.0f / 60.0f);
+    }
+    X_func_001D81F0((int)&D_007812C0, X_func_001F6878(arg1), M2C_FIELD(arg0, int *, 0x224), M2C_FIELD(arg0, int *, 0x228), arg0 + 0x10);
+    if (M2C_FIELD(arg0, int *, 0x20C) > 0) {
+        pathInit940(arg0);
+    } else {
+        temp_v1 = M2C_FIELD(arg0, int *, 0x290);
+        if (temp_v1 != 0) *(int *)temp_v1 = 4;
+    }
+    if (M2C_FIELD(arg0, int *, 0x298) > 0) {
+        *(m2c_block8 *)((char *)(arg0) + 696) = *(m2c_block8 *)((char *)(&D_002FDDA0) + 0);
+        return;
+    }
+    temp_a0 = M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0x120);
+    bool flag40 = temp_a0 & 0x40;
+    bool flag80 = temp_a0 & 0x80;
+    if (flag40 && !flag80) {
+        *(m2c_block8 *)((char *)(arg0) + 696) = *(m2c_block8 *)((char *)(&D_002FDDA8) + 0);
+        return;
+    }
+    *(m2c_block8 *)((char *)(arg0) + 696) = *(m2c_block8 *)((char *)(&D_002FDDB0) + 0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EC940);
+#endif
 
 extern "C" void TskMoveSectaFindPath__vfunc_06(int arg0, int arg1)
 {
