@@ -1,4 +1,6 @@
 #include "include_asm.h"
+struct m2c_v20_28_i { char pad[32]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual int call(); };
+struct m2c_v20_58_i { char pad[32]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual int call(); };
 struct Vec3_E65C {
     float x;
     float y;
@@ -111,7 +113,32 @@ extern "C" void Eff0__vfunc_10(int arg0, int arg1)
     (*(unsigned short *)(arg0)) |= 8;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", Eff0__vfunc_04);
+extern "C" int Eff0__vfunc_04(int arg0)
+{
+    int temp_v0;
+    int temp_v0_3;
+    int temp_v0_4;
+    int temp_v1;
+    int var_v0;
+    int temp_v0_2;
+    int temp_v0_5;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x1C);
+    temp_v1 = temp_v0 - 1;
+    if ((temp_v0 < 0) || (M2C_FIELD(arg0, int *, 0x1C) = temp_v1, var_v0 = 1, (temp_v1 < 0))) {
+        if (M2C_FIELD(arg0, unsigned short *, 0) & 8) {
+            ((m2c_v20_58_i *)(arg0))->call();
+        }
+        if (M2C_FIELD(arg0, int *, 4) >= 0) {
+            if (--M2C_FIELD(arg0, int *, 4) <= 0) {
+                M2C_FIELD(arg0, int *, 4) = -1;
+                M2C_FIELD(arg0, unsigned short *, 0) |= 2;
+            }
+        }
+        var_v0 = ((m2c_v20_28_i *)(arg0))->call();
+    }
+    return var_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", render__4Eff0PQ24Eff011RENDERPARAM);
 
