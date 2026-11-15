@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" void func_00211E84(int, int, int);
+extern "C" void func_00213F48(int, int, int);
+struct Block18000_1 { char b[0x18000]; };
 extern "C" int func_00213B7C(int arg0, int arg1, int arg2, int arg3, int arg4);
 struct NodeIter3D90 {
     int *m_node;
@@ -105,7 +108,14 @@ extern int D_007B4DD0;
 extern "C" void func_0020ED9C(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020EDA4);
+extern "C" void func_0020EDA4(int arg0, int arg1)
+{
+    int src = arg1;
+    int dst = *(int *)(arg0 + 4);
+    *(Block18000_1 *)dst = *(Block18000_1 *)src;
+    func_00213F48(arg0, *(int *)(arg0 + 4), 1);
+    func_00211E84(arg0, 0x44000000, D_007B47D0 - 0xA4);
+}
 
 // NON_MATCHING: 28/61 differ, 3 relocs differ (size 0xF4, game 0xFC), 14 edits
 #ifdef NON_MATCHING
