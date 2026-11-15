@@ -1,4 +1,16 @@
 #include "include_asm.h"
+extern "C" void X_func_0018741C_50b8(int) asm("func_0018741C");
+extern "C" int X_func_00187464_50b8(int) asm("func_00187464");
+extern "C" void X_func_001874F4_50b8(int, int, int, int) asm("func_001874F4");
+extern "C" char *X_strncpy_50b8(char *, const char *, int) asm("strncpy");
+extern "C" int X_func_00134730_50b8(int, int, int, int, int) asm("func_00134730");
+extern "C" void X_func_00118980__9MagSystemiiiiii(void *, int, int, int, int, int, int) asm("func_00118980__9MagSystemiiiiii");
+extern "C" int X_func_001348B0_50b8(int, unsigned int) asm("func_001348B0");
+extern "C" int X_func_00135594_50b8(int, unsigned int) asm("func_00135594");
+extern "C" int X_func_001351B0_50b8(int, unsigned int, int) asm("func_001351B0");
+extern "C" void X_func_00135418_50b8(int, unsigned int, int) asm("func_00135418");
+extern "C" void X_func_00135494_50b8(int, unsigned int, int) asm("func_00135494");
+extern "C" void X_func_00134CD0_50b8(int, unsigned int, int, int, int, int) asm("func_00134CD0");
 struct TskVec4;
 extern "C" float sqrtf(float);
 extern "C" int X_func_001F59B4_ee7f0(unsigned int, int, int, int, int, float, float) asm("func_001F59B4");
@@ -2271,7 +2283,37 @@ extern "C" int TskMsgMan__vfunc_04(int arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMsgMan__vfunc_04);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F50B8);
+extern "C" void func_001F50B8(int arg0, const char *arg1, int arg2, int arg3, int arg4)
+{
+    int sub = arg0 + 0x224;
+    int off = 0x12540;
+    int scene;
+    unsigned int no;
+
+    X_strncpy_50b8((char *)(arg0 + 4), arg1, 0x200);
+    M2C_FIELD(arg0, const char **, 0x220) = arg1;
+    M2C_FIELD(arg0, int *, 0x208) = arg2;
+    X_func_00187464_50b8(sub);
+    scene = (int)&D_006E9840 + off;
+    X_func_001351B0_50b8(scene, M2C_FIELD(arg0, unsigned int *, 0x214), 1);
+    X_func_00135594_50b8(scene, M2C_FIELD(arg0, unsigned int *, 0x214));
+    X_func_001348B0_50b8(scene, M2C_FIELD(arg0, unsigned int *, 0x214));
+    M2C_FIELD(arg0, int *, 0x9A4) = 0x8001;
+    no = X_func_00134730_50b8(scene, M2C_FIELD(arg0, int *, 0x9A8), M2C_FIELD(arg0, int *, 0x9AC), M2C_FIELD(arg0, int *, 0x9B4), -1);
+    M2C_FIELD(arg0, unsigned int *, 0x214) = no;
+    X_func_00118980__9MagSystemiiiiii(&D_006E9840, no, M2C_FIELD(arg0, int *, 0x99C), M2C_FIELD(arg0, int *, 0x9A0), M2C_FIELD(arg0, int *, 0x9A4), M2C_FIELD(arg0, int *, 0x9A8), M2C_FIELD(arg0, int *, 0x9AC));
+    X_func_00134CD0_50b8(scene, M2C_FIELD(arg0, unsigned int *, 0x214), 0, 0, M2C_FIELD(arg0, int *, 0x9A8), M2C_FIELD(arg0, int *, 0x9AC));
+    if (arg4 != 0) {
+        X_func_00135494_50b8(scene, M2C_FIELD(arg0, unsigned int *, 0x214), 1);
+        X_func_00135418_50b8(scene, M2C_FIELD(arg0, unsigned int *, 0x214), 0);
+    } else {
+        X_func_00135494_50b8(scene, M2C_FIELD(arg0, unsigned int *, 0x214), 0);
+        X_func_00135418_50b8(scene, M2C_FIELD(arg0, unsigned int *, 0x214), 1);
+    }
+    X_func_00135594_50b8((int)&D_006E9840 + off, M2C_FIELD(arg0, unsigned int *, 0x214));
+    X_func_0018741C_50b8(sub);
+    X_func_001874F4_50b8(sub, 0, M2C_FIELD(arg0, int *, 0x220), M2C_FIELD(arg0, int *, 0x9B0));
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F5244);
 
