@@ -1,4 +1,18 @@
 #include "include_asm.h"
+extern "C" int X_2E20_1D5A0C(void *, float *, int, int, int, void *) asm("func_001D5A0C");
+extern "C" void X_2E20_17C340(void *, float *, void *, int, float, float) asm("func_0017C340");
+extern char D_006FBD80[];
+struct S_00202E20_sub {
+    int f00;
+    int f04;
+    int f08;
+    int f0C;
+    int f10[4];
+};
+struct S_00202E20 {
+    char pad00[0x8];
+    struct S_00202E20_sub sub;
+};
 extern "C" int X_v4_200988(void *, void *) asm("func_00200988");
 extern "C" void X_v4_200D18(void *, void *) asm("func_00200D18");
 extern "C" void X_v4_202FE4(void *, void *) asm("func_00202FE4");
@@ -277,7 +291,16 @@ extern "C" void func_00202874(struct S_00202874 *arg0, float fparg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202900);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202E20);
+extern "C" int func_00202E20(struct S_00202E20 *arg0, float *arg1, float *arg2, int arg3)
+{
+    int off = 0x8542C;
+
+    X_2E20_17C340(D_006FBD80 + off, arg2, arg0->sub.f10, 0, 40.0f, 0.0f);
+    if (arg0->sub.f10[arg0->sub.f0C] == 0) {
+        return 1;
+    }
+    return X_2E20_1D5A0C(&D_007812C0, arg1, arg0->sub.f00, arg3, 0, 0) != 0;
+}
 
 extern "C" void TskEnemyMove__vfunc_02(int arg0, int arg1)
 {
