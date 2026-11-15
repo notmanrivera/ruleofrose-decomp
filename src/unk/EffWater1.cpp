@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0017A410(int) asm("func_0017A410");
 extern "C" int X_func_0021A760(int, int, int) asm("func_0021A760");
 extern "C" int X_func_0022E960(int, int, int, float) asm("func_0022E960");
 extern "C" int X_func_0022F7A0(int, int, int) asm("func_0022F7A0");
@@ -226,7 +227,35 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffCloud1__vfunc_02);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_0017A410);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffCloud1__vfunc_05);
+extern "C" int EffCloud1__vfunc_05(int arg0)
+{
+    int temp_a1;
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0xC);
+    temp_a1 = M2C_FIELD(arg0, int *, 0x70) + 1;
+    M2C_FIELD(arg0, int *, 0x70) = temp_a1;
+    M2C_FIELD(arg0, int *, 8) = temp_v1;
+    switch (temp_v1) {
+    case 0:
+        if (temp_a1 < M2C_FIELD(arg0, int *, 0x74)) {
+            M2C_FIELD(arg0, float *, 0x30) += M2C_FIELD(arg0, float *, 0x4C);
+            M2C_FIELD(arg0, float *, 0x34) += M2C_FIELD(arg0, float *, 0x50);
+            M2C_FIELD(arg0, float *, 0x38) += M2C_FIELD(arg0, float *, 0x54);
+        } else {
+            M2C_FIELD(arg0, int *, 0xC) = 0xA;
+        }
+        break;
+    case 10:
+        if (temp_a1 >= M2C_FIELD(arg0, int *, 0x78)) {
+            Xii_func_0017A410(arg0);
+            M2C_FIELD(arg0, int *, 0x70) = 0;
+            M2C_FIELD(arg0, int *, 0xC) = 0;
+        }
+        break;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffCloud1__vfunc_08);
 
