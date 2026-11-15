@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void func_001E43E0(int, char *, int *, int *);
+extern "C" void func_001E44B4(int, int, int, int, int);
 extern "C" int func_001E4908(int, int, int *, int) asm("func_001E4908");
 extern "C" int func_001E43A4(int, unsigned int, int, unsigned int);
 struct m2c_block36 { int w[9]; };
@@ -90,7 +92,14 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E43A4);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E43E0);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E4458);
+extern "C" void func_001E4458(int arg0, char *arg1, int arg2, int arg3)
+{
+    int a;
+    int b;
+
+    func_001E43E0(arg0, arg1, &a, &b);
+    func_001E44B4(arg0, a, b, arg2, arg3);
+}
 
 extern "C" void func_001E44B4(int arg0, int arg1, int arg2, int arg3, int arg4)
 {
