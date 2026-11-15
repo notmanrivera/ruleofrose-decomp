@@ -63,7 +63,27 @@ extern "C" void func_001703C0(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffDust2__vfunc_02);
 
+// NON_MATCHING: 4/36 differ, 5 edits
+#ifdef NON_MATCHING
+struct Dust2Struct {
+    char pad00[0x88];
+    int unk88[12];
+};
+extern "C" int X_0594_func_00170624(int, int) asm("func_00170624");
+
+extern "C" int EffDust2__vfunc_05(int arg0)
+{
+    Dust2Struct *self = (Dust2Struct *)arg0;
+    for (int i = 0; i < 12; i++) {
+        if (((int *)D_00298E08)[self->unk88[i] + 0x20DF9] == 0) {
+            self->unk88[i] = X_0594_func_00170624(arg0, 0);
+        }
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffDust2__vfunc_05);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_00170624);
 
