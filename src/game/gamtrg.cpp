@@ -858,7 +858,112 @@ extern "C" void func_001DB1B8(int arg0, float fparg0)
     Xiiif_func_001333C0((int)&D_006E9840 + off, M2C_FIELD(arg0, int *, 0x108), fparg0);
 }
 
+// NON_MATCHING: 7/75 differ, 4 edits
+#ifdef NON_MATCHING
+struct Copy48_db1f0 {
+    long long d0;
+    long long d1;
+    long long d2;
+    long long d3;
+    long long d4;
+    long long d5;
+}; // db1f0
+struct Unq_db1f0 {
+    unsigned char pad0[0x48];
+    unsigned short f48;
+    unsigned short f4A;
+    unsigned short f4C;
+    unsigned char pad4E[0x70 - 0x4E];
+    float f70;
+    unsigned char pad74[0x80 - 0x74];
+    unsigned char f80[0x30];
+    int fB0;
+}; // db1f0
+struct Obj_db1f0 {
+    unsigned char pad0[0x110];
+    int f110;
+    int f114;
+    float f118;
+    int pad11C;
+    int f120;
+    unsigned char pad124[6];
+    unsigned short f12A;
+    unsigned short f12C;
+    unsigned short f12E;
+    unsigned char pad130[4];
+    int f134;
+    int f138;
+    int f13C;
+    unsigned char pad140[0x10];
+    union { Copy48_db1f0 c; struct { int f0; int f4; } s; } f150;
+    unsigned char pad180[0x220 - 0x180];
+    Copy48_db1f0 f220;
+    int pad250;
+    int f254;
+    unsigned char pad258[0x280 - 0x258];
+    Unq_db1f0 *f280;
+    void *f284;
+    Unq_db1f0 *f288;
+    int f28C;
+    short f290;
+    short pad292;
+    int f294;
+}; // db1f0
+struct GamMan_db1f0 {
+    unsigned char pad0[0x22220];
+    unsigned char m_unq[4];
+}; // db1f0
+extern GamMan_db1f0 X_gm_db1f0 asm("D_007812C0"); // db1f0
+extern "C" Unq_db1f0 *X_func_001DBFA0(void *, unsigned short) asm("func_001DBFA0"); // db1f0
+static inline void *gamSub22220_db1f0() { void *p = (void *)&X_gm_db1f0; return (char *)p + 0x22220; } // db1f0
+extern "C" void func_001DB1F0(Obj_db1f0 *arg0, int arg1)
+{
+    unsigned short id = arg1;
+    arg0->f150.s.f0 = 2;
+    arg0->f150.s.f4 = 2;
+    arg0->f220 = arg0->f150.c;
+    arg0->f114 = 0;
+    arg0->f110 = 0;
+    arg0->f138 = -1;
+    arg0->f13C = -1;
+    arg0->f254 = -1;
+    arg0->f120 = 0;
+    arg0->f280 = 0;
+
+    switch (id >> 9) {
+    case 6:
+    case 7:
+    case 8:
+        break;
+    case 4:
+        arg0->f120 = 0;
+        break;
+    case 5: {
+        Unq_db1f0 *p = X_func_001DBFA0(gamSub22220_db1f0(), id);
+        arg0->f134 = 0;
+        arg0->f288 = p;
+        arg0->f284 = p->f80;
+        arg0->f120 = p->fB0;
+        arg0->f290 = 1;
+        arg0->f280 = p;
+        break;
+    }
+    case 9:
+        arg0->f28C = -1;
+        arg0->f294 = -1;
+        break;
+    }
+
+    if (arg0->f280 != 0) {
+        arg0->f12A = arg0->f280->f48;
+        arg0->f12C = arg0->f280->f4A;
+        arg0->f12E = arg0->f280->f4C;
+        arg0->f118 = arg0->f280->f70;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB1F0);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB31C);
 
