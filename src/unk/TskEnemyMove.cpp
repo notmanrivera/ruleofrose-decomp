@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int X_2234_1D5A0C(void *, float *, int, int, int, void *) asm("func_001D5A0C");
+extern "C" void X_2234_16A594(unsigned int, void *) asm("func_0016A594");
+extern "C" float X_2234_atan2f(float, float) asm("func_0026CB00");
+extern "C" float X_2234_10A650(void *) asm("func_0010A650__8DogActor");
+extern "C" int X_2234_10B1B0(void *, int, int, float, int, int) asm("func_0010B1B0__8DogActoriifii");
 extern "C" float cosf(float);
 extern "C" float Xf_func_0010A650__8DogActor(void *) asm("func_0010A650__8DogActor");
 extern "C" float sinf(float);
@@ -338,99 +343,6 @@ extern "C" int func_00202138(void *arg0, float *arg1)
     return var_v0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202234);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202380);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202638);
-
-extern "C" void func_00202874(struct S_00202874 *arg0, float fparg0)
-{
-    int temp_s1;
-    int f70 = arg0->f70;
-    int f5C = arg0->f5C;
-
-    if (fparg0 > 0.0f) {
-        temp_s1 = (f70 != 0) ? 0xF : 9;
-        arg0->fA80 = 0;
-    } else {
-        temp_s1 = (f70 != 0) ? 0xE : 8;
-        arg0->fA80 = 1;
-    }
-    if (f5C != temp_s1) {
-        X_2874_DogActor(arg0->f28, temp_s1, 1, arg0->f4C, -1, -1);
-        arg0->f5C = temp_s1;
-    }
-    arg0->f2C = 2;
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202900);
-
-extern "C" int func_00202E20(struct S_00202E20 *arg0, float *arg1, float *arg2, int arg3)
-{
-    int off = 0x8542C;
-
-    X_2E20_17C340(D_006FBD80 + off, arg2, arg0->sub.f10, 0, 40.0f, 0.0f);
-    if (arg0->sub.f10[arg0->sub.f0C] == 0) {
-        return 1;
-    }
-    return X_2E20_1D5A0C(&D_007812C0, arg1, arg0->sub.f00, arg3, 0, 0) != 0;
-}
-
-extern "C" void TskEnemyMove__vfunc_02(int arg0, int arg1)
-{
-    int temp_v0;
-
-    if (M2C_FIELD(arg0, int *, 4) != 0) {
-        temp_v0 = M2C_FIELD(arg0, int *, 0x28);
-        if (arg1 != 0) {
-            if (temp_v0 != 0) {
-                M2C_FIELD(temp_v0, float *, 0x1E8) = 9.999999583953922e-08f;
-            }
-        } else if (temp_v0 != 0) {
-            M2C_FIELD(temp_v0, float *, 0x1E8) = (float) M2C_FIELD(arg0, float *, 0x4C);
-        }
-    }
-}
-
-extern "C" void func_00202F10(void *arg0)
-{
-    M2C_FIELD(arg0, int *, 4) = 0;
-    X_2F10_180EA8(&D_007B2580, M2C_FIELD(arg0, int *, 0xAB8));
-    M2C_FIELD(arg0, int *, 0xAB8) = -1;
-    X_2F10_1640AC(&D_007B2140, M2C_FIELD(arg0, int *, 8), 0);
-}
-
-extern "C" void func_00202F60(void *arg0)
-{
-    void *temp_a0;
-
-    M2C_FIELD(arg0, int *, 0xAC4) = 1;
-    X_2F60_180EA8(&D_007B2580, M2C_FIELD(arg0, int *, 0xAB8));
-    if (M2C_FIELD(arg0, int *, 4) == 0) {
-        return;
-    }
-    temp_a0 = M2C_FIELD(arg0, void **, 0x28);
-    if (temp_a0 != 0) {
-        M2C_FIELD(temp_a0, float *, 0x1E8) = 9.999999583953922e-08f;
-    }
-}
-
-extern "C" void func_00202FBC(int arg0)
-{
-    int temp_v0;
-
-    M2C_FIELD(arg0, int *, 0xAC4) = 0;
-    if (M2C_FIELD(arg0, int *, 4) != 0) {
-        temp_v0 = M2C_FIELD(arg0, int *, 0x28);
-        if (temp_v0 != 0) {
-            M2C_FIELD(temp_v0, float *, 0x1E8) = (float) M2C_FIELD(arg0, float *, 0x4C);
-        }
-    }
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202FE4);
-
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF338);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF340);
@@ -535,13 +447,121 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF4C8);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF4D0);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF4D8);
+extern "C" int func_00202234(void *arg0, float *arg1)
+{
+    float pos[4];
+    int info[8];
+    float yaw;
+    int mot;
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF4E0);
+    if (X_2234_1D5A0C(&D_007812C0, arg1, M2C_FIELD(arg0, int *, 0x8), 0, 0, info) != 0) {
+        X_2234_16A594(info[4], pos);
+        yaw = X_2234_atan2f(pos[0] - arg1[0], pos[2] - arg1[2]) - X_2234_10A650(M2C_FIELD(arg0, void **, 0x28));
+        if (yaw < -3.14159265358979323846) {
+            yaw += 2.0 * 3.14159265358979323846;
+        }
+        if (yaw > 3.14159265358979323846) {
+            yaw -= 2.0 * 3.14159265358979323846;
+        }
+        mot = (yaw > 0.0f) ? 0x10 : 0x11;
+        X_2234_10B1B0(M2C_FIELD(arg0, void **, 0x28), mot, 0, M2C_FIELD(arg0, float *, 0x4C), -1, -1);
+        M2C_FIELD(arg0, int *, 0x5C) = mot;
+        M2C_FIELD(arg0, int *, 0x2C) = 1;
+        return 1;
+    }
+    return 0;
+}
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF4E8);
+INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202380);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF4F0);
+INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202638);
+
+extern "C" void func_00202874(struct S_00202874 *arg0, float fparg0)
+{
+    int temp_s1;
+    int f70 = arg0->f70;
+    int f5C = arg0->f5C;
+
+    if (fparg0 > 0.0f) {
+        temp_s1 = (f70 != 0) ? 0xF : 9;
+        arg0->fA80 = 0;
+    } else {
+        temp_s1 = (f70 != 0) ? 0xE : 8;
+        arg0->fA80 = 1;
+    }
+    if (f5C != temp_s1) {
+        X_2874_DogActor(arg0->f28, temp_s1, 1, arg0->f4C, -1, -1);
+        arg0->f5C = temp_s1;
+    }
+    arg0->f2C = 2;
+}
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202900);
+
+extern "C" int func_00202E20(struct S_00202E20 *arg0, float *arg1, float *arg2, int arg3)
+{
+    int off = 0x8542C;
+
+    X_2E20_17C340(D_006FBD80 + off, arg2, arg0->sub.f10, 0, 40.0f, 0.0f);
+    if (arg0->sub.f10[arg0->sub.f0C] == 0) {
+        return 1;
+    }
+    return X_2E20_1D5A0C(&D_007812C0, arg1, arg0->sub.f00, arg3, 0, 0) != 0;
+}
+
+extern "C" void TskEnemyMove__vfunc_02(int arg0, int arg1)
+{
+    int temp_v0;
+
+    if (M2C_FIELD(arg0, int *, 4) != 0) {
+        temp_v0 = M2C_FIELD(arg0, int *, 0x28);
+        if (arg1 != 0) {
+            if (temp_v0 != 0) {
+                M2C_FIELD(temp_v0, float *, 0x1E8) = 9.999999583953922e-08f;
+            }
+        } else if (temp_v0 != 0) {
+            M2C_FIELD(temp_v0, float *, 0x1E8) = (float) M2C_FIELD(arg0, float *, 0x4C);
+        }
+    }
+}
+
+extern "C" void func_00202F10(void *arg0)
+{
+    M2C_FIELD(arg0, int *, 4) = 0;
+    X_2F10_180EA8(&D_007B2580, M2C_FIELD(arg0, int *, 0xAB8));
+    M2C_FIELD(arg0, int *, 0xAB8) = -1;
+    X_2F10_1640AC(&D_007B2140, M2C_FIELD(arg0, int *, 8), 0);
+}
+
+extern "C" void func_00202F60(void *arg0)
+{
+    void *temp_a0;
+
+    M2C_FIELD(arg0, int *, 0xAC4) = 1;
+    X_2F60_180EA8(&D_007B2580, M2C_FIELD(arg0, int *, 0xAB8));
+    if (M2C_FIELD(arg0, int *, 4) == 0) {
+        return;
+    }
+    temp_a0 = M2C_FIELD(arg0, void **, 0x28);
+    if (temp_a0 != 0) {
+        M2C_FIELD(temp_a0, float *, 0x1E8) = 9.999999583953922e-08f;
+    }
+}
+
+extern "C" void func_00202FBC(int arg0)
+{
+    int temp_v0;
+
+    M2C_FIELD(arg0, int *, 0xAC4) = 0;
+    if (M2C_FIELD(arg0, int *, 4) != 0) {
+        temp_v0 = M2C_FIELD(arg0, int *, 0x28);
+        if (temp_v0 != 0) {
+            M2C_FIELD(temp_v0, float *, 0x1E8) = (float) M2C_FIELD(arg0, float *, 0x4C);
+        }
+    }
+}
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202FE4);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF4F8);
 
