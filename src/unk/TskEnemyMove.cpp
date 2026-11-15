@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern float D_002FF260[];
+extern float D_002FF270[];
+extern int D_002FF280[];
 extern "C" float X_FDDB8_10A650(void *) asm("func_0010A650__8DogActor");
 extern "C" int X_FDDB8_1D5A0C(void *, float *, int, int, int, void *) asm("func_001D5A0C");
 extern "C" int X_FDDB8_1D890C(int, float *) asm("func_001D890C");
@@ -163,19 +166,36 @@ extern "C" int func_001FDDB8(int arg0)
     return M2C_FIELD(arg0, int *, 0x20);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FDF8C);
+extern "C" int func_001FDF8C(int arg0)
+{
+    float pos0[4];
+    float pos1[4];
+    float baseYaw = X_FDDB8_10A650((char *)&D_006FE6A0 + M2C_FIELD(arg0, int *, 0x14) * 0x4D0);
+    X_FDDB8_1D890C(M2C_FIELD(arg0, int *, 0x18), pos0);
+    for (int i = 0; i < 3; i++) {
+        float yaw = baseYaw - D_002FF260[i];
+        if (yaw < -3.14159265358979323846) {
+            yaw += 2.0 * 3.14159265358979323846;
+        }
+        if (yaw > 3.14159265358979323846) {
+            yaw -= 2.0 * 3.14159265358979323846;
+        }
+        float dist = D_002FF270[i];
+        pos1[0] = pos0[0] + sinf(yaw) * dist;
+        pos1[2] = pos0[2] + cosf(yaw) * dist;
+        pos1[1] = 0.0f;
+        if (X_FDDB8_1D7F48((int)&D_007812C0, pos1, 0) != 0 &&
+            X_FDDB8_1D5A0C(&D_007812C0, pos1, M2C_FIELD(arg0, int *, 0x10), 0, 0, 0) == 0) {
+            return D_002FF280[i];
+        }
+    }
+    M2C_FIELD(arg0, int *, 0xC) |= 8;
+    return M2C_FIELD(arg0, int *, 0x20);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FE160);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FE87C);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF0F0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF0F8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF100);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF108);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF110);
 
