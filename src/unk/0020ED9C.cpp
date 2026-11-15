@@ -850,7 +850,20 @@ extern "C" int func_00213B28(int arg0, int arg1, int arg2, int arg3, int arg4, i
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213B7C);
+extern "C" int func_00213B7C(int arg0, int arg1, int arg2, int arg3, int arg4)
+{
+    NodeIter it;
+
+    it.m_node = *(int **)arg2;
+    while (it.m_node != *(int **)arg3) {
+        if (strcmp((char *)it.m_node + 0x20, (char *)arg1) == 0) {
+            *(int **)arg4 = it.m_node;
+            return 1;
+        }
+        it.m_node = (int *)it.m_node[1];
+    }
+    return 0;
+}
 
 extern "C" int func_00213BFC(int arg0, int arg1, int arg2, int arg3)
 {
