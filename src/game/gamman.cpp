@@ -1696,7 +1696,41 @@ extern "C" void func_001C8414(int arg0, int arg1)
     Xiiii_func_001C94D8(arg0, temp_s1, 0);
 }
 
+// NON_MATCHING: 17/43 differ (size 0xAC, game 0xAC), 17 edits
+#ifdef NON_MATCHING
+extern "C" void func_001C845C(GamMan *arg0)
+{
+    GamItemHave *have = &arg0->m_itemHave;
+    GamItem *end = have->m_end;
+    GamItem *buf = have->m_buf;
+    GamItem *p = have->m_begin;
+    GamItem item;
+    GamItem **out;
+    int i;
+
+    if (p != end) {
+        p++;
+        do {
+            asm volatile("" ::: "memory");
+        } while (++p != end);
+    }
+    have->m_max = 0xC;
+    i = 0xB;
+    have->m_end = buf;
+    item.m_uid = 0xA00;
+    have->m_begin = buf;
+    out = &arg0->m_itemHave.m_end;
+    do {
+        GamItem *dst;
+        i--;
+        dst = *out;
+        *dst = item;
+        *out = dst + 1;
+    } while (i >= 0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C845C);
+#endif
 
 extern "C" int func_001C8508(int arg0, unsigned short arg1)
 {
