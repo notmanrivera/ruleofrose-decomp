@@ -1,4 +1,10 @@
 #include "include_asm.h"
+extern "C" int X_func_001DD00C_DEDC(void *, int, int) asm("func_001DD00C");
+extern "C" void X_func_001DC48C_DEDC(void *, int, int, void *) asm("func_001DC48C");
+extern int D_007812C0_DEDC asm("D_007812C0");
+extern char *D_002A42E0;
+extern char D_002F84B8[];
+static inline void *gamSub22220_DEDC() { void *p = &D_007812C0_DEDC; return (char *)p + 0x22220; }
 extern "C" int Xii_func_00131550(int) asm("func_00131550");
 extern "C" int Xii_func_001874AC(int) asm("func_001874AC");
 extern "C" int Xii_func_0018C068(int) asm("func_0018C068");
@@ -643,7 +649,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019DBC8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019DCBC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019DEDC);
+extern "C" char *func_0019DEDC(int arg0, unsigned short arg1)
+{
+    char *p = 0;
+    void *base = gamSub22220_DEDC();
+    (void)arg0;
+    if (X_func_001DD00C_DEDC(base, arg1, 4) != 0) {
+        X_func_001DC48C_DEDC(base, arg1, 0xC, &p);
+    } else {
+        p = D_002A42E0;
+    }
+    if (p == 0) {
+        p = D_002F84B8;
+    }
+    return p;
+}
 
 extern "C" void func_0019DF78(char *dst, char *src)
 {
