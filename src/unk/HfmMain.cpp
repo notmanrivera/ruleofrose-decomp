@@ -1164,7 +1164,52 @@ extern "C" void func_00148BD0(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00148CB4);
 
+// NON_MATCHING: 13/70 differ, 8 edits
+#ifdef NON_MATCHING
+struct __attribute__((aligned(8))) HfmVec4 {
+    float x, y, z, w;
+};
+struct HfmEffParam {
+    int m_kind;
+    int m_unk04;
+    int m_unk08;
+    int m_unk0C;
+    HfmVec4 m_pos;
+    float m_rot[3];
+    int m_num;
+    int m_pad[20];
+};
+extern "C" int Xiii_func_00176CC8(int, int) asm("func_00176CC8");
+extern "C" int Xii_func_00165570(int) asm("func_00165570");
+extern "C" void HfmOutDead__vfunc_02(int arg0)
+{
+    HfmVec4 vec;
+    HfmEffParam param;
+    int off = 0x837E0;
+
+    Xiii_func_001DA228(M2C_FIELD(arg0, int *, 8), 5, (int)&vec);
+    param.m_pos = vec;
+    param.m_pos.w = 0.0f;
+    param.m_rot[0] = -1.0f;
+    param.m_rot[1] = 0.0f;
+    param.m_rot[2] = 100.0f;
+    param.m_num = 0x5A;
+    param.m_kind = 3;
+    param.m_unk08 = 0;
+    Xiii_func_00176CC8((int)&D_006FBD80 + off, (int)&param);
+    M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0xC) = 0;
+    Xiiui_func_001D1410((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x40);
+    Xiiui_func_001D10D0((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x10000000);
+    Xiiui_func_001D10D0((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x400);
+    Xiiii_func_001680A0(arg0, 0x31, 0x100);
+    Xii_func_00165570(M2C_FIELD(arg0, int *, 0xC));
+    M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x150) = 0;
+    M2C_FIELD(M2C_FIELD(arg0, int *, 8), int *, 0x120) |= 0x400;
+    M2C_FIELD(M2C_FIELD(arg0, int *, 8), int *, 0x120) |= 0x2000;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmOutDead__vfunc_02);
+#endif
 
 extern "C" int HfmOutDead__vfunc_03()
 {
