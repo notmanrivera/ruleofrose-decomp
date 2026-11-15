@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int X_func_0019A20C_9A08(void *, int) asm("func_0019A20C");
+struct Elem20_9A08 {
+    char *unk00;
+    int pad[7];
+};
 extern "C" int X_func_001DD00C_DEDC(void *, int, int) asm("func_001DD00C");
 extern "C" void X_func_001DC48C_DEDC(void *, int, int, void *) asm("func_001DC48C");
 extern int D_007812C0_DEDC asm("D_007812C0");
@@ -253,7 +258,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019946C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00199714);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00199A08);
+extern "C" void func_00199A08(void *arg0, int arg1, int arg2, int arg3)
+{
+    int idx1 = X_func_0019A20C_9A08(arg0, arg1);
+    int idx2 = X_func_0019A24C_9AB4(arg0, arg2);
+    UnkHdr_9AB4 **p = X_func_0022AED8_9AB4((*(Elem20_9A08 **)((char *)arg0 + 0x94))[idx1].unk00 + 0x10, arg3 != 0);
+    (*func_0022AAD0(p, 0))->unk1C = (*(Elem10_9AB4 **)((char *)arg0 + 0xA4))[idx2].unk08;
+    (*p)->unk08++;
+}
 
 extern "C" void func_00199AB4(void *arg0, int arg1, int arg2)
 {
