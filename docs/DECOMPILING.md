@@ -569,6 +569,36 @@ From recovering `game/gamman`'s types (2026-11-12):
   order among the 16-byte iterator slots; iterators declared inside the
   `if`, after a call, are zeroed after that call.
 
+### Portability (the PC and Vita ports)
+
+The matching build is one target; the ports will build the same sources
+for a 32-bit PC (and the PS Vita's 32-bit ARM). As sm64 does with
+`TARGET_N64` and its host-gcc pass, the code says what only the PS2 needs
+(`include/target.h`, included by `ror.h` and `include_asm.h`):
+
+- `TARGET_PS2` is defined for the matching build (the default),
+  `TARGET_PC` for everything else. Code that only makes sense on the PS2
+  (VU0 macros, GS registers, scratchpad, hand-scheduled asm) goes under
+  `#ifdef TARGET_PS2` with a portable `#else` that does the same thing.
+- Register hints that only the matching needs: `register int i
+  PS2_REG("$5") = 0;`, never `asm("$5")` (a PC compiler rejects MIPS
+  register names). Symbol aliases (`... asm("func_0011A888")`) are fine.
+- `u_long128` is the EE's 128-bit type on the PS2 and 16 aligned bytes on
+  a PC: copy it (`*(u_long128 *)dst = *(u_long128 *)src`), do not do
+  arithmetic on it or assign integers to it.
+- `STATIC_ASSERT(sizeof(T) == 0x40, T_size);` for recovered layouts,
+  `UNUSED`, `ALIGNED(16)`.
+- Keep the `NON_MATCHING` branches compiling (`work.py --keep` checks
+  with `-DNON_MATCHING`); a behaviour difference that only undefined
+  behaviour explains goes under `#ifdef AVOID_UB`, as in sm64.
+
+`tools/host_check.py [<file>...]` compiles files with a modern g++
+(`-m32`, `TARGET_PC`, `NON_MATCHING`, `AVOID_UB`, syntax only; image
+`docker/host/`). `config/host_check.tsv` is each file's error count when it
+was last updated (old code has some, mostly integers assigned to
+`u_long128`); a merge that makes a file worse is refused, and `--update
+<file>` records a file that got better.
+
 ## 4. Name it
 
 Functions in the binary are referenced by other (asm) files, so the C++ name
