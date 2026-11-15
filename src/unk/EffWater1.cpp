@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int X_88EC_func_0013FE64__8MagSceneii(int, int, int) asm("func_0013FE64__8MagSceneii");
 extern "C" int X_9C30_func_0016AD94() asm("func_0016AD94");
 extern "C" void X_9C30_func_00176CC8(int, void *) asm("func_00176CC8");
 extern "C" void X_9C30_func_00237340(void *) asm("func_00237340");
@@ -176,7 +177,32 @@ extern "C" void func_00178894(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffMuzzleFlash1__vfunc_02);
+extern "C" int EffMuzzleFlash1__vfunc_02(int arg0, int arg1)
+{
+    if (!Xiii_Eff0__vfunc_02(arg0, arg1)) {
+        return 0;
+    }
+    unsigned char rnd = (unsigned int)Xi_func_0016AD94() % 18U;
+    *(m2c_block12 *)((char *)arg0 + 0x30) = *(m2c_block12 *)((char *)arg1 + 0x10);
+    M2C_FIELD(arg0, short *, 0x4C) = 0x7F00;
+    M2C_FIELD(arg0, float *, 0x3C) = 1.0f;
+    M2C_FIELD(arg0, float *, 0x44) = 10.0f;
+    M2C_FIELD(arg0, short *, 0x4E) = -0x3200;
+    M2C_FIELD(arg0, float *, 0x54) = 40.0f;
+    M2C_FIELD(arg0, short *, 0x5C) = 0x6000;
+    M2C_FIELD(arg0, short *, 0x5E) = -0x700;
+    M2C_FIELD(arg0, int *, 0x48) = 0;
+    M2C_FIELD(arg0, int *, 0x58) = 0;
+    M2C_FIELD(arg0, float *, 0x40) = ((float)(rnd * 17) * 3.14159265f) / 180.0f;
+    M2C_FIELD(arg0, float *, 0x50) = ((float)(rnd * 20) * 3.14159265f) / 180.0f;
+    int id = X_88EC_func_0013FE64__8MagSceneii(D_00298E08, 2, 3);
+    M2C_FIELD(arg0, int *, 0x60) = id;
+    MfLightPool *pool = (MfLightPool *)(D_00298E08 + 0x2050);
+    MfLightPoint *pt = pool->getPoint(id);
+    *(MfVec *)pt->m_pos = *(MfVec *)((char *)arg0 + 0x30);
+    pt->m_color[0] = pt->m_color[1] = pt->m_color[2] = pt->m_color[3] = 0.0f;
+    return 1;
+}
 
 extern "C" int EffMuzzleFlash1__vfunc_05(int arg0)
 {
