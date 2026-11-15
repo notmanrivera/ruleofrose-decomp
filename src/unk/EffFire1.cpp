@@ -691,7 +691,68 @@ extern "C" int func_001727EC()
     return 1;
 }
 
+// NON_MATCHING: 93/98 differ, 3 relocs differ (size 0x188, game 0x194), 33 edits
+#ifdef NON_MATCHING
+struct FogParam2934 {
+    float r, g, b, a;
+    float unk10, unk14, unk18, unk1C;
+} __attribute__((aligned(8)));
+struct FogHolder2934 {
+    char pad[0x2AB00];
+    FogParam2934 fog;
+};
+struct FogEntry2934 {
+    int id;
+    float unk04;
+    float unk08;
+    int unk0C;
+    float unk10;
+    int r, g, b;
+};
+extern char D_006E9840[];
+extern FogHolder2934 X_2934_D_006FBD80 asm("D_006FBD80");
+extern FogEntry2934 *X_2934_D_00298E18 asm("D_00298E18");
+extern "C" void X_2934_func_00143EEC(void *, void *, int) asm("func_00143EEC");
+
+extern "C" void func_00172934(int arg0, int arg1)
+{
+    FogParam2934 src = X_2934_D_006FBD80.fog;
+    FogEntry2934 *e = X_2934_D_00298E18;
+    FogParam2934 dst;
+    dst.unk10 = src.unk10 * e->unk04;
+    float d = src.unk1C - src.unk14;
+    dst.unk14 = src.unk14 + d * e->unk08;
+    dst.unk18 = src.unk18 * e->unk04;
+    dst.unk1C = src.unk1C * e->unk10;
+    dst.r = (float)e->r / 255.0f;
+    dst.g = (float)e->g / 255.0f;
+    dst.b = (float)e->b / 255.0f;
+    dst.a = 0.0f;
+    if (arg0 != 0) {
+        dst.unk10 -= src.unk10;
+        dst.unk14 -= src.unk14;
+        dst.unk18 -= src.unk18;
+        dst.unk1C -= src.unk1C;
+        dst.r -= src.r;
+        dst.g -= src.g;
+        dst.b -= src.b;
+        dst.a -= src.a;
+    } else {
+        dst.unk10 = src.unk10 - dst.unk10;
+        dst.unk14 = src.unk14 - dst.unk14;
+        dst.unk18 = src.unk18 - dst.unk18;
+        dst.unk1C = src.unk1C - dst.unk1C;
+        dst.r = src.r - dst.r;
+        dst.g = src.g - dst.g;
+        dst.b = src.b - dst.b;
+        dst.a = src.a - dst.a;
+    }
+    unsigned int off2 = 0x12540;
+    X_2934_func_00143EEC(D_006E9840 + off2, &dst, arg1);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_00172934);
+#endif
 
 extern "C" void dtor_7EffFog3(int arg0, int arg1)
 {
