@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" int X_vt_12TskEnemyMove asm("_vt$12TskEnemyMove");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_0010423C(...) asm("func_0010423C");
@@ -138,7 +140,13 @@ extern "C" void TskEnemyMove__vfunc_05(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_002006B0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", TskEnemyMove__vfunc_06);
+extern "C" void TskEnemyMove__vfunc_06(void *arg0, int arg1)
+{
+    M2C_FIELD(arg0, int **, 0) = &X_vt_12TskEnemyMove;
+    if (arg1 & 1) {
+        return X___builtin_delete(arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00200700);
 
