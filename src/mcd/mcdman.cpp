@@ -367,7 +367,37 @@ INCLUDE_RODATA("asm/nonmatchings/mcd/mcdman", D_002F7830);
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018A17C);
 
+// NON_MATCHING: 26/56 differ, 2 relocs differ, 33 edits
+#ifdef NON_MATCHING
+extern "C" int X_strlen(const char *) asm("strlen");
+extern "C" char *Xcc_strcpy(char *, const char *) asm("strcpy");
+extern const char D_002F7888[];
+extern const char D_002F7898[];
+extern const char D_002F78A0[];
+static inline char *mcd_strcat(char *dst, const char *src)
+{
+    return Xcc_strcpy(dst + X_strlen(dst), src);
+}
+extern "C" void func_0018A3F4(int arg0, int arg1, char *arg2)
+{
+    struct S14 {
+        char c[14];
+    };
+    char buf[3];
+    int d1 = 10;
+    int d2 = 10;
+    buf[0] = (arg1 / d1) + '0';
+    arg2[0] = '\0';
+    *(struct S14 *)arg2 = *(const struct S14 *)D_002F7888;
+    buf[1] = (arg1 % d2) + '0';
+    buf[2] = '\0';
+    mcd_strcat(arg2, D_002F7898);
+    mcd_strcat(arg2, buf);
+    mcd_strcat(arg2, D_002F78A0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018A3F4);
+#endif
 
 extern "C" void func_0018A4D4(int arg0)
 {
