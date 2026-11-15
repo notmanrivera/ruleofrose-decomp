@@ -660,7 +660,77 @@ extern "C" void func_001E15D0(int arg0, int arg1)
     *(m2c_block36 *)((char *)(arg0) + 0x15a0) = *(m2c_block36 *)((char *)(arg1) + 0x0);
 }
 
+// NON_MATCHING: 14/101 differ, 14 edits
+#ifdef NON_MATCHING
+struct Ent15A0_1620 {
+    int unk00_1620;
+    int unk04_1620;
+    int unk08_1620;
+    int unk0C_1620;
+    int unk10_1620;
+    int unk14_1620;
+    int unk18_1620;
+    int unk1C_1620;
+    int unk20_1620;
+}; // 1620
+struct Ent1654_1620 {
+    int unk00_1620;
+    int unk04_1620;
+    int unk08_1620;
+}; // 1620
+struct Obj1620 {
+    char pad0000_1620[0x15A0];
+    Ent15A0_1620 arr15A0_1620[5];
+    Ent1654_1620 arr1654_1620[3];
+    char pad1678_1620[0xC];
+    int unk1684_1620;
+}; // 1620
+extern "C" void func_001E1620(Obj1620 *arg0, int arg1, int arg2, int arg3) {
+    if (arg0->unk1684_1620 < 0) {
+        return;
+    }
+    arg0->unk1684_1620 = 0;
+
+    if (arg1 != 1) {
+        int *p = &arg0->arr15A0_1620[0].unk0C_1620;
+        if (arg3 != -1) {
+            if (arg3 != *p) {
+                goto after_if1;
+            }
+            *p = -1;
+        } else {
+            *p = arg3;
+        }
+        arg0->arr15A0_1620[arg0->unk1684_1620].unk10_1620 = 0;
+        arg0->arr15A0_1620[arg0->unk1684_1620].unk14_1620 = 0;
+    }
+after_if1:
+
+    if (arg1 != 2) {
+        if (arg2 != 0) {
+            if (arg2 == arg0->arr15A0_1620[arg0->unk1684_1620].unk00_1620) {
+                arg0->arr15A0_1620[arg0->unk1684_1620].unk00_1620 = 0;
+                arg0->arr15A0_1620[arg0->unk1684_1620].unk04_1620 = 0;
+                arg0->arr15A0_1620[arg0->unk1684_1620].unk08_1620 = 0;
+            }
+            if (arg2 == arg0->arr1654_1620[arg0->unk1684_1620].unk00_1620) {
+                arg0->arr1654_1620[arg0->unk1684_1620].unk00_1620 = 0;
+                goto clear_1658;
+            }
+        } else {
+            arg0->arr15A0_1620[arg0->unk1684_1620].unk00_1620 = 0;
+            arg0->arr15A0_1620[arg0->unk1684_1620].unk04_1620 = 0;
+            arg0->arr15A0_1620[arg0->unk1684_1620].unk08_1620 = 0;
+            arg0->arr1654_1620[arg0->unk1684_1620].unk00_1620 = 0;
+        clear_1658:
+            arg0->arr1654_1620[arg0->unk1684_1620].unk04_1620 = 0;
+            arg0->arr1654_1620[arg0->unk1684_1620].unk08_1620 = 0;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E1620);
+#endif
 
 extern "C" void func_001E17B4(Obj17B4 *arg0, int arg1)
 {
