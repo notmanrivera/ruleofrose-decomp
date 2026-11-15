@@ -1,4 +1,5 @@
 #include "include_asm.h"
+static inline void noop(int *) {}
 extern char D_006E9800;
 extern char D_002FD770;
 extern "C" void *alloc__BedMemory(int, int, const char *, int, int, int) asm("alloc__9BedMemoryiPCciii");
@@ -1083,7 +1084,12 @@ extern "C" int TskTest__vfunc_04()
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E7ED8);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", TskLogger__vfunc_04);
+extern "C" int TskLogger__vfunc_04()
+{
+    int x;
+    noop(&x);
+    return 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamsnd", D_002FD900);
 INCLUDE_RODATA("asm/nonmatchings/game/gamsnd", D_002FD910);
