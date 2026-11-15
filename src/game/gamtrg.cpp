@@ -1,4 +1,53 @@
 #include "include_asm.h"
+struct Elem_dec14 {
+    float minX;
+    float minZ;
+    float maxX;
+    float maxZ;
+    unsigned int u10[4];
+    unsigned int flg;
+    unsigned int u24[2];
+    int id;
+    int u30;
+    int u34;
+    unsigned int u38[(0x70 - 0x38) / 4];
+    unsigned int flg70;
+    unsigned int u74[(0xB0 - 0x74) / 4];
+} __attribute__((aligned(16)));
+struct Node_dec14 { Node_dec14 *m_prev; Node_dec14 *m_next; Elem_dec14 m_data; };
+struct Chain_dec14 { Node_dec14 m_head; int m_num; };
+struct Iter_dec14 {
+    Node_dec14 *m_node;
+    Iter_dec14() : m_node(0) {}
+    Iter_dec14(Node_dec14 *n) : m_node(n) {}
+    Iter_dec14(const Iter_dec14 &o) : m_node(o.m_node) {}
+    Elem_dec14 &operator*() const { return m_node->m_data; }
+    Iter_dec14 &operator++() { m_node = m_node->m_next; return *this; }
+    bool operator!=(const Iter_dec14 &o) const { return m_node != o.m_node; }
+};
+struct List_dec14 {
+    Chain_dec14 m_free;
+    Chain_dec14 m_used;
+    int m_max;
+    Iter_dec14 begin() { return Iter_dec14(m_used.m_head.m_next); }
+    Iter_dec14 end() { return Iter_dec14(&m_used.m_head); }
+    int size() const { return m_used.m_num; }
+};
+struct Mgr_dec14 {
+    char pad[0xC1C0];
+    List_dec14 list;
+};
+struct Pc_dec14 {
+    char pad[0x100];
+    int m_oid;
+};
+struct GamMan_dec14 {
+    char pad[0x22090];
+    Pc_dec14 *m_pc;
+};
+extern GamMan_dec14 D_007812C0_dec14 asm("D_007812C0");
+extern "C" int Xiiui_func_001D05F4(void *, unsigned int, float *) asm("func_001D05F4");
+extern "C" void Xviiii_func_001E0C2C(void *, int, int, unsigned int) asm("func_001E0C2C");
 struct Elem_dd414 {
     unsigned char pad[0x30];
 } __attribute__((aligned(16)));
@@ -1814,7 +1863,28 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DEA40);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DEAAC);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DEC14);
+extern "C" void func_001DEC14(Mgr_dec14 *arg0)
+{
+    Iter_dec14 it;
+    Iter_dec14 last;
+    float pos[4];
+    int oid = D_007812C0_dec14.m_pc ? D_007812C0_dec14.m_pc->m_oid : 0;
+    Xiiui_func_001D05F4(&D_007812C0_dec14, oid, pos);
+    if (arg0->list.size() != 0) {
+        it = arg0->list.begin();
+        last = arg0->list.end();
+        while (it != last) {
+            if (((*it).flg & 1) && ((*it).flg70 & 2) &&
+                (*it).minX <= pos[0] && pos[0] <= (*it).maxX &&
+                (*it).minZ <= pos[2] && pos[2] <= (*it).maxZ &&
+                (*it).u30 != 0 && (*it).u34 != 0) {
+                Xviiii_func_001E0C2C(arg0, 2, (*it).id, 0x10000000);
+                return;
+            }
+            ++it;
+        }
+    }
+}
 
 // NON_MATCHING: 42/68 differ (size 0x110, game 0x108), 23 edits
 #ifdef NON_MATCHING
