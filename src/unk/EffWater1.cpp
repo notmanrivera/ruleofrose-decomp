@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xi_func_0016AD94() asm("func_0016AD94");
 struct Stack8DD8 {
     int unk00;
     int unk04;
@@ -156,7 +157,17 @@ extern "C" void updateZDepth__13EffSteam1Prim(int arg0)
     M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, arg0 + 0x30);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam2__vfunc_02);
+extern "C" int EffSteam2__vfunc_02(int arg0, int arg1)
+{
+    if (!Xiii_Eff0__vfunc_02(arg0, arg1)) {
+        return 0;
+    }
+    *(m2c_block12 *)((char *)(arg0) + 36) = *(m2c_block12 *)((char *)(arg1) + 16);
+    M2C_FIELD(arg0, float *, 0x30) = M2C_FIELD(arg1, float *, 0x1C);
+    M2C_FIELD(arg0, float *, 0x34) = M2C_FIELD(arg1, float *, 0x20);
+    M2C_FIELD(arg0, signed char *, 0x38) = (signed char)((Xi_func_0016AD94() * 0x96) / 255);
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", EffSteam2__vfunc_05);
 
