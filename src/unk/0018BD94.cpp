@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void Xv_func_0018D7EC(int, int, int, int, int, int) asm("func_0018D7EC");
 extern "C" int Xiiiiii_func_001BEDC0(int, int, int, int, int) asm("func_001BEDC0");
 extern "C" int Xiiiiii_func_001BEF24(int, int, int, int, int) asm("func_001BEF24");
 extern "C" int Xiii_func_0018C9D8(int, int) asm("func_0018C9D8");
@@ -512,7 +513,23 @@ extern "C" void func_0018F2E8(int arg0, int arg1, int arg2, int arg3, int arg4, 
     X_func_0018D7EC(arg0, arg1, 4, arg3, arg4, arg5);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0018BD94", func_0018F338);
+extern "C" void func_0018F338(int arg0, int arg1, int arg2, int arg3, int arg4)
+{
+    int temp_a7;
+    int temp_t1;
+
+    temp_a7 = arg1 * 0x154;
+    temp_t1 = temp_a7 + M2C_FIELD(arg0, int *, 0x4AC);
+    if (M2C_FIELD(temp_t1, int *, 0x10) == 0) {
+        M2C_FIELD(temp_t1, int *, 0x10) = 1;
+        M2C_FIELD((temp_a7 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0xC) = 1;
+        M2C_FIELD((temp_a7 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x18) = 0x80;
+        M2C_FIELD((temp_a7 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x1C) = 0x80;
+        M2C_FIELD((temp_a7 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x20) = 0x80;
+        M2C_FIELD((temp_a7 + M2C_FIELD(arg0, int *, 0x4AC)), int *, 0x24) = 0;
+        return Xv_func_0018D7EC(arg0, arg1, 4, arg2, (int) arg3, (int) arg4);
+    }
+}
 
 extern "C" void func_0018F3E0(int arg0, int arg1)
 {
