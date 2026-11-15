@@ -1,4 +1,7 @@
 #include "include_asm.h"
+struct GamTrgCopy_d9830 {
+    int data[0xB0 / 4];
+};
 extern "C" void Xvii_func_001D7EB8(int, int) asm("func_001D7EB8");
 extern "C" void Xvii_func_001D890C(int, int) asm("func_001D890C");
 extern "C" void Xvii_func_001D8D28(int, int) asm("func_001D8D28");
@@ -478,7 +481,14 @@ extern "C" void func_001D96E0(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D96EC);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D9830);
+extern "C" int func_001D9830(int arg0, const GamTrgCopy_d9830 *arg1)
+{
+    *(GamTrgCopy_d9830 *)((char *)arg0 + 0x100) = *arg1;
+    M2C_FIELD(arg0, int *, 0x10C) = 0;
+    M2C_FIELD(arg0, int *, 0x110) = 0;
+    M2C_FIELD(arg0, int *, 0x114) = 0;
+    return 0xB0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D9908);
 
