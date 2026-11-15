@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "ror.h"
+extern "C" int rotGet(int, int) asm("func_001E79C0");
 struct Ecbe0Targets { char pad[0x10]; int targets[128]; };
 extern "C" void ecbe0Stop(int, int) asm("func_001D8964");
 extern "C" void ecbe0Move(int, int, int, int, int, int, float) asm("func_001F6308");
@@ -1598,47 +1599,6 @@ extern "C" void TskChrRot__vfunc_05(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskChrRot__vfunc_04);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F090C);
-
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0B50);
-
-extern "C" int func_001F0E14(int arg0)
-{
-    float temp_f1;
-    int var_v0;
-
-    temp_f1 = Xfi_func_0010A650__8DogActor(M2C_FIELD(arg0, int *, 0x50)) - M2C_FIELD(arg0, float *, 0x30);
-    var_v0 = 0;
-    if (temp_f1 < 0.0f) {
-        if (!(temp_f1 >= -0.09999999590218067f)) {
-
-        } else {
-            goto block_4;
-        }
-    } else if (temp_f1 <= 0.09999999590218067f) {
-block_4:
-        var_v0 = 1;
-    }
-    return var_v0;
-}
-
-extern "C" void func_001F0E90(unsigned int arg0, int arg1, float fparg0)
-{
-    int *slot;
-    int temp_v0_2;
-
-    slot = (int *)(Xiiu_func_001D2B8C((int)&D_007812C0, arg0) + 0x3D8);
-    if (Xiii_func_001E7D7C_2((int)&D_007A3D80, *slot) != 0) {
-        Xiii_func_001E7724((int)&D_007A3D80, *slot);
-        *slot = -1;
-    }
-    if (fparg0 != 0.0f) {
-        temp_v0_2 = Xii___builtin_new(0x80);
-        Xfunc_001F0434(temp_v0_2, arg0, arg1, -1, fparg0, 32769.0f, 1.0f, 1, 1);
-        X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0_2, 0, (int)slot, 0x11);
-    }
-}
-
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF10);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF28);
@@ -1765,17 +1725,80 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1A0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1A8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1B0);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1B8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1C0);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1C8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1D0);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1D8);
+
+
+
+
+
+
+
+extern "C" int func_001F090C(int arg0) {
+    if (M2C_FIELD(arg0, int *, 0x38)-- >= 0) {
+        float angle = M2C_FIELD(arg0, float *, 0x14) + M2C_FIELD(arg0, float *, 0x34);
+        if (angle < -3.14159265358979323846) angle += 6.28318530717958647692;
+        if (angle > 3.14159265358979323846) angle -= 6.28318530717958647692;
+        M2C_FIELD(arg0, float *, 0x14) = angle;
+        Xv_func_001CFE78((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0x20), arg0 + 0x10);
+        int *id = (int *)(M2C_FIELD(arg0, int *, 0x54) + 0x3DC);
+        if (X_func_001E7D7C((int)&D_007A3D80, *id)) {
+        M2C_FIELD(arg0, int *, 0x4C) = rotGet((int)&D_007A3D80, *id);
+        if (M2C_FIELD(arg0, float *, 0x14) < -3.14159265358979323846 || M2C_FIELD(arg0, float *, 0x14) > 3.14159265358979323846) {
+            float a = M2C_FIELD(arg0, float *, 0x14);
+            if (a < -3.14159265358979323846) a += 6.28318530717958647692;
+            if (a > 3.14159265358979323846) a -= 6.28318530717958647692;
+            M2C_FIELD(arg0, float *, 0x14) = a;
+            if (a < -3.14159265358979323846 || a > 3.14159265358979323846) M2C_FIELD(arg0, float *, 0x14) = 0.0f;
+        }
+        M2C_FIELD(M2C_FIELD(arg0, int *, 0x4C), float *, 0x6C) = M2C_FIELD(arg0, float *, 0x14);
+        }
+        return 0;
+    }
+    return 1;
+}
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0B50);
+
+extern "C" int func_001F0E14(int arg0)
+{
+    float temp_f1;
+    int var_v0;
+
+    temp_f1 = Xfi_func_0010A650__8DogActor(M2C_FIELD(arg0, int *, 0x50)) - M2C_FIELD(arg0, float *, 0x30);
+    var_v0 = 0;
+    if (temp_f1 < 0.0f) {
+        if (!(temp_f1 >= -0.09999999590218067f)) {
+
+        } else {
+            goto block_4;
+        }
+    } else if (temp_f1 <= 0.09999999590218067f) {
+block_4:
+        var_v0 = 1;
+    }
+    return var_v0;
+}
+
+extern "C" void func_001F0E90(unsigned int arg0, int arg1, float fparg0)
+{
+    int *slot;
+    int temp_v0_2;
+
+    slot = (int *)(Xiiu_func_001D2B8C((int)&D_007812C0, arg0) + 0x3D8);
+    if (Xiii_func_001E7D7C_2((int)&D_007A3D80, *slot) != 0) {
+        Xiii_func_001E7724((int)&D_007A3D80, *slot);
+        *slot = -1;
+    }
+    if (fparg0 != 0.0f) {
+        temp_v0_2 = Xii___builtin_new(0x80);
+        Xfunc_001F0434(temp_v0_2, arg0, arg1, -1, fparg0, 32769.0f, 1.0f, 1, 1);
+        X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0_2, 0, (int)slot, 0x11);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE1E0);
 
