@@ -1,4 +1,18 @@
 #include "include_asm.h"
+struct GamHitInfo {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+    int unk10;
+    int unk14;
+    int unk18;
+    int unk1C;
+    GamHitInfo() { unk10 = 0; }
+};
+extern "C" void Xvp_func_001D890C(int, int) asm("func_001D890C");
+extern "C" int Xiii_func_001D8B5C(int, int) asm("func_001D8B5C");
+extern "C" void Xvp_func_001D89C4(int, int) asm("func_001D89C4");
 extern "C" float Xff_cosf(float) asm("cosf");
 extern "C" float Xff_sinf(float) asm("sinf");
 extern "C" float Xfpff_func_002180E4(float *, float, float) asm("func_002180E4");
@@ -690,7 +704,30 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF498);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF888);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF9CC);
+extern "C" int func_001EF9CC(int arg0)
+{
+    TskVec4 pos;
+    GamHitInfo info;
+    int temp_s0;
+
+    temp_s0 = arg0 + 0x20;
+    Xvp_func_001D890C(M2C_FIELD(arg0, int *, 4), temp_s0);
+    Xv_func_0025B878(&pos, temp_s0, arg0 + 0x30);
+    if (Xiii_func_001D8B5C(M2C_FIELD(arg0, int *, 4), (int)&pos) != 0) {
+        Xvp_func_001D89C4(M2C_FIELD(arg0, int *, 4), (int)&pos);
+        if (M2C_FIELD(arg0, int *, 0x64)++ >= 9) {
+            return 1;
+        }
+    } else {
+        M2C_FIELD(arg0, int *, 0x64) = 0;
+    }
+    if (M2C_FIELD(arg0, int *, 0x70)++ > M2C_FIELD(arg0, int *, 0x68)) {
+        M2C_FIELD(arg0, float *, 0x30) *= 1.25f;
+        M2C_FIELD(arg0, float *, 0x38) *= 1.25f;
+        M2C_FIELD(arg0, int *, 0x70) = 0;
+    }
+    return 0;
+}
 
 extern "C" int func_001EFAA8()
 {
