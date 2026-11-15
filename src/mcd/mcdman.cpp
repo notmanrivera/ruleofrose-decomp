@@ -355,7 +355,28 @@ INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018B2BC);
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018B874);
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018B918);
+extern "C" int func_0018B918(int arg0, const char *s1, const char *s2)
+{
+    int i = 0;
+
+    if (s1 == 0) {
+        return -1;
+    }
+    if (s2 == 0) {
+        return -1;
+    }
+    while (s1[i] != '\0' && s2[i] != '\0') {
+        if (s1[i] != '?' && s2[i] != '?' && s1[i] != s2[i]) {
+            goto fail;
+        }
+        i++;
+    }
+    if (s1[i] == '\0' && s2[i] == '\0') {
+        return 0;
+    }
+fail:
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018B9B8);
 
