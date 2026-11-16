@@ -66,7 +66,7 @@ judgement and go to Sonnet.
   Done entry below) to find which of its strings/asserts name them; (F) a
   minimal compatibility API for the PC/Vita ports (not just "replace the
   renderer"). Needs Sonnet (judgement) plus [web] for the parsers.
-- [ ] R14 **[web]** Other games built on SCE Japan's "i3d package" (2005-
+- [ ] R14 **[flash]** **[web]** Other games built on SCE Japan's "i3d package" (2005-
   2006, i3d_package_version 0501xx; formats I3D_BIN/I3D_I3M/I3D_I3C; VU
   overlays .DVP.overlay..0x0.3420215670.9.0): which ones, and does any
   have symbols (debug ELF, prototype, .map) or a decompilation? Ape
