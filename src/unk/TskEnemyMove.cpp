@@ -1570,7 +1570,99 @@ extern "C" int func_00201164(int arg0, int arg1) {
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00201164);
 #endif
 
+// NON_MATCHING: 265/282 differ, 54 relocs differ (size 0x468, game 0x4AC), 130 edits
+#ifdef NON_MATCHING
+extern "C" float f1524_atan(float, float) asm("func_0026CB00");
+extern "C" float f1524_yaw(void *) asm("func_0010A650__8DogActor");
+extern "C" float sqrtf(float x);
+extern "C" int f1524_test(void *, float *, float, float) asm("func_00201FA4");
+extern "C" int f1524_mode(void *, float) asm("func_00202380");
+extern "C" void f1524_turn(void *, float) asm("func_00202874");
+extern "C" void f1524_move(void *, float *, float) asm("func_00202900");
+extern "C" void f1524_pos(int, float *) asm("func_0016A594");
+extern "C" int f1524_near(float *, void *, float) asm("func_00169A98");
+static inline void f1524_getatan(float *out, float x, float z) { *out = f1524_atan(x, z); }
+static inline void f1524_getyaw(void *actor, float *out) { *out = f1524_yaw(actor); }
+extern const double f1524_2FF3E0 asm("D_002FF3E0");
+extern const double f1524_2FF3E8 asm("D_002FF3E8");
+extern const double f1524_2FF3F0 asm("D_002FF3F0");
+extern const double f1524_2FF3F8 asm("D_002FF3F8");
+extern const double f1524_2FF400 asm("D_002FF400");
+extern const double f1524_2FF408 asm("D_002FF408");
+extern const double f1524_2FF410 asm("D_002FF410");
+extern const double f1524_2FF418 asm("D_002FF418");
+extern const double f1524_2FF420 asm("D_002FF420");
+extern const double f1524_2FF428 asm("D_002FF428");
+extern const double f1524_2FF430 asm("D_002FF430");
+extern const double f1524_2FF438 asm("D_002FF438");
+extern const double f1524_2FF440 asm("D_002FF440");
+extern "C" void func_00201524(void *arg0, float *arg1) {
+    float yaw, facing, pos[4];
+    char *base = (char *)arg0 + 0x18;
+    char *point = base + M2C_FIELD(arg0, int *, 0xA7C) * 16;
+    f1524_getatan(&yaw, M2C_FIELD(point, float *, 0x270) - arg1[0], M2C_FIELD(point, float *, 0x278) - arg1[2]);
+    f1524_getyaw(M2C_FIELD(arg0, void **, 0x28), &facing);
+    float angle = yaw - facing;
+    if ((double)angle < f1524_2FF3E0) angle = (float)((double)angle + f1524_2FF3E8);
+    if ((double)angle > f1524_2FF3F0) angle = (float)((double)angle - f1524_2FF3F8);
+    float magnitude = angle;
+    if (angle < 0.0f) magnitude = -angle;
+    if (M2C_FIELD(arg0, int *, 0x10) != 0 || !f1524_test(arg0, arg1, angle, magnitude)) {
+        float turn;
+        if ((double)magnitude <= f1524_2FF400) {
+            point = base + M2C_FIELD(arg0, int *, 0xA7C) * 16;
+            float z = M2C_FIELD(point, float *, 0x278) - D_006E97D8[2];
+            float x = M2C_FIELD(point, float *, 0x270) - D_006E97D8[0];
+            float dist = sqrtf(x * x + z * z);
+            float limit = M2C_FIELD(arg0, float *, 0xA84);
+            turn = magnitude / (dist / M2C_FIELD(arg0, float *, 0x50));
+            if (limit < turn) turn = limit;
+            if (angle > 0.0f) turn = -turn;
+        } else {
+            M2C_FIELD(arg0, int *, 0x74) = 0;
+            turn = 0.0f;
+        }
+        switch (f1524_mode(arg0, turn)) {
+        case 1: f1524_turn(arg0, angle); break;
+        case 2: f1524_move(arg0, arg1, facing); break;
+        }
+        if (M2C_FIELD(arg0, int *, 0xA7C) == M2C_FIELD(arg0, int *, 0xA78) - 1) {
+            f1524_pos(M2C_FIELD(arg0, int *, 8), pos);
+            if (f1524_near(arg1, (char *)arg0 + 0x78, M2C_FIELD(arg0, float *, 0xA8C))) {
+                point = base + M2C_FIELD(arg0, int *, 0xA7C) * 16;
+                double low = f1524_2FF408;
+                f1524_getatan(&yaw, M2C_FIELD(point, float *, 0x270) - pos[0], M2C_FIELD(point, float *, 0x278) - pos[2]);
+                f1524_getyaw(M2C_FIELD(arg0, void **, 0x28), &facing);
+                float diff = yaw - facing;
+                float wrapped = diff;
+                if ((double)wrapped < low) wrapped = (float)((double)wrapped + f1524_2FF410);
+                double high = f1524_2FF418;
+                if ((double)wrapped > high) wrapped = (float)((double)wrapped - f1524_2FF420);
+                float value = diff;
+                float absangle;
+                if (wrapped < 0.0f) {
+                    if ((double)value < low) value = (float)((double)value + f1524_2FF428);
+                    if ((double)value <= high) absangle = -value;
+                    else absangle = -(float)((double)value - f1524_2FF430);
+                } else {
+                    if ((double)value < low) value = (float)((double)value + f1524_2FF438);
+                    absangle = value;
+                    if ((double)value > high) absangle = (float)((double)value - f1524_2FF440);
+                }
+                if (absangle < M2C_FIELD(arg0, float *, 0xA84)) {
+                    *M2C_FIELD(arg0, int **, 0x30) = 1;
+                } else {
+                    *M2C_FIELD(arg0, int **, 0x30) = 0;
+                }
+            } else {
+                *M2C_FIELD(arg0, int **, 0x30) = 0;
+            }
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00201524);
+#endif
 
 // NON_MATCHING: 181/215 differ, 40 relocs differ (size 0x35C, game 0x388), 116 edits
 #ifdef NON_MATCHING
