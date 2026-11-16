@@ -795,7 +795,113 @@ INCLUDE_RODATA("asm/nonmatchings/mnu/mnusvld", D_002F9430);
 
 INCLUDE_RODATA("asm/nonmatchings/mnu/mnusvld", D_002F9440);
 
+// NON_MATCHING: 131/185 differ, 10 relocs differ (size 0x2E4, game 0x2EC), 66 edits
+#ifdef NON_MATCHING
+extern "C" int Xiii_func_001A7B90(int, int) asm("func_001A7B90");
+extern "C" int Xiii_strcpy(int, int) asm("strcpy");
+extern "C" int Xiu_func_001832E8(unsigned int) asm("func_001832E8");
+extern int D_002A7470;
+extern int D_002F9440;
+extern int D_006E94A0;
+extern int D_006E9520;
+extern int D_006E95A0;
+extern "C" void func_001A7C54(int object, int index)
+{
+    register int arg0 PS2_REG("$18") = object;
+    register int arg1 PS2_REG("$20") = index;
+    register int one PS2_REG("$6") = 1;
+    int temp_v0_2;
+    int temp_a1;
+    int temp_t3;
+    int temp_v1;
+    int temp_a0;
+    int temp_a4;
+    int temp_hi;
+    int temp_s1;
+    int temp_s1_2;
+    unsigned short temp_s3;
+    int var_a1;
+    int temp_a2;
+    int temp_s0;
+    int temp_s6;
+    int temp_v0;
+
+    temp_s0 = arg0 + 0x1474;
+    temp_s6 = arg0 + 0xC;
+    temp_s3 = (*(unsigned short *)&D_002F9440);
+    temp_s1 = arg1 * 0x2C;
+    M2C_FIELD(M2C_FIELD(temp_s0, int *, 0x4AC), int *, 0x57B8) = one;
+    temp_a4 = temp_s1 + 0x2510;
+    temp_t3 = temp_s6 + temp_a4;
+    M2C_FIELD(M2C_FIELD(temp_s0, int *, 0x4AC), int *, 0x5510) = one;
+    M2C_FIELD(M2C_FIELD(temp_s0, int *, 0x4AC), int *, 0x5664) = one;
+    M2C_FIELD(M2C_FIELD(temp_s0, int *, 0x4AC), int *, 0x590C) = one;
+    M2C_FIELD((int)&D_006E94A0, unsigned short *, 0) = temp_s3;
+    (*(unsigned short *)&D_006E9520) = temp_s3;
+    M2C_FIELD((int)&D_006E95A0, unsigned short *, 0) = temp_s3;
+    if ((*(int *)(temp_t3)) > 0) {
+        temp_v1 = arg0 + 0x10 + temp_a4;
+        temp_a1 = arg0 + 0x14 + temp_a4;
+        M2C_FIELD((int)&D_006E94A0, signed char *, 0) = (signed char) (((int) (*(int *)(temp_v1)) / 10) + 0x30);
+        M2C_FIELD((int)&D_006E94A0, signed char *, 2) = 0x2F;
+        M2C_FIELD((int)&D_006E94A0, signed char *, 1) = (signed char) (((int) (*(int *)(temp_v1)) % 10) + 0x30);
+        M2C_FIELD((int)&D_006E94A0, signed char *, 3) = (signed char) (((int) (*(int *)(temp_a1)) / 10) + 0x30);
+        M2C_FIELD((int)&D_006E94A0, signed char *, 5) = 0x2F;
+        M2C_FIELD((int)&D_006E94A0, signed char *, 4) = (signed char) (((int) (*(int *)(temp_a1)) % 10) + 0x30);
+        temp_hi = (int) (*(int *)(temp_t3)) % 1000;
+        M2C_FIELD((int)&D_006E94A0, signed char *, 6) = (signed char) ((temp_hi / 10) + 0x30);
+        M2C_FIELD((int)&D_006E94A0, signed char *, 8) = 0;
+        M2C_FIELD((int)&D_006E94A0, signed char *, 7) = (signed char) (((int) (temp_hi % 10) % 10) + 0x30);
+    }
+    temp_s1_2 = temp_s1 + 0x2500;
+    temp_a0 = M2C_FIELD((arg0 + temp_s1_2), int *, 0x10);
+    if (temp_a0 >= 0) {
+        var_a1 = 0;
+        if ((unsigned int) temp_a0 < 0xDU) {
+            var_a1 = Xiu_func_001832E8(temp_a0 + 0x1C6);
+        }
+        if (*(int *)(temp_s6 + temp_s1_2) != 0) {
+            Xiii_func_001A7B90((int)&D_006E9520, var_a1);
+        } else if (var_a1 == 0) {
+            (*(unsigned short *)&D_006E9520) = temp_s3;
+        } else {
+            Xiii_strcpy((int)&D_006E9520, var_a1);
+        }
+    }
+    temp_v0 = (arg1 * 0x2C) + arg0;
+    if (M2C_FIELD(temp_v0, int *, 0x2508) == 1) {
+        temp_v0_2 = (int) "Save data is corrupted.    ";
+        int tail = M2C_FIELD(temp_v0_2, int *, 0x18);
+        long long a = M2C_FIELD(temp_v0_2, long long *, 0);
+        long long b = M2C_FIELD(temp_v0_2, long long *, 8);
+        long long c = M2C_FIELD(temp_v0_2, long long *, 0x10);
+        char *dst = (char *)&D_006E95A0;
+        *(int *)(dst + 0x18) = tail;
+        *(long long *)dst = a;
+        *(long long *)(dst + 8) = b;
+        *(long long *)(dst + 0x10) = c;
+    }
+    M2C_FIELD(M2C_FIELD(temp_s0, int *, 0x4AC), int *, 0x5650) = (int)&D_002A7470;
+    M2C_FIELD(M2C_FIELD(temp_s0, int *, 0x4AC), int *, 0x57A4) = (int)&D_002A7470;
+    M2C_FIELD(M2C_FIELD(temp_s0, int *, 0x4AC), int *, 0x58F8) = (int)&D_002A7470;
+    M2C_FIELD(M2C_FIELD(temp_s0, int *, 0x4AC), int *, 0x5A4C) = (int)&D_002A7470;
+    temp_a2 = M2C_FIELD(temp_s0, int *, 0x4AC);
+    if (M2C_FIELD(temp_v0, int *, 0x2508) == 1) {
+        M2C_FIELD(temp_a2, int *, 0x58EC) = 0;
+        M2C_FIELD(M2C_FIELD(temp_s0, int *, 0x4AC), int *, 0x58F0) = 0;
+        M2C_FIELD(M2C_FIELD(temp_s0, int *, 0x4AC), int *, 0x58F4) = (int)&D_006E95A0;
+        return;
+    }
+    M2C_FIELD(temp_a2, int *, 0x5644) = 0;
+    M2C_FIELD(M2C_FIELD(temp_s0, int *, 0x4AC), int *, 0x5648) = 0;
+    M2C_FIELD(M2C_FIELD(temp_s0, int *, 0x4AC), int *, 0x564C) = (int)&D_006E94A0;
+    M2C_FIELD(M2C_FIELD(temp_s0, int *, 0x4AC), int *, 0x5798) = 0;
+    M2C_FIELD(M2C_FIELD(temp_s0, int *, 0x4AC), int *, 0x579C) = 0;
+    M2C_FIELD(M2C_FIELD(temp_s0, int *, 0x4AC), int *, 0x57A0) = (int)&D_006E9520;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A7C54);
+#endif
 
 extern "C" int func_001A7F40(int arg0, int arg1)
 {
