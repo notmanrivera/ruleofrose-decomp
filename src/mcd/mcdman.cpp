@@ -272,7 +272,72 @@ INCLUDE_RODATA("asm/nonmatchings/mcd/mcdman", D_002F7588);
 
 INCLUDE_RODATA("asm/nonmatchings/mcd/mcdman", D_002F75A0);
 
+// NON_MATCHING: 138/143 differ, 21 relocs differ, 45 edits
+#ifdef NON_MATCHING
+extern "C" void func_00187788(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0) = 1;
+    M2C_FIELD(arg0, int *, 4) = 2;
+    M2C_FIELD(arg0, int *, 8) = 3;
+    M2C_FIELD(arg0, int *, 0xC) = 4;
+    M2C_FIELD(arg0, int *, 0x10) = 5;
+    M2C_FIELD(arg0, int *, 0x14) = 6;
+    M2C_FIELD(arg0, int *, 0x18) = 7;
+    M2C_FIELD(arg0, int *, 0x1C) = 8;
+    M2C_FIELD(arg0, int *, 0x20) = 9;
+    M2C_FIELD(arg0, int *, 0x24) = 0xA;
+    M2C_FIELD(arg0, int *, 0x28) = 0xB;
+    M2C_FIELD(arg0, int *, 0x2C) = 0xC;
+    M2C_FIELD(arg0, int *, 0x30) = 0xD;
+    M2C_FIELD(arg0, int *, 0x34) = 0xE;
+    M2C_FIELD(arg0, int *, 0x38) = 0xF;
+    M2C_FIELD(arg0, int *, 0x3C) = 0x10;
+    M2C_FIELD(arg0, int *, 0x40) = 0x11;
+    M2C_FIELD(arg0, int *, 0x44) = 0x12;
+    M2C_FIELD(arg0, int *, 0x48) = 0x13;
+    M2C_FIELD(arg0, int *, 0x4C) = 0x14;
+    M2C_FIELD(arg0, int *, 0x50) = 0x15;
+    M2C_FIELD(arg0, int *, 0x54) = 0x16;
+    M2C_FIELD(arg0, int *, 0x58) = 1;
+    M2C_FIELD(arg0, int *, 0x5C) = 0;
+    M2C_FIELD(arg0, int *, 0x64) = 0;
+    M2C_FIELD(arg0, int *, 0xC8) = 1;
+    M2C_FIELD(arg0, int *, 0x70) = 0;
+    M2C_FIELD(arg0, int *, 0x74) = 0;
+    M2C_FIELD(arg0, int *, 0x7C) = 0;
+    M2C_FIELD(arg0, int *, 0x84) = 0;
+    M2C_FIELD(arg0, int *, 0x88) = 0;
+    M2C_FIELD(arg0, int *, 0x98) = 0;
+    M2C_FIELD(arg0, signed char *, 0x114) = 0;
+    M2C_FIELD(arg0, signed char *, 0x154) = 0;
+    M2C_FIELD(arg0, int *, 0x684) = (int) "ERR_NoErr\0\0\0\0\0\0";
+    M2C_FIELD(arg0, int *, 0x688) = (int) "ERR_CmdErr\0\0\0\0\0";
+    M2C_FIELD(arg0, int *, 0x68C) = (int) "ERR_Capacity\0\0\0";
+    M2C_FIELD(arg0, int *, 0x690) = (int) "ERR_NoInit\0\0\0\0\0";
+    M2C_FIELD(arg0, int *, 0x694) = (int) "ERR_NotPathName";
+    M2C_FIELD(arg0, int *, 0x698) = (int) "ERR_Semapho\0\0\0\0";
+    M2C_FIELD(arg0, int *, 0x69C) = (int) "ERR_NoFormat\0\0\0";
+    M2C_FIELD(arg0, int *, 0x6A0) = (int) "ERR_DeniedPermit\0\0\0\0\0\0\0";
+    M2C_FIELD(arg0, int *, 0x6A4) = (int) "ERR_NoMemoryCard\0\0\0\0\0\0\0";
+    M2C_FIELD(arg0, int *, 0x6A8) = (int) "ERR_NoFunction\0";
+    M2C_FIELD(arg0, int *, 0x6AC) = (int) "ERR_NotFd\0\0\0\0\0\0";
+    M2C_FIELD(arg0, int *, 0x6B0) = (int) "ERR_NotFileName";
+    M2C_FIELD(arg0, int *, 0x6B4) = (int) "ERR_NotOpen\0\0\0\0";
+    M2C_FIELD(arg0, int *, 0x6B8) = (int) "ERR_NotMemCardAccess\0\0\0";
+    M2C_FIELD(arg0, int *, 0x6BC) = (int) "ERR_NotEmpty\0\0\0";
+    M2C_FIELD(arg0, int *, 0x6C0) = (int) "ERR_FullDevice\0";
+    M2C_FIELD(arg0, int *, 0x6C4) = (int) "ERR_ExistEntry\0";
+    M2C_FIELD(arg0, int *, 0x6C8) = (int) "ERR_UpLimitHandle\0\0\0\0\0\0";
+    M2C_FIELD(arg0, int *, 0x6CC) = (int) "ERR_NotRead\0\0\0\0";
+    M2C_FIELD(arg0, int *, 0x6D0) = (int) "ERR_FailReplace";
+    M2C_FIELD(arg0, int *, 0x6D4) = (int) "ERR_ChangedCard";
+    M2C_FIELD(arg0, int *, 0x6D8) = 0;
+    M2C_FIELD(arg0, int *, 0x6DC) = 0;
+    M2C_FIELD(arg0, int *, 0x6E0) = 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00187788);
+#endif
 
 extern "C" void func_001879C4()
 {
