@@ -834,7 +834,73 @@ INCLUDE_RODATA("asm/nonmatchings/mnu/mnusvld", D_002F93E0);
 
 INCLUDE_RODATA("asm/nonmatchings/mnu/mnusvld", D_002F93F0);
 
+// NON_MATCHING: 164/216 differ, 5 relocs differ (size 0x360, game 0x358), 75 edits
+#ifdef NON_MATCHING
+extern int D_002A7460;
+extern char D_006E9450[];
+struct Text6_6C90 { char text[6]; } __attribute__((packed));
+extern "C" int C6C90_sprite(int, int, int) asm("func_0018C4D8");
+extern "C" void func_001A6C90(int object, int arg1, int arg2)
+{
+    register int arg0 PS2_REG("$21") = object;
+    register int number PS2_REG("$22") = arg1 + 0x29;
+    int sub = arg0 + 0x1474;
+    M2C_FIELD(number * 0x154 + M2C_FIELD(sub, int *, 0x4AC), int *, 0x150) = (int)&D_002A7460;
+    if (arg2 < 12) {
+        int data = M2C_FIELD(sub, int *, 0x4AC);
+        int sprite = arg1 + 0x1D;
+        unsigned int value = M2C_FIELD(arg0 + arg2 * 0x2C, unsigned int *, 0x2510);
+
+        if (value >= 13) {
+            int offset = sprite * 0x154;
+            M2C_FIELD(offset + data, int *, 0xD8) = 10;
+            C6C90_sprite(sub, sprite, 0);
+            M2C_FIELD(offset + M2C_FIELD(sub, int *, 0x4AC), int *, 0xC) = 0;
+            M2C_FIELD(offset + M2C_FIELD(sub, int *, 0x4AC), int *, 0x10) = 0;
+            M2C_FIELD(M2C_FIELD(sub, int *, 0x4AC), int *, 0x57B8) = 0;
+            M2C_FIELD(M2C_FIELD(sub, int *, 0x4AC), int *, 0x5510) = 0;
+            M2C_FIELD(M2C_FIELD(sub, int *, 0x4AC), int *, 0x5664) = 0;
+            M2C_FIELD(M2C_FIELD(sub, int *, 0x4AC), int *, 0x590C) = 0;
+        } else {
+            int offset = sprite * 0x154;
+            M2C_FIELD(offset + data, int *, 0xD8) = value + 10;
+            M2C_FIELD(offset + M2C_FIELD(sub, int *, 0x4AC), int *, 0x10) = 1;
+            C6C90_sprite(sub, sprite, 0);
+            M2C_FIELD(offset + M2C_FIELD(sub, int *, 0x4AC), int *, 0xC) = 1;
+        }
+        int *baseHours = (int *)(arg0 + 0x14);
+        int *hours = (int *)((char *)baseHours + (arg2 * 0x2C + 0x2500));
+        int h = *hours;
+
+        if (h < 0) {
+            *(Text6_6C90 *)(D_006E9450 + arg1 * 6) = *(const Text6_6C90 *)"--:--";
+        } else {
+            if (h >= 100) {
+                D_006E9450[arg1 * 6 + 0] = '9'; D_006E9450[arg1 * 6 + 1] = '9';
+            } else {
+                D_006E9450[arg1 * 6 + 0] = h / 10 + '0';
+                D_006E9450[arg1 * 6 + 1] = *hours % 10 + '0';
+            }
+            D_006E9450[arg1 * 6 + 2] = ':';
+            int *minutes = (int *)(arg0 + 8 + (arg2 * 0x2C + 0x2510));
+            int m = *minutes;
+            if (m >= 60) {
+                D_006E9450[arg1 * 6 + 3] = '5'; D_006E9450[arg1 * 6 + 4] = '9';
+            } else {
+                D_006E9450[arg1 * 6 + 3] = m / 10 + '0';
+                D_006E9450[arg1 * 6 + 4] = *minutes % 10 + '0';
+            }
+            D_006E9450[arg1 * 6 + 5] = 0;
+        }
+        int textOffset = ((number * 4) + number) * 0x44;
+        M2C_FIELD(textOffset + M2C_FIELD(sub, int *, 0x4AC), int *, 0x144) = 0;
+        M2C_FIELD(textOffset + M2C_FIELD(sub, int *, 0x4AC), int *, 0x148) = 0;
+        M2C_FIELD(textOffset + M2C_FIELD(sub, int *, 0x4AC), int *, 0x14C) = (int)(D_006E9450 + arg1 * 6);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A6C90);
+#endif
 
 extern "C" void func_001A6FE8(int arg0)
 {
