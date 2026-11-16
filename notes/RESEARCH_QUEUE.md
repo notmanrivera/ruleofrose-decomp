@@ -17,6 +17,17 @@ judgement and go to Sonnet.
 
 ## Open
 
+- [ ] R15 R9's leads, not applied yet: (1) "mnu/mnuSelectLanguage.cpp"
+  (0x2FB330) is game/gamman's .rodata and is the __FILE__ of asserts at
+  0x1BDCB8, 0x1BDD64, 0x1BDDDC: a second file inside gamman's range (find
+  its text and .rodata bounds; gamman is partly decompiled, so its C++ must
+  move with it). (2) "task/naga_chunk.cpp" (0x2FEFF0) sits in
+  unk/TskCamera's .rodata and is used at 0x1FC4F0-0x1FCB14, so naga_chunk's
+  real text is at TskCamera's end and its row at 0x1F8F70 is wrong.
+  (3) 29 files whose .rodata starts with another class's type names
+  (build/workers/research-R9.md, table (a)); check each against the
+  previous file's code before moving. (4) unk/EventTestTask reads
+  D_00301AF8 (8 zero bytes before its .rodata start).
 - [ ] R5 unk/HfmMain: the small file before it. 0x2EF238-0x2EF260
   ("18MagLifeWindowDebug", "8MagLife0") ends at HfmMain's first table;
   the MagLifeWindowDebug code (constructor func_00144214, wrappers
@@ -34,12 +45,6 @@ judgement and go to Sonnet.
   func_001DBC5C). Find what in their .rodata the compiler emits in
   another order than the asm piece (strings? the table?) and the source
   shape that gives the game's order.
-- [ ] R9 **[flash]** Other wrong boundaries without jump tables: scan every file's
-  .rodata start for the signs found so far (RTTI names of the previous
-  file's classes at the start, an assert __FILE__ string of another file
-  inside the range, a function using data of a file it does not belong
-  to) and list suspects with evidence.
-
 - [ ] R11 **[flash]** C++ matching lessons from other ee-gcc decomps: read the
   docs/CONTRIBUTING of TheOnlyZac/Sly1, Komasia/sly2-decomp, ethteck/kh1
   and denzi-gh/crashwoc-decomp-ps2 (web), note each one's exact compiler
@@ -77,6 +82,9 @@ judgement and go to Sonnet.
 
 ## Done
 
+- [x] R9 Other wrong boundaries (2026-11-15, Flash): applied 473875d,
+  0x20313C and .rodata 0x2FF578-0x2FF61F moved to unk/TskEnemyMove (its
+  func_00202FE4 reads the tables after them). The other leads are R15.
 - [x] R8 Near-miss patterns (2026-11-15, Flash): branch-probability
   flips, register order, store order, type tells from loads, tail calls;
   bullets added to docs/DECOMPILING.md "What this compiler does".
