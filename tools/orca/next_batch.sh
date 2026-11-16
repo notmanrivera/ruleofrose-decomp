@@ -77,7 +77,7 @@ done
 ST=build/workers; mkdir -p "$ST"; ENV="$ST/$NAME.env"; SKIP="$ST/skipped.txt"; touch "$SKIP"
 STATS="$ST/stats.tsv"
 HANDLE=""; BUSY=""; FILE=""; AVOID=""; BATCH=""; STATUS=""; RETRY=""; MODEL=""; SENT=""; LOOPARGS=""
-ZERO=0; SINCE_NEW=0; AGENT=""; PRIMARY=""; RESERVE=""; ON_RESERVE=""
+ZERO=0; FZERO=0; DROPPED=""; SINCE_NEW=0; AGENT=""; PRIMARY=""; RESERVE=""; ON_RESERVE=""
 # shellcheck disable=SC1090
 [ -f "$ENV" ] && . "./$ENV"
 NEWFILE=""; MAX=30; MIN=0; NAMES=20; BUDGET=0; TRIES=5; NEW=""; MERGE=1; DRY=""; WATCH=""; LOOP=""; ROUND=""
@@ -110,6 +110,7 @@ save() {
   { echo "HANDLE='$HANDLE'"; echo "BUSY='$BUSY'"; echo "FILE='$FILE'"; echo "AVOID='$AVOID'"
     echo "BATCH='$BATCH'"; echo "STATUS='$STATUS'"; echo "RETRY='$RETRY'"; echo "MODEL='$MODEL'"
     echo "SENT='$SENT'"; echo "LOOPARGS='$LOOPARGS'"; echo "ZERO='$ZERO'"; echo "SINCE_NEW='$SINCE_NEW'"
+    echo "FZERO='$FZERO'"; echo "DROPPED='$DROPPED'"
     echo "AGENT='$AGENT'"; echo "PRIMARY='$PRIMARY'"; echo "RESERVE='$RESERVE'"; echo "ON_RESERVE='$ON_RESERVE'"; } > "$ENV"
 }
 # The agent's screen as JSON; Orca may be away for a minute (it updates
@@ -171,6 +172,15 @@ if [ -n "$BATCH" ] && [ -n "$FILE" ] && [ -n "$MERGE" ]; then
   [ -e "$STATS" ] || printf 'time\tworker\tmodel\tfile\tsent\tmerged\tnon_matching\tbytes\tminutes\n' > "$STATS"
   printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$(date '+%F %H:%M')" "$NAME" "$MODEL" "$FILE" \
     "$nsent" "$ncommit" "$nnm" "${bytes:-0}" "$mins" >> "$STATS"
+  # Two batches in a row on one file that gained no bytes (NON_MATCHING
+  # commits gain none): leave the file to others; this worker gets another.
+  if [ "$STATUS" != quota ]; then
+    if [ "${bytes:-0}" -le 0 ]; then FZERO=$((FZERO + 1)); else FZERO=0; fi
+    if [ "$FZERO" -ge 2 ] && [ -z "$NEWFILE" ]; then
+      echo "$NAME: no bytes from its last $FZERO batches on $FILE; moving to another file"
+      DROPPED="${DROPPED:+$DROPPED,}$FILE"; FILE=""; FZERO=0
+    fi
+  fi
   n=0
   [ "$STATUS" != quota ] || BATCH=""
   for f in $(echo "$BATCH" | tr ',' ' '); do
@@ -208,7 +218,9 @@ if [ -z "$funcs" ]; then
   # shellcheck disable=SC2086
   FILE=$("$PY" tools/backlog.py $R --by-yield --min "$MIN" --max "$MAX" --top 200 --exclude "${others:-}${FILE:+,$FILE}" |
          awk 'NF == 5 && $2 == "functions" {print $5}' |
-         { if [ -n "$AVOID" ]; then grep -vE "^($(echo "$AVOID" | sed "s/,/|/g"))" || true; else cat; fi; } | head -1)
+         { av="$AVOID${DROPPED:+${AVOID:+,}$DROPPED}"
+           if [ -n "$av" ]; then grep -vE "^($(echo "$av" | sed "s/,/|/g"))" || true; else cat; fi; } | head -1)
+  FZERO=0
   [ -n "$FILE" ] || { echo "no file left with functions of up to $MAX instructions"; exit 1; }
   # shellcheck disable=SC2086
   funcs=$("$PY" tools/backlog.py $R --file "$FILE" --min "$MIN" --max "$MAX" --names "$NAMES" --budget "$BUDGET")

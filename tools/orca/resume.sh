@@ -31,7 +31,7 @@ echo "docker: up"
 
 # 2. A half-done merge.
 if [ -d "$ST/merge.lock" ] && ! ps -ef | grep -q "[m]erge_worker"; then
-  rmdir "$ST/merge.lock"; echo "removed a stale merge lock"
+  rm -rf "$ST/merge.lock"; echo "removed a stale merge lock"
 fi
 if [ -e "$ST/BUILD_FAILED" ]; then echo "BUILD_FAILED: $(cat "$ST/BUILD_FAILED")"; exit 1; fi
 if [ ! -e build/ok ]; then
