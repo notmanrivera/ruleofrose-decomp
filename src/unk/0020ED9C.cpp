@@ -1,4 +1,6 @@
 #include "include_asm.h"
+struct F150_block { char data[0x400]; };
+struct F150_part { int data[16]; };
 #define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
 extern "C" int X_func_00214310(...) asm("func_00214310");
 extern "C" int X_func_002144C4(...) asm("func_002144C4");
@@ -1778,7 +1780,16 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00214C24);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00214E98);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002150B0);
+extern "C" int func_002150B0(char *arg0, F150_block *arg1)
+{
+    char *source = *(char **)(arg0 + 0xDC20);
+    int n = D_007A3210;
+    if ((unsigned)(n - 1) >= 13) n = 9;
+    F150_block block = *(F150_block *)source;
+    *(F150_part *)(block.data + 0x360) = *(F150_part *)(((n * 0x200 + 0x1900) >> 3) + (int)source);
+    *arg1 = block;
+    return 0x400;
+}
 
 extern "C" int func_002152B8(Obj2152B8 *arg0, Src2152B8 *arg1)
 {
