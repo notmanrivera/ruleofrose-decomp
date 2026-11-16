@@ -1055,7 +1055,97 @@ INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00188EC0);
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00189068);
 
+// NON_MATCHING: 12/137 differ, 10 edits
+#ifdef NON_MATCHING
+extern "C" int F892_mkdir(...) asm("sceMcMkdir");
+extern "C" int func_001892B0(int arg0)
+{
+    int temp_a0;
+    int temp_v0;
+    int temp_v1;
+    int temp_v1_2;
+    int var_s3;
+    int var_v0;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x60);
+    var_s3 = 0;
+    switch (temp_v1) {
+    case 0:
+        M2C_FIELD(arg0, int *, 0x60) = 3;
+        M2C_FIELD(arg0, int *, 0xBC) = 0;
+    case 3:
+        M2C_FIELD(arg0, int *, 0x60) = 5;
+        temp_a0 = F892_mkdir(M2C_FIELD(arg0, int *, 0x70), M2C_FIELD(arg0, int *, 0x74), arg0 + 0x114);
+        M2C_FIELD(arg0, int *, 0x64) = 3;
+        M2C_FIELD(arg0, int *, 0x6C) = temp_a0;
+        switch (temp_a0) {
+        case 0:
+            M2C_FIELD(arg0, int *, 0x60) = 4;
+            M2C_FIELD(arg0, int *, 0x64) = 1;
+            M2C_FIELD(arg0, int *, 0x58) = 1;
+            break;
+        case -100:
+            M2C_FIELD(arg0, int *, 0x58) = 4;
+            break;
+        case -200:
+            M2C_FIELD(arg0, int *, 0x58) = 2;
+            break;
+        case -210:
+            M2C_FIELD(arg0, int *, 0x58) = 5;
+            break;
+        default:
+            M2C_FIELD(arg0, int *, 0x58) = 2;
+            break;
+        }
+        M2C_FIELD(arg0, int *, 0xBC) = (int) (M2C_FIELD(arg0, int *, 0xBC) + 1);
+        break;
+    case 5:
+        var_s3 = 1;
+        break;
+    case 4:
+        temp_v0 = X_sceMcSync(M2C_FIELD(arg0, int *, 0xC8), arg0 + 0xCC, arg0 + 0xD0);
+        switch (temp_v0) {
+        case 0:
+            break;
+        case 1:
+            M2C_FIELD(arg0, int *, 0x64) = 3;
+            temp_v1_2 = M2C_FIELD(arg0, int *, 0xD0);
+            if (temp_v1_2 == 0) {
+                M2C_FIELD(arg0, int *, 0x60) = 5;
+                M2C_FIELD(arg0, int *, 0x64) = 2;
+            } else {
+                if (temp_v1_2 == -2) {
+                    register int error PS2_REG("$4") = 7;
+                    M2C_FIELD(arg0, int *, 0x58) = error;
+                    if (!__builtin_expect(M2C_FIELD(arg0, int *, 0xBC) >= 8, 1)) {
+                        M2C_FIELD(arg0, int *, 0x60) = 3;
+                        M2C_FIELD(arg0, int *, 0x64) = 1;
+                        M2C_FIELD(arg0, int *, 0x58) = 1;
+                    }
+                } else if (temp_v1_2 == -3) {
+                    M2C_FIELD(arg0, int *, 0x58) = 16;
+                } else if (temp_v1_2 == -4) {
+                    M2C_FIELD(arg0, int *, 0x58) = 17;
+                } else if (temp_v1_2 == -5) {
+                    M2C_FIELD(arg0, int *, 0x58) = 8;
+                } else if (temp_v1_2 <= -10) {
+                    M2C_FIELD(arg0, int *, 0x58) = 9;
+                }
+            }
+            break;
+        case -1:
+            M2C_FIELD(arg0, int *, 0x64) = 3;
+            M2C_FIELD(arg0, int *, 0x58) = 0xA;
+            M2C_FIELD(arg0, int *, 0x60) = 5;
+            break;
+        }
+        break;
+    }
+    return (M2C_FIELD(arg0, int *, 0x64) == 1) ? var_s3 : 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_001892B0);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_001894D4);
 
