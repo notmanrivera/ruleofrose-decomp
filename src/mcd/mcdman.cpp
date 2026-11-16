@@ -2,6 +2,9 @@
 #include "utl/filereader.h"
 #include "bed/bedmemory.h"
 #include "bed/bedpfh.h"
+extern "C" int Xii_func_001885D4(int) asm("func_001885D4");
+extern "C" int Xii_func_001894D4(int) asm("func_001894D4");
+extern "C" int Xii_func_00189718(int) asm("func_00189718");
 extern "C" char *X_strchr_ci(const char *, int) asm("strchr");
 extern "C" char *X_strcpy_cc(char *, const char *) asm("strcpy");
 extern "C" const char *X_strrchr_ci(const char *, int) asm("strrchr");
@@ -581,7 +584,72 @@ extern "C" int func_0018AD0C(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018ADE0);
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018B12C);
+extern "C" int func_0018B12C(int arg0)
+{
+    int ret = 0;
+
+    switch (M2C_FIELD(arg0, int *, 0x68)) {
+    case 0:
+        M2C_FIELD(arg0, int *, 0x60) = 0;
+        M2C_FIELD(arg0, int *, 0x64) = 1;
+        M2C_FIELD(arg0, int *, 0x68) = 0x3C;
+    case 0x3C:
+        M2C_FIELD(arg0, int *, 0x60) = 0;
+        M2C_FIELD(arg0, int *, 0x64) = 1;
+        M2C_FIELD(arg0, int *, 0x68) = 0x46;
+        M2C_FIELD(arg0, int *, 0x9C) = 1;
+        break;
+    case 0x46:
+        if (Xii_func_001894D4(arg0) == 1) {
+            switch (M2C_FIELD(arg0, int *, 0x64)) {
+            case 2:
+                M2C_FIELD(arg0, int *, 0x64) = 1;
+                M2C_FIELD(arg0, int *, 0x68) = 0x50;
+                M2C_FIELD(arg0, int *, 0x60) = 0;
+                break;
+            case 3:
+                ret = 1;
+                break;
+            }
+        }
+        break;
+    case 0x50:
+        M2C_FIELD(arg0, int *, 0x68) = 0x5A;
+    case 0x5A:
+        if (Xii_func_00189718(arg0) == 1) {
+            switch (M2C_FIELD(arg0, int *, 0x64)) {
+            case 2:
+                M2C_FIELD(arg0, int *, 0x64) = 1;
+                M2C_FIELD(arg0, int *, 0x68) = 0x64;
+                M2C_FIELD(arg0, int *, 0x60) = 0;
+                break;
+            case 3:
+                ret = 1;
+                break;
+            }
+        }
+        break;
+    case 0x64:
+        if (Xii_func_001885D4(arg0) == 1) {
+            switch (M2C_FIELD(arg0, int *, 0x64)) {
+            case 2:
+                M2C_FIELD(arg0, int *, 0x64) = 1;
+                M2C_FIELD(arg0, int *, 0x68) = 0x6E;
+                M2C_FIELD(arg0, int *, 0x60) = 0;
+                break;
+            case 3:
+                ret = 1;
+                break;
+            }
+        }
+        break;
+    case 0x6E:
+        M2C_FIELD(arg0, int *, 0x64) = 2;
+        ret = 1;
+        break;
+    }
+    return ret;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mcd/mcdman", D_002F78C8);
 
