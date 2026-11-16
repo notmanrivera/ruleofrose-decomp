@@ -2362,7 +2362,102 @@ extern "C" int TskAvoidMove__vfunc_04(TskAvoidMoveObj *arg0)
     return (arg0->*(arg0->m_func))();
 }
 
+// NON_MATCHING: 193/267 differ, 42 relocs differ (size 0x42C, game 0x434), 107 edits
+#ifdef NON_MATCHING
+extern "C" int idF0434(int, unsigned int) asm("func_001CBE38");
+extern "C" float yawF0434(int) asm("func_0010A650__8DogActor");
+extern "C" void eventF0434(int, int, int *) asm("func_001DA228");
+extern "C" int moveF0434(unsigned int, int, int, int, int, float, float) asm("func_001F5BDC");
+extern "C" void rotF0434(int, int, float *) asm("setActorRot__9MagSystemiPCf");
+struct CopyF0434 { int words[2]; };
+extern const CopyF0434 cbF0434a asm("D_002FE130");
+extern const CopyF0434 cbF0434b asm("D_002FE140");
+extern const double cF0434_2FE148 asm("D_002FE148");
+extern const double cF0434_2FE150 asm("D_002FE150");
+extern const double cF0434_2FE158 asm("D_002FE158");
+extern const double cF0434_2FE160 asm("D_002FE160");
+extern const double cF0434_2FE168 asm("D_002FE168");
+extern const double cF0434_2FE170 asm("D_002FE170");
+extern const double cF0434_2FE178 asm("D_002FE178");
+extern const double cF0434_2FE180 asm("D_002FE180");
+extern const double cF0434_2FE188 asm("D_002FE188");
+extern const double cF0434_2FE190 asm("D_002FE190");
+extern const double cF0434_2FE198 asm("D_002FE198");
+extern const double cF0434_2FE1A0 asm("D_002FE1A0");
+extern const double cF0434_2FE1A8 asm("D_002FE1A8");
+extern "C" void func_001F0434(int arg0, unsigned int arg1, int arg2, int arg3, float f0, float f1, float f2, int arg4, int unused) {
+    int manager = (int)&D_007812C0;
+    int actors = (int)&D_006FBD80;
+    float angle = f0;
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$9TskChrRot;
+    M2C_FIELD(arg0, unsigned int *, 0x20) = arg1;
+    M2C_FIELD(arg0, int *, 0x24) = idF0434(manager, arg1);
+    unsigned int actorId = M2C_FIELD(arg0, unsigned int *, 0x20);
+    if (angle < cF0434_2FE148) angle += cF0434_2FE150;
+    register double maxAngle PS2_REG("$23") = cF0434_2FE158;
+    if (angle > maxAngle) angle -= cF0434_2FE160;
+    M2C_FIELD(arg0, float *, 0x30) = angle;
+    M2C_FIELD(arg0, int *, 0x40) = arg4;
+    int obj = X_func_001D2B8C_f1670(manager, actorId);
+    M2C_FIELD(arg0, int *, 0x44) = arg3;
+    M2C_FIELD(arg0, int *, 0x54) = obj;
+    M2C_FIELD(arg0, int *, 0x4C) = 0;
+    M2C_FIELD(arg0, int *, 0x50) = M2C_FIELD(arg0, int *, 0x24) * 0x4D0 + actors + 0x2920;
+    bool special = (M2C_FIELD(obj, int *, 0x120) & 0x80000) != 0;
+    double a = M2C_FIELD(arg0, float *, 0x30);
+    if (a < cF0434_2FE168 || a > maxAngle) {
+        M2C_FIELD(arg0, float *, 0x30) = 0.0f;
+        arg2 = 0;
+    }
+    if (!(f1 >= 32769.0f)) {
+        M2C_FIELD(arg0, float *, 0x14) = f1;
+        M2C_FIELD(arg0, int *, 0x10) = 0;
+        M2C_FIELD(arg0, int *, 0x18) = 0;
+    } else {
+        M2C_FIELD(arg0, int *, 0x10) = 0;
+        float y = yawF0434(M2C_FIELD(arg0, int *, 0x50));
+        M2C_FIELD(arg0, int *, 0x18) = 0;
+        M2C_FIELD(arg0, float *, 0x14) = y;
+    }
+    M2C_FIELD(arg0, int *, 0x1C) = 0;
+    if (special) {
+        if (f0 < 0.0f) eventF0434(M2C_FIELD(arg0, int *, 0x54), 0x1102, (int *)(arg0 + 0x44));
+        else eventF0434(M2C_FIELD(arg0, int *, 0x54), 0x1101, (int *)(arg0 + 0x44));
+    }
+    int mode = M2C_FIELD(arg0, int *, 0x44);
+    float delta = M2C_FIELD(arg0, float *, 0x30);
+    if (mode != -1) {
+        float yaw = M2C_FIELD(arg0, float *, 0x14);
+        float speed = f2 * 0.016666667f;
+        angle = yaw + delta;
+        M2C_FIELD(arg0, float *, 0x48) = speed;
+        if (angle < cF0434_2FE170) angle += cF0434_2FE178;
+        if (angle > cF0434_2FE180) angle -= cF0434_2FE188;
+        M2C_FIELD(arg0, float *, 0x34) = 0.0f;
+        M2C_FIELD(arg0, float *, 0x30) = angle;
+        M2C_FIELD(arg0, int *, 0x4C) = moveF0434(arg1, mode, 0, 0x100, 0, speed, yaw);
+        M2C_FIELD(arg0, CopyF0434 *, 0x58) = cbF0434a;
+        return;
+    }
+    if (arg2 <= 0) {
+        angle = M2C_FIELD(arg0, float *, 0x14) + delta;
+        if (angle < cF0434_2FE190) angle += cF0434_2FE198;
+        if (angle > cF0434_2FE1A0) angle -= cF0434_2FE1A8;
+        M2C_FIELD(arg0, float *, 0x14) = angle;
+        rotF0434((int)&D_006E9840, M2C_FIELD(arg0, int *, 0x24), (float *)(arg0 + 0x10));
+        M2C_FIELD(arg0, float *, 0x34) = 0.0f;
+        M2C_FIELD(arg0, int *, 0x3C) = 0;
+        M2C_FIELD(arg0, int *, 0x38) = 0;
+    } else {
+        M2C_FIELD(arg0, int *, 0x3C) = arg2 - 1;
+        M2C_FIELD(arg0, int *, 0x38) = arg2 - 1;
+        M2C_FIELD(arg0, float *, 0x34) = delta / (float)arg2;
+    }
+    M2C_FIELD(arg0, CopyF0434 *, 0x58) = cbF0434b;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F0434);
+#endif
 
 extern "C" void TskChrRot__vfunc_06(int arg0, int arg1)
 {
