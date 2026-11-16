@@ -1,6 +1,8 @@
 #include "ror.h"
 #include "include_asm.h"
 #include "utl/filereader.h"
+extern "C" void position3138(void *, int, void *, int) asm("func_001DBA3C");
+extern "C" int play3138(void *, unsigned int, int, int, float, int, int, int) asm("func_001E5428");
 struct Vec2DB4 { float m_x,m_y,m_z; }; // vec2DB4
 extern "C" float sqrtf(float); // decl2DB4
 extern "C" int scene2DB4(void *) asm("func_001C6C28"); // decl2DB4
@@ -1557,7 +1559,49 @@ extern "C" void func_001E2DB4(Obj2DB4 *self, unsigned int id, Vec2DB4 *position,
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3138);
+extern "C" void func_001E3138(Obj2DB4 *self, unsigned int id, unsigned int key, int flags)
+{
+    unsigned int kind = (key >> 30) ^ 2;
+    Item2DB4 item;
+    item.flags = flags | 5;
+    item.distance = 3000.0f;
+    item.id = id;
+    item.zero = key;
+    item.handle = -1;
+    if (kind == 0) item.scene = scene2DB4(world2DB4);
+    else item.scene = -1;
+    register int world PS2_REG("$4") = (int)world2DB4;
+    world += 0x18C00;
+    position3138((void *)world, 2, &item.position, 0);
+    item.data = 0;
+    float horizontal = sqrtf(item.position.m_x * item.position.m_x + item.position.m_z * item.position.m_z);
+    float distance = sqrtf(item.position.m_y * item.position.m_y + horizontal * horizontal);
+    Que2DB4 *queue = &self->queue;
+    register Node2DB4 *sentinel PS2_REG("$21") = &queue->used.head;
+    Iter2DB4 it;
+    Iter2DB4 last;
+    it = queue->begin();
+    last = Iter2DB4(sentinel);
+    while (it != last) {
+        if ((unsigned int)(*it).zero == key && (*it).id == id) return;
+        ++it;
+    }
+    if (flags & 0x20) {
+        if (check2DB4(self, item.id, 0x16, 0) != 0) return;
+        item.flags |= 0x200;
+        item.handle = play3138(self, item.id, 1, 1, 1.0f, 0, 1, 0);
+    }
+    it = queue->begin();
+    last = Iter2DB4(sentinel);
+    while (it != last) {
+        if (distance <= (*it).distance) {
+            queue->insert(it, item);
+            return;
+        }
+        ++it;
+    }
+    queue->push(item);
+}
 
 // NON_MATCHING: 22/107 differ, 25 edits
 #ifdef NON_MATCHING
