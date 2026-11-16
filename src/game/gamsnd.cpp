@@ -1,6 +1,83 @@
 #include "ror.h"
 #include "include_asm.h"
 #include "utl/filereader.h"
+struct Vec2DB4 { float m_x,m_y,m_z; }; // vec2DB4
+extern "C" float sqrtf(float); // decl2DB4
+extern "C" int scene2DB4(void *) asm("func_001C6C28"); // decl2DB4
+extern "C" void *find2DB4(void *, int) asm("func_0017EA44"); // decl2DB4
+extern "C" int lookup2DB4(void *, unsigned int, void **) asm("func_001E4C1C"); // decl2DB4
+extern "C" int check2DB4(void *, unsigned int, int, void *) asm("func_001E5660"); // decl2DB4
+extern "C" int play2DB4(void *, unsigned int, int, Vec2DB4 *, int, int) asm("func_001E5250"); // decl2DB4
+extern char world2DB4[] asm("D_007812C0"); // decl2DB4
+extern char bank2DB4[] asm("D_00298EE0"); // decl2DB4
+struct ALIGNED(16) Item2DB4 { // decl2DB4
+    char unused[0x10];
+    Vec2DB4 position; // decl2DB4
+    int pad1C; // decl2DB4 // decl2DB4
+    unsigned int id; // decl2DB4
+    int handle; // decl2DB4
+    unsigned int flags; // decl2DB4
+    int zero; // decl2DB4
+    int scene; // decl2DB4
+    void *data; // decl2DB4
+    float distance; // decl2DB4
+    int a,b; // decl2DB4
+    char tail[12]; // decl2DB4
+}; // item2DB4 // decl2DB4
+struct Node2DB4 { Node2DB4 *prev,*next; Item2DB4 data; }; // node2DB4 // decl2DB4
+class Iter2DB4 { public: // decl2DB4
+    Node2DB4 *node; // decl2DB4
+    Iter2DB4() : node(0) {} // decl2DB4
+    Iter2DB4(Node2DB4 *n) : node(n) {} // decl2DB4
+    Iter2DB4(const Iter2DB4 &n) : node(n.node) {} // decl2DB4
+    Item2DB4 &operator*() const { return node->data; } // decl2DB4
+    Iter2DB4 &operator++() { node = node->next; return *this; } // decl2DB4
+    bool operator!=(const Iter2DB4 &n) const { return node != n.node; } // decl2DB4
+}; // iter2DB4 // decl2DB4
+struct Chain2DB4 { // decl2DB4
+    Node2DB4 head; // decl2DB4
+    int count; // decl2DB4
+    void insert(Node2DB4 *target, Node2DB4 *n) { // decl2DB4
+        Node2DB4 *p = target->prev; // decl2DB4
+        n->prev = p; // decl2DB4
+        p->next = n; // decl2DB4
+        n->next = target; // decl2DB4
+        target->prev = n; // decl2DB4
+        ++count; // decl2DB4
+    } // decl2DB4
+    void push(Node2DB4 *n) { // decl2DB4
+        if (count == 0) { head.next = n; n->prev = &head; } // decl2DB4
+        else { head.prev->next = n; n->prev = head.prev; } // decl2DB4
+        n->next = &head; // decl2DB4
+        head.prev = n; // decl2DB4
+        ++count; // decl2DB4
+    } // decl2DB4
+}; // chain2DB4 // decl2DB4
+struct Que2DB4 { // decl2DB4
+    Chain2DB4 free, used; // decl2DB4
+    Iter2DB4 begin() { return Iter2DB4(used.head.next); } // decl2DB4
+    Iter2DB4 end() { return Iter2DB4(&used.head); } // decl2DB4
+    Iter2DB4 insert(Iter2DB4 where, const Item2DB4 &item) { // decl2DB4
+        Node2DB4 *n = free.head.prev; // decl2DB4
+        Node2DB4 *previous = n->prev; // decl2DB4
+        free.head.prev = previous; // decl2DB4
+        previous->next = &free.head; // decl2DB4
+        --free.count; // decl2DB4
+        n->data = item; // decl2DB4
+        used.insert(where.node, n); // decl2DB4
+        return where; // decl2DB4
+    } // decl2DB4
+    void push(const Item2DB4 &item) { // decl2DB4
+        Node2DB4 *n = free.head.prev; // decl2DB4
+        Node2DB4 *previous = n->prev; // decl2DB4
+        free.head.prev = previous; // decl2DB4
+        previous->next = &free.head; // decl2DB4
+        --free.count; // decl2DB4
+        n->data = item; // decl2DB4
+        used.push(n); // decl2DB4
+    } // decl2DB4
+}; // que2DB4 // decl2DB4
+struct Obj2DB4 { char pad[0x40]; Que2DB4 queue; }; // obj2DB4 // decl2DB4
 struct Vec5250 { // 5250
     float x, y, z, w; // 5250
 }; // 5250
@@ -1390,7 +1467,46 @@ extern "C" void func_001E2C40(Obj2C40 *arg0, int arg1) {
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2C40);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2DB4);
+extern "C" void func_001E2DB4(Obj2DB4 *self, unsigned int id, Vec2DB4 *position, int scene, int flags)
+{
+    if (scene == -1) scene = scene2DB4(world2DB4);
+    float *entry = (float *)find2DB4(bank2DB4, scene);
+    if (entry) {
+        Item2DB4 item;
+        item.flags = flags | 1;
+        item.distance = 3000.0f;
+        item.scene = scene;
+        item.handle = -1;
+        item.id = id;
+        item.zero = 0;
+        item.position.m_x = position->m_x + entry[8];
+        item.position.m_y = position->m_y + entry[9];
+        item.position.m_z = position->m_z + entry[10];
+        void *data;
+        if (lookup2DB4(self, id, &data)) item.data = data;
+        else item.data = 0;
+        float horizontal = sqrtf(item.position.m_x * item.position.m_x + item.position.m_z * item.position.m_z);
+        float distance = sqrtf(item.position.m_y * item.position.m_y + horizontal * horizontal);
+        Que2DB4 *queue = &self->queue;
+        Iter2DB4 it;
+        Iter2DB4 last;
+        it = queue->begin();
+        last = queue->end();
+        if (flags & 0x20) {
+            if (check2DB4(self, item.id, 0x16, 0) != 0) return;
+            item.flags |= 0x200;
+            item.handle = play2DB4(self, item.id, 1, position, 0, 0x80);
+        }
+            while (it != last) {
+                if (distance <= (*it).distance) {
+                    queue->insert(it, item);
+                    return;
+                }
+                ++it;
+            }
+            queue->push(item);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3138);
 
