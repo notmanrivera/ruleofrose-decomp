@@ -1945,8 +1945,6 @@ extern "C" int func_001DCF28(char **arg0, unsigned short arg1)
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DCF28);
 #endif
 
-// NON_MATCHING: 1 reloc differs, 1 edits
-#ifdef NON_MATCHING
 struct S_A0_dd00c { char pad[0x90]; int val; char pad2[0xC]; }; // dd00c
 struct S_C0_90_dd00c { char pad[0x90]; int val; char pad2[0x2C]; }; // dd00c
 struct S_E0_dd00c { char pad[0x90]; int val; char pad2[0x4C]; }; // dd00c
@@ -1971,9 +1969,7 @@ extern "C" int func_001DD00C(Mgr_dd00c *arg0, unsigned short arg1, int arg2)
     }
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD00C);
-#endif
+
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DD118);
 
@@ -2017,9 +2013,12 @@ extern "C" void func_001DD414(Mgr_dd414 *arg0)
     }
 }
 
+// Keep the allocation source string on the boundary after the ten-entry switch table.
+extern const char trgSourceFile[] ALIGNED(16) = "game/gamtrg.cpp";
+
 extern "C" GamTrgCopy_dd558 *func_001DD558(int arg0, const GamTrgCopy_dd558 *arg1)
 {
-    GamTrgCopy_dd558 *p = (GamTrgCopy_dd558 *)Xiiiiiii_alloc__9BedMemoryiPCciii((int)&D_006E9800, 0xB0, (int)"game/gamtrg.cpp", 0x62, 0, 1);
+    GamTrgCopy_dd558 *p = (GamTrgCopy_dd558 *)Xiiiiiii_alloc__9BedMemoryiPCciii((int)&D_006E9800, 0xB0, (int)trgSourceFile, 0x62, 0, 1);
     *p = *arg1;
     return p;
 }
