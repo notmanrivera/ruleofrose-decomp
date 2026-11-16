@@ -37,7 +37,8 @@ case $AGENT in
         orca terminal read --terminal "$HANDLE" --screen --json 2>/dev/null | grep -q "Select variant" || break
         send "$(printf '\033')" 2
       done
-      model_on_screen | grep -qF "$WANT" && break
+      # Exact: searching "GLM-5.3" puts "GLM-5.3-Flash Free" first.
+      [ "$(model_on_screen)" = "$WANT" ] && break
       send "$(printf '\033')" 1
     done
     ;;
