@@ -2497,7 +2497,83 @@ extern "C" float func_001E6D54(Obj6D54 *arg0)
     return ((func_00237580(mat + 0x20, vec) + 1.0f) * 0.5f * 0.7f) + 0.3f;
 }
 
+// NON_MATCHING: 99/160 differ, 4 relocs differ (size 0x280, game 0x294), 37 edits
+#ifdef NON_MATCHING
+#include "ror.h"
+extern "C" float sqrtf(float);
+extern "C" void sub6E00(void *, const void *, const void *) asm("func_00237408");
+extern "C" float pan6E00(void *) asm("func_001E6D54");
+extern char global6E00[] asm("D_006FBD80");
+extern char camera6E00[] asm("D_007812C0");
+struct ALIGNED(16) Vec6E00 { float x,y,z,w; }; // 6E00vec
+struct Pan6E00 { Vec6E00 *a; Vec6E00 *b; float angle; Vec6E00 *src; }; // 6E00pan
+extern "C" void func_001E6E00(int mode, Vec6E00 *src, unsigned short *info, int *left, int *right)
+{
+    register Vec6E00 *source PS2_REG("$21") = src;
+    Vec6E00 pos;
+    Vec6E00 dir;
+    Pan6E00 pan;
+    Vec6E00 delta;
+    memset(&pos, 0, 16);
+    pos.w = 1.0f;
+    register Vec6E00 *direction PS2_REG("$20") = &dir;
+    memset(direction, 0, 16);
+    register float farDist PS2_REG("$f24") = info[0x2C/2];
+    register float farVol PS2_REG("$f22") = info[0x30/2];
+    register float nearVol PS2_REG("$f23") = info[0x2E/2];
+    register float nearDist PS2_REG("$f21") = info[0x2A/2];
+    if (mode != 0) {
+        if (mode != 1) {
+            *right = 64;
+            *left = 64;
+            return;
+        }
+        register int base PS2_REG("$2") = (int)global6E00;
+        base += 0x2AB70;
+        float *p = (float *)base;
+        float px = p[0x40/4], py = p[0x44/4], pz = p[0x48/4];
+        float dx = p[0x50/4], dy = p[0x54/4], dz = p[0x58/4];
+        pos.x = px; pos.y = py; pos.z = pz;
+        direction->x = dx; dir.y = dy; dir.z = dz;
+    } else {
+        register int base PS2_REG("$3") = (int)camera6E00;
+        register Vec6E00 *tmp PS2_REG("$4") = &delta;
+        register u_long128 copy PS2_REG("$6");
+        copy = *(u_long128 *)(base + 0x22020);
+        *(u_long128 *)tmp = copy;
+        *(long long *)&pos = *(long long *)&delta;
+        *(int *)&pos.z = *(int *)&delta.z;
+        copy = *(u_long128 *)(base + 0x22030);
+        *(u_long128 *)tmp = copy;
+        *(long long *)&dir = *(long long *)&delta;
+        *(int *)&dir.z = *(int *)&delta.z;
+    }
+    sub6E00(&delta, source, &pos);
+    float distance = sqrtf(delta.x*delta.x + delta.y*delta.y + delta.z*delta.z);
+    register float volume PS2_REG("$f20");
+    volume = farVol;
+    if (!(nearDist <= distance)) {
+        volume = nearVol;
+        if (!(distance <= farDist)) {
+            volume = farVol + ((nearVol-farVol)*(distance-nearDist))/(farDist-nearDist);
+        }
+    }
+    if (volume <= 0.0f) {
+        *right = 0;
+        *left = 0;
+        return;
+    }
+    pan.a = &pos;
+    pan.b = direction;
+    pan.angle = -1.0471976f;
+    pan.src = source;
+    *left = (int)(volume * pan6E00(&pan));
+    pan.angle = 1.0471976f;
+    *right = (int)(volume * pan6E00(&pan));
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E6E00);
+#endif
 
 Obj7094::Obj7094()
 {
