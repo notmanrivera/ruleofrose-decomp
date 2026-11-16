@@ -594,6 +594,18 @@ From recovering `game/gamman`'s types (2026-11-12):
   - Frame restored then `j callee`: `return f();` with the callee's own
     return type. A frame 0x10 larger: one more live local.
 
+- **From other ee-gcc decomps** (R11: Sly1, Sly2, kh1, crashwoc):
+  - `__ptmf`/`__ptmd` type_info (0x295C90-0x295E00) and their strings in
+    `sdk/libc`'s .rodata are emitted by the compiler's library, not by game
+    source: never write them in a game file.
+  - To see which file owns a stretch of .rodata, list every `%hi/%lo`
+    reference into it; a file's data runs to its last referenced address
+    plus the access width (crashwoc's method), and is contiguous.
+  - `tools/permute.py` (randomized source permutations) exists but found
+    nothing in 42 near-misses; decomp-permuter itself is C-only.
+  - Their float expression shapes come from `-ffast-math`, which this game
+    does not use: do not copy them.
+
 ### Portability (the PC and Vita ports)
 
 The matching build is one target; the ports will build the same sources

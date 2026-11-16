@@ -45,14 +45,6 @@ judgement and go to Sonnet.
   func_001DBC5C). Find what in their .rodata the compiler emits in
   another order than the asm piece (strings? the table?) and the source
   shape that gives the game's order.
-- [ ] R11 **[flash]** C++ matching lessons from other ee-gcc decomps: read the
-  docs/CONTRIBUTING of TheOnlyZac/Sly1, Komasia/sly2-decomp, ethteck/kh1
-  and denzi-gh/crashwoc-decomp-ps2 (web), note each one's exact compiler
-  and flags, and extract what applies to ee-gcc 2.96 C++ here (vtables,
-  RTTI and key methods, pointers to members, jump tables and .rodata
-  boundaries, inline emission, permuter use with C++, objdiff setup) as
-  ready-to-paste bullets for docs/DECOMPILING.md, marking what is already
-  there.
 - [ ] R12 objdiff for this project: can encounter/objdiff compare our
   build/match objects against the game's per function (its config for a
   splat PS2 project, e.g. Sly 2's), and would it beat tools/match.py's
@@ -82,6 +74,11 @@ judgement and go to Sonnet.
 
 ## Done
 
+- [x] R11 Lessons from Sly1/Sly2/kh1/crashwoc (2026-11-15, Flash): their
+  compilers are 2.95.x (Sly) and 2.96 C-only (kh1), mostly -O2/-ffast-math,
+  so little transfers; four bullets added to DECOMPILING.md. Unchecked
+  leads: Sly2's vtable entry layout vs ours; an -O2 experiment on a stuck
+  file; objdiff setup (Sly1 configure.py --objects) for R12.
 - [x] R9 Other wrong boundaries (2026-11-15, Flash): applied 473875d,
   0x20313C and .rodata 0x2FF578-0x2FF61F moved to unk/TskEnemyMove (its
   func_00202FE4 reads the tables after them). The other leads are R15.
