@@ -2,6 +2,7 @@
 #include "utl/filereader.h"
 #include "bed/bedmemory.h"
 #include "bed/bedpfh.h"
+extern "C" int F897_read(...) asm("sceMcRead");
 extern "C" int X7C4C_func_00187E44(int) asm("func_00187E44");
 extern "C" int X7C4C_func_001880CC(int) asm("func_001880CC");
 extern "C" int X7C4C_func_001881C0(int) asm("func_001881C0");
@@ -1149,7 +1150,93 @@ INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_001892B0);
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_001894D4);
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00189718);
+extern "C" int func_00189718(int arg0)
+{
+    int temp_a0;
+    int temp_v0;
+    int temp_v1;
+    int temp_v1_2;
+    int var_s3;
+    int var_v0;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x60);
+    var_s3 = 0;
+    switch (temp_v1) {
+    case 0:
+        M2C_FIELD(arg0, int *, 0x60) = 3;
+        M2C_FIELD(arg0, int *, 0xBC) = 0;
+    case 3:
+        M2C_FIELD(arg0, int *, 0x60) = 5;
+        temp_a0 = F897_read(M2C_FIELD(arg0, int *, 0x94), M2C_FIELD(arg0, int *, 0xB4), M2C_FIELD(arg0, int *, 0xB0));
+        M2C_FIELD(arg0, int *, 0x64) = 3;
+        M2C_FIELD(arg0, int *, 0x6C) = temp_a0;
+        switch (temp_a0) {
+        case 0:
+            M2C_FIELD(arg0, int *, 0x60) = 4;
+            M2C_FIELD(arg0, int *, 0x64) = 1;
+            M2C_FIELD(arg0, int *, 0x58) = 1;
+            break;
+        case -100:
+            M2C_FIELD(arg0, int *, 0x58) = 4;
+            break;
+        case -200:
+            M2C_FIELD(arg0, int *, 0x58) = 2;
+            break;
+        default:
+            M2C_FIELD(arg0, int *, 0x58) = 2;
+            break;
+        }
+        M2C_FIELD(arg0, int *, 0xBC) = (int) (M2C_FIELD(arg0, int *, 0xBC) + 1);
+        break;
+    case 5:
+        var_s3 = 1;
+        break;
+    case 4:
+        temp_v0 = X_sceMcSync(M2C_FIELD(arg0, int *, 0xC8), arg0 + 0xCC, arg0 + 0xD0);
+        switch (temp_v0) {
+        case 0:
+            break;
+        case 1:
+            M2C_FIELD(arg0, int *, 0x64) = 3;
+            temp_v1_2 = M2C_FIELD(arg0, int *, 0xD0);
+            if (temp_v1_2 >= 0) {
+                M2C_FIELD(arg0, int *, 0x64) = 2;
+                M2C_FIELD(arg0, int *, 0x60) = 5;
+                M2C_FIELD(arg0, int *, 0xA0) = (int) M2C_FIELD(arg0, int *, 0xD0);
+            } else {
+                if (temp_v1_2 == -2) {
+                    register int retry PS2_REG("$2") = M2C_FIELD(arg0, int *, 0xBC);
+                    M2C_FIELD(arg0, int *, 0x58) = 7;
+                    if (retry < 8) {
+                        M2C_FIELD(arg0, int *, 0x60) = 3;
+                        M2C_FIELD(arg0, int *, 0x64) = 1;
+                        M2C_FIELD(arg0, int *, 0x58) = 1;
+                    } else {
+                        __asm__("" ::: "memory");
+                    }
+                } else if (temp_v1_2 == -3) {
+                    M2C_FIELD(arg0, int *, 0x58) = 19;
+                } else if (temp_v1_2 == -4) {
+                    M2C_FIELD(arg0, int *, 0x58) = 13;
+                } else if (temp_v1_2 == -5) {
+                    M2C_FIELD(arg0, int *, 0x58) = 8;
+                } else if (temp_v1_2 == -7) {
+                    M2C_FIELD(arg0, int *, 0x58) = 18;
+                } else if (temp_v1_2 <= -10) {
+                    M2C_FIELD(arg0, int *, 0x58) = 9;
+                }
+            }
+            break;
+        case -1:
+            M2C_FIELD(arg0, int *, 0x64) = 3;
+            M2C_FIELD(arg0, int *, 0x58) = 0xA;
+            M2C_FIELD(arg0, int *, 0x60) = 5;
+            break;
+        }
+        break;
+    }
+    return (M2C_FIELD(arg0, int *, 0x64) == 1) ? var_s3 : 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018993C);
 
