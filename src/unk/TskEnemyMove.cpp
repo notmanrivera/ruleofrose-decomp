@@ -833,7 +833,85 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF2F0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF2F8);
 
+// NON_MATCHING: 35/141 differ, 7 relocs differ, 32 edits
+#ifdef NON_MATCHING
+extern "C" unsigned int e988_00200BC4(int) asm("func_00200BC4");
+extern "C" void e988_0017C340(int,float *,float *,int,float,float) asm("func_0017C340");
+extern "C" int e988_001D046C(int,int) asm("func_001D046C");
+extern "C" void e988_0020313C(int,int,float *) asm("func_0020313C");
+extern "C" int e988_0017D298(int,void *) asm("func_0017D298");
+extern "C" void e988_0010B1B0(void *,int,int,float,int,int) asm("func_0010B1B0__8DogActoriifii");
+extern "C" void e988_002019D0(int) asm("func_002019D0");
+extern "C" unsigned int e988_00201D58(int,float *) asm("func_00201D58");
+extern "C" int func_00200988(int arg0, float *arg1) {
+    struct { int mode; float *start; float *end; void *path; } stack;
+    float sp10[4];
+    float sp20[4];
+    int temp_a1;
+    int temp_v0;
+    int var_a1;
+    unsigned int temp_v0_2;
+    unsigned int var_v0;
+    int temp_s0;
+    int offset = 0x8542C;
+
+    temp_v0_2 = e988_00200BC4(arg0);
+    switch (temp_v0_2) {
+    case 0: return 1;
+    case 1:
+    case 2:
+        stack.mode = 1;
+        e988_0017C340((int)D_006FBD80 + offset, D_006E97D8, sp10, 0, 40.0f, 30.0f);
+        temp_a1 = M2C_FIELD(arg0, int *, 0x38);
+        stack.start = sp10;
+        if (temp_a1 != 0) {
+            temp_v0 = e988_001D046C((int)&D_007812C0, temp_a1);
+            if (temp_v0 == 0) {
+                *M2C_FIELD(arg0, int **, 0x30) = 2;
+                M2C_FIELD(arg0, float *, 0x78) = M2C_FIELD(arg0, float *, 0x7C) = M2C_FIELD(arg0, float *, 0x80) = 0.0f;
+                return temp_v0;
+            }
+            e988_0020313C(arg0, M2C_FIELD(arg0, int *, 0x38), (float *)(arg0 + 0x78));
+            goto block_9;
+        }
+        M2C_FIELD(arg0, float *, 0x78) = (float) M2C_FIELD(arg0, float *, 0x3C);
+        M2C_FIELD(arg0, float *, 0x7C) = (float) M2C_FIELD(arg0, float *, 0x40);
+        M2C_FIELD(arg0, float *, 0x80) = (float) M2C_FIELD(arg0, float *, 0x44);
+block_9:
+        temp_s0 = (int)D_006FBD80 + offset;
+        e988_0017C340(temp_s0, (float *)(arg0 + 0x78), sp20, 0, 40.0f, 80.0f);
+        stack.end = sp20;
+        stack.path = (void *)(arg0 + 0x88);
+        if (e988_0017D298((stack.mode * 0x18) + temp_s0 + 8, &stack) != 0 && M2C_FIELD(arg0, int *, 0x284) > 0) {
+            e988_002019D0(arg0);
+            var_v0 = e988_00201D58(arg0, arg1);
+        } else {
+            M2C_FIELD(arg0, int *, 0x68) = 0;
+            e988_0010B1B0(M2C_FIELD(arg0, void **, 0x28), (M2C_FIELD(arg0, int *, 0x70) != 0) ? 0xA : 2, 0, M2C_FIELD(arg0, float *, 0x4C), -1, -1);
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, unsigned int *, 0x2C) = 1;
+            return 0;
+        }
+block_20:
+        M2C_FIELD(arg0, unsigned int *, 0x2C) = var_v0;
+    default:
+        return 1;
+    case 4:
+        M2C_FIELD(arg0, int *, 0x68) = 0;
+        var_a1 = (M2C_FIELD(arg0, int *, 0x70) != 0) ? 0xA : 2;
+block_19:
+        e988_0010B1B0(M2C_FIELD(arg0, void **, 0x28), var_a1, 0, M2C_FIELD(arg0, float *, 0x4C), -1, -1);
+        M2C_FIELD(arg0, int *, 0x5C) = 0;
+        var_v0 = 1;
+        goto block_20;
+    case 3:
+        var_a1 = M2C_FIELD(arg0, int *, 0xAB0);
+        goto block_19;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00200988);
+#endif
 
 extern "C" int func_00200BC4(int arg0)
 {
