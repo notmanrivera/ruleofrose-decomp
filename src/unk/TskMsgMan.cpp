@@ -1698,7 +1698,173 @@ extern "C" void TskMoveSecta__vfunc_05(int arg0)
 }
 
 
+// NON_MATCHING: 307/318 differ, 32 relocs differ (size 0x4F8, game 0x56C), 189 edits
+#ifdef NON_MATCHING
+extern "C" void sCreate(int,int,int,int,int,int,int,float,float) asm("func_001EC940");
+extern "C" void sMove(int,int,int,int,int,float,float) asm("func_001E9A3C");
+extern "C" void sFinish(int,int,int,int,int,float,float) asm("func_001F59B4");
+extern "C" int sFind(int,int,int) asm("func_001D7B08");
+extern "C" int sGet(int) asm("func_001F6878");
+extern "C" int sRand() asm("rand");
+extern "C" int TskMoveSecta__vfunc_04(int arg0) {
+    float var_f12;
+    int temp_v0_3;
+    int var_a3;
+    int temp_a0;
+    int temp_s4;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_4;
+    int temp_v0_5;
+    int temp_v0_6;
+    int temp_v0_7;
+    int temp_v1;
+    int temp_v1_2;
+    int var_a2;
+    int var_v0;
+    int temp_v0_8;
+    int var_a0;
+    int var_s0;
+    int var_s0_2;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x30);
+    temp_s4 = (temp_v1 < 6) == 0;
+    temp_a0 = M2C_FIELD(arg0, int *, 0xC);
+    if (temp_a0 != 0) {
+        if (temp_a0 & 8) {
+            temp_v0 = M2C_FIELD(arg0, int *, 0x3C)--;
+            if (temp_v0 <= 0) {
+                if (X_func_001E7D7C((int)&D_007A3D80, *(int *)M2C_FIELD(arg0, int *, 0x10)) != 0) {
+                    X_func_001E7724((int)&D_007A3D80, *(int *)M2C_FIELD(arg0, int *, 0x10));
+                }
+                M2C_FIELD(arg0, int *, 0x3C) = (int) M2C_FIELD(arg0, int *, 0x38);
+                var_v0 = (M2C_FIELD(arg0, int *, 0xC) & ~8) | 2;
+                goto block_43;
+            }
+            goto block_44;
+        }
+        if (temp_a0 & 2) {
+            M2C_FIELD(arg0, int *, 0xC) = (int) ((temp_a0 & ~2) | 1);
+            return 0;
+        }
+        switch (temp_v1) {
+        case 0:
+        case 6:
+            temp_v0_2 = M2C_FIELD(arg0, int *, 0x3C) - 1;
+            M2C_FIELD(arg0, int *, 0x3C) = temp_v0_2;
+            if (temp_v0_2 > 0) {
+                M2C_FIELD(arg0, int *, 0xC) = 0;
+                var_s0 = X___builtin_new_f1670(0x2C0);
+                temp_v0_3 = M2C_FIELD(arg0, int *, 0x1C);
+                M2C_FIELD(arg0, int *, 0x1C) = (int) (temp_v0_3 + 4);
+                var_a0 = var_s0;
+                var_a3 = arg0 + 0xC;
+                var_a2 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0);
+block_21:
+                sCreate(var_a0, M2C_FIELD(arg0, int *, 8), var_a2, var_a3, M2C_FIELD(arg0, int *, 0x40), temp_s4, 0x20, M2C_FIELD(arg0, float *, 0x2C), M2C_FIELD(arg0, float *, 0x44));
+                X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, var_s0, 0, M2C_FIELD(arg0, int *, 0x10), 0x11);
+                goto block_44;
+            }
+block_17:
+            sFinish(M2C_FIELD(arg0, int *, 8), 1, -1, 0x100, 0, M2C_FIELD(arg0, float *, 0x44) * 0.016666666f, 32769.0f);
+            return 1;
+        case 1:
+        case 7:
+            temp_v0_4 = M2C_FIELD(arg0, int *, 0x3C) - 1;
+            M2C_FIELD(arg0, int *, 0x3C) = temp_v0_4;
+            if (temp_v0_4 > 0) {
+                M2C_FIELD(arg0, int *, 0x1C) = (int) (M2C_FIELD(arg0, int *, 0x1C) + 4);
+            } else {
+                M2C_FIELD(arg0, int *, 0x3C) = (int) M2C_FIELD(arg0, int *, 0x38);
+                M2C_FIELD(arg0, int *, 0x1C) = (int) M2C_FIELD(arg0, int *, 0x18);
+            }
+            M2C_FIELD(arg0, int *, 0xC) = 0;
+            var_s0 = X___builtin_new_f1670(0x2C0);
+            var_a2 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0);
+            var_a0 = var_s0;
+            var_a3 = arg0 + 0xC;
+            goto block_21;
+        case 2:
+        case 8:
+            temp_v0_5 = M2C_FIELD(arg0, int *, 0x3C) - 1;
+            M2C_FIELD(arg0, int *, 0x3C) = temp_v0_5;
+            if (temp_v0_5 <= 0) {
+                goto block_17;
+            }
+block_20:
+            M2C_FIELD(arg0, int *, 0xC) = 0;
+            var_s0 = X___builtin_new_f1670(0x2C0);
+            var_a0 = var_s0;
+            var_a3 = arg0 + 0xC;
+            var_a2 = *(int *)(((sRand() % (int) M2C_FIELD(arg0, int *, 0x38)) * 4) + M2C_FIELD(arg0, int *, 0x18));
+            goto block_21;
+        case 3:
+        case 9:
+            temp_v0_6 = M2C_FIELD(arg0, int *, 0x3C) - 1;
+            M2C_FIELD(arg0, int *, 0x3C) = temp_v0_6;
+            if (temp_v0_6 <= 0) {
+                M2C_FIELD(arg0, int *, 0x3C) = (int) M2C_FIELD(arg0, int *, 0x38);
+            }
+            goto block_20;
+        case 4:
+        case 5:
+        case 10:
+        case 11:
+            if (temp_a0 & 4) {
+                var_f12 = M2C_FIELD(arg0, float *, 0x44) * 0.016666666f;
+                goto block_28;
+            }
+            temp_v0_7 = sFind((int)&D_007812C0, M2C_FIELD(arg0, int *, 0x18), sGet(M2C_FIELD(arg0, int *, 8)));
+            if (temp_v0_7 != -1) {
+                if (X_func_001E7D7C((int)&D_007A3D80, *(int *)M2C_FIELD(arg0, int *, 0x10)) != 0) {
+                    X_func_001E7724((int)&D_007A3D80, *(int *)M2C_FIELD(arg0, int *, 0x10));
+                }
+                if (sFind((int)&D_007812C0, M2C_FIELD(arg0, int *, 8), sGet(M2C_FIELD(arg0, int *, 8))) == temp_v0_7) {
+                    if (sFind((int)&D_007812C0, M2C_FIELD(arg0, int *, 8), sGet(M2C_FIELD(arg0, int *, 8))) == temp_v0_7) {
+                        if (M2C_FIELD(arg0, int *, 0x30) < 6) {
+                            var_s0_2 = X___builtin_new_f1670(0xC0);
+                            sMove(var_s0_2, M2C_FIELD(arg0, int *, 8), 3, M2C_FIELD(arg0, int *, 0x18), M2C_FIELD(arg0, int *, 0x40), 1.0f, M2C_FIELD(arg0, float *, 0x44));
+                        } else {
+                            var_s0_2 = X___builtin_new_f1670(0xC0);
+                            sMove(var_s0_2, M2C_FIELD(arg0, int *, 8), 0xB, M2C_FIELD(arg0, int *, 0x18), M2C_FIELD(arg0, int *, 0x40), 1.0f, M2C_FIELD(arg0, float *, 0x44));
+                        }
+                    } else {
+                        var_s0_2 = X___builtin_new_f1670(0x2C0);
+                        sCreate(var_s0_2, M2C_FIELD(arg0, int *, 8), temp_v0_7, arg0 + 0xC, M2C_FIELD(arg0, int *, 0x40), temp_s4, 0x20, M2C_FIELD(arg0, float *, 0x2C), M2C_FIELD(arg0, float *, 0x44));
+                    }
+                    X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, var_s0_2, 0, M2C_FIELD(arg0, int *, 0x10), 0x11);
+                } else {
+                    temp_v0_8 = X___builtin_new_f1670(0x2C0);
+                    sCreate(temp_v0_8, M2C_FIELD(arg0, int *, 8), temp_v0_7, arg0 + 0xC, M2C_FIELD(arg0, int *, 0x40), temp_s4, 0x20, M2C_FIELD(arg0, float *, 0x2C), M2C_FIELD(arg0, float *, 0x44));
+                    X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0_8, 0, M2C_FIELD(arg0, int *, 0x10), 0x11);
+                }
+                M2C_FIELD(arg0, int *, 0xC) = 0;
+            } else {
+                var_f12 = M2C_FIELD(arg0, float *, 0x44) * 0.016666666f;
+block_28:
+                sFinish(M2C_FIELD(arg0, int *, 8), 1, -1, 0x100, 0, var_f12, 32769.0f);
+                M2C_FIELD(arg0, int *, 0x3C) = 0x3C;
+                M2C_FIELD(arg0, int *, 0x38) = 0x3C;
+                M2C_FIELD(arg0, int *, 0xC) = (int) ((M2C_FIELD(arg0, int *, 0xC) & ~4) | 8);
+            }
+            temp_v1_2 = M2C_FIELD(arg0, int *, 0x30);
+            if ((temp_v1_2 == 5) || (temp_v1_2 == 0xB)) {
+                var_v0 = M2C_FIELD(arg0, int *, 0xC) | 8;
+block_43:
+                M2C_FIELD(arg0, int *, 0xC) = var_v0;
+            }
+            /* Duplicate return node #45. Try simplifying control flow for better match */
+            return 0;
+        }
+    } else {
+block_44:
+        return 0;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMoveSecta__vfunc_04);
+#endif
 
 extern "C" u_long128 *func_001EE2FC(int arg0, int arg1, int arg2, int arg3, u_long128 *arg4, int arg5, float fparg0)
 {
