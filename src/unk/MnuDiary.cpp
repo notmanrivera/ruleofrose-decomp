@@ -1418,7 +1418,85 @@ extern "C" void func_0019DBC8(Obj_DBC8 *arg0, int arg1, int arg2)
     }
 }
 
+// NON_MATCHING: 119/124 differ, 4 relocs differ (size 0x1F0, game 0x220), 99 edits
+#ifdef NON_MATCHING
+inline int diaryDiv(int n,int d) { return n/d; }
+inline int diaryMod(int n,int d) { return n%d; }
+extern int D_006E9408[];
+extern "C" int diaryCount(int,int,int) asm("func_001DD00C");
+extern "C" void func_0019DCBC(int arg0, int arg1, int arg2, int arg3) {
+    int *temp_a1;
+    int *temp_a3;
+    int *temp_a5;
+    int temp_hi;
+    int temp_hi_2;
+    int temp_lo;
+    int hundred = 100;
+    int ten = 10;
+    int temp_lo_2;
+    int temp_v1;
+    int temp_v1_2;
+    unsigned short temp_s0;
+    unsigned short temp_s0_2;
+    unsigned short temp_s0_3;
+    int temp_a0;
+    int temp_a2;
+    void *temp_v0;
+
+    if (arg3 >= M2C_FIELD(arg0, int *, 0x1544)) {
+        temp_a3 = &D_006E9408[arg2];
+        M2C_FIELD(temp_a3, signed char *, 2) = 0x20;
+        temp_a0 = arg0 + 0x7D0;
+        M2C_FIELD(temp_a3, signed char *, 1) = 0x20;
+        temp_v1 = arg1 * 0x154;
+        M2C_FIELD(temp_a3, signed char *, 0) = 0x20;
+        M2C_FIELD(temp_a3, signed char *, 3) = 0;
+        M2C_FIELD((temp_v1 + M2C_FIELD(temp_a0, int *, 0x4AC)), int *, 0x144) = 0;
+        M2C_FIELD((temp_v1 + M2C_FIELD(temp_a0, int *, 0x4AC)), int *, 0x148) = 0;
+        M2C_FIELD((temp_v1 + M2C_FIELD(temp_a0, int *, 0x4AC)), int **, 0x14C) = temp_a3;
+        return;
+    }
+    if (arg3 != 0) {
+        temp_v0 = M2C_FIELD(((arg3 * 4) + arg0), void **, 0x1110);
+        temp_s0 = M2C_FIELD(temp_v0, unsigned short *, 0xA);
+        temp_s0_2 = (diaryCount((int)((char *)&D_007812C0) + 0x22220, (int) M2C_FIELD(temp_v0, unsigned short *, 8), 0x20000) == 0) ? 0 : temp_s0;
+        temp_s0_3 = ((int) temp_s0_2 >= 0x64) ? 0x63 : temp_s0_2;
+        temp_hi = diaryMod(temp_s0_3, hundred);
+        temp_lo = diaryDiv(temp_s0_3, hundred);
+        temp_a5 = &D_006E9408[arg2];
+        M2C_FIELD(temp_a5, signed char *, 0) = 0;
+        M2C_FIELD(temp_a5, signed char *, 1) = 0;
+        M2C_FIELD(temp_a5, signed char *, 2) = 0;
+        M2C_FIELD(temp_a5, signed char *, 3) = 0;
+        temp_hi_2 = diaryMod(temp_s0_3, ten);
+        temp_lo_2 = diaryDiv(temp_hi, ten);
+        M2C_FIELD(temp_a5, signed char *, 0) = 0x20;
+        if (temp_lo_2 == 0) {
+            if (temp_lo == 0) {
+                M2C_FIELD(&D_006E9408[arg2], signed char *, 0) = 0x20;
+                if (temp_hi_2 == 0) {
+                    M2C_FIELD(&D_006E9408[arg2], signed char *, 1) = 0x20;
+                } else {
+                    M2C_FIELD(&D_006E9408[arg2], signed char *, 1) = (signed char) (temp_hi_2 + 0x30);
+                }
+            } else {
+                M2C_FIELD(&D_006E9408[arg2], signed char *, 0) = 0x30;
+            }
+        } else {
+            temp_a1 = &D_006E9408[arg2];
+            M2C_FIELD(temp_a1, signed char *, 0) = (signed char) (temp_lo_2 + 0x30);
+            M2C_FIELD(temp_a1, signed char *, 1) = (signed char) (temp_hi_2 + 0x30);
+        }
+        temp_a2 = arg0 + 0x7D0;
+        temp_v1_2 = arg1 * 0x154;
+        M2C_FIELD((temp_v1_2 + M2C_FIELD(temp_a2, int *, 0x4AC)), int *, 0x144) = 0;
+        M2C_FIELD((temp_v1_2 + M2C_FIELD(temp_a2, int *, 0x4AC)), int *, 0x148) = 0;
+        M2C_FIELD((temp_v1_2 + M2C_FIELD(temp_a2, int *, 0x4AC)), int **, 0x14C) = &D_006E9408[arg2];
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019DCBC);
+#endif
 
 extern "C" char *func_0019DEDC(int arg0, unsigned short arg1)
 {
