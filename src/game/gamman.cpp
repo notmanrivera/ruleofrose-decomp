@@ -1,6 +1,11 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void func_001E7544(void *, int);
+extern "C" int func_001C574C() throw();
+extern "C" int X_func_001C58B8(GamMan *, int) asm("func_001C58B8");
+extern "C" void func_001C58C0(GamMan *, int);
+extern "C" void func_001D3B44(GamMan *);
 extern "C" void X_void_191E04(void *, int, int) asm("func_00191E04");
 extern "C" void X_void_191E58(void *, int, int) asm("func_00191E58");
 extern "C" void func_00191C00(void *, int, int, int, int);
@@ -656,7 +661,27 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C541C);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C574C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C57A0);
+extern "C" void func_001C57A0(GamMan *arg0)
+{
+    if (arg0->chkSysFlg2(0xC)) {
+        if (arg0->chkSysFlg2(4)) {
+            func_001E7544(&D_007A3D80, 1);
+            X_func_001C58B8(arg0, 1);
+            func_001C58C0(arg0, 1);
+            Xii_func_00144334(0);
+            arg0->m_sysFlg2 &= ~4;
+        } else {
+            if (func_001C574C() == 0 || arg0->chkSysFlg2(0x10)) {
+                arg0->m_sysFlg2 &= ~0x10;
+                func_001E7544(&D_007A3D80, 0);
+                func_001C58C0(arg0, 0);
+                X_func_001C58B8(arg0, 0);
+                func_001D3B44(arg0);
+                arg0->m_sysFlg2 &= ~8;
+            }
+        }
+    }
+}
 
 extern "C" int func_001C58B8()
 {
