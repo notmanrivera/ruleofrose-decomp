@@ -229,7 +229,59 @@ extern "C" void func_00194548()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00194588);
+struct PBookHeapEnt {
+    char *top;
+    unsigned int size;
+    int flags;
+    int unk;
+};
+
+extern "C" char *func_00194588(unsigned int size)
+{
+    PBookHeapEnt *p;
+    PBookHeapEnt *best;
+    unsigned int bestdiff;
+    int i;
+
+    size = (size + 0xF) >> 4 << 4;
+    p = (PBookHeapEnt *)D_0029BFB4;
+    best = 0;
+    bestdiff = -1;
+    for (i = 0x7F; i >= 0; i--, p++) {
+        if ((p->flags & 3) == 1 && p->size >= size && (best == 0 || p->size - size < bestdiff)) {
+            bestdiff = p->size - size;
+            best = p;
+        }
+    }
+    if (best == 0) {
+        return 0;
+    }
+    if (bestdiff != 0) {
+        p = (PBookHeapEnt *)D_0029BFB4;
+        i = 0;
+        if (((p->flags ^ 1) & 1) == 0) {
+            do {
+                i++;
+                p++;
+                if (i >= 0x80) {
+                    break;
+                }
+            } while (((p->flags ^ 1) & 1) == 0);
+        }
+        if (i == 0x80) {
+            return 0;
+        }
+        p->top = best->top;
+        p->flags = 3;
+        p->size = size;
+        best->top += size;
+        best->size -= size;
+    } else {
+        p = best;
+        p->flags |= 2;
+    }
+    return p->top;
+}
 
 // NON_MATCHING: 18/22 differ (size 0x58, game 0x5C), 5 edits
 #ifdef NON_MATCHING
