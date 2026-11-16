@@ -199,7 +199,96 @@ extern "C" int func_0014E38C(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014E3D0);
 
+// NON_MATCHING: 129/143 differ, 8 relocs differ (size 0x23C, game 0x268), 81 edits
+#ifdef NON_MATCHING
+#include "ror.h"
+extern "C" void X_func_001E4EBC(int,int,int,int,int) asm("func_001E4EBC");
+extern "C" void X_func_001FAC60(int,int,int,int,int,int,int) asm("func_001FAC60");
+extern "C" int Xiiiif_func_0016A424(int, int, int, float) asm("func_0016A424");
+struct ClrGlobals { char sound[0x18E00]; char soundObject[0x9290]; int player0; int player1; };
+extern ClrGlobals clrGlobals asm("D_007812C0");
+extern "C" int func_0014E4D4(int arg0)
+{
+    struct { int sp0; } stack;
+    int temp_s1_2;
+    int temp_v1;
+    int var_v1;
+    int temp_s0;
+    int temp_s0_2;
+    int temp_s1;
+    int temp_v0;
+    int temp_v0_2;
+    register int var_fp PS2_REG("$30");
+    int var_s3;
+    int var_s5;
+    int var_s6;
+    register int var_s7 PS2_REG("$23");
+
+    var_s7 = 0;
+    var_fp = 0;
+    if (clrGlobals.player0 != 0) {
+        var_fp = M2C_FIELD(clrGlobals.player0, int *, 0x100);
+    }
+    stack.sp0 = 0;
+    var_s6 = 0;
+    if (clrGlobals.player1 != 0) {
+        stack.sp0 = M2C_FIELD(clrGlobals.player1, int *, 0x100);
+    }
+    var_s5 = arg0 + 0x288;
+    var_s3 = 0x270;
+    do {
+        temp_s1 = arg0 + 4;
+        if (*(int *)(temp_s1 + var_s3) != 0) {
+            temp_s0 = arg0 + 8;
+            var_v1 = temp_s0 + var_s3;
+            if (*(int *)(temp_s0 + var_s3) == 1) {
+                if (M2C_FIELD((arg0 + var_s3), int *, 0x10) == 0) {
+                    if ((var_s6 % 20) == 0) {
+                        X_func_001E4EBC((int)&clrGlobals.soundObject, 0x1F010594, 0, 0, 0);
+                    }
+                } else {
+                    X_func_001E4EBC((int)&clrGlobals.soundObject, 0x1F010594, 0, 0, 0);
+                }
+                var_v1 = temp_s0 + var_s3;
+            }
+            temp_v0 = (*(int *)(var_v1));
+            if (temp_v0 <= 0) {
+                temp_v1 = arg0 + 0xC + var_s3;
+                temp_v0_2 = (*(int *)(temp_v1));
+                if (temp_v0_2 <= 0) {
+                    *(int *)(temp_s1 + var_s3) = 0;
+                } else {
+                    (*(int *)(temp_v1)) = temp_v0_2 - 1;
+                }
+                temp_s0_2 = arg0 + 4;
+                temp_s1_2 = temp_s0_2 + ((var_s6 << 5) + 0x280);
+                if (Xiiiif_func_0016A424(var_s5, 1, var_fp, (*(float *)(temp_s1_2))) == 1) {
+                    var_s7 = 1;
+                    *(int *)(temp_s0_2 + var_s3) = 0;
+                }
+                if (Xiiiif_func_0016A424(var_s5, 1, stack.sp0, (*(float *)(temp_s1_2))) == 1) {
+                    var_s7 = 2;
+                    *(int *)(temp_s0_2 + var_s3) = 0;
+                }
+            } else {
+                (*(int *)(var_v1)) = temp_v0 - 1;
+            }
+        }
+        var_s6 += 1;
+        var_s5 += 0x20;
+        var_s3 += 0x20;
+    } while (var_s6 < 0x40);
+    if (var_s7 & 1) {
+        X_func_001FAC60(0xB, (*(int *)(arg0)), 0, 0, 0x32, var_fp, 0);
+    }
+    if (var_s7 & 2) {
+        X_func_001FAC60(0xB, (*(int *)(arg0)), 0, 0, 0x32, stack.sp0, 0);
+    }
+    return var_s7;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014E4D4);
+#endif
 
 extern "C" void ClrOutUp__vfunc_02(int arg0)
 {
