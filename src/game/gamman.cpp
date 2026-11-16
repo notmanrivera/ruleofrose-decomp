@@ -1,6 +1,7 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void func_001D1C80(GamMan *, unsigned int, int, void *);
 extern "C" void func_001D88FC(ObjStat *);
 extern "C" void func_001E7544(void *, int);
 extern "C" int func_001C574C() throw();
@@ -1154,7 +1155,36 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C8AE8);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C8C50);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C8CA4);
+static inline GamItem *itemAt(GamItem *base, int off)
+{
+    return (GamItem *)((char *)base + off);
+}
+
+extern "C" int func_001C8CA4(GamMan *self, unsigned int theOID, unsigned short theUID)
+{
+    unsigned short sp0 = 0;
+
+    if (theUID != 0) {
+        sp0 = theUID;
+    } else if (Xiiu_func_001D046C((int)self, theOID) != 0) {
+        func_001D1C80(self, theOID, 2, &sp0);
+    }
+
+    int i;
+    for (i = 0; i < 12; i++) {
+        if (itemAt(self->m_itemHave.m_begin, i * 0x10)->m_uid == 0xA00) {
+            break;
+        }
+        if (itemAt(self->getItemHavePtr()->m_begin, i * 0x10)->m_uid == sp0 && itemAt(self->getItemHavePtr()->m_begin, i * 0x10)->m_uid != 0) {
+            if (func_001DD00C(self->m_unq, sp0, 0x20000) != 0) {
+                if (itemAt(self->getItemHavePtr()->m_begin, i * 0x10)->m_num < 99) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return i < 12;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C8DC8);
 
