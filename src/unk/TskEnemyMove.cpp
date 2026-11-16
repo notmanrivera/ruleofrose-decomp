@@ -280,7 +280,95 @@ extern "C" int func_001FDF8C(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FE160);
 
+// NON_MATCHING: 4/175 differ, 4 edits
+#ifdef NON_MATCHING
+#define M2C_ULONG(expr, offset) (((e87_ulong *)((char *)(expr) + (offset)))->v)
+extern "C" int e87_X___builtin_new(int) asm("__builtin_new");
+extern "C" int e87_X_attachActor__9MagSystemiii(...) asm("attachActor__9MagSystemiii");
+extern "C" int e87_X_func_00163BE4(...) asm("func_00163BE4");
+extern "C" int e87_X_func_001CBE38(...) asm("func_001CBE38");
+extern "C" int e87_X_func_001CBEDC(int,int) asm("func_001CBEDC");
+extern "C" int e87_X_func_001CFBE4(...) asm("func_001CFBE4");
+extern "C" int e87_X_func_001D1410(...) asm("func_001D1410");
+extern "C" int e87_X_func_001DA228(...) asm("func_001DA228");
+extern "C" int e87_X_func_001DA740(...) asm("func_001DA740");
+extern "C" int e87_X_func_001E71FC(...) asm("func_001E71FC");
+extern "C" int e87_X_func_001EEAEC(...) asm("func_001EEAEC");
+extern "C" int e87_X_func_0022B3D8(...) asm("func_0022B3D8");
+extern "C" int e87_X_ror_assert(...) asm("ror_assert");
+extern const char D_002FF0A0[];
+extern const char D_002FF0A8[];
+extern const char D_002FF0B8[];
+extern const char D_002FF0C8[];
+extern int D_002FF110;
+extern int sysE87 asm("D_006E9840");
+extern int D_007A3D80;
+struct copyE87 { int w[5]; };
+struct e87_ulong { long v; } __attribute__((packed));
+struct e87_v94 { char pad[148]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16(); virtual int call(int, int); };
+extern "C" void func_001FE87C(int arg0, int arg1, int arg2, unsigned short arg3, int arg4)
+{
+    struct { int sp10; char pad14[44]; float sp40; float sp44; float sp48; char pad4C[4]; float sp50; float sp54; float sp58; char pad5C[4]; int sp60; short sp64; char pad66[10]; float sp70; float sp74; float sp78; char pad7C[4]; int sp80[5]; } stack;
+    int temp_v1_2;
+    int temp_v0;
+    register int temp_s0 PS2_REG("$16");
+    int temp_v0_2;
+    int temp_v0_3;
+    int temp_v1;
+    register int var_s1 PS2_REG("$17");
+    register int var_s1_2 PS2_REG("$17");
+    int temp_s0_2;
+    int temp_v1_3;
+
+    temp_s0 = arg3 & 0xFFFF;
+    e87_X_func_001DA228(arg0, 0x67, (int)&stack.sp60);
+    if (stack.sp60 != 0) {
+        temp_v1 = M2C_FIELD(arg0, int *, 0x3EC);
+        var_s1 = 0;
+        if (temp_v1 & 8) {
+            var_s1 = (unsigned int)(temp_v1 & 0x10) > 0;
+        }
+        var_s1_2 = var_s1;
+        if (arg4 & 0x100) var_s1_2 = 1;
+        if ((e87_X_func_00163BE4((int)&D_007B2140, arg1) == 2) && (temp_v0 = e87_X_func_001CBEDC((int)&D_007812C0, stack.sp60), stack.sp64 = temp_v0, (temp_v0 == 0xA2E))) {
+            if ((temp_s0 == 0xBC3) || (temp_s0 == 0xBC1)) {
+                var_s1_2 = 1;
+            }
+        }
+        if ((temp_s0 == 0xBC3) || (var_s1_2 != 0)) {
+            temp_v1_2 = (int) D_002FF0A0;
+            temp_s0_2 = (int)&D_006FE6A0 + (arg2 * 0x4D0);
+            if (M2C_FIELD(temp_s0_2, int *, 0x11C) == 0) {
+                e87_X_ror_assert((int) D_002FF0A8, 0x131, (int) D_002FF0B8);
+            }
+            if (temp_v1_2 == 0) {
+                e87_X_ror_assert((int) D_002FF0A8, 0x131, (int) D_002FF0C8);
+            }
+            temp_v0_2 = e87_X_func_0022B3D8(M2C_FIELD(temp_s0_2, int *, 0x11C), temp_v1_2);
+            stack.sp50 = 0.0f;
+            stack.sp54 = 0.0f;
+            stack.sp58 = 0.0f;
+            ((e87_v94 *)(temp_s0_2))->call((int)&stack.sp10, temp_v0_2);
+            stack.sp70 = stack.sp40 + stack.sp50;
+            stack.sp74 = stack.sp44 + stack.sp54;
+            stack.sp78 = stack.sp48 + stack.sp58;
+            e87_X_func_001CFBE4((int)&D_007812C0, stack.sp60, (int)&stack.sp70);
+            e87_X_func_001D1410((int)&D_007812C0, stack.sp60, 0x04000000);
+            e87_X_attachActor__9MagSystemiii((int)&sysE87, e87_X_func_001CBE38((int)&D_007812C0, stack.sp60), -1, 0);
+            *(copyE87 *)stack.sp80 = *(copyE87 *)&D_002FF110;
+            temp_v0_3 = e87_X___builtin_new(0x80);
+            e87_X_func_001EEAEC(temp_v0_3, stack.sp60, (int)&stack.sp80);
+            e87_X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0_3, 0, 0, 1);
+            stack.sp64 = 0xA00;
+            e87_X_func_001DA740(arg0, 0x66, (int)&stack.sp64);
+            stack.sp60 = 0;
+            e87_X_func_001DA740(arg0, 0x67, (int) (int)&stack.sp60);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FE87C);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF110);
 
