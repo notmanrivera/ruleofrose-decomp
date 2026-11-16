@@ -1260,7 +1260,56 @@ extern "C" void func_001E239C(Obj239C *self, unsigned int id, Vec239C *position,
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E239C);
 #endif
 
+// NON_MATCHING: 9/231 differ, 10 edits
+#ifdef NON_MATCHING
+extern "C" void position2704(void *, int, void *, int) asm("func_001DBA3C");
+extern "C" int lookup2704(void *, unsigned int, void **, unsigned int) asm("func_001E4908");
+extern "C" int check2704(void *, unsigned int, int, void *) asm("func_001E5E58");
+extern "C" int play2704(void *, unsigned int, int, int, float, int, int, int) asm("func_001E50C8");
+extern "C" void func_001E2704(Obj2DB4 *self, unsigned int id, int key, int flags)
+{
+    Item2DB4 item;
+    item.distance = 3000.0f;
+    item.flags = flags | 4;
+    item.id = id;
+    item.zero = key;
+    item.scene = scene2DB4(world2DB4);
+    item.handle = -1;
+    position2704((void *)((int)world2DB4 + 0x18C00), 2, &item.position, 0);
+    lookup2704(self, id, &item.data, 1);
+    float horizontal = sqrtf(item.position.m_x * item.position.m_x + item.position.m_z * item.position.m_z);
+    float distance = sqrtf(item.position.m_y * item.position.m_y + horizontal * horizontal);
+    if (flags & 0x20) {
+        if (check2704(self, item.id, 0x16, 0) != 0) return;
+        item.flags |= 0x200;
+        item.handle = play2704(self, item.id, 1, 1, 1.0f, 1, 0, 0x80);
+    }
+    Que2DB4 *queue = &self->queue;
+    Iter2DB4 it;
+    Iter2DB4 last;
+    it = queue->begin();
+    last = queue->end();
+    while (it != last) {
+        if ((*it).zero == key && (*it).id == id) return;
+        ++it;
+    }
+    {
+    register Que2DB4 *queue PS2_REG("$4") = &self->queue;
+    it = queue->begin();
+    last = queue->end();
+    while (it != last) {
+        if (distance <= (*it).distance) {
+            queue->insert(it, item);
+            return;
+        }
+        ++it;
+    }
+    queue->push(item);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2704);
+#endif
 
 // NON_MATCHING: 22/104 differ, 25 edits
 #ifdef NON_MATCHING
