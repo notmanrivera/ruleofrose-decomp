@@ -1853,7 +1853,103 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF568);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF570);
 
+// NON_MATCHING: 156/195 differ, 14 relocs differ (size 0x30C, game 0x32C), 103 edits
+#ifdef NON_MATCHING
+extern int sys313C asm("D_006E9840");
+extern char D_002FF578[], D_002FF588[], D_002FF598[], D_002FF5A8[];
+extern "C" void ror_assert(const char *, int, const char *);
+extern "C" float sqrtf(float);
+extern "C" int f313C_bone(int, const char *) asm("func_0022B3D8");
+struct Bone313C { char pad[0x94]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16(); virtual void call(float *, int); };
+extern "C" void f313C_pos(int, float *) asm("func_0016A594");
+extern "C" void f313C_start(void *, int, float *) asm("func_001D05F4");
+extern "C" int f313C_idx(void *, int) asm("func_001CBE38");
+extern "C" int f313C_mode(void *) asm("func_00118FEC__9MagSystem");
+extern "C" int f313C_flag(void *) asm("func_00118FDC__9MagSystem");
+extern "C" float f313C_yaw(void *) asm("func_0010A650__8DogActor");
+extern "C" void f313C_trace(void *, float *, void *, int, float, float) asm("func_0017C340");
+static inline void bone313C(void *actor, float *matrix, const char *name) {     if (!(*(int *)((char *)actor + 0x11C))) ror_assert(D_002FF588, 305, D_002FF598);     if (!name) ror_assert(D_002FF588, 305, D_002FF5A8);     ((Bone313C *)actor)->call(matrix, f313C_bone((*(int *)((char *)actor + 0x11C)), name)); }
+extern "C" void func_0020313C(void *arg0, int arg1, float *arg2) {
+    float pos[4], matrix[16];
+    float *target = matrix;
+    int *hits = (int *)(matrix + 4);
+    float *bone = matrix + 12;
+    const char *temp_v0;
+    float temp_f0;
+    float temp_f0_2;
+    float temp_f0_3;
+    float temp_f1;
+    float temp_f21;
+    float var_f20;
+    float var_f21;
+    float var_f2;
+    int temp_v0_2;
+    int var_v1;
+    void *temp_s0;
+    void *temp_v1;
+
+    var_v1 = 0;
+    if (M2C_FIELD(&D_007812C0, void **, 0x22090) != 0) {
+        var_v1 = M2C_FIELD(M2C_FIELD(&D_007812C0, void **, 0x22090), int *, 0x100);
+    }
+    if (arg1 != var_v1) {
+        f313C_pos(arg1, arg2);
+        return;
+    }
+    f313C_start(&D_007812C0, arg1, arg2);
+    temp_v0 = D_002FF578;
+    temp_s0 = (char *)&D_006FE6A0 + (f313C_idx(&D_007812C0, arg1) * 0x4D0);
+    bone313C(temp_s0, matrix, temp_v0);
+    arg2[0] = bone[0]; arg2[2] = bone[2];
+    pos[0] = bone[0]; pos[1] = bone[1]; pos[2] = bone[2];
+    f313C_pos(M2C_FIELD(arg0, int *, 8), pos);
+    var_f2 = pos[2];
+    temp_f1 = M2C_FIELD(arg2, float *, 0) - pos[0];
+    temp_f0 = M2C_FIELD(arg2, float *, 8) - var_f2;
+    var_f2 = sqrtf(temp_f1 * temp_f1 + temp_f0 * temp_f0);
+    var_f20 = var_f2 / M2C_FIELD(arg0, float *, 0x50);
+    if (var_f20 > 250.0f) {
+        var_f20 = 250.0f;
+    }
+    temp_v0_2 = f313C_mode(&sys313C);
+    if (temp_v0_2 != 7) {
+        if (temp_v0_2 < 8) {
+            if (temp_v0_2 != 6) {
+                goto block_22;
+            }
+            var_f21 = 2.575f;
+            if (f313C_flag(&sys313C) == 0) {
+                var_f21 = 3.714285714f;
+            }
+        } else {
+            var_f21 = 2.5f;
+            if (temp_v0_2 != 8) {
+block_22:
+                var_f21 = 0.0f;
+            }
+        }
+    } else {
+        var_f21 = 2.575f;
+        if (f313C_flag(&sys313C) == 0) {
+            var_f21 = 6.923076923f;
+        }
+    }
+    temp_f21 = var_f21 * var_f20;
+    temp_f0_2 = f313C_yaw(M2C_FIELD(arg0, void **, 0x28));
+    temp_f0_3 = sinf(temp_f0_2) * temp_f21;
+    target[1] = M2C_FIELD(arg2, float *, 4);
+    target[0] = M2C_FIELD(arg2, float *, 0) + temp_f0_3;
+    target[2] = M2C_FIELD(arg2, float *, 8) + (cosf(temp_f0_2) * temp_f21);
+    f313C_trace(D_006FBD80 + 0x8542C, target, hits, 0, 40.0f, 0.0f);
+    if (hits[M2C_FIELD(arg0, int *, 0x14)] != 0) {
+        M2C_FIELD(arg2, float *, 0) = target[0];
+        M2C_FIELD(arg2, float *, 8) = target[2];
+        M2C_FIELD(arg2, float *, 4) = target[1];
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_0020313C);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF5B0);
 
