@@ -405,7 +405,79 @@ extern "C" int EffBloodStay1__vfunc_05(Obj_Stay1_v5 *arg0)
     return 1;
 }
 
+// NON_MATCHING: 2/126 differ, 2 edits
+#ifdef NON_MATCHING
+extern "C" float Stay08_distance(int, int) asm("func_0016FF18");
+extern "C" int X_func_0016CCB8(...) asm("func_0016CCB8");
+extern "C" int X_func_0021B260(...) asm("func_0021B260");
+extern "C" int X_func_0021B4F8(...) asm("func_0021B4F8");
+extern "C" int Stay08_write(int,int,unsigned long long) asm("func_0021B550");
+extern "C" int X_func_0021B5A0(...) asm("func_0021B5A0");
+extern "C" int X_func_0021E488(...) asm("func_0021E488");
+extern "C" int Stay08_start(int,int,int) asm("func_0021E5A0");
+extern "C" int X_func_0021E688(...) asm("func_0021E688");
+extern int D_002F20A0;
+extern int D_002F20B0;
+extern int D_002F20C0;
+struct Stay08Words { int w[4]; };
+struct Stay08Pair { long long x,y; };
+extern "C" void EffBloodStay1__vfunc_08(int arg0, int arg1, int arg2, int arg3)
+{
+    struct { Stay08Words words; int sp10; float sp14; float sp18; int sp1C; int sp20; int sp24; char pad28[8]; Stay08Words scales; } stack;
+    int var_v0;
+    int temp_a0;
+    int temp_s0;
+    int temp_v0;
+    int temp_v0_2;
+    int var_s1;
+    int var_s4;
+    int var_s0;
+    int temp_a2;
+
+    var_s4 = 0;
+    temp_s0 = Stay08_write(X_func_0021B5A0(arg3, M2C_FIELD(arg1, int *, 8)), 0x42, 0x44);
+    temp_a0 = Stay08_write(X_func_0021B4F8(temp_s0, X_func_0021B260(arg2, 0)), 0x47, 0x51001);
+    int texture = M2C_FIELD(arg1, int *, 8);
+    *(Stay08Pair *)&stack.words = *(Stay08Pair *)&D_002F20A0;
+    temp_v0 = X_func_0021E488(Stay08_start(temp_a0, texture, 1), (int)&stack);
+    temp_a2 = arg0 + 0x24;
+    stack.sp10 = temp_a2;
+    stack.sp20 = arg1;
+    stack.sp24 = temp_v0;
+    float distance = Stay08_distance((*(int *)&D_00298E08) + 0x2AB70, arg0 + 0xA0);
+    int count = M2C_FIELD(arg0, int *, 0x64);
+    stack.sp14 = distance;
+    stack.words = *(Stay08Words *)&D_002F20B0;
+    stack.scales = *(Stay08Words *)&D_002F20C0;
+    int age;
+    if ((count > 0) && ((int) stack.words.w[0] < (age = M2C_FIELD(arg0, int *, 0xB4)))) {
+        var_s0 = (int)&stack;
+        var_s1 = 0;
+loop_3:
+        var_v0 = (int)&stack.scales + var_s1;
+        var_s1 += 4;
+        var_s4 += 1;
+        stack.sp18 = M2C_FIELD(arg0, float *, 0xB0) * (*(float *)(var_v0));
+        temp_v0_2 = (*(int *)(var_s0));
+        var_s0 += 4;
+        stack.sp1C = age - temp_v0_2;
+        temp_v0 = X_func_0016CCB8(arg0, (int)&stack.sp10);
+        int next = stack.sp10 + 0x10;
+        count = M2C_FIELD(arg0, int *, 0x64);
+        stack.sp24 = temp_v0;
+        stack.sp10 = next;
+        if (var_s4 < count) {
+            age = M2C_FIELD(arg0, int *, 0xB4);
+            if ((*(int *)(var_s0)) < age) {
+                goto loop_3;
+            }
+        }
+    }
+    Stay08_write(X_func_0021E688(stack.sp24), 0x47, 0x5000D);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay1__vfunc_08);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016CCB8);
 
