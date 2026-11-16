@@ -511,7 +511,164 @@ INCLUDE_RODATA("asm/nonmatchings/unk/DwfMain", D_002F0EC0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/DwfMain", D_002F0ED0);
 
+// NON_MATCHING: 176/203 differ, 26 relocs differ (size 0x32C, game 0x348), 93 edits
+#ifdef NON_MATCHING
+extern "C" int P_func_0015DAA8(...) asm("func_0015DAA8");
+extern "C" int P_func_00166F50(char *, int, float) asm("func_00166F50");
+extern "C" int P_func_001687BC(...) asm("func_001687BC");
+extern "C" int P_func_00169810(...) asm("func_00169810");
+extern "C" int P_func_001CBEDC(...) asm("func_001CBEDC");
+extern "C" bool P_func_001D19A8(int *, int) asm("func_001D19A8");
+extern "C" int P_func_001D2BA8(...) asm("func_001D2BA8");
+extern "C" int P_func_001DA228(...) asm("func_001DA228");
+extern "C" int P_func_001DA740(...) asm("func_001DA740");
+extern "C" int P_func_001DB520(...) asm("func_001DB520");
+extern "C" int P_func_00202F10(...) asm("func_00202F10");
+extern int D_002F0F10[];
+extern int D_002F0F20[];
+extern "C" int DwfOutPickup__vfunc_03(char *arg0) {
+    struct { short id; short pad2; int id4; char pad8[8]; float vec[4]; int id20; } stack;
+    int temp_a0_2;
+    int temp_s1;
+    bool temp_v0;
+    int temp_v0_2;
+    bool temp_v0_3;
+    bool temp_v0_4;
+    bool temp_v0_5;
+    int temp_v1_2;
+    int var_a1;
+    int var_s3;
+    int var_v0;
+    int var_v0_2;
+    int var_v1;
+    unsigned int temp_v1;
+    unsigned int var_v0_3;
+    char *temp_a0;
+
+    temp_v1 = M2C_FIELD(arg0, unsigned int *, 4);
+    var_s3 = -1;
+    switch (temp_v1) {
+    case 0:
+        temp_v0 = P_func_001D19A8(&D_007812C0, M2C_FIELD(arg0, int *, 0));
+        if (temp_v0 != 0) {
+            M2C_FIELD(M2C_FIELD(arg0, char **, 0xC), int *, 0x2C) = 1;
+            if (temp_v0 != 0) {
+            case 1:
+                P_func_001DA228(M2C_FIELD(arg0, char **, 8), 0x67, &stack.id4);
+                temp_a0 = M2C_FIELD(arg0, char **, 8);
+                if (stack.id4 == 0) {
+                    var_v1 = M2C_FIELD(temp_a0, int *, 0x3EC);
+                    var_v0_2 = var_v1 & 8;
+                    if (!(var_v1 & 2) && (var_v0_2 = var_v1 & 8, (((var_v1 & 1) != 0) == 0)) && ((var_v0_2 == 0) || (var_v0_2 = var_v1 & 8, ((var_v1 & 0x10) == 0)))) {
+                        temp_v0_2 = P_func_0015DAA8(temp_a0);
+                        M2C_FIELD(arg0, int *, 0x3C) = temp_v0_2;
+                        if (temp_v0_2 != 0) {
+                            P_func_00166F50(arg0, temp_v0_2, 20.0f);
+                            M2C_FIELD(arg0, unsigned int *, 4) = 2U;
+                        } else {
+                            goto block_12;
+                        }
+                    } else {
+                        goto block_13;
+                    }
+                } else {
+block_12:
+                    var_v1 = M2C_FIELD(M2C_FIELD(arg0, char **, 8), int *, 0x3EC);
+                    var_v0_2 = var_v1 & 8;
+block_13:
+                    if ((var_v0_2 == 0) || (var_a1 = 0xA, ((var_v1 & 0x10) == 0))) {
+                        temp_v1_2 = M2C_FIELD(M2C_FIELD(arg0, char **, 8), int *, 0x3EC);
+                        if (temp_v1_2 & 8) {
+                            var_a1 = 1;
+                        } else if (!(temp_v1_2 & 0x10)) {
+                            var_a1 = 0x14;
+                            if (M2C_FIELD(arg0, int *, 0x38) == 2) {
+                                P_func_001DA228(M2C_FIELD(arg0, char **, 8), 0x67, &stack.id20);
+                                var_a1 = 0x4F;
+                                if ((P_func_001CBEDC(&D_007812C0, stack.id20) ^ 0xA2E) != 0) {
+                                    var_a1 = 0x14;
+                                }
+                            }
+                        } else {
+                            var_a1 = 1;
+                        }
+                    }
+                    P_func_001687BC(arg0, var_a1, 0);
+                    M2C_FIELD(arg0, unsigned int *, 4) = 6U;
+                }
+            }
+        }
+    default:
+block_43:
+        var_v0 = var_s3;
+        break;
+    case 2:
+        var_v0 = -1;
+        if (M2C_FIELD(arg0, int *, 0x24) != 0) {
+            P_func_00202F10(M2C_FIELD(M2C_FIELD(arg0, char **, 0xC), int *, 0x1F0));
+            if (M2C_FIELD(arg0, int *, 0x24) == 1) {
+                P_func_001687BC(arg0, 0x19, 0);
+                M2C_FIELD(arg0, unsigned int *, 4) = 3U;
+            } else {
+block_42:
+                var_s3 = D_002F0F10[M2C_FIELD(arg0, int *, 0x38)];
+            }
+            goto block_43;
+        }
+        break;
+    case 3:
+        temp_v0_3 = P_func_001D19A8(&D_007812C0, M2C_FIELD(arg0, int *, 0));
+        if (temp_v0_3 != 0) {
+            M2C_FIELD(M2C_FIELD(arg0, char **, 0xC), int *, 0x2C) = 1;
+            if (temp_v0_3 != 0) {
+                if (P_func_00169810(M2C_FIELD(arg0, int *, 0), M2C_FIELD(arg0, int *, 0x3C)) == 0) {
+                    var_v0_3 = 6;
+                } else {
+                    stack.id = P_func_001CBEDC(&D_007812C0, M2C_FIELD(arg0, int *, 0x3C));
+                    P_func_001DA740(M2C_FIELD(arg0, char **, 8), 0x66, &stack.id);
+                    P_func_001DA740(M2C_FIELD(arg0, char **, 8), 0x67, arg0 + 0x3C);
+                    var_v0_3 = 4;
+                }
+                M2C_FIELD(arg0, unsigned int *, 4) = var_v0_3;
+                P_func_001687BC(arg0, 0x1A, 0);
+            }
+        }
+        goto block_43;
+    case 4:
+        temp_s1 = P_func_001D2BA8(&D_007812C0, M2C_FIELD(arg0, int *, 0x3C));
+        temp_a0_2 = temp_s1;
+        stack.vec[0] = 0.0f;
+        stack.vec[3] = 0.0f;
+        stack.vec[2] = 0.0f;
+        stack.vec[1] = 0.0f;
+        P_func_001DB520(temp_a0_2, 5, &stack.vec[0]);
+        P_func_001DB520(temp_s1, 6, &stack.vec[0]);
+        M2C_FIELD(arg0, unsigned int *, 4) = 5U;
+        goto block_43;
+    case 5:
+        temp_v0_4 = P_func_001D19A8(&D_007812C0, M2C_FIELD(arg0, int *, 0));
+        if (temp_v0_4 != 0) {
+            M2C_FIELD(M2C_FIELD(arg0, char **, 0xC), int *, 0x2C) = 1;
+            if (temp_v0_4 != 0) {
+                var_s3 = D_002F0F20[M2C_FIELD(arg0, int *, 0x38)];
+            }
+        }
+        goto block_43;
+    case 6:
+        temp_v0_5 = P_func_001D19A8(&D_007812C0, M2C_FIELD(arg0, int *, 0));
+        if (temp_v0_5 != 0) {
+            M2C_FIELD(M2C_FIELD(arg0, char **, 0xC), int *, 0x2C) = 1;
+            if (temp_v0_5 != 0) {
+                goto block_42;
+            }
+        }
+        goto block_43;
+    }
+    return var_v0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfOutPickup__vfunc_03);
+#endif
 
 extern "C" void DwfOutPickup__vfunc_04()
 {
