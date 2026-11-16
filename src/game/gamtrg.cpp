@@ -1565,8 +1565,6 @@ extern "C" float func_001DBA00()
     return var_f0;
 }
 
-// NON_MATCHING: function matches (.text 0xfc MATCH), whole-object .rodata +8 jtbl alignment
-#ifdef NON_MATCHING
 extern "C" void Xvvvv_func_0017EB3C(int, void *, int, int) asm("func_0017EB3C");
 extern "C" void Xvvvv_func_0017EBAC(int, void *, int, int) asm("func_0017EBAC");
 extern "C" void func_001DBA3C(int arg0, unsigned int arg1, void *arg2, int arg3)
@@ -1591,9 +1589,7 @@ extern "C" void func_001DBA3C(int arg0, unsigned int arg1, void *arg2, int arg3)
         return;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBA3C);
-#endif
+
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DBB38);
 
@@ -1769,7 +1765,8 @@ extern "C" void func_001DBEF8(int arg0, int arg1)
     M2C_FIELD(arg0, int *, 0x24) = (int) (temp_v1 + (M2C_FIELD(temp_a1, int *, 0x24) - temp_a2));
 }
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamtrg", D_002FC748);
+extern const float mapBoundsR7[26] asm("D_002FC748") ALIGNED(8) = {
+38400,6400,3072,512,24,514,6400,6400,512,512,128,354,6400,6400,512,512,155,185,0,0,0,0,0,0,0,0};
 
 extern "C" int func_001DBFA0(int *arg0, unsigned short arg1)
 {
