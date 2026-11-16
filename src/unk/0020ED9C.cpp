@@ -811,7 +811,93 @@ extern "C" void func_0020F788(int arg0)
     X_func_002144C4((*(int *)((int)&D_007B4DD0)));
 }
 
+// NON_MATCHING: 342/360 differ, 16 relocs differ (size 0x5A0, game 0x5A8), 6 edits
+#ifdef NON_MATCHING
+extern "C" void F98C_cleanup(int) asm("func_0020F4FC");
+extern "C" void F98C_finish(void *) asm("func_001CD25C");
+extern "C" void func_0020F98C(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0xDC24) & 1) return;
+    {
+        List212E64 *pending = (List212E64 *)(arg0 + 0x6200);
+        List212E64 *active = (List212E64 *)(arg0 + 0x40);
+        if (pending->m_used.m_num != 0) {
+            F98C_cleanup(arg0);
+            if (pending->m_used.m_num != 0) {
+                List212E64::Chain *used = (List212E64::Chain *)(arg0 + 0x62D0);
+                if (used->m_num != 0) {
+                    pending->m_free.m_head.m_prev->m_next = used->m_head.m_next;
+                    List212E64::Node *p = pending->m_free.m_head.m_prev;
+                    p->m_next->m_prev = p;
+                    List212E64::Node *last = used->m_head.m_prev;
+                    pending->m_free.m_head.m_prev = last;
+                    last->m_next = &pending->m_free.m_head;
+                    pending->m_free.m_num += used->m_num;
+                    used->m_num = 0;
+                    used->m_head.m_prev = &used->m_head;
+                    used->m_head.m_next = &used->m_head;
+                    active = (List212E64 *)(arg0 + 0x40);
+                }
+            }
+        }
+        if (active->m_used.m_num != 0) {
+            List212E64::Chain *used = (List212E64::Chain *)(arg0 + 0x110);
+            Iter12FBC it;
+            Iter12FBC end;
+            it = Iter12FBC((int *)active->m_used.m_head.m_next);
+            end = Iter12FBC((int *)used);
+            for (; it != end; ++it) {
+                Data212E64 *data = (Data212E64 *)((char *)it.node + 0x10);
+                int kind = *(unsigned int *)(data->b + 4) >> 30;
+                switch (kind) {
+                case 0: ((List212E64 *)M2C_FIELD(arg0, int *, 0x10))->push_back(*data); break;
+                case 1: ((List212E64 *)M2C_FIELD(arg0, int *, 0x14))->push_back(*data); break;
+                case 2: ((List212E64 *)M2C_FIELD(arg0, int *, 0x18))->push_back(*data); break;
+                }
+                int id = it.node[12];
+                if (id) func_001E0C2C(D_007812C0.getTrg(), 3, id, 0x02000000);
+            }
+            if (active->m_used.m_num != 0 && used->m_num != 0) {
+                active->m_free.m_head.m_prev->m_next = used->m_head.m_next;
+                List212E64::Node *p = active->m_free.m_head.m_prev;
+                p->m_next->m_prev = p;
+                List212E64::Node *last = used->m_head.m_prev;
+                active->m_free.m_head.m_prev = last;
+                last->m_next = &active->m_free.m_head;
+                active->m_free.m_num += used->m_num;
+                used->m_num = 0;
+                used->m_head.m_prev = &used->m_head;
+                used->m_head.m_next = &used->m_head;
+            }
+        }
+        D_007B4DD0 = 0;
+        if (M2C_FIELD(M2C_FIELD(arg0, int *, 16), int *, 0x190) != 0) {
+            D_007B4640 = M2C_FIELD(M2C_FIELD(arg0, int *, 16), int *, 0xD4);
+            D_007B4650 = M2C_FIELD(arg0, int *, 16) + 0xD0;
+            Iter12FBC temp((int *)D_007B4650);
+            func_0020F788(arg0);
+        }
+        D_007B4DD0 = 1;
+        if (M2C_FIELD(M2C_FIELD(arg0, int *, 20), int *, 0x190) != 0) {
+            D_007B4640 = M2C_FIELD(M2C_FIELD(arg0, int *, 20), int *, 0xD4);
+            D_007B4650 = M2C_FIELD(arg0, int *, 20) + 0xD0;
+            Iter12FBC temp((int *)D_007B4650);
+            func_0020F788(arg0);
+        }
+        D_007B4DD0 = 2;
+        if (M2C_FIELD(M2C_FIELD(arg0, int *, 24), int *, 0x190) != 0) {
+            D_007B4640 = M2C_FIELD(M2C_FIELD(arg0, int *, 24), int *, 0xD4);
+            D_007B4650 = M2C_FIELD(arg0, int *, 24) + 0xD0;
+            Iter12FBC temp((int *)D_007B4650);
+            func_0020F788(arg0);
+        }
+        D_007B4DD0 = 0;
+        F98C_finish(&D_007812C0);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020F98C);
+#endif
 
 extern "C" void func_0020FF34(void) {
 }
