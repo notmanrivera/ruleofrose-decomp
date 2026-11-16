@@ -1486,7 +1486,90 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E386C);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3C24);
 
+// NON_MATCHING: 132/138 differ, 7 relocs differ (size 0x228, game 0x234), 54 edits
+#ifdef NON_MATCHING
+ // 4120decl
+struct Iter4120 { // 4120decl
+    int node; // 4120decl
+    Iter4120() : node(0) {} // 4120decl
+    Iter4120(int n) : node(n) {} // 4120decl
+    Iter4120(const Iter4120 &i) : node(i.node) {} // 4120decl
+    Iter4120 &operator++() { node = *(int *)(node+4); return *this; } // 4120decl
+    bool operator!=(const Iter4120 &i) const { return node != i.node; } // 4120decl
+}; // 4120decl
+struct Sub4120 { int *arr; }; // 4120decl
+extern "C" int X___builtin_new(...) asm("__builtin_new"); // 4120decl
+extern "C" void X_func_001E5660(int, unsigned int, int, void *) asm("func_001E5660"); // 4120decl
+extern "C" int X_func_001E5B60(...) asm("func_001E5B60"); // 4120decl
+extern "C" int X_func_001E6368(...) asm("func_001E6368"); // 4120decl
+extern "C" int X_func_001E71FC(...) asm("func_001E71FC"); // 4120decl
+extern "C" int X_func_001F8FC0(...) asm("func_001F8FC0"); // 4120decl
+extern int D_007A3D80; // 4120decl
+extern "C" void func_001E4120(int arg0)
+{
+    Iter4120 it;
+    Iter4120 last;
+    struct { unsigned int sp30; int sp34; int sp38; int sp3C; char pad40[4]; int sp44; char pad48[8]; int sp50; int sp54; int sp58; char pad5C[20]; } stack;
+    int temp_a4_2;
+    int temp_a5;
+    int temp_s0;
+    unsigned int temp_a1;
+    unsigned int temp_a1_2;
+    int temp_v0_3;
+    int temp_a4;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v1;
+    int temp_v1_2;
+    int temp_v1_3;
+
+    it = Iter4120(M2C_FIELD(arg0, int *, 0xB4));
+    last = Iter4120(arg0 + 0xB0);
+    {
+        while (it != last) {
+            temp_v0_2 = it.node + 0x10;
+            temp_a1 = M2C_FIELD(temp_v0_2, unsigned int *, 0x20);
+            temp_s0 = M2C_FIELD(temp_v0_2, int *, 0x24);
+            if (M2C_FIELD(temp_v0_2, int *, 0x28) & 1) {
+                if (X_func_001E5B60(arg0, temp_a1, temp_s0) != 0) {
+                    temp_a1_2 = M2C_FIELD(it.node, unsigned int *, 0x30);
+                    temp_a5 = temp_s0 * 0x28;
+                    stack.sp30 = temp_a1_2;
+                    Sub4120 *sub = (Sub4120 *)(arg0 + 0xD40);
+                    temp_a4 = (int)sub->arr + temp_a5;
+                    stack.sp3C = M2C_FIELD(temp_a4, int *, 0x18);
+                    stack.sp50 = M2C_FIELD(temp_a4, int *, 4);
+                    stack.sp44 = 0x1E;
+                    stack.sp54 = M2C_FIELD(temp_a4, int *, 8);
+                    stack.sp34 = 0;
+                    stack.sp38 = 0;
+                    M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + arg0), unsigned int *, 0x15B8) = (unsigned int) M2C_FIELD(it.node, unsigned int *, 0x30);
+                    M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + arg0), int *, 0x15BC) = (int) M2C_FIELD(((int)sub->arr + temp_a5), int *, 4);
+                    temp_a4_2 = M2C_FIELD(arg0, int *, 0x1684);
+                    M2C_FIELD(((temp_a4_2 * 0x24) + arg0), int *, 0x15C0) = (int) M2C_FIELD(((int)sub->arr + temp_a5), int *, 8);
+                    X_func_001E5660(arg0, temp_a1_2, 0x15, &stack.sp30);
+                }
+            } else if (X_func_001E6368(arg0, temp_a1, temp_s0) != 0) {
+                temp_v1_3 = M2C_FIELD(arg0, int *, 0xD40) + (temp_s0 * 0x28);
+                stack.sp30 = M2C_FIELD(it.node, unsigned int *, 0x30);
+                stack.sp3C = M2C_FIELD(temp_v1_3, int *, 0x18);
+                stack.sp50 = M2C_FIELD(temp_v1_3, int *, 4);
+                stack.sp44 = 0x3C;
+                stack.sp54 = M2C_FIELD(temp_v1_3, int *, 8);
+                stack.sp34 = 0;
+                stack.sp38 = 0;
+                stack.sp58 = 0;
+                temp_v0_3 = X___builtin_new(0xC0);
+                X_func_001F8FC0(temp_v0_3, 0, (int)&stack.sp30);
+                X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0_3, 0, 0, 1);
+            }
+            ++it;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E4120);
+#endif
 
 extern "C" void func_001E4354(void) {
 }
