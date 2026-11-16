@@ -752,7 +752,47 @@ extern "C" int func_001BEEEC(int self, int theA)
     return *(int *)(self + 0x38);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BEF24);
+extern "C" int func_001BEF24(char *arg0, int arg1, int arg2, int arg3, int arg4)
+{
+    unsigned char *buf = M2C_FIELD(arg0, unsigned char **, 0xC);
+    if (buf == 0) {
+        return 0;
+    }
+
+    int pitch = M2C_FIELD(arg0, int *, 0x10);
+    int x, y;
+    unsigned char *p;
+    if (M2C_FIELD(arg0, int *, 0x18) == 4) {
+        int c = M2C_FIELD(arg0, int *, 0x64) & 0xF;
+        unsigned char color = c | (c << 4);
+        unsigned char *row = buf + (arg1 >> 1) + ((pitch >> 1) * arg2);
+        int w = arg3 >> 1;
+        for (y = 0; y < arg4; y++) {
+            p = row + (M2C_FIELD(arg0, int *, 0x10) >> 1) * y;
+            if (w > 0) {
+                x = w;
+                do {
+                    --x;
+                    *p++ = color;
+                } while (x != 0);
+            }
+        }
+    } else {
+        unsigned char *row = buf + arg1 + (pitch * arg2);
+        for (y = 0; y < arg4; y++) {
+            p = row + M2C_FIELD(arg0, int *, 0x10) * y;
+            if (arg3 > 0) {
+                x = arg3;
+                do {
+                    --x;
+                    *p++ = (unsigned char)M2C_FIELD(arg0, int *, 0x64);
+                } while (x != 0);
+            }
+        }
+    }
+
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BF024);
 
