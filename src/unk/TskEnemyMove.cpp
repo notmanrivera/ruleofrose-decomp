@@ -1387,7 +1387,113 @@ extern "C" int func_00200BC4(int arg0)
     return r;
 }
 
+// NON_MATCHING: 243/256 differ, 47 relocs differ (size 0x400, game 0x44C), 125 edits
+#ifdef NON_MATCHING
+extern "C" float d18_atan(float, float) asm("func_0026CB00");
+extern "C" float d18_yaw(void *) asm("func_0010A650__8DogActor");
+extern "C" int d18_busy(void *) asm("func_0010A834__8DogActor");
+extern "C" int d18_motion(void *) asm("func_0010DB38__8DogActor");
+extern "C" void d18_play(void *, int, int, float, int, int) asm("func_0010B1B0__8DogActoriifii");
+extern "C" int d18_near(void *, void *, float) asm("func_00169A98");
+extern "C" void d18_turn(void *, float) asm("func_00202874");
+extern "C" int d18_check(void *, float *) asm("func_00201164");
+extern "C" void d18_move(void *, float *) asm("func_00201524");
+extern "C" int d18_test(void *, float *) asm("func_00202234");
+extern "C" unsigned int d18_next(void *, float *) asm("func_00201D58");
+extern "C" void d18_stop(void *) asm("func_00202638");
+extern "C" int d18_step(void *, float *) asm("func_00202138");
+extern const double d18_2FF338 asm("D_002FF338");
+extern const double d18_2FF340 asm("D_002FF340");
+extern const double d18_2FF348 asm("D_002FF348");
+extern const double d18_2FF350 asm("D_002FF350");
+extern const double d18_2FF358 asm("D_002FF358");
+extern const double d18_2FF360 asm("D_002FF360");
+extern const double d18_2FF368 asm("D_002FF368");
+extern const double d18_2FF370 asm("D_002FF370");
+extern const double d18_2FF378 asm("D_002FF378");
+static inline void d18_getyaw(void *actor, float *out) { *out = d18_yaw(actor); }
+static inline void d18_getatan(float *out, float x, float z) { *out = d18_atan(x, z); }
+extern "C" void func_00200D18(void *arg0, float *arg1) {
+    float yaw, facing;
+    switch (M2C_FIELD(arg0, unsigned int *, 0x2C)) {
+    case 0:
+        if (d18_check(arg0, arg1)) { d18_move(arg0, arg1); return; }
+        return;
+    case 1:
+        if (!d18_busy((char *)&D_006FE6A0 + M2C_FIELD(arg0, int *, 0xC) * 0x4D0)) {
+            if (!d18_test(arg0, arg1)) M2C_FIELD(arg0, unsigned int *, 0x2C) = d18_next(arg0, arg1);
+        } else d18_stop(arg0);
+        break;
+    case 2: {
+        char *base = (char *)arg0 + 0x18;
+        char *point = base + M2C_FIELD(arg0, int *, 0xA7C) * 16;
+        d18_getatan(&yaw, M2C_FIELD(point, float *, 0x270) - D_006E97D8[0], M2C_FIELD(point, float *, 0x278) - D_006E97D8[2]);
+        d18_getyaw(M2C_FIELD(arg0, void **, 0x28), &facing);
+        float angle = yaw - facing;
+        int direction = M2C_FIELD(arg0, int *, 0xA80);
+        if ((double)angle < d18_2FF338) angle = (float)((double)angle + d18_2FF340);
+        if ((double)angle > d18_2FF348) angle = (float)((double)angle - d18_2FF350);
+        if (angle > 0.0f) {
+            if (direction == 0) goto turning;
+            goto reset;
+        }
+        if (direction != 0) {
+turning:
+            if (!d18_busy((char *)&D_006FE6A0 + M2C_FIELD(arg0, int *, 0xC) * 0x4D0)) d18_turn(arg0, angle);
+            float magnitude = angle;
+            if (magnitude < 0.0f) magnitude = -magnitude;
+            int index = M2C_FIELD(arg0, int *, 0xA7C);
+            if (index >= M2C_FIELD(arg0, int *, 0xA78) - 1) {
+                if (magnitude < M2C_FIELD(arg0, float *, 0xA84)) {
+                    int *flag = M2C_FIELD(arg0, int **, 0x30);
+                    if (d18_near(arg1, (char *)arg0 + 0x78, M2C_FIELD(arg0, float *, 0xA8C))) { *flag = 1; return; }
+                    *flag = 0;
+                    point = base + M2C_FIELD(arg0, int *, 0xA7C) * 16;
+                    goto advance;
+                }
+            } else if ((double)magnitude < d18_2FF358) {
+                point = base + index * 16;
+advance:
+                d18_getatan(&yaw, M2C_FIELD(point, float *, 0x270) - arg1[0], M2C_FIELD(point, float *, 0x278) - arg1[2]);
+                d18_getyaw(M2C_FIELD(arg0, void **, 0x28), &facing);
+                float diff = yaw - facing;
+                if ((double)diff < d18_2FF360) diff = (float)((double)diff + d18_2FF368);
+                if ((double)diff > d18_2FF370) diff = (float)((double)diff - d18_2FF378);
+                if (!d18_step(arg0, arg1)) M2C_FIELD(arg0, unsigned int *, 0x2C) = d18_next(arg0, arg1);
+            }
+        } else {
+reset:
+            M2C_FIELD(arg0, int *, 0xAA4) = 0;
+            M2C_FIELD(arg0, unsigned int *, 0x2C) = 0;
+            return;
+        }
+        break;
+    }
+    case 3:
+        if (!d18_motion(M2C_FIELD(arg0, void **, 0x28))) {
+            if (M2C_FIELD(arg0, int *, 0x68)) { M2C_FIELD(arg0, unsigned int *, 0x2C) = 4; return; }
+            M2C_FIELD(arg0, unsigned int *, 0x2C) = 0;
+            return;
+        }
+        break;
+    case 4:
+        if (!d18_busy((char *)&D_006FE6A0 + M2C_FIELD(arg0, int *, 0xC) * 0x4D0)) {
+            int motion = 7;
+            if (!M2C_FIELD(arg0, int *, 0x74)) motion = M2C_FIELD(arg0, int *, 0x64);
+            d18_play(M2C_FIELD(arg0, void **, 0x28), motion, 0x41, M2C_FIELD(arg0, float *, 0x4C), -1, -1);
+            M2C_FIELD(arg0, int *, 0x5C) = motion;
+            M2C_FIELD(arg0, int *, 0x60) = 0x41;
+            M2C_FIELD(arg0, unsigned int *, 0x2C) = 3;
+            M2C_FIELD(arg0, int *, 0x68) = 0;
+            return;
+        }
+        d18_stop(arg0);
+        break;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00200D18);
+#endif
 
 // NON_MATCHING: 207/231 differ, 41 relocs differ (size 0x39C, game 0x3C0), 124 edits
 #ifdef NON_MATCHING
