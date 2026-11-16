@@ -3218,7 +3218,175 @@ extern "C" void func_001E5DE4(int arg0, int arg1, int arg2, int arg3, int arg4, 
     }
 }
 
+// NON_MATCHING: 248/328 differ, 20 relocs differ (size 0x520, game 0x510), 109 edits
+#ifdef NON_MATCHING
+extern "C" int F5E58_func_00180CA8(int, int) asm("func_00180CA8");
+extern "C" void F5E58_func_00180EA8(int, int) asm("func_00180EA8");
+extern "C" void F5E58_func_00180CE0(int, int, int, int, int, float) asm("func_00180CE0");
+extern "C" void F5E58_func_00180EEC(int, int, unsigned int *) asm("func_00180EEC");
+extern "C" int F5E58_func_001E7D7C(int, int) asm("func_001E7D7C");
+extern "C" void F5E58_func_001E7724(int, int) asm("func_001E7724");
+extern "C" int F5E58___builtin_new(unsigned int) asm("__builtin_new");
+extern "C" void F5E58_func_001F8FC0(int, int, unsigned int *) asm("func_001F8FC0");
+extern "C" int F5E58_func_001E71FC(int, int, int, int, int, int, int, int *, int) asm("func_001E71FC");
+extern "C" int func_001E5E58(int arg0, unsigned int arg1, int arg2, unsigned int *arg3) {
+    unsigned int *sp10;
+    int *temp_v1_4;
+    int *var_s0;
+    int *var_s1;
+    int temp_a1;
+    int temp_a1_2;
+    int temp_a1_3;
+    int temp_a1_4;
+    int temp_a1_5;
+    int temp_s0;
+    int temp_s5;
+    int temp_v0;
+    int temp_v1_3;
+    int var_s3;
+    int var_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+    int temp_v1;
+    int temp_v1_2;
+    int temp_v1_5;
+
+    sp10 = 0;
+    var_s3 = 0;
+loop_1:
+    var_s1 = (int *)(arg0 + 0xD40);
+    temp_s5 = var_s3 * 0x28;
+    temp_v1 = *var_s1 + temp_s5;
+    if (M2C_FIELD(temp_v1, int *, 0) & 1) goto block_31;
+    if ((temp_v0 = M2C_FIELD(temp_v1, int *, 0xC), (temp_v0 != 0)) && (temp_v0 == arg1)) {
+        if (F5E58_func_00180CA8((int)&X_5428_D_007B2580, M2C_FIELD(temp_v1, int *, 0x18)) == -1) {
+            M2C_FIELD((*var_s1 + temp_s5), int *, 0xC) = 0;
+            goto block_31;
+        }
+        switch (arg2) {
+        case 22:
+            return 1;
+        case 1:
+        case 8:
+            temp_s0 = var_s3 * 0x28;
+            temp_v1_2 = *var_s1 + temp_s0;
+            if (!(M2C_FIELD(temp_v1_2, int *, 0) & 0x80)) {
+                F5E58_func_00180EA8((int)&X_5428_D_007B2580, M2C_FIELD(temp_v1_2, int *, 0x18));
+                M2C_FIELD((*var_s1 + temp_s0), int *, 0xC) = 0;
+                M2C_FIELD((*var_s1 + temp_s0), int *, 0x18) = -1;
+                M2C_FIELD((*var_s1 + temp_s0), int *, 4) = 0;
+                M2C_FIELD((*var_s1 + temp_s0), int *, 8) = 0;
+                if (arg2 == 1) {
+                    goto block_33;
+                }
+            }
+            goto block_31;
+        case 2:
+        case 9:
+            temp_a1 = var_s3 * 0x28;
+            M2C_FIELD((*var_s1 + temp_a1), int *, 4) = (int) M2C_FIELD(arg3, int *, 0);
+            M2C_FIELD((*var_s1 + temp_a1), float *, 8) = (int) M2C_FIELD(arg3, int *, 4);
+            F5E58_func_00180CE0((int)&X_5428_D_007B2580, M2C_FIELD((*var_s1 + temp_a1), int *, 0x18), M2C_FIELD(arg3, int *, 0), M2C_FIELD(arg3, int *, 4), 0, -1024.0f);
+            var_s3 += 1;
+            if (arg2 == 2) {
+                goto block_33;
+            }
+            goto block_32;
+        case 3:
+        case 10:
+            F5E58_func_00180CE0((int)&X_5428_D_007B2580, M2C_FIELD((*var_s1 + (var_s3 * 0x28)), int *, 0x18), -1024, -1024, 0, M2C_FIELD(arg3, int *, 0));
+            var_s3 += 1;
+            if (arg2 == 3) {
+                goto block_33;
+            }
+            goto block_32;
+        case 5:
+        case 11:
+            temp_a1_2 = var_s3 * 0x28;
+            M2C_FIELD((*var_s1 + temp_a1_2), float *, 8) = (int) M2C_FIELD(arg3, int *, 4);
+            sp10 = arg3;
+            M2C_FIELD((*var_s1 + temp_a1_2), int *, 4) = (int) M2C_FIELD(arg3, int *, 0);
+            F5E58_func_00180CE0((int)&X_5428_D_007B2580, M2C_FIELD((*var_s1 + temp_a1_2), int *, 0x18), M2C_FIELD(arg3, int *, 0), M2C_FIELD(arg3, int *, 4), M2C_FIELD(arg3, int *, 0x10), M2C_FIELD(arg3, float *, 8));
+            var_s3 += 1;
+            if (arg2 == 5) {
+                goto block_33;
+            }
+            goto block_32;
+        case 6:
+        case 12:
+            F5E58_func_00180CE0((int)&X_5428_D_007B2580, M2C_FIELD((*var_s1 + (var_s3 * 0x28)), int *, 0x18), -1024, -1024, M2C_FIELD(sp10, int *, 0x10), -1024.0f);
+            goto block_33;
+        case 19:
+            M2C_FIELD(arg3, unsigned int *, 0) = arg1;
+            temp_a1_3 = var_s3 * 0x28;
+            M2C_FIELD(arg3, int *, 0xC) = (int) M2C_FIELD((*var_s1 + temp_a1_3), int *, 0x18);
+            M2C_FIELD(arg3, int *, 0x20) = (int) M2C_FIELD((*var_s1 + temp_a1_3), int *, 4);
+            M2C_FIELD(arg3, int *, 0x24) = (int) M2C_FIELD((*var_s1 + temp_a1_3), int *, 8);
+            if (F5E58_func_001E7D7C((int)&X_50C8_D_007A3D80, M2C_FIELD(arg0, int *, 0x1710)) != 0) {
+                F5E58_func_001E7724((int)&X_50C8_D_007A3D80, M2C_FIELD(arg0, int *, 0x1710));
+                M2C_FIELD(arg0, int *, 0x1710) = -1;
+            }
+            var_s0 = (int *)(arg0 + 0x1710);
+block_26:
+            temp_v0_2 = F5E58___builtin_new(0xC0);
+            F5E58_func_001F8FC0(temp_v0_2, 0, arg3);
+            F5E58_func_001E71FC((int)&X_50C8_D_007A3D80, 1, -1, 1, 0, temp_v0_2, 0, var_s0, 0x11);
+            return *var_s0;
+        case 21:
+            M2C_FIELD(arg3, unsigned int *, 0) = arg1;
+            temp_v1_3 = var_s3 * 0x28;
+            M2C_FIELD(arg3, int *, 0xC) = (int) M2C_FIELD((*var_s1 + temp_v1_3), int *, 0x18);
+            M2C_FIELD(arg3, int *, 0x20) = (int) M2C_FIELD((*var_s1 + temp_v1_3), int *, 4);
+            M2C_FIELD(arg3, int *, 0x24) = (int) M2C_FIELD((*var_s1 + temp_v1_3), int *, 8);
+            temp_v0_3 = F5E58___builtin_new(0xC0);
+            F5E58_func_001F8FC0(temp_v0_3, 0, arg3);
+            F5E58_func_001E71FC((int)&X_50C8_D_007A3D80, 1, -1, 1, 0, temp_v0_3, 0, 0, 1);
+            return M2C_FIELD(arg0, int *, 0x1710);
+        case 20:
+            M2C_FIELD(arg3, unsigned int *, 0) = arg1;
+            temp_a1_4 = var_s3 * 0x28;
+            M2C_FIELD(arg3, int *, 0xC) = (int) M2C_FIELD((*var_s1 + temp_a1_4), int *, 0x18);
+            M2C_FIELD(arg3, int *, 0x20) = (int) M2C_FIELD((*var_s1 + temp_a1_4), int *, 4);
+            M2C_FIELD(arg3, int *, 0x24) = (int) M2C_FIELD((*var_s1 + temp_a1_4), int *, 8);
+            if (F5E58_func_001E7D7C((int)&X_50C8_D_007A3D80, M2C_FIELD(arg0, int *, 0x1714)) != 0) {
+                F5E58_func_001E7724((int)&X_50C8_D_007A3D80, M2C_FIELD(arg0, int *, 0x1714));
+                M2C_FIELD(arg0, int *, 0x1714) = -1;
+            }
+            var_s0 = (int *)(arg0 + 0x1714);
+            goto block_26;
+        case 4:
+            temp_a1_5 = var_s3 * 0x28;
+            temp_v1_4 = (int *)(*var_s1 + temp_a1_5);
+            *temp_v1_4 |= 0x10;
+            F5E58_func_00180EEC((int)&X_5428_D_007B2580, M2C_FIELD((*var_s1 + temp_a1_5), int *, 0x18), arg3);
+            goto block_31;
+        case 33:
+            temp_v1_5 = *var_s1 + (var_s3 * 0x28);
+            var_v0 = 0;
+            if (M2C_FIELD(temp_v1_5, int *, 4) == M2C_FIELD(arg3, unsigned int *, 0)) {
+                var_v0 = 1;
+                if (M2C_FIELD(temp_v1_5, int *, 8) != M2C_FIELD(arg3, int *, 4)) {
+                    goto block_33;
+                }
+            }
+            /* Duplicate return node #34. Try simplifying control flow for better match */
+            return var_v0;
+        }
+    } else {
+block_31:
+        var_s3 += 1;
+block_32:
+        if (var_s3 >= 0x30) {
+block_33:
+            var_v0 = 0;
+            return var_v0;
+        }
+        goto loop_1;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5E58);
+#endif
 
 extern "C" int func_001E6368(Obj6368 *arg0, int arg1, int arg2)
 {
