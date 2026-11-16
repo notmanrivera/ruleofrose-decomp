@@ -839,7 +839,86 @@ extern "C" int EffBloodStay2__vfunc_02(Obj_Stay2 *arg0, Arg_Stay2 *arg1)
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay2__vfunc_02);
 #endif
 
+// NON_MATCHING: 106/196 differ, 5 relocs differ (size 0x310, game 0x314), 19 edits
+#ifdef NON_MATCHING
+struct ALIGNED(8) S205Vec { float x,y,z,w; };
+extern "C" void s205Sub(S205Vec *,S205Vec *,S205Vec *) asm("func_00237408");
+extern "C" float s205Len(S205Vec *) asm("func_0016FC20");
+extern "C" void s205Norm(S205Vec *,S205Vec *) asm("func_002375D8");
+extern "C" float s205Dot(S205Vec *,S205Vec *) asm("func_00237580");
+extern "C" double s205Cos(double) asm("cos");
+extern "C" void s205Add(void *,S205Vec *,S205Vec *,S205Vec *) asm("func_0016D3E4");
+extern "C" int EffBloodStay2__vfunc_05(char *obj) {
+    struct { S205Vec pos, vel, delta, dir; } stack;
+#define pos stack.pos
+#define vel stack.vel
+#define delta stack.delta
+#define dir stack.dir
+    int again;
+    if ((M2C_FIELD(obj,int *,8)=M2C_FIELD(obj,int *,12)) == -1) return 1;
+    {
+        float *p=M2C_FIELD(obj,float **,0x4B0);
+        float *v=M2C_FIELD(obj,float **,0x4B4);
+        vel.x=p[0]; vel.y=p[1]; vel.z=p[2]; vel.w=1.0f;
+        pos=vel;
+        delta.x=v[0]; delta.y=v[1]; delta.z=v[2]; delta.w=0.0f;
+        vel=delta;
+        do {
+            S205Vec *prev=(S205Vec *)(obj+0x4D0);
+            again=0;
+            s205Sub(&delta,&pos,prev);
+            float len=s205Len(&delta);
+            if (len>0.0f) s205Norm(&dir,&delta);
+            else dir=*(S205Vec *)(obj+0x4E0);
+            switch (M2C_FIELD(obj,int *,8)=M2C_FIELD(obj,int *,12)) {
+            case 0:
+                if (len>0.0f) {
+                    s205Add(obj,prev,&vel,&dir);
+                    again=1;
+                    M2C_FIELD(obj+M2C_FIELD(obj,int *,0x4C8)*4,float *,0x430)=0.0f;
+                    long long lo=*(long long *)&dir;
+                    long long hi=*((long long *)&dir+1);
+                    M2C_FIELD(obj,long long *,0x4E0)=lo;
+                    M2C_FIELD(obj,long long *,0x4E8)=hi;
+                    M2C_FIELD(obj,int *,12)=10;
+                    M2C_FIELD(obj,int *,0x4C8)++;
+                }
+                break;
+            case 10:
+                s205Add(obj,&pos,&vel,&dir);
+                char *entry=M2C_FIELD(obj,int *,0x4C8)*4+obj;
+                M2C_FIELD(entry,float *,0x430)=M2C_FIELD(entry,float *,0x42C)+len/(M2C_FIELD(obj,float *,0x4B8)*3.0f);
+                M2C_FIELD(obj,float *,0x4C0)=M2C_FIELD(obj,float *,0x4C4)+len;
+                if (M2C_FIELD(obj,float *,0x4BC)<=len) {
+                    again=1;
+                    M2C_FIELD(obj,int *,0x4C8)++;
+                    *(S205Vec *)(obj+0x4D0)=pos;
+                    *(S205Vec *)(obj+0x4E0)=dir;
+                    M2C_FIELD(obj,float *,0x4C4)=M2C_FIELD(obj,float *,0x4C0);
+                } else if ((double)s205Dot(&dir,(S205Vec *)(obj+0x4E0)) < s205Cos((double)(((90.0f-len*90.0f/M2C_FIELD(obj,float *,0x4BC))*3.14159265f)/180.0f))) {
+                    again=1;
+                    M2C_FIELD(obj,int *,0x4C8)++;
+                    *(S205Vec *)(obj+0x4D0)=pos;
+                    *(S205Vec *)(obj+0x4E0)=dir;
+                    M2C_FIELD(obj,float *,0x4C4)=M2C_FIELD(obj,float *,0x4C0);
+                }
+                if (M2C_FIELD(obj,int *,0x4C8)>=32) {
+                    M2C_FIELD(obj,int *,0x4C8)=31; again=0; M2C_FIELD(obj,int *,12)=-1;
+                }
+                break;
+            }
+        } while(again);
+    }
+    return 1;
+}
+
+#undef pos
+#undef vel
+#undef delta
+#undef dir
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay2__vfunc_05);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016D3E4);
 
