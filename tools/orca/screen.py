@@ -53,7 +53,8 @@ def wait(tail, now=None):
     text = "\n".join(tail[-40:])
     # "Resets 11:56 PM today" (OpenCode Go), "They reset at 6:43 p.m." (its free tier),
     # "try again at 6:05 PM" (Codex)
-    m = re.search(r"(?:[Rr]esets?|try again) (?:at )?(\d{1,2}):(\d{2}) ?([AaPp])\.?[Mm]", text)
+    # (a wrapped line puts a newline anywhere in it)
+    m = re.search(r"(?:[Rr]esets?|try\s+again)\s+(?:at\s+)?(\d{1,2}):(\d{2})\s*([AaPp])\.?[Mm]", text)
     if m:
         h = int(m.group(1)) % 12 + (12 if m.group(3).upper() == "P" else 0)
         at = now.replace(hour=h, minute=int(m.group(2)), second=0, microsecond=0)
