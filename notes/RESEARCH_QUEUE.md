@@ -17,17 +17,34 @@ judgement and go to Sonnet.
 
 ## Open
 
-- [ ] R15 R9's leads, not applied yet: (1) "mnu/mnuSelectLanguage.cpp"
-  (0x2FB330) is game/gamman's .rodata and is the __FILE__ of asserts at
-  0x1BDCB8, 0x1BDD64, 0x1BDDDC: a second file inside gamman's range (find
-  its text and .rodata bounds; gamman is partly decompiled, so its C++ must
-  move with it). (2) "task/naga_chunk.cpp" (0x2FEFF0) sits in
-  unk/TskCamera's .rodata and is used at 0x1FC4F0-0x1FCB14, so naga_chunk's
-  real text is at TskCamera's end and its row at 0x1F8F70 is wrong.
-  (3) 29 files whose .rodata starts with another class's type names
-  (build/workers/research-R9.md, table (a)); check each against the
-  previous file's code before moving. (4) unk/EventTestTask reads
-  D_00301AF8 (8 zero bytes before its .rodata start).
+- [ ] R16 Split game/gamman and unk/TskCamera (R15's findings, Sonnet,
+  2026-11-16; needs moving decompiled C++ between files, so a careful
+  session, not a worker):
+  - mnu/mnuSelectLanguage is text [0x1BDAE4, 0x1BE2CC), .rodata from
+    0x2FB1A0 ("location.tm2"; "mnusllg.rpk" ends 0x2FB398), .data from
+    0x2B89E0. Evidence: its asserts (0x1BDCB8...), MagLifeMenuSelLang calls
+    func_001BDC00/func_001BDE58 on self+0x40 (src/mag/maglifemenu.cpp:49-72),
+    all functions use one layout (+0x78C, +0x1078..0x1084). 14 of its 16
+    functions are decompiled in src/game/gamman.cpp (lines ~315-519).
+  - After it, 0x1BE2CC (FileReader, a date helper with the days table
+    0x2B8DA8; .rodata 0x2FB398, tags BIT/CDH/CDF/PRP) is another file;
+    game/gamman proper has .rodata from 0x2FB3C0 ("game/gamman.cpp" at
+    0x2FB3C8, first used by 0x1C0D70) and text from at most 0x1C0D44 (exact
+    start unsettled; no function in 0x1BE2CC-0x1C0D44 reads .rodata).
+    gamman.cpp has compiled switches, so its .rodata must start at a
+    multiple of 16: 0x2FB398 cannot be gamman's.
+  - Before it, 0x1B64C4-0x1BDAE4 is probably not gamman either (no
+    gamman.cpp assert before 0x1C0EF8; its data points into the previous
+    mnu file's .rodata, "mnuboard.rpk").
+  - task/naga_chunk is text [0x1FC47C, 0x1FCC20), .rodata 0x2FEFF0-0x2FF010
+    ("task/naga_chunk.cpp", "host:%s"); its row at 0x1F8F70 is PLScenePlay's
+    constructor + deleting destructor, which belong to unk/001F836C (whose
+    .rodata start 0x2FE888 must become a multiple of 16: it has 2 jump
+    tables). TskCamera's .rodata starts at 0x2FEA00 (0x2FE980-0x2FE9FF are
+    001F836C's type names), and the range is several files: TskSnd
+    (vtable 0x1F8FC4), TskAttack, TskDamage, TskCamera (~0x1FBBA4, .rodata
+    0x2FEF80).
+  - unk/WrdSrv's .rodata start (EffWater type names) stays unsettled.
 - [ ] R5 unk/HfmMain: the small file before it. 0x2EF238-0x2EF260
   ("18MagLifeWindowDebug", "8MagLife0") ends at HfmMain's first table;
   the MagLifeWindowDebug code (constructor func_00144214, wrappers
@@ -68,6 +85,9 @@ judgement and go to Sonnet.
   renderer"). Needs Sonnet (judgement) plus [web] for the parsers.
 ## Done
 
+- [x] R15 R9's leads (2026-11-16, Sonnet): applied 4cd12d3, the .rodata
+  starts of MagLifeBwnModeSit (0x2EBC60), MnuPBook (0x2F7D30) and
+  maglifepc2 (0x2EA208); the larger splits are R16.
 - [x] R14 Other i3d games (2026-11-15, Flash, web): only Rule of Rose and
   Ape Escape 3 are known; no symbols anywhere; Million Monkeys untested.
   Notes in notes/I3D.md.
