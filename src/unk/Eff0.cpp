@@ -421,7 +421,86 @@ extern "C" int func_0016B62C(int arg0)
     return Xiiii_memset(arg0 + 0x40, 0, 0x240);
 }
 
+// NON_MATCHING: 12/196 differ, 8 edits
+#ifdef NON_MATCHING
+struct Spray02Table { float angle[9][2]; };
+struct ALIGNED(8) Spray02Vec { float x,y,z,w; };
+extern Spray02Table spray02Angles asm("D_002F1FA0");
+extern "C" void spray02Identity(void *) asm("func_00237340");
+extern "C" void spray02RotateX(void *,void *,float) asm("func_00237818");
+extern "C" void spray02RotateZ(void *,void *,float) asm("func_00237848");
+extern "C" void spray02Transform(Spray02Vec *,void *,Spray02Vec *) asm("func_002373A8");
+extern "C" float fabsf(float);
+extern "C" int EffBloodSpray1__vfunc_02(int obj,int param)
+{
+    Spray02Table angles ALIGNED(16);
+    long long matrix[8];
+    Spray02Vec direction;
+    Spray02Vec temp;
+    int result=Xiii_Eff0__vfunc_02(obj,param);
+    if (result!=0) {
+        M2C_FIELD(obj,int *,0x24)=0;
+        float spread=M2C_FIELD(param,float *,0x28)*4.5f;
+        float speed=M2C_FIELD(param,float *,0x28);
+        float size=spread*0.5f;
+        float life=spread*3.0f;
+        angles=spray02Angles;
+        char *particle=(char *)(obj+0x40);
+        int count=8;
+        M2C_FIELD(obj,float *,0x30)=M2C_FIELD(param,float *,0x10);
+        M2C_FIELD(obj,float *,0x34)=M2C_FIELD(param,float *,0x14);
+        M2C_FIELD(obj,float *,0x38)=M2C_FIELD(param,float *,0x18);
+        M2C_FIELD(obj,float *,0x3C)=1.0f;
+        int index=(X_func_0016AD94()%9U)&0xFF;
+        do {
+            register int offset PS2_REG("$17")=index*8;
+            float y=M2C_FIELD(param,float *,0x20);
+            register float x PS2_REG("$f0")=M2C_FIELD(param,float *,0x1C);
+            register float z PS2_REG("$f2")=M2C_FIELD(param,float *,0x24);
+            temp.y=y;
+            count--;
+            temp.x=x; temp.z=z; temp.w=0;
+            long long lo=*(long long *)&temp;
+            long long hi=*((long long *)&temp+1);
+            *(long long *)&direction=lo;
+            *((long long *)&direction+1)=hi;
+            spray02Identity(matrix);
+            spray02RotateX(matrix,matrix,*(float *)((char *)&angles+offset));
+            spray02RotateZ(matrix,matrix,*(float *)((char *)&angles+offset+4));
+            spray02Transform(&direction,matrix,&direction);
+            M2C_FIELD(particle,short *,0x20)=0x7F00;
+            M2C_FIELD(particle,short *,0x22)=0;
+            M2C_FIELD(particle,short *,0x24)=(int)(speed*192.0f)+0x300;
+            register float decay PS2_REG("$f1")=0.8f;
+            speed*=1.25f;
+            long long dirLo=*(long long *)&direction;
+            long long dirHi=*((long long *)&direction+1);
+            *(long long *)particle=*(long long *)(obj+0x30);
+            long long originHi=*(long long *)(obj+0x38);
+            *(long long *)(particle+0x10)=dirLo;
+            M2C_FIELD(particle,float *,0x28)=life;
+            life*=decay;
+            register float height PS2_REG("$f0")=M2C_FIELD(particle,float *,0x14)*0.5f;
+            *(long long *)(particle+8)=originHi;
+            *(long long *)(particle+0x18)=dirHi;
+            register float gravity PS2_REG("$f1")=M2C_FIELD(param,float *,0x28)*0.01f;
+            M2C_FIELD(particle,float *,0x34)=size;
+            size*=1.1f;
+            M2C_FIELD(particle,float *,0x30)=spread;
+            height=fabsf(height);
+            gravity+=0.04f;
+            height+=0.5f;
+            M2C_FIELD(particle,float *,0x2C)=height*gravity;
+            index=(index+1)%9;
+            particle+=0x40;
+        } while(count>=0);
+        result=1;
+    }
+    return result;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodSpray1__vfunc_02);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodSpray1__vfunc_05);
 
