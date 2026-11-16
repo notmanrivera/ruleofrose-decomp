@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "utl/filereader.h"
 #include "bed/bedmemory.h"
+#include "bed/bedpfh.h"
+extern const char *D_002998D0[];
 extern BedMemory D_006E9800;
 extern const char *D_0029993C;
 extern const char D_002F7728[];
@@ -293,7 +295,23 @@ extern "C" int func_00187A28(int arg0)
 
 INCLUDE_RODATA("asm/nonmatchings/mcd/mcdman", D_002F7728);
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00187B10);
+extern "C" int func_00187B10(int arg0, int arg1)
+{
+    BedPfh pfh;
+    if (M2C_FIELD(arg0, void **, 0x6E0) == 0) {
+        func_00187A28(arg0);
+    }
+    pfh.setTop(M2C_FIELD(arg0, void **, 0x6E0));
+    int idx = pfh.getIndex(D_002998D0[arg1]);
+    if (idx >= 0) {
+        int off = (arg1 * 4) + 0x6D0;
+        char *p1 = (char *)arg0 + 0xC;
+        *(void **)(p1 + off) = pfh.getFileTop(idx);
+        char *p2 = (char *)arg0 + 8;
+        *(int *)(p2 + off) = pfh.getFileSize(idx);
+    }
+    return 0;
+}
 
 extern "C" void func_00187C30()
 {
