@@ -1489,7 +1489,108 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDE50);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDE58);
 
+// NON_MATCHING: 101/213 differ, 8 relocs differ (size 0x354, game 0x370), 48 edits
+#ifdef NON_MATCHING
+extern "C" void sectaCreateEd998(int, int, int, int, int, int, int, float, float) asm("func_001EC940");
+extern "C" void moveCreateEd998(int, int, int, int, int, float, float) asm("func_001E9A3C");
+extern "C" int randEd998() asm("rand");
+extern "C" int sectaFindEd998(int, int, int) asm("func_001D7B08");
+extern "C" int sectaGetEd998(int) asm("func_001F6878");
+extern "C" void func_001ED998(int arg0, int arg1, int arg2, int arg3, int a4, int a5, float fparg0, float fparg1) {
+    register int arg4 PS2_REG("$18") = a4;
+    register int arg5 PS2_REG("$17") = a5;
+    int temp_s0;
+    int var_a3;
+    int temp_s4;
+    int temp_s6;
+    int temp_v0_2;
+    int var_a2;
+    int var_a2_2;
+    int temp_v0;
+    int temp_v0_3;
+    int var_a0;
+    int var_a0_2;
+    register int var_s0 PS2_REG("$16");
+    int var_s0_2;
+
+    temp_s6 = arg2 < 6;
+    M2C_FIELD(arg0, int *, 8) = arg1;
+    temp_s4 = temp_s6 == 0;
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$12TskMoveSecta;
+    temp_v0 = X_func_001D2B8C_f1670((int)&D_007812C0, arg1);
+    M2C_FIELD(arg0, int *, 4) = temp_v0;
+    M2C_FIELD(arg0, int *, 0x3C) = arg3;
+    M2C_FIELD(arg0, int *, 0x14) = (int) M2C_FIELD(temp_v0, int *, 0x108);
+    M2C_FIELD(arg0, float *, 0x2C) = fparg0;
+    M2C_FIELD(arg0, int *, 0x18) = arg4;
+    M2C_FIELD(arg0, int *, 0x40) = arg5;
+    M2C_FIELD(arg0, float *, 0x44) = fparg1;
+    M2C_FIELD(arg0, int *, 0x10) = (int ) (temp_v0 + 0x3E0);
+    M2C_FIELD(arg0, int *, 0x38) = arg3;
+    M2C_FIELD(arg0, int *, 0x30) = arg2;
+    M2C_FIELD(arg0, int *, 0xC) = 0;
+    switch (arg2) {
+    case 0:
+    case 1:
+    case 6:
+    case 7:
+        M2C_FIELD(arg0, int *, 0x1C) = (int ) M2C_FIELD(arg0, int *, 0x18);
+        var_s0 = X___builtin_new_f1670(0x2C0);
+        var_a2 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x18), int *, 0);
+        var_a0 = var_s0;
+        var_a3 = arg0 + 0xC;
+        sectaCreateEd998(var_a0, M2C_FIELD(arg0, int *, 8), var_a2, var_a3, M2C_FIELD(arg0, int *, 0x40), temp_s4, 0x20, M2C_FIELD(arg0, float *, 0x2C), M2C_FIELD(arg0, float *, 0x44));
+        X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, var_s0, 0, M2C_FIELD(arg0, int *, 0x10), 0x11);
+    default:
+        break;
+    case 2:
+    case 3:
+    case 8:
+    case 9:
+        M2C_FIELD(arg0, int *, 0x1C) = (int ) M2C_FIELD(arg0, int *, 0x18);
+        var_s0 = X___builtin_new_f1670(0x2C0);
+        var_a0 = var_s0;
+        var_a2 = *(int *)(((randEd998() % M2C_FIELD(arg0, int *, 0x38)) * 4) + M2C_FIELD(arg0, int *, 0x18));
+        var_a3 = arg0 + 0xC;
+        sectaCreateEd998(var_a0, M2C_FIELD(arg0, int *, 8), var_a2, var_a3, M2C_FIELD(arg0, int *, 0x40), temp_s4, 0x20, M2C_FIELD(arg0, float *, 0x2C), M2C_FIELD(arg0, float *, 0x44));
+        X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, var_s0, 0, M2C_FIELD(arg0, int *, 0x10), 0x11);
+        break;
+    case 4:
+    case 5:
+    case 10:
+    case 11:
+        temp_s0 = (int)&D_007812C0;
+        temp_v0_2 = sectaFindEd998(temp_s0, M2C_FIELD(arg0, int *, 0x18), sectaGetEd998(M2C_FIELD(arg0, int *, 8)));
+        if (temp_v0_2 != -1) {
+            if (sectaFindEd998(temp_s0, M2C_FIELD(arg0, int *, 8), sectaGetEd998(M2C_FIELD(arg0, int *, 8))) == temp_v0_2) {
+                if (temp_s6 != 0) {
+                    var_s0_2 = X___builtin_new_f1670(0xC0);
+                    moveCreateEd998(var_s0_2, M2C_FIELD(arg0, int *, 8), 3, M2C_FIELD(arg0, int *, 0x18), 0, 1.0f, 0.016666667f);
+                } else {
+                    var_s0_2 = X___builtin_new_f1670(0xC0);
+                    moveCreateEd998(var_s0_2, M2C_FIELD(arg0, int *, 8), 11, M2C_FIELD(arg0, int *, 0x18), 0, 1.0f, 0.016666667f);
+                }
+                X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, var_s0_2, 0, M2C_FIELD(arg0, int *, 0x10), 0x11);
+            } else {
+                temp_v0_3 = X___builtin_new_f1670(0x2C0);
+                sectaCreateEd998(temp_v0_3, M2C_FIELD(arg0, int *, 8), temp_v0_2, arg0 + 0xC, M2C_FIELD(arg0, int *, 0x40), temp_s4, 0x20, M2C_FIELD(arg0, float *, 0x2C), M2C_FIELD(arg0, float *, 0x44));
+                X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0_3, 0, M2C_FIELD(arg0, int *, 0x10), 0x11);
+            }
+        } else {
+            M2C_FIELD(arg0, int *, 0xC) = (int) (M2C_FIELD(arg0, int *, 0xC) | 4);
+        }
+        if ((arg2 == 5) || (arg2 == 0xB)) {
+            if (M2C_FIELD(arg0, int *, 0x38) < 0xA) {
+                M2C_FIELD(arg0, int *, 0x38) = 0xA;
+            }
+            M2C_FIELD(arg0, int *, 0xC) = (int) (M2C_FIELD(arg0, int *, 0xC) | 8);
+        }
+        break;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001ED998);
+#endif
 
 extern "C" void TskMoveSecta__vfunc_06(int arg0, int arg1)
 {
