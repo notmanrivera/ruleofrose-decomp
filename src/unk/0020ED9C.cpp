@@ -1,4 +1,9 @@
 #include "include_asm.h"
+struct Block780_47E0;
+struct State12A5C { int data[28]; Block780_47E0 *buffer; int rest[3]; } ALIGNED(8);
+extern State12A5C F12A5C_state asm("D_007B4700");
+extern int F12A5C_mode asm("D_007B4DC0");
+extern "C" void F12A5C_run(int, unsigned int, int, int, int, int) asm("func_00211830");
 extern "C" int F11BE4_check(int, unsigned int, int, unsigned int) asm("func_00213D00");
 #ifdef NON_MATCHING
 
@@ -1883,7 +1888,30 @@ extern "C" void func_002129B8(int arg0, int arg1, int arg2, int arg3)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00212A5C);
+extern "C" void func_00212A5C(Obj2127F4 *self, unsigned int arg1, int arg2, int arg3)
+{
+    List2127F4::iterator it;
+    List2127F4::iterator end;
+    struct {
+        State12A5C state;
+        Block780_47E0 buffer;
+        char unused[0x1680];
+    } backup;
+    it = self->m_list.begin();
+    end = self->m_list.end();
+    for (; it != end; ++it) {
+        if ((*it).a == arg1) {
+            D_007B4DB0 = D_007B4780;
+            F12A5C_mode = 2;
+            backup.state = F12A5C_state;
+            backup.buffer = *F12A5C_state.buffer;
+            F12A5C_run((int)self, arg1, (*it).b, arg2, 2, arg3);
+            F12A5C_state = backup.state;
+            *F12A5C_state.buffer = backup.buffer;
+            return;
+        }
+    }
+}
 
 extern "C" void func_00212D08(int arg0, int arg1, int arg2)
 {
