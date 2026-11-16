@@ -689,7 +689,146 @@ INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF8E8);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF8F0);
 
+// NON_MATCHING: 232/242 differ, 26 relocs differ (size 0x3C8, game 0x3D4), 123 edits
+#ifdef NON_MATCHING
+extern "C" int ClrAttackRandom(int,int) asm("func_0010423C");
+extern "C" int X_func_001506A0(...) asm("func_001506A0");
+extern "C" int X_func_001680A0(...) asm("func_001680A0");
+extern "C" void ClrAttackSound(int,int,int,int,int) asm("func_001E4EBC");
+extern "C" void ClrAttackCamera(int,void *) asm("func_001F9D90");
+extern "C" int func_0014FEBC(int arg0, int arg1)
+{
+    register int globals PS2_REG("$16") = (int)&D_007812C0;
+    register int self PS2_REG("$18") = arg0;
+    struct { int target; int pad4; int camera; char padC[12]; int motion; int frames; int mode; int flags; float distance; int pad2C; } stack;
+    int temp_a1;
+    int temp_a4;
+    int temp_a5;
+    int temp_a5_2;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v1;
+    register int var_s1 PS2_REG("$17");
+    unsigned int var_v1;
+
+    M2C_FIELD(self, int *, 0x194) = 0;
+    M2C_FIELD(self, int *, 0x190) = 0;
+    temp_v1 = M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x24C);
+    var_s1 = 0x5A;
+    if (temp_v1 < 2) {
+        var_s1 = 0x46;
+        if (temp_v1 == 0) {
+            if (arg1 != 0) {
+                goto block_10;
+            }
+            var_s1 = 0x28;
+            goto block_6;
+        }
+    }
+block_6:
+    if (ClrAttackRandom(0, 0x63) < var_s1) {
+    X_func_0016649C(M2C_FIELD(self, int *, 0xC), 0);
+    X_func_001D10D0(globals, M2C_FIELD(self, int *, 0), 0x400);
+    M2C_FIELD(self, int *, 0x184) = -1;
+    return 0xD;
+    }
+block_10:
+        temp_v0 = ClrAttackRandom(0, 0x63);
+        temp_a1 = M2C_FIELD(self, int *, 0x184);
+        var_s1 = 0x14;
+        if (temp_v0 >= 0x28) {
+            var_s1 = (temp_v0 >= 0x50) ? 0x13 : 0x12;
+        }
+        if (temp_a1 >= 0) {
+            var_s1 = ((temp_a1 ^ 0x14) != 0) ? 0x14 : var_s1;
+        }
+        if (M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x14) != 0) {
+            var_v1 = var_s1 - 3;
+            if (ClrAttackRandom(0, 0x63) < 0x50) {
+                temp_v0_2 = X_func_001506A0(self);
+                var_s1 = ((temp_v0_2 ^ 2) == 0) ? 4 : (((temp_v0_2 ^ 1) == 0) ? 3 : var_s1);
+                goto block_17;
+            }
+        } else {
+block_17:
+            var_v1 = var_s1 - 3;
+        }
+        M2C_FIELD(self, int *, 0x180) = var_s1;
+        switch (var_v1) {
+        case 15:
+            temp_a5 = M2C_FIELD(self, int *, 0x14);
+            stack.target = temp_a5;
+            stack.camera = 0x2F;
+            stack.motion = 0x12;
+            stack.frames = 0xF;
+            stack.mode = 1;
+            stack.flags = 5;
+            stack.distance = 25.0f;
+            ClrAttackCamera(M2C_FIELD(self,int *,0),&stack);
+            M2C_FIELD(self, int *, 0x178) = 0xA;
+            M2C_FIELD(self, int *, 4) = 2;
+            M2C_FIELD(self, int *, 0x17C) = 0x78;
+            X_func_0016649C(M2C_FIELD(self, int *, 0xC), 0);
+block_24:
+            X_func_001D10D0(globals, M2C_FIELD(self, int *, 0), 0x400);
+            break;
+        case 16:
+            temp_a5_2 = M2C_FIELD(self, int *, 0x14);
+            stack.target = temp_a5_2;
+            stack.camera = 0x30;
+            stack.motion = 0x13;
+            stack.frames = 0xF;
+            stack.mode = 1;
+            stack.flags = 5;
+            stack.distance = 25.0f;
+            ClrAttackCamera(M2C_FIELD(self,int *,0),&stack);
+            M2C_FIELD(self, int *, 0x178) = 0xA;
+            M2C_FIELD(self, int *, 4) = 2;
+            M2C_FIELD(self, int *, 0x17C) = 0x12C;
+            X_func_0016649C(M2C_FIELD(self, int *, 0xC), 0);
+            goto block_24;
+        case 17:
+            X_func_0016649C(M2C_FIELD(self, int *, 0xC), 1);
+            X_func_001D1410(globals, M2C_FIELD(self, int *, 0), 0x400);
+            temp_a4 = M2C_FIELD(self, int *, 0x14);
+            stack.target = temp_a4;
+            stack.camera = 0x2E;
+            stack.motion = 0x14;
+            stack.frames = 0xA;
+            stack.mode = 1;
+            stack.flags = 5;
+            stack.distance = 80.0f;
+            ClrAttackCamera(M2C_FIELD(self,int *,0),&stack);
+            ClrAttackSound(globals + 0x18E00, 0x1F0105AC, 0, 0, 0);
+            M2C_FIELD(self, int *, 0x178) = 0;
+            M2C_FIELD(self, int *, 4) = 1;
+            break;
+        case 1:
+            M2C_FIELD(self, int *, 0x198) = 0;
+            M2C_FIELD(self, int *, 4) = 5;
+            X_func_001680A0(self, var_s1, 0);
+            M2C_FIELD(self, float *, 0x188) = 0.09519977308809757f;
+            X_func_001D1410(globals, M2C_FIELD(self, int *, 0), 0x40);
+            X_func_001D10D0(globals, M2C_FIELD(self, int *, 0), 0x10000000);
+            goto block_24;
+        case 0:
+            M2C_FIELD(self, int *, 4) = 5;
+            M2C_FIELD(self, int *, 0x198) = 1;
+            X_func_001680A0(self, var_s1, 0);
+            M2C_FIELD(self, float *, 0x188) = -0.09519977308809757f;
+            X_func_001D1410(globals, M2C_FIELD(self, int *, 0), 0x40);
+            X_func_001D10D0(globals, M2C_FIELD(self, int *, 0), 0x10000000);
+            X_func_001D10D0(globals, M2C_FIELD(self, int *, 0), 0x400);
+            break;
+        }
+        X_func_0016649C(M2C_FIELD(self, int *, 0xC), 1);
+        X_func_001D1410(globals, M2C_FIELD(self, int *, 0), 0x400);
+        M2C_FIELD(self, int *, 0x184) = (int) M2C_FIELD(self, int *, 0x180);
+        return -1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014FEBC);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_00150290);
 
