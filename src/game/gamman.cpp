@@ -1,6 +1,7 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void func_001C5BF4(GamMan *, int) throw();
 extern "C" int Xiii_func_001D9F10(int, int) asm("func_001D9F10");
 extern "C" void Xiiii_setPlayer__9MagSystemii(int, int, int) asm("setPlayer__9MagSystemii");
 extern "C" int Xiiuhi_func_001C7210(int, unsigned int, unsigned char, int) asm("func_001C7210");
@@ -743,7 +744,42 @@ extern "C" void func_001C5D08(GamMan *arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C5E1C);
+extern "C" void func_001C5E1C(GamMan *arg0, int arg1)
+{
+    arg0->setSysFlg2(4);
+    X_func_001C6A40(arg0, 2);
+    do {
+        switch (arg1) {
+        case -2:
+        case -1:
+        case 0:
+        case 0x10005:
+        case 0x10006:
+        case 0x10007:
+            break;
+        case 0x10000:
+        case 0x10002:
+        case 0x10003:
+        case 0x10004:
+            func_001C5BF4(arg0, 1);
+            break;
+        case 0x10001:
+            func_001C5BF4(arg0, 2);
+            break;
+        case 0x1000A:
+            arg0->setSysFlg2(0x20);
+            func_001C5BF4(arg0, 1);
+            break;
+        case 0x10008:
+        case 0x10009:
+        default:
+            if (arg1 < 0x20000 || arg1 >= 0x400000) {
+                func_001C5BF4(arg0, 1);
+            }
+            break;
+        }
+    } while (0);
+}
 
 extern "C" void func_001C5F70(GamMan *arg0)
 {
