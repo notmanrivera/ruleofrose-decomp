@@ -682,7 +682,59 @@ extern "C" void updateZDepth__10EffBreath1(int arg0)
         arg0 + (M2C_FIELD(arg0, int *, 0x180) << 5) + 0x80);
 }
 
+// NON_MATCHING: 22/136 differ, 2 relocs differ (size 0x220, game 0x224), 4 edits
+#ifdef NON_MATCHING
+struct ALIGNED(8) E438Vec { float x,y,z,w; };
+struct E438Model {
+    char pad[0x94];
+    virtual void X__vfunc_00();
+    virtual void X__vfunc_01();
+    virtual void X__vfunc_02();
+    virtual void X__vfunc_03();
+    virtual void X__vfunc_04();
+    virtual void X__vfunc_05();
+    virtual int X__vfunc_06(int);
+}; // E438 model
+extern "C" void e438Matrix(void *, E438Model *, int) asm("func_002377D0");
+extern "C" void e438Transform(E438Vec *, void *, void *) asm("func_002373A8");
+extern "C" void e438Sub(E438Vec *, E438Vec *, E438Vec *) asm("func_00237408");
+extern "C" float e438Length(E438Vec *) asm("func_0016FC20");
+static inline double e438Abs(double x) { if (x < 0.0) x = 0.0 - x; return x; }
+extern "C" void func_0016E438(char *obj)
+{
+    E438Vec pos;
+    long long matrix[8];
+    int node = M2C_FIELD(obj,E438Model **,0x50)->X__vfunc_06(M2C_FIELD(obj,int *,0x54));
+    E438Model *model = M2C_FIELD(obj,E438Model **,0x50);
+    model->X__vfunc_01();
+    e438Matrix(matrix, model, node);
+    e438Transform(&pos, matrix, (void *)(obj + 0x60));
+    int index = M2C_FIELD(obj,int *,0x180);
+    register int previousOffset PS2_REG("$2") = (index << 5) + 0x80;
+    E438Vec *previous = (E438Vec *)(obj + previousOffset);
+    if (e438Abs((double)(pos.x - previous->x)) < 3.0) {
+        if (e438Abs((double)(pos.z - previous->z)) < 3.0) {
+            float y = previous->y;
+            if (e438Abs((double)(pos.y - y)) < 5.0) pos.y = y;
+        }
+    }
+    register int increment PS2_REG("$5") = index + 1;
+    int next = increment % 8;
+    register int offset PS2_REG("$16") = next * 32;
+    long long low = *(long long *)&pos;
+    long long high = *((long long *)&pos + 1);
+    register int target PS2_REG("$2") = (int)(offset + obj);
+    offset = (int)((unsigned int)offset + (unsigned int)obj);
+    long long *dest = (long long *)(target + 0x80);
+    dest[1] = high;
+    dest[0] = low;
+    e438Sub(&pos,&pos,(E438Vec *)(obj + M2C_FIELD(obj,int *,0x180) * 32 + 0x80));
+    M2C_FIELD(offset,float *,0x90) = e438Length(&pos);
+    M2C_FIELD(obj,int *,0x180) = next;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016E438);
+#endif
 
 extern "C" int func_0016E65C(Obj_E65C *arg0)
 {
