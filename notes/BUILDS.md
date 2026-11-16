@@ -48,3 +48,38 @@ of words that must become symbols (a possible tools/reloc_from_demo.py).
 
 See notes/I3D.md: 336 of our 464 i3d chunks are instruction-identical in
 its three builds.
+
+## Leads from the owner's outside research (2026-11-16)
+
+Unchecked unless marked. Source: the owner's report (ChatGPT search of
+Lost Releases, Hidden Palace, Retro Reversing, PCSX2 forums/wiki).
+
+- Rule of Rose promos: SCPS-15093 (Japanese promo, same serial as retail:
+  probably the retail ELF; **checked**: the retail ELF is above) and
+  SLES-54218 (European promo, same serial as the European retail). Hidden
+  Palace lists only the July 19 2006 prototype. A Japanese auction titled
+  "開発ロム 体験版" (development ROM / trial) is unverified.
+- **Sony libraries (sdk/, 0 %)**: Retro Reversing's "PS2 Demo Disks with
+  Debug Symbols" lists SDK 3.0.x builds with symbols: Rumble Roses PAL demo
+  (SCED-52170, SDK 3.0.1, .MAP file), Athens 2004 PAL demo (SCED-53122,
+  3.0.0, .MAP), Full Spectrum Warrior PAL demo (SCED-53160, 3.0.0, 19,690
+  symbols in .sndata), a Resident Evil 4 prototype (.mdebug). A .MAP of a
+  build with our SDK version would name the sdk/ functions and their
+  object files (= file boundaries). Our sdk/ names now come from SDK
+  signatures (sce-sdb); compare versions before trusting a .MAP.
+- **Sound (mw/sound, 0x237D00-0x24B490, ~78 KB; with mw/i3d ~204 KB)**:
+  RXSNDDRV.IRX ("Start RX - sound RPC server", "Installed sound driver
+  version 1.00", SE / ADPCM stream / PCM stream systems, loaded after
+  LIBSD.IRX) is also loaded by Arc the Lad: Twilight of the Spirits
+  (SCUS-97231) and Wild Arms 5 (SLUS-21615); Retro Reversing counts six
+  discs with it. Their ELFs may share the EE client library (rxSnd*,
+  rxmpeg): an instruction comparison like the i3d one would tell, and any
+  of them with symbols would name it.
+- Punchline / Shirogumi interview (PlayStation C.A.M.P., January 2006,
+  Shuji Ishikawa and Makoto Hanafusa): Punchline programmed, Shirogumi did
+  the graphics and cut scenes; **three simultaneous light sources**, the
+  rest painted into vertex colours and textures; motion capture for the
+  children and Brown. For the port: keep vertex colours, texture
+  modulation and the original render states, not only the dynamic lights.
+  Nothing explains the Mag/Dog prefixes.
+- Million Monkeys trial (PCPX-98041): **checked**, no i3d (notes/I3D.md).

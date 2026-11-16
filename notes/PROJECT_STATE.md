@@ -52,7 +52,7 @@ Orden en `.text` (según `notes/object_layout.txt`): `bed/` → `utl/` → `dog/
 - `task/`: todas las tareas heredan de `CmnITask`.
 - `mnu/`, `snd/`, `spr/`, `mcd/`, `msg/`, `sequence/`, `system/`, `debug/`.
 
-Sin middleware de terceros. Audio por driver IOP propio `RXSNDDRV.IRX`.
+Audio por el driver IOP `RXSNDDRV.IRX` con su librería cliente en el EE (`mw/sound`); no es exclusivo del juego: Arc the Lad: Twilight of the Spirits (SCUS-97231) y Wild Arms 5 (SLUS-21615), también de Sony, lo cargan (registros de PCSX2; investigación externa del 2026-11-16, ver `notes/BUILDS.md`). Fabricante y licencia sin identificar.
 
 ## Assets
 
