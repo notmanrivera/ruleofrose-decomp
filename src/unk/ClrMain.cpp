@@ -830,7 +830,120 @@ block_24:
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014FEBC);
 #endif
 
+// NON_MATCHING: 181/257 differ, 13 relocs differ (size 0x404, game 0x410), 86 edits
+#ifdef NON_MATCHING
+extern "C" void ClrEmitDamage(int,int,int,int,int,float) asm("func_0014E3D0");
+extern "C" void ClrEmitParticle(int,int) asm("func_00176CC8");
+extern "C" int ClrEmitFindNode(...) asm("func_0022B3D8");
+extern "C" int X_memset(...) asm("memset");
+extern "C" int ClrEmitAssert(...) asm("ror_assert");
+extern const char ClrEmitFile[] asm("D_002EF950");
+extern const char ClrEmitRoot[] asm("D_002EF960");
+extern const char ClrEmitParam[] asm("D_002EF970");
+extern const char D_002EF978[];
+extern int D_00298DD0;
+struct ClrEmitModel { char pad[148]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16(); virtual int call(int, int); };
+extern int ClrEmitPool asm("D_006FBD80");
+extern "C" void func_00150290(int arg0)
+{
+    struct { char pad0[32]; float sp20,sp24,sp28,sp2C,sp30,sp34,sp38,sp3C; char sp40[48]; float sp70,sp74,sp78,sp7C; int sp80; char pad84[4]; int sp88; char pad8C[4]; int sp90; int sp94; float sp98; float sp9C; float spA0; float spA4; float spA8; float spAC; float spB0; int spB4; char padB8[72]; int sp100; char pad104[4]; int sp108; char pad10C[4]; float sp110; float sp114; float sp118; float sp11C; float sp120; float sp124; float sp128; float sp12C; int sp130; char pad134[76]; } stack;
+    int temp_v0;
+    int temp_v1_2;
+    register float var_f21 PS2_REG("$f21");
+    register int temp_s2 PS2_REG("$18");
+    int temp_v0_2;
+    int temp_v0_5;
+    int temp_s0;
+    register int temp_s1 PS2_REG("$17");
+    int temp_v0_3;
+    int temp_v0_4;
+    int temp_v0_6;
+    int temp_v1;
+
+    temp_s2 = M2C_FIELD(M2C_FIELD(arg0, int *, 8), int *, 0x108);
+    if (temp_s2 >= 0) {
+        if ((*(int *)&D_00298DD0) >= 8) {
+            (*(int *)&D_00298DD0) = 0;
+        } else {
+            (*(int *)&D_00298DD0) += 1;
+        }
+        temp_v0 = (int) "p_eff";
+        temp_s1 = (temp_s2 * 0x4D0) + (int)&ClrEmitPool + 0x2920;
+        if (M2C_FIELD(temp_s1, int *, 0x11C) == 0) {
+            ClrEmitAssert((int) ClrEmitFile, 0x131, (int) ClrEmitRoot);
+        }
+        if (temp_v0 == 0) {
+            ClrEmitAssert((int) ClrEmitFile, 0x131, (int) ClrEmitParam);
+        }
+        temp_v0_2 = ClrEmitFindNode(M2C_FIELD(temp_s1, int *, 0x11C), temp_v0);
+        if (temp_v0_2 >= 0) {
+            ((ClrEmitModel *)(temp_s1))->call((int)&stack, temp_v0_2);
+            temp_v1 = arg0 + 8;
+            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0x30) = stack.sp30;
+            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0x34) = stack.sp34;
+            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0x38) = stack.sp38;
+            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0x3C) = stack.sp3C;
+            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0xD0) = stack.sp20;
+            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0xD4) = stack.sp24;
+            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0xD8) = stack.sp28;
+            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0xDC) = stack.sp2C;
+            X_memset((int)&stack.sp80, 0, 0x80);
+            temp_v0_4 = arg0 + ((*(int *)&D_00298DD0) * 0x10);
+            stack.sp80 = 0xA;
+            stack.sp90 = temp_v0_4 + 0x38;
+            stack.sp94 = temp_v0_4 + 0xD8;
+            stack.sp98 = 0.5f;
+            stack.spB0 = 1.0f;
+            stack.spB4 = 8;
+            stack.sp88 = 0;
+            stack.sp9C = 1.0f;
+            stack.spA0 = 1.0f;
+            stack.spA4 = 1.0f;
+            stack.spA8 = 1.0f;
+            stack.spAC = 1.0f;
+            if (((*(int *)&D_00298DD0) == 0) || ((*(int *)&D_00298DD0) == 4)) {
+                ClrEmitParticle((int)&ClrEmitPool + 0x837E0, (int)&stack.sp80);
+            }
+        }
+        if (((*(int *)&D_00298DD0) == 1) || ((*(int *)&D_00298DD0) == 4) || ((*(int *)&D_00298DD0) == 7)) {
+            temp_v1_2 = (int) D_002EF978;
+            temp_s0 = (temp_s2 * 0x4D0) + (int)&ClrEmitPool + 0x2920;
+            if (M2C_FIELD(temp_s0, int *, 0x11C) == 0) {
+                ClrEmitAssert((int) ClrEmitFile, 0x131, (int) ClrEmitRoot);
+            }
+            if (temp_v1_2 == 0) {
+                ClrEmitAssert((int) ClrEmitFile, 0x131, (int) ClrEmitParam);
+            }
+            temp_v0_5 = ClrEmitFindNode(M2C_FIELD(temp_s0, int *, 0x11C), temp_v1_2);
+            if (temp_v0_5 >= 0) {
+                register float oneZ PS2_REG("$f20") = 1.0f;
+                register float oneX PS2_REG("$f22") = 1.0f;
+                register float oneY PS2_REG("$f23") = 1.0f;
+                var_f21 = -3.0f;
+                ((ClrEmitModel *)(temp_s1))->call((int)&stack.sp40, temp_v0_5);
+                if ((stack.sp70 > -380.0f) && (stack.sp70 < -190.0f) && (stack.sp78 > -15.0f) && (stack.sp78 < 15.0f)) {
+                    var_f21 = -65.0f;
+                }
+                stack.sp130 = 0xC8;
+                stack.sp100 = 0xC;
+                stack.sp108 = 0xA;
+                stack.sp110 = stack.sp70;
+                stack.sp114 = var_f21;
+                stack.sp118 = stack.sp78;
+                stack.sp120 = oneX;
+                stack.sp124 = oneY;
+                stack.sp128 = oneZ;
+                stack.sp12C = 0.5f;
+                stack.sp11C = 100.0f;
+                ClrEmitParticle((int)&ClrEmitPool + 0x837E0, (int)&stack.sp100);
+                ClrEmitDamage(M2C_FIELD(arg0, int *, 0xC), (int)&stack.sp110, stack.sp108, stack.sp130, 0, 80.0f);
+            }
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_00150290);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_001506A0);
 
