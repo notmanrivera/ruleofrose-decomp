@@ -1,5 +1,8 @@
 #include "include_asm.h"
 #include "dog/doglightpool.h"
+extern "C" int X_func_0016AD94(...) asm("func_0016AD94");
+struct ALIGNED(8) Stay02Vec { float x,y,z,w; };
+extern "C" void stay02Matrix(int, Stay02Vec *) asm("func_0016FDA0");
 struct Obj_Stay1_v5 {
     unsigned short m_00;
     unsigned char pad02[0x06];
@@ -379,7 +382,69 @@ INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodSpray2__vfunc_08);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", updateZDepth__14EffBloodSpray2);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay1__vfunc_02);
+extern "C" int EffBloodStay1__vfunc_02(int in0, int in1)
+{
+    register int arg0 PS2_REG("$19") = in0;
+    register int arg1 PS2_REG("$16") = in1;
+    struct { Stay02Vec copy; Stay02Vec temp; } stack;
+    float temp_f4;
+    float temp_f5;
+    int temp_s0;
+    register int temp_s1 PS2_REG("$17");
+    int temp_v0;
+    int var_s4;
+    int var_v0;
+    register int temp_s2 PS2_REG("$18");
+
+    var_v0 = Xiii_Eff0__vfunc_02(arg0,arg1);
+    if (var_v0 != 0) {
+        unsigned short flags = M2C_FIELD(arg0,unsigned short *,0);
+        stack.temp.w = 0;
+        var_s4 = 0;
+        M2C_FIELD(arg0, unsigned short *, 0) = (unsigned short)(flags | 0x10);
+        float x = M2C_FIELD(arg1, float *, 0x1C);
+        float y = M2C_FIELD(arg1, float *, 0x20);
+        float z = M2C_FIELD(arg1, float *, 0x24);
+        stack.temp.x=x; stack.temp.y=y; stack.temp.z=z;
+        long long lo=*(long long *)&stack.temp;
+        long long hi=*((long long *)&stack.temp+1);
+        *(long long *)&stack.copy=lo;
+        *((long long *)&stack.copy+1)=hi;
+        stay02Matrix(arg0 + 0x70, &stack.copy);
+        temp_f5 = M2C_FIELD(arg1, float *, 0x10);
+        M2C_FIELD(arg0, float *, 0xA0) = temp_f5;
+        temp_f4 = M2C_FIELD(arg1, float *, 0x14);
+        M2C_FIELD(arg0, float *, 0xA4) = temp_f4;
+        register float dx PS2_REG("$f2") = M2C_FIELD(arg0,float *,0x90) * 0.5f;
+        register float dy PS2_REG("$f3") = M2C_FIELD(arg0,float *,0x94) * 0.5f;
+        register float dz PS2_REG("$f1") = M2C_FIELD(arg0,float *,0x98) * 0.5f;
+        float pz = M2C_FIELD(arg1,float *,0x18);
+        M2C_FIELD(arg0,float *,0xAC) = 1.0f;
+        M2C_FIELD(arg0,float *,0xA0) = temp_f5 + dx;
+        M2C_FIELD(arg0,float *,0xA4) = temp_f4 + dy;
+        M2C_FIELD(arg0,float *,0xA8) = pz + dz;
+        M2C_FIELD(arg0, float *, 0xB0) = (float) M2C_FIELD(arg1, float *, 0x28);
+        M2C_FIELD(arg0, int *, 0xB4) = 0;
+        M2C_FIELD(arg0, int *, 0xBC) = (int) M2C_FIELD(arg1, int *, 0x2C);
+        M2C_FIELD(arg0, float *, 0xB8) = 1.0f;
+        temp_v0 = (X_func_0016AD94() % 3U) + 2;
+        M2C_FIELD(arg0, int *, 0x64) = temp_v0;
+        if (temp_v0 != 0) {
+            do {
+                temp_s0 = var_s4 * 0x10;
+                temp_s1 = temp_s0 + 0x20;
+                temp_s2 = arg0 + 4;
+                var_s4 += 1;
+                *(float *)(temp_s2 + temp_s1) = M2C_FIELD(arg0, float *, 0xB0) * ((((float) X_func_0016AD94() / 255.0f) * 0.8f) - 0.4f);
+                M2C_FIELD((temp_s0 + temp_s2), float *, 0x24) = (float) (M2C_FIELD(arg0, float *, 0xB0) * ((((float) X_func_0016AD94() / 255.0f) * 0.8f) - 0.4f));
+                M2C_FIELD((arg0 + temp_s1), float *, 0xC) = (float) (((((float) X_func_0016AD94() * 360.0f) / 255.0f) * 3.14159265f) / 180.0f);
+            } while (var_s4 < M2C_FIELD(arg0, int *, 0x64));
+        }
+        var_v0 = 1;
+        M2C_FIELD(arg0, float *, 0x24) = M2C_FIELD(arg0, float *, 0x28) = 0.0f;
+    }
+    return var_v0;
+}
 
 extern "C" int EffBloodStay1__vfunc_05(Obj_Stay1_v5 *arg0)
 {
