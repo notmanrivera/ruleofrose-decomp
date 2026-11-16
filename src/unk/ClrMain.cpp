@@ -326,7 +326,62 @@ INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF9A0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF9A8);
 
+// NON_MATCHING: 125/127 differ, 24 relocs differ (size 0x1FC, game 0x218), 85 edits
+#ifdef NON_MATCHING
+struct ClrVec { float x,y,z; };
+extern "C" float Xfiiifff_func_001D4A3C(int, int, int, float, float, float) asm("func_001D4A3C");
+extern "C" int X_func_001CBE38(int, int) asm("func_001CBE38");
+extern "C" int X_func_0022B3D8(...) asm("func_0022B3D8");
+extern "C" int X_ror_assert(...) asm("ror_assert");
+extern "C" int Xiiif_func_00169B0C(int, int, float) asm("func_00169B0C");
+extern const char D_002EF950[];
+extern const char D_002EF960[];
+extern const char D_002EF970[];
+extern int D_006FBD80;
+struct m2c_v94_88_iii { char pad[148]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16(); virtual int call(int, int); };
+extern "C" int func_00150804(int arg0, int arg1)
+{
+    struct { char pad0[16]; float sp10; float sp14; float sp18; char pad1C[4]; char sp20[48]; float sp50; float sp54; float sp58; float sp5C; } stack;
+    int temp_v0;
+    int var_s1;
+    float temp_f20;
+    int temp_s0;
+    int temp_s0_2;
+    int temp_v1;
+    int temp_v1_2;
+
+    temp_v0 = (int) "Bip01 Spine1";
+    temp_s0 = ((X_func_001CBE38((int)&D_007812C0, 0) * 0x4D0) + ((int)&D_006FBD80)) + 0x2920;
+    if (M2C_FIELD(temp_s0, int *, 0x11C) == 0) {
+        X_ror_assert((int) D_002EF950, 0x131, (int) D_002EF960);
+    }
+    if (temp_v0 == 0) {
+        X_ror_assert((int) D_002EF950, 0x131, (int) D_002EF970);
+    }
+    ((m2c_v94_88_iii *)(temp_s0))->call((int)&stack.sp20, X_func_0022B3D8(M2C_FIELD(temp_s0, int *, 0x11C), temp_v0));
+    temp_f20 = Xfiiifff_func_001D4A3C((int)&D_007812C0, arg1, 0, stack.sp50, stack.sp54, stack.sp58) + 32.0f;
+    if (M2C_FIELD(arg0, int *, 0x198) != 0) {
+        var_s1 = (int) "nodel_p_arm_r";
+    } else {
+        var_s1 = (int) "nodel_p_arm_l";
+    }
+    temp_s0_2 = ((X_func_001CBE38((int)&D_007812C0, M2C_FIELD(arg0, int *, 0)) * 0x4D0) + ((int)&D_006FBD80)) + 0x2920;
+    if (M2C_FIELD(temp_s0_2, int *, 0x11C) == 0) {
+        X_ror_assert((int) D_002EF950, 0x131, (int) D_002EF960);
+    }
+    if (var_s1 == 0) {
+        X_ror_assert((int) D_002EF950, 0x131, (int) D_002EF970);
+    }
+    ((m2c_v94_88_iii *)(temp_s0_2))->call((int)&stack.sp20, X_func_0022B3D8(M2C_FIELD(temp_s0_2, int *, 0x11C), var_s1));
+    float *position = &stack.sp10;
+    position[0] = stack.sp50;
+    stack.sp14 = stack.sp54;
+    stack.sp18 = stack.sp58;
+    return Xiiif_func_00169B0C((int)&stack.sp10, (int)&stack, temp_f20) != 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_00150804);
+#endif
 
 extern "C" int func_00150A1C()
 {
