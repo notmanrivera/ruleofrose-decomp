@@ -81,25 +81,31 @@ else
   FILES="$(for c in $COMMITS; do git show --name-only --format= "$c"; done | sort -u | sed 's|^src/||; s|\.cpp$||')"
   echo "wt/$NAME: $(echo "$COMMITS" | wc -l | tr -d ' ') commits on: $(echo $FILES)"
 
-  FAIL=0
-  # Checked here, with this checkout's compile server, on each file as
-  # committed on wt/<name> (not the worker's disk, which may hold edits).
-  "$PY" tools/match.py --server start >/dev/null 2>&1 || true
-  for f in $FILES; do
-    src="build/merge-verify/$f.cpp"; mkdir -p "$(dirname "$src")"
-    git show "wt/$NAME:src/$f.cpp" > "$src"
-    if out="$("$PY" tools/match.py "$f" --src "$src" 2>&1)"; then
-      echo "  $f: $(echo "$out" | tail -1)"
-    else
-      FAIL=1; echo "  $f: MISMATCH"; echo "$out" | grep -vE ' (MATCH|asm)$' | tail -15
-    fi
-  done
-  [ "$FAIL" = 0 ] || { echo "not merged"; exit 1; }
-  [ "$CHECK" = "--check" ] && exit 0
+  # Checked with this checkout's compile server on each file as it will be
+  # merged: the commits cherry-picked onto this branch (which may have moved
+  # file boundaries since the worker started), not the worker's branch tip.
+  verify() {   # $1: git revision whose src/ is checked
+    FAIL=0
+    "$PY" tools/match.py --server start >/dev/null 2>&1 || true
+    for f in $FILES; do
+      src="build/merge-verify/$f.cpp"; mkdir -p "$(dirname "$src")"
+      git show "$1:src/$f.cpp" > "$src"
+      if out="$("$PY" tools/match.py "$f" --src "$src" 2>&1)"; then
+        echo "  $f: $(echo "$out" | tail -1)"
+      else
+        FAIL=1; echo "  $f: MISMATCH"; echo "$out" | grep -vE ' (MATCH|asm)$' | tail -15
+      fi
+    done
+  }
+  if [ "$CHECK" = "--check" ]; then
+    verify "wt/$NAME"; [ "$FAIL" = 0 ] || { echo "not merged"; exit 1; }; exit 0
+  fi
 
   BEFORE="$(git rev-parse HEAD)"; P0="$(progress)"
   # shellcheck disable=SC2086
   git cherry-pick $COMMITS >/dev/null || { git cherry-pick --abort; echo "cherry-pick failed; nothing merged"; exit 1; }
+  verify HEAD
+  [ "$FAIL" = 0 ] || { git reset -q --hard "$BEFORE"; echo "not merged"; exit 1; }
   # Still valid C++ for a PC (tools/host_check.py): no file may get worse
   # than its baseline in config/host_check.tsv.
   # shellcheck disable=SC2086
