@@ -2,6 +2,28 @@
 #include "utl/filereader.h"
 #include "bed/bedmemory.h"
 #include "bed/bedpfh.h"
+extern "C" int X7C4C_func_00187E44(int) asm("func_00187E44");
+extern "C" int X7C4C_func_001880CC(int) asm("func_001880CC");
+extern "C" int X7C4C_func_001881C0(int) asm("func_001881C0");
+extern "C" int X7C4C_func_001883C0(int) asm("func_001883C0");
+extern "C" int X7C4C_func_001885D4(int) asm("func_001885D4");
+extern "C" int X7C4C_func_0018894C(int) asm("func_0018894C");
+extern "C" int X7C4C_func_00188BFC(int) asm("func_00188BFC");
+extern "C" int X7C4C_func_00188CD4(int) asm("func_00188CD4");
+extern "C" int X7C4C_func_00188EC0(int) asm("func_00188EC0");
+extern "C" int X7C4C_func_00189068(int) asm("func_00189068");
+extern "C" int X7C4C_func_001892B0(int) asm("func_001892B0");
+extern "C" int X7C4C_func_001894D4(int) asm("func_001894D4");
+extern "C" int X7C4C_func_00189718(int) asm("func_00189718");
+extern "C" int X7C4C_func_0018993C(int) asm("func_0018993C");
+extern "C" int X7C4C_func_00189B7C(int) asm("func_00189B7C");
+extern "C" int X7C4C_func_00189D94(int) asm("func_00189D94");
+extern "C" int X7C4C_func_00189F58(int) asm("func_00189F58");
+extern "C" int X7C4C_func_0018A50C(int) asm("func_0018A50C");
+extern "C" int X7C4C_func_0018AD0C(int) asm("func_0018AD0C");
+extern "C" int X7C4C_func_0018ADE0(int) asm("func_0018ADE0");
+extern "C" int X7C4C_func_0018B12C(int) asm("func_0018B12C");
+extern "C" int X7C4C_func_0018B2BC(int) asm("func_0018B2BC");
 extern "C" int Xii_func_001885D4(int) asm("func_001885D4");
 extern "C" int Xii_func_001894D4(int) asm("func_001894D4");
 extern "C" int Xii_func_00189718(int) asm("func_00189718");
@@ -325,7 +347,145 @@ extern "C" void func_00187C30()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00187C4C);
+extern "C" void func_00187C4C(int arg0)
+{
+    switch (M2C_FIELD(arg0, int *, 0x5C)) {
+    case 0:
+        break;
+    case 1:
+        if (X7C4C_func_00187E44(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 2:
+        if (X7C4C_func_001880CC(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 3:
+        if (X7C4C_func_001881C0(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 4:
+        if (X7C4C_func_001883C0(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 5:
+        if (X7C4C_func_001885D4(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 6:
+        if (X7C4C_func_0018894C(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 7:
+        if (X7C4C_func_00188BFC(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 8:
+        if (X7C4C_func_00188CD4(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 9:
+        if (X7C4C_func_00188EC0(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 10:
+        if (X7C4C_func_00189068(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 11:
+        if (X7C4C_func_001892B0(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 12:
+        if (X7C4C_func_001894D4(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 13:
+        if (X7C4C_func_00189718(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 14:
+        if (X7C4C_func_0018993C(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 15:
+        if (X7C4C_func_00189B7C(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 16:
+        if (X7C4C_func_00189D94(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 17:
+        if (X7C4C_func_00189F58(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 18:
+        if (X7C4C_func_0018A50C(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 19:
+        if (X7C4C_func_0018AD0C(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 20:
+        if (X7C4C_func_0018ADE0(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 21:
+        if (X7C4C_func_0018B12C(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    case 22:
+        if (X7C4C_func_0018B2BC(arg0) == 1) {
+            M2C_FIELD(arg0, int *, 0x5C) = 0;
+            M2C_FIELD(arg0, int *, 0x60) = 0;
+        }
+        break;
+    }
+}
 
 extern "C" int func_00187E00(int arg0)
 {
