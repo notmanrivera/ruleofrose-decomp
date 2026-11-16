@@ -2199,7 +2199,132 @@ extern "C" int func_0018AD0C(int arg0)
     return ret;
 }
 
+// NON_MATCHING: 143/212 differ, 6 relocs differ (size 0x350, game 0x34C), 57 edits
+#ifdef NON_MATCHING
+extern "C" int func_0018ADE0(int arg0)
+{
+    int done = 0;
+    int r;
+    switch (M2C_FIELD(arg0, int *, 0x68)) {
+    case 0:
+        M2C_FIELD(arg0, int *, 0x64) = 1;
+        M2C_FIELD(arg0, int *, 0xC0) = 0;
+        M2C_FIELD(arg0, int *, 0x60) = 0;
+        M2C_FIELD(arg0, int *, 0x194) = 0;
+        if (M2C_FIELD(arg0, signed char *, 0x154)) {
+            int p = X_strstr(arg0 + 0x154, (int)D_002F7898);
+            M2C_FIELD(arg0, int *, 0x194) = p;
+            if (p) {
+                M2C_FIELD(arg0, int *, 0x194) = p + 5;
+                M2C_FIELD(p, char *, 5) = '1';
+            }
+        }
+        if (!M2C_FIELD(arg0, char *, 0x114)) M2C_FIELD(arg0, int *, 0x68) = 60;
+        else M2C_FIELD(arg0, int *, 0x68) = 10;
+        break;
+    case 10:
+        r = X_func_0018993C(arg0);
+        if (r == 1) {
+            if (M2C_FIELD(arg0, int *, 0x64) == 2) {
+                M2C_FIELD(arg0, int *, 0x68) = 60;
+                M2C_FIELD(arg0, int *, 0x64) = r;
+                M2C_FIELD(arg0, int *, 0x60) = 0;
+            } else if (M2C_FIELD(arg0, int *, 0x64) == 3) {
+                if (M2C_FIELD(arg0, int *, 0x58) == 12) {
+                    M2C_FIELD(arg0, int *, 0x64) = r;
+                    M2C_FIELD(arg0, int *, 0x68) = 60;
+                    M2C_FIELD(arg0, int *, 0x60) = 0;
+                } else done = 1;
+            }
+        }
+        break;
+    case 60: {
+        int name = arg0 + 0x154;
+        M2C_FIELD(arg0, int *, 0x68) = 70;
+        M2C_FIELD(arg0, int *, 0x64) = 1;
+        M2C_FIELD(arg0, int *, 0x60) = 0;
+        if (!name) M2C_FIELD(arg0, char *, 0x114) = 0;
+        else X_strcpy(arg0 + 0x114, name);
+        M2C_FIELD(arg0, int *, 0x9C) = 3;
+        break;
+    }
+    case 70:
+        r = X_func_001894D4(arg0);
+        if (r == 1) {
+            switch (M2C_FIELD(arg0, int *, 0x64)) {
+            case 2:
+                M2C_FIELD(arg0, int *, 0x68) = 80;
+                M2C_FIELD(arg0, int *, 0x64) = r;
+                M2C_FIELD(arg0, int *, 0x60) = 0;
+                break;
+            case 3:
+                done = 1;
+                if (M2C_FIELD(arg0, int *, 0x58) == 5 && M2C_FIELD(arg0, int *, 0xC0) == 0) {
+                    M2C_FIELD(arg0, int *, 0x60) = 0;
+                    M2C_FIELD(arg0, int *, 0x9C) = 0x203;
+                    M2C_FIELD(arg0, int *, 0x64) = 1;
+                    done = 0;
+                }
+                M2C_FIELD(arg0, int *, 0xC0)++;
+                break;
+            }
+        }
+        break;
+    case 80:
+        M2C_FIELD(arg0, int *, 0x68) = 90;
+    case 90:
+        r = X_func_00189F58(arg0);
+        if (r == 1) {
+            if (M2C_FIELD(arg0, int *, 0x64) == 2) {
+                M2C_FIELD(arg0, int *, 0x64) = r;
+                M2C_FIELD(arg0, int *, 0x68) = 100;
+                M2C_FIELD(arg0, int *, 0x60) = 0;
+            } else if (M2C_FIELD(arg0, int *, 0x64) == 3) done = 1;
+        }
+        break;
+    case 100:
+        r = X_func_001885D4(arg0);
+        if (r == 1) {
+            if (M2C_FIELD(arg0, int *, 0x64) == 2) {
+                M2C_FIELD(arg0, int *, 0x64) = r;
+                M2C_FIELD(arg0, int *, 0x68) = 101;
+                M2C_FIELD(arg0, int *, 0x60) = 0;
+            } else if (M2C_FIELD(arg0, int *, 0x64) == 3) done = 1;
+        }
+        break;
+    case 101:
+        if (M2C_FIELD(arg0, int *, 0x194)) {
+            M2C_FIELD(arg0, int *, 0x68) = 102;
+            X_strcpy(arg0 + 0x114, arg0 + 0x154);
+            *(char *)M2C_FIELD(arg0, int *, 0x194) = '0';
+        } else M2C_FIELD(arg0, int *, 0x68) = 110;
+        break;
+    case 102:
+        r = X_func_0018993C(arg0);
+        if (r == 1) {
+            if (M2C_FIELD(arg0, int *, 0x64) == 2) {
+                M2C_FIELD(arg0, int *, 0x64) = r;
+                M2C_FIELD(arg0, int *, 0x68) = 110;
+                M2C_FIELD(arg0, int *, 0x60) = 0;
+            } else if (M2C_FIELD(arg0, int *, 0x64) == 3) {
+                if (M2C_FIELD(arg0, int *, 0x58) == 12) {
+                    M2C_FIELD(arg0, int *, 0x64) = r;
+                    M2C_FIELD(arg0, int *, 0x68) = 110;
+                    M2C_FIELD(arg0, int *, 0x60) = 0;
+                } else done = 1;
+            }
+        }
+        break;
+    case 110:
+        done = 1;
+        M2C_FIELD(arg0, int *, 0x64) = 2;
+        break;
+    }
+    return done;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018ADE0);
+#endif
 
 extern "C" int func_0018B12C(int arg0)
 {
