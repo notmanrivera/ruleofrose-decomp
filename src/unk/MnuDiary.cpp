@@ -749,7 +749,74 @@ INCLUDE_RODATA("asm/nonmatchings/unk/MnuDiary", D_002F8228);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", MnuDiary__vfunc_05);
 
+// NON_MATCHING: 18/169 differ (size 0x2A4, game 0x2A8), 6 edits
+#ifdef NON_MATCHING
+inline int diaryPressed(unsigned int bits) { return (bits >> 13) & 1; }
+inline void diaryTick(unsigned int *counter) { *counter = (*counter + 1) % 300U; }
+extern "C" float Xfi_getLeftX__C6BedPad(int) asm("getLeftX__C6BedPad");
+extern "C" int Xiii_func_0017F8FC(int, int) asm("func_0017F8FC");
+extern "C" int Xiii_func_0019A054(int, int) asm("func_0019A054");
+extern "C" int Xiiii_func_00199B3C(int, int, int) asm("func_00199B3C");
+extern int D_007B2580;
+extern "C" int func_0019946C(int arg0, int arg1)
+{
+    int temp_v0;
+    int temp_v0_3;
+    int temp_v1;
+    unsigned int temp_a1;
+
+    if (M2C_FIELD(arg0, int *, 4) & 0x40000) {
+        Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 1, 0);
+        Xiiui_func_001351B0(M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x130), 0);
+    }
+    temp_v0 = M2C_FIELD(arg0, int *, 0x120);
+
+    if (temp_v0 > 0) {
+        temp_v0 -= 1;
+        M2C_FIELD(arg0, int *, 0x120) = temp_v0;
+        if (temp_v0 == 0) {
+            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & 0xFFE7FFFD);
+            Xiii_func_0019A3C0(arg0, M2C_FIELD(arg0, int *, 0x124));
+            if ((M2C_FIELD(arg0, int *, 0x124) + 1) >= M2C_FIELD(arg0, int *, 0x11C)) {
+                M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x40000);
+            }
+        }
+    }
+    Xii_func_001874AC(arg0 + 0x13C);
+    temp_v1 = M2C_FIELD(arg0, int *, 4);
+    if (!(temp_v1 & 2)) {
+        if (diaryPressed(M2C_FIELD(arg1, unsigned short *, 0x7A)) && (temp_v1 & 0x40000)) {
+            Xiiui_func_001351B0(M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x134), 1);
+            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 2);
+            return 0;
+        }
+        if (M2C_FIELD(arg0, int *, 0x120) == 0) {
+            if (((((unsigned short) M2C_FIELD(arg1, unsigned short *, 0x78) >> 5) & 1 & 0xFFFF) || (Xfi_getLeftX__C6BedPad((int) arg1) >= 0.75f)) && (Xiii_func_0019A054(arg0, 1) != 0)) {
+                temp_v0_3 = M2C_FIELD(arg0, int *, 0x124);
+                temp_a1 = temp_v0_3 + 3;
+                M2C_FIELD(arg0, int *, 0x124) = (int) (temp_v0_3 + 2);
+                Xiiii_func_00199B3C(arg0, ((int) (temp_a1 + (temp_a1 >> 0x1F)) >> 1) - 1, 1);
+                M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x100002);
+                Xiii_func_0017F8FC((int) (int)&D_007B2580, 8);
+                Xiii_func_0019A3C0(arg0, -1);
+            } else if (((((unsigned short) M2C_FIELD(arg1, unsigned short *, 0x78) >> 7) & 1 & 0xFFFF) || (Xfi_getLeftX__C6BedPad((int) arg1) <= -0.75f)) && (Xiii_func_0019A054(arg0, 0) != 0)) {
+                Xiiii_func_00199B3C(arg0, ((int) (M2C_FIELD(arg0, int *, 0x124) + 1) / 2) - 1, 0);
+                M2C_FIELD(arg0, int *, 0x124) = (int) (M2C_FIELD(arg0, int *, 0x124) - 2);
+                M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x80002);
+                Xiii_func_0017F8FC((int) (int)&D_007B2580, 8);
+                Xiii_func_0019A3C0(arg0, -1);
+            }
+        }
+
+    }
+    if (M2C_FIELD(arg0, int *, 4) & 2) {
+        M2C_FIELD(arg0, unsigned int *, 0x8B4) = (M2C_FIELD(arg0, unsigned int *, 0x8B4) + 1) % 300U;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019946C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00199714);
 
