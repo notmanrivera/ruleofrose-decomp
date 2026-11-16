@@ -30,14 +30,17 @@ Ape Escape 3 retail JP (SCPS_150.96) and the US demo (SCUS-97548,
 /APEESC3/APEESC3.ELF), Chulip. Not yet checked, candidates from the
 outside research: Ape Escape 3 Japanese kiosk demo **PCPX-96657**, the
 European review disc **SCES-53642 (Review)**, ChainDive retail
-**SCPS-15054**, its Japanese demo **PAPX-90232**, its demo on Official
-U.S. PlayStation Magazine **disc 79**, Saru! Get You! Million Monkeys demo
+its demo on Official U.S. PlayStation Magazine **disc 79** (the retail
+and the Japanese demo are checked, below), Saru! Get You! Million Monkeys demo
 **PCPX-98041** (i3d use unconfirmed). Ape Escape 3 retail keeps a debug
 menu and a `debug/` folder in DATA.BIN, but no symbols.
 
-ChainDive matters even without symbols: an older build of the library in a
-third game lets a three-way comparison separate the library's functions
-from each game's code.
+**Checked 2026-11-15, ChainDive** (owner's discs: retail SCPS_150.54 and the
+Japanese demo PAPX_902.32): both stripped (the `.mdebug.eabi64` section is
+empty, an ABI marker that Rule of Rose has too), and only the string
+`I3D_I3M`; 0.1 % of our i3d instruction 24-grams (SDK 53 %). So its 2003
+"i3d" shares the animation file format at most, not the code: no use for a
+three-way comparison. Ape Escape 3 (68 %) stays the reference.
 
 ## Formats (public tools, for R13 and the port)
 
