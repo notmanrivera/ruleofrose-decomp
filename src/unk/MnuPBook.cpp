@@ -230,7 +230,38 @@ extern "C" void func_00194280(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001942CC);
+extern "C" int func_001942CC(int arg0, int arg1, int arg2)
+{
+    char *p;
+    int i;
+    int cap;
+    int limit;
+
+    cap = *(int *)((char *)arg0 + 0xA0);
+    limit = arg2 + 1;
+    if (cap < limit) {
+        limit = cap;
+    }
+    for (; arg1 < limit; arg1++) {
+        if (*(int *)(int *)((arg1 << 4) + *(int *)((char *)arg0 + 0x9C)) != 0) {
+            continue;
+        }
+        i = 0;
+        p = *(char **)((char *)arg0 + 0x18);
+        for (; i < *(int *)((char *)arg0 + 0x20); i++) {
+            if ((*(int *)(p + 8) & 0xF) == 2) {
+                if (*(int *)(p + 0xC) == arg1) {
+                    break;
+                }
+            }
+            p += 0x30;
+        }
+        if (i == *(int *)((char *)arg0 + 0x20)) {
+            return arg1;
+        }
+    }
+    return -1;
+}
 
 extern "C" void func_00194370(int arg0, int arg1)
 {
