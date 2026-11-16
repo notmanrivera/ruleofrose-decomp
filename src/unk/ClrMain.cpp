@@ -560,7 +560,106 @@ extern "C" void ClrOutMove__vfunc_04()
 
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014F23C);
 
+// NON_MATCHING: 233/240 differ, 18 relocs differ (size 0x3C0, game 0x3CC), 49 edits
+#ifdef NON_MATCHING
+#define CMF(o,t) M2C_FIELD(arg0,t *,o)
+extern "C" void ClrRiseGetPos(int,int) asm("func_001D890C");
+extern "C" void ClrRiseSetPos(int,int) asm("func_001D89C4");
+extern "C" void ClrRiseEffect(int,int,int,int,int,float,float) asm("func_001F627C");
+extern "C" void ClrRiseSound(int,int,int,int,int) asm("func_001E4EBC");
+extern "C" int ClrRiseCheck(int,int) asm("func_001D19A8");
+extern "C" int ClrRiseNear(int,int,float) asm("func_001F5350");
+extern "C" void ClrRiseHit(int,int,int,int,int,int,int) asm("func_001FAC60");
+extern "C" void ClrRiseMode(int,int,int) asm("func_001680A0");
+extern int D_007A3354;
+struct ClrRiseGlobals { char pad[0x22090]; int player;
+ int playerID() { int id=0; if(player) id=*(int *)((char *)player+0x100); return id; }
+ void sound(int id) { ClrRiseSound((int)this+0x18E00,id,0,0,0); }
+};
+extern ClrRiseGlobals clrRiseGlobals asm("D_007812C0");
+extern "C" int func_0014F360(int arg0, int arg1)
+{
+    register int result PS2_REG("$19")=0;
+    int one=1;
+    if(arg1==one) CMF(0x9C,int)=0;
+    switch(CMF(0x9C,int)) {
+    case 0: {
+        CMF(0x90,int)=0;
+        CMF(0x9C,int)=one;
+        int actor=CMF(0xC,int);
+        switch(M2C_FIELD(actor,int *,0x264)) {
+        case 0: CMF(0x98,float)=0.0f; break;
+        case 1: CMF(0x98,float)=-52.6529855f; break;
+        case 2: CMF(0x98,float)=-97.345981f; break;
+        }
+        M2C_FIELD(actor,int *,0x268)=4;
+        ClrRiseGetPos(CMF(8,int),arg0+0x50);
+        CMF(0x94,float)=0.0f;
+        CMF(0xA0,int)=0;
+        CMF(0xA4,int)=0;
+        ClrRiseEffect(CMF(0xB0,int),2,-1,0,0,0.0166666667f,32769.0f);
+        break;
+    }
+    case 1: {
+        int pos=arg0+0x40;
+        ClrRiseGetPos(CMF(8,int),pos);
+        float time=CMF(0x94,float);
+        float velocity=time*0.8f;
+        CMF(0x94,float)=time+1.0f;
+        float squared=velocity*velocity;
+        CMF(0x44,float)=CMF(0x54,float)+squared+time+1.0f;
+        int interval=3;
+        if((int)CMF(0x94,float)%interval==0)
+            ClrRiseEffect(CMF(0xB0,int),2,-1,0,0,0.0166666667f,32769.0f);
+        interval=10;
+        if((int)CMF(0x94,float)%interval==0)
+            clrRiseGlobals.sound(0x1F010597);
+        float height=CMF(0x98,float);
+        if(height<=CMF(0x44,float)) {
+            CMF(0x44,float)=height;
+            ClrRiseMode(arg0,9,0);
+            CMF(0x9C,int)=2;
+            CMF(0x94,float)=0.0f;
+        }
+        ClrRiseSetPos(CMF(8,int),pos);
+        if(CMF(0xA0,int)==0) {
+            int player=clrRiseGlobals.playerID();
+            if(ClrRiseNear(CMF(0,int),player,60.0f)) {
+                ClrRiseHit(11,CMF(0,int),0,0,0x31,player,0);
+                CMF(0xA0,int)=1;
+                clrRiseGlobals.sound(0x1F0105AC);
+            }
+        }
+        if(CMF(0xA4,int)==0) {
+            int player=0;
+            if(D_007A3354) player=M2C_FIELD(D_007A3354,int *,0x100);
+            if(ClrRiseNear(CMF(0,int),player,60.0f)) {
+                ClrRiseHit(11,CMF(0,int),0,0,0x31,player,0);
+                CMF(0xA4,int)=1;
+            }
+        }
+        break;
+    }
+    case 2: {
+        int check=ClrRiseCheck((int)&D_007812C0,CMF(0,int));
+        if(check) {
+            M2C_FIELD(CMF(0xC,int),int *,0x2C)=one;
+            if(check) {
+                CMF(0xA0,int)=0;
+                CMF(0x9C,int)=9999;
+                result=1;
+                ClrRiseMode(arg0,1,0x100);
+            }
+        }
+        break;
+    }
+    case 9999: result=1; break;
+    }
+    return result;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014F360);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014F72C);
 
