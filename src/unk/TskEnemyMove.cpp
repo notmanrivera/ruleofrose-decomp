@@ -303,7 +303,97 @@ block_36:
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FD6BC);
 #endif
 
+// NON_MATCHING: 235/252 differ, 32 relocs differ (size 0x3F0, game 0x3FC), 31 edits
+#ifdef NON_MATCHING
+extern int sysD9BC asm("D_006E9840");
+extern int queueD9BC asm("D_007A3D80");
+extern const char nameD9BC[] asm("D_002FF0A0");
+extern const char fileD9BC[] asm("D_002FF0A8");
+extern const char rootD9BC[] asm("D_002FF0B8");
+extern const char ptrD9BC[] asm("D_002FF0C8");
+extern "C" void assertD9BC(const char *, int, const char *) asm("ror_assert");
+extern "C" float yawD9BC(void *) asm("func_0010A650__8DogActor");
+extern "C" float sqrtf( float );
+extern "C" void *memset(void *, int, unsigned int);
+struct MotionD9BC { float v[8]; };
+struct ModelD9BC { char pad[148]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16(); virtual void call(float *, int); };
+extern "C" int d9_idx(void *, int) asm("func_001CBE38");
+extern "C" void d9_attach(void *, int, int, int) asm("attachActor__9MagSystemiii");
+extern "C" void d9_rot(void *, int, float *) asm("func_001D06B8");
+extern "C" int d9_bone(int, const char *) asm("func_0022B3D8");
+extern "C" void d9_pos(void *, int, float *) asm("func_001CFBE4");
+extern "C" void d9_setrot(void *, int, float *) asm("func_001CFE78");
+extern "C" void d9_effect(void *, int, int, int, int, int, float) asm("func_001331F4");
+extern "C" void * d9_alloc(unsigned int) asm("__builtin_new");
+extern "C" void d9_ctor(void *, int, MotionD9BC *) asm("func_001EEAEC");
+extern "C" void d9_queue(void *, int, int, int, int, void *, int, int, int) asm("func_001E71FC");
+extern "C" void d9_state(int, int) asm("func_0016A8A4");
+extern "C" void d9_start(int, int, int, int, int, float, float) asm("func_001F5BDC");
+extern "C" int d9_done(void *, int) asm("func_001D19A8");
+extern "C" int func_001FD9BC(void *arg0) {
+    float rot[4], pos[4], matrix[16], offset[4];
+    MotionD9BC motion, temp;
+    int mode = M2C_FIELD(arg0, int *, 0x20);
+    char *actor = (char *)((M2C_FIELD(arg0, int *, 0x14) * 0x4D0) + (int)D_006FBD80 + 0x2920);
+    switch (mode) {
+    case 0: {
+        d9_state(M2C_FIELD(arg0, int *, 0x10), 11);
+        d9_start(M2C_FIELD(arg0, int *, 0x10), M2C_FIELD(arg0, int *, 0x24), -1, 0, 0, 0.016666667f, yawD9BC(actor));
+        int nextmode = M2C_FIELD(arg0, int *, 0x20) + 1;
+        M2C_FIELD(arg0, int *, 0x1C) = 0;
+        M2C_FIELD(arg0, int *, 0x20) = nextmode;
+        break;
+    }
+    case 1:
+        if (M2C_FIELD(arg0, int *, 0x1C) >= M2C_FIELD(arg0, int *, 0x44)) {
+            int index = d9_idx(&D_007812C0, M2C_FIELD(arg0, int *, 0x4C));
+            d9_attach(&sysD9BC, index, -1, 0);
+            d9_rot(&D_007812C0, M2C_FIELD(arg0, int *, 0x10), rot);
+            const char *name = nameD9BC;
+            char *model = (char *)((M2C_FIELD(arg0, int *, 0x14) * 0x4D0) + (int)D_006FBD80 + 0x2920);
+            if (!M2C_FIELD(model, int *, 0x11C)) assertD9BC(fileD9BC, 305, rootD9BC);
+            if (!name) assertD9BC(fileD9BC, 305, ptrD9BC);
+            int bone = d9_bone(M2C_FIELD(model, int *, 0x11C), name);
+            offset[0] = 0.0f; offset[1] = 0.0f; offset[2] = 0.0f;
+            ((ModelD9BC *)((char *)((M2C_FIELD(arg0, int *, 0x14) * 0x4D0) + (int)D_006FBD80 + 0x2920)))->call(matrix, bone);
+            pos[0] = matrix[12] + offset[0];
+            pos[1] = matrix[13] + offset[1];
+            pos[2] = matrix[14] + offset[2];
+            d9_rot(&D_007812C0, M2C_FIELD(arg0, int *, 0x10), rot);
+            d9_pos(&D_007812C0, M2C_FIELD(arg0, int *, 0x4C), pos);
+            float x = sinf(rot[1]) * M2C_FIELD(arg0, float *, 0x58);
+            float z = cosf(rot[1]) * M2C_FIELD(arg0, float *, 0x58);
+            float length = sqrtf(x * x + z * z);
+            memset(&temp, 0, 32);
+            temp.v[0] = x;
+            float y = length * cosf(M2C_FIELD(arg0, float *, 0x54));
+            temp.v[2] = z;
+            temp.v[4] = 1.0f;
+            temp.v[1] = y;
+            motion = temp;
+            d9_setrot(&D_007812C0, M2C_FIELD(arg0, int *, 0x4C), rot);
+            d9_effect(D_006FBD80, index, 1, 0, 0, 0, 0.016666695f);
+            void *task = d9_alloc(128);
+            d9_ctor(task, M2C_FIELD(arg0, int *, 0x4C), &motion);
+            d9_queue(&queueD9BC, 1, -1, 1, 0, task, 0, 0, mode);
+            M2C_FIELD(arg0, int *, 0x20) = 20;
+        }
+        break;
+    case 10:
+        if (M2C_FIELD(arg0, int *, 0x1C) == 30) return 1;
+        break;
+    case 20:
+        if (d9_done(&D_007812C0, M2C_FIELD(arg0, int *, 0x10))) return 1;
+        break;
+    case 999:
+        return 1;
+    }
+    M2C_FIELD(arg0, int *, 0x1C) = M2C_FIELD(arg0, int *, 0x1C) + 1;
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FD9BC);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF040);
 
