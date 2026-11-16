@@ -2070,7 +2070,86 @@ extern "C" int func_001EFAB0()
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EFAB8);
 
+// NON_MATCHING: 169/242 differ, 40 relocs differ (size 0x3C8, game 0x3D0), 89 edits
+#ifdef NON_MATCHING
+extern "C" float radiusEfeb8(int, unsigned int, int) asm("func_001D4A3C");
+extern "C" int spineEfeb8(unsigned int, float *, const char *) asm("func_001F5558");
+extern "C" void posEfeb8(int, unsigned int, float *) asm("func_001D05F4");
+extern "C" float yawEfeb8(float *, float, float) asm("func_002180E4");
+extern "C" int testEfeb8(int, float *) ASM_NOTHROW asm("func_001D8B5C");
+extern "C" float sinf(float);
+extern "C" float cosf(float);
+extern const char spineNameEfeb8[] asm("D_002FDFE0");
+extern const double c2FE0B8 asm("D_002FE0B8");
+extern const double c2FE0C0 asm("D_002FE0C0");
+extern const double c2FE0C8 asm("D_002FE0C8");
+extern const double c2FE0D0 asm("D_002FE0D0");
+extern const double c2FE0D8 asm("D_002FE0D8");
+extern const double c2FE0E0 asm("D_002FE0E0");
+extern const double c2FE0E8 asm("D_002FE0E8");
+extern const double c2FE0F0 asm("D_002FE0F0");
+extern const double c2FE0F8 asm("D_002FE0F8");
+extern const double c2FE100 asm("D_002FE100");
+extern const double c2FE108 asm("D_002FE108");
+extern "C" void func_001EFEB8(int arg0, unsigned int arg1, float *arg2, int arg3) {
+    float distance;
+    float point[4] ALIGNED(16);
+    M2C_FIELD(arg0, unsigned int *, 0x10) = arg1;
+    radiusEfeb8((int)&D_007812C0, arg1, 0);
+    radiusEfeb8((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0xC), 0);
+    if (!spineEfeb8(arg1, point, spineNameEfeb8)) posEfeb8((int)&D_007812C0, arg1, point);
+    float angle = yawEfeb8(&distance, arg2[0] - point[0], arg2[2] - point[2]);
+    float used = distance;
+    float radius = radiusEfeb8((int)&D_007812C0, arg1, 0);
+    float x = sinf(angle) * radius;
+    point[1] = arg2[1];
+    point[0] = arg2[0] + x;
+    point[2] = arg2[2] + cosf(angle) * radius;
+    if (!testEfeb8(M2C_FIELD(arg0, int *, 4), point)) {
+        int i = 0;
+        double next = angle + c2FE0B8;
+        goto convert;
+        while (i++ < 16) {
+            if (testEfeb8(M2C_FIELD(arg0, int *, 4), point)) goto done;
+            used = distance;
+            x = sinf(angle) * used;
+            point[1] = arg2[1];
+            point[0] = arg2[0] + x;
+            point[2] = arg2[2] + cosf(angle) * used;
+            angle += c2FE0C0;
+            if (angle < c2FE0C8) angle += c2FE0D0;
+            if (angle > c2FE0D8) {
+                next = angle - c2FE0E0;
+convert:
+                angle = next;
+            }
+        }
+        used = radius;
+        i = 0;
+        while (i++ < 16 && !testEfeb8(M2C_FIELD(arg0, int *, 4), point)) {
+            float x = sinf(angle) * radius;
+            point[1] = arg2[1];
+            point[0] = arg2[0] + x;
+            point[2] = arg2[2] + cosf(angle) * radius;
+            angle += c2FE0E8;
+            if (angle < c2FE0F0) angle += c2FE0F8;
+            if (angle > c2FE100) angle -= c2FE108;
+        }
+    }
+done:
+    M2C_FIELD(arg0, float *, 0x74) = angle;
+    M2C_FIELD(arg0, float *, 0x78) = used / (float)arg3;
+    float sx = sinf(angle);
+    M2C_FIELD(arg0, int *, 0x34) = 0;
+    M2C_FIELD(arg0, float *, 0x30) = sx * M2C_FIELD(arg0, float *, 0x78);
+    float cz = cosf(angle);
+    M2C_FIELD(arg0, int *, 0x50) = arg3;
+    M2C_FIELD(arg0, int *, 0x60) = 0;
+    M2C_FIELD(arg0, float *, 0x38) = cz * M2C_FIELD(arg0, float *, 0x78);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EFEB8);
+#endif
 
 extern "C" void func_001F0288(int arg0, int arg1, float *arg2, float *arg3, int arg4)
 {
