@@ -777,7 +777,141 @@ extern "C" void func_001E107C(int arg0)
     Xiiiiiii_func_001E6734(arg0, 0xF, 0x80, 0x80, 0, -1);
 }
 
+// NON_MATCHING: 178/298 differ, 6 relocs differ (size 0x4A8, game 0x4B4), 26 edits
+#ifdef NON_MATCHING
+extern int D_007A3D80;
+extern "C" int X_111C_func_001E4908(int, unsigned int, int *, unsigned int) asm("func_001E4908");
+extern "C" int X_111C_func_001E5B60(...) asm("func_001E5B60");
+extern "C" int X_111C_func_001E6368(...) asm("func_001E6368");
+extern "C" int X_111C_func_001E79C0(int, int) asm("func_001E79C0");
+extern "C" int X_111C_func_001E7D7C(int, int) asm("func_001E7D7C");
+extern "C" void X_111C_func_001F9658(int, int, int) asm("func_001F9658");
+extern "C" void func_001E111C(int arg0, int arg1)
+{
+    struct { int sp0; } stack;
+    int temp_a2;
+    int temp_a3;
+    int temp_a0_2;
+    int temp_a1_3;
+    int temp_v0;
+    int temp_v1;
+    int temp_v1_2;
+    int temp_v1_3;
+    int temp_v1_4;
+    int temp_v1_9;
+    int var_s3;
+    int var_s4;
+    unsigned int temp_a1;
+    unsigned int temp_a1_4;
+    unsigned int temp_a1_5;
+    int temp_a0;
+    int temp_a1_2;
+    int temp_a1_6;
+    int temp_a4;
+    int temp_s5;
+    int temp_s6;
+    int temp_v0_2;
+    char *temp_v1_5;
+    char *temp_v1_6;
+    char *temp_v1_7;
+    int temp_v1_8;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x1684);
+    if (temp_v1 < 0) {
+        temp_v1_2 = temp_v1 + 1;
+        M2C_FIELD(arg0, int *, 0x1708) = 0;
+        M2C_FIELD(arg0, int *, 0x1684) = temp_v1_2;
+        temp_s6 = arg0 + 0x28;
+        temp_s5 = arg0 + 0x14;
+        M2C_FIELD(((temp_v1_2 * 0x24) + arg0), int *, 0x15A0) = 0;
+        var_s3 = 0;
+        var_s4 = 0x2F;
+        M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + arg0), int *, 0x15AC) = -1;
+        M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + temp_s6), int *, 0x1590) = -1;
+        M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0xC) + temp_s5), int *, 0x1640) = 0;
+        do {
+            int *entries = (int *)(arg0 + 0xD40);
+            temp_a0 = *entries + var_s3;
+            temp_v1_3 = M2C_FIELD(temp_a0, int *, 0);
+            if (!(temp_v1_3 & 0x80)) {
+                if (temp_v1_3 & 1) {
+                    if (arg1 != 1) {
+                        temp_a1 = M2C_FIELD(temp_a0, unsigned int *, 0x14);
+                        if ((temp_a1 != -1U) && (temp_v1_3 & 0x100)) {
+                            temp_v0 = X_111C_func_001E5B60(arg0, temp_a1, M2C_FIELD(temp_a0, int *, 0x18));
+                            if ((temp_v0 != 5) && (temp_v0 != -1)) {
+                                M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + arg0), int *, 0x15AC) = (int) M2C_FIELD((*entries + var_s3), int *, 0x14);
+                                if (X_111C_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x1718)) != 0) {
+                                    int task = X_111C_func_001E79C0((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x1718));
+                                    temp_a1_2 = arg0 + (M2C_FIELD(arg0, int *, 0x1684) * 0x24);
+                                    X_111C_func_001F9658(task, temp_a1_2 + 0x15B0, temp_a1_2 + 0x15B4);
+                                } else {
+                                    M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + arg0), int *, 0x15B0) = (int) M2C_FIELD((*entries + var_s3), int *, 4);
+                                    M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + arg0), int *, 0x15B4) = (int) M2C_FIELD((*entries + var_s3), int *, 8);
+                                }
+                            }
+                            temp_v1_4 = M2C_FIELD(arg0, int *, 0x1684);
+                            temp_a2 = arg0 + 0x20;
+                            temp_a0_2 = temp_v1_4 * 0x24;
+                            temp_a1_3 = temp_a0_2 + 0x1590;
+                            if (*(int *)(temp_a2 + temp_a1_3) == 0) {
+                                temp_a3 = arg0 + 0x24;
+                                if ((*(int *)(temp_a3 + temp_a1_3) == 0) && (temp_v1_4 > 0)) {
+                                    temp_v1_5 = (char *)((temp_a0_2 + arg0) + 0x2C);
+                                    M2C_FIELD(temp_v1_5, int *, 0x1580) = (int) M2C_FIELD(temp_v1_5, int *, 0x155C);
+                                    temp_v1_6 = (char *)((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + temp_a2);
+                                    M2C_FIELD(temp_v1_6, int *, 0x1590) = (int) M2C_FIELD(temp_v1_6, int *, 0x156C);
+                                    temp_v1_7 = (char *)((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + temp_a3);
+                                    M2C_FIELD(temp_v1_7, int *, 0x1590) = (int) M2C_FIELD(temp_v1_7, int *, 0x156C);
+                                }
+                            }
+                        }
+                    }
+                } else if (arg1 != 2) {
+                    temp_a1_4 = M2C_FIELD(temp_a0, unsigned int *, 0xC);
+                    if ((temp_a1_4 != 0) && (temp_a1_4 != 0x0B030352) && (X_111C_func_001E6368(arg0, temp_a1_4, M2C_FIELD(temp_a0, int *, 0x18)) != 0)) {
+                        temp_a4 = *entries + var_s3;
+                        temp_a1_5 = M2C_FIELD(temp_a4, unsigned int *, 0xC);
+                        if ((temp_a1_5 >> 0x18) == 0xB) {
+                            temp_v1_9 = M2C_FIELD(arg0, int *, 0x1684);
+                            temp_v0_2 = (temp_v1_9 * 0x24) + arg0 + 0x15A0;
+                            if (M2C_FIELD(temp_v0_2, unsigned int *, 0) == 0) {
+                                M2C_FIELD(temp_v0_2, unsigned int *, 0) = temp_a1_5;
+                                if (X_111C_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x1710)) != 0) {
+                                    int task = X_111C_func_001E79C0((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x1710));
+                                    temp_a1_6 = arg0 + (M2C_FIELD(arg0, int *, 0x1684) * 0x24);
+                                    X_111C_func_001F9658(task, temp_a1_6 + 0x15A4, temp_a1_6 + 0x15A8);
+                                } else {
+                                    M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + arg0), int *, 0x15A4) = (int) M2C_FIELD((*entries + var_s3), int *, 4);
+                                    M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + temp_s6), int *, 0x1580) = (int) M2C_FIELD((*entries + var_s3), int *, 8);
+                                }
+                            } else {
+                                M2C_FIELD(((temp_v1_9 * 0xC) + temp_s5), unsigned int *, 0x1640) = temp_a1_5;
+                                M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0xC) + arg0), int *, 0x1658) = (int) M2C_FIELD((*entries + var_s3), int *, 4);
+                                M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0xC) + arg0), int *, 0x165C) = (int) M2C_FIELD((*entries + var_s3), int *, 8);
+                            }
+                        } else {
+                            stack.sp0 = 0;
+                            X_111C_func_001E4908(arg0, M2C_FIELD(temp_a4, unsigned int *, 0xC), &stack.sp0, 1);
+                            temp_v1_8 = *entries + var_s3;
+                            if ((M2C_FIELD(temp_v1_8, int *, 0) & 0x10) || ((stack.sp0 != 0) && (M2C_FIELD(stack.sp0, unsigned short *, 0x36) != 0))) {
+                                M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1708) * 0x10) + arg0), int *, 0x1688) = (int) M2C_FIELD(temp_v1_8, int *, 0xC);
+                                M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1708) * 0x10) + arg0), int *, 0x168C) = (int) M2C_FIELD((*entries + var_s3), int *, 4);
+                                M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1708) * 0x10) + arg0), int *, 0x1690) = (int) M2C_FIELD((*entries + var_s3), int *, 8);
+                                M2C_FIELD(arg0, int *, 0x1708) = (int) (M2C_FIELD(arg0, int *, 0x1708) + 1);
+                            }
+                        }
+                    }
+                }
+            }
+            var_s4 -= 1;
+            var_s3 += 0x28;
+        } while (var_s4 >= 0);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E111C);
+#endif
 
 extern "C" void func_001E15D0(int arg0, int arg1)
 {
