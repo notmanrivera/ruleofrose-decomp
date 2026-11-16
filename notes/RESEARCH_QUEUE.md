@@ -51,11 +51,6 @@ judgement and go to Sonnet.
   func_001DBC5C). Find what in their .rodata the compiler emits in
   another order than the asm piece (strings? the table?) and the source
   shape that gives the game's order.
-- [ ] R12 objdiff for this project: can encounter/objdiff compare our
-  build/match objects against the game's per function (its config for a
-  splat PS2 project, e.g. Sly 2's), and would it beat tools/match.py's
-  diff for workers? A short how-to if yes.
-
 - [ ] R13 mw/i3d's architecture (the owner's outside brief, 2026-11-15),
   READ-ONLY: (A) MagSystem's version check is known (src/mag/magsystem.cpp
   ~250-275: 36 i3d type sizes checked through func_0021F1A8(i), message
@@ -74,6 +69,19 @@ judgement and go to Sonnet.
   renderer"). Needs Sonnet (judgement) plus [web] for the parsers.
 ## Done
 
+- [x] R12 objdiff (2026-11-16, Sonnet): feasible, medium effort, a
+  complement to match.py (which stays the authority). objdiff reads the
+  R5900 ISA from e_flags (or mips_instr_category) and pairs HI16/LO16.
+  Needs: per-file target objects (whole-file asm + its data chunks, one
+  `as`/`ld -r`), a -DSKIP_ASM branch in include_asm.h so INCLUDE_ASM
+  functions do not count as matched, base objects through fix_hi16/strip,
+  a generated objdiff.json (custom_make "tools/dock ninja"), as Sly1's
+  configure.py --objects does. Risk: named D_ symbols in the target vs
+  .LC/.rodata+off in ours read as reloc mismatches (symbol_mappings or
+  object rewriting). `objdiff-cli diff ... --format json` gives a
+  per-function diff for workers; `report generate` per-unit percentages
+  (decomp.dev would need a local report: the ELF cannot be in CI).
+  Next step if wanted: prototype bed/bedpad by hand.
 - [x] R5, R6 The five files with jump tables and a .rodata start off 16
   (2026-11-16, Sonnet + coordinator): applied 2aee43d and the EffMan
   commit. New files unk/MagLifeWindowDebug (head of HfmMain),
