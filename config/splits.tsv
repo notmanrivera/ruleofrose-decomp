@@ -87,7 +87,7 @@ text	rodata	data	bss	file	confidence
 0016EB00	002F2278	-	-	unk/EffBreath2Prim	likely
 001702E4	002F2350	00298E14	-	unk/EffFire1	likely
 00172E4C	002F2700	-	-	unk/EffLight2	manual
-00176694	002F2A18	-	-	unk/EffFindItem1	likely
+00176A34	002F2AC0	-	-	unk/EffMan	manual
 001787B0	002F2E10	00298E1C	-	unk/EffWater1	likely
 0017B7CC	002F3060	-	-	unk/SctLayer	family
 0017C60C	002F3080	00298E20	-	unk/WrdSrv	family

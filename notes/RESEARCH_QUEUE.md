@@ -45,17 +45,6 @@ judgement and go to Sonnet.
     (vtable 0x1F8FC4), TskAttack, TskDamage, TskCamera (~0x1FBBA4, .rodata
     0x2FEF80).
   - unk/WrdSrv's .rodata start (EffWater type names) stays unsettled.
-- [ ] R5 unk/HfmMain: the small file before it. 0x2EF238-0x2EF260
-  ("18MagLifeWindowDebug", "8MagLife0") ends at HfmMain's first table;
-  the MagLifeWindowDebug code (constructor func_00144214, wrappers
-  0x144244-0x1445D0 on D_006FBD80) seems to be its own file. Find its
-  text start (0x143D3C-0x144214 are scene-camera helpers on +0x2AB40:
-  magsceneif's or the new file's?) and a likely name (asserts, RTTI).
-- [ ] R6 unk/001D1BEC, unk/EffFindItem1, unk/BdlMain, unk/DwfOutAtkFar:
-  the same question for each (split ranges in notes/NEXT_SESSION.md and
-  in the memory of 2026-11-15: 001D1BEC in (0x1D27DC, 0x1D3B44], second
-  rodata 0x2FC100; EffFindItem1 from ~0x176A34, rodata 0x2F2AC0; BdlMain
-  ~0x14C2FC, rodata 0x2EF690; DwfOutAtkFar from 0x161230, rodata 0x2F10C0).
 - [ ] R7 game/gamtrg func_001DD00C and func_001DBA3C: each matches as a
   function, but compiling it moves the .rodata references of later C++
   functions (func_001DD558, func_001DEAAC, func_001DEE78; func_001DBB74,
@@ -85,6 +74,15 @@ judgement and go to Sonnet.
   renderer"). Needs Sonnet (judgement) plus [web] for the parsers.
 ## Done
 
+- [x] R5, R6 The five files with jump tables and a .rodata start off 16
+  (2026-11-16, Sonnet + coordinator): applied 2aee43d and the EffMan
+  commit. New files unk/MagLifeWindowDebug (head of HfmMain),
+  unk/BdlOutAtk, unk/DwfOutFort, unk/001D3B44, unk/EffMan; EffFindItem1's
+  methods merged into unk/EffLight2. All 185 files with tables now start
+  at a multiple of 16. Uncertain text starts (rodata is certain):
+  001D3B44 in (0x1D27DC, 0x1D3B44]; BdlOutAtk could start at BdlOutSearch
+  (0x14C1F4); DwfOutFort at DwfOutParts; MagLifeWindowDebug's 0x143D3C-
+  0x144210 could be magsceneif's tail.
 - [x] R15 R9's leads (2026-11-16, Sonnet): applied 4cd12d3, the .rodata
   starts of MagLifeBwnModeSit (0x2EBC60), MnuPBook (0x2F7D30) and
   maglifepc2 (0x2EA208); the larger splits are R16.
