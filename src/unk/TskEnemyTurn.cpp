@@ -5,8 +5,6 @@ extern int _vt$12TskEnemyTurn;
 extern "C" int X_func_00180EA8(...) asm("func_00180EA8");
 extern int D_007B2580;
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyTurn", func_0020313C);
-
 extern "C" void TskEnemyTurn__vfunc_05(int arg0)
 {
     int temp_v0;
@@ -61,12 +59,6 @@ extern "C" void TskEnemyTurn__vfunc_02(int arg0, int arg1)
         }
     }
 }
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyTurn", D_002FF5B0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyTurn", D_002FF5C0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyTurn", D_002FF600);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyTurn", D_002FF620);
 

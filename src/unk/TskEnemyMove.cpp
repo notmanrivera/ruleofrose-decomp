@@ -1162,3 +1162,11 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF560);
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF568);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF570);
+
+INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_0020313C);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF5B0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF5C0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF600);

@@ -119,7 +119,7 @@ text	rodata	data	bss	file	confidence
 001F8FB8	002FE980	-	-	unk/TskCamera	family
 001FCC20	002FF010	-	-	task/tsk_bg_load	likely
 001FD424	002FF040	-	-	unk/TskEnemyMove	likely
-0020313C	002FF578	-	-	unk/TskEnemyTurn	certain
+00203468	002FF620	-	-	unk/TskEnemyTurn	manual
 002039A4	002FF660	-	-	unk/002039A4	likely
 002043DC	002FF728	002D8FF8	-	unk/002043DC	anchor
 00204BF8	002FF8A0	002D90A8	007A3350	system/sysnowloading	likely
