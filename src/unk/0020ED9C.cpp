@@ -2091,7 +2091,49 @@ extern "C" int func_00213E78(int arg0, int arg1)
     return 0;
 }
 
+// NON_MATCHING: 84/224 differ, 14 relocs differ (size 0x380, game 0x378), 85 edits
+#ifdef NON_MATCHING
+extern Block780_47E0 *F13F48_buffers[] asm("D_002D9E08");
+extern "C" void func_00213F48(int arg0, int arg1, int arg2)
+{
+    int base = arg1 + 0x30;
+    D_007B47D0 = base;
+    D_007B4820 = M2C_FIELD(arg1, int *, 0x20);
+    D_007B4830 = M2C_FIELD(arg1, int *, 0x24);
+    D_007B47E0 = arg1 + M2C_FIELD(arg1, int *, 0x14) + M2C_FIELD(arg1, int *, 0x18);
+    D_007B4800 = arg1 + M2C_FIELD(arg1, int *, 0x14);
+    D_007B47F0 = D_007B4800 - M2C_FIELD(arg1, int *, 0x1C) + 8;
+    M2C_FIELD(D_007B47E0, int *, -0x20) = M2C_FIELD(arg0, int *, 0xDC1C);
+    M2C_FIELD(D_007B47E0, int *, -0x10) = M2C_FIELD(arg0, int *, 0xDC20);
+    D_007B47D0 = base;
+    D_007B47E0 = M2C_FIELD(arg1, int *, 0x10);
+    D_007B4800 = arg1 + M2C_FIELD(arg1, int *, 0x14);
+    D_007B47F0 = D_007B4800 + M2C_FIELD(arg1, int *, 0x1C) + 8;
+    D_007B4820 = M2C_FIELD(arg1, int *, 0x20);
+    D_007B4830 = M2C_FIELD(arg1, int *, 0x24);
+    int tail = arg1 + M2C_FIELD(arg1, int *, 0xC) + (M2C_FIELD(arg1, int *, 0x18) + M2C_FIELD(arg1, int *, 0x14));
+    X4310_D_007B4700[28] = tail + 0x8000;
+    X4310_D_007B4700[29] = tail + 0x8780;
+    D_002D9C08[arg2] = *(Block80_4310 *)X4310_D_007B4700;
+    *F13F48_buffers[arg2] = *(Block780_47E0 *)X4310_D_007B4700[28];
+    int off = arg2 * 0x30;
+    int off10 = off + 0x10;
+    D_007B4850[arg2].unk00 = D_007B47D0;
+    *(int *)(off + (char *)&D_007B4850[0].unk04) = D_007B47E0;
+    int result = X4310_D_007B4700[28] - D_007B47E0 + 0x450000;
+    *(int *)(off + (char *)&D_007B4850[0].unk08) = D_007B4800;
+    D_007B4850[arg2].unk0C = D_007B47F0;
+    D_007B4850[arg2].unk10 = D_007B4820;
+    *(int *)(off10 + (char *)&D_007B4850[0].unk04) = D_007B4830;
+    D_007B4850[arg2].unk20 = X4310_D_007B4700[28];
+    *(int *)(off + 0x20 + (char *)&D_007B4850[0].unk04) = X4310_D_007B4700[29];
+    *(int *)(off10 + (char *)&D_007B4850[0].unk08) = result;
+    D_007B4810 = result;
+    X4310_D_007B4700[1] = result;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00213F48);
+#endif
 
 extern "C" void func_002142C0(void)
 {
