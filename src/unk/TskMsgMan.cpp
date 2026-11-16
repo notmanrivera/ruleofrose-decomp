@@ -2863,7 +2863,100 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE558);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE560);
 
+// NON_MATCHING: 156/162 differ, 27 relocs differ (size 0x288, game 0x318), 146 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_00118FEC__9MagSystem(...) asm("func_00118FEC__9MagSystem");
+extern "C" int X_func_0013F280(...) asm("func_0013F280");
+extern "C" int X_func_0013F444(...) asm("func_0013F444");
+extern "C" int X_func_00191D20(...) asm("func_00191D20");
+extern "C" int X_func_00191D74(...) asm("func_00191D74");
+extern "C" int X_func_00191DC8(...) asm("func_00191DC8");
+extern "C" int X_func_00191ED0(...) asm("func_00191ED0");
+extern "C" int X_func_001C574C(...) asm("func_001C574C");
+extern "C" int X_func_001CF95C(...) asm("func_001CF95C");
+extern "C" int X_func_001F5BDC(...) asm("func_001F5BDC");
+extern "C" int X_memset(...) asm("memset");
+extern "C" int func_001F3824(int arg0)
+{
+    struct { char pad0[64]; } stack;
+    int var_v0;
+    int var_a1;
+    int temp_v1_2;
+    unsigned int temp_v1;
+    int temp_s0;
+
+    temp_v1 = M2C_FIELD(arg0, unsigned int *, 0x10);
+    switch (temp_v1) {
+    case 0:
+        if (!(M2C_FIELD((int)&D_007812C0, int *, 0x21F4C) & 0x80000)) {
+            return 1;
+        }
+        if ((unsigned int) (X_func_00118FEC__9MagSystem((int)&D_006E9840) - 5) < 3U) {
+            M2C_FIELD(arg0, unsigned int *, 0x10) = 1U;
+block_24:
+        default:
+            return 0;
+        }
+block_9:
+        M2C_FIELD((int)&D_007812C0, int *, 0x21F4C) = (int) (M2C_FIELD((int)&D_007812C0, int *, 0x21F4C) & 0xFFF7FFFF & 0xFFFBFFFF);
+        return 1;
+    case 1:
+        if (X_func_001C574C((int)&D_007812C0) == 0) {
+            if ((unsigned int) (X_func_00118FEC__9MagSystem((int)&D_006E9840) - 5) >= 3U) {
+                goto block_9;
+            }
+            X_func_001C6A40((int)&D_007812C0, 0x100000);
+            var_v0 = 0;
+            if (M2C_FIELD((int)&D_007812C0, int *, 0x22090) != 0) {
+                var_v0 = M2C_FIELD(M2C_FIELD((int)&D_007812C0, int *, 0x22090), int *, 0x100);
+            }
+            X_func_001F5BDC(var_v0, 1, 0x1E, 0, 0, 0.016666666138917208f, 32769.0f);
+            X_memset((int)&stack, 0, 0x40);
+            if (M2C_FIELD((int)&D_007812C0, int *, 0x21F4C) & 0x40000) {
+                var_a1 = 0x16;
+            } else {
+                var_a1 = 0xB;
+            }
+            M2C_FIELD(arg0, int *, 0x28) = X_func_0013F280((int)&D_006E9840 + 0x12540, var_a1, (int)&stack, 1);
+            M2C_FIELD((int)&D_007812C0, int *, 0x21F4C) = (int) (M2C_FIELD((int)&D_007812C0, int *, 0x21F4C) & 0xFFF7FFFF & 0xFFFBFFFF);
+            M2C_FIELD(arg0, unsigned int *, 0x10) = 3U;
+            M2C_FIELD(arg0, int *, 0x14) = 1;
+            goto block_24;
+        }
+        goto block_24;
+    case 2:
+        if (X_func_0013F444((int)&D_006E9840 + 0x12540, M2C_FIELD(arg0, int *, 0x28)) != 0) {
+            M2C_FIELD(arg0, unsigned int *, 0x10) = 3U;
+        }
+        goto block_24;
+    case 3:
+        temp_v1_2 = M2C_FIELD(arg0, int *, 0x14);
+        M2C_FIELD(arg0, int *, 0x14) = (int) (temp_v1_2 - 1);
+        if (temp_v1_2 > 0) {
+            temp_s0 = (int)&D_006FBD80 + 0x42BB0;
+            X_func_00191F98(temp_s0, 2);
+            X_func_00191ED0(temp_s0, 2);
+            X_func_00191D20(temp_s0, 2, 1);
+            X_func_00191D74(temp_s0, 2, 1);
+            X_func_00191DC8(temp_s0, 2, 2);
+        }
+        if (X_func_0013F444((int)&D_006E9840 + 0x12540, M2C_FIELD(arg0, int *, 0x28)) == 0) {
+            M2C_FIELD(arg0, unsigned int *, 0x10) = 4U;
+        }
+        
+        return 0;
+    case 4:
+        if (!(M2C_FIELD((int)&D_007812C0, int *, 0x21F4C) & 8)) {
+            X_func_001CF95C((int)&D_007812C0);
+            X_func_001C65E8((int)&D_007812C0, 0x100000);
+            return 1;
+        }
+        goto block_24;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F3824);
+#endif
 
 extern "C" int func_001F3B3C()
 {
