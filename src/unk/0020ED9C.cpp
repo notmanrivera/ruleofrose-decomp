@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int F113DC_check(int, unsigned int, int) asm("func_00213D00");
+extern "C" int F113DC_alloc() asm("func_00214AC4");
+extern "C" void F113DC_select(unsigned int) asm("func_00214310");
+extern "C" void F113DC_load(int) asm("func_00214BCC");
+extern "C" int F113DC_exec(int) asm("func_00214C24");
 struct Block780_47E0;
 struct State12A5C { int data[28]; Block780_47E0 *buffer; int rest[3]; } ALIGNED(8);
 extern State12A5C F12A5C_state asm("D_007B4700");
@@ -1510,7 +1515,84 @@ extern "C" void func_002113A4(int arg0, int arg1)
     (*(unsigned int *)&D_007B47B0) = (arg1 + (*(int *)&D_007B47D0)) - M2C_FIELD((((*(int *)((int)&D_007B4DD0)) * 4) + arg0), int *, 0xDC08);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002113DC);
+extern "C" void func_002113DC(int arg0, unsigned int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, const char *arg7)
+{
+    State12A5C backup;
+    unsigned int index = arg1 >> 30;
+    int var_a3 = arg2 + D_007B4850[index].unk00 - M2C_FIELD(arg0 + index * 4, int *, 0xDC08);
+    if (F113DC_check(arg0, arg1, arg3) != 0) return;
+    backup = F12A5C_state;
+    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+        var_a3 += 4;
+        if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+            var_a3 += 4;
+            if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                var_a3 += 4;
+                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                    var_a3 -= 0x1C;
+                    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                        var_a3 += 4;
+                        if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                            var_a3 += 4;
+                            if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                                var_a3 += 4;
+                                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                                    var_a3 += 4;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    M2C_FIELD(arg0, int *, 0xDC30) = arg4;
+    M2C_FIELD(arg0, int *, 0xDC34) = arg1;
+    M2C_FIELD(arg0, int *, 0xDC38) = var_a3;
+    M2C_FIELD(arg0, int *, 0xDC4C) = -1;
+    M2C_FIELD(arg0, int *, 0xDC50) = arg6;
+    M2C_FIELD(arg0, int *, 0xDC54) = 1;
+    M2C_FIELD(arg0, int *, 0xDC58) = arg3;
+    M2C_FIELD(arg0, int *, 0xDCDC) = 0;
+    F11E_strncpy((char *)(arg0 + 0xDC40), arg7, 8);
+    if (arg5) M2C_FIELD(arg0, int *, 0xDC3C) = F113DC_alloc();
+    F113DC_select(index);
+    if (arg5) F113DC_load(M2C_FIELD(arg0, int *, 0xDC3C));
+    M2C_FIELD(arg0, int *, 0xDC24) |= 0x100;
+    register int result PS2_REG("$4");
+    result = F113DC_exec(M2C_FIELD(arg0, int *, 0xDC38));
+#ifdef TARGET_PS2
+    asm("" : "+r"(result) : : "$7");
+#endif
+    int chain = arg0 + 0x40;
+    if (result != 0) {
+        M2C_FIELD(arg0, int *, 0xDC38) = result;
+        result = arg0 + 0xDC30;
+        int node = M2C_FIELD(chain, int *, 0);
+        int prev = M2C_FIELD(node, int *, 0);
+        M2C_FIELD(chain, int *, 0) = prev;
+        M2C_FIELD(prev, int *, 4) = chain;
+        --M2C_FIELD(chain, int *, 0xC0);
+        *(F11E_record *)(node + 0x10) = *(F11E_record *)result;
+        int used = chain + 0xD0;
+        if (M2C_FIELD(used, int *, 0xC0) == 0) {
+            M2C_FIELD(used, int *, 4) = node;
+            M2C_FIELD(node, int *, 0) = used;
+        } else {
+            M2C_FIELD(M2C_FIELD(used, int *, 0), int *, 4) = node;
+            M2C_FIELD(node, int *, 0) = M2C_FIELD(used, int *, 0);
+        }
+        M2C_FIELD(node, int *, 4) = used;
+        M2C_FIELD(used, int *, 0) = node;
+        ++M2C_FIELD(used, int *, 0xC0);
+    } else {
+        func_0020F428(arg0, (char *)(arg0 + 0xDC30));
+    }
+    M2C_FIELD(arg0, int *, 0xDC24) &= ~0x100;
+    F113DC_select(D_007B4DD0);
+    F12A5C_state = backup;
+}
 
 // NON_MATCHING: 3/237 differ, 3 edits
 #ifdef NON_MATCHING
