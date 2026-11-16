@@ -473,7 +473,72 @@ extern "C" int func_00188BFC(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00188CD4);
 
+// NON_MATCHING: 3/106 differ, 2 edits
+#ifdef NON_MATCHING
+extern "C" int func_00188EC0(int arg0)
+{
+    int temp_a0;
+    int var_s3;
+
+    var_s3 = 0;
+    switch (M2C_FIELD(arg0, int *, 0x60)) {
+    case 0:
+        M2C_FIELD(arg0, int *, 0x60) = 3;
+        M2C_FIELD(arg0, int *, 0xBC) = 0;
+    case 3:
+        M2C_FIELD(arg0, int *, 0x60) = 5;
+        temp_a0 = X_sceMcFormat(M2C_FIELD(arg0, int *, 0x70), M2C_FIELD(arg0, int *, 0x74));
+        M2C_FIELD(arg0, int *, 0x64) = 3;
+        M2C_FIELD(arg0, int *, 0x6C) = temp_a0;
+        switch (temp_a0) {
+        case 0:
+            M2C_FIELD(arg0, int *, 0x60) = 4;
+            M2C_FIELD(arg0, int *, 0x64) = 1;
+            M2C_FIELD(arg0, int *, 0x58) = 1;
+            break;
+        case -100:
+            M2C_FIELD(arg0, int *, 0x58) = 4;
+            break;
+        case -200:
+            M2C_FIELD(arg0, int *, 0x58) = 2;
+            break;
+        default:
+            M2C_FIELD(arg0, int *, 0x58) = 2;
+            break;
+        }
+        M2C_FIELD(arg0, int *, 0xBC) = M2C_FIELD(arg0, int *, 0xBC) + 1;
+        break;
+    case 5:
+        var_s3 = 1;
+        break;
+    case 4:
+        switch (X_sceMcSync(M2C_FIELD(arg0, int *, 0xC8), arg0 + 0xCC, arg0 + 0xD0)) {
+        case 0:
+            break;
+        case 1:
+            M2C_FIELD(arg0, int *, 0x64) = 3;
+            if (M2C_FIELD(arg0, int *, 0xD0) == 0) {
+                M2C_FIELD(arg0, int *, 0x64) = 2;
+                M2C_FIELD(arg0, int *, 0x60) = 5;
+            } else if (M2C_FIELD(arg0, int *, 0xD0) == -5) {
+                M2C_FIELD(arg0, int *, 0x58) = 0xE;
+            } else if (M2C_FIELD(arg0, int *, 0xD0) <= -10) {
+                M2C_FIELD(arg0, int *, 0x58) = 9;
+            }
+            break;
+        case -1:
+            M2C_FIELD(arg0, int *, 0x58) = 0xA;
+            M2C_FIELD(arg0, int *, 0x60) = 5;
+            M2C_FIELD(arg0, int *, 0x64) = 3;
+            break;
+        }
+        break;
+    }
+    return (M2C_FIELD(arg0, int *, 0x64) == 1) ? var_s3 : 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00188EC0);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00189068);
 
