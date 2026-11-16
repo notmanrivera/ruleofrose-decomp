@@ -1512,7 +1512,87 @@ extern "C" void func_002113A4(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002113DC);
 
+// NON_MATCHING: 3/237 differ, 3 edits
+#ifdef NON_MATCHING
+extern "C" int F11830_check(int, unsigned int, int) asm("func_00213D00");
+extern "C" int F11830_alloc() asm("func_00214AC4");
+extern "C" void F11830_select(unsigned int) asm("func_00214310");
+extern "C" void F11830_load(int) asm("func_00214BCC");
+extern "C" int F11830_exec(int) asm("func_00214C24");
+extern "C" void func_00211830(int arg0, unsigned int arg1, int arg2, int arg3, int arg4, int arg5)
+{
+    unsigned int index = arg1 >> 30;
+    int var_a3 = arg2 + D_007B4850[index].unk00 - M2C_FIELD(arg0 + index * 4, int *, 0xDC08);
+    if (F11830_check(arg0, arg1, arg3) != 0) return;
+    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+        var_a3 += 4;
+        if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+            var_a3 += 4;
+            if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                var_a3 += 4;
+                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                    var_a3 -= 0x1C;
+                    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                        var_a3 += 4;
+                        if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                            var_a3 += 4;
+                            if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                                var_a3 += 4;
+                                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                                    var_a3 += 4;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    M2C_FIELD(arg0, int *, 0xDC30) = arg4;
+    M2C_FIELD(arg0, int *, 0xDC34) = arg1;
+    M2C_FIELD(arg0, int *, 0xDC38) = var_a3;
+    M2C_FIELD(arg0, int *, 0xDC4C) = -1;
+    M2C_FIELD(arg0, int *, 0xDC54) = 1;
+    M2C_FIELD(arg0, int *, 0xDC58) = arg3;
+    M2C_FIELD(arg0, int *, 0xDC50) = 0;
+    M2C_FIELD(arg0, int *, 0xDCDC) = 0;
+    F11E_strncpy((char *)(arg0 + 0xDC40), "imdy", 8);
+    if (arg5) M2C_FIELD(arg0, int *, 0xDC3C) = F11830_alloc();
+    F11830_select(index);
+    if (arg5) F11830_load(M2C_FIELD(arg0, int *, 0xDC3C));
+    M2C_FIELD(arg0, int *, 0xDC24) |= 0x100;
+    var_a3 = F11830_exec(M2C_FIELD(arg0, int *, 0xDC38));
+    int chain = arg0 + 0x40;
+    if (var_a3 != 0) {
+        M2C_FIELD(arg0, int *, 0xDC38) = var_a3;
+        var_a3 = arg0 + 0xDC30;
+        int node = M2C_FIELD(chain, int *, 0);
+        int prev = M2C_FIELD(node, int *, 0);
+        M2C_FIELD(chain, int *, 0) = prev;
+        M2C_FIELD(prev, int *, 4) = chain;
+        --M2C_FIELD(chain, int *, 0xC0);
+        *(F11E_record *)(node + 0x10) = *(F11E_record *)var_a3;
+        int used = chain + 0xD0;
+        if (M2C_FIELD(used, int *, 0xC0) == 0) {
+            M2C_FIELD(used, int *, 4) = node;
+            M2C_FIELD(node, int *, 0) = used;
+        } else {
+            M2C_FIELD(M2C_FIELD(used, int *, 0), int *, 4) = node;
+            M2C_FIELD(node, int *, 0) = M2C_FIELD(used, int *, 0);
+        }
+        M2C_FIELD(node, int *, 4) = used;
+        M2C_FIELD(used, int *, 0) = node;
+        ++M2C_FIELD(used, int *, 0xC0);
+    } else {
+        func_0020F428(arg0, (char *)(arg0 + 0xDC30));
+    }
+    M2C_FIELD(arg0, int *, 0xDC24) &= ~0x100;
+    F11830_select(2);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00211830);
+#endif
 
 extern "C" void func_00211BE4(int arg0, unsigned int arg1, int arg2, int arg3, int arg4)
 {
