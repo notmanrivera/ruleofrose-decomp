@@ -1,6 +1,30 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+struct ActorStub_CA8E8 {
+    char pad00[0x60];
+    float m_x;
+    float m_y;
+    float m_z;
+    float m_w;
+    char pad70[0x20];
+    int m_unk90;
+    char pad94[0x4D0 - 0x94];
+};
+struct SceneStub_CA8E8 {
+    char pad00[0x2920];
+    ActorStub_CA8E8 m_actor[128];
+};
+struct SystemStub_CA8E8 {
+    char pad00[0x12540];
+    SceneStub_CA8E8 m_scene;
+    void setScale(int theNo, float x, float y, float z)
+    {
+        ActorStub_CA8E8 *p = &m_scene.m_actor[theNo];
+        p->m_z = p->m_y = p->m_x = x;
+        p->m_unk90 = 1;
+    }
+};
 extern "C" void func_001D1C80(GamMan *, unsigned int, int, void *);
 extern "C" void func_001D88FC(ObjStat *);
 extern "C" void func_001E7544(void *, int);
@@ -1487,7 +1511,21 @@ extern "C" const char *func_001CA604(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CA72C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CA8E8);
+extern "C" int func_001CA8E8(int arg0, unsigned short arg1, unsigned int arg2, unsigned short arg3, int arg4, int arg5, int arg6)
+{
+    if (arg2 != 0 && Xiiu_func_001D046C(arg0, arg2) != 0) {
+        return -1;
+    }
+    int temp_v0 = X_loadModel__9MagSystemii(&D_006E9840, arg1, -1);
+    func_001CA598(arg0, temp_v0, arg2);
+    if (arg6 != 0) {
+        func_001CC250(&D_007812C0, temp_v0, arg2, arg3, arg4, arg5);
+    }
+    if (arg1 == 0x800) {
+        ((SystemStub_CA8E8 *)&D_006E9840)->setScale(temp_v0, 9.999999583953922e-08f, 9.999999583953922e-08f, 9.999999583953922e-08f);
+    }
+    return temp_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CAA14);
 
