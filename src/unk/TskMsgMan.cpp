@@ -2154,7 +2154,93 @@ extern "C" int func_001EFAB0()
 }
 
 
+// NON_MATCHING: 96/256 differ, 26 relocs differ, 66 edits
+#ifdef NON_MATCHING
+extern "C" float radiusFab8(int, unsigned int, int) asm("func_001D4A3C");
+extern "C" int spineFab8(unsigned int, float *, const char *) asm("func_001F5558");
+extern "C" void posFab8(int, unsigned int, float *) asm("func_001D05F4");
+extern "C" float yawFab8(float *, float, float) asm("func_002180E4");
+extern "C" int testFab8(int, float *) asm("func_001D8B5C");
+extern "C" float sinFab8(float) asm("sinf");
+extern "C" float cosFab8(float) asm("cosf");
+extern const char spineNameFab8[] asm("D_002FDFE0");
+extern const double cFab8_2FE060 asm("D_002FE060");
+extern const double cFab8_2FE068 asm("D_002FE068");
+extern const double cFab8_2FE070 asm("D_002FE070");
+extern const double cFab8_2FE078 asm("D_002FE078");
+extern const double cFab8_2FE080 asm("D_002FE080");
+extern const double cFab8_2FE088 asm("D_002FE088");
+extern const double cFab8_2FE090 asm("D_002FE090");
+extern const double cFab8_2FE098 asm("D_002FE098");
+extern const double cFab8_2FE0A0 asm("D_002FE0A0");
+extern const double cFab8_2FE0A8 asm("D_002FE0A8");
+extern const double cFab8_2FE0B0 asm("D_002FE0B0");
+extern "C" void func_001EFAB8(int arg0, unsigned int arg1, float *arg2, int arg3) {
+    float distance;
+    float point[4] ALIGNED(16);
+    M2C_FIELD(arg0, unsigned int *, 0x10) = arg1;
+    radiusFab8((int)&D_007812C0, arg1, 0);
+    radiusFab8((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0xC), 0);
+    if (!spineFab8(arg1, point, spineNameFab8)) posFab8((int)&D_007812C0, arg1, point);
+    float angle = yawFab8(&distance, arg2[0] - point[0], arg2[2] - point[2]);
+    float length = distance;
+    M2C_FIELD(arg0, float *, 0x74) = angle;
+    M2C_FIELD(arg0, float *, 0x78) = length / (float)arg3 * 0.5f;
+    float x = sinFab8(angle) * length;
+    point[1] = arg2[1];
+    point[0] = arg2[0] + x;
+    point[2] = arg2[2] + cosFab8(angle) * length;
+    if (!testFab8(M2C_FIELD(arg0, int *, 4), point)) {
+        int i = 0;
+        double next = angle + cFab8_2FE060;
+        bool more;
+        goto convertFirst;
+bodyFirst:
+        x = sinFab8(angle) * length;
+        point[1] = arg2[1];
+        point[0] = arg2[0] + x;
+        point[2] = arg2[2] + cosFab8(angle) * length;
+        angle += cFab8_2FE068;
+        if (angle < cFab8_2FE070) angle += cFab8_2FE078;
+        if (angle > cFab8_2FE080) {
+            next = angle - cFab8_2FE088;
+convertFirst:
+            angle = next;
+        }
+        more = i < 16;
+        ++i;
+        if (more) {
+            if (!testFab8(M2C_FIELD(arg0, int *, 4), point)) goto bodyFirst;
+            goto done;
+        }
+        M2C_FIELD(arg0, float *, 0x78) = radiusFab8((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0xC), 0);
+        i = 0;
+        while (i++ < 16 && !testFab8(M2C_FIELD(arg0, int *, 4), point)) {
+            float x = sinFab8(angle) * M2C_FIELD(arg0, float *, 0x78);
+            point[1] = arg2[1];
+            point[0] = arg2[0] + x;
+            point[2] = arg2[2] + cosFab8(angle) * M2C_FIELD(arg0, float *, 0x78);
+            angle += cFab8_2FE090;
+            if (angle < cFab8_2FE098) angle += cFab8_2FE0A0;
+            if (angle > cFab8_2FE0A8) angle -= cFab8_2FE0B0;
+        }
+    }
+done:
+    float sx = sinFab8(angle);
+    M2C_FIELD(arg0, int *, 0x34) = 0;
+    M2C_FIELD(arg0, float *, 0x30) = sx * M2C_FIELD(arg0, float *, 0x78);
+    float cz = cosFab8(angle);
+    float z = cz * M2C_FIELD(arg0, float *, 0x78);
+    M2C_FIELD(arg0, int *, 0x50) = arg3;
+    M2C_FIELD(arg0, int *, 0x44) = 0;
+    M2C_FIELD(arg0, int *, 0x60) = 0;
+    M2C_FIELD(arg0, float *, 0x38) = z;
+    M2C_FIELD(arg0, float *, 0x40) = M2C_FIELD(arg0, float *, 0x30) * 1.25f;
+    M2C_FIELD(arg0, float *, 0x48) = z * 1.25f;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EFAB8);
+#endif
 
 // NON_MATCHING: 169/242 differ, 40 relocs differ (size 0x3C8, game 0x3D0), 89 edits
 #ifdef NON_MATCHING
