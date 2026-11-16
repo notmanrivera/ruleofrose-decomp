@@ -2035,7 +2035,67 @@ extern "C" int func_001E4E20(int arg0, int arg1, int arg2, int arg3, int arg4, f
     return -1;
 }
 
+// NON_MATCHING: 123/130 differ, 7 relocs differ (size 0x208, game 0x20C), 18 edits
+#ifdef NON_MATCHING
+struct Entry4E { int a,b,c,d,e,f,g,h,i,j; };
+struct Sub4E { Entry4E *arr; };
+struct Obj4E { int first; char pad[0xD3C]; Sub4E sub; };
+extern int D_007A320C;
+inline bool flag4E() { return (D_007A320C & 1) != 0; }
+extern "C" int X_func_0017F8FC(...) asm("func_0017F8FC");
+extern "C" void X_func_00180CE0(void *, int, int, int, float, int) asm("func_00180CE0");
+extern "C" int X_func_001E4908(int, unsigned int, int *, unsigned int) asm("func_001E4908");
+extern "C" void X_func_001E6E00(int, void *, int, int *, int *, float) asm("func_001E6E00");
+extern int D_007A320C;
+extern "C" int func_001E4EBC(int arg0, unsigned int arg1, int arg2, int arg3, int arg4)
+{
+    struct { int sp0; int sp4; int sp8; char padC[4]; Vec5250 vec; } stack;
+    float temp_f0;
+    int temp_a0;
+    int var_s1;
+    int var_v0;
+
+    var_v0 = -1;
+    if (!flag4E()) {
+        if (X_func_001E4908(arg0, arg1, &stack.sp8, 1U) == 0) {
+            return -1;
+        }
+        if (arg3 != 0) {
+            stack.vec.x = ((Vec5250 *)arg3)->x;
+            stack.vec.y = ((Vec5250 *)arg3)->y;
+            stack.vec.z = ((Vec5250 *)arg3)->z;
+            stack.vec.w = ((Vec5250 *)arg3)->w;
+            X_func_001E6E00(M2C_FIELD(arg0, int *, 0), &stack.vec, stack.sp8, &stack.sp0, &stack.sp4, 100.0f);
+            var_s1 = X_func_0017F8FC(&D_007B2580, arg1);
+            X_func_00180CE0(&D_007B2580, var_s1, stack.sp0, stack.sp4, -1024.0f, 0);
+        } else {
+            var_s1 = X_func_0017F8FC(&D_007B2580, arg1);
+            if (arg2 != 0) {
+                temp_f0 = (float) M2C_FIELD(stack.sp8, unsigned short *, 0x28) * 0.00390625f;
+                stack.sp0 = (int)((float) M2C_FIELD(stack.sp8, unsigned short *, 0x26) * temp_f0);
+                stack.sp4 = (int)((float) M2C_FIELD(stack.sp8, unsigned short *, 0x26) * (1.0f - temp_f0));
+            } else {
+                stack.sp0 = 100;
+                stack.sp4 = 100;
+            }
+            X_func_00180CE0(&D_007B2580, var_s1, stack.sp0, stack.sp4, -1024.0f, 0);
+        }
+        var_v0 = var_s1;
+        temp_a0 = var_s1 * 0x28;
+        Sub4E *sub = &((Obj4E *)arg0)->sub;
+        *(int *)((int)sub->arr + temp_a0) = arg4;
+        M2C_FIELD(((int)sub->arr + temp_a0), unsigned int *, 0xC) = arg1;
+        M2C_FIELD(((int)sub->arr + temp_a0), int *, 0x18) = var_s1;
+        M2C_FIELD(((int)sub->arr + temp_a0), int *, 4) = stack.sp0;
+        M2C_FIELD(((int)sub->arr + temp_a0), int *, 8) = stack.sp4;
+        
+        return var_v0;
+    }
+    return var_v0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E4EBC);
+#endif
 
 extern "C" int func_001E50C8(int arg0, int arg1, int arg2, int arg3, float fparg0, int arg4, int arg5, int arg6) {
     Msg50C8 msg;
