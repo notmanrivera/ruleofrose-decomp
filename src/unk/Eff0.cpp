@@ -996,7 +996,84 @@ INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay2__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016D3E4);
 
+// NON_MATCHING: 145/203 differ, 2 relocs differ (size 0x32C, game 0x348), 114 edits
+#ifdef NON_MATCHING
+struct ALIGNED(8) S208Vec { float x,y,z,w; };
+struct ALIGNED(8) S208Quad { S208Vec v[4]; };
+struct ALIGNED(8) S208Pair { S208Vec a,b; };
+extern S208Quad s208Colors asm("D_002F20F0");
+extern S208Quad s208UV asm("D_002F2130");
+extern "C" int s208Write(int,int,unsigned long long) asm("func_0021B550");
+extern "C" int s208Texture(int,int) asm("func_0021B5A0");
+extern "C" int s208State(int,int) asm("func_0021B260");
+extern "C" int s208Join(int,int) asm("func_0021B4F8");
+extern "C" int s208Setup(int,int) asm("func_0021B5D0");
+extern "C" void s208Identity(void *) asm("func_00237340");
+extern "C" void *s208Zero(void *,int,unsigned int) asm("memset");
+extern "C" float s208Mod(float,float *) asm("modff");
+extern "C" int s208Draw(int,void *,int,void *,void *,void *,int) asm("func_0021DB40");
+extern "C" int EffBloodStay2__vfunc_08(char *obj,int render,int state,int packet) {
+    struct { long long matrix[8]; S208Quad positions,colors,uv; float integral; } stack;
+#define matrix stack.matrix
+#define positions stack.positions
+#define colors stack.colors
+#define uv stack.uv
+#define integral stack.integral
+    if (M2C_FIELD(obj,int *,0x4C8)>0) {
+        int index=1;
+        packet=s208Texture(s208Write(s208Write(packet,0x4E,0x13A0000E0ULL),0x42,0x44),M2C_FIELD(render,int *,8));
+        packet=s208Setup(s208Join(packet,s208State(state,0)),M2C_FIELD(render,int *,8));
+        s208Identity(matrix);
+        float *velocity=M2C_FIELD(obj,float **,0x4B4);
+        ((float *)matrix)[12]=velocity[0]*0.5f;
+        ((float *)matrix)[13]=velocity[1]*0.5f;
+        ((float *)matrix)[14]=velocity[2]*0.5f;
+        s208Zero(&positions,0,64);
+        positions.v[3].w=1.0f;
+        colors=s208Colors; uv=s208UV;
+        positions.v[0].w=1.0f; positions.v[1].w=1.0f; positions.v[2].w=1.0f;
+        int count=M2C_FIELD(obj,int *,0x4C8);
+        positions.v[2]=*(S208Vec *)(obj+0x30); positions.v[3]=*(S208Vec *)(obj+0x40);
+        char *next=obj+0x50;
+        if(count>0) {
+            float *length=(float *)(obj+0x430);
+            do {
+                positions.v[0]=positions.v[2]; positions.v[1]=positions.v[3];
+                positions.v[2]=*(S208Vec *)next; next+=16;
+                positions.v[3]=*(S208Vec *)next; next+=16;
+                s208Mod(length[0],&integral);
+                float end=length[1];
+                float start=length[0]; length++;
+                float u0=start-integral, u1=end-integral;
+                uv.v[0].y=u0; uv.v[1].y=u0; uv.v[2].y=u1; uv.v[3].y=u1;
+                colors.v[0].w=colors.v[2].w;
+                colors.v[1].w=colors.v[2].w;
+                if(index==count) { colors.v[2].w=0.0f; colors.v[3].w=0.0f; }
+                else {
+                    float width=M2C_FIELD(obj,float *,0x4B8);
+                    float fade=(M2C_FIELD(obj,float *,0x4C0)-width*3.0f*end)/width;
+                    float capped=1.0f;
+                    if(!(fade>1.0f)) capped=fade;
+                    float alpha;
+                    if(capped>1.0f) alpha=127.0f; else alpha=capped*127.0f;
+                    colors.v[3].w=alpha; colors.v[2].w=alpha;
+                }
+                index++;
+                packet=s208Draw(packet,matrix,4,&uv,&colors,&positions,0);
+            } while(count>=index);
+        }
+    }
+    return packet;
+}
+
+#undef matrix
+#undef positions
+#undef colors
+#undef uv
+#undef integral
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay2__vfunc_08);
+#endif
 
 extern int _vt$13EffBloodStay3;
 extern int D_00298E10;
