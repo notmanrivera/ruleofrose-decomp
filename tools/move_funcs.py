@@ -62,7 +62,8 @@ def where(chunk, addr):
         return "text", addr[m.group(1)]
     if "{" not in t:
         return None
-    for m in re.finditer(r'^\S[^;\n]*?\b(\w+)\s*\(', t, re.M):
+    # a definition's first line has no ';' (a prototype's has)
+    for m in re.finditer(r'^\S[^;\n]*?\b(\w+)\s*\([^;\n]*$', t, re.M):
         if m.group(1) in addr:
             return "text", addr[m.group(1)]
     return None
@@ -81,6 +82,15 @@ def main():
     keep, move = [], []
     for c in chunks((ROOT / "src" / f"{a.old}.cpp").read_text(encoding="utf8")):
         w = where(c, addr)
+        t = "\n".join(c)
+        if w is None and re.search(r"\)\s*(const\s*)?\n?\{", t) and "inline" not in t \
+                and not re.match(r"\s*(//[^\n]*\n\s*)*(struct|class|union|enum|typedef)\b", t):
+            # A function definition whose symbol is not a glabel here (a C++
+            # method: its asm name is mangled). Left in the old file; check it.
+            first = next(l for l in c if re.match(r"\S", l) and not l.startswith("//"))
+            print(f"not placed (kept in {a.old}): {first.strip()[:100]}")
+            keep.append(c)
+            continue
         if w is None:
             keep.append(c)
             move.append(c)

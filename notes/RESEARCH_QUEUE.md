@@ -51,24 +51,12 @@ judgement and go to Sonnet.
   func_001DBC5C). Find what in their .rodata the compiler emits in
   another order than the asm piece (strings? the table?) and the source
   shape that gives the game's order.
-- [ ] R13 mw/i3d's architecture (the owner's outside brief, 2026-11-15),
-  READ-ONLY: (A) MagSystem's version check is known (src/mag/magsystem.cpp
-  ~250-275: 36 i3d type sizes checked through func_0021F1A8(i), message
-  "i3d_package_version 050121-stable-050826"); (B) inventory every call
-  from game code into 0x218500-0x237D00 (address, callers, known or
-  provisional name, prototype evidence); (C) classify them (resource
-  loading, node hierarchies, matrices, animation, lighting, textures,
-  render state, DMA/VIF/VU, memory); (D) compare the structures/offsets
-  DogModel, DogTexInfo, DogLightPool and MagSystem use with the public
-  model parsers (Murugo's Misc-Game-Research PS2/Rule of Rose/mdl2obj.py,
-  Durik256's Noesis fmt_i3dg.py: 0x10-byte nodes, types 0x25 materials,
-  0x2A bones, 0x2D meshes, 0x59 instances, VIF) and the 36 sizes; (E) map
-  i3d functions to Ape Escape 3's copy (disc/ape3/SCPS_150.96, see the
-  Done entry below) to find which of its strings/asserts name them; (F) a
-  minimal compatibility API for the PC/Vita ports (not just "replace the
-  renderer"). Needs Sonnet (judgement) plus [web] for the parsers.
 ## Done
 
+- [x] R13 mw/i3d's architecture (2026-11-16, Sonnet): 143 entry points,
+  1193 call sites, grouped; the version table compared with Ape Escape
+  3's; format checks against pxdl/Murugo; AE3 counterparts; a port API.
+  All in notes/I3D.md "Interface used by the game".
 - [x] R12 objdiff (2026-11-16, Sonnet): feasible, medium effort, a
   complement to match.py (which stays the authority). objdiff reads the
   R5900 ISA from e_flags (or mips_instr_category) and pairs HI16/LO16.
