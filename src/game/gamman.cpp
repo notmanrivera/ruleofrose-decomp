@@ -1,6 +1,9 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" int Xiii_func_001D9F10(int, int) asm("func_001D9F10");
+extern "C" void Xiiii_setPlayer__9MagSystemii(int, int, int) asm("setPlayer__9MagSystemii");
+extern "C" int Xiiuhi_func_001C7210(int, unsigned int, unsigned char, int) asm("func_001C7210");
 struct MapModelHide {
     int hide;
     char pad[0x520 - 4];
@@ -1626,7 +1629,31 @@ extern "C" int func_001CB1C0(GamMan *arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CB24C);
+extern "C" void func_001CB24C(int arg0, int arg1)
+{
+    int temp_v0_2;
+    int temp_a3;
+    int temp_v0;
+
+    if (arg1 == -1) {
+        return Xiiii_setPlayer__9MagSystemii((int)&D_006E9840, arg1, 0);
+    }
+    M2C_FIELD(arg0, int *, 0x21FCC) = arg1;
+    temp_v0 = Xiiu_func_001D2B8C(arg0, (unsigned int)arg1);
+    M2C_FIELD(arg0, int *, 0x22090) = temp_v0;
+    if (temp_v0 != 0) {
+        Xiii_func_001D9F10(temp_v0, 1);
+        temp_a3 = M2C_FIELD(arg0, int *, 0x22090);
+        M2C_FIELD(temp_a3, int *, 0x120) = M2C_FIELD(temp_a3, int *, 0x120) | 0x10000;
+        temp_v0_2 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x22090), int *, 0x108);
+        M2C_FIELD(arg0, int *, 0x21FDC) = temp_v0_2;
+        M2C_FIELD(arg0, int *, 0x21FE0) = (int)&D_006FE6A0 + (temp_v0_2 * 0x4D0);
+        Xiiii_setPlayer__9MagSystemii((int)&D_006E9840, -1, 0);
+        M2C_FIELD(arg0, int *, 0x21F70) = M2C_FIELD(arg0, int *, 0x21FDC);
+        M2C_FIELD(arg0, int *, 0x21F74) = -1;
+        Xiiuhi_func_001C7210(arg0, M2C_FIELD(arg0, unsigned int *, 0x21F6C), M2C_FIELD(arg0, unsigned char *, 0x21F78), 0);
+    }
+}
 
 extern "C" int func_001CB384(int arg0, int arg1)
 {
