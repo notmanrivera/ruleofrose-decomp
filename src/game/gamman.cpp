@@ -1,6 +1,9 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void X_void_191E04(void *, int, int) asm("func_00191E04");
+extern "C" void X_void_191E58(void *, int, int) asm("func_00191E58");
+extern "C" void func_00191C00(void *, int, int, int, int);
 extern "C" void func_001CF95C(GamMan *);
 extern "C" void func_001CDBF0(GamMan *);
 extern "C" void func_001C143C(GamMan *);
@@ -1878,7 +1881,53 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CF2E8);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CF518);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CF6BC);
+struct S2dMes {
+    void setMessageSpriteDispOn_(int a, int b, bool c = true)
+    {
+        X_func_00191F98(this, a);
+        X_func_00191ED0(this, a);
+        X_func_00191D20(this, a, 1);
+        X_func_00191D74(this, a, 1);
+        if (c) {
+            X_func_00191DC8(this, a, b);
+        }
+    }
+    void setMessageSpriteStdPoint(int a, int b, int c, int d)
+    {
+        func_00191C00(this, a, b, c, d);
+    }
+    void setMessageSpriteOffPoint(int a, int b, int c)
+    {
+        func_00191C64((char *)this, a, b, c);
+    }
+    void setMessageSpriteFadeIn_(int a, int b)
+    {
+        X_func_00191F98(this, a);
+        X_void_191E04(this, a, b);
+    }
+    void setMessageSpriteFadeOut(int a, int b)
+    {
+        X_void_191E58(this, a, b);
+    }
+};
+
+static inline S2dMes *getS2dMes()
+{
+    unsigned int off = 0x42BB0;
+    return (S2dMes *)(D_006FBD80 + off);
+}
+
+extern "C" void func_001CF6BC(int arg0, int arg1, int *arg2)
+{
+    if (arg1 != 0) {
+        getS2dMes()->setMessageSpriteDispOn_(3, arg2[0], true);
+        getS2dMes()->setMessageSpriteStdPoint(3, arg2[1] << 4, arg2[2] << 4, 0x80010);
+        getS2dMes()->setMessageSpriteOffPoint(3, arg2[5] << 4, arg2[6] << 4);
+        return getS2dMes()->setMessageSpriteFadeIn_(3, arg2[3]);
+    } else {
+        getS2dMes()->setMessageSpriteFadeOut(3, arg2[4]);
+    }
+}
 
 extern "C" void func_001CF7D0(GamMan *arg0, const GamMsgRect *arg1)
 {
