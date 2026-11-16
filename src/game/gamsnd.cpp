@@ -2039,7 +2039,113 @@ extern "C" void func_001E386C(Obj386C *self, Item2DB4 *item)
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E386C);
 #endif
 
+// NON_MATCHING: 296/306 differ, 17 relocs differ (size 0x4C8, game 0x4FC), 168 edits
+#ifdef NON_MATCHING
+struct Vec3; // decl3C24
+struct ALIGNED(16) Item3C24 { // decl3C24
+    float unused[4]; // decl3C24
+    float x,y,z; int pad; // decl3C24
+    unsigned int id; int handle; unsigned int flags; int zero; // decl3C24
+    int scene; void *data; float distance; int a,b; char tail[12]; // decl3C24
+}; // decl3C24
+struct Node3C24 { Node3C24 *prev,*next; Item3C24 item; }; // decl3C24
+struct Iter3C24 { // decl3C24
+    Node3C24 *node; // decl3C24
+    Iter3C24():node(0) {} // decl3C24
+    Iter3C24(Node3C24 *n):node(n) {} // decl3C24
+    Iter3C24(const Iter3C24 &i):node(i.node) {} // decl3C24
+    bool operator!=(const Iter3C24 &i) const { return node!=i.node; } // decl3C24
+    Item3C24 &operator*() const { return node->item; } // decl3C24
+    Iter3C24 &operator++() { node=node->next; return *this; } // decl3C24
+}; // decl3C24
+extern "C" int position3C24(void *, int, void *) asm("func_001D05F4"); // decl3C24
+extern "C" void calc3C24(int, Item3C24 *, void *, void *, float) asm("func_001E2350"); // decl3C24
+extern "C" void apply3C24(int, Item3C24 *) asm("func_001E386C"); // decl3C24
+extern "C" void stop3C24(int, unsigned int, int) asm("func_001E649C"); // decl3C24
+extern "C" int check3C24(void *, int) asm("func_001E7D7C"); // decl3C24
+extern "C" void cancel3C24(void *, int) asm("func_001E7724"); // decl3C24
+extern "C" void ctor3C24(void *, int, void *) asm("func_001F8FC0"); // decl3C24
+extern "C" void queue3C24(void *, int, int, int, int, void *, int, int *, int) asm("func_001E71FC"); // decl3C24
+extern "C" void *alloc3C24(unsigned int) asm("__builtin_new"); // decl3C24
+extern "C" void *memset(void *, int, unsigned int); // decl3C24
+extern "C" void func_001E3C24(int self, Vec3 *position)
+{
+    Item3C24 *nearest[4];
+    float v[3];
+    if (*(int *)(self+0x1870)&1) return;
+    if (*(int *)(world2DB4+0x21F4C)>=0) {
+        int scene=scene2DB4(world2DB4);
+        char *obj=(char *)find2DB4(bank2DB4,scene);
+        if (obj) {
+            memset(nearest,0,0x10);
+            Iter3C24 it, end;
+            it=Iter3C24(*(Node3C24 **)(self+0xB4));
+            end=Iter3C24((Node3C24 *)(self+0xB0));
+            while(it!=end) {
+                float distance;
+                Item3C24 *item=&*it;
+                if (item->zero) {
+                    if (!position3C24(world2DB4,item->zero,v) || ((it.node->item.flags&2) && it.node->item.scene!=scene)) {
+                        ++it;
+                        continue;
+                    }
+                    distance=(v[0]-((float *)position)[0])+(v[1]-((float *)position)[1])+(v[2]-((float *)position)[2]);
+                    calc3C24(self,&*it,v,0,distance);
+                } else {
+                    float x=(item->x-*(float *)(obj+0x20))-((float *)position)[0];
+                    if(x<0.0f) x=-x;
+                    distance=x;
+                    v[0]=(it.node->item.x-*(float *)(obj+0x20))-((float *)position)[0];
+                    v[1]=(it.node->item.y-*(float *)(obj+0x24))-((float *)position)[1];
+                    v[2]=(it.node->item.z-*(float *)(obj+0x28))-((float *)position)[2];
+                    calc3C24(self,&*it,&it.node->item.x,obj+0x20,x);
+                }
+                float dx=it.node->item.unused[0]-((float *)position)[0];
+                bool far=dx<0.0f ? dx < -15000.0f : dx > 15000.0f;
+                if (!far) {
+                    float dz=it.node->item.unused[2]-((float *)position)[2];
+                    far=dz<0.0f ? dz < -15000.0f : dz > 15000.0f;
+                }
+                if (far) {
+                    Item3C24 *p=&*it;
+                    int handle=p->handle;
+                    if(handle!=-1) {
+                        if(p->flags&1) {
+                            int msg[16];
+                            msg[3]=handle;
+                            int *entry=(int *)(*(int *)(self+0xD40)+handle*0x28);
+                            msg[8]=entry[1]; msg[5]=10; msg[9]=entry[2]; msg[1]=0; msg[2]=0;
+                            if(check3C24(&X_50C8_D_007A3D80,*(int *)(self+0x1718))) {
+                                cancel3C24(&X_50C8_D_007A3D80,*(int *)(self+0x1718));
+                                *(int *)(self+0x1718)=-1;
+                            }
+                            void *task=alloc3C24(0xC0);
+                            ctor3C24(task,1,msg);
+                            queue3C24(&X_50C8_D_007A3D80,1,-1,1,0,task,0,(int *)(self+0x1718),0x11);
+                        } else stop3C24(self,p->id,handle);
+                        it.node->item.handle=-1;
+                    }
+                } else {
+                    Item3C24 *p=&*it;
+                    int count=!(p->flags&1)?3:4;
+                    for(int i=0;i<count;i++) {
+                        if(!nearest[i]) { nearest[i]=p; break; }
+                        if(distance<nearest[i]->distance) {
+                            for(int j=count-1;i<j;j--) if(nearest[j-1]) nearest[j]=nearest[j-1];
+                            nearest[i]=&*it;
+                            break;
+                        }
+                    }
+                }
+                ++it;
+            }
+            for(int i=0;i<4;i++) if(nearest[i]) apply3C24(self,nearest[i]);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3C24);
+#endif
 
 // NON_MATCHING: 132/138 differ, 7 relocs differ (size 0x228, game 0x234), 54 edits
 #ifdef NON_MATCHING
