@@ -76,7 +76,32 @@ extern int D_0029C0F8;
 extern int D_006E9800;
 extern int D_007812C0;
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_0019397C);
+extern "C" void X_strcpy_pv(char *dst, char *src) asm("strcpy");
+
+extern "C" void func_0019397C(int arg0, char *arg1, int arg2, int arg3)
+{
+    char *p;
+    int i;
+    int count;
+
+    count = *(int *)((char *)arg0 + 0x20);
+    if (count == *(int *)((char *)arg0 + 0x1C)) {
+        return;
+    }
+    p = (char *)*(int *)((char *)arg0 + 0x18);
+    for (i = 0; i < count; i++) {
+        if ((*(int *)(p + 8) & 0xF) == (arg2 & 0xF)) {
+            if (*(int *)(p + 0xC) == arg3) {
+                return;
+            }
+        }
+        p += 0x30;
+    }
+    X_strcpy_pv(p + 0x10, arg1);
+    *(int *)(p + 8) = arg2;
+    *(int *)(p + 0xC) = arg3;
+    *(int *)((char *)arg0 + 0x20) = *(int *)((char *)arg0 + 0x20) + 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00193A1C);
 
