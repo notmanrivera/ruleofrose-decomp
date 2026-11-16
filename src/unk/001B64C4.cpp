@@ -254,7 +254,178 @@ extern int D_007B2140;
 extern int D_007B2580;
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 
+// NON_MATCHING: 111/323 differ, 15 relocs differ, 14 edits
+#ifdef NON_MATCHING
+struct C64Item { int words[4]; };
+extern char c64Heap[] asm("D_006E9840");
+extern "C" int c64_func_001C9198(GamMan *,C64Item) asm("func_001C9198");
+extern "C" int c64_func_0018F0EC(int,int,int,int) asm("func_0018F0EC");
+extern "C" int c64_func_0017F8FC(int,int) asm("func_0017F8FC");
+extern "C" int c64_func_0013511C(int,int,int,int,int) asm("func_0013511C");
+extern "C" int c64_func_001351B0(int,int,int) asm("func_001351B0");
+extern "C" int c64_func_00135088(int,int,int,int,int) asm("func_00135088");
+extern "C" int c64_func_001C5094(int,int,int,int) asm("func_001C5094");
+extern "C" int c64_func_001C51E0(int,int,int) asm("func_001C51E0");
+extern "C" int c64_func_001B070C(int,int,int) asm("func_001B070C");
+extern "C" int c64_func_001C8214(int,int) asm("func_001C8214");
+extern "C" int c64_func_001AF5E0(int) asm("func_001AF5E0");
+extern "C" int c64_func_0018F41C(int,int,int) asm("func_0018F41C");
+extern "C" int c64_func_0018C4D8(int,int,int) asm("func_0018C4D8");
+extern "C" int func_001B64C4(int arg0, int arg1) {
+    register int *choice PS2_REG("$16");
+    int temp_a1_2;
+    int temp_s2;
+    int temp_s2_3;
+    int temp_v1_2;
+    int var_s3;
+    unsigned short temp_a1;
+    unsigned int temp_v1;
+    unsigned int var_v0;
+    int temp_s0;
+    register int temp_s0_2 PS2_REG("$16");
+    int temp_s0_3;
+    int temp_s0_4;
+    int temp_s0_5;
+    register int temp_s2_2 PS2_REG("$18");
+    register int *indexPtr PS2_REG("$16");
+
+    temp_v1 = M2C_FIELD(arg0, unsigned int *, 0x5C);
+    var_s3 = 0;
+    switch (temp_v1) {
+    case 0:
+        M2C_FIELD(arg0, int *, 0x14) = 1;
+        /* fallthrough */
+    case 1:
+        temp_s0 = arg0 + 0x98;
+        M2C_FIELD(arg0, unsigned int *, 0x5C) = 6U;
+        var_s3 = 2;
+        c64_func_0018F0EC(temp_s0, 0x26, 1, -1);
+        c64_func_0018F0EC(temp_s0, 0x27, 1, -1);
+        c64_func_0018F0EC(temp_s0, 0x28, 1, -1);
+        c64_func_0018F0EC(temp_s0, 0x29, 1, -1);
+        M2C_FIELD(arg0, int *, 0x14) = 1;
+        break;
+    case 6:
+        if ((M2C_FIELD(arg1, int *, 0x70) & 0x10) && ((choice=(int *)(arg0+0x14), *choice) == 1)) {
+            var_s3 = 1;
+            c64_func_0017F8FC((int)&D_007B2580, 1);
+            *choice = 0;
+        }
+        if ((M2C_FIELD(arg1, int *, 0x70) & 0x40) && ((choice=(int *)(arg0+0x14), *choice) == 0)) {
+            var_s3 |= 2;
+            c64_func_0017F8FC((int)&D_007B2580, 1);
+            *choice = 1;
+        }
+        temp_a1 = M2C_FIELD(arg1, unsigned short *, 0x7A);
+        if ((temp_a1 >> 14) & 1) {
+            switch (M2C_FIELD(arg0,int *,0x14)) {
+            case 0: var_s3 |= 4; break;
+            case 1: var_s3 |= 8; break;
+            }
+        }
+        if ((temp_a1 >> 13) & 1) {
+            var_s3 |= 8;
+            M2C_FIELD(arg0,int *,0x14)=1;
+        }
+        if (var_s3 & 4) {
+            temp_s2 = M2C_FIELD(arg0, int *, 0x2470);
+            M2C_FIELD(arg0, int *, 0x248C) = 1;
+            if (temp_s2 == 1) {
+                if (M2C_FIELD(arg0, int *, 0x246C) == 0) {
+                    temp_s0_2 = (int)&c64Heap;
+                    temp_s0_2 += 0x12540;
+                    c64_func_0013511C(temp_s0_2, M2C_FIELD(arg0, int *, 0x2700), 0, 0, 0x80);
+                    c64_func_001351B0(temp_s0_2, M2C_FIELD(arg0, int *, 0x2700), 0);
+                    c64_func_00135088(temp_s0_2, M2C_FIELD(arg0, int *, 0x2700), 0xF, 0, 0x80);
+                    c64_func_001C5094((int)&D_007812C0, 8, 1, 0);
+                    c64_func_001C5094((int)&D_007812C0, 4, 1, 0);
+                    c64_func_001C51E0((int)&D_007812C0, 8, 0xF);
+                    c64_func_001C51E0((int)&D_007812C0, 4, 0xF);
+                    M2C_FIELD(arg0, int *, 0x246C) = temp_s2;
+                }
+            }
+            c64_func_0017F8FC((int)&D_007B2580, 4);
+            M2C_FIELD(arg0, unsigned int *, 0x5C) = 7U;
+        }
+        if (var_s3 & 8) {
+            c64_func_0017F8FC((int)&D_007B2580, 3);
+            goto block_35;
+        }
+        break;
+    case 7:
+        M2C_FIELD(arg0, unsigned int *, 0x5C) = 8U;
+        break;
+    case 8:
+        M2C_FIELD(arg0, unsigned int *, 0x5C) = 9U;
+        break;
+    case 9:
+        M2C_FIELD(arg0, unsigned int *, 0x5C) = 0xAU;
+        break;
+    case 10:
+        indexPtr=(int *)(arg0+8);
+        temp_s2_2 = arg0 + 4;
+        temp_a1_2 = *indexPtr;
+        if (M2C_FIELD(M2C_FIELD(((temp_a1_2 * 4) + temp_s2_2), int *, 0x2430), unsigned short *, 8) != 0xA00) {
+            if (c64_func_001B070C(arg0, temp_a1_2, 0x01000000) != 1) {
+                C64Item item = M2C_FIELD(M2C_FIELD(*indexPtr*4+temp_s2_2,int *,0x2430),C64Item *,0);
+                c64_func_001C9198(&D_007812C0,item);
+            }
+            c64_func_001C8214((int)&D_007812C0, *indexPtr);
+        }
+        c64_func_001AF5E0(arg0);
+block_35:
+        M2C_FIELD(arg0, unsigned int *, 0x5C) = 0xCU;
+        break;
+    case 12:
+        temp_s0_3 = arg0 + 0x98;
+        c64_func_0018F41C(temp_s0_3, 0x26, 6);
+        c64_func_0018F41C(temp_s0_3, 0x27, 6);
+        c64_func_0018F41C(temp_s0_3, 0x28, 6);
+        c64_func_0018F41C(temp_s0_3, 0x29, 6);
+        c64_func_0018F41C(temp_s0_3, 0x2A, 6);
+        c64_func_0018F41C(temp_s0_3, 0x2B, 6);
+        temp_s2_3 = M2C_FIELD(arg0, int *, 0x14);
+        M2C_FIELD(arg0, int *, 0x58) = (int) M2C_FIELD(((M2C_FIELD(arg0, int *, 0x58) * 4) + arg0), int *, 0x60);
+        if (temp_s2_3 == 1) {
+            M2C_FIELD(arg0, unsigned int *, 0x5C) = 6U;
+            c64_func_0018C4D8(temp_s0_3, 0x20, 3);
+            M2C_FIELD(M2C_FIELD(temp_s0_3, int *, 0x4AC), int *, 0x2A8C) = temp_s2_3;
+        }
+        break;
+    }
+    if (var_s3 != 0) {
+        temp_s0_4 = arg0 + 0x98;
+        if (var_s3 & 1) {
+            c64_func_0018F0EC(temp_s0_4, 0x2A, 1, -1);
+            c64_func_0018F0EC(temp_s0_4, 0x2B, 0, -1);
+            M2C_FIELD(M2C_FIELD(temp_s0_4, int *, 0x4AC), int *, 0x37E0) = 0x80;
+            M2C_FIELD(M2C_FIELD(temp_s0_4, int *, 0x4AC), int *, 0x37E4) = 0x80;
+            M2C_FIELD(M2C_FIELD(temp_s0_4, int *, 0x4AC), int *, 0x37E8) = 0x80;
+            M2C_FIELD(M2C_FIELD(temp_s0_4, int *, 0x4AC), int *, 0x37EC) = 0x80;
+            M2C_FIELD(M2C_FIELD(temp_s0_4, int *, 0x4AC), int *, 0x3934) = 0x80;
+            M2C_FIELD(M2C_FIELD(temp_s0_4, int *, 0x4AC), int *, 0x3938) = 0x80;
+            M2C_FIELD(M2C_FIELD(temp_s0_4, int *, 0x4AC), int *, 0x393C) = 0x80;
+            M2C_FIELD(M2C_FIELD(temp_s0_4, int *, 0x4AC), int *, 0x3940) = 0x28;
+        }
+        temp_s0_5 = arg0 + 0x98;
+        if (var_s3 & 2) {
+            c64_func_0018F0EC(temp_s0_5, 0x2A, 0, -1);
+            c64_func_0018F0EC(temp_s0_5, 0x2B, 1, -1);
+            M2C_FIELD(M2C_FIELD(temp_s0_5, int *, 0x4AC), int *, 0x37E0) = 0x80;
+            M2C_FIELD(M2C_FIELD(temp_s0_5, int *, 0x4AC), int *, 0x37E4) = 0x80;
+            M2C_FIELD(M2C_FIELD(temp_s0_5, int *, 0x4AC), int *, 0x37E8) = 0x80;
+            M2C_FIELD(M2C_FIELD(temp_s0_5, int *, 0x4AC), int *, 0x37EC) = 0x28;
+            M2C_FIELD(M2C_FIELD(temp_s0_5, int *, 0x4AC), int *, 0x3934) = 0x80;
+            M2C_FIELD(M2C_FIELD(temp_s0_5, int *, 0x4AC), int *, 0x3938) = 0x80;
+            M2C_FIELD(M2C_FIELD(temp_s0_5, int *, 0x4AC), int *, 0x393C) = 0x80;
+            M2C_FIELD(M2C_FIELD(temp_s0_5, int *, 0x4AC), int *, 0x3940) = 0x80;
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001B64C4", func_001B64C4);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/001B64C4", func_001B69D0);
 
