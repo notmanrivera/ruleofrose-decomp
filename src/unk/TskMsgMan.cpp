@@ -601,7 +601,87 @@ fail:
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAFB0);
 
+// NON_MATCHING: 157/190 differ, 10 relocs differ (size 0x2F8, game 0x308), 155 edits
+#ifdef NON_MATCHING
+struct RoundFnB63 { int w[2]; };
+extern const RoundFnB63 roundFn0B63 asm("D_002FDCB8");
+extern const RoundFnB63 roundFn1B63 asm("D_002FDCC0");
+extern const RoundFnB63 roundFn2B63 asm("D_002FDCC8");
+extern "C" int roundMoveB63(int, int, int, int, int, int, float) asm("func_001F6308");
+extern "C" void func_001EB63C(int arg0, int arg1, int arg2, int arg3, int arg4, float f0, float f1, float f2) {
+    M2C_FIELD(arg0, int *, 0) = (int)&_vt$16TskMoveTypeRound;
+    M2C_FIELD(arg0, int *, 8) = arg1;
+    register int man PS2_REG("$21") = (int)&D_006FBD80;
+    int obj = X_func_001D2B8C_f1670((int)&D_007812C0, arg1);
+    float one = 1.0f;
+    M2C_FIELD(arg0, int *, 4) = obj;
+    register int stride PS2_REG("$22") = 0x4D0;
+    float *pos = (float *)(arg0 + 0x40);
+    float *rot = (float *)(arg0 + 0x50);
+    int id = M2C_FIELD(obj, int *, 0x108);
+    M2C_FIELD(arg0, float *, 0x1C) = f0;
+    M2C_FIELD(arg0, int *, 0xC) = id;
+    M2C_FIELD(arg0, float *, 0x28) = f1;
+    M2C_FIELD(arg0, float *, 0x24) = one;
+    M2C_FIELD(arg0, int *, 0x2C) = arg2;
+    int actor = id * stride + man;
+    actor += 0x2920;
+    pos[0] = M2C_FIELD(actor, float *, 0x40);
+    pos[1] = M2C_FIELD(actor, float *, 0x44);
+    pos[2] = M2C_FIELD(actor, float *, 0x48);
+    actor = M2C_FIELD(arg0, int *, 0xC) * stride + man;
+    actor += 0x2920;
+    rot[0] = M2C_FIELD(actor, float *, 0x50);
+    rot[1] = M2C_FIELD(actor, float *, 0x54);
+    rot[2] = M2C_FIELD(actor, float *, 0x58);
+    int n;
+    float *p;
+    switch(arg2) {
+    case 0:
+        M2C_FIELD(arg0, int *, 0x10) = arg3;
+        n = Xiiu_func_001CBE38(&D_007812C0, arg3);
+        p = (float *)(arg0 + 0x30);
+        M2C_FIELD(arg0, int *, 0x14) = n;
+        actor = n * stride + man;
+        actor += 0x2920;
+        p[0] = M2C_FIELD(actor, float *, 0x40);
+        p[1] = M2C_FIELD(actor, float *, 0x44);
+        p[2] = M2C_FIELD(actor, float *, 0x48);
+        M2C_FIELD(arg0, RoundFnB63 *, 0x60) = roundFn0B63;
+        goto move;
+    case 1:
+        M2C_FIELD(arg0, float *, 0x30) = M2C_FIELD(arg3, float *, 0);
+        M2C_FIELD(arg0, float *, 0x34) = M2C_FIELD(arg3, float *, 4);
+        M2C_FIELD(arg0, float *, 0x38) = M2C_FIELD(arg3, float *, 8);
+        M2C_FIELD(arg0, RoundFnB63 *, 0x60) = roundFn1B63;
+move:
+        roundMoveB63(M2C_FIELD(arg0, int *, 0xC), arg4, 0, 0x100, arg1, 0, f2);
+        break;
+    case 2:
+        M2C_FIELD(arg0, int *, 0x10) = arg3;
+        n = Xiiu_func_001CBE38(&D_007812C0, arg3);
+        p = (float *)(arg0 + 0x30);
+        M2C_FIELD(arg0, int *, 0x14) = n;
+        actor = n * stride + man;
+        actor += 0x2920;
+        p[0] = M2C_FIELD(actor, float *, 0x40);
+        p[1] = M2C_FIELD(actor, float *, 0x44);
+        p[2] = M2C_FIELD(actor, float *, 0x48);
+        M2C_FIELD(arg0, RoundFnB63 *, 0x60) = roundFn2B63;
+        goto follow;
+    case 3:
+        M2C_FIELD(arg0, float *, 0x30) = M2C_FIELD(arg3, float *, 0);
+        M2C_FIELD(arg0, float *, 0x34) = M2C_FIELD(arg3, float *, 4);
+        M2C_FIELD(arg0, float *, 0x38) = M2C_FIELD(arg3, float *, 8);
+        M2C_FIELD(arg0, RoundFnB63 *, 0x60) = roundFn1B63;
+follow:
+        M2C_FIELD(arg0, int *, 0x68) = X_func_001F59B4_ee954(arg1, arg4, -1, 0x100, 0, f2, 32769.0f);
+        break;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EB63C);
+#endif
 
 extern "C" void TskMoveTypeRound__vfunc_06(int arg0, int arg1)
 {
