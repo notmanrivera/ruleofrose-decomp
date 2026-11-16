@@ -51,6 +51,14 @@ files: Saru! Get You! 3 Tentou-you Taikenban `PCPX_966.57`, and Ape Escape 3
 i3d package itself, so no names for mw/i3d. That leaves no known symbol
 source for the i3d package.
 
+**Other users (R14, 2026-11-15, web survey):** only Rule of Rose and Ape
+Escape 3 are publicly known to link the package; `i3d_package_version` has
+no web hits, and no i3d game has public symbols or a source-level
+decompilation. Untested candidates: Saru! Get You! Million Monkeys (2006)
+and other SCEJ titles of 2005-06. `pxdl/ae3-sdk` `docs/formats/I3D.md`
+documents the I3D_BIN format from Ape Escape 3's ELF (BIN version
+0x00100001, 90 node handlers, build stamp 2005/12/16).
+
 ## Formats (public tools, for R13 and the port)
 
 | Tool | Covers |
