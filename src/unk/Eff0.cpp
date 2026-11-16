@@ -479,7 +479,75 @@ loop_3:
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay1__vfunc_08);
 #endif
 
+// NON_MATCHING: 106/129 differ, 9 relocs differ, 76 edits
+#ifdef NON_MATCHING
+struct ALIGNED(8) VecCCB8 { float x,y,z,w; };
+struct ALIGNED(8) MatCCB8 { long long a,b,c,d,e,f,g,h; };
+extern VecCCB8 ccScale asm("D_002F20D0");
+extern "C" double ccSin(double) asm("sin");
+extern "C" void ccScaleMat(MatCCB8 *, MatCCB8 *, VecCCB8 *) asm("func_00237A40");
+extern "C" void ccLight(VecCCB8 *) asm("func_0016AF20");
+extern "C" void ccColor(VecCCB8 *, float) asm("func_0016AE00");
+extern "C" int ccMatrix(int, MatCCB8 *) asm("func_0021E428");
+extern "C" int ccVertex(int, VecCCB8 *, VecCCB8 *) asm("func_0021E690");
+extern "C" int func_0016CCB8(int obj, int param)
+{
+    MatCCB8 matrix;
+    VecCCB8 scale;
+    VecCCB8 color;
+    VecCCB8 temp;
+    register float ratio PS2_REG("$f20") = (float)M2C_FIELD(param,int *,12) / 20.0f;
+    register float one PS2_REG("$f0") = 1.0f;
+    float capped = one;
+    if (!(ratio > one)) capped = ratio;
+    ratio = capped;
+    long long scale0 = *(long long *)&ccScale;
+    long long scale1 = *((long long *)&ccScale + 1);
+    long long r0 = M2C_FIELD(obj,long long *,0x70);
+    long long r2 = M2C_FIELD(obj,long long *,0x80);
+    long long r3 = M2C_FIELD(obj,long long *,0x88);
+    long long r4 = M2C_FIELD(obj,long long *,0x90);
+    long long r6 = M2C_FIELD(obj,long long *,0xA0);
+    long long r1 = M2C_FIELD(obj,long long *,0x78);
+    long long r7 = M2C_FIELD(obj,long long *,0xA8);
+    long long r5 = M2C_FIELD(obj,long long *,0x98);
+    matrix.a = r0;
+    matrix.b = r1;
+    matrix.c = r2;
+    matrix.d = r3;
+    matrix.e = r4;
+    matrix.f = r5;
+    matrix.g = r6;
+    matrix.h = r7;
+    *(long long *)&scale = scale0;
+    *((long long *)&scale + 1) = scale1;
+    float amount = (float)(ccSin((double)((((ratio * 45.0f) + 45.0f) * 3.14159265f) / 180.0f)) * (double)M2C_FIELD(param,float *,8));
+    scale.y = amount;
+    scale.x = amount;
+    ccScaleMat(&matrix, &matrix, &scale);
+    temp.x = 1.0f;
+    temp.y = 1.0f;
+    temp.z = 1.0f;
+    temp.w = 2.0f * (M2C_FIELD(obj,float *,0xB8) * ratio);
+    color = temp;
+    one = 1.0f;
+    float alpha = one;
+    if (!(color.w > one)) alpha = color.w;
+    color.w = alpha;
+    ccLight(&color);
+    ccColor(&color, M2C_FIELD(param,float *,4));
+    float *pos = M2C_FIELD(param,float **,0);
+    VecCCB8 *translation = (VecCCB8 *)((char *)&matrix + 0x30);
+    translation->x += pos[0];
+    translation->y += -2.0f;
+    translation->z += pos[1];
+    int packet = ccMatrix(M2C_FIELD(param,int *,0x14), &matrix);
+    M2C_FIELD(param,int *,0x14) = packet;
+    return ccVertex(packet,translation,&color);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016CCB8);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016CEBC);
 
