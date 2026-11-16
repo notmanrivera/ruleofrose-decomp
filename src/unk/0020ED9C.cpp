@@ -1,4 +1,82 @@
 #include "include_asm.h"
+#ifdef NON_MATCHING
+
+struct Data20F4FC { unsigned char b[0xB0]; };
+struct List20F4FC {
+    struct Node {
+        Node *m_prev;
+        Node *m_next;
+        int pad[2];
+        Data20F4FC m_data;
+    } ALIGNED(16);
+    struct Chain {
+        Node m_head;
+        int m_num;
+        void push_back(Node *theNode)
+        {
+            if (m_num == 0) {
+                m_head.m_next = theNode;
+                theNode->m_prev = &m_head;
+            } else {
+                m_head.m_prev->m_next = theNode;
+                theNode->m_prev = m_head.m_prev;
+            }
+            theNode->m_next = &m_head;
+            m_head.m_prev = theNode;
+            ++m_num;
+        }
+        void unlink(Node *theNode)
+        {
+            if (theNode == m_head.m_next) {
+                Node *next = theNode->m_next;
+                m_head.m_next = next;
+                next->m_prev = &m_head;
+            } else if (theNode == m_head.m_prev) {
+                Node *p = theNode->m_prev;
+                m_head.m_prev = p;
+                p->m_next = &m_head;
+            } else {
+                Node *p = theNode->m_prev;
+                p->m_next = theNode->m_next;
+                Node *prev = theNode->m_prev;
+                p = theNode->m_next;
+                p->m_prev = prev;
+            }
+            --m_num;
+        }
+    };
+    struct iterator {
+        Node *m_node;
+        iterator() : m_node(0) {}
+        iterator(Node *theNode) : m_node(theNode) {}
+        iterator(const iterator &theIt) : m_node(theIt.m_node) {}
+        Data20F4FC &operator*() const { return m_node->m_data; }
+        iterator &operator++()
+        {
+            m_node = m_node->m_next;
+            return *this;
+        }
+        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; }
+    };
+    Chain m_free;
+    Chain m_used;
+    iterator begin() { return iterator(m_used.m_head.m_next); }
+    iterator end() { return iterator(&m_used.m_head); }
+    iterator erase(iterator thePos)
+    {
+        iterator next = thePos;
+        ++next;
+        Node *n = thePos.m_node;
+        m_used.unlink(n);
+        m_free.push_back(n);
+        return next;
+    }
+};
+
+struct Obj20F4FC { char pad[0x6200]; List20F4FC list; };
+extern "C" void F4FC_start(void *) asm("func_001C4168");
+extern "C" void F4FC_stop(void *) asm("func_001C43F0");
+#endif
 extern const char D_00301710[];
 extern "C" int X_strncpy(...) asm("strncpy");
 struct F11E_record { int data[44]; };
@@ -629,7 +707,34 @@ extern "C" void func_0020F428(int arg0, char *arg1)
     Xv_memset(arg1, 0, 0xB0);
 }
 
+// NON_MATCHING: 84/145 differ, 1 reloc differs (size 0x244, game 0x28C), 62 edits
+#ifdef NON_MATCHING
+extern "C" void func_0020F4FC(Obj20F4FC *self)
+{
+
+    List20F4FC::iterator it;
+    List20F4FC::iterator end;
+    List20F4FC::iterator found;
+    it = self->list.begin();
+    end = self->list.end();
+    for (; it != end; ++it) {
+        unsigned int id = *(unsigned int *)((*it).b + 4);
+        int kind = id >> 30;
+        if (X2D08_func_00213C6C((int)self, id, (int)&found, *(int *)((*it).b + 0x28))) {
+            if (*(unsigned int *)((*it).b + 4) == 0x44000000) F4FC_start(&D_007812C0);
+            if (*(unsigned int *)((*it).b + 4) == 0x84000000) F4FC_stop(&D_007812C0);
+            switch (kind) {
+            case 0: ((List20F4FC *)*(int *)((char *)self + 0x10))->erase(found); break;
+            case 1: ((List20F4FC *)*(int *)((char *)self + 0x14))->erase(found); break;
+            case 2: ((List20F4FC *)*(int *)((char *)self + 0x18))->erase(found); break;
+            }
+            func_0020F428((int)self, (char *)&*found);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020F4FC);
+#endif
 
 extern "C" void func_0020F788(int arg0)
 {
