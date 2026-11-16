@@ -83,3 +83,32 @@ Lost Releases, Hidden Palace, Retro Reversing, PCSX2 forums/wiki).
   modulation and the original render states, not only the dynamic lights.
   Nothing explains the Mag/Dog prefixes.
 - Million Monkeys trial (PCPX-98041): **checked**, no i3d (notes/I3D.md).
+
+## Sound library and SDK, other games (checked 2026-11-16)
+
+The owner's discs: Wild Arms: The Vth Vanguard trial (Japan, PAPX_905.24),
+Arc the Lad: Seirei no Tasogare premiere disc (Japan demo, PAPX_902.30),
+Arc the Lad: Twilight of the Spirits (USA, SCUS_972.31), Athens 2004 PAL
+demo (SCED_524.91; not the SCED-53122 that Retro Reversing lists with a
+.MAP: no .MAP or symbols on this disc). All stripped.
+
+| ELF | SDK | mw/sound chunks found | sdk/ chunks found |
+|---|---|---|---|
+| Wild Arms 5 trial | 3.0.0 (libdbc 3030) | 370/375 (75.6 of 76.8 KB) | 469/1376 (125 of 264 KB) |
+| Arc the Lad JP demo | 2.6.0 | 264/375 (40.6 KB) | 298/1376 (75 KB) |
+| Arc the Lad USA | 2.4.x | 6/375 | 149/1376 |
+| Athens 2004 demo | 3.0.0 | 0 | 211/1376 (59 KB) |
+
+- mw/sound is SCE's shared "rx" library (RXSNDDRV.IRX on the IOP; rxSnd*,
+  rxFile, rxThread on the EE), nearly identical in Wild Arms 5: not
+  Punchline's own code. Same treatment as i3d: work done on it serves
+  other games, and Wild Arms 5 is the reference copy.
+- Names: the rx strings that code references, in functions identical to
+  ours, give only what our own ELF already says: 0x23B3B4 (uses
+  "rxSndBgmStop"), 0x23C0F8 ("rxSndSeStop"), 0x23CE94 ("rxSndPcmClose"),
+  0x23E01C ("rxSndAdpcmClose"), 0x2480A8 (rxFile HDD I/O error),
+  0x24A258 (rxThAddCallback failed), 0x24AFF4 / 0x24B048 (rxThread
+  messages). Likely those functions' names or their callers' (unchecked).
+  The Arc the Lad demo's other 70 rx strings (rxHdd*, rxGsSyncPath) are
+  modules Rule of Rose does not link.
+- No .MAP among these, so the sdk/ names still come from signatures.
