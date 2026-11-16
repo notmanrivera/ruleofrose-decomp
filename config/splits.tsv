@@ -33,12 +33,12 @@ text	rodata	data	bss	file	confidence
 001194B4	002E9510	-	-	mag/maglifeman	manual
 00119B34	002E9598	-	-	mag/maglife	likely
 0011AB40	002E96B0	-	-	mag/maglifepc	manual
-0011C464	002EA1E8	-	-	mag/maglifepc2	likely
+0011C464	002EA208	-	-	mag/maglifepc2	manual
 0011D720	002EA5F0	002961E0	-	mag/maglifepc3	certain
 0011DF7C	002EA8D0	00297220	0030FFF0	mag/maglifepcmove	likely
 00120788	002EAD00	-	-	mag/maglifepcmode	likely
 001233D8	002EAFA0	00297408	-	mag/maglifebwn	likely
-00125A20	002EBBF8	-	-	unk/MagLifeBwnModeSit	likely
+00125A20	002EBC60	-	-	unk/MagLifeBwnModeSit	manual
 00126008	002EBC70	-	-	mag/maglifebwnmode	likely
 001267C0	002EBD00	-	-	mag/maglifebwnctrl	likely
 0012B870	002EC4B0	00298178	-	mag/maglifepcbtl	likely
@@ -97,7 +97,7 @@ text	rodata	data	bss	file	confidence
 0018BD94	002F7940	-	006E93D4	unk/0018BD94	likely
 0018F6DC	002F79E0	00299950	-	spr/sprtexture	likely
 001916C4	002F7C60	0029A388	-	unk/mnuBase	likely
-0019397C	002F7D20	0029BFB4	-	unk/MnuPBook	family
+0019397C	002F7D30	0029BFB4	-	unk/MnuPBook	manual
 00198318	002F8150	0029C368	006E9408	unk/MnuDiary	likely
 001A066C	002F8500	-	-	mnu/mnuselect	likely
 001A0950	002F8530	002A4524	-	mnu/mnudlg	likely

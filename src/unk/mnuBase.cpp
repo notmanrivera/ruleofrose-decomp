@@ -689,3 +689,5 @@ extern "C" void mnuBase__vfunc_11(int arg0)
 
 
 INCLUDE_RODATA("asm/nonmatchings/unk/mnuBase", D_002F7D10);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/mnuBase", D_002F7D20);

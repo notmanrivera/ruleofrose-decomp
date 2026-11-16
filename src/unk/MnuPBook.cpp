@@ -257,8 +257,6 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00194688);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001946E4);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F7D20);
-
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001947A4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuMap__vfunc_01);

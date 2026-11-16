@@ -490,3 +490,8 @@ extern "C" void renderPostProcess__10MagLifeBwn(MagBwn *self)
     }
 }
 
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EBBF8);
+
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EBC08);
+
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EBC20);

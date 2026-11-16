@@ -922,3 +922,4 @@ extern "C" void termWorld__9MagLifePC(MagPC *self)
     I(self, 0xD0) = 1000;
 }
 
+INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc", D_002EA1E8);

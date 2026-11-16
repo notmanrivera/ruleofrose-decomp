@@ -54,12 +54,6 @@ INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", init__18MagLifeBwnModeFuse
 
 INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", term__18MagLifeBwnModeFuseR10MagLifeBwni);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/MagLifeBwnModeSit", D_002EBBF8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/MagLifeBwnModeSit", D_002EBC08);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/MagLifeBwnModeSit", D_002EBC20);
-
 INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", init__18MagLifeBwnModeMoveR10MagLifeBwn);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", live__18MagLifeBwnModeMoveR10MagLifeBwn);

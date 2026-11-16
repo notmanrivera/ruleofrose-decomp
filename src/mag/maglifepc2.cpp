@@ -112,8 +112,6 @@ extern "C" int func_0011C52C(void *self, char *thePos, int theMax)
     return count;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc2", D_002EA1E8);
-
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepc2", D_002EA208);
 
 void vecTurnY(float *theVec, float theAngle);
