@@ -78,7 +78,101 @@ extern "C" void func_001A5034(int arg0)
     Xiiii_func_001A4E34(arg0, arg0 + 0x834, 0x10);
 }
 
+// NON_MATCHING: 178/180 differ, 20 relocs differ (size 0x2D0, game 0x2F8), 208 edits
+#ifdef NON_MATCHING
+extern "C" int Xii_strlen(int) asm("strlen");
+extern "C" int X5070_strcpy(int, int) asm("strcpy");
+extern "C" int Xiii_strstr(int, int) asm("strstr");
+extern "C" int Xiiii_strncpy(int, int, int) asm("strncpy");
+extern const char D_002F9118[];
+extern const char D_002F9120[];
+extern "C" char *S5070_find(const char *, const char *) asm("strstr");
+extern "C" unsigned int S5070_len(const char *) asm("strlen");
+extern "C" char *S5070_copy(char *, const char *) asm("strcpy");
+extern "C" char *S5070_ncopy(char *, const char *, unsigned int) asm("strncpy");
+extern "C" void func_001A5070(int arg0, char *arg1, char *arg2, int arg3, int arg4, int arg5, int arg6)
+{
+    if (M2C_FIELD(arg0, int *, 0) && M2C_FIELD(arg0, int *, 0x7D8) != 1) {
+        M2C_FIELD(arg0, int *, 0x7D8) = 1;
+        M2C_FIELD(arg0, int *, 0x7D4) = -1;
+        M2C_FIELD(arg0, int *, 0x7DC) = arg3;
+        M2C_FIELD(arg0, int *, 0x7E0) = arg4;
+        M2C_FIELD(arg0, int *, 0x7E4) = arg5;
+        M2C_FIELD(arg0, int *, 0x7E8) = arg6;
+        { char *p = arg1; char **slots = (char **)(arg0 + 0x7F4); int n = 0;
+        while (*p) {
+            char *a = S5070_find(p, D_002F9118);
+            char *b = S5070_find(p, D_002F9120);
+            if (!a) {
+                if (!b) {
+                    if (S5070_len(p)) S5070_copy(slots[n++], p);
+                } else {
+                    int length = b - p;
+                    char **slot = &slots[n++];
+                    S5070_ncopy(*slot, p, length);
+                    (*slot)[length] = 0;
+                }
+                break;
+            } else {
+                int length = a - p;
+                char **slot = &slots[n++];
+                if (!b) {
+                    S5070_ncopy(*slot, p, length);
+                    p = a + 2;
+                    (*slot)[length] = 0;
+                } else if (length < b - p) {
+                    S5070_ncopy(*slot, p, length);
+                    p = a + 2;
+                    (*slot)[length] = 0;
+                } else {
+                    length = b - p;
+                    S5070_ncopy(*slot, p, length);
+                    (*slot)[length] = 0;
+                    break;
+                }
+            }
+        }
+        M2C_FIELD(arg0, int *, 0x20) = n; }
+
+        { char *p = arg2; char **slots = (char **)(arg0 + 0x834); int n = 0;
+        while (*p) {
+            char *a = S5070_find(p, D_002F9118);
+            char *b = S5070_find(p, D_002F9120);
+            if (!a) {
+                if (!b) {
+                    if (S5070_len(p)) S5070_copy(slots[n++], p);
+                } else {
+                    int length = b - p;
+                    char **slot = &slots[n++];
+                    S5070_ncopy(*slot, p, length);
+                    (*slot)[length] = 0;
+                }
+                break;
+            } else {
+                int length = a - p;
+                char **slot = &slots[n++];
+                if (!b) {
+                    S5070_ncopy(*slot, p, length);
+                    p = a + 2;
+                    (*slot)[length] = 0;
+                } else if (length < b - p) {
+                    S5070_ncopy(*slot, p, length);
+                    p = a + 2;
+                    (*slot)[length] = 0;
+                } else {
+                    length = b - p;
+                    S5070_ncopy(*slot, p, length);
+                    (*slot)[length] = 0;
+                    break;
+                }
+            }
+        }
+        M2C_FIELD(arg0, int *, 0x24) = n; }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A5070);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A5368);
 
