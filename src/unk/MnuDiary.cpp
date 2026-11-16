@@ -747,7 +747,136 @@ extern "C" void func_00198EB4(int arg0)
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuDiary", D_002F8228);
 
+// NON_MATCHING: 44/238 differ, 1 reloc differs (size 0x3B8, game 0x3BC), 33 edits
+#ifdef NON_MATCHING
+extern int diaryV5Sound asm("D_007B2580");
+extern int diaryV5Work asm("D_007A4440");
+extern "C" int diaryV5X_func_00279C98(...) asm("func_00279C98");
+extern "C" int diaryV5Xii_func_00131550(int) asm("func_00131550");
+extern "C" int diaryV5Xii_func_00192F3C(int) asm("func_00192F3C");
+extern "C" int diaryV5Xii_func_00193A1C(int) asm("func_00193A1C");
+extern "C" int diaryV5Xii_func_00198B54(int) asm("func_00198B54");
+extern "C" int diaryV5Xii_func_00198CA8(int) asm("func_00198CA8");
+extern "C" int diaryV5Xii_func_00198EB4(int) asm("func_00198EB4");
+extern "C" int diaryV5Xii_func_00199714(int) asm("func_00199714");
+extern "C" int diaryV5Xii_func_001D44E4(int) asm("func_001D44E4");
+extern "C" int diaryV5Xiii_func_0017F8FC(int, int) asm("func_0017F8FC");
+extern "C" int diaryV5Xiii_func_0019946C(int, int) asm("func_0019946C");
+extern "C" int diaryV5Xiiiii_func_00131184(int, int, int, int) asm("func_00131184");
+extern "C" int diaryV5Xiiiii_func_001311BC(int, int, int, int) asm("func_001311BC");
+extern "C" int diaryV5Xiiiii_func_001C5094(int, int, int, int) asm("func_001C5094");
+extern "C" int diaryV5Xiiiii_func_001D83D0(int, int, int, int) asm("func_001D83D0");
+extern "C" int diaryV5Xiiui_func_001351B0(int, unsigned int, int) asm("func_001351B0");
+struct m2c_v10C_18_i { char pad[268]; virtual void v1(); virtual void v2(); virtual int call(); };
+struct m2c_v10C_50_i { char pad[268]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual int call(); };
+struct m2c_v10C_58_i { char pad[268]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual int call(); };
+inline bool diaryV5Ready(int p) { return diaryV5Xii_func_00131550(p) >= 5; }
+inline int diaryV5SlotA(char *p) { return *(int *)(p+0xDC1C); }
+inline int diaryV5SlotB(char *p) { return *(int *)(p+0xDC20); }
+inline void diaryV5Clear(int *p, int mask) { *p &= ~mask; }
+inline void diaryV5Set(int *p, int mask) { *p |= mask; }
+extern "C" int MnuDiary__vfunc_05(int arg0, int arg1)
+{
+    int temp_a1;
+    int temp_a0;
+    int temp_v1_2;
+    int temp_v1_3;
+    int var_s2;
+    int var_v0;
+    unsigned int temp_v0_3;
+    unsigned int temp_v1;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_4;
+
+    var_s2 = 0;
+    diaryV5Xii_func_00193A1C(arg0);
+    diaryV5Xii_func_00199714(arg0);
+    temp_v1 = M2C_FIELD(arg0, unsigned int *, 0x14);
+    M2C_FIELD(arg0, unsigned int *, 0x10) = temp_v1;
+    switch (temp_v1) {
+    case 0:
+        if (!(M2C_FIELD(arg0, int *, 4) & 0x20000) && diaryV5Ready(M2C_FIELD(arg0, int *, 8))) {
+            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x20000);
+        }
+        temp_v1_2 = M2C_FIELD(arg0, int *, 4);
+        if (!(temp_v1_2 & 0x10000) && (M2C_FIELD(arg0, int *, 0x20) == 0)) {
+            M2C_FIELD(arg0, int *, 4) = (int) (temp_v1_2 | 0x10000);
+            ((m2c_v10C_58_i *)(arg0))->call();
+            diaryV5X_func_00279C98(arg0 + 0x24, (int) "data/mnurpk/mnupbook/%s.rpk", M2C_FIELD(arg0, int *, 0x110) + 0xC);
+            ((m2c_v10C_50_i *)(arg0))->call();
+            diaryV5Xii_func_00198B54(arg0);
+            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x20000);
+        }
+        var_v0 = 0;
+        if ((M2C_FIELD(arg0, int *, 4) & 0x30000) == 0x30000) {
+            M2C_FIELD(arg0, unsigned int *, 0x14) = 1U;
+        } else { return 0;
+        default:
+            break;
+        }
+        break;
+    case 1:
+        if (M2C_FIELD(arg0, int *, 0x20) != 0) return 0;
+        if (M2C_FIELD(arg0, int *, 0x20) == 0) {
+            diaryV5Xii_func_00198CA8(arg0);
+            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & 0xFFFCFFFF);
+            diaryV5Xiiiii_func_00131184((int) M2C_FIELD(arg0, int *, 8), 0xF, 7, 0);
+            M2C_FIELD(arg0, unsigned int *, 0x14) = 2U;
+            break;
+        }
+        break;
+    case 2:
+        if (!(M2C_FIELD(arg0, int *, 4) & 0x20000) && diaryV5Ready(M2C_FIELD(arg0, int *, 8))) {
+            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x20000);
+        }
+        temp_v1_3 = M2C_FIELD(arg0, int *, 4);
+        if (!(temp_v1_3 & 0x10000) && (M2C_FIELD(arg0, int *, 0x20) == 0)) {
+            M2C_FIELD(arg0, int *, 4) = (int) (temp_v1_3 | 0x10000);
+            diaryV5Xii_func_00198EB4(arg0);
+        }
+        temp_a0 = M2C_FIELD(arg0, int *, 4);
+        var_v0 = 0;
+        if ((temp_a0 & 0x30000) == 0x30000) {
+            M2C_FIELD(arg0, unsigned int *, 0x14) = 3U;
+            M2C_FIELD(arg0, int *, 4) = (int) (temp_a0 & ~2);
+            break;
+        }
+        break;
+    case 3:
+        if (diaryV5Xiii_func_0019946C(arg0, arg1) == 0) {
+            diaryV5Xiiiii_func_001311BC((int) M2C_FIELD(arg0, int *, 8), 0xF, 7, 0);
+            diaryV5Xiii_func_0017F8FC((int) (int)&diaryV5Sound, 2);
+            diaryV5Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 0, 0);
+            diaryV5Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x130), 1);
+            M2C_FIELD(arg0, unsigned int *, 0x14) = 4U;
+        }
+        break;
+    case 4:
+        if (diaryV5Ready(M2C_FIELD(arg0, int *, 8))) {
+            M2C_FIELD(arg0, unsigned int *, 0x14) = 5U;
+        }
+        break;
+    case 5:
+        M2C_FIELD(diaryV5SlotA((char *)&diaryV5Work), int *, 0x44) = diaryV5Xiiiii_func_001D83D0((int) (int)&D_007812C0, 1, M2C_FIELD(arg0, int *, 0x114), 2);
+        M2C_FIELD(diaryV5SlotA((char *)&diaryV5Work), int *, 0x194) = (int) M2C_FIELD(arg0, int *, 0x118);
+        diaryV5Clear((int *)(diaryV5SlotB((char *)&diaryV5Work)+4), 0x04000000);
+        if (diaryV5Xii_func_001D44E4((int)&D_007812C0) != 0) {
+            diaryV5Set((int *)(diaryV5SlotB((char *)&diaryV5Work)+4), 0x02000000);
+        }
+        temp_v0_3 = diaryV5Xiiiii_func_001D83D0((int) (int)&D_007812C0, 1, M2C_FIELD(arg0, int *, 0x114), 6);
+        temp_a1 = ((temp_v0_3 >> 5) * 4) + diaryV5SlotB((char *)&diaryV5Work);
+        var_s2 = 1;
+        (*(int *)(temp_a1)) &= ~(1 << (temp_v0_3 & 0x1F));
+        diaryV5Xii_func_00192F3C(arg0);
+        ((m2c_v10C_18_i *)(arg0))->call();
+        break;
+    }
+    return var_s2;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", MnuDiary__vfunc_05);
+#endif
 
 // NON_MATCHING: 18/169 differ (size 0x2A4, game 0x2A8), 6 edits
 #ifdef NON_MATCHING
