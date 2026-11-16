@@ -202,3 +202,13 @@ INCLUDE_RODATA("asm/nonmatchings/unk/BdsMain", D_002EF5B0);
 INCLUDE_RODATA("asm/nonmatchings/unk/BdsMain", D_002EF5B8);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/BdsMain", D_002EF5C0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/BdsMain", D_002EF5C8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/BdsMain", D_002EF5D8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/BdsMain", D_002EF5E8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/BdsMain", D_002EF5F8);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/BdsMain", D_002EF608);

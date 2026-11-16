@@ -227,12 +227,6 @@ extern "C" void MrtOutAtk__vfunc_02(int arg0)
     M2C_FIELD(arg0, int *, 4) = 0;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/unk/MrtMain", D_002EF720);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/MrtMain", D_002EF730);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/MrtMain", D_002EF740);
-
 INCLUDE_RODATA("asm/nonmatchings/unk/MrtMain", D_002EF750);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MrtMain", D_002EF760);

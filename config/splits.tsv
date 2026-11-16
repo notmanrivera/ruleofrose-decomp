@@ -63,10 +63,12 @@ text	rodata	data	bss	file	confidence
 00141E44	002EEC70	00298D80	-	mag/magloader	likely
 00143114	002EF0E0	-	-	mag/magscenedebug	likely
 00143498	002EF168	-	-	mag/magsceneif	certain
-00143D3C	002EF238	-	-	unk/HfmMain	likely
+00143D3C	002EF238	-	-	unk/MagLifeWindowDebug	manual
+001445D8	002EF260	-	-	unk/HfmMain	manual
 00149D18	002EF568	-	-	unk/BdsMain	family
-0014B3BC	002EF5C8	-	-	unk/BdlMain	family
-0014CDE4	002EF720	-	-	unk/MrtMain	family
+0014B3BC	002EF618	-	-	unk/BdlMain	manual
+0014C2FC	002EF690	-	-	unk/BdlOutAtk	manual
+0014CDE4	002EF750	-	-	unk/MrtMain	manual
 0014DC7C	002EF800	00298DD0	-	unk/ClrMain	manual
 00150B24	002EF9E0	-	-	unk/NorMain	likely
 001515C4	002EFA50	00298DD8	-	unk/NorOutAttack	likely
@@ -76,6 +78,7 @@ text	rodata	data	bss	file	confidence
 0015A17C	002F0DA0	-	-	unk/PigMain	manual
 0015C2A4	002F0E20	-	-	unk/DwfMain	manual
 001606EC	002F1048	-	-	unk/DwfOutAtkFar	likely
+00161230	002F10C0	-	-	unk/DwfOutFort	manual
 0016265C	002F1210	-	-	emy/emy_main	likely
 00165010	002F14D0	-	-	unk/EmyOut	likely
 00166AD0	002F19E0	-	-	unk/00166AD0	likely
@@ -105,6 +108,7 @@ text	rodata	data	bss	file	confidence
 001A90EC	002F9820	002A7798	-	unk/001A6830	manual
 001B64C4	002FB050	002B8598	006E9640	game/gamman	likely
 001D1BEC	002FC0B8	-	-	unk/001D1BEC	likely
+001D3B44	002FC100	-	-	unk/001D3B44	manual
 001D5610	002FC1D8	002C0000	007811AC	game/gamstat	conflict
 001D859C	002FC420	002D8F60	-	game/gamtrg	manual
 001E0BB0	002FD750	-	-	game/gamsnd	likely

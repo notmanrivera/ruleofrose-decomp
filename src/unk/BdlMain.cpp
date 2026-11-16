@@ -133,18 +133,6 @@ extern "C" void BdlOutSearch__vfunc_04()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", BdlOutAtk__vfunc_02);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF5C8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF5D8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF5E8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF5F8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF608);
-
 INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF618);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF628);
@@ -163,80 +151,6 @@ INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF670);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF680);
 
-INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", BdlOutAtk__vfunc_03);
-
-extern "C" void BdlOutAtk__vfunc_04()
-{
-    X_func_00166AD0();
-}
 
 
-extern "C" void BdlOutWin__vfunc_02(int arg0)
-{
-    int temp_v0;
 
-    Xiiii_func_001680A0(arg0, 0x15, 0x100);
-    temp_v0 = Xiii_func_001694CC(arg0, 0xD);
-    M2C_FIELD(arg0, int *, 0x2C) = temp_v0;
-    Xiiii_func_00180EEC((int) (int)&D_007B2580, temp_v0, 1);
-    M2C_FIELD(arg0, int *, 4) = 1;
-}
-
-extern "C" int BdlOutWin__vfunc_03(int arg0)
-{
-    if ((M2C_FIELD(arg0, int *, 4) == 0) && (Xiiiiff_func_001679B4(arg0, M2C_FIELD(arg0, int *, 0x14), 1, M2C_FIELD(arg0, float *, 0x38), 0.7853981405496597f) != 0)) {
-        Xii_func_00202F10(M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1F0));
-        M2C_FIELD(arg0, int *, 4) = 1;
-    }
-    return -1;
-}
-
-extern "C" void BdlOutWin__vfunc_04()
-{
-    X_func_00166AD0();
-}
-
-
-INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", BdlOutDead__vfunc_02);
-
-extern "C" int BdlOutDead__vfunc_03()
-{
-    return -1;
-}
-
-
-extern "C" void BdlOutDead__vfunc_04()
-{
-    X_func_00166AD0();
-}
-
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF6A8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF6B0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF6B8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF6C0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF6C8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF6D0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF6D8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF6E0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF6E8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF6F0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF6F8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF700);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF708);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF710);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF718);

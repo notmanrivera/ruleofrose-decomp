@@ -107,8 +107,6 @@ extern "C" int DwfOutTest__vfunc_03()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", DwfOutFort__vfunc_02);
-
 INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F1048);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F1058);
@@ -125,67 +123,4 @@ INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F10A0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F10B0);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F10C0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", DwfOutFort__vfunc_03);
-
-extern "C" void DwfOutFort__vfunc_04()
-{
-    X_func_00166AD0();
-}
-
-
-INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", func_00161AAC);
-
-INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", DwfOutIrritate__vfunc_02);
-
-INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", DwfOutIrritate__vfunc_03);
-
-extern "C" void DwfOutIrritate__vfunc_04()
-{
-    X_func_00166AD0();
-}
-
-
-INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", func_00161DA8);
-
-INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", func_00161E74);
-
-INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", func_00161F28);
-
-INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", DwfOutDead__vfunc_02);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F1130);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F1138);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F1148);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F1158);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F1160);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F1170);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F1180);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F1190);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F11A8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F11B8);
-
-INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", DwfOutDead__vfunc_03);
-
-extern "C" void DwfOutDead__vfunc_04(int arg0)
-{
-    int temp_a1;
-
-    temp_a1 = M2C_FIELD(arg0, int *, 8);
-    M2C_FIELD(temp_a1, int *, 0x120) = (int) (M2C_FIELD(temp_a1, int *, 0x120) & ~0x400);
-    Xii_func_00166AD0(arg0);
-}
-
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F11E8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/DwfOutAtkFar", D_002F11F8);
