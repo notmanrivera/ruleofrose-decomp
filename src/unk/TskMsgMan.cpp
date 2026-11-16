@@ -1961,7 +1961,152 @@ extern "C" int func_001EEC44()
 }
 
 
+// NON_MATCHING: 272/281 differ, 20 relocs differ (size 0x464, game 0x48C), 156 edits
+#ifdef NON_MATCHING
+extern "C" float ee_001EF0D8(int, float) asm("func_001EF0D8");
+extern "C" float ee_001EF100(int, float) asm("func_001EF100");
+extern "C" float ee_00133454(int, float *, float *, float *, int) asm("func_00133454");
+extern "C" void ee_001DB7CC(int, float *) asm("func_001DB7CC");
+extern "C" int ee_001F5350(int, unsigned int, float) asm("func_001F5350");
+extern "C" void ee_001FAC60(int,int,int,int,int,int,int) asm("func_001FAC60");
+extern "C" int ee_001D7F48(void *, float *, int) asm("func_001D7F48");
+extern "C" void ee_001D05F4(void *, int, float *) asm("func_001D05F4");
+extern "C" void ee_0025B878(float *, float *, float *) asm("func_0025B878");
+extern "C" int func_001EEC4C(int arg0) {
+    float sp[4] __attribute__((aligned(16)));
+    float out[4] __attribute__((aligned(16)));
+    float area[28] __attribute__((aligned(16)));
+    float pos[4], delta[4];
+    float *var_v1;
+    int var_a0_2;
+    register float *temp_s2 PS2_REG("$18");
+    float temp_f0;
+    float temp_f0_2;
+    float temp_f1;
+    float temp_f20;
+    float temp_f20_2;
+    float temp_f21;
+    float temp_f22;
+    float temp_f2;
+    float var_f20;
+    float var_f23;
+    int var_a0;
+    int var_v0;
+    unsigned int var_a1;
+    unsigned int var_a1_2;
+    register int temp_s6 PS2_REG("$22");
+    int temp_v0;
+
+    var_v1 = &area[8];
+    var_a0 = 2;
+    area[0] = area[1] = area[2] = 0.0f;
+    area[4] = 0.0f;
+    area[3] = area[7] = 1.0f;
+    area[5] = area[6] = 0.0f;
+    do {
+        var_a0 -= 1;
+        M2C_FIELD(var_v1, float *, 0) = M2C_FIELD(var_v1, float *, 4) = M2C_FIELD(var_v1, float *, 8) = 0.0f;
+        M2C_FIELD(var_v1, float *, 0xC) = 1.0f;
+        var_v1 += 4;
+    } while (var_a0 != -1);
+    temp_s2 = (float *)(arg0 + 0x20);
+    M2C_FIELD(arg0, int *, 0x64) = (int) (M2C_FIELD(arg0, int *, 0x64) + 1);
+    ee_001D05F4(&D_007812C0, M2C_FIELD(arg0, int *, 0xC), temp_s2);
+    temp_f21 = (float) M2C_FIELD(arg0, int *, 0x64) / 30.0f;
+    if (temp_f21 > 0.5f) {
+        temp_f20 = ee_001EF0D8(arg0, temp_f21);
+        var_f23 = temp_f20 - ee_001EF0D8(arg0, temp_f21 - 0.5f);
+    } else {
+        var_f23 = ee_001EF0D8(arg0, temp_f21);
+    }
+    if (temp_f21 > 0.5f) {
+        temp_f20_2 = ee_001EF100(arg0, temp_f21);
+        var_f20 = temp_f20_2 - ee_001EF100(arg0, temp_f21 - 0.5f);
+    } else {
+        var_f20 = ee_001EF100(arg0, temp_f21);
+    }
+    if (var_f20 < 16.0f) {
+        var_f20 = M2C_FIELD(arg0, float *, 0x60);
+    }
+    temp_f22 = -var_f23;
+    M2C_FIELD(arg0, float *, 0x60) = var_f20;
+    sp[0] = M2C_FIELD(arg0, float *, 0x40) * var_f20;
+    sp[1] = M2C_FIELD(arg0, float *, 0x44) * temp_f22;
+    sp[2] = M2C_FIELD(arg0, float *, 0x48) * var_f20;
+    ee_0025B878(&out[0], temp_s2, sp);
+    pos[0] = out[0];
+    temp_s6 = (int)&D_006E9840 + 0x12540;
+    pos[2] = out[2];
+    pos[3] = out[3];
+    pos[1] = out[1];
+    delta[0] = sp[0];
+    delta[3] = sp[3];
+    delta[1] = sp[1];
+    delta[2] = sp[2];
+    temp_f0 = ee_00133454(temp_s6, &area[0], &pos[0], &delta[0], 0);
+    if (!(temp_f0 >= 0.0f) || !(temp_f0 <= 1.0f)) {
+        M2C_FIELD(arg0, u_long128 *, 0x20) = *(u_long128 *)out;
+    } else {
+        sp[0] *= temp_f0;
+        sp[2] *= temp_f0;
+        ee_0025B878(&out[0], temp_s2, sp);
+        M2C_FIELD(arg0, u_long128 *, 0x20) = *(u_long128 *)out;
+        temp_f1 = -(M2C_FIELD(arg0, float *, 0x40) * 0.25f);
+        temp_f2 = -(M2C_FIELD(arg0, float *, 0x48) * 0.25f);
+        sp[1] = M2C_FIELD(arg0, float *, 0x44) * temp_f22;
+        M2C_FIELD(arg0, float *, 0x40) = temp_f1;
+        M2C_FIELD(arg0, float *, 0x48) = temp_f2;
+        sp[0] = temp_f1 * var_f20;
+        sp[2] = temp_f2 * var_f20;
+        ee_0025B878(&out[0], &out[0], sp);
+        pos[0] = out[0];
+        pos[1] = out[1];
+        pos[2] = out[2];
+        pos[3] = out[3];
+        delta[0] = sp[0];
+        delta[3] = sp[3];
+        delta[1] = sp[1];
+        delta[2] = sp[2];
+        temp_f0_2 = ee_00133454(temp_s6, &area[0], &pos[0], &delta[0], 0);
+        if ((temp_f0_2 >= 0.0f) && (temp_f0_2 <= 1.0f)) {
+            M2C_FIELD(arg0, float *, 0x48) = 0.0f;
+            M2C_FIELD(arg0, float *, 0x40) = 0.0f;
+        }
+    }
+    ee_001DB7CC(M2C_FIELD(arg0, int *, 8), temp_s2);
+    if (M2C_FIELD(arg0, int *, 0x5C) & 1) {
+        var_a1 = 0;
+        if (M2C_FIELD(&D_007812C0, int *, 0x22090) != 0) {
+            var_a1 = M2C_FIELD(M2C_FIELD(&D_007812C0, int *, 0x22090), unsigned int *, 0x100);
+        }
+        if (ee_001F5350(M2C_FIELD(arg0, int *, 0xC), var_a1, 100.0f) != 0) {
+            var_a0_2 = 4;
+            goto block_27;
+        }
+        var_a1_2 = 0;
+        if (M2C_FIELD(&D_007812C0, int *, 0x22094) != 0) {
+            var_a1_2 = M2C_FIELD(M2C_FIELD(&D_007812C0, int *, 0x22094), unsigned int *, 0x100);
+        }
+        var_a0_2 = 3;
+        if (ee_001F5350(M2C_FIELD(arg0, int *, 0xC), var_a1_2, 100.0f) != 0) {
+block_27:
+            ee_001FAC60(var_a0_2, M2C_FIELD(arg0, int *, 0xC), 0, 0, 0x15, 0, 0);
+            M2C_FIELD(arg0, int *, 0x5C) = (int) (M2C_FIELD(arg0, int *, 0x5C) & ~1);
+        }
+    }
+    temp_v0 = ee_001D7F48(&D_007812C0, temp_s2, 0);
+    var_v0 = 0;
+    if (temp_v0 != 0) {
+        var_v0 = 1;
+        if (!(M2C_FIELD(temp_v0, float *, 0x14) < M2C_FIELD(arg0, float *, 0x24))) {
+            var_v0 = 0;
+        }
+    }
+    return var_v0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EEC4C);
+#endif
 
 extern "C" float func_001EF0D8(float fparg0)
 {
