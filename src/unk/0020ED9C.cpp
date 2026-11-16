@@ -1472,7 +1472,68 @@ extern "C" void func_00211E84(int arg0, int arg1, int arg2)
     M2C_FIELD(temp_v1, int *, 0xC0) = (int) (M2C_FIELD(temp_v1, int *, 0xC0) + 1);
 }
 
+// NON_MATCHING: 108/160 differ, 2 relocs differ (size 0x280, game 0x284), 18 edits
+#ifdef NON_MATCHING
+extern "C" int F120AC_alloc() asm("func_00214AC4");
+extern "C" void func_002120AC(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, const char *arg6)
+{
+    F11E_record stack;
+    int temp_a1_2, temp_s0, temp_v0, temp_v1, var_a0, var_a2;
+    unsigned int index = (unsigned)arg1 >> 30;
+    int var_a3 = arg2 + D_007B4850[index].unk00 - M2C_FIELD(arg0 + index * 4, int *, 0xDC08);
+    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000 &&
+        (var_a3 += 4, (M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) &&
+        (var_a3 += 4, (M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000)) {
+        var_a3 += 4;
+        if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000 &&
+            (var_a3 -= 0x1C, (M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000)) {
+            var_a3 += 4;
+            if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                var_a3 += 4;
+                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                    var_a3 += 4;
+                    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) var_a3 += 4;
+                }
+            }
+        }
+    }
+    stack.data[0] = arg4;
+    temp_s0 = arg0 + 0x40;
+    stack.data[1] = arg1;
+    stack.data[2] = var_a3;
+    stack.data[7] = -1;
+    stack.data[8] = 0;
+    stack.data[9] = 1;
+    stack.data[10] = arg3;
+    stack.data[43] = 0;
+    F11E_strncpy((char *)&stack.data[4], arg6, 8);
+    if (arg5) {
+        stack.data[0] |= 0x80;
+        stack.data[3] = F120AC_alloc();
+    }
+    temp_a1_2 = M2C_FIELD(temp_s0, int *, 0);
+    var_a2 = (int)&stack;
+    temp_v0 = M2C_FIELD(temp_a1_2, int *, 0);
+    var_a0 = temp_a1_2 + 0x10;
+    M2C_FIELD(temp_s0, int *, 0) = temp_v0;
+    M2C_FIELD(temp_v0, int *, 4) = temp_s0;
+    M2C_FIELD(temp_s0, int *, 0xC0) = (int) (M2C_FIELD(temp_s0, int *, 0xC0) - 1);
+    *(F11E_record *)var_a0 = stack;
+    temp_v1 = temp_s0 + 0xD0;
+    if (M2C_FIELD(temp_v1, int *, 0xC0) == 0) {
+        M2C_FIELD(temp_v1, int *, 4) = temp_a1_2;
+        M2C_FIELD(temp_a1_2, int *, 0) = temp_v1;
+    } else {
+        M2C_FIELD(M2C_FIELD(temp_v1, int *, 0), int *, 4) = temp_a1_2;
+        M2C_FIELD(temp_a1_2, int *, 0) = M2C_FIELD(temp_v1, int *, 0);
+    }
+    M2C_FIELD(temp_a1_2, int *, 4) = temp_v1;
+    M2C_FIELD(temp_v1, int *, 0) = temp_a1_2;
+    M2C_FIELD(temp_v1, int *, 0xC0) = (int) (M2C_FIELD(temp_v1, int *, 0xC0) + 1);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002120AC);
+#endif
 
 extern "C" void func_00212330(int arg0, int arg1, int arg2, int arg3)
 {
