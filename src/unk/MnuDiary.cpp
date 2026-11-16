@@ -1,4 +1,19 @@
 #include "include_asm.h"
+struct DiaryRGB { signed char r,g,b; };
+extern "C" int diaryAttach(int,int,int,int) asm("func_001874F4");
+extern "C" int Xiii_func_001874F4(int, int) asm("func_001874F4");
+extern "C" int Xiii_func_0019A3C0(int, int) asm("func_0019A3C0");
+extern "C" int Xiiii_func_001C51E0(int, int, int) asm("func_001C51E0");
+extern "C" int Xiiiii_func_001C5094(int, int, int, int) asm("func_001C5094");
+extern "C" int Xiiiii_func_001C5168(int, int, int, int) asm("func_001C5168");
+extern "C" int Xiiiiii_func_00134730(int, int, int, int, int) asm("func_00134730");
+extern "C" int Xiiui_func_001351B0(int, unsigned int, int) asm("func_001351B0");
+extern "C" int Xiiui_func_00135418(int, unsigned int, int) asm("func_00135418");
+extern "C" int Xiiui_func_00135494(int, unsigned int, int) asm("func_00135494");
+extern "C" int Xiiuii_func_00134AB8(int, unsigned int, int, int) asm("func_00134AB8");
+extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func_00134A00");
+extern "C" int Xiiuiiii_func_00134CD0(int, unsigned int, int, int, int, int) asm("func_00134CD0");
+extern "C" int Xiu_func_001832E8(unsigned int) asm("func_001832E8");
 struct Sub110_v2 {
     int unk00;
     int unk04;
@@ -615,7 +630,42 @@ extern "C" void func_00198B54(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00198CA8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00198EB4);
+extern "C" void func_00198EB4(int arg0)
+{
+    int temp_v0_2;
+    int temp_v0_3;
+    int temp_s2;
+    int temp_v0;
+
+    temp_s2 = arg0 + 0x13C;
+    temp_v0 = M2C_FIELD(arg0, int *, 0x138);
+    *(DiaryRGB *)temp_v0 = *(DiaryRGB *)&D_002F8228;
+    Xii_func_0018741C(temp_s2);
+    temp_v0_2 = Xiiiiii_func_00134730(M2C_FIELD(arg0, int *, 8), 0x200, 0x100, 0, -1);
+    M2C_FIELD(arg0, int *, 0x134) = temp_v0_2;
+    Xiiuiii_func_00134A00((int) M2C_FIELD(arg0, int *, 8), (unsigned int) temp_v0_2, 0, 0x20, 0x7FFF);
+    Xiiuiiii_func_00134CD0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 0, 0, 0x200, 0x100);
+    Xiiuii_func_00134AB8((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 0x200, 0x100);
+    Xiiui_func_00135494((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 1);
+    Xiiui_func_00135418((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 0);
+    Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 0);
+    Xiiu_func_00135594(M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134));
+    Xiii_func_0019A3C0(arg0, M2C_FIELD(arg0, int *, 0x124));
+    Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 4, 0xDC, 0x198);
+    Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 4, 0);
+    Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 0, 0);
+    Xii_func_0018741C(temp_s2);
+    temp_v0_3 = Xiiiiii_func_00134730(M2C_FIELD(arg0, int *, 8), 0x40, 0x20, 0, -1);
+    M2C_FIELD(arg0, int *, 0x130) = temp_v0_3;
+    Xiiuiii_func_00134A00((int) M2C_FIELD(arg0, int *, 8), (unsigned int) temp_v0_3, 0xF6, 0x19A, 0x7FFF);
+    Xiiuiiii_func_00134CD0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x130), 0, 0, 0x40, 0x20);
+    Xiiui_func_00135494((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x130), 1);
+    Xiiui_func_00135418((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x130), 0);
+    Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x130), 1);
+    Xiiu_func_00135594(M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x130));
+    int texture = Xiu_func_001832E8(0x1AU);
+    diaryAttach(temp_s2, M2C_FIELD(arg0, int *, 0x130), texture, 0);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuDiary", D_002F8228);
 
