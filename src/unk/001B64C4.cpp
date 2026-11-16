@@ -429,7 +429,156 @@ INCLUDE_ASM("asm/nonmatchings/unk/001B64C4", func_001B64C4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001B64C4", func_001B69D0);
 
+// NON_MATCHING: 308/317 differ, 55 relocs differ (size 0x4F4, game 0x544), 167 edits
+#ifdef NON_MATCHING
+extern char boardName[] asm("D_002B8878");
+extern char boardPack[] asm("D_002B8598");
+extern char boardTable[] asm("D_002B8810");
+extern char boardItems[] asm("D_002B8740");
+extern char *D_007B2060;
+extern "C" int ba3_func_001CF7D0(...) asm("func_001CF7D0");
+extern "C" int ba3_func_001AEE8C(...) asm("func_001AEE8C");
+extern "C" int ba3_func_0018BCC0(...) asm("func_0018BCC0");
+extern "C" int ba3_func_001DC48C(...) asm("func_001DC48C");
+extern "C" int ba3_func_001B1B34(...) asm("func_001B1B34");
+extern "C" int ba3_strcpy(...) asm("strcpy");
+extern "C" int ba3_func_001AD7D4(...) asm("func_001AD7D4");
+extern "C" int ba3_strlen(...) asm("strlen");
+extern "C" int ba3_func_0018F808(...) asm("func_0018F808");
+extern "C" int ba3_func_001CF95C(...) asm("func_001CF95C");
+extern "C" int ba3_func_001311BC(...) asm("func_001311BC");
+extern "C" int ba3_func_0013511C(...) asm("func_0013511C");
+extern "C" int ba3_func_001C5240(...) asm("func_001C5240");
+extern "C" int ba3_func_0018FEBC(...) asm("func_0018FEBC");
+extern "C" int ba3_func_00131184(...) asm("func_00131184");
+extern "C" int ba3_func_001C5094(...) asm("func_001C5094");
+extern "C" int ba3_func_001C5168(...) asm("func_001C5168");
+extern "C" int ba3_func_001C51E0(...) asm("func_001C51E0");
+extern "C" int ba3_func_0018C190(...) asm("func_0018C190");
+extern "C" int ba3_func_001CF854(...) asm("func_001CF854");
+extern "C" int ba3_func_0018C068(...) asm("func_0018C068");
+extern "C" int ba3_func_00135088(...) asm("func_00135088");
+extern "C" int ba3_func_0018C130(...) asm("func_0018C130");
+extern "C" int func_001BA3A0(int arg0, int arg1) {
+    int sp0;
+    int sp4;
+    int params[8];
+    int temp_s0_2;
+    int temp_v1_3;
+    unsigned short temp_a1;
+    unsigned int temp_v1;
+    int temp_s1;
+    int temp_s5;
+    int temp_s0;
+    int temp_s0_3;
+    int temp_s2;
+    int temp_s2_2;
+    int temp_v1_2;
+    int temp_v1_4;
+
+    params[0] = 0x20;
+    params[1] = 0x140;
+    params[2] = 0x8001;
+    params[3] = 0x1C0;
+    params[4] = 0x50;
+    sp0 = 0;
+    params[5] = 0;
+    params[6] = 0;
+    params[7] = 0;
+    ba3_func_001CF7D0((int)&D_007812C0, (int)&params[0]);
+    temp_v1 = M2C_FIELD(arg0, unsigned int *, 0x5C);
+    switch (temp_v1) {
+    case 0:
+        temp_s5 = arg0 + 0x1278;
+        ba3_func_001AEE8C(arg0);
+        ba3_func_0018BCC0(arg0 + 0x1270, 3);
+        temp_v1_2 = arg0 + 0x98;
+        M2C_FIELD(temp_s5, int *, 0x414) = (int) M2C_FIELD(arg0, int *, 0x23E0);
+        M2C_FIELD(M2C_FIELD(temp_v1_2, void **, 0x4AC), int *, 0x937C) = 4;
+        M2C_FIELD(M2C_FIELD(temp_v1_2, void **, 0x4AC), int *, 0x94D0) = 4;
+        M2C_FIELD(M2C_FIELD(temp_v1_2, void **, 0x4AC), int *, 0x9624) = 4;
+        ba3_func_001DC48C((int)&D_007812C0 + 0x22220, ba3_func_001B1B34(arg0, M2C_FIELD(arg0, int *, 8)) & 0xFFFF, 0x42, (int)&sp0);
+        if (sp0 == 0) {
+            sp0 = 0x40000;
+        }
+        ba3_strcpy((int)boardName, ba3_func_001AD7D4(sp0));
+        ba3_strcpy(ba3_strlen((int)boardName) + (int)boardName, ".tm2");
+        ba3_func_0018F808(temp_s5, (int)boardPack, "data/mnurpk/mnuboard.rpk", 1);
+        M2C_FIELD(arg0, unsigned int *, 0x5C) = 1U;
+        temp_s0 = (int)&D_006E9840 + 0x12540;
+        ba3_func_001CF95C((int)&D_007812C0);
+        ba3_func_001311BC((int) temp_s0, 0xA, 7, 0);
+        ba3_func_0013511C((int) temp_s0, M2C_FIELD(arg0, unsigned int *, 0x2700), 0xA, 0, 0x80);
+        ba3_func_001C5240((int)&D_007812C0, 8, 10);
+        ba3_func_001C5240((int)&D_007812C0, 4, 10);
+        break;
+    case 1:
+        temp_s2 = arg0 + 0x1270;
+        if (ba3_func_0018FEBC(arg0 + 0x1278) != 0) {
+            ba3_func_00131184((int) ((int)&D_006E9840 + 0x12540), 0xA, 7, 0);
+            ba3_func_001C5094((int) (int)&D_007812C0, 2, 1, 3);
+            ba3_func_001C5168((int) (int)&D_007812C0, 2, 0x100, 0x180);
+            ba3_func_001C51E0((int) (int)&D_007812C0, 2, 0xA);
+            M2C_FIELD(arg0, unsigned int *, 0x5C) = 2U;
+            M2C_FIELD(temp_s2, void **, 0x4B0) = (void *)boardTable;
+            ba3_func_0018C190(temp_s2, (int)boardItems);
+            M2C_FIELD(temp_s2, int *, 4) = 1;
+            M2C_FIELD(M2C_FIELD(temp_s2, void **, 0x4AC), int *, 0x10) = 2;
+        }
+        break;
+    case 2:
+        M2C_FIELD(arg0, unsigned int *, 0x5C) = 3U;
+        temp_s1 = (int)&D_007812C0 + 0x22220;
+        ba3_func_00131184(M2C_FIELD(arg0, int *, 0x1B5C) + 0x12540, M2C_FIELD(D_007B205C, int *, 0x164), 7, 0);
+        temp_s0_2 = ba3_func_001B1B34(arg0, M2C_FIELD(arg0, int *, 8)) & 0xFFFF;
+        ba3_func_001DC48C(temp_s1, temp_s0_2, 0x42, (int)&sp0);
+        ba3_func_001DC48C(temp_s1, temp_s0_2, 0x25, (int)&sp4);
+        ba3_func_001CF854((int)&D_007812C0, sp4, 0, 0xB4);
+        break;
+    case 3:
+        temp_a1 = M2C_FIELD(arg1, unsigned short *, 0x7A);
+        if (((temp_a1 >> 0xD) & 1 & 0xFFFF) || ((temp_a1 >> 0xE) & 1 & 0xFFFF)) {
+            M2C_FIELD(arg0, unsigned int *, 0x5C) = 0xCU;
+            M2C_FIELD(M2C_FIELD(arg0, void **, 0x171C), int *, 0x10) = 4;
+            ba3_func_001311BC((int) ((int)&D_006E9840 + 0x12540), 0xA, 7, 0);
+            ba3_func_001C5240((int)&D_007812C0, 2, 10);
+            ba3_func_001CF95C((int)&D_007812C0);
+            M2C_FIELD(arg0, int *, 0x2704) = 0xA;
+        }
+        ba3_func_0018C068(arg0 + 0x1270);
+        break;
+    case 12:
+        temp_s2_2 = arg0 + 0x1270;
+        temp_v1_3 = M2C_FIELD(arg0, int *, 0x2704);
+        M2C_FIELD(arg0, int *, 0x2704) = (int) (temp_v1_3 - 1);
+        if (temp_v1_3 <= 0) {
+            temp_s0_3 = (int)&D_006E9840 + 0x12540;
+            ba3_func_001C5094((int) (int)&D_007812C0, 2, 0, 0);
+            ba3_func_00131184((int) temp_s0_3, 0xA, 7, 0);
+            ba3_func_00135088((int) temp_s0_3, M2C_FIELD(arg0, unsigned int *, 0x2700), 0xA, 0, 0x80);
+            if (!(M2C_FIELD(D_007B2060, int *, 4) & 0x10000000) || (M2C_FIELD(arg0, int *, 0x246C) == 1)) {
+                ba3_func_001C5094((int) (int)&D_007812C0, 8, 1, 0);
+                ba3_func_001C5094((int) (int)&D_007812C0, 4, 1, 0);
+            }
+            ba3_func_001C51E0((int) (int)&D_007812C0, 8, 0xA);
+            ba3_func_001C51E0((int) (int)&D_007812C0, 4, 0xA);
+            ba3_func_0018C130(temp_s2_2);
+            temp_v1_4 = arg0 + 0x98;
+            M2C_FIELD(M2C_FIELD(temp_v1_4, void **, 0x4AC), int *, 0x937C) = 1;
+            M2C_FIELD(M2C_FIELD(temp_v1_4, void **, 0x4AC), int *, 0x94D0) = 1;
+            M2C_FIELD(M2C_FIELD(temp_v1_4, void **, 0x4AC), int *, 0x9624) = 1;
+            M2C_FIELD(arg0, unsigned int *, 0x5C) = 1U;
+            M2C_FIELD(arg0, int *, 0x58) = (int) M2C_FIELD(((M2C_FIELD(arg0, int *, 0x58) * 4) + arg0), int *, 0x60);
+        } else {
+            ba3_func_0018C068(temp_s2_2);
+        }
+        break;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001B64C4", func_001BA3A0);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/001B64C4", func_001BA8E4);
 
