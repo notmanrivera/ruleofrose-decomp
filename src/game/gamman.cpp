@@ -1,6 +1,32 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+class EntityStub_687C {
+public:
+    char pad00[0x94];
+    virtual void vfunc01();
+    virtual void vfunc02();
+    virtual void vfunc03();
+    virtual void vfunc04();
+    virtual void vfunc05();
+    virtual void vfunc06();
+    virtual void vfunc07();
+    virtual void setHide(bool theHide);
+};
+class ActorStub_687C : public EntityStub_687C {
+public:
+    char pad98[0x4D0 - 0x98];
+};
+struct SceneStub_687C {
+    char pad00[0x2920];
+    ActorStub_687C m_actor[128];
+    void setActorHide(int theNo, bool theHide)
+    {
+        m_actor[theNo].setHide(theHide);
+    }
+};
+extern SceneStub_687C gScene_687C asm("D_006FBD80");
+extern "C" int Xiiu_func_001CBE38(int, unsigned int) asm("func_001CBE38");
 extern "C" void func_001F688C();
 extern "C" void func_001D8F04(void *, float *);
 extern "C" void func_001D8964(void *, float *);
@@ -887,7 +913,23 @@ extern "C" void func_001C651C(GamMan *arg0)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C65E8);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C687C);
+extern "C" void func_001C687C(GamMan *self, unsigned int theOID)
+{
+    if (Xiiu_func_001D046C((int)self, theOID) != 0 && ((theOID >> 28) & 3) == 1) {
+        int attach = ((ObjStat *)Xiiu_func_001D2B8C((int)self, theOID))->get_attach_id();
+        if (attach != -1) {
+            gScene_687C.setActorHide(Xiiu_func_001CBE38((int)self, attach), 0);
+        }
+        if (((theOID >> 23) & 0x1F) == 0) {
+            if (self->m_unk22004 != 0 && Xiiu_func_001D046C((int)self, self->m_unk22004) != 0) {
+                gScene_687C.setActorHide(Xiiu_func_001CBE38((int)self, self->m_unk22004), 0);
+            }
+            if (self->m_unk22008 != 0 && Xiiu_func_001D046C((int)self, self->m_unk22008) != 0) {
+                gScene_687C.setActorHide(Xiiu_func_001CBE38((int)self, self->m_unk22008), 0);
+            }
+        }
+    }
+}
 
 extern "C" void func_001C6A04(int arg0)
 {
