@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "bed/bedpfh.h"
 extern "C" int Xiii_func_001959EC(int, int) asm("func_001959EC");
 extern "C" int Xiiii_func_00193FEC(int, int, int) asm("func_00193FEC");
 struct m2c_v10C_50_i {
@@ -69,6 +70,7 @@ extern "C" int X_memset(...) asm("memset");
 extern "C" int X_mnuBase__vfunc_03(...) asm("mnuBase__vfunc_03");
 extern "C" int X_releaseTex__10DogTexInfoi(...) asm("releaseTex__10DogTexInfoi");
 extern "C" int X_strcpy(...) asm("strcpy");
+extern "C" int Xiii_func_001BE524__10FileReaderP11FileReadReqi(int, int, int) asm("func_001BE524__10FileReaderP11FileReadReqi");
 extern int D_0029BFB4;
 extern int D_0029C0F8;
 extern int D_006E9800;
@@ -106,7 +108,30 @@ extern "C" void func_00193E20(int arg0, int arg1)
     M2C_FIELD(temp_s0, int *, 0xC) = -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00193E7C);
+extern "C" int func_00193E7C(int arg0, int arg1, int arg2)
+{
+    if (M2C_FIELD(arg0, int *, 0x64) == 0) {
+        return 0;
+    }
+    if (M2C_FIELD(arg0, int *, 4) & 4) {
+        return 0;
+    }
+
+    BedPfh pfh;
+    pfh.setTop(M2C_FIELD(arg0, void **, 0x64));
+    int idx = pfh.getIndex((const char *)arg1);
+    int size = pfh.getFileSize(idx);
+    int result = X_func_00194588(size);
+    M2C_FIELD(arg0, int *, 0x84) = 0;
+    M2C_FIELD(arg0, int *, 0x80) = pfh.getFileOffset(idx);
+    M2C_FIELD(arg0, int *, 0x8C) = size;
+    M2C_FIELD(arg0, int *, 0x88) = result;
+    Xiii_func_001BE524__10FileReaderP11FileReadReqi(arg0 + 0x68, arg0 + 0x70, 0);
+    if (arg2 != 0) {
+        (*(int *)arg2) = size;
+    }
+    return result;
+}
 
 extern "C" void func_00193F74(int arg0, int arg1)
 {
