@@ -695,7 +695,90 @@ block_6:
     return 0;
 }
 
+// NON_MATCHING: 117/187 differ, 11 relocs differ (size 0x2EC, game 0x2E0), 70 edits
+#ifdef NON_MATCHING
+extern int sysFce asm("D_006E9840");
+extern "C" float fce_Xf_func_0010A650__8DogActor(int) asm("func_0010A650__8DogActor");
+extern "C" int fce_X_func_00118FEC__9MagSystem(...) asm("func_00118FEC__9MagSystem");
+extern "C" int fce_X_func_00119090__9MagSystem(...) asm("func_00119090__9MagSystem");
+extern "C" int fce_X_func_0016A8A4(...) asm("func_0016A8A4");
+extern "C" int fce_X_func_001D19A8(...) asm("func_001D19A8");
+extern "C" int fce_X_func_001D1C80(...) asm("func_001D1C80");
+extern "C" int fce_X_func_001DC48C(...) asm("func_001DC48C");
+extern "C" int fce_X_func_001F5BDC(int,int,int,int,int,float,float) asm("func_001F5BDC");
+extern "C" int fce_X_func_001FAC60(...) asm("func_001FAC60");
+extern "C" int fce_Xiitif_func_00169F94(int, unsigned short, int, float) asm("func_00169F94");
+extern "C" int func_001FFCE0(int input)
+{
+    struct { unsigned short sp0; unsigned short sp2; int sp4; unsigned short sp8; } stack;
+    register int arg0 PS2_REG("$18") = input;
+    float var_f1;
+    int temp_a1;
+    int temp_a1_2;
+    register int var_s0 PS2_REG("$16");
+    register int var_s1 PS2_REG("$17");
+    register int var_s3 PS2_REG("$19");
+    int var_v0;
+    int var_v1;
+    int temp_s0;
+    int temp_s0_2;
+
+    temp_a1 = M2C_FIELD(arg0, int *, 0x20);
+    temp_s0 = (int)&D_006FE6A0 + (M2C_FIELD(arg0, int *, 0x14) * 0x4D0);
+    switch (temp_a1) {
+    case 0:
+                fce_X_func_0016A8A4(M2C_FIELD(arg0, int *, 0x10), 0x13);
+                fce_X_func_001F5BDC(M2C_FIELD(arg0, int *, 0x10), M2C_FIELD(arg0, int *, 0x24), -1, 0, 0, 0.016666666666666666f, fce_Xf_func_0010A650__8DogActor(temp_s0));
+                M2C_FIELD(arg0, int *, 0x1C) = 0;
+                M2C_FIELD(arg0, int *, 0x20) = (int) (M2C_FIELD(arg0, int *, 0x20) + 1);
+        break;
+    case 1:
+        temp_a1_2 = M2C_FIELD(arg0, int *, 0x1C);
+        var_v1 = 0;
+        if (temp_a1_2 >= M2C_FIELD(arg0, int *, 0x44)) {
+            var_v1 = (unsigned int)(M2C_FIELD(arg0, int *, 0x48) < temp_a1_2) == 0;
+        }
+        var_f1 = (float)(unsigned int)var_v1;
+        if (var_f1 != 0.0f) {
+            register int manager PS2_REG("$20") = (int)&D_007812C0;
+            register int system PS2_REG("$21") = (int)&sysFce;
+            fce_X_func_001D1C80(manager, M2C_FIELD(arg0, int *, 0x10), 0x66, (int)&stack);
+            temp_s0_2 = manager + 0x22220;
+            fce_X_func_001D1C80(manager, M2C_FIELD(arg0, int *, 0x10), 0x67, (int)&stack.sp4);
+            var_s3 = 0;
+            fce_X_func_001DC48C(temp_s0_2, stack.sp0, 0x22, (int)&stack.sp2);
+            var_s0 = 0;
+            fce_X_func_001DC48C(temp_s0_2, stack.sp0, 0x30, (int)&stack.sp8);
+            if (M2C_FIELD(manager, int *, 0x22090) != 0) {
+                var_s0 = M2C_FIELD(M2C_FIELD(manager, int *, 0x22090), int *, 0x100);
+            }
+            if ((fce_X_func_00118FEC__9MagSystem(system) != 9) && (fce_Xiitif_func_00169F94(stack.sp4, stack.sp2, var_s0, (float) stack.sp8) != 0)) {
+                var_s3 = 1;
+                fce_X_func_001FAC60(0xB, M2C_FIELD(arg0, int *, 0x10), 0, 0, M2C_FIELD(arg0, int *, 0x3C), var_s0, 0);
+            }
+            var_s1 = 0;
+            if (M2C_FIELD(manager, int *, 0x22094) != 0) {
+                var_s1 = M2C_FIELD(M2C_FIELD(manager, int *, 0x22094), int *, 0x100);
+            }
+            if ((fce_X_func_00119090__9MagSystem(system) != 0xA) && (fce_X_func_00119090__9MagSystem(system) != 0xD) && (fce_Xiitif_func_00169F94(stack.sp4, stack.sp2, var_s1, (float) stack.sp8) != 0)) {
+                var_s3 = 1;
+                fce_X_func_001FAC60(0xB, M2C_FIELD(arg0, int *, 0x10), 0, 0, M2C_FIELD(arg0, int *, 0x3C), var_s1, 0);
+            }
+            fce_X_func_0016A8A4(M2C_FIELD(arg0, int *, 0x10), (var_s3 == 0) ? 0xF : 0x10);
+        }
+        if (M2C_FIELD(arg0,int *,0x1C) == M2C_FIELD(arg0,int *,0x48)) M2C_FIELD(arg0,int *,0x20) = 20;
+        break;
+    case 20:
+        if (fce_X_func_001D19A8((int)&D_007812C0, M2C_FIELD(arg0,int *,0x10)) != 0) return 1;
+        break;
+    case 999: return 1;
+    }
+    M2C_FIELD(arg0,int *,0x1C)++;
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FFCE0);
+#endif
 
 extern "C" int func_001FFFC0(int arg0)
 {
