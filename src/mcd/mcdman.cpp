@@ -2,6 +2,9 @@
 #include "utl/filereader.h"
 #include "bed/bedmemory.h"
 #include "bed/bedpfh.h"
+extern "C" int F899_rename(...) asm("sceMcRename");
+extern "C" const char *F899_strrchr(const char *, int) asm("strrchr");
+extern "C" char *F899_strcpy(char *, const char *) asm("strcpy");
 extern "C" int F89F_write(...) asm("sceMcWrite");
 extern "C" int F897_read(...) asm("sceMcRead");
 extern "C" int X7C4C_func_00187E44(int) asm("func_00187E44");
@@ -1304,7 +1307,104 @@ extern "C" int func_00189718(int arg0)
     return (M2C_FIELD(arg0, int *, 0x64) == 1) ? var_s3 : 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018993C);
+extern "C" int func_0018993C(int arg0)
+{
+    int temp_a0;
+    int temp_v0;
+    int temp_v1;
+    int temp_v1_2;
+    int var_s3;
+    int var_v0;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x60);
+    var_s3 = 0;
+    switch (temp_v1) {
+    case 0:
+        M2C_FIELD(arg0, int *, 0x60) = 3;
+        M2C_FIELD(arg0, int *, 0xBC) = 0;
+    case 3: {
+        M2C_FIELD(arg0, int *, 0x60) = 5;
+        const char *name = (const char *)(arg0 + 0x154);
+        const char *oldName = (const char *)(arg0 + 0x114);
+        const char *part = F899_strrchr(name, '/');
+        if (part) {
+            F899_strcpy((char *)(arg0 + 0xD4), part + 1);
+        } else {
+            F899_strcpy((char *)(arg0 + 0xD4), name);
+        }
+        temp_a0 = F899_rename(M2C_FIELD(arg0, int *, 0x70), M2C_FIELD(arg0, int *, 0x74), oldName, arg0 + 0xD4);
+        M2C_FIELD(arg0, int *, 0x64) = 3;
+        M2C_FIELD(arg0, int *, 0x6C) = temp_a0;
+        switch (temp_a0) {
+        case 0:
+            M2C_FIELD(arg0, int *, 0x60) = 4;
+            M2C_FIELD(arg0, int *, 0x64) = 1;
+            M2C_FIELD(arg0, int *, 0x58) = 1;
+            break;
+        case -100:
+            M2C_FIELD(arg0, int *, 0x58) = 4;
+            break;
+        case -210:
+            M2C_FIELD(arg0, int *, 0x58) = 5;
+            break;
+        case -200:
+            M2C_FIELD(arg0, int *, 0x58) = 2;
+            break;
+        default:
+            M2C_FIELD(arg0, int *, 0x58) = 2;
+            break;
+        }
+        M2C_FIELD(arg0, int *, 0xBC) = (int) (M2C_FIELD(arg0, int *, 0xBC) + 1);
+        break;
+    }
+    case 5:
+        var_s3 = 1;
+        break;
+    case 4:
+        temp_v0 = X_sceMcSync(M2C_FIELD(arg0, int *, 0xC8), arg0 + 0xCC, arg0 + 0xD0);
+        switch (temp_v0) {
+        case 0:
+            break;
+        case 1:
+            M2C_FIELD(arg0, int *, 0x64) = 3;
+            temp_v1_2 = M2C_FIELD(arg0, int *, 0xD0);
+            if (temp_v1_2 == 0) {
+                register int ready PS2_REG("$2") = 2;
+                register int finished PS2_REG("$3") = 5;
+                M2C_FIELD(arg0, int *, 0x64) = ready;
+                __asm__("" : : "r"(ready), "r"(finished) : "memory");
+                M2C_FIELD(arg0, int *, 0x60) = finished;
+            } else {
+                if (temp_v1_2 == -2) {
+                    register int retry PS2_REG("$2") = M2C_FIELD(arg0, int *, 0xBC);
+                    register int error PS2_REG("$4") = 7;
+                    M2C_FIELD(arg0, int *, 0x58) = error;
+                    if (retry < 8) {
+                        M2C_FIELD(arg0, int *, 0x60) = 3;
+                        M2C_FIELD(arg0, int *, 0x64) = 1;
+                        M2C_FIELD(arg0, int *, 0x58) = 1;
+                    } else {
+                        __asm__("" ::: "memory");
+                    }
+                } else if (temp_v1_2 == -4) {
+                    M2C_FIELD(arg0, int *, 0x58) = 12;
+                } else if (temp_v1_2 == -5) {
+                    M2C_FIELD(arg0, int *, 0x58) = 14;
+                } else if (temp_v1_2 <= -10) {
+                    M2C_FIELD(arg0, int *, 0x58) = 9;
+                }
+            }
+            break;
+        case -1:
+            M2C_FIELD(arg0, int *, 0x64) = 3;
+            M2C_FIELD(arg0, int *, 0x58) = 0xA;
+            M2C_FIELD(arg0, int *, 0x60) = 5;
+            break;
+        }
+        break;
+    }
+    return (M2C_FIELD(arg0, int *, 0x64) == 1) ? var_s3 : 1;
+}
 
 // NON_MATCHING: 8/134 differ, 6 edits
 #ifdef NON_MATCHING
