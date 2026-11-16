@@ -3704,4 +3704,71 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE6A8);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE6B8);
 
+// NON_MATCHING: 180/198 differ, 47 relocs differ (size 0x318, game 0x32C), 53 edits
+#ifdef NON_MATCHING
+extern "C" void X_func_0010EBA0__8DogActorif(int, int, float) asm("func_0010EBA0__8DogActorif");
+extern "C" int X_func_0022B3D8(...) asm("func_0022B3D8");
+extern "C" int assertF5680(...) asm("ror_assert");
+extern "C" int func_001F5680(int arg0, unsigned int arg1) {
+    int obj = X_func_001D2B8C_f1670((int)&D_007812C0, arg0);
+    int id = M2C_FIELD(obj, int *, 0x108);
+    int *flags = (int *)(obj + 0x3EC);
+    int node = -1;
+    switch (arg1) {
+    case 0: {
+        if (!bool(*flags & 1)) return 0;
+        int name = (int) "Bip01 Neck";
+        int actor = (int)&D_006FE6A0 + id * 0x4D0;
+        if (!M2C_FIELD(actor, int *, 0x11C)) assertF5680((int)D_002FE698, 0x131, (int)D_002FE6A8);
+        if (!name) assertF5680((int)D_002FE698, 0x131, (int)D_002FE6B8);
+        node = X_func_0022B3D8(M2C_FIELD(actor, int *, 0x11C), name);
+        *flags &= ~1;
+        break;
+    }
+    case 1: {
+        if (!(*flags & 2)) return 0;
+        int name = (int) "Bip01 R UpperArm";
+        int actor = (int)&D_006FE6A0 + id * 0x4D0;
+        if (!M2C_FIELD(actor, int *, 0x11C)) assertF5680((int)D_002FE698, 0x131, (int)D_002FE6A8);
+        if (!name) assertF5680((int)D_002FE698, 0x131, (int)D_002FE6B8);
+        node = X_func_0022B3D8(M2C_FIELD(actor, int *, 0x11C), name);
+        *flags &= ~2;
+        break;
+    }
+    case 2: {
+        if (!(*flags & 4)) return 0;
+        int name = (int) "Bip01 L UpperArm";
+        int actor = (int)&D_006FE6A0 + id * 0x4D0;
+        if (!M2C_FIELD(actor, int *, 0x11C)) assertF5680((int)D_002FE698, 0x131, (int)D_002FE6A8);
+        if (!name) assertF5680((int)D_002FE698, 0x131, (int)D_002FE6B8);
+        node = X_func_0022B3D8(M2C_FIELD(actor, int *, 0x11C), name);
+        *flags &= ~4;
+        break;
+    }
+    case 3: {
+        if (!(*flags & 8)) return 0;
+        int name = (int) "Bip01 R Thigh";
+        int actor = (int)&D_006FE6A0 + id * 0x4D0;
+        if (!M2C_FIELD(actor, int *, 0x11C)) assertF5680((int)D_002FE698, 0x131, (int)D_002FE6A8);
+        if (!name) assertF5680((int)D_002FE698, 0x131, (int)D_002FE6B8);
+        node = X_func_0022B3D8(M2C_FIELD(actor, int *, 0x11C), name);
+        *flags &= ~8;
+        break;
+    }
+    case 4: {
+        if (!(*flags & 16)) return 0;
+        int name = (int) "Bip01 L Thigh";
+        int actor = (int)&D_006FE6A0 + id * 0x4D0;
+        if (!M2C_FIELD(actor, int *, 0x11C)) assertF5680((int)D_002FE698, 0x131, (int)D_002FE6A8);
+        if (!name) assertF5680((int)D_002FE698, 0x131, (int)D_002FE6B8);
+        node = X_func_0022B3D8(M2C_FIELD(actor, int *, 0x11C), name);
+        *flags &= ~16;
+        break;
+    }
+    }
+    X_func_0010EBA0__8DogActorif((int)&D_006FE6A0 + id * 0x4D0, node, 1.0f);
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F5680);
+#endif
