@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "ror.h"
 extern "C" int Xii_func_00202F10(int) asm("func_00202F10");
 extern "C" int Xiiii_func_001680A0(int, int, int) asm("func_001680A0");
 extern "C" int Xiiiiff_func_001679B4(int, int, int, float, float) asm("func_001679B4");
@@ -201,7 +202,6 @@ INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014E3D0);
 
 // NON_MATCHING: 129/143 differ, 8 relocs differ (size 0x23C, game 0x268), 81 edits
 #ifdef NON_MATCHING
-#include "ror.h"
 extern "C" void X_func_001E4EBC(int,int,int,int,int) asm("func_001E4EBC");
 extern "C" void X_func_001FAC60(int,int,int,int,int,int,int) asm("func_001FAC60");
 extern "C" int Xiiiif_func_0016A424(int, int, int, float) asm("func_0016A424");
@@ -304,7 +304,79 @@ extern "C" void ClrOutUp__vfunc_04()
 }
 
 
+// NON_MATCHING: 146/191 differ, 10 relocs differ (size 0x2FC, game 0x304), 10 edits
+#ifdef NON_MATCHING
+#define F(o,t) (*(t *)((char *)arg0 + (o)))
+extern "C" void clrSetMode(int,int,int) asm("func_001680A0");
+extern "C" int clrCheck(int,int) asm("func_001D19A8");
+extern "C" void clrGetPos(int,float *) asm("func_001D890C");
+extern "C" void clrSetPos(int,float *) asm("func_001D89C4");
+extern "C" void clrEffect(int,int,int,int,int,float,float) asm("func_001F627C");
+extern "C" void clrSound(int,int,int,int,int) asm("func_001E4EBC");
+inline void clrMaybeMode(int obj,int flag) { if(flag) clrSetMode(obj,10,0x100); }
+extern "C" int func_0014E850(int arg0, int arg1)
+{
+    int result = 0;
+    X_func_0016649C(F(0xC,int),0);
+    X_func_001D10D0((int)&D_007812C0,F(0,int),0x400);
+    if(arg1 == 1) F(0x9C,int)=0;
+    switch(F(0x9C,int)) {
+    case 0:
+        F(0x9C,int)=1;
+        F(0xA8,int)=0;
+        F(0x90,int)=0;
+        clrSetMode(arg0,10,0x100);
+        F(0x94,float)=0.0f;
+    case 1: {
+        int check=clrCheck((int)&D_007812C0,F(0,int));
+        if(check) {
+            M2C_FIELD(F(0xC,int),int *,0x2C)=1;
+            clrMaybeMode(arg0,check);
+        }
+        float *pos=(float *)((char *)arg0+0x40);
+        clrGetPos(F(8,int),pos);
+        F(0x94,float) += 1.0f;
+        if(((int)F(0x94,float)&3)==0)
+            clrEffect(F(0xAC,int),2,-1,0,0,0.0166666667f,32769.0f);
+        int interval=20;
+        if((int)F(0x94,float)%interval==0)
+            clrSound((int)&D_007812C0+0x18E00,0x1F010596,0,0,0);
+        F(0x44,float) -= 4.0f;
+        if(F(0x44,float)<=-347.34599f) {
+            pos[0]=-800.0f;
+            result=1;
+            F(0x44,float)=-347.34599f;
+            F(0x48,float)=-800.0f;
+            clrSetMode(arg0,1,0x100);
+            F(0x9C,int)=2;
+            F(0x94,float)=0.0f;
+        }
+        clrSetPos(F(8,int),pos);
+        break;
+    }
+    case 9999: result=1; break;
+    case 2: {
+        int interval=3;
+        if((int)F(0x94,float)%interval==0)
+            clrEffect(F(0xAC,int),2,-1,0,0,0.0166666667f,32769.0f);
+        if((int)F(0x94,float)>=121) F(0x9C,int)=3;
+        F(0x94,float)+=1.0f;
+        break;
+    }
+    case 3: F(0x9C,int)=9999; break;
+    }
+    if(F(0xA8,int)==1) {
+        X_func_0016649C(F(0xC,int),0);
+        X_func_001D10D0((int)&D_007812C0,F(0,int),0x400);
+    }
+    if(F(0xA8,int)==0) {
+        if(M2C_FIELD(F(0xC,int),int *,0x30)&1) F(0xA8,int)=1;
+    }
+    return result;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014E850);
+#endif
 
 extern "C" void ClrOutDeathUp__vfunc_02(int arg0)
 {
