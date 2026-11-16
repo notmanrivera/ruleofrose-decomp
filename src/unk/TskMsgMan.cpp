@@ -400,7 +400,97 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDAD0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001E9CB4);
 
+// NON_MATCHING: 219/266 differ, 40 relocs differ (size 0x428, game 0x44C), 92 edits
+#ifdef NON_MATCHING
+extern "C" int activeA5ec(int, int) asm("func_001E7D7C");
+extern "C" int taskA5ec(int, int) asm("func_001E79C0");
+extern "C" void posA5ec(int, unsigned int, float *) asm("func_001D05F4");
+extern "C" float yawA5ec(float *, float, float) asm("func_002180E4");
+extern "C" int moveA5ec(unsigned int, unsigned short, float, float, int *, int, float) asm("func_001EE7F0");
+extern "C" void startA5ec(int, int, int, int, int, int, float) asm("func_001F6308");
+extern "C" float sinA5ec(float) asm("sinf");
+extern "C" float cosA5ec(float) asm("cosf");
+struct CopyA5ec { int words[2]; };
+extern const CopyA5ec cbA5ec0 asm("D_002FDAC0");
+extern const CopyA5ec cbA5ec1 asm("D_002FDAC8");
+extern const CopyA5ec cbA5ec2 asm("D_002FDAD0");
+extern const double cA5ec_2FDBA8 asm("D_002FDBA8");
+extern const double cA5ec_2FDBB0 asm("D_002FDBB0");
+extern const double cA5ec_2FDBB8 asm("D_002FDBB8");
+extern const double cA5ec_2FDBC0 asm("D_002FDBC0");
+extern const double cA5ec_2FDBC8 asm("D_002FDBC8");
+extern const double cA5ec_2FDBD0 asm("D_002FDBD0");
+extern const double cA5ec_2FDBD8 asm("D_002FDBD8");
+extern const double cA5ec_2FDBE0 asm("D_002FDBE0");
+extern const double cA5ec_2FDBE8 asm("D_002FDBE8");
+extern "C" float func_001EA5EC(int arg0) {
+    float distance;
+    float *pos = (float *)(arg0 + 0x30);
+    float angle = 0.0f;
+    u_long128 *saved = (u_long128 *)(arg0 + 0x90);
+    register int actors PS2_REG("$21") = (int)&D_006FBD80;
+    register int stride PS2_REG("$22") = 0x4D0;
+    int taskman = (int)&D_007A3D80;
+    int actor = M2C_FIELD(arg0, int *, 0xC) * stride + actors + 0x2920;
+    pos[0] = M2C_FIELD(actor, float *, 0x40);
+    pos[1] = M2C_FIELD(actor, float *, 0x44);
+    pos[2] = M2C_FIELD(actor, float *, 0x48);
+    int slot = M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0x3DC);
+    if (!activeA5ec(taskman, slot)) {
+        float *rot = (float *)(arg0 + 0x40);
+        actor = M2C_FIELD(arg0, int *, 0xC) * stride + actors + 0x2920;
+        rot[0] = M2C_FIELD(actor, float *, 0x50);
+        rot[1] = M2C_FIELD(actor, float *, 0x54);
+        rot[2] = M2C_FIELD(actor, float *, 0x58);
+    } else {
+        M2C_FIELD(arg0, float *, 0x44) = M2C_FIELD(taskA5ec(taskman, slot), float *, 0x6C);
+    }
+    *saved = *(u_long128 *)pos;
+    int mode = M2C_FIELD(arg0, int *, 0x1C);
+    if (mode >= 3 && (mode < 5 || (mode < 13 && mode >= 11))) {
+        unsigned int id = M2C_FIELD(arg0, unsigned int *, 0x6C);
+        M2C_FIELD(arg0, unsigned int *, 0x10) = id;
+        M2C_FIELD(arg0, float *, 0x14) = M2C_FIELD(arg0, float *, 0xA0);
+        posA5ec((int)&D_007812C0, id, (float *)(arg0 + 0x20));
+        angle = yawA5ec(&distance, M2C_FIELD(arg0, float *, 0x20) - pos[0], M2C_FIELD(arg0, float *, 0x28) - M2C_FIELD(arg0, float *, 0x38));
+        float speed = M2C_FIELD(arg0, float *, 0x14);
+        if (speed < 0.0f) angle += cA5ec_2FDBA8;
+        if (angle < cA5ec_2FDBB0) angle += cA5ec_2FDBB8;
+        if (angle > cA5ec_2FDBC0) angle -= cA5ec_2FDBC8;
+        M2C_FIELD(arg0, int *, 0x84) = 0;
+        bool specialMode = M2C_FIELD(arg0, int *, 0x1C) >= 8;
+        if (specialMode) {
+            int count = moveA5ec(M2C_FIELD(arg0, unsigned int *, 8), M2C_FIELD(arg0, unsigned short *, 0xC), 32769.0f, distance, (int *)(arg0 + 0x84), M2C_FIELD(arg0, int *, 0x70), M2C_FIELD(arg0, float *, 0x74));
+            M2C_FIELD(arg0, int *, 0x60) = count;
+            M2C_FIELD(arg0, int *, 0x64) = count / 2;
+        } else {
+            float zero = 0.0f;
+            if (speed == zero) M2C_FIELD(arg0, float *, 0x14) = 1.0f;
+            M2C_FIELD(arg0, int *, 0x60) = (int)(distance / M2C_FIELD(arg0, float *, 0x14));
+            if (angle < cA5ec_2FDBD0) angle += cA5ec_2FDBD8;
+            if (angle > cA5ec_2FDBE0) angle -= cA5ec_2FDBE8;
+            float x = sinA5ec(angle);
+            M2C_FIELD(arg0, float *, 0x54) = zero;
+            M2C_FIELD(arg0, float *, 0x50) = x * M2C_FIELD(arg0, float *, 0x14);
+            M2C_FIELD(arg0, float *, 0x58) = cosA5ec(angle) * M2C_FIELD(arg0, float *, 0x14);
+            startA5ec(M2C_FIELD(arg0, int *, 0xC), M2C_FIELD(arg0, int *, 0x70), 0, 0x100, M2C_FIELD(arg0, int *, 8), 0, M2C_FIELD(arg0, float *, 0x74));
+        }
+        int m = M2C_FIELD(arg0, int *, 0x1C);
+        if (m == 4 || m == 12) M2C_FIELD(arg0, int *, 0x60) = M2C_FIELD(arg0, int *, 0x68);
+    }
+    bool specialMode = M2C_FIELD(arg0, int *, 0x1C) >= 8;
+    if (specialMode) {
+        M2C_FIELD(arg0, CopyA5ec *, 0x7C) = cbA5ec0;
+    } else {
+        int flags = M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0x120);
+        if ((flags & 0x40) && !(flags & 0x80)) M2C_FIELD(arg0, CopyA5ec *, 0x7C) = cbA5ec1;
+        else M2C_FIELD(arg0, CopyA5ec *, 0x7C) = cbA5ec2;
+    }
+    return angle;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EA5EC);
+#endif
 
 extern "C" int func_001EAA38(int arg0)
 {
