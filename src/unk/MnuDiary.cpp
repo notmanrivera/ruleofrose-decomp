@@ -2040,7 +2040,119 @@ extern "C" void func_0019DF78(char *dst, char *src)
     }
 }
 
+// NON_MATCHING: 181/263 differ, 20 relocs differ (size 0x41C, game 0x42C), 105 edits
+#ifdef NON_MATCHING
+extern char diaryEBlank[] asm("D_002A42D0");
+inline char *diaryEUnq(char *p) { return p+0x22220; }
+extern "C" int diaryE_func_001DC48C(char *,int,int,void *) asm("func_001DC48C");
+extern "C" void * diaryE_memset(void *,int,unsigned int) asm("memset");
+extern "C" void diaryE_func_0019DF78(char *,char *) asm("func_0019DF78");
+extern "C" void diaryE_func_0018EBA4(int,char *,char *,int) asm("func_0018EBA4");
+extern "C" char * diaryE_func_0019DEDC(int,int) asm("func_0019DEDC");
+extern "C" void diaryE_func_0018EC58(int,char *) asm("func_0018EC58");
+extern "C" void diaryE_func_0018C4D8(char *,int,int) asm("func_0018C4D8");
+inline char *diaryESub(char *p) { return p+0x7D0; }
+inline unsigned short diaryEId(char *p) { return *(unsigned short *)(p+8); }
+extern "C" void func_0019E010(char *arg0, char *arg1) {
+    short sp0;
+    char *sp4;                                        /* compiler-managed */
+    char sp10[256];
+    char *temp_s0;
+    char *temp_v0_2;
+    char *temp_v0_3;
+    char *temp_v0_4;
+    unsigned short temp_v0;
+    char *temp_s5;
+    char *temp_s6;
+    char *temp_s7;
+    char *temp_s4;
+    int one;
+
+    temp_s4 = diaryESub(arg0);
+    M2C_FIELD(M2C_FIELD(temp_s4, void **, 0x4AC), char **, 0x53A8) = diaryEBlank;
+    M2C_FIELD(M2C_FIELD(temp_s4, void **, 0x4AC), char **, 0x54FC) = diaryEBlank;
+    M2C_FIELD(M2C_FIELD(temp_s4, void **, 0x4AC), char **, 0x5650) = diaryEBlank;
+    M2C_FIELD(M2C_FIELD(temp_s4, void **, 0x4AC), char **, 0x58F8) = diaryEBlank;
+    if (arg1 != 0) {
+        temp_v0 = diaryEId(arg1);
+        if (temp_v0 != 0xA00) {
+            diaryE_func_001DC48C(diaryEUnq((char *)&D_007812C0), (int) temp_v0, 0x25, &sp4);
+            one = 1;
+            diaryE_memset(sp10, 0, 0x100);
+            temp_s5 = arg0 + 0xE38;
+            temp_s6 = arg0 + 0xEB8;
+            temp_s7 = arg0 + 0xF38;
+            func_0019DF78(sp10, sp4);
+            diaryE_func_0018EBA4((int) temp_s4, (char *) sp10, arg0 + 0xCB8, 0);
+            diaryE_func_0018EBA4((int) temp_s4, (char *) sp10, arg0 + 0xD38, 1);
+            diaryE_func_0018EBA4((int) temp_s4, (char *) sp10, arg0 + 0xDB8, 2);
+            diaryE_func_001DC48C(diaryEUnq((char *)&D_007812C0), (int) diaryEId(arg1), 0x10, &sp0);
+            if (M2C_FIELD(arg0, int *, 0x156C) == one) {
+                if (sp0 != 0xA00) {
+                    temp_v0_2 = func_0019DEDC((int)arg0, (unsigned short)sp0);
+                    sp4 = temp_v0_2;
+                    diaryE_func_0018EBA4((int)temp_s4, temp_v0_2, temp_s5, 0);
+                } else {
+                    diaryE_func_0018EBA4((int)temp_s4, (char *)" ", temp_s5, 0);
+                }
+                diaryE_func_001DC48C(diaryEUnq((char *)&D_007812C0), (int) diaryEId(arg1), 17, &sp0);
+                if (sp0 != 0xA00) {
+                    temp_v0_3 = func_0019DEDC((int)arg0, (unsigned short)sp0);
+                    sp4 = temp_v0_3;
+                    diaryE_func_0018EBA4((int)temp_s4, temp_v0_3, temp_s6, 0);
+                } else {
+                    diaryE_func_0018EBA4((int)temp_s4, (char *)" ", temp_s6, 0);
+                }
+                diaryE_func_001DC48C(diaryEUnq((char *)&D_007812C0), (int) diaryEId(arg1), 18, &sp0);
+                temp_s0 = diaryESub(arg0);
+                if (sp0 != 0xA00) {
+                    temp_v0_4 = func_0019DEDC((int)arg0, (unsigned short)sp0);
+                    sp4 = temp_v0_4;
+                    diaryE_func_0018EBA4((int)temp_s0, temp_v0_4, temp_s7, 0);
+                } else {
+                    diaryE_func_0018EBA4((int)temp_s0, (char *)" ", temp_s7, 0);
+                }
+            } else {
+                temp_s0 = (char *)" ";
+                diaryE_func_0018EBA4((int)temp_s4, temp_s0, temp_s5, 0);
+                diaryE_func_0018EBA4((int)temp_s4, temp_s0, temp_s6, 0);
+                diaryE_func_0018EBA4((int)temp_s4, temp_s0, temp_s7, 0);
+            }
+            temp_s0 = diaryESub(arg0);
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x539C) = 0;
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x53A0) = 0;
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), void **, 0x53A4) = (char *) (arg0 + 0xE38);
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x54F0) = 0;
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x54F4) = 0;
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), void **, 0x54F8) = (char *) (arg0 + 0xEB8);
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x5644) = 0;
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x5648) = 0;
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), void **, 0x564C) = (char *) (arg0 + 0xF38);
+            diaryE_func_001DC48C(diaryEUnq((char *)&D_007812C0), (int) diaryEId(arg1), 0xC, &sp4);
+            diaryE_func_0018EC58((int) temp_s0, (char *) sp4);
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x58EC) = 0;
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x58F0) = 0;
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), char **, 0x58F4) = sp4;
+            diaryE_func_0018C4D8(temp_s0, 0x43, 0);
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x5908) = one;
+            diaryE_func_0018C4D8(temp_s0, 0x44, 0);
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x5A5C) = one;
+            diaryE_func_0018C4D8(temp_s0, 0x45, 0);
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x5BB0) = one;
+            diaryE_func_0018C4D8(temp_s0, 0x3E, 0);
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x5264) = one;
+            diaryE_func_0018C4D8(temp_s0, 0x3F, 0);
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x53B8) = one;
+            diaryE_func_0018C4D8(temp_s0, 0x40, 0);
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x550C) = one;
+            diaryE_func_0018C4D8(temp_s0, 0x42, 0);
+            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x57B4) = one;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019E010);
+#endif
 
 extern "C" int func_0019E43C(int arg0, int arg1, int arg2)
 {
