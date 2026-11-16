@@ -3612,7 +3612,179 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE518);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FE520);
 
+// NON_MATCHING: 287/352 differ, 48 relocs differ (size 0x580, game 0x5BC), 105 edits
+#ifdef NON_MATCHING
+extern double D_002FE548, D_002FE550, D_002FE558, D_002FE560;
+extern "C" void death001E7544(int,int) asm("func_001E7544");
+extern "C" void death0017762C(int) asm("func_0017762C");
+extern "C" void death001CB638(int) asm("func_001CB638");
+extern "C" void death001C6A40(int,int) asm("func_001C6A40");
+extern "C" void death001F5BDC(int,int,int,int,int,float,float) asm("func_001F5BDC");
+extern "C" int death001D8B5C(int,float *) asm("func_001D8B5C");
+extern "C" void death001F0F9C(int,float,float) asm("func_001F0F9C");
+extern "C" int death001E7D7C(int,int) asm("func_001E7D7C");
+extern "C" void death001311BC(int,int,int,int) asm("func_001311BC");
+extern "C" void death001CD044(int,int,int,int,int,unsigned int) asm("func_001CD044");
+extern "C" void death00140B20(int,int) asm("func_00140B20");
+extern "C" void death00131184(int,int,int,int) asm("func_00131184");
+extern "C" void death001F438C(int,char *) asm("func_001F438C");
+extern "C" void death001E71FC(int,int,int,int,int,int,int,int,int) asm("func_001E71FC");
+extern "C" int func_001F2F0C(int input) {
+    register int arg0 PS2_REG("$18") = input;
+    float sp10[4] __attribute__((aligned(16)));
+    float sp20[4] __attribute__((aligned(16)));
+    float sp30[4] __attribute__((aligned(16)));
+    char sp40[64] = "DEATH_J.PSS";
+    char sp80[64] = "DEATH_B.PSS";
+    int temp_v0;
+    int temp_v0_2;
+    int var_a0_2;
+    int var_a0_3;
+    register float var_f22 PS2_REG("$f22");
+    int temp_a3;
+    int temp_a3_2;
+    double angle1, angle2;
+    register float var_f21 PS2_REG("$f21");
+    int temp_a0;
+    int temp_a0_2;
+    int temp_v0_3;
+    int temp_v0_4;
+    int temp_v0_5;
+    int temp_v0_6;
+    int var_a1;
+    register int var_s0 PS2_REG("$16");
+    register int var_s2 PS2_REG("$18");
+    int var_v0;
+    int var_v0_2;
+    int temp_s0;
+    register int temp_s1 PS2_REG("$17");
+    int temp_v0_7;
+    int var_a0;
+    int sceneOffset = 0x12540;
+    int padOffset = 0x837E0;
+
+switch (M2C_FIELD(arg0, int *, 0x10)) {
+case 100: var_s0 = 101;
+                death001C6A40((int)&D_007812C0, 0x100000);
+                M2C_FIELD(arg0, int *, 0x14) = 1;
+                var_a0 = (int)&D_006E9840 + sceneOffset;
+                var_a1 = 0x78;
+                goto block_39;
+
+case 101:
+            M2C_FIELD(arg0, int *, 0x14) = 0x77;
+            M2C_FIELD(arg0, int *, 0x10) = 0x66;
+            temp_s1 = M2C_FIELD((int)&D_007812C0, int *, 0x22090);
+            if ((temp_s1 != 0) && (M2C_FIELD(arg0, int *, 0x28) != 0xB)) {
+                *(u_long128 *)sp30 = M2C_FIELD((int)&D_007812C0, u_long128 *, 0x22030);
+                *(u_long128 *)sp10 = M2C_FIELD((int)&D_007812C0, u_long128 *, 0x22020);
+                var_a0_2 = 0;
+                if (M2C_FIELD((int)&D_007812C0, int *, 0x22090) != 0) {
+                    var_a0_2 = M2C_FIELD(M2C_FIELD((int)&D_007812C0, int *, 0x22090), int *, 0x100);
+                }
+                death001F5BDC(var_a0_2, 0x2C, 0x1E, 0, 0, 0.016666667f, 32769.0f);
+                var_f22 = sp30[1];
+                sp20[1] = sp10[1];
+                sp20[0] = sp10[0] + (Xff_sinf(var_f22) * 50.0f);
+                sp20[2] = sp10[2] + (Xff_cosf(var_f22) * 50.0f);
+                var_v0 = 0;
+                if (death001D8B5C(temp_s1, sp20) == 0) {
+                    sp20[0] = sp10[0] + (Xff_sinf(var_f22) * 140.0f);
+                    sp20[2] = sp10[2] + (Xff_cosf(var_f22) * 140.0f);
+                    var_v0 = 0;
+                    if (death001D8B5C(temp_s1, sp20) == 0) {
+                        var_s2 = 0;
+loop_22:
+                        var_f21 = var_f22 + 0.39269908169872414f;
+                        angle1 = (double)var_f21;
+                        if (angle1 < D_002FE548) {
+                            var_f21 = (float)(angle1 + D_002FE550);
+                        }
+                        angle2 = (double)var_f21;
+                        if (angle2 > D_002FE558) {
+                            var_f21 = (float)(angle2 - D_002FE560);
+                        }
+                        var_f22 = var_f21;
+                        sp20[0] = sp10[0] + (Xff_sinf(var_f21) * 50.0f);
+                        sp20[2] = sp10[2] + (Xff_cosf(var_f21) * 50.0f);
+                        if (death001D8B5C(temp_s1, sp20) != 0) {
+                            sp20[0] = sp10[0] + (Xff_sinf(var_f21) * 140.0f);
+                            sp20[2] = sp10[2] + (Xff_cosf(var_f21) * 140.0f);
+                            if (death001D8B5C(temp_s1, sp20) != 0) {
+                                var_a0_3 = 0;
+                                if (M2C_FIELD((int)&D_007812C0, int *, 0x22090) != 0) {
+                                    var_a0_3 = M2C_FIELD(M2C_FIELD((int)&D_007812C0, int *, 0x22090), int *, 0x100);
+                                }
+                                death001F0F9C(var_a0_3, var_f21, 1.0f);
+                                goto block_43;
+                            }
+                        }
+                        var_s2 += 1;
+                        if (var_s2 >= 0xF) {
+                            return 0;
+                        }
+                        goto loop_22;
+                    }
+                }
+                /* Duplicate return node #44. Try simplifying control flow for better match */
+                return var_v0;
+            }
+            goto block_43;
+
+case 102:
+                    temp_v0_3 = M2C_FIELD(arg0, int *, 0x14)--;
+                    if (temp_v0_3 <= 0) {
+                        death001E7544((int)&D_007A3D80, 1);
+                        death0017762C((int)&D_006FBD80 + padOffset);
+                        death001CB638((int)&D_007812C0);
+                        M2C_FIELD(arg0, int *, 0x14) = 0;
+                        var_v0_2 = 0x67;
+                        goto block_42;
+                    }
+                    goto block_43;
+
+case 103:
+    temp_v0_6 = M2C_FIELD(arg0, int *, 0x14)--;
+    if (temp_v0_6 <= 0) {
+        M2C_FIELD(arg0, int *, 0x14) = 0x28;
+        temp_s0 = (int)&D_006E9840 + sceneOffset;
+        death00140B20(temp_s0, 0);
+        death00131184(temp_s0, M2C_FIELD(arg0, int *, 0x14), 7, 0);
+        temp_v0_7 = X___builtin_new_f1670(0x80);
+        death001F438C(temp_v0_7, sp40);
+        death001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0_7, 0, arg0 + 0x20, 0x11);
+        var_v0_2 = 0x68;
+block_42:
+        M2C_FIELD(arg0, int *, 0x10) = var_v0_2;
+    }
+goto block_43;
+case 104: var_s0 = 105;
+var_v0 = 0;
+if (death001E7D7C((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x20)) == 0) {
+ M2C_FIELD(arg0, int *, 0x14) = 0x3C;
+ var_a0 = (int)&D_006E9840 + sceneOffset; var_a1 = 0x3C;
+block_39:
+ death001311BC(var_a0, var_a1, 7, 0);
+ M2C_FIELD(arg0, int *, 0x10) = var_s0;
+}
+return 0;
+
+case 105:
+temp_a0_2 = M2C_FIELD(arg0, int *, 0x14)--;
+if (temp_a0_2 > 0) {
+ death001CD044((int)&D_007812C0, 1, -1, -1, 0x63, 0xCCCCCCCC);
+ var_v0_2 = 0x3E7; goto block_42;
+}
+return 0;
+
+case 999: return 1;
+default: return 0;
+}
+block_43: return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2F0C);
+#endif
 
 // NON_MATCHING: 132/141 differ, 10 relocs differ (size 0x234, game 0x244), 58 edits
 #ifdef NON_MATCHING
