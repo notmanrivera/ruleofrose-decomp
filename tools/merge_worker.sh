@@ -53,6 +53,11 @@ if [ "$CHECK" != "--check" ]; then
   until mkdir "$L" 2>/dev/null; do
     i=$((i + 1))
     [ $i -ne 60 ] || echo "waiting 10 min for the merge lock: $(cat "$L/owner" 2>/dev/null || echo '?')"
+    # A holder that no longer runs (its loop was killed mid-build) left it.
+    pid=$(sed -n 's/.* pid \([0-9]*\) .*/\1/p' "$L/owner" 2>/dev/null)
+    if [ -n "$pid" ] && ! ps -p "$pid" >/dev/null 2>&1; then
+      echo "stale merge lock ($(cat "$L/owner")): removed"; rm -rf "$L"; continue
+    fi
     [ $i -le 360 ] || { echo "merge lock held for an hour ($(cat "$L/owner" 2>/dev/null)); remove $L if stale"; exit 1; }
     sleep 10
   done
@@ -137,4 +142,5 @@ if [ -n "$DEFER" ] && [ -n "$COMMITS" ]; then
     fi
     rm -rf "$L"
   ) </dev/null >/dev/null 2>&1 &
+  echo "$NAME pid $! since $(date '+%F %T') (deferred build)" > "$L/owner"
 fi
