@@ -146,6 +146,8 @@ def score(status):
     count from an older status; differing relocations count extra."""
     if status.endswith("MATCH"):
         return 0
+    if status == "asm":           # still the INCLUDE_ASM line: any real attempt beats it
+        return 1 << 30
     m = re.search(r"(\d+) edits", status) or re.search(r"(\d+)/\d+ differ", status)
     n = int(m.group(1)) if m else 0
     r = re.search(r"(\d+) relocs? differ", status)
