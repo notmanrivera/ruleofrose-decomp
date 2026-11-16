@@ -1303,7 +1303,95 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00201164);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00201524);
 
+// NON_MATCHING: 181/215 differ, 40 relocs differ (size 0x35C, game 0x388), 116 edits
+#ifdef NON_MATCHING
+extern "C" float f19_atan(float, float) asm("func_0026CB00");
+extern "C" void f19_trace(void *, float *, void *, int, float, float) asm("func_0017C340");
+extern const double D_002FF448;
+extern const double D_002FF450;
+extern const double D_002FF458;
+extern const double D_002FF460;
+extern const double D_002FF468;
+extern const double D_002FF470;
+extern const double D_002FF478;
+extern const double D_002FF480;
+extern const double D_002FF488;
+extern const double D_002FF490;
+extern const double D_002FF498;
+extern const double D_002FF4A0;
+extern const double D_002FF4A8;
+struct Vec19 { float x, y, z; };
+extern "C" void func_002019D0(void *arg0, void *arg1) {
+    float prev[4], next[4];
+    int hits[4];
+    int count;
+#ifdef AVOID_UB
+    count = 0;
+#endif
+    float angle;
+    M2C_FIELD(arg0, int *, 0xA7C) = 0;
+    int n = M2C_FIELD(arg0, int *, 0x284);
+    if (n == 1) {
+        float x = M2C_FIELD(arg0, float *, 0x78);
+        float y = M2C_FIELD(arg0, float *, 0x7C);
+        float z = M2C_FIELD(arg0, float *, 0x80);
+        M2C_FIELD(arg0, int *, 0xA78) = n;
+        M2C_FIELD(arg0, float *, 0x288) = x;
+        M2C_FIELD(arg0, float *, 0x28C) = y;
+        M2C_FIELD(arg0, float *, 0x290) = z;
+        return;
+    } else {
+        next[1] = 0;
+        int i = 0;
+        prev[0] = D_006E97D8[0]; prev[1] = D_006E97D8[1]; prev[2] = D_006E97D8[2];
+        if (n - 1 > 0) {
+            do {
+                int j = i + 1;
+                if (j == M2C_FIELD(arg0, int *, 0x284) - 1) {
+                    float x = M2C_FIELD(arg0, float *, 0x78); float y = M2C_FIELD(arg0, float *, 0x7C); float z = M2C_FIELD(arg0, float *, 0x80); next[0] = x; next[1] = y; next[2] = z;
+                } else {
+                    float *p = (float *)((char *)M2C_FIELD((char *)arg0 + i * 4, void **, 0x8C) + 0x10);
+                    next[0] = p[0]; next[1] = p[1]; next[2] = p[2];
+                }
+                float yaw = f19_atan(next[0] - prev[0], next[2] - prev[2]);
+                if (i == 0) count = 0;
+                else {
+                    f19_trace(D_006FBD80 + 0x8542C, (float *)((char *)arg0 + 0x78), hits, 0, 40.0f, 0.0f);
+                    if (hits[1]) {
+                        float diff = yaw - angle;
+                        float wrapped = diff;
+                        if ((double)wrapped < D_002FF448) wrapped = (float)((double)wrapped + D_002FF450);
+                        if ((double)wrapped > D_002FF458) wrapped = (float)((double)wrapped - D_002FF460);
+                        float magnitude;
+                        if (wrapped < 0.0f) {
+                            float v = diff;
+                            if ((double)v < D_002FF468) v = (float)((double)v + D_002FF470);
+                            if ((double)v > D_002FF478) magnitude = -(float)((double)v - D_002FF480);
+                            else magnitude = -v;
+                        } else {
+                            float v = diff;
+                            if ((double)v < D_002FF488) v = (float)((double)v + D_002FF490);
+                            magnitude = v;
+                            if ((double)v > D_002FF498) magnitude = (float)((double)v - D_002FF4A0);
+                        }
+                        if ((double)magnitude < D_002FF4A8) count--;
+                    }
+                }
+                char *dst = (char *)arg0 + 0x18 + count * 16;
+                count++;
+                M2C_FIELD(dst, float *, 0x270) = next[0]; M2C_FIELD(dst, float *, 0x274) = next[1]; M2C_FIELD(dst, float *, 0x278) = next[2];
+                i = j;
+                angle = yaw;
+                prev[0] = next[0]; prev[1] = next[1]; prev[2] = next[2];
+            } while (i < M2C_FIELD(arg0, int *, 0x284) - 1);
+        }
+        M2C_FIELD(arg0, int *, 0xA78) = count;
+        return;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_002019D0);
+#endif
 
 // NON_MATCHING: 134/147 differ, 15 relocs differ, 68 edits
 #ifdef NON_MATCHING
