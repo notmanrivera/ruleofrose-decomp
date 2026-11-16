@@ -17,7 +17,7 @@ judgement and go to Sonnet.
 
 ## Open
 
-- [ ] R16 Split game/gamman and unk/TskCamera (R15's findings, Sonnet,
+- [ ] R16 Split unk/TskCamera (game/gamman done in c6d41ad; R15's findings, Sonnet,
   2026-11-16; needs moving decompiled C++ between files, so a careful
   session, not a worker):
   - mnu/mnuSelectLanguage is text [0x1BDAE4, 0x1BE2CC), .rodata from
