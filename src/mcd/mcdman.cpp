@@ -2,6 +2,9 @@
 #include "utl/filereader.h"
 #include "bed/bedmemory.h"
 #include "bed/bedpfh.h"
+extern "C" char *X_strchr_ci(const char *, int) asm("strchr");
+extern "C" char *X_strcpy_cc(char *, const char *) asm("strcpy");
+extern "C" const char *X_strrchr_ci(const char *, int) asm("strrchr");
 extern const char *D_002998D0[];
 extern BedMemory D_006E9800;
 extern const char *D_0029993C;
@@ -397,7 +400,38 @@ INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_001883C0);
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_001885D4);
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_001887C0);
+extern "C" int func_001887C0(const McdMgr *arg0, int arg1, const char *arg2, char *arg3)
+{
+    char buf[64];
+    if (arg1 >= arg0->m_num) {
+        return -1;
+    }
+    const char *slash = X_strrchr_ci(arg2, '/');
+    if (slash != 0) {
+        X_strcpy_cc(buf, slash + 1);
+    } else {
+        X_strcpy_cc(buf, arg2);
+    }
+    char *star = X_strchr_ci(buf, '*');
+    if (star == 0) {
+        return -1;
+    }
+    *star = '\0';
+    for (int i = arg1; i < arg0->m_num; i++) {
+        if (Xcc_strstr(arg0->getName(i), buf) != 0) {
+            arg1 = i;
+            if (slash != 0) {
+                X_strcpy_cc(buf, arg2);
+                X_strcpy_cc((char *)X_strrchr_ci(buf, '/') + 1, arg0->getName(arg1));
+                X_strcpy_cc(arg3, buf);
+            } else {
+                X_strcpy_cc(arg3, arg0->getName(arg1));
+            }
+            break;
+        }
+    }
+    return arg1 + 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018894C);
 
