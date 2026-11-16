@@ -1,6 +1,42 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void func_001CF95C(GamMan *);
+extern "C" void func_001CDBF0(GamMan *);
+extern "C" void func_001C143C(GamMan *);
+extern "C" void func_001CF518(GamMan *, int);
+extern "C" void func_001E77B4(void *, int);
+struct GamList16 {
+    struct Node {
+        Node *m_prev;
+        Node *m_next;
+        int m_data[4];
+    };
+    struct Chain {
+        Node m_head;
+        int m_num;
+        void splice(Chain &theOther)
+        {
+            if (theOther.m_num != 0) {
+                m_head.m_prev->m_next = theOther.m_head.m_next;
+                Node *last = m_head.m_prev;
+                last->m_next->m_prev = last;
+                Node *tail = theOther.m_head.m_prev;
+                m_head.m_prev = tail;
+                tail->m_next = &m_head;
+                m_num += theOther.m_num;
+                theOther.m_num = 0;
+                theOther.m_head.m_prev = &theOther.m_head;
+                theOther.m_head.m_next = &theOther.m_head;
+            }
+        }
+    };
+    Chain m_free;
+    Chain m_used;
+    int m_max;
+    int size() const { return m_used.m_num; }
+    void clear() { m_free.splice(m_used); }
+};
 extern "C" void X_func_001C6A40(GamMan *, int) asm("func_001C6A40");
 extern "C" int X_func_001F184C(...) asm("func_001F184C");
 extern "C" void func_001D5DA0(GamMan *, int);
@@ -1480,7 +1516,25 @@ extern "C" void func_001CB608(GamMan *arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CB638);
+extern "C" void func_001CB638(GamMan *arg0)
+{
+    X_func_001C6A40(arg0, 0x100000);
+    func_001CF95C(arg0);
+    func_001CB01C(arg0, 2);
+    func_001CDBF0(arg0);
+    func_001C143C(arg0);
+    func_001CF518(arg0, 1);
+    X_func_001CED18(arg0);
+    func_001E77B4(&D_007A3D80, 0x13);
+    func_001E77B4(&D_007A3D80, 0x14);
+    func_001E77B4(&D_007A3D80, 5);
+    GamList16 *list = (GamList16 *)arg0->m_unk2246C;
+    if (list->size() != 0) {
+        list->clear();
+    }
+    arg0->m_unk21FF0 = 0;
+    arg0->m_inuMode = 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CB74C);
 
