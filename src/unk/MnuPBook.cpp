@@ -472,7 +472,28 @@ extern "C" void func_00196A9C(int arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196A9C);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_01);
+extern "C" void X_MnuPBook__vfunc_03_v1(void *) asm("MnuPBook__vfunc_03");
+extern int vtbl_MnuPBook_v1 asm("_vt$8MnuPBook");
+
+extern "C" void MnuPBook__vfunc_01(char *arg0, int arg1)
+{
+    char *start = arg0 + 0x140;
+    *(void **)(arg0 + 0x10C) = &vtbl_MnuPBook_v1;
+    X_MnuPBook__vfunc_03_v1(arg0);
+    if (start != 0) {
+        char *p = arg0 + 0x8B8;
+        if (start != p) {
+            do {
+                p -= 0x3BC;
+                X_func_00183B24_v1(p, 2);
+            } while (start != p);
+        }
+    }
+    X_mnuBase__vfunc_01_v1(arg0, 0);
+    if (arg1 & 1) {
+        return X___builtin_delete_vm(arg0);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F8048);
 
