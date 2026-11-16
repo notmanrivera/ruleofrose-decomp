@@ -1,6 +1,11 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+struct MapModelHide {
+    int hide;
+    char pad[0x520 - 4];
+};
+extern MapModelHide D_00725410[];
 struct ActorStub_CA8E8 {
     char pad00[0x60];
     float m_x;
@@ -1428,7 +1433,35 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C9C1C);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C9E20);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C9F94);
+extern "C" void func_001C9F94(GamMan *self)
+{
+    GamList<GamElem1D240>::iterator it;
+    GamList<GamElem1D240>::iterator last;
+    GamList<GamElem1D240> *list = &self->m_unk1D240;
+
+    it = list->begin();
+    last = list->end();
+    while (it != last) {
+        if (self->m_curStat != 2) {
+            if (self->m_curStat == 3) {
+                if (((unsigned int)(*it).m_flg >> 30) == 2) {
+                    D_00725410[(*it).m_unk04[1]].hide = 1;
+                } else if (((unsigned int)(*it).m_flg >> 30) == 3) {
+                    D_00725410[(*it).m_unk04[1]].hide = 0;
+                    self->m_unk1D300 = (*it).m_unk04[1];
+                }
+            }
+        } else {
+            if (((unsigned int)(*it).m_flg >> 30) == 2) {
+                D_00725410[(*it).m_unk04[1]].hide = 0;
+                self->m_unk1D300 = (*it).m_unk04[1];
+            } else if (((unsigned int)(*it).m_flg >> 30) == 3) {
+                D_00725410[(*it).m_unk04[1]].hide = 1;
+            }
+        }
+        ++it;
+    }
+}
 
 extern "C" void func_001CA0CC(void) {
 }
