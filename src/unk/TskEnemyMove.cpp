@@ -957,7 +957,104 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00201524);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_002019D0);
 
+// NON_MATCHING: 134/147 differ, 15 relocs differ, 68 edits
+#ifdef NON_MATCHING
+extern const double D_002FF4B0, D_002FF4B8, D_002FF4C0, D_002FF4C8, D_002FF4D0;
+extern "C" float atanD58(float,float) asm("func_0026CB00");
+extern "C" float yawD58(void *) asm("func_0010A650__8DogActor");
+extern "C" void animD58(void *,int,int,float,int,int) asm("func_0010B1B0__8DogActoriifii");
+extern "C" void turnD58(int,float) asm("func_00202874");
+extern "C" unsigned int func_00201D58(int input, float *arg1) {
+    register int arg0 PS2_REG("$17") = input;
+    volatile float yawSlot;
+    volatile float sp4;
+    int var_a2;
+    float temp_f0;
+    float temp_f0_2;
+    float temp_f1;
+    float temp_f2;
+    float var_f0;
+    float var_f12;
+    register float var_f20 PS2_REG("$f20");
+    int temp_v0;
+    int temp_v0_2;
+    register int var_s0 PS2_REG("$16");
+    register int var_s2_2 PS2_REG("$18");
+    unsigned int var_s2;
+    int temp_a0;
+    int temp_a1;
+
+    var_s2_2 = 0;
+    temp_a0 = arg0 + 0x18;
+    temp_a1 = (M2C_FIELD(arg0, int *, 0xA7C) * 0x10) + temp_a0;
+    sp4 = atanD58( M2C_FIELD(temp_a1, float *, 0x270) - M2C_FIELD(&D_006E97D8, float *, 0), M2C_FIELD(temp_a1, float *, 0x278) - M2C_FIELD(&D_006E97D8, float *, 8));
+    temp_f0 = yawD58(M2C_FIELD(arg0, void **, 0x28));
+    yawSlot = temp_f0;
+    var_f20 = sp4 - temp_f0;
+    double angle1 = var_f20;
+    if (angle1 < D_002FF4B0) {
+        var_f20 = (float)(angle1 + D_002FF4B8);
+    }
+    double angle2 = var_f20;
+    if (angle2 > D_002FF4C0) {
+        var_f20 = (float)(angle2 - D_002FF4C8);
+    }
+    var_f12 = var_f20;
+    if (var_f20 < 0.0f) {
+        var_f12 = -var_f20;
+    }
+    if ((double)var_f12 <= D_002FF4D0) {
+        if (M2C_FIELD(arg0, int *, 0xA7C) == (M2C_FIELD(arg0, int *, 0xA78) - 1)) {
+            temp_f0_2 = M2C_FIELD(arg0, float *, 0x78) - M2C_FIELD(arg1, float *, 0);
+            temp_f2 = M2C_FIELD(arg0, float *, 0xAB4);
+            temp_f1 = M2C_FIELD(arg0, float *, 0x80) - M2C_FIELD(arg1, float *, 8);
+            if (!(((temp_f0_2 * temp_f0_2) + (temp_f1 * temp_f1)) < (temp_f2 * temp_f2))) {
+                var_f0 = M2C_FIELD(arg0, float *, 0x54);
+            } else {
+                var_f0 = M2C_FIELD(arg0, float *, 0x58);
+                var_s2_2 = 1;
+            }
+            M2C_FIELD(arg0, float *, 0x50) = var_f0;
+        }
+        M2C_FIELD(arg0, int *, 0x74) = var_s2_2;
+        if (M2C_FIELD(arg0, int *, 0x10) == 0) {
+            var_a2 = 0x41;
+            var_s0 = 0xB;
+            if (M2C_FIELD(arg0, int *, 0x70) == 0) {
+                goto block_22;
+            }
+            goto block_24;
+        }
+        var_a2 = 0x40;
+        if (M2C_FIELD(arg0, int *, 0x68) != 0) {
+            var_s0 = (var_s2_2 == 0) ? 0xA : 0xB;
+            var_s2 = 3;
+            M2C_FIELD(arg0, int *, 0x6C) = 1;
+            M2C_FIELD(arg0, int *, 0x60) = 0x40;
+        } else {
+            var_a2 = 0x41;
+block_22:
+            var_s0 = 7;
+            if (var_s2_2 == 0) {
+                var_s0 = M2C_FIELD(arg0, int *, 0x64);
+            }
+block_24:
+            var_s2 = 0;
+        }
+        if (M2C_FIELD(arg0, int *, 0x5C) != var_s0) {
+            animD58(M2C_FIELD(arg0, void **, 0x28), var_s0, var_a2, M2C_FIELD(arg0, float *, 0x4C), -1, -1);
+            M2C_FIELD(arg0, int *, 0x5C) = var_s0;
+        } else {
+            var_s2 = 0;
+        }
+        return var_s2;
+    }
+    turnD58(arg0, var_f20);
+    return 2U;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00201D58);
+#endif
 
 // NON_MATCHING: 6/101 differ, 4 edits
 #ifdef NON_MATCHING
