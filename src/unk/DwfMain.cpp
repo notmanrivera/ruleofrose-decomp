@@ -559,7 +559,176 @@ block_22:
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015DAA8);
 #endif
 
+// NON_MATCHING: 246/263 differ, 22 relocs differ (size 0x41C, game 0x4A0), 153 edits
+#ifdef NON_MATCHING
+extern "C" int DD___builtin_vec_delete(...) asm("__builtin_vec_delete");
+extern "C" int DD___builtin_vec_new(...) asm("__builtin_vec_new");
+extern "C" int DD_func_001637CC(...) asm("func_001637CC");
+extern "C" int DD_func_0016976C(...) asm("func_0016976C");
+extern "C" void DD_func_001D35AC(int, int, int, int, int, int, float) asm("func_001D35AC");
+extern "C" int DD_func_001D890C(...) asm("func_001D890C");
+extern "C" int DD_func_001DA228(...) asm("func_001DA228");
+extern "C" int DD_func_001DB71C(...) asm("func_001DB71C");
+extern "C" int DD_func_001DC48C(...) asm("func_001DC48C");
+extern int DD_manager asm("D_007B2140");
+extern "C" int func_0015DD74(int arg0)
+{
+    struct { int sp0; unsigned short sp4; unsigned short sp6; char pad8[8]; float sp10; char pad14[4]; float sp18; char pad1C[4]; float sp20; char pad24[4]; float sp28; char pad2C[4]; int sp30; int sp34; char pad38[4]; int sp3C; int sp40; int sp44; char pad48[4]; int sp4C; int sp50; char pad54[28]; int sp70; char pad74[60]; int spB0; char padB4[12]; int spC0; char padC4[12]; int spD0; char padD4[12]; int spE0; } stack;
+    int var_s0;
+    int temp_a3;
+    int temp_v0;
+    int temp_v1;
+    int temp_v1_2;
+    int var_a0;
+    int var_a2;
+    float temp_f2;
+    float temp_f2_2;
+    float temp_f3;
+    float temp_f3_2;
+    float var_f20;
+    float var_f21;
+    int temp_a1;
+    int temp_a3_2;
+    int temp_v1_3;
+    int var_a1;
+    register int var_s7 PS2_REG("$23");
+    int var_v0;
+    unsigned short temp_s2;
+    int temp_s0;
+    int temp_s0_2;
+    int temp_s0_3;
+    int temp_s0_4;
+    int temp_s0_5;
+    int var_a0_2;
+
+    register int list PS2_REG("$18") = (int)&stack.sp30;
+    register int sentinel PS2_REG("$19") = (int)&stack.sp40;
+    register int capacity PS2_REG("$16") = 0x40;
+    stack.sp3C = 0;
+    M2C_FIELD(list, int *, 0) = list;
+    stack.sp34 = list;
+    stack.sp4C = 0;
+    stack.sp40 = sentinel;
+    stack.sp44 = sentinel;
+    stack.sp50 = 0;
+    temp_a3 = DD___builtin_vec_new(0x300);
+    stack.sp50 = capacity;
+    stack.sp70 = temp_a3;
+    var_a0 = temp_a3;
+    var_a1 = 0;
+    do {
+        M2C_FIELD(var_a0, int *, 0) = var_a0 - 0xC;
+        temp_v1 = var_a0 + 0xC;
+        var_a1 += 1;
+        M2C_FIELD(var_a0, int *, 4) = temp_v1;
+        var_a0 = temp_v1;
+    } while (var_a1 < M2C_FIELD(list, int *, 0x20));
+    temp_v0 = list + 0x10;
+    var_s0 = (int)&stack.spB0;
+    M2C_FIELD(temp_v0, int *, 4) = temp_v0;
+    M2C_FIELD(temp_v0, int *, 0xC) = 0;
+    M2C_FIELD(list, int *, 0x10) = temp_v0;
+    M2C_FIELD(list, int *, 4) = temp_a3;
+    M2C_FIELD(list, int *, 0xC) = (int) M2C_FIELD(list, int *, 0x20);
+    (*(int *)(temp_a3)) = list;
+    temp_a3_2 = M2C_FIELD(list, int *, 0xC);
+    temp_v1_2 = (M2C_FIELD(list, int *, 4) + (temp_a3_2 * 0xC)) - 0xC;
+    M2C_FIELD(list, int *, 0) = temp_v1_2;
+    M2C_FIELD(temp_v1_2, int *, 4) = list;
+    (*(int *)(var_s0)) = 0;
+    stack.spC0 = 0;
+    DD_func_001DA228(arg0, 0x67, (int)&stack, temp_a3_2);
+    if (stack.sp0 != 0) {
+    if (stack.sp70 != 0) DD___builtin_vec_delete(stack.sp70);
+    return 0;
+    }
+    int *flags = (int *)(arg0 + 0x3EC);
+    if (((*flags & 2) && (*flags & 4)) || ((*flags & 8) && (*flags & 0x10))) {
+    if (stack.sp70 != 0) DD___builtin_vec_delete(stack.sp70);
+    return 0;
+    }
+    {
+block_14:
+        var_f20 = 490000.0f;
+        DD_func_001D890C(arg0, (int)&stack.sp10);
+        var_s7 = 0;
+        DD_func_001D35AC((int)&D_007812C0, (int)&stack.sp10, list, 5, 0, 0, 700.0f);
+        var_f21 = 490000.0f;
+        stack.spD0 = stack.sp44;
+        stack.spB0 = stack.sp44;
+        stack.spD0 = sentinel;
+        stack.spC0 = sentinel;
+loop_48:
+        if ((*(int *)(var_s0)) != stack.spC0) {
+            temp_a1 = M2C_FIELD(M2C_FIELD((*(int *)(var_s0)), int *, 8), int *, 0x100);
+            stack.sp0 = temp_a1;
+            if (temp_a1 != 0) {
+                if (DD_func_001637CC((int)&DD_manager, temp_a1) == 0) {
+                    temp_s2 = M2C_FIELD(M2C_FIELD((*(int *)(var_s0)), int *, 8), unsigned short *, 0x128);
+                    if (temp_s2 == 0xbbf && (M2C_FIELD(arg0, int *, 0x3EC) & 1)) {
+                        temp_s0 = (int)&D_007812C0 + 0x22220;
+                        DD_func_001DC48C(temp_s0, M2C_FIELD(arg0, unsigned short *, 0x128), 79, (int)&stack.sp4);
+                        DD_func_001DC48C(temp_s0, M2C_FIELD(arg0, unsigned short *, 0x128), 80, (int)&stack.sp6);
+                        goto block_41;
+                    }
+                    else if (temp_s2 == 0xbc3 && (M2C_FIELD(arg0, int *, 0x3EC) & 2)) {
+                        temp_s0 = (int)&D_007812C0 + 0x22220;
+                        DD_func_001DC48C(temp_s0, M2C_FIELD(arg0, unsigned short *, 0x128), 81, (int)&stack.sp4);
+                        DD_func_001DC48C(temp_s0, M2C_FIELD(arg0, unsigned short *, 0x128), 82, (int)&stack.sp6);
+                        goto block_41;
+                    }
+                    else if (temp_s2 == 0xbc1 && (M2C_FIELD(arg0, int *, 0x3EC) & 4)) {
+                        temp_s0 = (int)&D_007812C0 + 0x22220;
+                        DD_func_001DC48C(temp_s0, M2C_FIELD(arg0, unsigned short *, 0x128), 83, (int)&stack.sp4);
+                        DD_func_001DC48C(temp_s0, M2C_FIELD(arg0, unsigned short *, 0x128), 84, (int)&stack.sp6);
+                        goto block_41;
+                    }
+                    else if (temp_s2 == 0xbc2 && (M2C_FIELD(arg0, int *, 0x3EC) & 8)) {
+                        temp_s0 = (int)&D_007812C0 + 0x22220;
+                        DD_func_001DC48C(temp_s0, M2C_FIELD(arg0, unsigned short *, 0x128), 85, (int)&stack.sp4);
+                        DD_func_001DC48C(temp_s0, M2C_FIELD(arg0, unsigned short *, 0x128), 86, (int)&stack.sp6);
+                        goto block_41;
+                    }
+                    else if (temp_s2 == 0xbc0 && (M2C_FIELD(arg0, int *, 0x3EC) & 16)) {
+                        temp_s0 = (int)&D_007812C0 + 0x22220;
+                        DD_func_001DC48C(temp_s0, M2C_FIELD(arg0, unsigned short *, 0x128), 87, (int)&stack.sp4);
+                        DD_func_001DC48C(temp_s0, M2C_FIELD(arg0, unsigned short *, 0x128), 88, (int)&stack.sp6);
+                        goto block_41;
+                    }
+                    goto next_node;
+block_41:
+                            if ((stack.sp4 == temp_s2) || (stack.sp6 == temp_s2)) {
+                                DD_func_001DB71C(M2C_FIELD(stack.spB0, int *, 8), (int)&stack.sp20);
+                                if (DD_func_0016976C((int)&stack.sp10, (int)&stack.sp20) != 0) {
+                                    temp_f3 = stack.sp20 - stack.sp10;
+                                    temp_f2 = stack.sp28 - stack.sp18;
+                                    temp_f3_2 = temp_f3 * temp_f3;
+                                    temp_f2_2 = temp_f2 * temp_f2;
+                                    if ((temp_f3_2 + temp_f2_2) < (var_f21 + var_f20)) {
+                                        var_s7 = stack.sp0;
+                                        var_f21 = temp_f3_2;
+                                        var_f20 = temp_f2_2;
+                                    }
+                                }
+                            }
+                }
+            }
+next_node:
+            var_s0 = (int)&stack.spB0;
+            stack.spE0 = stack.spB0;
+            stack.spB0 = M2C_FIELD(stack.spB0, int *, 4);
+            stack.spD0 = stack.spE0;
+            goto loop_48;
+        }
+        if (stack.sp70 != 0) {
+            DD___builtin_vec_delete(stack.sp70);
+        }
+        return var_s7;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015DD74);
+#endif
 
 extern "C" void DwfOutDisappear__vfunc_02(int arg0)
 {
