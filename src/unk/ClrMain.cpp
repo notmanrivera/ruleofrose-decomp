@@ -679,7 +679,203 @@ INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF898);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF8B0);
 
+// NON_MATCHING: 297/354 differ, 65 relocs differ (size 0x588, game 0x5D4), 107 edits
+#ifdef NON_MATCHING
+extern "C" float Xf_dptofp(...) asm("dptofp");
+extern "C" float ClrAtkYaw(int) asm("func_0010A650__8DogActor");
+extern "C" int X_dpadd(...) asm("dpadd");
+extern "C" int X_dpcmp(...) asm("dpcmp");
+extern "C" int X_dpsub(...) asm("dpsub");
+extern "C" int X_fptodp(...) asm("fptodp");
+extern "C" int ClrAtkCall_0014FEBC(...) asm("func_0014FEBC");
+extern "C" void ClrAtkCall_00150290(int) asm("func_00150290");
+extern "C" int ClrAtkCall_00150804(...) asm("func_00150804");
+extern "C" int ClrAtkCall_00150A1C(...) asm("func_00150A1C");
+extern "C" int ClrAtkCall_0016649C(...) asm("func_0016649C");
+extern "C" int ClrAtkEmit(int,int) asm("func_001694CC");
+extern "C" int ClrAtkCall_001D10D0(...) asm("func_001D10D0");
+extern "C" int ClrAtkCall_001D1410(...) asm("func_001D1410");
+extern "C" void ClrAtkSetRot(int,void *) asm("func_001D8A8C");
+extern "C" void ClrAtkCall_001E4EBC(int,int,int,int,int) asm("func_001E4EBC");
+extern "C" int ClrAtkCall_001E7D7C(...) asm("func_001E7D7C");
+extern "C" void ClrAtkCall_001FAC60(int,int,int,int,int,int,int) asm("func_001FAC60");
+extern "C" int ClrAtkActor(int,int) asm("func_001CBE38");
+extern "C" int ClrAtkCheck(int,int) asm("func_001D19A8");
+extern int D_002EF8D8;
+extern int D_002EF8E0;
+extern int D_002EF8E8;
+extern int D_002EF8F0;
+extern int D_006FE6A0;
+extern int D_007A3D80;
+extern const double ClrAtkMinYaw asm("D_002EF8D8");
+extern const double ClrAtkTurn1 asm("D_002EF8E0");
+extern const double ClrAtkMaxYaw asm("D_002EF8E8");
+extern const double ClrAtkTurn2 asm("D_002EF8F0");
+struct ClrAtkGlobals { char pad[0x22090]; int first, second; int firstID() { int id=0; if(first) id=*(int *)((char *)first+0x100); return id; } int secondID() { int id=0; if(second) id=*(int *)((char *)second+0x100); return id; } };
+extern ClrAtkGlobals clrAtkGlobals asm("D_007812C0");
+inline float clrAtkFlagFloat(int flag) { if(flag>=0) return (float)flag; return 2.0f*(float)flag; }
+extern "C" int ClrOutAtk__vfunc_03(int arg0)
+{
+    register int self PS2_REG("$17") = arg0;
+    struct { float x,y,z,w; } stack;
+    float temp_f0;
+    float var_f1;
+    register float var_f20 PS2_REG("$f20");
+    int temp_a0_4;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+    int temp_v0_4;
+    int temp_v0_5;
+    int temp_v0_6;
+    int temp_v0_7;
+    int var_a1;
+    int var_a1_2;
+    int var_a5;
+    int var_a5_2;
+    register int var_s2 PS2_REG("$18");
+    register int var_v1 PS2_REG("$3");
+    int temp_a0;
+    int temp_a0_2;
+    int temp_a0_3;
+
+    temp_v0 = M2C_FIELD(self, int *, 4);
+    var_s2 = -1;
+    switch (temp_v0) {
+    case 1:
+        temp_a0 = M2C_FIELD(self, int *, 0xC);
+        if (M2C_FIELD(temp_a0, int *, 0x24C) > 0) {
+            ClrAtkCall_0016649C(temp_a0, 0);
+            ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
+        }
+        if (ClrAtkCall_001E7D7C((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(self, int *, 8), int *, 0x3E0)) == 0) {
+            ClrAtkCall_0016649C(M2C_FIELD(self, int *, 0xC), 0);
+            ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
+            goto block_55;
+        }
+        break;
+    case 2:
+        temp_v0_2 = M2C_FIELD(self, int *, 0x178) - 1;
+        M2C_FIELD(self, int *, 0x178) = temp_v0_2;
+        if (temp_v0_2 <= 0) {
+            M2C_FIELD(self, int *, 4) = 3;
+            M2C_FIELD(self, int *, 0x178) = 0;
+            ClrAtkCall_0016649C(M2C_FIELD(self, int *, 0xC), 1);
+            ClrAtkCall_001D1410((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
+            ClrAtkCall_001E4EBC((int)&D_007812C0 + 0x18E00, 0x1F0105A7, 0, 0, 0);
+        }
+        if (ClrAtkCall_001E7D7C((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(self, int *, 8), int *, 0x3E0)) == 0) {
+            ClrAtkCall_0016649C(M2C_FIELD(self, int *, 0xC), 0);
+            ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
+            var_s2 = ClrAtkCall_0014FEBC(self, 0);
+        }
+        if (M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x30) & 1) {
+            ClrAtkCall_0016649C(M2C_FIELD(self, int *, 0xC), 0);
+            ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
+            var_s2 = ClrAtkCall_0014FEBC(self, 0);
+            M2C_FIELD(self, int *, 0x184) = (int) M2C_FIELD(self, int *, 0x180);
+        }
+        break;
+    case 3:
+        temp_a0_2 = M2C_FIELD(self, int *, 0xC);
+        if (M2C_FIELD(temp_a0_2, int *, 0x24C) > 0) {
+            ClrAtkCall_0016649C(temp_a0_2, 0);
+            ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
+        }
+        temp_v0_3 = M2C_FIELD(self, int *, 0x17C) - 1;
+        M2C_FIELD(self, int *, 0x17C) = temp_v0_3;
+        if (temp_v0_3 <= 0) {
+            M2C_FIELD(self, int *, 4) = 4;
+        }
+        if (ClrAtkCall_001E7D7C((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(self, int *, 8), int *, 0x3E0)) == 0) {
+            ClrAtkCall_0016649C(M2C_FIELD(self,int *,0xC),0);
+            ClrAtkCall_001D10D0((int)&D_007812C0,M2C_FIELD(self,int *,0),0x400);
+            goto block_55;
+        } else {
+            M2C_FIELD(self,int *,0x178) += 1;
+            ClrAtkCall_00150290(self);
+        }
+        break;
+    case 4:
+        temp_a0_3 = M2C_FIELD(self, int *, 0xC);
+        if (M2C_FIELD(temp_a0_3, int *, 0x24C) > 0) {
+            ClrAtkCall_0016649C(temp_a0_3, 0);
+            ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
+        }
+        if (ClrAtkCall_001E7D7C((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(self, int *, 8), int *, 0x3E0)) != 0) {
+            temp_v0_4 = ClrAtkCheck((int)&D_007812C0, M2C_FIELD(self, int *, 0));
+            if (temp_v0_4 != 0) {
+                M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x2C) = 1;
+                if (temp_v0_4 != 0) {
+                    goto block_55;
+                }
+            }
+        } else {
+            goto block_55;
+        }
+        break;
+    case 5:
+        stack.x = stack.z = 0.0f;
+        temp_f0 = ClrAtkYaw((int)&D_006FE6A0 + (ClrAtkActor((int)&D_007812C0, M2C_FIELD(self, int *, 0)) * 0x4D0));
+        stack.y = temp_f0;
+        var_f20 = temp_f0 + M2C_FIELD(self, float *, 0x188);
+        if ((double)var_f20 < ClrAtkMinYaw) var_f20 = (float)((double)var_f20 + ClrAtkTurn1);
+        if ((double)var_f20 > ClrAtkMaxYaw) var_f20 = (float)((double)var_f20 - ClrAtkTurn2);
+        stack.y = var_f20;
+        ClrAtkSetRot(M2C_FIELD(self,int *,8), &stack);
+        M2C_FIELD(self, int *, 0x18C) = (int) (M2C_FIELD(self, int *, 0x18C) + 1);
+        ClrAtkCall_0016649C(M2C_FIELD(self, int *, 0xC), 0);
+        ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
+        temp_a0_4 = M2C_FIELD(self, int *, 0x18C);
+        var_v1 = 0;
+        if (temp_a0_4 >= 0xB) {
+            var_v1 = (temp_a0_4 > 0x1C) == 0;
+        }
+        var_f1 = clrAtkFlagFloat(var_v1);
+        if (var_f1 != 0.0f) {
+            if (M2C_FIELD(self, int *, 0x190) == 0) {
+                var_a1 = clrAtkGlobals.firstID();
+                if (ClrAtkCall_00150804(self, var_a1) != 0) {
+                    M2C_FIELD(self, int *, 0x190) = 1;
+                    ClrAtkEmit(self, 7);
+                    var_a5 = clrAtkGlobals.firstID();
+                    ClrAtkCall_001FAC60(0xB, M2C_FIELD(self, int *, 0), 0, 0, 0x33, var_a5, 0);
+                }
+            }
+            if (M2C_FIELD(self, int *, 0x194) == 0) {
+                var_a1_2 = clrAtkGlobals.secondID();
+                if (ClrAtkCall_00150804(self, var_a1_2) != 0) {
+                    M2C_FIELD(self, int *, 0x190) = 1;
+                    ClrAtkEmit(self, 7);
+                    var_a5_2 = clrAtkGlobals.secondID();
+                    ClrAtkCall_001FAC60(0xB, M2C_FIELD(self, int *, 0), 0, 0, 0x33, var_a5_2, 0);
+                }
+            }
+        }
+        temp_v0_7 = ClrAtkCheck((int)&D_007812C0, M2C_FIELD(self, int *, 0));
+        if (temp_v0_7 != 0) {
+            M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x2C) = 1;
+            if (temp_v0_7 != 0) {
+                ClrAtkCall_0016649C(M2C_FIELD(self, int *, 0xC), 1);
+                ClrAtkCall_001D1410((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
+                ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x40);
+                ClrAtkCall_001D1410((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x10000000);
+                ClrAtkCall_001D1410((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
+                goto block_55;
+            }
+        }
+        break;
+    }
+    goto finish;
+block_55:
+    var_s2 = ClrAtkCall_0014FEBC(self, 0);
+finish:
+    ClrAtkCall_00150A1C(self, 1);
+    return var_s2;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrOutAtk__vfunc_03);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF8D8);
 
