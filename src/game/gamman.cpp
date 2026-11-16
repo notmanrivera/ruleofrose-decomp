@@ -1,6 +1,10 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+static inline GamItem *itemAt_8AE8(GamItem *base, int off)
+{
+    return (GamItem *)((char *)base + off);
+}
 extern "C" void func_001C5BF4(GamMan *, int) throw();
 extern "C" int Xiii_func_001D9F10(int, int) asm("func_001D9F10");
 extern "C" void Xiiii_setPlayer__9MagSystemii(int, int, int) asm("setPlayer__9MagSystemii");
@@ -1219,7 +1223,40 @@ loop_1:
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C8A28);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C8AE8);
+extern "C" int func_001C8AE8(GamMan *self, unsigned short theUID, int theStock)
+{
+    int count = 0;
+
+    for (int i = 0; i < 12; i++) {
+        if (itemAt_8AE8(self->getItemHavePtr()->m_begin, i * 0x10)->m_uid == theUID) {
+            if (func_001DD00C(self->m_unq, itemAt_8AE8(self->getItemHavePtr()->m_begin, i * 0x10)->m_uid, 0x20000) != 0) {
+                count += itemAt_8AE8(self->getItemHavePtr()->m_begin, i * 0x10)->m_num;
+            } else {
+                count++;
+            }
+        }
+    }
+
+    if (theStock != 0) {
+        GamList<GamItemStock>::iterator it;
+        GamList<GamItemStock>::iterator last;
+        GamPool<GamItemStock, 0x14E> *list = self->getItemStockPtr();
+        it = list->begin();
+        last = list->end();
+        while (it != last) {
+            if ((*it).m_item.m_uid == theUID) {
+                if (func_001DD00C(self->m_unq, (*it).m_item.m_uid, 0x20000) != 0) {
+                    count += (*it).m_item.m_num;
+                } else {
+                    count++;
+                }
+            }
+            ++it;
+        }
+    }
+
+    return count;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C8C50);
 
