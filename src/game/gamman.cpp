@@ -1435,7 +1435,55 @@ extern "C" void func_001CA598(int unused, int arg1, unsigned int arg2)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CA604);
+extern "C" const char *func_001CA604(int arg0, int arg1)
+{
+    switch (arg1) {
+    case 0:
+        return "data/ch/action/ACTION.RPK";
+    case 1:
+        return "data/ch/target/TRG.RPK";
+    case 2:
+        return "data/ch/fix/FIX.RPK";
+    case 3:
+        return "data/ch/item/ITEM.RPK";
+    case 4:
+        return "data/ch/inst/INST.RPK";
+    case 5:
+        return "data/ch/enemy/ENEMY.RPK";
+    case 6:
+        return "data/ch/door/DOOR.RPK";
+    case 10:
+        return "data/ch/01/CHAP01.RPK";
+    case 11:
+        return "data/ch/02/CHAP02.RPK";
+    case 12:
+        return "data/ch/03/CHAP03.RPK";
+    case 13:
+        return "data/ch/04/CHAP04.RPK";
+    case 14:
+        return "data/ch/05/CHAP05.RPK";
+    case 15:
+        return "data/ch/06/CHAP06.RPK";
+    case 16:
+        return "data/ch/07/CHAP07.RPK";
+    case 17:
+        return "data/ch/08/CHAP08.RPK";
+    case 18:
+        return "data/ch/09/CHAP09.RPK";
+    case 19:
+        return "data/ch/10/CHAP10.RPK";
+    case 20:
+        return "data/ch/11/CHAP11.RPK";
+    case 21:
+        return "data/ch/12/CHAP12.RPK";
+    case 8:
+        return "data/ch/pc/PC.RPK";
+    case 9:
+        return "data/ch/bwn/BWN.RPK";
+    default:
+        return 0;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CA72C);
 
