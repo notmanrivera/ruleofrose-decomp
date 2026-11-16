@@ -1813,7 +1813,97 @@ extern "C" void func_001E3804(char *arg0)
     ((SndQue *)(arg0 + 0x40))->clear();
 }
 
+// NON_MATCHING: 6/238 differ, 5 edits
+#ifdef NON_MATCHING
+struct Entry386C { int unused, left, right; char rest[0x1C]; }; // entry386C // decl386C
+struct Obj386C { // decl386C
+    int mode; // decl386C
+    char pad04[0xD3C]; // decl386C
+    Entry386C *entries; // decl386C
+    char padD44[0x80C]; // decl386C
+    char fallback[0x31C]; // decl386C
+    float multiplier; // decl386C
+}; // obj386C // decl386C
+extern "C" void calc386C(int, void *, void *, int *, int *, int, float) asm("func_001E6E00"); // decl386C
+extern "C" int active386C(void *, unsigned int, int) asm("func_001E5B60"); // decl386C
+extern "C" int activeOther386C(void *, unsigned int, int) asm("func_001E6368"); // decl386C
+extern "C" void stop386C(void *, unsigned int, int) asm("func_001E34EC"); // decl386C
+extern "C" void stopOther386C(void *, unsigned int, int) asm("func_001E2AA0"); // decl386C
+extern "C" int start386C(void *, unsigned int, int, int, int, float, int, int) asm("func_001E5428"); // decl386C
+extern "C" int startOther386C(void *, unsigned int, int, int, int, float, int, int) asm("func_001E50C8"); // decl386C
+extern "C" void volume386C(void *, unsigned int, int, int, int) asm("func_001E5C40"); // decl386C
+extern "C" void volumeOther386C(void *, unsigned int, int, int, int) asm("func_001E63C0"); // decl386C
+extern "C" int abs(int); // abs386C // decl386C
+extern "C" void func_001E386C(Obj386C *self, Item2DB4 *item)
+{
+    int left, right;
+    int oldLeft = 0;
+    int oldRight = 0;
+    int handle = item->handle;
+    void *data = item->data;
+    int mode = self->mode;
+    float distance = item->distance;
+    if (handle != -1) {
+        Entry386C *entry = &self->entries[handle];
+        oldRight = entry->right;
+        oldLeft = entry->left;
+    }
+    int flags = item->flags;
+    if (flags & 1) {
+        if (data) {
+            calc386C(mode, item, data, &left, &right, flags, distance);
+        } else {
+            calc386C(mode, item, self->fallback, &left, &right, flags, distance);
+        }
+        if (!left || abs(left - oldLeft) >= 33) left = (int)((left + oldLeft) * 0.75f);
+        if (!right || abs(right - oldRight) >= 33) right = (int)((right + oldRight) * 0.75f);
+        if (item->scene != scene2DB4(world2DB4)) {
+            float factor = self->multiplier;
+            left = (int)((float)left * factor);
+            right = (int)((float)right * factor);
+        }
+        item->a = left;
+        item->b = right;
+        if (!active386C(self, item->id, item->handle)) {
+            if ((*(long long *)&item->flags & 0x60) == 0x60 || (item->flags & 0x200)) {
+                stop386C(self, item->id, -1);
+            } else {
+                item->handle = start386C(self, item->id, left, right, 0, 1.0f, 1, 0x80);
+                item->flags |= 0x40;
+            }
+        }
+        volume386C(self, item->id, item->handle, left, right);
+        return;
+    }
+        if (data) {
+            calc386C(mode, item, data, &left, &right, flags, distance);
+        } else {
+            calc386C(mode, item, self->fallback, &left, &right, flags, distance);
+        }
+        if (!left || abs(left - oldLeft) >= 33) left = (int)((left + oldLeft) * 0.75f);
+        if (!right || abs(right - oldRight) >= 33) right = (int)((right + oldRight) * 0.75f);
+        if (item->scene != scene2DB4(world2DB4)) {
+            float factor = self->multiplier;
+            left = (int)((float)left * factor);
+            right = (int)((float)right * factor);
+        }
+        left = (unsigned int)left >= 256 ? 0 : left;
+        right = (unsigned int)right >= 256 ? 0 : right;
+        item->a = left;
+        item->b = right;
+        if (!activeOther386C(self, item->id, item->handle)) {
+            if ((*(long long *)&item->flags & 0x60) == 0x60 || (item->flags & 0x200)) {
+                stopOther386C(self, item->id, -1);
+            } else {
+                item->handle = startOther386C(self, item->id, left, right, 1, 1.0f, 0, 0x80);
+                item->flags |= 0x40;
+            }
+        }
+        volumeOther386C(self, item->id, item->handle, left, right);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E386C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3C24);
 
