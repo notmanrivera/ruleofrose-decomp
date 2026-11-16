@@ -2166,7 +2166,96 @@ extern "C" void func_00202874(struct S_00202874 *arg0, float fparg0)
     arg0->f2C = 2;
 }
 
+// NON_MATCHING: 261/329 differ, 50 relocs differ (size 0x524, game 0x520), 73 edits
+#ifdef NON_MATCHING
+extern "C" int f2900_rand(int, int) asm("func_0010423C");
+extern "C" int f2900_check(void *, float *, float *, int) asm("func_00202E20");
+extern "C" void f2900_play(void *, int, int, float, int, int) asm("func_0010B1B0__8DogActoriifii");
+extern const double f2900_2FF518 asm("D_002FF518");
+extern const double f2900_2FF520 asm("D_002FF520");
+extern const double f2900_2FF528 asm("D_002FF528");
+extern const double f2900_2FF530 asm("D_002FF530");
+extern const double f2900_2FF538 asm("D_002FF538");
+extern const double f2900_2FF540 asm("D_002FF540");
+extern const double f2900_2FF548 asm("D_002FF548");
+extern const double f2900_2FF550 asm("D_002FF550");
+extern const double f2900_2FF558 asm("D_002FF558");
+extern const double f2900_2FF560 asm("D_002FF560");
+extern const double f2900_2FF568 asm("D_002FF568");
+extern const double f2900_2FF570 asm("D_002FF570");
+extern "C" void func_00202900(void *arg0, float *arg1, float facing) {
+    float start[4], end[4];
+    int motion;
+    float angle;
+    start[1] = end[1] = arg1[1];
+    if (f2900_rand(0, 99) < 50) {
+        angle = facing - M2C_FIELD(arg0, float *, 0xA94);
+        double low = f2900_2FF518;
+        if ((double)angle < low) angle = (float)((double)angle + f2900_2FF520);
+        double high = f2900_2FF528;
+        if ((double)angle > high) angle = (float)((double)angle - f2900_2FF530);
+        start[0] = arg1[0] + sinf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+        start[2] = arg1[2] + cosf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+        end[0] = D_006E97D8[0] + sinf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+        end[2] = D_006E97D8[2] + cosf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+        int result = f2900_check(arg0, start, end, M2C_FIELD(arg0, int *, 0x38));
+
+        motion = 16;
+
+        if (result) {
+            angle = facing + M2C_FIELD(arg0, float *, 0xA94);
+        if ((double)angle < low) angle = (float)((double)angle + f2900_2FF538);
+        if ((double)angle > high) angle = (float)((double)angle - f2900_2FF540);
+        start[0] = arg1[0] + sinf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+        start[2] = arg1[2] + cosf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+        end[0] = D_006E97D8[0] + sinf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+        end[2] = D_006E97D8[2] + cosf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+            int result = f2900_check(arg0, start, end, M2C_FIELD(arg0, int *, 0x38));
+
+            motion = 17;
+
+            if (result) goto failed;
+        }
+    } else {
+        angle = facing + M2C_FIELD(arg0, float *, 0xA94);
+        double low = f2900_2FF548;
+        if ((double)angle < low) angle = (float)((double)angle + f2900_2FF550);
+        double high = f2900_2FF558;
+        if ((double)angle > high) angle = (float)((double)angle - f2900_2FF560);
+        start[0] = arg1[0] + sinf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+        start[2] = arg1[2] + cosf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+        end[0] = D_006E97D8[0] + sinf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+        end[2] = D_006E97D8[2] + cosf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+        int result = f2900_check(arg0, start, end, M2C_FIELD(arg0, int *, 0x38));
+
+        motion = 17;
+
+        if (result) {
+            angle = facing - M2C_FIELD(arg0, float *, 0xA94);
+        if ((double)angle < low) angle = (float)((double)angle + f2900_2FF568);
+        if ((double)angle > high) angle = (float)((double)angle - f2900_2FF570);
+        start[0] = arg1[0] + sinf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+        start[2] = arg1[2] + cosf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+        end[0] = D_006E97D8[0] + sinf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+        end[2] = D_006E97D8[2] + cosf(angle) * M2C_FIELD(arg0, float *, 0xA90);
+            int result = f2900_check(arg0, start, end, M2C_FIELD(arg0, int *, 0x38));
+
+            motion = 16;
+
+            if (result) goto failed;
+        }
+    }
+    f2900_play(M2C_FIELD(arg0, void **, 0x28), motion, 0, M2C_FIELD(arg0, float *, 0x4C), -1, -1);
+    M2C_FIELD(arg0, int *, 0x5C) = motion;
+    M2C_FIELD(arg0, int *, 0x2C) = 1;
+    return;
+failed:
+    M2C_FIELD(arg0, int *, 0xAA4) = 0;
+    M2C_FIELD(arg0, int *, 0x2C) = 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202900);
+#endif
 
 extern "C" int func_00202E20(struct S_00202E20 *arg0, float *arg1, float *arg2, int arg3)
 {
