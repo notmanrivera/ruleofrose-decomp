@@ -1697,7 +1697,253 @@ INCLUDE_RODATA("asm/nonmatchings/unk/DwfMain", D_002F0F10);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/DwfMain", D_002F0F20);
 
+// NON_MATCHING: 351/385 differ, 47 relocs differ (size 0x604, game 0x63C), 122 edits
+#ifdef NON_MATCHING
+extern "C" float Xf_func_001044B8(float, float) asm("func_001044B8");
+extern "C" int F8AC_func_0010423C(...) asm("func_0010423C");
+extern "C" int X_func_00118FEC__9MagSystem(...) asm("func_00118FEC__9MagSystem");
+extern "C" int X_func_00119090__9MagSystem(...) asm("func_00119090__9MagSystem");
+extern "C" int X_func_0015FEE8(...) asm("func_0015FEE8");
+extern "C" int F8AC_func_00166EB4(...) asm("func_00166EB4");
+extern "C" int X_func_00166F50(...) asm("func_00166F50");
+extern "C" int F8AC_func_001683E8(...) asm("func_001683E8");
+extern "C" int X_func_00169F94(int, int, int, float) asm("func_00169F94");
+extern "C" int X_func_001FAC60(...) asm("func_001FAC60");
+extern "C" int F8AC_func_00202F10(...) asm("func_00202F10");
+extern "C" int Xiiiifi_func_00169BAC(int, int, int, float, float) asm("func_00169BAC");
+extern int D_002F1010;
+extern int F8AC_table asm("D_002F1000");
+extern int D_006E9840;
+extern int D_007A3350;
+extern int D_007A3354;
+extern "C" int func_0015F8AC(int arg0)
+{
+    int var_a4;
+    float temp_f13;
+    float temp_f13_2;
+    float var_f1;
+    int temp_s0_2;
+    int temp_s0_3;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+    int temp_v0_5;
+    int temp_v0_6;
+    int temp_v1_2;
+    int temp_v1_3;
+    int temp_v1_4;
+    int temp_v1_5;
+    int temp_v1_6;
+    int temp_v1_7;
+    unsigned int var_a0;
+    int var_a1;
+    int var_a1_2;
+    int var_a2;
+    int var_a2_2;
+    int var_s0;
+    int var_v1;
+    int temp_v0_4;
+    int temp_v1_8;
+    unsigned int temp_s0;
+    unsigned int temp_v1;
+    int temp_a0;
+
+    temp_v1 = M2C_FIELD(arg0, unsigned int *, 4);
+    switch (temp_v1) {
+    case 0:
+        if (M2C_FIELD(arg0, unsigned int *, 0x24) != 0) {
+            F8AC_func_00202F10(M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1F0));
+            temp_s0 = M2C_FIELD(arg0, unsigned int *, 0x24);
+            if (temp_s0 != 1) {
+                goto block_83;
+            }
+            if (X_func_0015FEE8(arg0) == 0) {
+                goto block_83;
+            }
+            M2C_FIELD(arg0, unsigned int *, 4) = temp_s0;
+            goto block_88;
+        }
+    default:
+        return -1;
+    case 1:
+        temp_v0 = X_func_001D19A8((int)&D_007812C0, M2C_FIELD(arg0, int *, 0));
+        if (temp_v0 != 0) {
+            M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x2C) = 1;
+            if (temp_v0 != 0) {
+                temp_v1_2 = M2C_FIELD(M2C_FIELD(arg0, int *, 8), int *, 0x3EC);
+                var_a1 = 0x40;
+                if (temp_v1_2 & 8) {
+                    var_a1 = 0x3D;
+                    if (!(temp_v1_2 & 0x10)) {
+                        var_a1 = 0x40;
+                    }
+                }
+                X_func_001687BC(arg0, var_a1, 0);
+                M2C_FIELD(arg0, int *, 0x64) = 0;
+                M2C_FIELD(arg0, unsigned int *, 4) = 2U;
+            }
+        }
+        goto block_88;
+    case 2:
+        var_a0 = 0;
+        temp_v1_3 = M2C_FIELD(arg0, int *, 0x64) + 1;
+        M2C_FIELD(arg0, int *, 0x64) = temp_v1_3;
+        if (temp_v1_3 >= 5) {
+            var_a0 = (temp_v1_3 > 0xF) == 0;
+        }
+        var_f1 = (float)var_a0;
+        if (var_f1 != 0.0f) {
+            if ((M2C_FIELD(arg0, int *, 0x7C) == 0) && (X_func_00118FEC__9MagSystem((int)&D_006E9840) != 9)) {
+                var_a2 = 0;
+                if ((*(int *)&D_007A3350) != 0) {
+                    var_a2 = M2C_FIELD((*(int *)&D_007A3350), int *, 0x100);
+                }
+                if (X_func_00169F94(M2C_FIELD(arg0, int *, 0), 1, var_a2, 12.0f) != 0) {
+                    X_func_001694CC(arg0, 5);
+                    M2C_FIELD(arg0, int *, 0x7C) = 1;
+                    M2C_FIELD(arg0, int *, 0x44) = (int) (M2C_FIELD(arg0, int *, 0x44) + 1);
+                    temp_v1_4 = M2C_FIELD(M2C_FIELD(arg0, int *, 8), int *, 0x3EC);
+                    var_a4 = 0xD;
+                    if ((temp_v1_4 & 8) && (temp_v1_4 & 0x10)) {
+                        var_a4 = 0x11;
+                        M2C_FIELD(arg0, int *, 0x44) = (int) M2C_FIELD(arg0, int *, 0x48);
+                    }
+                    X_func_001FAC60(0xB, M2C_FIELD(arg0, int *, 0), 0, 0, var_a4, M2C_FIELD(arg0, int *, 0x14), 0);
+                }
+            }
+            if ((M2C_FIELD(arg0, int *, 0x80) == 0) && (X_func_00119090__9MagSystem((int)&D_006E9840) != 0xA) && (X_func_00119090__9MagSystem((int)&D_006E9840) != 0xD)) {
+                var_a2_2 = 0;
+                if ((*(int *)&D_007A3354) != 0) {
+                    var_a2_2 = M2C_FIELD((*(int *)&D_007A3354), int *, 0x100);
+                }
+                if (X_func_00169F94(M2C_FIELD(arg0, int *, 0), 1, var_a2_2, 12.0f) != 0) {
+                    X_func_001694CC(arg0, 5);
+                    M2C_FIELD(arg0, int *, 0x80) = 1;
+                    X_func_001FAC60(0xB, M2C_FIELD(arg0, int *, 0), 0, 0, 0xD, M2C_FIELD(arg0, int *, 0x14), 0);
+                }
+            }
+        }
+        temp_v0_2 = X_func_001D19A8((int)&D_007812C0, M2C_FIELD(arg0, int *, 0));
+        if (temp_v0_2 != 0) {
+            M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x2C) = 1;
+            if (temp_v0_2 != 0) {
+                if ((M2C_FIELD(arg0, int *, 0x64) >= 0xF) && (M2C_FIELD(arg0, int *, 0x7C) == 0)) {
+                    M2C_FIELD(arg0, int *, 0x44) = (int) M2C_FIELD(arg0, int *, 0x48);
+                }
+                temp_a0 = M2C_FIELD(arg0, int *, 8);
+                if (M2C_FIELD(arg0, int *, 0x44) >= M2C_FIELD(arg0, int *, 0x48)) {
+                    temp_v1_5 = M2C_FIELD(temp_a0, int *, 0x3EC);
+                    var_a1_2 = 0x41;
+                    if (temp_v1_5 & 8) {
+                        var_a1_2 = 0x3E;
+                        if (!(temp_v1_5 & 0x10)) {
+                            var_a1_2 = 0x41;
+                        }
+                    }
+                    var_s0 = var_a1_2;
+                    M2C_FIELD(arg0, unsigned int *, 4) = 3U;
+                } else {
+                    M2C_FIELD(arg0, int *, 0x80) = 0;
+                    M2C_FIELD(arg0, int *, 0x7C) = 0;
+                    temp_v1_6 = M2C_FIELD(temp_a0, int *, 0x3EC);
+                    if (!(temp_v1_6 & 8) || (var_v1 = 0x3D, ((temp_v1_6 & 0x10) == 0))) {
+                        var_v1 = 0x40;
+                    }
+                    var_s0 = var_v1;
+                    X_func_001694CC(arg0, 0xB);
+                    M2C_FIELD(arg0, int *, 0x64) = 0;
+                }
+                X_func_001687BC(arg0, var_s0, 0);
+            }
+        }
+        goto block_88;
+    case 3:
+        temp_v0_3 = X_func_001D19A8((int)&D_007812C0, M2C_FIELD(arg0, int *, 0));
+        if (temp_v0_3 != 0) {
+            M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x2C) = 1;
+            if (temp_v0_3 != 0) {
+                M2C_FIELD(arg0, int *, 0x44) = 0;
+                temp_v0_4 = F8AC_func_0010423C(0, 0x63);
+                if (temp_v0_4 >= 0x32) {
+                    if ((temp_v0_4 < 0x46) && (temp_v1_7 = M2C_FIELD(M2C_FIELD(arg0, int *, 8), int *, 0x3EC), ((temp_v1_7 & 8) == 0)) && (temp_v1_7 & 0x10)) {
+                        X_func_001687BC(arg0, 6, 0);
+                        M2C_FIELD(arg0, unsigned int *, 4) = 5U;
+                    } else {
+                        F8AC_func_001683E8(arg0);
+                        M2C_FIELD(arg0, unsigned int *, 4) = 4U;
+                        M2C_FIELD(arg0, int *, 0x4C) = (int) (M2C_FIELD(arg0, int *, 0x4C) + 1);
+                    }
+                    goto block_88;
+                }
+                return ((int *)&D_002F1010)[M2C_FIELD(arg0, int *, 0x38)];
+            }
+        }
+        goto block_88;
+    case 4:
+        if (Xiiiifi_func_00169BAC(1, M2C_FIELD(arg0, int *, 0x14), M2C_FIELD(arg0, int *, 8), 60.0f, 0.785398163f) == 0) {
+            temp_v0_5 = X_func_001D19A8((int)&D_007812C0, M2C_FIELD(arg0, int *, 0));
+            if (temp_v0_5 != 0) {
+                M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x2C) = 1;
+                if (temp_v0_5 != 0) {
+                    if (M2C_FIELD(arg0, int *, 0x4C) < 3) {
+                        if (F8AC_func_0010423C(0, 0x63) >= 0xA) {
+                            goto block_73;
+                        }
+                        F8AC_func_001683E8(arg0);
+                        M2C_FIELD(arg0, int *, 0x4C) = (int) (M2C_FIELD(arg0, int *, 0x4C) + 1);
+                    } else {
+block_73:
+                        F8AC_func_00166EB4(arg0, 0x64);
+                        temp_s0_2 = M2C_FIELD(arg0, int *, 0x14);
+                        temp_f13 = ((float *)&D_002F0FE0)[M2C_FIELD(arg0, int *, 0x38)];
+                        Xiiif_func_00166F50(arg0, temp_s0_2, Xf_func_001044B8(temp_f13 * 0.7999999672174454f, temp_f13));
+                        M2C_FIELD(arg0, unsigned int *, 4) = 0U;
+                        M2C_FIELD(arg0, int *, 0x4C) = 0;
+                    }
+                }
+            }
+            goto block_88;
+        }
+block_79:
+        if (X_func_0015FEE8(arg0) == 0) {
+            goto block_83;
+        }
+        M2C_FIELD(arg0, unsigned int *, 4) = 1U;
+        goto block_88;
+    case 5:
+        temp_v0_6 = X_func_001D19A8((int)&D_007812C0, M2C_FIELD(arg0, int *, 0));
+        if (temp_v0_6 != 0) {
+            M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x2C) = 1;
+            if (temp_v0_6 != 0) {
+                if (Xiiiifi_func_00169BAC(1, M2C_FIELD(arg0, int *, 0x14), M2C_FIELD(arg0, int *, 8), 60.0f, 0.785398163f) == 0) {
+                    temp_v1_8 = F8AC_func_0010423C(0, 0x63);
+                    if ((M2C_FIELD(arg0, int *, 0x40) == 0) && (temp_v1_8 < 0x14)) {
+                        X_func_001687BC(arg0, 6, 0);
+                        M2C_FIELD(arg0, unsigned int *, 4) = 5U;
+                        M2C_FIELD(arg0, int *, 0x40) = (int) (M2C_FIELD(arg0, int *, 0x40) + 1);
+                    } else {
+                        F8AC_func_00166EB4(arg0, 0x64);
+                        temp_s0_3 = M2C_FIELD(arg0, int *, 0x14);
+                        temp_f13_2 = ((float *)&D_002F0FE0)[M2C_FIELD(arg0, int *, 0x38)];
+                        Xiiif_func_00166F50(arg0, temp_s0_3, Xf_func_001044B8(temp_f13_2 * 0.7999999672174454f, temp_f13_2));
+                        M2C_FIELD(arg0, unsigned int *, 4) = 0U;
+                        M2C_FIELD(arg0, int *, 0x40) = 0;
+                    }
+                    goto block_88;
+                }
+                goto block_79;
+            }
+        }
+        goto block_88;
+    }
+block_83:
+    return ((int *)&F8AC_table)[M2C_FIELD(arg0, int *, 0x38)];
+block_88:
+    return -1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015F8AC);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015FEE8);
 
