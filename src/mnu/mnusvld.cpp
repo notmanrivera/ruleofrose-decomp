@@ -925,7 +925,113 @@ extern "C" int func_001A7060(int arg0)
 }
 
 
+// NON_MATCHING: 197/222 differ, 15 relocs differ (size 0x378, game 0x390), 148 edits
+#ifdef NON_MATCHING
+extern "C" void F7088_clear(int) asm("func_001A6BF8");
+extern "C" int F7088_count(int) asm("func_001A1C8C");
+extern "C" int F7088_atoi(const char *) asm("atoi");
+extern "C" int F7088_bcd(int) asm("func_001A7060");
+extern "C" int F7088_decimal(unsigned char) asm("func_001A7040");
+extern "C" void F7088_local(void *) asm("sceScfGetLocalTimefromRTC");
+extern "C" void func_001A7088(int object)
+{
+    register int arg0 PS2_REG("$22") = object;
+    int values[5];
+    char digits[3];
+    unsigned char rtc[8];
+    int base8;
+    int base14;
+    F7088_clear(arg0);
+    if (F7088_count(arg0) > 0) {
+        int i = 0;
+loop_7088:
+        int sub = arg0 + 0xC0;
+        if (i < F7088_count(arg0)) {
+
+            char *name = (char *)(sub + (i << 6) + 0x1E0);
+            if (i >= M2C_FIELD(sub, int *, 0x90)) name = 0;
+            if (name[0] == 'd' && name[1] == 't') {
+                char *p = name;
+                int error = 0;
+                int n = 0;
+                int *out = values;
+                do {
+                    char a = p[2];
+                    digits[0] = a;
+                    char b = p[3];
+                    p += 2;
+                    digits[2] = 0;
+                    digits[1] = b;
+                    if (a == '_' || b == '_') error = 1;
+                    else {
+                        int value = F7088_atoi(digits);
+                        if (value < 0) { error = 1; break; }
+                        *out = value;
+                    }
+                    n++;
+                    out++;
+                } while (n < 5);
+                if (error != 1 && values[0] >= 0) {
+                    base8 = arg0 + 8;
+                    if (values[0] < M2C_FIELD(arg0, int *, 0x142C)) {
+                        base14 = arg0 + 0x14;
+                        int offset = values[0] * 0x2C;
+                        int baseC = arg0 + 0xC;
+                        int base10 = arg0 + 0x10;
+                        *(int *)(base8 + offset + 0x2500) = values[1] / 10;
+                        *(int *)(baseC + offset + 0x2500) = values[1] % 10;
+                        *(int *)(base10 + offset + 0x2500) = values[2];
+                        *(int *)(base14 + offset + 0x2500) = values[3];
+                        M2C_FIELD(offset + base8, int *, 0x2510) = values[4];
+                        unsigned short year = 0;
+                        if (i < M2C_FIELD(sub, int *, 0x90)) year = M2C_FIELD(sub + (i << 6), unsigned short *, 0x1CE);
+                        rtc[7] = F7088_bcd(year < 2000 ? year : year - 2000);
+                        unsigned char v0 = 0;
+                        if (i < M2C_FIELD(sub, int *, 0x90)) v0 = M2C_FIELD(sub + (i << 6), unsigned char *, 0x1CD);
+                        rtc[6] = F7088_bcd(v0);
+
+                        unsigned char v1 = 0;
+                        if (i < M2C_FIELD(sub, int *, 0x90)) v1 = M2C_FIELD(sub + (i << 6), unsigned char *, 0x1CC);
+                        rtc[5] = F7088_bcd(v1);
+
+                        unsigned char v2 = 0;
+                        if (i < M2C_FIELD(sub, int *, 0x90)) v2 = M2C_FIELD(sub + (i << 6), unsigned char *, 0x1CB);
+                        rtc[3] = F7088_bcd(v2);
+
+                        unsigned char v3 = 0;
+                        if (i < M2C_FIELD(sub, int *, 0x90)) v3 = M2C_FIELD(sub + (i << 6), unsigned char *, 0x1CA);
+                        rtc[2] = F7088_bcd(v3);
+
+                        unsigned char v4 = 0;
+                        if (i < M2C_FIELD(sub, int *, 0x90)) v4 = M2C_FIELD(sub + (i << 6), unsigned char *, 0x1C9);
+                        rtc[1] = F7088_bcd(v4);
+                        F7088_local(rtc);
+                        int y = F7088_decimal(rtc[7]);
+                        int m = F7088_decimal(rtc[6]);
+                        int d = F7088_decimal(rtc[5]);
+                        int h = F7088_decimal(rtc[3]);
+                        int min = F7088_decimal(rtc[2]);
+                        int sec = F7088_decimal(rtc[1]);
+                        int offset2 = values[0] * 0x2C;
+                        int date = offset2 + 0x2510;
+                        int time = offset2 + 0x2520;
+                        *(int *)(baseC + date) = y;
+                        *(int *)(base10 + date) = m;
+                        *(int *)(base14 + date) = d;
+                        *(int *)(base8 + time) = h;
+                        *(int *)(baseC + time) = min;
+                        *(int *)(base10 + time) = sec;
+                    }
+                }
+            }
+            i++;
+            goto loop_7088;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A7088);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A7418);
 
