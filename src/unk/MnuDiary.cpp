@@ -818,7 +818,141 @@ extern "C" int func_0019946C(int arg0, int arg1)
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019946C);
 #endif
 
+// NON_MATCHING: 178/184 differ, 9 relocs differ (size 0x2E0, game 0x2F4), 136 edits
+#ifdef NON_MATCHING
+extern "C" int Xiii_func_00194370(int, int) asm("func_00194370");
+extern "C" int Xiii_func_0019A20C(int, int) asm("func_0019A20C");
+extern "C" int Xiii_func_0019A24C(int, int) asm("func_0019A24C");
+extern "C" int diary99714_AB4(int, int, int) asm("func_00199AB4");
+extern "C" void func_00199714(int arg0)
+{
+    int var_v1;
+    int temp_a0;
+    int temp_a0_2;
+    int temp_a1;
+    int temp_a1_2;
+    int temp_a1_3;
+    int temp_a1_4;
+    int temp_a1_5;
+    int temp_a2;
+    int temp_s0;
+    int var_a1;
+    int var_a1_2;
+    int var_a1_3;
+    int var_a1_4;
+    int var_s2;
+    int var_v0;
+    int temp_v0;
+    int temp_v1;
+    int var_s3;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x128);
+    var_s3 = temp_v0;
+    if (temp_v0 != 0) {
+        var_s2 = 4;
+        do {
+            bool disabled = !(M2C_FIELD(var_s3, int *, 0) & 1);
+            if (!disabled) {
+                temp_a2 = M2C_FIELD(var_s3, int *, 0xC);
+                temp_a0 = M2C_FIELD(var_s3, int *, 0x10);
+                temp_v1 = M2C_FIELD(arg0, int *, 0x9C) + (temp_a2 * 0x10);
+                if (temp_a0 < M2C_FIELD(temp_v1, int *, 4)) {
+                    temp_a0_2 = temp_a0 + 1;
+                    M2C_FIELD(var_s3, int *, 0x10) = temp_a0_2;
+                    temp_s0 = M2C_FIELD(temp_v1, int *, 4) - temp_a0_2;
+                    if (temp_s0 == 0) {
+                        temp_a1 = M2C_FIELD(var_s3, int *, 0x14);
+                        if (!(temp_a2 & 1)) {
+                            diary99714_AB4(arg0, (temp_a1 * 2) + 1, 1);
+                        } else {
+                            diary99714_AB4(arg0, (temp_a1 * 2) + 2, 0);
+                        }
+                    } else if (temp_s0 == 4) {
+                        temp_a1_2 = M2C_FIELD(var_s3, int *, 0x14);
+                        temp_s0 = Xiii_func_0019A20C(arg0, (((temp_a2 & 1) ^ 0) != 0) ? (temp_a1_2 - 1) : (temp_a1_2 + 1));
+                        if (temp_s0 != -1) {
+                            var_v1 = (temp_s0 << 5) + M2C_FIELD(arg0, int *, 0x128);
+                            var_v0 = (*(int *)(var_v1)) & ~3;
+                            goto block_14;
+                        }
+                    } else if (temp_a0_2 == 4) {
+                        temp_a1_3 = M2C_FIELD(var_s3, int *, 0x14);
+                        temp_s0 = Xiii_func_0019A20C(arg0, (((temp_a2 & 1) ^ 0) != 0) ? (temp_a1_3 + 1) : (temp_a1_3 - 1));
+                        if (temp_s0 != -1) {
+                            var_v1 = (temp_s0 << 5) + M2C_FIELD(arg0, int *, 0x128);
+                            var_v0 = (*(int *)(var_v1)) | 2;
+block_14:
+                            (*(int *)(var_v1)) = var_v0;
+                        }
+                    }
+                }
+            }
+            var_s2 -= 1;
+            var_s3 += 0x20;
+        } while (var_s2 >= 0);
+        var_s2 = ((int) (M2C_FIELD(arg0, int *, 0x124) + 1) / 2) - 2;
+        if (var_s2 >= -1) {
+            var_a1 = var_s2;
+loop_18:
+            temp_a1_4 = var_s2 - 1;
+            if (Xiii_func_0019A20C(arg0, var_a1) == -1) {
+                var_s2 = (temp_a1_4 * 2) + 2;
+                if (var_s2 >= 0) {
+                    var_a1_2 = var_s2;
+                    do {
+                        var_s2 -= 1;
+                        temp_s0 = Xiii_func_0019A24C(arg0, var_a1_2);
+                        var_s3 = -1;
+                        if (temp_s0 != var_s3) {
+                            Xiii_func_00194370(arg0, temp_s0);
+                            *(int *)((temp_s0 * 4) + M2C_FIELD(arg0, int *, 0x8B8)) = var_s3;
+                        }
+                        var_a1_2 = var_s2;
+                    } while (var_s2 >= 0);
+                }
+            } else {
+                var_s2 = temp_a1_4;
+                var_a1 = var_s2;
+                if (var_s2 >= -1) {
+                    goto loop_18;
+                }
+            }
+        }
+        var_s2 = ((int) (M2C_FIELD(arg0, int *, 0x124) + 1) / 2) + 1;
+        if (var_s2 < M2C_FIELD(arg0, int *, 0x12C)) {
+            var_a1_3 = var_s2;
+loop_28:
+            temp_a1_5 = var_s2 + 1;
+            if (Xiii_func_0019A20C(arg0, var_a1_3) == -1) {
+                var_s2 = (temp_a1_5 * 2) + 1;
+                if (var_s2 < M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 8)) {
+                    var_a1_4 = var_s2;
+                    do {
+                        var_s2 += 1;
+                        temp_s0 = Xiii_func_0019A24C(arg0, var_a1_4);
+                        var_s3 = -1;
+                        if (temp_s0 != var_s3) {
+                            Xiii_func_00194370(arg0, temp_s0);
+                            *(int *)((temp_s0 * 4) + M2C_FIELD(arg0, int *, 0x8B8)) = var_s3;
+                        }
+                        var_a1_4 = var_s2;
+                    } while (var_s2 < M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 8));
+                }
+            } else {
+                var_s2 = temp_a1_5;
+                var_a1_3 = var_s2;
+                if (var_s2 >= M2C_FIELD(arg0, int *, 0x12C)) {
+
+                } else {
+                    goto loop_28;
+                }
+            }
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00199714);
+#endif
 
 extern "C" void func_00199A08(void *arg0, int arg1, int arg2, int arg3)
 {
