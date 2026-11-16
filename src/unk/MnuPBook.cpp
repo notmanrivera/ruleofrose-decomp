@@ -1,5 +1,26 @@
 #include "include_asm.h"
 #include "bed/bedpfh.h"
+struct PBookHdr {
+    int unk00;
+    int unk04;
+    unsigned short unk08;
+};
+struct PBookItem {
+    int pad[7];
+    int unk1C;
+};
+struct PBookElem10 {
+    int unk00;
+    int unk04;
+    int unk08;
+    int unk0C;
+};
+struct PBookElem20 {
+    char *unk00;
+    int pad[7];
+};
+extern "C" PBookHdr **Xp_func_0022AED8(void *, int) asm("func_0022AED8");
+extern "C" PBookItem **Xp_func_0022AAD0(PBookHdr **, int) asm("func_0022AAD0");
 extern "C" int Xiii_func_001959EC(int, int) asm("func_001959EC");
 extern "C" int Xiiii_func_00193FEC(int, int, int) asm("func_00193FEC");
 struct m2c_v10C_50_i {
@@ -638,7 +659,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00197A74);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00197D28);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00197E68);
+extern "C" void func_00197E68(int arg0, int arg1, int arg2, int arg3)
+{
+    PBookHdr **p = Xp_func_0022AED8((*(PBookElem20 **)((char *)arg0 + 0x94))[arg1].unk00 + 0x10, arg3 != 0);
+    PBookItem *item = *Xp_func_0022AAD0(p, 0);
+    PBookElem10 *base = (PBookElem10 *)M2C_FIELD(arg0, int *, 0xA4);
+    if (arg2 == -1) {
+        item->unk1C = (arg3 ? (base + 0x21) : (base + 0x20))->unk08;
+    } else {
+        item->unk1C = (base + arg2)->unk08;
+    }
+    (*p)->unk08++;
+}
 
 extern "C" void func_00197F18(int arg0, int arg1, int arg2)
 {
