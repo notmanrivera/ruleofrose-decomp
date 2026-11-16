@@ -715,7 +715,93 @@ extern "C" int func_00188BFC(int arg0)
     return (M2C_FIELD(arg0, int *, 0x64) == 1) ? var_s2 : 1;
 }
 
+// NON_MATCHING: 42/121 differ (size 0x1E4, game 0x1EC), 14 edits
+#ifdef NON_MATCHING
+extern "C" int F8CD_sync(int, int *, int *) asm("sceMcSync");
+extern "C" int func_00188CD4(int arg0)
+{
+    int done = 0;
+    switch (M2C_FIELD(arg0, int *, 0x60)) {
+    case 0:
+        M2C_FIELD(arg0, int *, 0x60) = 3;
+        M2C_FIELD(arg0, int *, 0xBC) = 0;
+    case 3: {
+        M2C_FIELD(arg0, int *, 0x60) = 5;
+        int result = X_sceMcFlush(M2C_FIELD(arg0, int *, 0x94));
+        M2C_FIELD(arg0, int *, 0x64) = 3;
+        M2C_FIELD(arg0, int *, 0x6C) = result;
+        switch (result) {
+        case 0:
+            M2C_FIELD(arg0, int *, 0x60) = 4;
+            M2C_FIELD(arg0, int *, 0x64) = 1;
+            M2C_FIELD(arg0, int *, 0x58) = 1;
+            break;
+        case -100:
+            M2C_FIELD(arg0, int *, 0x58) = 4;
+            break;
+        case -200:
+            M2C_FIELD(arg0, int *, 0x58) = 2;
+            break;
+        default:
+            M2C_FIELD(arg0, int *, 0x58) = 2;
+            break;
+        }
+        M2C_FIELD(arg0, int *, 0xBC) += 1;
+        break;
+    }
+    case 4: {
+        int *out = (int *)(arg0 + 0xD0);
+        int sync = F8CD_sync(M2C_FIELD(arg0, int *, 0xC8), (int *)(arg0 + 0xCC), out);
+        switch (sync) {
+        case 0:
+            break;
+        case 1:
+            M2C_FIELD(arg0, int *, 0x64) = 3;
+            if (*out == 0) {
+                M2C_FIELD(arg0, int *, 0x64) = 2;
+                M2C_FIELD(arg0, int *, 0x60) = 5;
+                break;
+            }
+            if (*out == -2) {
+                register int error PS2_REG("$4") = 7;
+                M2C_FIELD(arg0, int *, 0x58) = error;
+                if (M2C_FIELD(arg0, int *, 0xBC) >= 8) break;
+                {
+                    M2C_FIELD(arg0, int *, 0x60) = 3;
+                    M2C_FIELD(arg0, int *, 0x64) = 1;
+                    M2C_FIELD(arg0, int *, 0x58) = 1;
+                }
+                break;
+            }
+            if (*out == -4) {
+                M2C_FIELD(arg0, int *, 0x58) = 13;
+                break;
+            }
+            if (*out == -5) {
+                M2C_FIELD(arg0, int *, 0x58) = 14;
+                break;
+            }
+            if (*out <= -10) {
+                M2C_FIELD(arg0, int *, 0x58) = 9;
+            }
+            break;
+        case -1:
+            M2C_FIELD(arg0, int *, 0x64) = 3;
+            M2C_FIELD(arg0, int *, 0x58) = 10;
+            M2C_FIELD(arg0, int *, 0x60) = 5;
+            break;
+        }
+        break;
+    }
+    case 5:
+        done = 1;
+        break;
+    }
+    return M2C_FIELD(arg0, int *, 0x64) == 1 ? done : 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00188CD4);
+#endif
 
 // NON_MATCHING: 3/106 differ, 2 edits
 #ifdef NON_MATCHING
