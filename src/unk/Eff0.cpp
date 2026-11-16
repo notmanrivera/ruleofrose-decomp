@@ -290,7 +290,95 @@ INCLUDE_RODATA("asm/nonmatchings/unk/Eff0", D_002F1F38);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/Eff0", D_002F1F40);
 
+// NON_MATCHING: 35/185 differ (size 0x2E4, game 0x2E8), 10 edits
+#ifdef NON_MATCHING
+struct Bg02Pack { char *top; int *size; int *offset; short *user; char *name; // Bg02 declaration
+    void *file(int n) const { // Bg02 declaration
+        if (!top) ror_assert("bed/bedpfh.h",85,"m_top"); // Bg02 declaration
+        if (!(n>=0 && n<((short *)top)[7])) ror_assert("bed/bedpfh.h",86,"n >= 0 && n < m_top->m_num_file"); // Bg02 declaration
+        return top + offset[n]; // Bg02 declaration
+    } // Bg02 declaration
+}; // Bg02Pack // Bg02 declaration
+struct Bg02Data { int words[8]; }; // Bg02 declaration
+extern "C" void bg02Clear(Bg02Pack *) asm("clear__6BedPfh"); // Bg02 declaration
+extern "C" void bg02Top(Bg02Pack *,void *) asm("setTop__6BedPfhPv"); // Bg02 declaration
+extern "C" const char *bg02Name(Bg02Pack *,int) asm("getName__C6BedPfhi"); // Bg02 declaration
+extern "C" int bg02Compare(const char *,const char *) asm("strcasecmp"); // Bg02 declaration
+extern char bg02Heap[] asm("D_006E9800"); // Bg02 declaration
+extern "C" void *bg02Alloc(void *,int,int) asm("alloc__9BedMemoryii"); // Bg02 declaration
+extern "C" void *bg02Copy(void *,const void *,unsigned int) asm("memcpy"); // Bg02 declaration
+extern "C" void *bg02Zero(void *,int,unsigned int) asm("memset"); // Bg02 declaration
+extern "C" int bg02Count(int) asm("func_0022AEC0"); // Bg02 declaration
+extern "C" int EffBg1__vfunc_02(int obj,int param)
+{
+    Bg02Pack pack;
+    register int result PS2_REG("$2")=Xiii_Eff0__vfunc_02(obj,param);
+    if (result!=0) {
+        int scene=D_00298E08+0x29550;
+        result=0;
+        if (scene!=0) {
+            int data=M2C_FIELD(scene,int *,0x11C);
+            M2C_FIELD(obj,int *,0x24)=data;
+            if (data!=0) {
+                bg02Clear(&pack);
+                bg02Top(&pack,M2C_FIELD(M2C_FIELD(param,int *,12),void **,0x28));
+                int source=M2C_FIELD(param,int *,12);
+                int index=M2C_FIELD(source,int *,0x50)+M2C_FIELD(source,int *,0x54)+M2C_FIELD(source,int *,0x58);
+                if (bg02Compare(bg02Name(&pack,index),"eff")==0) {
+                    int size=pack.size ? pack.size[index] : -1;
+                    void *allocated=bg02Alloc(bg02Heap,size,-1);
+                    M2C_FIELD(obj,void **,0x40)=allocated;
+                    bg02Copy(allocated,pack.file(index),size);
+                } else {
+                    void *allocated=bg02Alloc(bg02Heap,16,-1);
+                    M2C_FIELD(obj,void **,0x40)=allocated;
+                    bg02Zero(allocated,0,16);
+                    M2C_FIELD(M2C_FIELD(obj,void **,0x40),short *,0)=7;
+                }
+                char *record=M2C_FIELD(obj,char **,0x40)+16;
+                register int i PS2_REG("$6")=0;
+                if (M2C_FIELD(M2C_FIELD(obj,void **,0x40),unsigned short *,2)!=0) {
+                    do {
+                        switch (M2C_FIELD(record,unsigned short *,0)) {
+                        case 4: *(Bg02Data *)(record+4)=*(Bg02Data *)(param+0x1C); break;
+                        case 5: *(Bg02Data *)(record+4)=*(Bg02Data *)(param+0x1C); break;
+                        case 6: *(Bg02Data *)(record+4)=*(Bg02Data *)(param+0x1C); break;
+                        }
+                        register void *header PS2_REG("$2")=M2C_FIELD(obj,void **,0x40);
+                        i++;
+                        register int stride PS2_REG("$3")=M2C_FIELD(record,unsigned short *,2);
+                        int max=M2C_FIELD(header,unsigned short *,2);
+                        record+=stride;
+                    } while (i < M2C_FIELD(M2C_FIELD(obj,void **,0x40),unsigned short *,2));
+                }
+                M2C_FIELD(obj,short *,0x44)=0;
+                M2C_FIELD(obj,unsigned short *,0x46)=M2C_FIELD(M2C_FIELD(obj,void **,0x40),unsigned short *,4);
+                register int count PS2_REG("$16")=bg02Count(M2C_FIELD(obj,int *,0x24)+16);
+                if (count>0) {
+                    M2C_FIELD(obj,void **,0x3C)=bg02Alloc(bg02Heap,count*16,-1);
+                    register int n PS2_REG("$6")=0;
+                    if (count>0) {
+                        do {
+                            int offset=n*16;
+                            n++;
+                            float *p=(float *)(offset+M2C_FIELD(obj,int *,0x3C));
+                            p[0]=p[1]=0.0f;
+                            float *q=(float *)(offset+M2C_FIELD(obj,int *,0x3C));
+                            q[2]=q[3]=1.0f;
+                        } while(n<count);
+                    }
+                    return 1;
+                }
+                M2C_FIELD(obj,void **,0x3C)=0;
+                result=1;
+            }
+        }
+    }
+    return result;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBg1__vfunc_02);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBg1__vfunc_05);
 
