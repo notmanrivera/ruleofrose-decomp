@@ -1541,7 +1541,99 @@ extern "C" int func_0019AF34(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019AFB0);
 
+// NON_MATCHING: 188/194 differ, 17 relocs differ (size 0x308, game 0x364), 156 edits
+#ifdef NON_MATCHING
+extern char D_002A4300[] __attribute__((aligned(8)));
+extern char D_002A42F0[];
+extern char D_002F8470[];
+extern char D_002999B0[], D_002999A0[];
+struct DiaryB020Text { char text[29]; } __attribute__((packed));
+struct DiaryB020Item { int m_unq,m_oid; unsigned short m_uid,m_num; int m_unk0c; };
+struct DiaryB020Node { DiaryB020Node *prev,*next; int pad[2]; DiaryB020Item data; };
+struct DiaryB020Iter { DiaryB020Node *p; DiaryB020Iter(DiaryB020Node *n=0):p(n) {} DiaryB020Iter(const DiaryB020Iter &o):p(o.p) {} DiaryB020Iter operator++(int) { DiaryB020Iter old(*this); p=p->next; return old; } };
+extern "C" char *strcpy(char *,const char *);
+inline DiaryB020Node *diaryBFirst(char *base) { return *(DiaryB020Node **)(base+0x1A7F4); }
+inline DiaryB020Node *diaryBHead(char *base) { return (DiaryB020Node *)(base+0x1A7F0); }
+extern "C" int diaryB020_func_0019E43C(int,int,int) asm("func_0019E43C");
+extern "C" int diaryB020_func_0019AFB0(int,int) asm("func_0019AFB0");
+extern "C" int diaryB020_func_0018F41C(int,int,int) asm("func_0018F41C");
+extern "C" int diaryB020_func_0018F1F4(int,int,int,int,int,int,int,int) asm("func_0018F1F4");
+inline void diaryBCopyTitle(char *dst,const char *src) { *(int *)(dst+0x28)=*(const int *)(src+8); *(long long *)(dst+0x20)=*(const long long *)src; }
+inline void diaryBCopySeparator(char *dst,const char *src) { *(long long *)dst=*(const long long *)src; *(long long *)(dst+8)=*(const long long *)(src+8); dst[16]=src[16]; }
+extern "C" void func_0019B020(void *self,int arg1) {
+    int arg0=(int)self;
+    DiaryB020Iter it, end;
+    it = DiaryB020Iter(diaryBFirst((char *)&D_007812C0));
+    end = DiaryB020Iter(diaryBHead((char *)&D_007812C0));
+    int var_t2 = 1;
+    static const char title[16] __attribute__((aligned(8))) = "Item Change";
+    static const char separator[24] __attribute__((aligned(8))) = "----------------";
+    diaryBCopyTitle(D_002A4300, title);
+    diaryBCopySeparator(D_002A4300, separator);
+    *(DiaryB020Text *)(D_002A4300+0xBA) = *(DiaryB020Text *)D_002F8470;
+    M2C_FIELD(D_002A42F0, short *,8)=0xA00;
+    M2C_FIELD(D_002A42F0,char **,0)=D_002A4300;
+    M2C_FIELD(D_002A42F0,int *,4)=0;
+    M2C_FIELD(arg0,char **,0x1110)=D_002A42F0;
+    DiaryB020Item **out=(DiaryB020Item **)(arg0+0x1114);
+    while (it.p != end.p) {
+        *out=0;
+        if (arg1 != 0) {
+            if (arg1 >= 0) {
+                if (arg1 < 7 && arg1 == M2C_FIELD(it.p->data.m_unq, unsigned short *,0xB8)) { *out++=&it.p->data; ++var_t2; }
+            }
+        } else { ++var_t2; *out++=&it.p->data; }
+        it++;
+    }
+    int temp_v1,temp_a2_2,temp_a0,temp_a1,temp_v1_2,var_v0;
+    char *temp_s0;
+    M2C_FIELD(arg0, int *, 0x1544) = var_t2;
+    M2C_FIELD(arg0, int *, 0x2C) = var_t2;
+    if (M2C_FIELD(arg0, int *, 8) >= M2C_FIELD(arg0, int *, 0x24)) {
+        M2C_FIELD(arg0, int *, 8) = 0;
+    }
+    temp_v1 = M2C_FIELD(arg0, int *, 8);
+    if ((M2C_FIELD(arg0, int *, 0x10) - temp_v1) < 0) {
+        M2C_FIELD(arg0, int *, 0x10) = temp_v1;
+    }
+    temp_a2_2 = M2C_FIELD(arg0, int *, 8);
+    temp_a0 = M2C_FIELD(arg0, int *, 0x24);
+    temp_a1 = M2C_FIELD(arg0, int *, 0x2C);
+    if (temp_a0 >= temp_a1) {
+        M2C_FIELD(arg0, int *, 0x10) = temp_a2_2;
+        temp_v1_2 = M2C_FIELD(arg0, int *, 0x2C);
+        if (M2C_FIELD(arg0, int *, 8) >= temp_v1_2) {
+            M2C_FIELD(arg0, int *, 8) = (int) (temp_v1_2 - 1);
+            var_v0 = M2C_FIELD(arg0, int *, 0x2C) - 1;
+            goto block_19;
+        }
+    } else if ((((M2C_FIELD(arg0, int *, 0x10) - temp_a2_2) + temp_a0) - 1) >= temp_a1) {
+        var_v0 = temp_a1 + (temp_a2_2 - temp_a0);
+block_19:
+        M2C_FIELD(arg0, int *, 0x10) = var_v0;
+    }
+    temp_s0 = (char *)arg0 + 0x7D0;
+    M2C_FIELD(M2C_FIELD((int)temp_s0, char **, 0x4AC), int *, 0x4974) = (int) (diaryB020_func_0019E43C((int) arg0, M2C_FIELD((arg0 + 4), int *, 0xC), M2C_FIELD(arg0, int *, 0x2C)) * 0x10);
+    
+    if (diaryB020_func_0019AFB0(arg0, 0) == 0) {
+        if (M2C_FIELD(M2C_FIELD((int)temp_s0, char **, 0x4AC), int *, 0x4674) != 0) {
+            diaryB020_func_0018F41C((int)temp_s0, 0x35, 0xA);
+        }
+    } else if ((M2C_FIELD(M2C_FIELD((int)temp_s0, char **, 0x4AC), int *, 0x4674) ^ 1) != 0) {
+        diaryB020_func_0018F1F4((int)temp_s0, 0x35, M2C_FIELD(arg0, int *, 0x1574), 0xA, 0, -1, (int)&D_002999B0, (int)&D_002999A0);
+    }
+
+    if (diaryB020_func_0019AFB0(arg0, 1) == 0) {
+        if (M2C_FIELD(M2C_FIELD((int)temp_s0, char **, 0x4AC), int *, 0x47C8) != 0) {
+            diaryB020_func_0018F41C((int)temp_s0, 0x36, 0xA);
+        }
+    } else if ((M2C_FIELD(M2C_FIELD((int)temp_s0, char **, 0x4AC), int *, 0x47C8) ^ 1) != 0) {
+        diaryB020_func_0018F1F4((int)temp_s0, 0x36, M2C_FIELD(arg0, int *, 0x1574), 0xA, 0, -1, (int)&D_002999B0, (int)&D_002999A0);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019B020);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuDiary", D_002F8470);
 
