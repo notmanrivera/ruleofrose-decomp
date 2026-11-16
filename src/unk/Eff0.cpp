@@ -545,7 +545,81 @@ INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016BEDC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodSpray2__vfunc_05);
 
+// NON_MATCHING: 187/206 differ, 15 relocs differ (size 0x338, game 0x348), 119 edits
+#ifdef NON_MATCHING
+struct ALIGNED(8) Spray08Entry { int index; float distance; };
+struct ALIGNED(8) Spray08Vec { float x,y,z,w; };
+struct Spray08Mat { long long q[8]; };
+struct Spray08Camera { char data[0x94]; virtual void X__vfunc_00(); virtual void X__vfunc_01(); };
+extern Spray08Vec spray08Scale asm("D_002F1FF0");
+extern Spray08Vec spray08Color asm("D_002F2000");
+extern Spray08Vec spray08UV asm("D_002F2010");
+extern "C" float spray08Distance(void *,void *) asm("func_0016FF18");
+extern "C" int spray08Texture(int,int) asm("func_0021B5A0");
+extern "C" int spray08Write(int,int,unsigned long long) asm("func_0021B550");
+extern "C" int spray08Start(int,int,int) asm("func_0021E5A0");
+extern "C" int spray08SetUV(int,void *) asm("func_0021E488");
+extern "C" void spray08Light(void *) asm("func_0016AF20");
+extern "C" void spray08Fog(void *,float) asm("func_0016AE00");
+extern "C" void spray08ScaleMat(void *,void *,void *) asm("func_00237A40");
+extern "C" int spray08State(int,int) asm("func_0021B260");
+extern "C" int spray08Join(int,int) asm("func_0021B4F8");
+extern "C" int spray08Matrix(int,void *) asm("func_0021E428");
+extern "C" int spray08Vertex(int,void *,void *) asm("func_0021E690");
+extern "C" int spray08End(int) asm("func_0021E688");
+extern "C" int EffBloodSpray2__vfunc_08(char *obj,int render,int state,int packet) {
+    Spray08Entry entries[17];
+    Spray08Entry tmp;
+    Spray08Mat matrix;
+    Spray08Vec scale,color,uv;
+    char *part=obj+0x40;
+    Spray08Camera *camera=(Spray08Camera *)(D_00298E08+0x2AB70);
+    int count=0;
+    Spray08Entry *out=entries;
+    int i=0;
+    do {
+        if (M2C_FIELD(part,short *,0x34)>=256) {
+            out->index=i; count++;
+            out->distance=spray08Distance(camera,part); out++;
+        }
+        i++; part+=0x50;
+    } while(i<17);
+    if (count>0) {
+        for(i=0;i<count-1;i++) {
+            int best=i;
+            for(int j=i+1;j<count;j++) if(entries[best].distance<entries[j].distance) best=j;
+            if(best!=i) { tmp=entries[i]; entries[i]=entries[best]; entries[best]=tmp; }
+        }
+        camera->X__vfunc_01();
+        short last=-1;
+        scale=spray08Scale; color=spray08Color;
+        int cmd=spray08Write(spray08Texture(packet,M2C_FIELD(render,int *,8)),0x42,0x44);
+        uv=spray08UV;
+        cmd=spray08SetUV(spray08Start(cmd,M2C_FIELD(render,int *,8),1),&uv);
+        spray08Light(&color); spray08Fog(&color,M2C_FIELD(obj,float *,0x10));
+        out=entries;
+        if(count>0) {
+            i=count;
+            do {
+                part=obj+out->index*0x50+0x40; out++;
+                color.w=(float)M2C_FIELD(part,short *,0x34)*0.000030517578125f;
+                matrix=*(Spray08Mat *)camera;
+                *(Spray08Vec *)((char *)&matrix+0x30)=*(Spray08Vec *)part;
+                scale.x=scale.y=M2C_FIELD(part,float *,0x28);
+                spray08ScaleMat(&matrix,&matrix,&scale);
+                short mode=M2C_FIELD(part,short *,0x30);
+                if(mode!=last) { last=M2C_FIELD(part,short *,0x30); cmd=spray08Join(cmd,spray08State(state,mode)); }
+                i--;
+                cmd=spray08Vertex(spray08Matrix(cmd,&matrix),(char *)&matrix+0x30,&color);
+            } while(i);
+        }
+        return spray08End(cmd);
+    }
+    return packet;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodSpray2__vfunc_08);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", updateZDepth__14EffBloodSpray2);
 
