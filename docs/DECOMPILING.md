@@ -606,6 +606,13 @@ From recovering `game/gamman`'s types (2026-11-12):
   - Their float expression shapes come from `-ffast-math`, which this game
     does not use: do not copy them.
 
+- **Padding after a jump table** (R7, gamtrg): when a function matches but
+  enabling it moves later functions' .rodata references by 4 or 8 bytes,
+  the game has padding after a jump table that our compile omits. Forcing
+  the alignment of the next .rodata item (`ALIGNED(8)` on a const table,
+  `ALIGNED(16)` on a named string) restores the layout; say so in a
+  comment, since the original shape is not known.
+
 ### Portability (the PC and Vita ports)
 
 The matching build is one target; the ports will build the same sources

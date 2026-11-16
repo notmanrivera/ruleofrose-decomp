@@ -45,14 +45,17 @@ judgement and go to Sonnet.
     (vtable 0x1F8FC4), TskAttack, TskDamage, TskCamera (~0x1FBBA4, .rodata
     0x2FEF80).
   - unk/WrdSrv's .rodata start (EffWater type names) stays unsettled.
-- [ ] R7 game/gamtrg func_001DD00C and func_001DBA3C: each matches as a
-  function, but compiling it moves the .rodata references of later C++
-  functions (func_001DD558, func_001DEAAC, func_001DEE78; func_001DBB74,
-  func_001DBC5C). Find what in their .rodata the compiler emits in
-  another order than the asm piece (strings? the table?) and the source
-  shape that gives the game's order.
 ## Done
 
+- [x] R7 gamtrg func_001DBA3C / func_001DD00C (2026-11-16, Codex): both
+  match in the whole object (cd350e0, 85b1060). Cause: in the game, a
+  jump table is followed by padding our compile does not emit (5-entry
+  table: 4 bytes; 10-entry: 8 bytes), so the next .rodata moved. Codex's
+  fix forces the next item's alignment: the float table D_002FC748 as an
+  ALIGNED(8) const array, and the alloc source string as a named
+  ALIGNED(16) "game/gamtrg.cpp". Byte-identical, but the original source
+  shape (why the padding is there) is still unknown: revisit if another
+  file shows the same pattern.
 - [x] R13 mw/i3d's architecture (2026-11-16, Sonnet): 143 entry points,
   1193 call sites, grouped; the version table compared with Ape Escape
   3's; format checks against pxdl/Murugo; AE3 counterparts; a port API.
