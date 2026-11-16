@@ -576,6 +576,24 @@ From recovering `game/gamman`'s types (2026-11-12):
   off; `tools/configure.py` lists the files where that is so, and gives
   the asm tables `.align 4` everywhere else.
 
+- **Near-miss tells** (survey of the NON_MATCHING attempts, R8):
+  - `bnel` vs `bnez` / `bltzl` vs `bltz` is gcc's branch-probability
+    guess, not one idiom: split `if (a && b) return;` into two tests,
+    turn a loop to count down (`for (i = 3; i >= 0; i--)`), or try the
+    early-return form. Try both ways.
+  - Same-lifetime temporaries take registers in creation order
+    (`$v0`/`$v1`, `$f20`/`$f21`, `$s2`/`$s3`): reorder the two
+    expressions in the source.
+  - Stores in another order: permute the statements (`build/climb.py`).
+  - Loads tell the type: game `lhu` where we emit `lw` means an
+    `unsigned short` member; `slt`/`blez` vs our `sltu`/`beqz` means a
+    signed bound; `ld`/`sd` vs our `lq`/`sq` means an 8-byte type, not
+    `u_long128`.
+  - The game re-reads a member after an assert or call (`lw` in the
+    delay slot): write the member again, not a local copy.
+  - Frame restored then `j callee`: `return f();` with the callee's own
+    return type. A frame 0x10 larger: one more live local.
+
 ### Portability (the PC and Vita ports)
 
 The matching build is one target; the ports will build the same sources

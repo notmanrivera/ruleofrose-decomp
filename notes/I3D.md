@@ -42,6 +42,15 @@ empty, an ABI marker that Rule of Rose has too), and only the string
 "i3d" shares the animation file format at most, not the code: no use for a
 three-way comparison. Ape Escape 3 (68 %) stays the reference.
 
+**Checked 2026-11-15, Ape Escape 3 kiosk demo and European beta** (owner's
+files: Saru! Get You! 3 Tentou-you Taikenban `PCPX_966.57`, and Ape Escape 3
+(Europe) Beta 2006-02-21 `SCES_536.42`): both stripped (no `.symtab`), both
+`i3d_package_version 050121`, same VU overlays as ours. The kiosk demo keeps
+374 game source paths in assert strings (`boss/`, `trap/`, `gamesys/`,
+`mgs/`, ...; `gamesys/i3dplus.cc` is the game's wrapper), but none from the
+i3d package itself, so no names for mw/i3d. That leaves no known symbol
+source for the i3d package.
+
 ## Formats (public tools, for R13 and the port)
 
 | Tool | Covers |

@@ -34,12 +34,6 @@ judgement and go to Sonnet.
   func_001DBC5C). Find what in their .rodata the compiler emits in
   another order than the asm piece (strings? the table?) and the source
   shape that gives the game's order.
-- [ ] R8 **[flash]** Recurring near-miss patterns: across the ~100 NON_MATCHING
-  attempts (`// NON_MATCHING:` notes, tools/permute_queue.py --list),
-  group the causes (bnel vs bnez, $v0/$v1 swaps, store order, delay-slot
-  placement) and find, in already-matched functions with the same
-  instruction patterns, the source idioms that produce them. Deliver
-  ready-to-paste bullets for docs/DECOMPILING.md.
 - [ ] R9 **[flash]** Other wrong boundaries without jump tables: scan every file's
   .rodata start for the signs found so far (RTTI names of the previous
   file's classes at the start, an assert __FILE__ string of another file
@@ -83,6 +77,10 @@ judgement and go to Sonnet.
 
 ## Done
 
+- [x] R8 Near-miss patterns (2026-11-15, Flash): branch-probability
+  flips, register order, store order, type tells from loads, tail calls;
+  bullets added to docs/DECOMPILING.md "What this compiler does".
+  Unsettled: what flips `addu` operand order.
 - [x] R1 game/gamtrg's .rodata start (2026-11-15, Sonnet + coordinator):
   0x2FC418 -> 0x2FC420; jump tables are 16-aligned (all 267). Applied in
   bcfa96a; +3 functions matched.
