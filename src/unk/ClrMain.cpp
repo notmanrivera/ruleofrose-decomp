@@ -39,7 +39,80 @@ INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrMain__vfunc_07);
 
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrMain__vfunc_01);
 
+// NON_MATCHING: 3/128 differ, 3 edits
+#ifdef NON_MATCHING
+extern "C" void ClrMain__vfunc_04(int arg0)
+{
+    int temp_v0;
+    int var_v0;
+    int temp_v1;
+
+    if ((M2C_FIELD(arg0, int *, 0x28) != 0) && (M2C_FIELD(arg0, int *, 0x2C) != 0) && (M2C_FIELD(arg0, int *, 0x24) == -1)) {
+        if ((M2C_FIELD(arg0, int *, 0x23C) != 0) && (X_func_0014E364() != 0)) {
+            M2C_FIELD(arg0, int *, 0x24) = 0xD;
+        }
+        if ((M2C_FIELD(arg0, int *, 0x238) != 0) && (X_func_0014E36C(arg0) != 0)) {
+            M2C_FIELD(arg0, int *, 0x24) = 0xC;
+        }
+        if ((M2C_FIELD(arg0, int *, 0x234) != 0) && (X_func_0014E374(arg0) != 0)) {
+            M2C_FIELD(arg0, int *, 0x24) = 0xB;
+        }
+        if ((M2C_FIELD(arg0, int *, 0x230) != 0) && (X_func_0014E37C(arg0) != 0)) {
+            M2C_FIELD(arg0, int *, 0x24) = 0xA;
+        }
+        if ((M2C_FIELD(arg0, int *, 0x22C) != 0) && (X_func_0014E384(arg0) != 0)) {
+            M2C_FIELD(arg0, int *, 0x24) = 9;
+        }
+        temp_v1 = X_func_0014E38C(arg0);
+        temp_v0 = temp_v1 & 0xFF;
+        if (M2C_FIELD(arg0, unsigned char *, 0x204) != 0) {
+            M2C_FIELD(arg0, unsigned char *, 0x204) = temp_v1;
+            if (temp_v0 == 0) {
+                
+                if (M2C_FIELD(arg0, int *, 0x210) != 0) {
+                    M2C_FIELD(arg0, int *, 0x24) = 2;
+                }
+            } else {
+                if ((M2C_FIELD(arg0, int *, 0x214) != 0) && (X_func_0014E2EC(arg0) != 0)) {
+                    M2C_FIELD(arg0, int *, 0x24) = 3;
+                }
+                if ((M2C_FIELD(arg0, int *, 0x218) != 0) && (X_func_0014E300(arg0) != 0)) {
+                    M2C_FIELD(arg0, int *, 0x24) = 4;
+                }
+                if ((M2C_FIELD(arg0, int *, 0x21C) != 0) && (X_func_0014E314(arg0) != 0)) {
+                    M2C_FIELD(arg0, int *, 0x24) = 5;
+                }
+                if ((M2C_FIELD(arg0, int *, 0x220) != 0) && (X_func_0014E328(arg0) != 0)) {
+                    M2C_FIELD(arg0, int *, 0x24) = 6;
+                }
+                if ((M2C_FIELD(arg0, int *, 0x224) != 0) && (X_func_0014E33C(arg0) != 0)) {
+                    M2C_FIELD(arg0, int *, 0x24) = 7;
+                }
+                if (M2C_FIELD(arg0, int *, 0x228) != 0) {
+                    
+                    if (X_func_0014E350(arg0) != 0) {
+                        M2C_FIELD(arg0, int *, 0x24) = 8;
+                    }
+                }
+            }
+        } else {
+            M2C_FIELD(arg0, unsigned char *, 0x204) = temp_v1;
+            if (temp_v0 != 0) {
+                if (M2C_FIELD(arg0, int *, 0x208) != 0) {
+                    M2C_FIELD(arg0, int *, 0x24) = 0;
+                }
+                
+                if (M2C_FIELD(arg0, int *, 0x20C) != 0) {
+block_44:
+                    M2C_FIELD(arg0, int *, 0x24) = 1;
+                }
+            }
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrMain__vfunc_04);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrMain__vfunc_05);
 
