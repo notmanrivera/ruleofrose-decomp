@@ -1,3 +1,4 @@
+#include "ror.h"
 #include "include_asm.h"
 #include "utl/filereader.h"
 struct Vec5250 { // 5250
@@ -1059,7 +1060,128 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2178);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2350);
 
+// NON_MATCHING: 90/217 differ (size 0x364, game 0x368), 32 edits
+#ifdef NON_MATCHING
+struct Vec239C { float m_x,m_y,m_z; }; // vec239C
+extern "C" float sqrtf(float); // decl239C
+extern "C" int scene239C(void *) asm("func_001C6C28"); // decl239C
+extern "C" void *find239C(void *, int) asm("func_0017EA44"); // decl239C
+extern "C" int lookup239C(void *, unsigned int, void **, unsigned int) asm("func_001E4908"); // decl239C
+extern "C" int check239C(void *, unsigned int, int, void *) asm("func_001E5E58"); // decl239C
+extern "C" int play239C(void *, unsigned int, int, Vec239C *, int) asm("func_001E4EBC"); // decl239C
+extern char world239C[] asm("D_007812C0"); // decl239C
+extern char bank239C[] asm("D_00298EE0"); // decl239C
+struct ALIGNED(16) Item239C { // decl239C
+    char unused[0x10];
+    Vec239C position; // decl239C
+    int pad1C; // decl239C // decl239C
+    unsigned int id; // decl239C
+    int handle; // decl239C
+    unsigned int flags; // decl239C
+    int zero; // decl239C
+    int scene; // decl239C
+    void *data; // decl239C
+    float distance; // decl239C
+    int a,b; // decl239C
+    char tail[12]; // decl239C
+}; // item239C // decl239C
+struct Node239C { Node239C *prev,*next; Item239C data; }; // node239C // decl239C
+class Iter239C { public: // decl239C
+    Node239C *node; // decl239C
+    Iter239C() : node(0) {} // decl239C
+    Iter239C(Node239C *n) : node(n) {} // decl239C
+    Iter239C(const Iter239C &n) : node(n.node) {} // decl239C
+    Item239C &operator*() const { return node->data; } // decl239C
+    Iter239C &operator++() { node = node->next; return *this; } // decl239C
+    bool operator!=(const Iter239C &n) const { return node != n.node; } // decl239C
+}; // iter239C // decl239C
+struct Chain239C { // decl239C
+    Node239C head; // decl239C
+    int count; // decl239C
+    void push(Node239C *n) { // decl239C
+        if (count == 0) { head.next = n; n->prev = &head; } // decl239C
+        else { head.prev->next = n; n->prev = head.prev; } // decl239C
+        n->next = &head; // decl239C
+        head.prev = n; // decl239C
+        ++count; // decl239C
+    } // decl239C
+}; // chain239C // decl239C
+struct Que239C { // decl239C
+    Chain239C free, used; // decl239C
+    Iter239C begin() { return Iter239C(used.head.next); } // decl239C
+    Iter239C end() { return Iter239C(&used.head); } // decl239C
+    Iter239C insert(Iter239C where, const Item239C &item) { // decl239C
+        Node239C *n = free.head.prev; // decl239C
+        Node239C *previous = n->prev; // decl239C
+        free.head.prev = previous; // decl239C
+        previous->next = &free.head; // decl239C
+        --free.count; // decl239C
+        n->data = item; // decl239C
+        Node239C *target = where.node; // decl239C
+        Node239C *p = target->prev; // decl239C
+        n->prev = p; // decl239C
+        p->next = n; // decl239C
+        n->next = target; // decl239C
+        target->prev = n; // decl239C
+        ++used.count; // decl239C
+        return where; // decl239C
+    } // decl239C
+    void push(const Item239C &item) { // decl239C
+        Node239C *n = free.head.prev; // decl239C
+        Node239C *previous = n->prev; // decl239C
+        free.head.prev = previous; // decl239C
+        previous->next = &free.head; // decl239C
+        --free.count; // decl239C
+        n->data = item; // decl239C
+        used.push(n); // decl239C
+    } // decl239C
+}; // que239C // decl239C
+struct Obj239C { char pad[0x40]; Que239C queue; }; // obj239C // decl239C
+extern "C" void func_001E239C(Obj239C *self, unsigned int id, Vec239C *position, int scene, int flags)
+{
+    if (scene == -1) scene = scene239C(world239C);
+    float *entry = (float *)find239C(bank239C, scene);
+    if (entry) {
+        Item239C item;
+        item.scene = scene;
+        item.distance = 3000.0f;
+        item.handle = -1;
+        item.flags = flags;
+        item.id = id;
+        item.zero = 0;
+        item.a = 0;
+        item.b = 0;
+        item.position.m_x = position->m_x + entry[8];
+        item.position.m_y = position->m_y + entry[9];
+        item.position.m_z = position->m_z + entry[10];
+        float horizontal = sqrtf(item.position.m_x * item.position.m_x + item.position.m_z * item.position.m_z);
+        float distance = sqrtf(item.position.m_y * item.position.m_y + horizontal * horizontal);
+        lookup239C(self, id, &item.data, 1);
+        if (item.data) {
+            if (flags & 0x20) {
+                if (check239C(self, item.id, 0x16, 0) != 0) return;
+                item.flags |= 0x200;
+                item.handle = play239C(self, item.id, 0, position, 0x80);
+            }
+            register Que239C *queue PS2_REG("$4") = &self->queue;
+            Iter239C it;
+            Iter239C last;
+            it = queue->begin();
+            last = queue->end();
+            while (it != last) {
+                if (distance <= (*it).distance) {
+                    queue->insert(it, item);
+                    return;
+                }
+                ++it;
+            }
+            queue->push(item);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E239C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2704);
 
@@ -2499,7 +2621,6 @@ extern "C" float func_001E6D54(Obj6D54 *arg0)
 
 // NON_MATCHING: 99/160 differ, 4 relocs differ (size 0x280, game 0x294), 37 edits
 #ifdef NON_MATCHING
-#include "ror.h"
 extern "C" float sqrtf(float);
 extern "C" void sub6E00(void *, const void *, const void *) asm("func_00237408");
 extern "C" float pan6E00(void *) asm("func_001E6D54");
