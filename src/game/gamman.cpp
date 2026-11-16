@@ -2917,7 +2917,42 @@ extern "C" int func_001D0758(int arg0, unsigned int arg1, float *arg2)
     return 0;
 }
 
+// NON_MATCHING: 44/67 differ, 7 relocs differ (size 0x10C, game 0x110), 12 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_00135E20(...) asm("func_00135E20");
+extern "C" int X_func_001D932C(...) asm("func_001D932C");
+extern "C" int Xiiii_func_001D5BC8(int, int, int) asm("func_001D5BC8");
+extern "C" void func_001D080C(int arg0, unsigned int arg1, int arg2)
+{
+    void *actor = 0;
+    int pos2 = arg2 + 0x10;
+
+    if (Xiiu_func_001D046C(arg0, arg1) != 0) {
+        switch ((arg1 >> 28) & 3) {
+        case 1:
+            actor = (void *)Xiiu_func_001D2B8C(arg0, arg1);
+            break;
+        case 2:
+            actor = (void *)Xiiu_func_001D2BA8(arg0, arg1);
+            break;
+        }
+        register void *a0 PS2_REG("$4") = actor;
+        X_func_001D932C(a0, 5, arg2);
+        X_func_001D932C(actor, 6, pos2);
+        Xiiii_func_001D5BC8(arg0, 0, arg1);
+
+        int stack[12];
+        stack[0] = 5;
+        stack[1] = 0;
+        char *p = (char *)&D_006E9840;
+        int off = 0x12540;
+        stack[6] = X_func_00135E20(p + off, arg2, pos2);
+        X_func_001D932C(actor, 0x18, stack);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D080C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D091C);
 
