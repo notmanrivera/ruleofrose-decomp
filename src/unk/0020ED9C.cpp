@@ -1951,7 +1951,64 @@ extern "C" int func_00214AC4(void)
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00214BCC);
 
+// NON_MATCHING: 88/160 differ, 11 relocs differ (size 0x280, game 0x274), 23 edits
+#ifdef NON_MATCHING
+extern char D_007A4440[];
+extern "C" int F14C_nop(int, int, int, int) asm("func_0020FF34");
+extern "C" void F14C_flush(void *, int *) asm("func_002147E0");
+extern int (*F14C_special[64])(unsigned, unsigned, unsigned, unsigned, unsigned) asm("D_002D9A58");
+extern int (*F14C_main[64])(unsigned, unsigned, unsigned, unsigned, unsigned) asm("D_002D9958");
+extern int (*F14C_sys[])(int,int,int,int,int,int) asm("D_002D90F8");
+extern "C" int *func_00214C24(int *pc)
+{
+    D_007B47C0 = 0;
+    D_007B47B0 = 0;
+    for (;;) {
+        D_007B4780 = (int)pc;
+        register unsigned insn PS2_REG("$8") = *pc;
+        if (insn == 0x0C102031) return 0;
+        unsigned op = insn >> 26;
+        if (op == 0) {
+            if (insn == 0) F14C_nop(0,0,0,0);
+            else F14C_special[insn & 63]((insn >> 21) & 31, (insn >> 16) & 31, (insn >> 11) & 31, (insn >> 6) & 31, insn);
+        } else F14C_main[op]((insn >> 21) & 31, (insn >> 16) & 31, insn & 65535, insn, insn);
+        if (D_007B47B0) {
+            if ((unsigned)D_007B47B0 <= 0x815F) {
+                int *regs = (int *)&D_007B4700;
+                regs[2] = F14C_sys[((unsigned)(D_007B47B0 - 0x144) >> 6) & 65535](regs[4],regs[5],regs[6],regs[7],regs[8],regs[9]);
+                D_007B47C0 = 0;
+                M2C_FIELD((*(int *)&D_007B4640), int *, 0x34) = 1;
+                if (regs[2] == 0) ++pc;
+                else if ((unsigned)regs[2] == 0xCCCCCCCC) {
+                    regs[31] = 0;
+                    F14C_flush(&D_007A4440, &D_007B47C0);
+                    return pc - 1;
+                } else if ((unsigned)regs[2] == 0xCCCCCCCD) {
+                    regs[31] = 0;
+                    F14C_flush(&D_007A4440, &D_007B47C0);
+                    return pc;
+                } else if ((unsigned)regs[2] == 0xCCCCCCCE) {
+                    F14C_flush(&D_007A4440, &D_007B47C0);
+                    return (int *)D_007B47B0;
+                } else if ((unsigned)regs[2] == 0xCCCCCCCA) {
+                    D_007B47B0 = 0;
+                    return 0;
+                } else if ((unsigned)regs[2] == 0xCCCCCCC9) pc = (int *)(D_007B4DB0 + 4);
+                else ++pc;
+            } else pc = (int *)(D_007B47D0 + D_007B47B0 - 0x8160);
+            D_007B47B0 = 0;
+        } else ++pc;
+        if (D_007B47C0) {
+            unsigned next = D_007B47C0 & 0x7FFFFFFF;
+            D_007B47B0 = next;
+            if (!next) return 0;
+            D_007B47C0 = 0;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00214C24);
+#endif
 
 extern "C" int func_00214E98(char *arg0, F14E_out *arg1)
 {
