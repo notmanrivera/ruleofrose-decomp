@@ -582,7 +582,122 @@ extern "C" int func_00187E08(int *arg0, int arg1)
 extern "C" void func_00187E3C(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00187E44);
+extern "C" int func_00187E44(int arg0)
+{
+    int temp_a0;
+    int temp_a2;
+    int temp_v0;
+    int temp_v1;
+    int temp_v1_2;
+    int var_a0;
+    int var_s3;
+    int var_v0;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x60);
+    var_s3 = 0;
+    switch (temp_v1) {                              
+    case 0:                                         
+        M2C_FIELD(arg0, int *, 0x60) = 3;
+        M2C_FIELD(arg0, int *, 0xBC) = 0;
+    case 3:                                         
+        M2C_FIELD(arg0, int *, 0x60) = 5;
+        temp_a0 = X_sceMcGetInfo(M2C_FIELD(arg0, int *, 0x70), M2C_FIELD(arg0, int *, 0x74), arg0 + 0x7C, arg0 + 0x84, arg0 + 0x88);
+        M2C_FIELD(arg0, int *, 0x64) = 3;
+        M2C_FIELD(arg0, int *, 0x6C) = temp_a0;
+        switch (temp_a0) {
+        case 0:
+            M2C_FIELD(arg0, int *, 0x60) = 4;
+            M2C_FIELD(arg0, int *, 0x64) = 1;
+            M2C_FIELD(arg0, int *, 0x58) = 1;
+            break;
+        case -210: M2C_FIELD(arg0, int *, 0x58) = 5; break;
+        case -200: M2C_FIELD(arg0, int *, 0x58) = 2; break;
+        case -100: M2C_FIELD(arg0, int *, 0x58) = 4; break;
+        default: M2C_FIELD(arg0, int *, 0x58) = 2; break;
+        }
+        M2C_FIELD(arg0, int *, 0xBC) = (int) (M2C_FIELD(arg0, int *, 0xBC) + 1);
+        break;
+    case 5:                                         
+        var_s3 = 1;
+        break;
+    case 4:                                         
+        temp_v0 = X_sceMcSync(M2C_FIELD(arg0, int *, 0xC8), arg0 + 0xCC, arg0 + 0xD0);
+        switch (temp_v0) {                          
+        case 0:                                     
+            break;
+        case 1:                                     
+            temp_a2 = M2C_FIELD(arg0, int *, 0xD0);
+            switch (temp_a2) {
+            case 0:
+                if (M2C_FIELD(arg0, int *, 0x88) == 0) {
+                    if (M2C_FIELD(arg0, int *, 0xBC) < 8) {
+                        M2C_FIELD(arg0, int *, 0x60) = 3;
+                    } else {
+                        M2C_FIELD(arg0, int *, 0x64) = 2;
+                        M2C_FIELD(arg0, int *, 0x60) = 5;
+                        M2C_FIELD(arg0, int *, 0x58) = 7;
+                        M2C_FIELD(arg0, int *, 0x90) = 0;
+                    }
+                } else {
+                    M2C_FIELD(arg0, int *, 0x64) = 2;
+                    M2C_FIELD(arg0, int *, 0x60) = 5;
+                    M2C_FIELD(arg0, int *, 0x58) = temp_v0;
+                }
+                break;
+            case -1:
+                M2C_FIELD(arg0, int *, 0x64) = 2;
+                        M2C_FIELD(arg0, int *, 0x60) = 5;
+                        M2C_FIELD(arg0, int *, 0x58) = 21;
+                        M2C_FIELD(arg0, int *, 0x90) = 0;
+                break;
+            case -2:
+                if (M2C_FIELD(arg0, int *, 0xBC) < 8) {
+                    M2C_FIELD(arg0, int *, 0x60) = 3;
+                } else {
+                    M2C_FIELD(arg0, int *, 0x64) = 2;
+                        M2C_FIELD(arg0, int *, 0x60) = 5;
+                        M2C_FIELD(arg0, int *, 0x58) = 7;
+                        M2C_FIELD(arg0, int *, 0x90) = 0;
+                }
+                break;
+            case -5:
+                M2C_FIELD(arg0, int *, 0x64) = 2;
+                        M2C_FIELD(arg0, int *, 0x60) = 5;
+                        M2C_FIELD(arg0, int *, 0x58) = 8;
+                        M2C_FIELD(arg0, int *, 0x90) = 0;
+                break;
+            default:
+                M2C_FIELD(arg0, int *, 0x64) = 2;
+                        M2C_FIELD(arg0, int *, 0x60) = 5;
+                        M2C_FIELD(arg0, int *, 0x58) = 14;
+                        M2C_FIELD(arg0, int *, 0x90) = 0;
+                break;
+            }
+            temp_v1_2 = M2C_FIELD(arg0, int *, 0x7C);
+            switch (temp_v1_2) {                    
+            case 0:
+            case 2:                                 
+                break;
+            case 1:
+                M2C_FIELD(arg0, int *, 0x58) = 0xE;
+                break;
+            case 3:                                 
+                M2C_FIELD(arg0, int *, 0x58) = 0xE;
+                break;
+            }
+            break;
+        case -1:                                    
+            M2C_FIELD(arg0, int *, 0x64) = 3;
+            M2C_FIELD(arg0, int *, 0x60) = 5;
+            M2C_FIELD(arg0, int *, 0x58) = 0xA;
+            M2C_FIELD(arg0, int *, 0x90) = 0;
+            break;
+        }
+        break;
+    }
+    int one = 1;
+    return M2C_FIELD(arg0, int *, 0x64) == one ? var_s3 : one;
+}
 
 extern "C" int func_001880CC(int arg0)
 {
