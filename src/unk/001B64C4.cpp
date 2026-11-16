@@ -287,7 +287,86 @@ extern "C" int func_001BC760()
 
 INCLUDE_ASM("asm/nonmatchings/unk/001B64C4", func_001BC790);
 
+// NON_MATCHING: 117/160 differ, 17 relocs differ (size 0x280, game 0x28C), 13 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_0018C4D8(...) asm("func_0018C4D8");
+extern "C" int X_func_0018EBA4(...) asm("func_0018EBA4");
+extern "C" int X_func_0018EC58(...) asm("func_0018EC58");
+extern "C" int X_func_001B1B34(int,int) asm("func_001B1B34");
+extern "C" int X_func_001DC48C(...) asm("func_001DC48C");
+extern int D_002B8848;
+extern int D_002B8850;
+extern int D_002B8920;
+extern "C" void func_001BC8F8(int arg0, int arg1, int arg2)
+{
+    struct { int sp0; } stack;
+    int temp_s2;
+    int temp_s3;
+    int temp_s0;
+    int temp_s1_2;
+    int var_a2;
+    int temp_s1;
+    int temp_s4;
+
+    temp_s4 = arg0 + 0x98;
+    var_a2 = 0xA00;
+    M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7B80) = (int)&D_002B8850;
+    M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7CD4) = (int)&D_002B8850;
+    M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7E28) = (int)&D_002B8850;
+    M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7F7C) = (int)&D_002B8850;
+    if (arg1 >= 0) {
+        if (arg1 < 12) var_a2=X_func_001B1B34(arg0,arg1);
+        else if (arg1==12) var_a2=M2C_FIELD(arg0,int *,0x2430);
+        else if (arg1==13) var_a2=M2C_FIELD(arg0,int *,0x242C);
+        if (var_a2 != 0xA00) {
+            temp_s0 = var_a2 & 0xFFFF;
+            temp_s1 = (int)&D_007812C0 + 0x22220;
+            X_func_001DC48C(temp_s1, temp_s0, 0xB, (int)&stack);
+            if (stack.sp0 == 0) {
+                stack.sp0 = (*(int *)&D_002B8848);
+            }
+            X_func_0018EC58(temp_s4, stack.sp0);
+            X_func_001DC48C(temp_s1, temp_s0, 0xC, (int)&stack);
+            if (stack.sp0 == 0) {
+                stack.sp0 = (*(int *)&D_002B8848);
+            }
+            X_func_0018EC58(temp_s4, stack.sp0);
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7B74) = 0;
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7B78) = 0;
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7B7C) = stack.sp0;
+            X_func_0018C4D8(temp_s4, 0x5C, 0);
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7A3C) = 1;
+            X_func_001DC48C(temp_s1, temp_s0, 0x25, (int)&stack);
+            if (stack.sp0 == 0) {
+                stack.sp0 = (*(int *)&D_002B8848);
+            }
+            temp_s1_2 = arg2 * 3;
+            X_func_0018EBA4(temp_s4, stack.sp0, (int)&D_002B8920, temp_s1_2);
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7CC8) = 0;
+            temp_s2 = (int)&D_002B8920 + 0x40;
+            temp_s3 = (int)&D_002B8920 + 0x80;
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7CCC) = 0;
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7CD0) = (int)&D_002B8920;
+            X_func_0018C4D8(temp_s4, 0x5D, 0);
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7B90) = 1;
+            X_func_0018EBA4(temp_s4, stack.sp0, temp_s2, temp_s1_2 + 1);
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7E1C) = 0;
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7E20) = 0;
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7E24) = temp_s2;
+            X_func_0018C4D8(temp_s4, 0x5E, 0);
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7CE4) = 1;
+            X_func_0018EBA4(temp_s4, stack.sp0, temp_s3, temp_s1_2 + 2);
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7F70) = 0;
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7F74) = 0;
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7F78) = temp_s3;
+            X_func_0018C4D8(temp_s4, 0x5F, 0);
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7E38) = 1;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001B64C4", func_001BC8F8);
+#endif
 
 static inline void *gamSub22220() {
     void *p = (void *)&D_007812C0;
