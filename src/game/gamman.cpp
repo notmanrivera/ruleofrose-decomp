@@ -758,7 +758,49 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BF024);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BF8C4);
 
+// NON_MATCHING: 63/64 differ, 4 relocs differ (size 0x100, game 0xF8), 40 edits
+#ifdef NON_MATCHING
+extern "C" void *X_memmove(void *, const void *, unsigned int) asm("memmove");
+extern "C" void *X_memset(void *, int, unsigned int) asm("memset");
+extern "C" void func_001BFE30(char *arg0, int arg1)
+{
+    int temp_v1 = M2C_FIELD(arg0, int *, 0x14);
+    if (arg1 >= temp_v1 || arg1 < -temp_v1) {
+        return;
+    }
+
+    int abs_arg1;
+    if (arg1 >= 0) {
+        abs_arg1 = arg1;
+    } else {
+        abs_arg1 = -arg1;
+    }
+
+    int size = M2C_FIELD(arg0, int *, 0x10) * abs_arg1;
+    int fill = 0;
+    switch (M2C_FIELD(arg0, int *, 0x18)) {
+    case 4:
+        size >>= 1;
+        fill = (M2C_FIELD(arg0, int *, 0x64) & 0xF) | ((M2C_FIELD(arg0, int *, 0x64) & 0xF) << 4);
+        break;
+    case 8:
+        fill = M2C_FIELD(arg0, int *, 0x64);
+        break;
+    }
+
+    char *buf = M2C_FIELD(arg0, char **, 0xC);
+    int total = M2C_FIELD(arg0, int *, 0x1C);
+    if (arg1 < 0) {
+        X_memmove(buf, buf + size, total - size);
+        X_memset(M2C_FIELD(arg0, char **, 0xC) + (M2C_FIELD(arg0, int *, 0x1C) - size), fill, size);
+    } else {
+        X_memmove(buf + size, buf, total - size);
+        X_memset(M2C_FIELD(arg0, char **, 0xC), fill, size);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001BFE30);
+#endif
 
 extern "C" void func_001BFF28(char *self, int theA)
 {
