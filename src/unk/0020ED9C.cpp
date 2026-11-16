@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int X_strncpy(...) asm("strncpy");
+struct F11E_record { int data[44]; };
+extern "C" char *F11E_strncpy(char *, const char *, unsigned int) asm("strncpy");
 struct F14E_block { int data[0x151]; };
 struct F14E_out { char data[0x544]; };
 struct F14E_part { int data[16]; };
@@ -1401,7 +1404,72 @@ INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00211830);
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00211BE4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00211E84);
+extern "C" void func_00211E84(int arg0, int arg1, int arg2)
+{
+    F11E_record stack;
+    int temp_a1;
+    int var_a3;
+    int temp_a1_2;
+    int temp_s0;
+    int temp_v0;
+    int temp_v1;
+    int var_a0;
+    int var_a2;
+
+    var_a3 = arg2 + 0xA4;
+    temp_s0 = arg0 + 0x40;
+    temp_a1 = var_a3;
+    if ((M2C_FIELD(arg2, int *, 0xA4) & 0xFFFF0000) != 0x27BD0000) {
+        var_a3 = arg2 + 0xA8;
+        if ((M2C_FIELD(arg2, int *, 0xA8) & 0xFFFF0000) != 0x27BD0000) {
+            var_a3 = arg2 + 0xAC;
+            if ((M2C_FIELD(arg2, int *, 0xAC) & 0xFFFF0000) != 0x27BD0000) {
+                var_a3 = arg2 + 0xB0;
+                if ((M2C_FIELD(arg2, int *, 0xB0) & 0xFFFF0000) != 0x27BD0000) {
+                    var_a3 = arg2 + 0x94;
+                    if ((M2C_FIELD(arg2, int *, 0x94) & 0xFFFF0000) != 0x27BD0000) {
+                        var_a3 = arg2 + 0x98;
+                        if ((M2C_FIELD(arg2, int *, 0x98) & 0xFFFF0000) != 0x27BD0000) {
+                            var_a3 = arg2 + 0x9C;
+                            if ((M2C_FIELD(arg2, int *, 0x9C) & 0xFFFF0000) != 0x27BD0000) {
+                                var_a3 = arg2 + 0xA0;
+                                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) var_a3 = temp_a1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    stack.data[0] = 0;
+    stack.data[1] = arg1;
+    stack.data[2] = var_a3;
+    stack.data[7] = -1;
+    stack.data[8] = 0;
+    stack.data[9] = 1;
+    stack.data[10] = 0;
+    stack.data[43] = 0;
+    F11E_strncpy((char *)(arg0 + 0xDC40), "mst", 8);
+    temp_a1_2 = M2C_FIELD(temp_s0, int *, 0);
+    var_a2 = (int)&stack;
+    temp_v0 = M2C_FIELD(temp_a1_2, int *, 0);
+    var_a0 = temp_a1_2 + 0x10;
+    M2C_FIELD(temp_s0, int *, 0) = temp_v0;
+    M2C_FIELD(temp_v0, int *, 4) = temp_s0;
+    M2C_FIELD(temp_s0, int *, 0xC0) = (int) (M2C_FIELD(temp_s0, int *, 0xC0) - 1);
+    *(F11E_record *)var_a0 = stack;
+    temp_v1 = temp_s0 + 0xD0;
+    if (M2C_FIELD(temp_v1, int *, 0xC0) == 0) {
+        M2C_FIELD(temp_v1, int *, 4) = temp_a1_2;
+        M2C_FIELD(temp_a1_2, int *, 0) = temp_v1;
+    } else {
+        M2C_FIELD(M2C_FIELD(temp_v1, int *, 0), int *, 4) = temp_a1_2;
+        M2C_FIELD(temp_a1_2, int *, 0) = M2C_FIELD(temp_v1, int *, 0);
+    }
+    M2C_FIELD(temp_a1_2, int *, 4) = temp_v1;
+    M2C_FIELD(temp_v1, int *, 0) = temp_a1_2;
+    M2C_FIELD(temp_v1, int *, 0xC0) = (int) (M2C_FIELD(temp_v1, int *, 0xC0) + 1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002120AC);
 
