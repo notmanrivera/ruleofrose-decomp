@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" float ctor700_Xf_func_001D4A3C(int, int, int) asm("func_001D4A3C");
+extern "C" float ctor700_Xf_func_001D4AEC(int, int, int) asm("func_001D4AEC");
+extern "C" int ctor700_X_func_0010423C(int, int) asm("func_0010423C");
+extern "C" int ctor700_X_func_00163DB8(int, int) asm("func_00163DB8");
+extern "C" int ctor700_X_func_001D2B8C(int, int) asm("func_001D2B8C");
 extern float D_002FF260[];
 extern float D_002FF270[];
 extern int D_002FF280[];
@@ -741,7 +746,65 @@ extern "C" void TskEnemyMove__vfunc_06(void *arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00200700);
+extern "C" void func_00200700(int arg0, int arg1)
+{
+    float var_f2;
+    int temp_v0_2;
+    int temp_a1;
+    int temp_a1_2;
+    int temp_v0;
+
+    M2C_FIELD(arg0, int *, 4) = 1;
+    M2C_FIELD(arg0, int *, 0xAC4) = 0;
+    temp_a1 = M2C_FIELD(arg1, int *, 0);
+    M2C_FIELD(arg0, int *, 8) = temp_a1;
+    temp_v0 = M2C_FIELD(ctor700_X_func_001D2B8C((int)&D_007812C0, temp_a1), int *, 0x108);
+    M2C_FIELD(arg0, int *, 0x2C) = 0;
+    M2C_FIELD(arg0, int *, 0xC) = temp_v0;
+    M2C_FIELD(arg0, int *, 0x28) = (int) ((int)&D_006FE6A0 + (temp_v0 * 0x4D0));
+    temp_v0_2 = M2C_FIELD(arg1, int *, 4);
+    M2C_FIELD(arg0, int *, 0x30) = temp_v0_2;
+    (*(int *)(temp_v0_2)) = 0;
+    M2C_FIELD(arg0, int *, 0x34) = 1;
+    M2C_FIELD(arg0, int *, 0x38) = (int) M2C_FIELD(arg1, int *, 0x28);
+    M2C_FIELD(arg0, float *, 0x3C) = (float) M2C_FIELD(arg1, float *, 0x2C);
+    M2C_FIELD(arg0, float *, 0x40) = (float) M2C_FIELD(arg1, float *, 0x30);
+    M2C_FIELD(arg0, float *, 0x44) = (float) M2C_FIELD(arg1, float *, 0x34);
+    M2C_FIELD(arg0, float *, 0x48) = (float) M2C_FIELD(arg1, float *, 0x38);
+    M2C_FIELD(arg0, int *, 0x10) = (int) M2C_FIELD(arg1, int *, 8);
+    M2C_FIELD(arg0, float *, 0x4C) = (float) (M2C_FIELD(arg1, float *, 0xC) * 0.016666694078594446f);
+    M2C_FIELD(arg0, float *, 0x54) = (float) (M2C_FIELD(arg1, float *, 0x10) * M2C_FIELD(arg1, float *, 0xC));
+    M2C_FIELD(arg0, float *, 0x58) = (float) (M2C_FIELD(arg1, float *, 0x14) * M2C_FIELD(arg1, float *, 0xC));
+    M2C_FIELD(arg0, float *, 0xA90) = (float) M2C_FIELD(arg1, float *, 0x18);
+    M2C_FIELD(arg0, float *, 0xA94) = (float) M2C_FIELD(arg1, float *, 0x1C);
+    M2C_FIELD(arg0, float *, 0x50) = (float) M2C_FIELD(arg1, float *, 0x10);
+    M2C_FIELD(arg0, int *, 0x60) = 0x40;
+    M2C_FIELD(arg0, int *, 0x5C) = 0;
+    M2C_FIELD(arg0, int *, 0x64) = (int) (M2C_FIELD(arg1, int *, 0x20) + 3);
+    M2C_FIELD(arg0, int *, 0x68) = 0;
+    M2C_FIELD(arg0, int *, 0x6C) = 0;
+    M2C_FIELD(arg0, int *, 0x70) = (int) M2C_FIELD(arg1, int *, 0x24);
+    M2C_FIELD(arg0, int *, 0x74) = 0;
+    M2C_FIELD(arg0, float *, 0xA84) = (float) M2C_FIELD(arg1, float *, 0x3C);
+    M2C_FIELD(arg0, float *, 0xA88) = ctor700_Xf_func_001D4AEC((int)&D_007812C0, M2C_FIELD(arg0, int *, 8), 0);
+    temp_a1_2 = M2C_FIELD(arg0, int *, 0x38);
+    if (temp_a1_2 != 0) {
+        var_f2 = ctor700_Xf_func_001D4A3C((int)&D_007812C0, temp_a1_2, 0);
+    } else {
+        var_f2 = 0.0f;
+    }
+    M2C_FIELD(arg0, float *, 0xA8C) = var_f2;
+    M2C_FIELD(arg0, float *, 0xA8C) = (float) (var_f2 + (M2C_FIELD(arg0, float *, 0xA88) + M2C_FIELD(arg1, float *, 0x5C)));
+    M2C_FIELD(arg0, int *, 0x14) = ctor700_X_func_00163DB8((int)&D_007B2140, M2C_FIELD(arg0, int *, 8));
+    M2C_FIELD(arg0, int *, 0xA98) = (int) M2C_FIELD(arg1, int *, 0x44);
+    M2C_FIELD(arg0, int *, 0xAA0) = (int) M2C_FIELD(arg1, int *, 0x48);
+    M2C_FIELD(arg0, int *, 0xAA8) = (int) M2C_FIELD(arg1, int *, 0x4C);
+    M2C_FIELD(arg0, int *, 0xAB0) = (int) M2C_FIELD(arg1, int *, 0x50);
+    M2C_FIELD(arg0, float *, 0xAB4) = (float) M2C_FIELD(arg1, float *, 0x58);
+    M2C_FIELD(arg0, int *, 0xABC) = ctor700_X_func_0010423C(0xF, 0x1E);
+    M2C_FIELD(arg0, int *, 0xAB8) = -1;
+    M2C_FIELD(arg0, int *, 0xAC0) = (int) M2C_FIELD(arg1, int *, 0x54);
+}
 
 extern "C" int TskEnemyMove__vfunc_04(void *arg0)
 {
