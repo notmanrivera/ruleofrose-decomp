@@ -1,6 +1,11 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void func_001F688C();
+extern "C" void func_001D8F04(void *, float *);
+extern "C" void func_001D8964(void *, float *);
+extern "C" void func_001E100C(void *, float *);
+extern "C" void func_001DEE78(void *, float *, float *);
 static inline GamItem *itemAt_8AE8(GamItem *base, int off)
 {
     return (GamItem *)((char *)base + off);
@@ -685,7 +690,28 @@ extern "C" void func_001C5240()
     X_func_00191E58((int)(p + 0x42BB0));
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C526C);
+extern "C" void func_001C526C(GamMan *arg0)
+{
+    func_001F688C();
+    arg0->m_vcount++;
+    arg0->m_sysFlg &= ~0x40001;
+    if ((arg0->m_vcount % 25) == 0) {
+        arg0->m_sysFlg |= 1;
+    }
+    if (!arg0->chkSysFlg2(0x8000000)) {
+        if (arg0->m_pc != 0) {
+            func_001D8F04(arg0->m_pc, arg0->m_pcPos);
+            func_001D8964(arg0->m_pc, arg0->m_pcRot);
+        }
+        if (arg0->m_dog != 0) {
+            func_001D8F04(arg0->m_dog, arg0->m_dogPos);
+        }
+    }
+    func_001E100C(arg0->m_snd, arg0->m_pcPos);
+    if (arg0->chkSysFlg(2)) {
+        func_001DEE78(arg0->m_trg, arg0->m_pcPos, arg0->m_pcRot);
+    }
+}
 
 extern "C" void func_001C53D8(void) {
 }
