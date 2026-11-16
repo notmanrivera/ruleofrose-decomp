@@ -122,7 +122,87 @@ extern int D_007812C0;
 extern int D_007B2140;
 extern int D_007B2580;
 
+// NON_MATCHING: 102/161 differ, 12 relocs differ (size 0x284, game 0x298), 22 edits
+#ifdef NON_MATCHING
+extern "C" float d424_Xf_func_0010A650__8DogActor(int) asm("func_0010A650__8DogActor");
+extern "C" int d424_X_func_00118FEC__9MagSystem(...) asm("func_00118FEC__9MagSystem");
+extern "C" int d424_X_func_00119090__9MagSystem(...) asm("func_00119090__9MagSystem");
+extern "C" int d424_X_func_0016A8A4(...) asm("func_0016A8A4");
+extern "C" int d424_X_func_001D19A8(...) asm("func_001D19A8");
+extern "C" int d424_X_func_001F5BDC(int,int,int,int,int,float,float) asm("func_001F5BDC");
+extern "C" int d424_X_func_001FAC60(...) asm("func_001FAC60");
+extern "C" int Xiitif_func_00169F94(int, unsigned short, int, float) asm("func_00169F94");
+extern int D_006E9840;
+extern "C" int func_001FD424(int arg0)
+{
+    float var_f1;
+    int temp_a1;
+    int temp_a1_2;
+    int var_s1;
+    int var_s2;
+    int var_s3;
+    int var_v0;
+    int var_v1;
+    int temp_s1;
+
+    temp_a1 = M2C_FIELD(arg0, int *, 0x20);
+    temp_s1 = (int)&D_006FE6A0 + (M2C_FIELD(arg0, int *, 0x14) * 0x4D0);
+    switch (temp_a1) {
+    case 0:
+
+                d424_X_func_0016A8A4(M2C_FIELD(arg0, int *, 0x10), 0xB);
+                d424_X_func_001F5BDC(M2C_FIELD(arg0, int *, 0x10), M2C_FIELD(arg0, int *, 0x24), -1, 0, 0, 0.016666666666666666f, d424_Xf_func_0010A650__8DogActor(temp_s1));
+                M2C_FIELD(arg0, int *, 0x20) = 1;
+                M2C_FIELD(arg0, int *, 0x1C) = 0;
+                break;
+    case 1:
+
+                temp_a1_2 = M2C_FIELD(arg0, int *, 0x1C);
+                var_v1 = 0;
+                if (temp_a1_2 >= M2C_FIELD(arg0, int *, 0x44)) {
+                    var_v1 = (M2C_FIELD(arg0, int *, 0x48) < temp_a1_2) == 0;
+                }
+                var_f1 = (float)(unsigned int)var_v1;
+                if (var_f1 != 0.0f) {
+                    var_s3 = 0;
+                    var_s1 = 0;
+                    if (M2C_FIELD((int)&D_007812C0, int *, 0x22090) != 0) {
+                        var_s1 = M2C_FIELD(M2C_FIELD((int)&D_007812C0, int *, 0x22090), int *, 0x100);
+                    }
+                    if ((d424_X_func_00118FEC__9MagSystem((int)&D_006E9840, temp_a1_2) != 9) && (Xiitif_func_00169F94(M2C_FIELD(arg0, int *, 0x10), 1U, var_s1, M2C_FIELD(arg0, float *, 0x40)) != 0)) {
+                        var_s3 = 1;
+                        d424_X_func_001FAC60(0xB, M2C_FIELD(arg0, int *, 0x10), 0, 0, M2C_FIELD(arg0, int *, 0x3C), var_s1, 0);
+                    }
+                    var_s2 = 0;
+                    if (M2C_FIELD((int)&D_007812C0, int *, 0x22094) != 0) {
+                        var_s2 = M2C_FIELD(M2C_FIELD((int)&D_007812C0, int *, 0x22094), int *, 0x100);
+                    }
+                    if ((d424_X_func_00119090__9MagSystem((int)&D_006E9840) != 0xA) && (d424_X_func_00119090__9MagSystem((int)&D_006E9840) != 0xD) && (Xiitif_func_00169F94(M2C_FIELD(arg0, int *, 0x10), 1U, var_s2, M2C_FIELD(arg0, float *, 0x40)) != 0)) {
+                        var_s3 = 1;
+                        d424_X_func_001FAC60(0xB, M2C_FIELD(arg0, int *, 0x10), 0, 0, M2C_FIELD(arg0, int *, 0x3C), var_s2, 0);
+                    }
+                    if (var_s3 != 0) {
+                        d424_X_func_0016A8A4(M2C_FIELD(arg0, int *, 0x10), 1);
+                    }
+                }
+                if (M2C_FIELD(arg0, int *, 0x1C) == M2C_FIELD(arg0, int *, 0x48)) {
+                    M2C_FIELD(arg0, int *, 0x20) = 3;
+                }
+                break;
+    case 2:
+        if (M2C_FIELD(arg0,int *,0x1C) == 30) return 1;
+        break;
+    case 3:
+        if (d424_X_func_001D19A8((int)&D_007812C0, M2C_FIELD(arg0,int *,0x10)) != 0) return 1;
+        break;
+    case 999: return 1;
+    }
+    M2C_FIELD(arg0,int *,0x1C)++;
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FD424);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_001FD6BC);
 
