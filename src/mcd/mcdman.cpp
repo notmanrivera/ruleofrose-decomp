@@ -2399,7 +2399,210 @@ INCLUDE_RODATA("asm/nonmatchings/mcd/mcdman", D_002F78D8);
 
 INCLUDE_RODATA("asm/nonmatchings/mcd/mcdman", D_002F78F8);
 
+// NON_MATCHING: 251/366 differ, 15 relocs differ, 150 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_0018A17C(...) asm("func_0018A17C");
+extern int D_00299928;
+extern int D_00299938;
+extern "C" void F_B2_icon(int) asm("func_0018A17C");
+extern "C" int func_0018B2BC(int arg0)
+{
+    int done = 0;
+    int r;
+    int next;
+    int name;
+    switch (M2C_FIELD(arg0, int *, 0x68)) {
+    case 0:
+        name = (int)"/FEBDUMMY";
+        M2C_FIELD(arg0, int *, 0x68) = 1;
+        M2C_FIELD(arg0, int *, 0x60) = 0;
+        M2C_FIELD(arg0, int *, 0x64) = 1;
+        if (!name) M2C_FIELD(arg0, char *, 0x114) = 0;
+        else X_strcpy(arg0 + 0x114, name);
+    case 1:
+        r = X_func_001892B0(arg0);
+        if (r == 1) {
+            if (M2C_FIELD(arg0, int *, 0x64) == 2) { next = 4; goto reset; }
+            if (M2C_FIELD(arg0, int *, 0x64) == 3) {
+                if (M2C_FIELD(arg0, int *, 0x58) != 17) done = 1;
+                else {
+                    M2C_FIELD(arg0, int *, 0x58) = r;
+                    M2C_FIELD(arg0, int *, 0x68) = 4;
+                    M2C_FIELD(arg0, int *, 0x60) = 0;
+                    M2C_FIELD(arg0, int *, 0x64) = r;
+                }
+            }
+        }
+        break;
+    case 4:
+        M2C_FIELD(arg0, int *, 0xC4) = 0;
+    case 5:
+        M2C_FIELD(arg0, int *, 0x64) = 1;
+        M2C_FIELD(arg0, int *, 0x68) = 10;
+        M2C_FIELD(arg0, int *, 0x60) = 0;
+        name = ((int *)&D_00299928)[M2C_FIELD(arg0, int *, 0xC4)];
+        goto copyName;
+    case 10:
+        next = 20;
+        goto openFile;
+    case 20: {
+        M2C_FIELD(arg0, int *, 0x68) = 30;
+        int p = arg0 + (M2C_FIELD(arg0, int *, 0xC4) * 4 + 0x6D0);
+        M2C_FIELD(arg0, int *, 0xB0) = M2C_FIELD(p, int *, 8);
+        M2C_FIELD(arg0, int *, 0xB4) = M2C_FIELD(p, int *, 12);
+        break;
+    }
+    case 30:
+        r = X_func_00189F58(arg0);
+        if (r == 1) {
+            if (M2C_FIELD(arg0, int *, 0x64) == 2) {
+                next = 40;
+                goto reset;
+            }
+            goto fail;
+        }
+        break;
+    case 40:
+        next = 50;
+        goto closeFile;
+    case 50:
+        ++M2C_FIELD(arg0, int *, 0xC4);
+        if (M2C_FIELD(arg0, int *, 0xC4) > 0) M2C_FIELD(arg0, int *, 0x68) = 60;
+        else M2C_FIELD(arg0, int *, 0x68) = 5;
+        break;
+    case 60:
+        M2C_FIELD(arg0, int *, 0x68) = 70;
+        M2C_FIELD(arg0, int *, 0x64) = 1;
+        M2C_FIELD(arg0, int *, 0x60) = 0;
+        F_B2_icon(arg0);
+        name = (int)"/FEBDUMMY/icon.sys";
+copyName:
+        if (!name) M2C_FIELD(arg0, char *, 0x114) = 0;
+        else X_strcpy(arg0 + 0x114, name);
+        M2C_FIELD(arg0, int *, 0x9C) = 0x203;
+        break;
+    case 70:
+        r = X_func_001894D4(arg0);
+        if (r == 1) {
+            if (M2C_FIELD(arg0, int *, 0x64) == 2) {
+                next = 80;
+                goto reset;
+            }
+            goto fail;
+        }
+        break;
+    case 80:
+        M2C_FIELD(arg0, int *, 0xB4) = arg0 + 0x6E8;
+        M2C_FIELD(arg0, int *, 0x68) = 90;
+        M2C_FIELD(arg0, int *, 0xB0) = 0x3C4;
+        break;
+    case 90:
+        r = X_func_00189F58(arg0);
+        if (r == 1) {
+            if (M2C_FIELD(arg0, int *, 0x64) == 2) {
+                next = 100;
+                goto reset;
+            }
+            goto fail;
+        }
+        break;
+    case 100:
+        r = X_func_001885D4(arg0);
+        if (r == 1) {
+            if (M2C_FIELD(arg0, int *, 0x64) == 2) {
+                next = 110;
+                goto reset;
+            }
+            goto fail;
+        }
+        break;
+    case 110:
+        M2C_FIELD(arg0, int *, 0x68) = 120;
+        break;
+    case 120:
+        r = X_func_00187E44(arg0);
+        if (r == 1) {
+            if (M2C_FIELD(arg0, int *, 0x64) == 2) {
+                next = 130;
+                goto reset;
+            }
+            goto fail;
+        }
+        break;
+    case 130:
+        if (M2C_FIELD(arg0, int *, 0x84) < 2) M2C_FIELD(arg0, int *, 0x68) = 161;
+        name = D_00299938;
+        if (!name) M2C_FIELD(arg0, char *, 0x114) = 0;
+        else X_strcpy(arg0 + 0x114, name);
+        M2C_FIELD(arg0, int *, 0x68) = 140;
+        M2C_FIELD(arg0, int *, 0x9C) = 0x203;
+        break;
+    case 140:
+        next = 150;
+openFile:
+        r = X_func_001894D4(arg0);
+        goto advance;
+    case 150:
+        M2C_FIELD(arg0, int *, 0xC4) = 1;
+        M2C_FIELD(arg0, int *, 0x68) = 151;
+        break;
+    case 151: {
+        M2C_FIELD(arg0, int *, 0x68) = 152;
+        int n = M2C_FIELD(arg0, int *, 0x84) - M2C_FIELD(arg0, int *, 0xC4);
+        if (n < 100) M2C_FIELD(arg0, int *, 0xAAC) = n;
+        else M2C_FIELD(arg0, int *, 0xAAC) = 100;
+        M2C_FIELD(arg0, int *, 0xB4) = arg0 + 0x6E8;
+        M2C_FIELD(arg0, int *, 0xB0) = M2C_FIELD(arg0, int *, 0xAAC) << 10;
+    }
+    case 152:
+        r = X_func_00189F58(arg0);
+        if (r == 1) {
+            if (M2C_FIELD(arg0, int *, 0x64) == 2) {
+                next = 153;
+                goto reset;
+            }
+            goto fail;
+        }
+        break;
+    case 153:
+        M2C_FIELD(arg0, int *, 0xC4) += M2C_FIELD(arg0, int *, 0xAAC);
+        if (M2C_FIELD(arg0, int *, 0xC4) < M2C_FIELD(arg0, int *, 0x84)) M2C_FIELD(arg0, int *, 0x68) = 151;
+        else M2C_FIELD(arg0, int *, 0x68) = 160;
+        break;
+    case 160:
+        next = 161;
+closeFile:
+        r = X_func_001885D4(arg0);
+advance:
+        if (r == 1) {
+            if (M2C_FIELD(arg0, int *, 0x64) == 2) {
+                M2C_FIELD(arg0, int *, 0x68) = next;
+                M2C_FIELD(arg0, int *, 0x64) = r;
+                M2C_FIELD(arg0, int *, 0x60) = 0;
+            } else if (M2C_FIELD(arg0, int *, 0x64) == 3) done = 1;
+        }
+        break;
+reset:
+        M2C_FIELD(arg0, int *, 0x64) = r;
+        M2C_FIELD(arg0, int *, 0x68) = next;
+        M2C_FIELD(arg0, int *, 0x60) = 0;
+        break;
+fail:
+        if (M2C_FIELD(arg0, int *, 0x64) == 3) done = 1;
+        break;
+    case 161:
+        M2C_FIELD(arg0, int *, 0x68) = 999;
+        break;
+    case 999:
+        done = 1;
+        M2C_FIELD(arg0, int *, 0x64) = 2;
+        break;
+    }
+    return done;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018B2BC);
+#endif
 
 extern "C" int func_0018B874(const McdMgr *arg0)
 {
