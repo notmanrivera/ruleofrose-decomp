@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void X_func_001C6A40(GamMan *, int) asm("func_001C6A40");
+extern "C" int X_func_001F184C(...) asm("func_001F184C");
 extern "C" void func_001D5DA0(GamMan *, int);
 extern "C" void func_001D3588(GamMan *);
 extern "C" void func_0017756C(void *, int);
@@ -1475,7 +1477,20 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C5A5C);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C5BF4);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C5D08);
+extern "C" void func_001C5D08(GamMan *arg0, int arg1)
+{
+    if (arg1 != 0) {
+        *(int *)(D_007B205C + 0x54) = 0;
+    }
+    *(int *)(D_007B205C + 0xA0) = -1;
+    X_func_001C6A40(&D_007812C0, 0x2000);
+    D_007812C0.unsetSysFlg2(0x80);
+    if ((arg0->chkSysFlg2(0x80000)) && (Xiii_func_001E7D7C((int)&D_007A3D80, arg0->m_itemUseTaskID) == 0)) {
+        int temp_v0 = Xii___builtin_new(0x80);
+        X_func_001F184C(temp_v0, 0x15, 0, 0);
+        X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0, 0, (int)&arg0->m_itemUseTaskID, 0x11);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C5E1C);
 
