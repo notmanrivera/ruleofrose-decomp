@@ -1533,7 +1533,39 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C9920);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C9C1C);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C9E20);
+extern "C" void func_001C9E20(GamMan *self, int theStat)
+{
+    GamList<GamElem1D240>::iterator it;
+    GamList<GamElem1D240>::iterator last;
+    GamList<GamElem1D240> *list = &self->m_unk1D240;
+
+    it = list->begin();
+    last = list->end();
+    while (it != last) {
+        switch (theStat) {
+        case 1:
+            D_00725410[(*it).m_unk04[1]].hide = 0;
+            break;
+        case 3:
+            if (((unsigned int)(*it).m_flg >> 30) == 2) {
+                D_00725410[(*it).m_unk04[1]].hide = 1;
+            } else if (((unsigned int)(*it).m_flg >> 30) == 3) {
+                D_00725410[(*it).m_unk04[1]].hide = 0;
+                self->m_unk1D300 = (*it).m_unk04[1];
+            }
+            break;
+        case 2:
+            if (((unsigned int)(*it).m_flg >> 30) == 2) {
+                D_00725410[(*it).m_unk04[1]].hide = 0;
+                self->m_unk1D300 = (*it).m_unk04[1];
+            } else if (((unsigned int)(*it).m_flg >> 30) == 3) {
+                D_00725410[(*it).m_unk04[1]].hide = 1;
+            }
+            break;
+        }
+        ++it;
+    }
+}
 
 extern "C" void func_001C9F94(GamMan *self)
 {
