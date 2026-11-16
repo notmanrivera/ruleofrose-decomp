@@ -933,7 +933,120 @@ INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A8B7C);
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A8D44);
 
+// NON_MATCHING: 106/109 differ, 2 relocs differ (size 0x1B4, game 0x258), 105 edits
+#ifdef NON_MATCHING
+extern "C" int Xcall90DC(int, int) asm("func_001A90DC");
+extern "C" int Xcall90E4(int, int) asm("func_001A90E4");
+extern "C" int func_001A8E84(int arg0, int arg1, unsigned short arg2)
+{
+    int temp_a1;
+    int temp_a1_2;
+    int temp_s1;
+    int temp_v0;
+    int temp_v1;
+    int temp_v1_2;
+    int temp_v1_3;
+    int var_s3;
+    int var_s4;
+    int var_v0;
+    int var_v0_2;
+    unsigned int temp_a2;
+    int *cursor = (int *)(arg0 + 0x1424);
+    int sub = arg0 + 4;
+
+    var_s3 = 0;
+    temp_v1 = M2C_FIELD(arg0, int *, 0x1454);
+    var_s4 = 0;
+    switch (temp_v1) {                              
+    
+    case 1:                                         
+        break;
+    case 0:                                         
+        (*cursor) = 0;
+        M2C_FIELD(arg0, int *, 0x1454) = 0xD;
+        var_s3 = 1;
+        break;
+    }
+    temp_v1_2 = (*cursor);
+    if (M2C_FIELD(arg0, int *, 0x24EC) == 0) {
+        temp_a2 = M2C_FIELD(arg1, unsigned short *, 0x7A);
+        if ((temp_a2 >> 0xE) & 1) {
+            var_s3 |= 2;
+            M2C_FIELD(arg0, int *, 0x24EC) = 1;
+        } else {
+            temp_a1 = M2C_FIELD(arg1, int *, 0x70);
+            if (temp_a1 & 0x10) {
+                var_s3 |= 1;
+                if (temp_v1_2 > 0) {
+                    (*cursor) = (int) (temp_v1_2 - 1);
+                } else {
+                    (*cursor) = (int) (M2C_FIELD(arg0, int *, 0x1448) - 1);
+                }
+            } else if (temp_a1 & 0x40) {
+                var_s3 |= 1;
+                if (temp_v1_2 < (M2C_FIELD(arg0, int *, 0x1448) - 1)) {
+                    (*cursor) = (int) (temp_v1_2 + 1);
+                } else {
+                    (*cursor) = 0;
+                }
+            } else if (temp_a1 & 0x80) {
+                var_s3 |= 1;
+                if (temp_v1_2 < 9) {
+                    (*cursor) = (int) ((M2C_FIELD(arg0, int *, 0x1448) + temp_v1_2) - 9);
+                } else {
+                    (*cursor) = (int) (temp_v1_2 - 9);
+                }
+            } else if (temp_a1 & 0x20) {
+                temp_a1_2 = M2C_FIELD(arg0, int *, 0x1448);
+                var_s3 |= 1;
+                if (temp_v1_2 < (temp_a1_2 - 9)) {
+                    (*cursor) = (int) (temp_v1_2 + 9);
+                } else {
+                    (*cursor) = (int) (9 - (temp_a1_2 - temp_v1_2));
+                }
+            } else {
+                var_s4 = ((temp_a2 >> 0xD) & 1) != 0;
+            }
+        }
+    }
+    temp_v1_3 = M2C_FIELD(arg0, int *, 0x24EC);
+    switch (temp_v1_3) {                            
+    case 2:                                         
+        temp_v0 = Xcall90E4(arg0, M2C_FIELD(sub, int *, 0x1420));
+        if (temp_v0 == 1) {
+            M2C_FIELD(arg0, int *, 0x24F4) = temp_v0;
+block_37:
+            M2C_FIELD(arg0, int *, 0x24EC) = 0;
+        }
+        break;
+    
+    case 1:                                         
+        temp_s1 = M2C_FIELD(arg0, int *, 0x24F4);
+        if (temp_s1 == 2) {
+            if (Xcall90DC(arg0, M2C_FIELD(sub, int *, 0x1420)) != 0) {
+                M2C_FIELD(arg0, int *, 0x24F4) = 1;
+                goto block_37;
+            }
+            M2C_FIELD(arg0, int *, 0x24EC) = temp_s1;
+            M2C_FIELD(arg0, int *, 0x24F4) = 0;
+        }
+        break;
+    }
+    if ((var_s3 != 0) && (var_s3 & 7) && (var_s3 & 1)) {
+        var_v0 = 0;
+        do {
+            var_v0 -= 1;
+        } while (var_v0 >= 0);
+        var_v0_2 = 0;
+        do {
+            var_v0_2 -= 1;
+        } while (var_v0_2 >= 0);
+    }
+    return var_s4;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A8E84);
+#endif
 
 extern "C" int func_001A90DC()
 {
