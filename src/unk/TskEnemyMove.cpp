@@ -1146,7 +1146,57 @@ extern "C" int func_00202234(void *arg0, float *arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202380);
 
+// NON_MATCHING: 30/143 differ, 21 edits
+#ifdef NON_MATCHING
+extern "C" float e2638_yaw(void *) asm("func_0010A650__8DogActor");
+extern "C" int e2638_state(void *) asm("func_0010DB18__8DogActor");
+extern "C" float e2638_time(void *) asm("func_0010DA4C__8DogActor");
+extern "C" void e2638_vec(void *,float,float,float *,float *,float *) asm("func_00109348__8DogActorffR9DogVectorPfP9DogVector");
+extern "C" void e2638_turn(float *,float) asm("vecTurnY__FPff");
+extern "C" void e2638_ground(int,float *,int *,int,float,float) asm("func_0017C340");
+extern "C" int e2638_hit(int,float *,int,int,void *,void *) asm("func_001D5A0C");
+extern "C" void e2638_move(void *,float *,float,float) asm("func_0010A090__8DogActorRC9DogVectorff");
+extern "C" int func_00202638(int arg0) {
+ float delta[4], rot[4], pos[4], value;
+ int hit[8];
+ int ground[4];
+ float y;
+ float *r = rot;
+ float *p = pos;
+ delta[0] = delta[1] = delta[2] = 0.0f; delta[3] = 1.0f;
+ r[0] = rot[1] = rot[2] = 0.0f; rot[3] = 1.0f;
+ p[0] = pos[1] = pos[2] = 0.0f; pos[3] = 1.0f;
+ y = 0.0f;
+ value = y;
+ register float yaw PS2_REG("$f23") = e2638_yaw(M2C_FIELD(arg0,void **,0x28));
+ if (e2638_state(M2C_FIELD(arg0,void **,0x28)) < 0) {
+  float t = e2638_time(M2C_FIELD(arg0,void **,0x28));
+  if (t >= y) {
+   void *actor = M2C_FIELD(arg0,void **,0x28);
+   e2638_vec(actor, 2.0f * t, 2.0f * (t + M2C_FIELD(actor,float *,0x1E8) / 0.016666694f),delta,&value,r);
+   y = rot[1];
+  }
+  delta[3] = 1.0f;
+  e2638_turn(delta,M2C_FIELD(M2C_FIELD(arg0,void **,0x28),float *,0x3C4));
+  void *actor = M2C_FIELD(arg0,void **,0x28);
+  int off = 0x8542C;
+  int world = (int)D_006FBD80 + off;
+  p[0] = M2C_FIELD(actor,float *,0x40) + delta[0];
+  pos[1] = M2C_FIELD(actor,float *,0x44) + delta[1];
+  pos[2] = M2C_FIELD(actor,float *,0x48) + delta[2];
+  e2638_ground(world,D_006E97D8,ground,0,40.0f,0.0f);
+  if (ground[M2C_FIELD(arg0,int *,0x14)] != 0) {
+   e2638_ground(world,p,(int *)(arg0+0x18),0,40.0f,0.0f);
+   if (M2C_FIELD(arg0 + M2C_FIELD(arg0,int *,0x14)*4,int *,0x18) == 0) return 1;
+  }
+  if (e2638_hit((int)&D_007812C0,p,M2C_FIELD(arg0,int *,8),0,0,hit) != 0 && (((unsigned int)hit[4] >> 23) & 31) != 2) return 2;
+  e2638_move(M2C_FIELD(arg0,void **,0x28),delta,y,yaw);
+ }
+ return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202638);
+#endif
 
 extern "C" void func_00202874(struct S_00202874 *arg0, float fparg0)
 {
