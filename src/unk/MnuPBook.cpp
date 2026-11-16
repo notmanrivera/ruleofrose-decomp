@@ -311,7 +311,31 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001946E4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001947A4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuMap__vfunc_01);
+extern "C" void X_MnuMap__vfunc_03_v1(void *) asm("MnuMap__vfunc_03");
+extern "C" void X___builtin_delete_vm(void *) asm("__builtin_delete");
+extern "C" void X_func_00183B24_v1(void *, int) asm("func_00183B24");
+extern "C" void X_mnuBase__vfunc_01_v1(void *, int) asm("mnuBase__vfunc_01");
+extern int vtbl_MnuMap_v1 asm("_vt$6MnuMap");
+
+extern "C" void MnuMap__vfunc_01(char *arg0, int arg1)
+{
+    char *start = arg0 + 0x150;
+    *(void **)(arg0 + 0x10C) = &vtbl_MnuMap_v1;
+    X_MnuMap__vfunc_03_v1(arg0);
+    if (start != 0) {
+        char *p = arg0 + 0x8C8;
+        if (start != p) {
+            do {
+                p -= 0x3BC;
+                X_func_00183B24_v1(p, 2);
+            } while (start != p);
+        }
+    }
+    X_mnuBase__vfunc_01_v1(arg0, 0);
+    if (arg1 & 1) {
+        return X___builtin_delete_vm(arg0);
+    }
+}
 
 extern "C" void MnuMap__vfunc_02(int arg0, int arg1)
 {
