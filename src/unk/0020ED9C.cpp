@@ -1,4 +1,12 @@
 #include "include_asm.h"
+struct Iter12FBC {
+    int *node;
+    Iter12FBC() : node(0) {}
+    Iter12FBC(int *n) : node(n) {}
+    Iter12FBC(const Iter12FBC &rhs) : node(rhs.node) {}
+    bool operator!=(const Iter12FBC &rhs) const { return node != rhs.node; }
+    Iter12FBC &operator++() { node = (int *)node[1]; return *this; }
+};
 extern "C" int F113DC_check(int, unsigned int, int) asm("func_00213D00");
 extern "C" int F113DC_alloc() asm("func_00214AC4");
 extern "C" void F113DC_select(unsigned int) asm("func_00214310");
@@ -2091,7 +2099,42 @@ extern "C" void func_00212E64(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00212FBC);
+extern "C" void func_00212FBC(int arg0, int arg1)
+{
+    struct Object {
+        char pad[0x10];
+        List212E64 *pools[3];
+        char pad1C[0x6200 - 0x1C];
+        List212E64 list;
+    };
+    Object *self = (Object *)arg0;
+    Iter12FBC it;
+    Iter12FBC end;
+    it = Iter12FBC((int *)self->pools[0]->m_used.m_head.m_next);
+    end = Iter12FBC((int *)&self->pools[0]->m_used.m_head);
+    for (; it != end; ++it) {
+        Data212E64 *data = (Data212E64 *)((char *)it.node + 0x10);
+        if (*(int *)(data->b + 0x28) == arg1) {
+            self->list.push_back(*data);
+        }
+    }
+    it = Iter12FBC((int *)self->pools[1]->m_used.m_head.m_next);
+    end = Iter12FBC((int *)&self->pools[1]->m_used.m_head);
+    for (; it != end; ++it) {
+        Data212E64 *data = (Data212E64 *)((char *)it.node + 0x10);
+        if (*(int *)(data->b + 0x28) == arg1) {
+            self->list.push_back(*data);
+        }
+    }
+    it = Iter12FBC((int *)self->pools[2]->m_used.m_head.m_next);
+    end = Iter12FBC((int *)&self->pools[2]->m_used.m_head);
+    for (; it != end; ++it) {
+        Data212E64 *data = (Data212E64 *)((char *)it.node + 0x10);
+        if (*(int *)(data->b + 0x28) == arg1) {
+            self->list.push_back(*data);
+        }
+    }
+}
 
 extern "C" void func_00213448(void) {
 }
