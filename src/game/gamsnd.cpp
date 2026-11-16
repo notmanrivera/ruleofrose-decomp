@@ -3495,7 +3495,204 @@ extern "C" void func_001E6570(Obj6570 *arg0, int arg1) {
     }
 }
 
+// NON_MATCHING: 297/346 differ, 34 relocs differ (size 0x568, game 0x578), 111 edits
+#ifdef NON_MATCHING
+struct Msg6734 { int id, left, right, d, e, time, g, h, oldLeft, oldRight; char tail[0x18]; };
+struct Bank6734 { char pad[0x1B04]; int left, right; };
+extern Bank6734 bankObj6734 asm("D_007B2580");
+#define bank6734 (&bankObj6734)
+extern char task6734[] asm("D_007A3D80");
+extern char world6734[] asm("D_007812C0");
+extern "C" void F6734_func_00238188(int, int) asm("func_00238188");
+extern "C" void F6734_func_0023BD70(int, int) asm("func_0023BD70");
+extern "C" void F6734_func_0023DBD0(int, int) asm("func_0023DBD0");
+extern "C" void F6734_func_001C9C1C(void *, int, int *) asm("func_001C9C1C");
+extern "C" int F6734_func_001E7D7C(void *, int) asm("func_001E7D7C");
+extern "C" void F6734_func_001E7724(void *, int) asm("func_001E7724");
+extern "C" void *F6734___builtin_new(unsigned int) asm("__builtin_new");
+extern "C" void F6734_func_001F8FC0(void *, int, Msg6734 *) asm("func_001F8FC0");
+extern "C" void F6734_func_001E71FC(void *, int, int, int, int, void *, int, int *, int) asm("func_001E71FC");
+extern "C" void F6734_func_0017F5E8(void *, int) asm("func_0017F5E8");
+extern "C" void F6734_func_001E6570(int, int) asm("func_001E6570");
+extern "C" void F6734_func_00180B30(void *, int) asm("func_00180B30");
+extern "C" void F6734_func_001E111C(int, int) asm("func_001E111C");
+extern "C" void F6734_func_001E1920(int, unsigned int *, int, int) asm("func_001E1920");
+extern "C" void func_001E6734(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
+    register float left PS2_REG("$f1");
+    register float right PS2_REG("$f0");
+    register float left_2 PS2_REG("$f1");
+    register float right_2 PS2_REG("$f0");
+    Msg6734 msg;
+    int sp50;
+    float temp_f0;
+    float temp_f0_2;
+    register float temp_f2 PS2_REG("$f2");
+    register float temp_f2_2 PS2_REG("$f2");
+    int temp_s0;
+    int temp_s0_2;
+    int temp_s2;
+    int temp_s2_2;
+    int *var_a7;
+    int var_s0;
+    int var_v0;
+    int var_v0_2;
+    int var_v0_3;
+    void *temp_v0;
+    void *temp_v0_2;
+    void *temp_v0_3;
+    void *var_a5;
+
+    switch (arg1) {
+    case 13:
+        if (arg4 == 0) {
+            bankObj6734.left = arg2;
+            bankObj6734.right = arg3;
+            F6734_func_00238188(arg2, arg3);
+            M2C_FIELD(arg0, int *, 0x1588) = arg2;
+            M2C_FIELD(arg0, int *, 0x158C) = arg3;
+            return;
+        }
+        arg5 = (int)task6734;
+        msg.oldLeft = M2C_FIELD(arg0, int *, 0x1588);
+        msg.oldRight = M2C_FIELD(arg0, int *, 0x158C);
+        msg.left = arg2;
+        msg.right = arg3;
+        msg.time = arg4;
+        if (F6734_func_001E7D7C((void *)arg5, M2C_FIELD(arg0, int *, 0x170C)) != 0) {
+            F6734_func_001E7724((void *)arg5, M2C_FIELD(arg0, int *, 0x170C));
+            M2C_FIELD(arg0, int *, 0x170C) = -1;
+        }
+        temp_v0 = F6734___builtin_new(0xC0);
+        F6734_func_001F8FC0(temp_v0, 2, &msg);
+        var_a5 = temp_v0;
+        var_a7 = (int *)(arg0 + 0x170C);
+        goto block_33;
+    case 14:
+        M2C_FIELD(arg0, int *, 0x1590) = arg2;
+        M2C_FIELD(arg0, int *, 0x1594) = arg3;
+        F6734_func_001C9C1C(world6734, 5, &sp50);
+        {
+        if (sp50 < 7) {
+            var_v0 = (int)(((float)sp50 / 6.0f) * 90.0f) + 10;
+        } else if (sp50 < 9) {
+            var_v0 = (int)(((float)(sp50 - 6) * 0.5f) * 28.0f) + 100;
+        } else {
+            var_v0 = 128;
+        }
+        temp_f2 = (float) var_v0 * 0.0078125f;
+        left = (float)arg2 * temp_f2;
+        right = (float)arg3 * temp_f2;
+        arg3 = (int)right;
+        arg2 = (int)left;
+        if (arg3 <= 10) arg3 = 10;
+        if (arg2 <= 10) arg2 = 10;
+        if (arg4 == 0) {
+            F6734_func_0023BD70(arg2, arg3);
+            return;
+        }
+        arg5 = (int)task6734;
+        msg.oldLeft = M2C_FIELD(arg0, int *, 0x1590);
+        msg.oldRight = M2C_FIELD(arg0, int *, 0x1594);
+        msg.left = arg2;
+        msg.right = arg3;
+        msg.time = arg4;
+        if (F6734_func_001E7D7C((void *)arg5, M2C_FIELD(arg0, int *, 0x1710)) != 0) {
+            F6734_func_001E7724((void *)arg5, M2C_FIELD(arg0, int *, 0x1710));
+            M2C_FIELD(arg0, int *, 0x1710) = -1;
+        }
+        temp_v0_2 = F6734___builtin_new(0xC0);
+        F6734_func_001F8FC0(temp_v0_2, 3, &msg);
+        var_a5 = temp_v0_2;
+        var_a7 = (int *)(arg0 + 0x1710);
+        goto block_33;
+        }
+    case 15:
+        M2C_FIELD(arg0, int *, 0x1598) = arg2;
+        M2C_FIELD(arg0, int *, 0x159C) = arg3;
+        F6734_func_001C9C1C(world6734, 4, &sp50);
+        {
+        if (sp50 < 7) {
+            var_v0_2 = (int)(((float)sp50 / 6.0f) * 90.0f) + 10;
+        } else if (sp50 < 9) {
+            var_v0_2 = (int)(((float)(sp50 - 6) * 0.5f) * 28.0f) + 100;
+        } else {
+            var_v0_2 = 128;
+        }
+        temp_f2_2 = (float) var_v0_2 * 0.0078125f;
+        left_2 = (float)arg2 * temp_f2_2;
+        right_2 = (float)arg3 * temp_f2_2;
+        arg3 = (int)right_2;
+        arg2 = (int)left_2;
+        if (arg3 <= 10) arg3 = 10;
+        if (arg2 <= 10) arg2 = 10;
+        if (arg4 == 0) {
+            F6734_func_0023DBD0(arg2, arg3);
+            return;
+        }
+        arg5 = (int)task6734;
+        msg.oldLeft = M2C_FIELD(arg0, int *, 0x1598);
+        msg.oldRight = M2C_FIELD(arg0, int *, 0x159C);
+        msg.left = arg2;
+        msg.right = arg3;
+        msg.time = arg4;
+        if (F6734_func_001E7D7C((void *)arg5, M2C_FIELD(arg0, int *, 0x1718)) != 0) {
+            F6734_func_001E7724((void *)arg5, M2C_FIELD(arg0, int *, 0x1718));
+            M2C_FIELD(arg0, int *, 0x1718) = -1;
+        }
+        temp_v0_3 = F6734___builtin_new(0xC0);
+        F6734_func_001F8FC0(temp_v0_3, 4, &msg);
+        var_a5 = temp_v0_3;
+        var_a7 = (int *)(arg0 + 0x1718);
+block_33:
+        F6734_func_001E71FC((void *)arg5, 1, -1, 1, 0, var_a5, 0, var_a7, 0x11);
+        return;
+        }
+    case 16:
+        F6734_func_0017F5E8(bank6734, 9);
+        F6734_func_001E6570(arg0, 0);
+        return;
+    case 17:
+        F6734_func_0017F5E8(bank6734, 8);
+        F6734_func_001E6570(arg0, 1);
+        return;
+    case 18:
+        F6734_func_0017F5E8(bank6734, 1);
+        F6734_func_001E6570(arg0, 2);
+        return;
+    case 25:
+        F6734_func_0017F5E8(bank6734, 9);
+        F6734_func_00180B30(bank6734, arg5);
+        return;
+    case 28:
+        if (arg2 < 0) {
+            var_s0 = 0;
+        } else {
+            var_s0 = (arg2 >= 0x65) ? 0x64 : arg2;
+        }
+        M2C_FIELD(arg0, float *, 0x186C) = (float) ((float) var_s0 / 100.0f);
+        return;
+    case 29:
+        F6734_func_001E111C(arg0, arg2);
+        return;
+    case 30:
+        F6734_func_001E1920(arg0, (unsigned int *)1, arg2, 0);
+        return;
+    case 31:
+        F6734_func_001E111C(arg0, arg2);
+        var_v0_3 = M2C_FIELD(arg0, int *, 0x1870) | 0x400;
+block_46:
+        M2C_FIELD(arg0, int *, 0x1870) = var_v0_3;
+    default:
+        return;
+    case 32:
+        F6734_func_001E1920(arg0, (unsigned int *)1, arg2, 0);
+        var_v0_3 = M2C_FIELD(arg0, int *, 0x1870) & ~0x400;
+        goto block_46;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E6734);
+#endif
 
 extern "C" int func_001E6CAC(Obj6CAC *arg0)
 {
