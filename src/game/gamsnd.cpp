@@ -2943,7 +2943,204 @@ extern "C" void func_001E5540(Obj5540 *arg0, int arg1, int arg2, int arg3, int a
     X_5540_func_001E4B48(arg0, arg1, &tmp);
 }
 
+// NON_MATCHING: 311/317 differ, 24 relocs differ (size 0x4F4, game 0x500), 129 edits
+#ifdef NON_MATCHING
+extern "C" void F5660_func_00180108(int, int) asm("func_00180108");
+extern "C" void F5660_func_00180168(int, int) asm("func_00180168");
+extern "C" void F5660_func_00180078(int, int, unsigned int *) asm("func_00180078");
+extern "C" int F5660_func_001800D0(int, int) asm("func_001800D0");
+extern "C" void F5660_func_001801C8(int, int) asm("func_001801C8");
+extern "C" void F5660_func_0017FF58(int, int, int, int, int, float) asm("func_0017FF58");
+extern "C" int F5660_func_001E7D7C(int, int) asm("func_001E7D7C");
+extern "C" void F5660_func_001E7724(int, int) asm("func_001E7724");
+extern "C" int F5660___builtin_new(unsigned int) asm("__builtin_new");
+extern "C" void F5660_func_001F8FC0(int, int, unsigned int *) asm("func_001F8FC0");
+extern "C" int F5660_func_001E71FC(int, int, int, int, int, int, int, int, int) asm("func_001E71FC");
+extern "C" int func_001E5660(int in0, unsigned int in1, int in2, unsigned int *in3) {
+    register int arg0 PS2_REG("$23") = in0;
+    register unsigned int arg1 PS2_REG("$21") = in1;
+    register int arg2 PS2_REG("$17") = in2;
+    register unsigned int *arg3 PS2_REG("$18") = in3;
+    register int *var_s3 PS2_REG("$19");
+    int temp_a1;
+    int temp_a1_10;
+    int temp_a1_3;
+    int temp_a1_4;
+    int temp_a1_5;
+    int temp_a1_7;
+    int temp_a1_8;
+    int temp_a1_9;
+    int temp_s0;
+    int temp_s4;
+    int temp_v0;
+    int temp_v1;
+    int temp_v1_2;
+    register int var_fp PS2_REG("$30");
+    int var_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+    int temp_a1_2;
+    int temp_a1_6;
+
+    var_fp = 0;
+    var_s3 = (int *)(arg0 + 0xD40);
+loop_1:
+    temp_a1_2 = *var_s3 + (var_fp * 0x28);
+    bool free = !((M2C_FIELD(temp_a1_2, int *, 0)) & 1);
+    if (!free && (temp_v1 = M2C_FIELD(temp_a1_2, int *, 0x14), (temp_v1 != -1))) {
+        switch (arg2) {                             /* switch 1; irregular */
+        case 23:                                    /* switch 1 */
+            if (temp_v1 == arg1) {
+                temp_a1_3 = M2C_FIELD(temp_a1_2, int *, 0x18);
+                if (temp_a1_3 != -1) {
+                    F5660_func_00180108((int)&X_5428_D_007B2580, temp_a1_3);
+                }
+            }
+            goto block_45;
+        case 24:                                    /* switch 1 */
+            if (temp_v1 == arg1) {
+                temp_a1_4 = M2C_FIELD(temp_a1_2, int *, 0x18);
+                if (temp_a1_4 != -1) {
+                    F5660_func_00180168((int)&X_5428_D_007B2580, temp_a1_4);
+                }
+            }
+            goto block_45;
+        case 4:                                     /* switch 1 */
+            if (temp_v1 == arg1) {
+                temp_a1_5 = M2C_FIELD(temp_a1_2, int *, 0x18);
+                if (temp_a1_5 != -1) {
+                    F5660_func_00180078((int)&X_5428_D_007B2580, temp_a1_5, arg3);
+                }
+            }
+            /* Duplicate return node #48. Try simplifying control flow for better match */
+            return 0;
+        default:                                    /* switch 1 */
+            temp_s4 = var_fp * 0x28;
+            temp_a1_6 = *var_s3 + temp_s4;
+            if (M2C_FIELD(temp_a1_6, int *, 0x14) == arg1) {
+                temp_a1 = M2C_FIELD(temp_a1_6, int *, 0x18);
+                if (arg2 == 0x1A) {
+                    return F5660_func_001800D0((int)&X_5428_D_007B2580, temp_a1) == 5;
+                }
+                temp_v0 = F5660_func_001800D0((int)&X_5428_D_007B2580, temp_a1);
+                if (temp_v0 != -1) {
+                    switch (arg2) {                 /* switch 2 */
+                    case 1:                         /* switch 2 */
+                    case 8:                         /* switch 2 */
+                        temp_s0 = var_fp * 0x28;
+                        F5660_func_001801C8((int)&X_5428_D_007B2580, M2C_FIELD((*var_s3 + temp_s0), int *, 0x18));
+                        M2C_FIELD((*var_s3 + temp_s0), int *, 0x14) = -1;
+                        M2C_FIELD((*var_s3 + temp_s0), int *, 0x18) = -1;
+                        if (arg2 == 1) {
+                            goto block_47;
+                        }
+                        goto block_45;
+                    case 2:                         /* switch 2 */
+                    case 9:                         /* switch 2 */
+                        if (arg3 != 0) {
+                            temp_a1_7 = var_fp * 0x28;
+                            M2C_FIELD((*var_s3 + temp_a1_7), unsigned int *, 8) = (unsigned int) M2C_FIELD(arg3, unsigned int *, 0);
+                            M2C_FIELD((*var_s3 + temp_a1_7), int *, 4) = (int) M2C_FIELD(arg3, int *, 4);
+                            F5660_func_0017FF58((int)&X_5428_D_007B2580, M2C_FIELD((*var_s3 + temp_a1_7), int *, 0x18), M2C_FIELD(arg3, unsigned int *, 0), M2C_FIELD(arg3, int *, 4), 0, -1024.0f);
+                            var_fp += 1;
+                            if (arg2 == 2) {
+                                goto block_47;
+                            }
+                            goto block_46;
+                        }
+                        /* Duplicate return node #48. Try simplifying control flow for better match */
+                        return 0;
+                    case 3:                         /* switch 2 */
+                    case 10:                        /* switch 2 */
+                        if (arg3 != 0) {
+                            F5660_func_0017FF58((int)&X_5428_D_007B2580, M2C_FIELD((*var_s3 + (var_fp * 0x28)), int *, 0x18), -0x400U, -0x400, 0, M2C_FIELD(arg3, float *, 0));
+                            var_fp += 1;
+                            if (arg2 == 3) {
+                                goto block_47;
+                            }
+                            goto block_46;
+                        }
+                        /* Duplicate return node #48. Try simplifying control flow for better match */
+                        return 0;
+                    case 5:                         /* switch 2 */
+                    case 11:                        /* switch 2 */
+                        if (arg3 != 0) {
+                            temp_a1_8 = var_fp * 0x28;
+                            M2C_FIELD((*var_s3 + temp_a1_8), unsigned int *, 8) = (unsigned int) M2C_FIELD(arg3, unsigned int *, 0);
+                            M2C_FIELD((*var_s3 + temp_a1_8), int *, 4) = (int) M2C_FIELD(arg3, int *, 4);
+                            F5660_func_0017FF58((int)&X_5428_D_007B2580, M2C_FIELD((*var_s3 + temp_a1_8), int *, 0x18), M2C_FIELD(arg3, unsigned int *, 0), M2C_FIELD(arg3, int *, 4), 0, M2C_FIELD(arg3, float *, 8));
+                            var_fp += 1;
+                            if (arg2 == 5) {
+                                goto block_47;
+                            }
+                            goto block_46;
+                        }
+                        /* Duplicate return node #48. Try simplifying control flow for better match */
+                        return 0;
+                    case 19:                        /* switch 2 */
+                        M2C_FIELD(arg3, unsigned int *, 0) = arg1;
+                        temp_a1_9 = var_fp * 0x28;
+                        M2C_FIELD(arg3, int *, 0xC) = (int) M2C_FIELD((*var_s3 + temp_a1_9), int *, 0x18);
+                        M2C_FIELD(arg3, int *, 0x20) = (int) M2C_FIELD((*var_s3 + temp_a1_9), int *, 4);
+                        var_v0 = M2C_FIELD((*var_s3 + temp_a1_9), int *, 8);
+                        M2C_FIELD(arg3, int *, 0x28) = 0;
+block_40:
+                        M2C_FIELD(arg3, int *, 0x24) = var_v0;
+                        if (F5660_func_001E7D7C((int)&X_50C8_D_007A3D80, M2C_FIELD(arg0, int *, 0x1718)) != 0) {
+                            F5660_func_001E7724((int)&X_50C8_D_007A3D80, M2C_FIELD(arg0, int *, 0x1718));
+                            M2C_FIELD(arg0, int *, 0x1718) = -1;
+                        }
+                        temp_v0_2 = F5660___builtin_new(0xC0);
+                        F5660_func_001F8FC0(temp_v0_2, 1, arg3);
+                        F5660_func_001E71FC((int)&X_50C8_D_007A3D80, 1, -1, 1, 0, temp_v0_2, 0, arg0 + 0x1718, 0x11);
+                        return M2C_FIELD(arg0, int *, 0x1718);
+                    case 27:                        /* switch 2 */
+                        M2C_FIELD(arg3, unsigned int *, 0) = arg1;
+                        temp_a1_10 = var_fp * 0x28;
+                        M2C_FIELD(arg3, int *, 0xC) = (int) M2C_FIELD((*var_s3 + temp_a1_10), int *, 0x18);
+                        M2C_FIELD(arg3, int *, 0x20) = (int) M2C_FIELD((*var_s3 + temp_a1_10), int *, 4);
+                        var_v0 = M2C_FIELD((*var_s3 + temp_a1_10), int *, 8);
+                        M2C_FIELD(arg3, int *, 0x28) = 1;
+                        goto block_40;
+                    case 21:                        /* switch 2 */
+                        M2C_FIELD(arg3, unsigned int *, 0) = arg1;
+                        temp_v1_2 = var_fp * 0x28;
+                        M2C_FIELD(arg3, int *, 0xC) = (int) M2C_FIELD((*var_s3 + temp_v1_2), int *, 0x18);
+                        M2C_FIELD(arg3, int *, 0x20) = (int) M2C_FIELD((*var_s3 + temp_v1_2), int *, 4);
+                        M2C_FIELD(arg3, int *, 0x28) = 1;
+                        M2C_FIELD(arg3, int *, 0x24) = (int) M2C_FIELD((*var_s3 + temp_v1_2), int *, 8);
+                        temp_v0_3 = F5660___builtin_new(0xC0);
+                        F5660_func_001F8FC0(temp_v0_3, 1, arg3);
+                        F5660_func_001E71FC((int)&X_50C8_D_007A3D80, 1, -1, 1, 0, temp_v0_3, 0, 0, 1);
+                        goto block_47;
+                    case 22:                        /* switch 2 */
+                        return 1;
+                    }
+                } else {
+                    M2C_FIELD((*var_s3 + temp_s4), int *, 0x14) = temp_v0;
+                    goto block_45;
+                }
+            } else {
+                goto block_45;
+            }
+            break;
+        }
+    } else {
+
+block_45:
+        var_fp += 1;
+block_46:
+        var_s3 = (int *)(arg0 + 0xD40);
+        if (var_fp >= 0x30) {
+block_47:
+            return 0;
+        }
+        goto loop_1;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5660);
+#endif
 
 extern "C" int func_001E5B60(Obj5B60 *arg0, int arg1, int arg2)
 {
