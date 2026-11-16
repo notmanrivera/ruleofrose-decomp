@@ -999,7 +999,30 @@ extern "C" void func_001C8214(GamMan *arg0, int arg1)
     *(Item1A6C0 *)(*vec + off) = tmp;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C82F8);
+extern "C" void func_001C82F8(GamMan *self, unsigned short theUID, int theOne)
+{
+    if (theUID == self->getPcEquipItem()) {
+        func_001C7A4C(self, 0xA00);
+    }
+    if (theUID == self->getFindTargetItem()) {
+        func_001C9784(self, 0xA00);
+    }
+    for (int i = 0; i < 12; i++) {
+        int off = i * 0x10;
+        if (((GamItem *)((char *)self->getItemHavePtr()->m_begin + off))->m_uid == theUID) {
+            if (func_001DD00C(self->m_unq, theUID, 0x20000) != 0) {
+                if (((GamItem *)((char *)self->getItemHavePtr()->m_begin + off))->m_num >= 2) {
+                    ((GamItem *)((char *)self->getItemHavePtr()->m_begin + off))->m_num--;
+                    return;
+                }
+            }
+            ((GamItem *)((char *)self->m_itemHave.m_begin + off))->m_uid = 0xA00;
+            if (theOne != 0) {
+                return;
+            }
+        }
+    }
+}
 
 extern "C" void func_001C8414(int arg0, int arg1)
 {
