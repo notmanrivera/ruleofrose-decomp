@@ -1,6 +1,7 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void func_001D88FC(ObjStat *);
 extern "C" void func_001E7544(void *, int);
 extern "C" int func_001C574C() throw();
 extern "C" int X_func_001C58B8(GamMan *, int) asm("func_001C58B8");
@@ -1921,7 +1922,27 @@ extern "C" void func_001CEA44(GamMan *self, int theKeep)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CEBF8);
+extern "C" void func_001CEBF8(GamMan *self)
+{
+    GamList<ACHRstat *>::iterator it1;
+    GamList<ACHRstat *>::iterator last1;
+    GamList<FCHRstat *>::iterator it2;
+    GamList<FCHRstat *>::iterator last2;
+
+    it1 = self->m_achrList.begin();
+    last1 = self->m_achrList.end();
+    while (it1 != last1) {
+        func_001D88FC(*it1);
+        ++it1;
+    }
+
+    it2 = self->m_fchrList.begin();
+    last2 = self->m_fchrList.end();
+    while (it2 != last2) {
+        func_001D88FC(*it2);
+        ++it2;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CED18);
 
