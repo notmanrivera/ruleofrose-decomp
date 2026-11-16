@@ -1299,7 +1299,80 @@ extern "C" int func_00200BC4(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00200D18);
 
+// NON_MATCHING: 207/231 differ, 41 relocs differ (size 0x39C, game 0x3C0), 124 edits
+#ifdef NON_MATCHING
+extern "C" float f1164_atan(float, float) asm("func_0026CB00");
+extern "C" int f1164_near(int, int, float) asm("func_00169A98");
+extern "C" void f1164_turn(int, float) asm("func_00202874");
+extern "C" void f1164_target(int, int, int) asm("func_0020313C");
+extern const double d1164_2FF380 asm("D_002FF380");
+extern const double d1164_2FF388 asm("D_002FF388");
+extern const double d1164_2FF390 asm("D_002FF390");
+extern const double d1164_2FF398 asm("D_002FF398");
+extern const double d1164_2FF3A0 asm("D_002FF3A0");
+extern const double d1164_2FF3A8 asm("D_002FF3A8");
+extern const double d1164_2FF3B0 asm("D_002FF3B0");
+extern const double d1164_2FF3B8 asm("D_002FF3B8");
+extern const double d1164_2FF3C0 asm("D_002FF3C0");
+extern const double d1164_2FF3C8 asm("D_002FF3C8");
+extern const double d1164_2FF3D0 asm("D_002FF3D0");
+extern const double d1164_2FF3D8 asm("D_002FF3D8");
+extern "C" float f1164_yaw(void *) asm("func_0010A650__8DogActor");
+static inline void yaw1164(void *actor, float *out) { *out = f1164_yaw(actor); }
+static inline void atan1164(float *out, float x, float z) { *out = f1164_atan(x, z); }
+extern "C" int func_00201164(int arg0, int arg1) {
+    float yaw, facing;
+    int index = M2C_FIELD(arg0, int *, 0xA7C);
+    if (index < M2C_FIELD(arg0, int *, 0xA78) - 1) {
+        if (f1164_near(arg1, arg0 + index * 16 + 0x288, 2.0f * M2C_FIELD(arg0, float *, 0xA88)))
+            M2C_FIELD(arg0, int *, 0xA7C) = M2C_FIELD(arg0, int *, 0xA7C) + 1;
+        if (M2C_FIELD(arg0, int *, 0xA7C) < M2C_FIELD(arg0, int *, 0xA78) - 1) return 1;
+    }
+    int end = arg0 + 0x78;
+    int base = arg0 + 0x18;
+    if (f1164_near(arg1, end, M2C_FIELD(arg0, float *, 0xA8C))) {
+        int point = base + M2C_FIELD(arg0, int *, 0xA7C) * 16;
+        double low = d1164_2FF380;
+        atan1164(&yaw, M2C_FIELD(point, float *, 0x270) - M2C_FIELD(arg1, float *, 0),
+                        M2C_FIELD(point, float *, 0x278) - M2C_FIELD(arg1, float *, 8));
+        yaw1164(M2C_FIELD(arg0, void **, 0x28), &facing);
+        float diff = yaw - facing;
+        float wrapped = diff;
+        if ((double)wrapped < low) wrapped = (float)((double)wrapped + d1164_2FF388);
+        double high = d1164_2FF390;
+        if ((double)wrapped > high) wrapped = (float)((double)wrapped - d1164_2FF398);
+        float value = diff;
+        float magnitude;
+        if (wrapped < 0.0f) {
+            if ((double)value < low) value = (float)((double)value + d1164_2FF3A0);
+            if ((double)value <= high) magnitude = -value;
+            else magnitude = -(float)((double)value - d1164_2FF3A8);
+        } else {
+            if ((double)value < low) value = (float)((double)value + d1164_2FF3B0);
+            magnitude = value;
+            if ((double)value > high) magnitude = (float)((double)value - d1164_2FF3B8);
+        }
+        if (M2C_FIELD(arg0, float *, 0xA84) < magnitude) {
+            float turn = yaw - facing;
+            if ((double)turn < d1164_2FF3C0) turn = (float)((double)turn + d1164_2FF3C8);
+            if ((double)turn > d1164_2FF3D0) turn = (float)((double)turn - d1164_2FF3D8);
+            f1164_turn(arg0, turn);
+            return 0;
+        }
+    }
+    int target = M2C_FIELD(arg0, int *, 0x38);
+    if (target) {
+        f1164_target(arg0, target, end);
+        int destbase = arg0 + 0x18;
+        M2C_FIELD(destbase + M2C_FIELD(arg0, int *, 0xA7C) * 16, float *, 0x270) = M2C_FIELD(arg0, float *, 0x78);
+        M2C_FIELD(destbase + M2C_FIELD(arg0, int *, 0xA7C) * 16, float *, 0x274) = M2C_FIELD(arg0, float *, 0x7C);
+        M2C_FIELD(destbase + M2C_FIELD(arg0, int *, 0xA7C) * 16, float *, 0x278) = M2C_FIELD(arg0, float *, 0x80);
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00201164);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00201524);
 
