@@ -1838,7 +1838,45 @@ INCLUDE_RODATA("asm/nonmatchings/mcd/mcdman", D_002F7800);
 
 INCLUDE_RODATA("asm/nonmatchings/mcd/mcdman", D_002F7830);
 
+// NON_MATCHING: 147/158 differ, 3 relocs differ, 112 edits
+#ifdef NON_MATCHING
+union MCD_A17_colors { int v[16]; long long q[8]; };
+struct MCD_A17_vec { long long v[6]; };
+extern MCD_A17_vec D_002F7800, D_002F7830;
+extern long long D_00299940[2];
+extern const char D_002F7868[];
+extern const char D_002F7450[];
+extern "C" void *memset(void *, int, unsigned int);
+extern "C" char *strcpy(char *, const char *);
+extern "C" void func_0018A17C(char *arg0)
+{
+    MCD_A17_colors colors;
+    MCD_A17_vec v1, v2;
+    memset(&colors, 0, 0x40);
+    colors.v[0] = colors.v[5] = colors.v[10] = 0x80;
+    colors.v[12] = colors.v[13] = colors.v[14] = 0x80;
+    v1 = D_002F7800;
+    v2 = D_002F7830;
+    memset(arg0 + 0x6E8, 0, 0x3C4);
+    strcpy(arg0 + 0x6E8, "PS2D");
+    *(long long *)(arg0 + 0x7A8) = *(const long long *)(D_002F7868);
+    *(long long *)(arg0 + 0x7B0) = *(const long long *)(D_002F7868 + 8);
+    *(long long *)(arg0 + 0x7B8) = *(const long long *)(D_002F7868 + 16);
+    arg0[0x7C0] = D_002F7868[24];
+    *(short *)(arg0 + 0x6EE) = 0x20;
+    *(int *)(arg0 + 0x6F4) = 0x60;
+    *(MCD_A17_colors *)(arg0 + 0x6F8) = colors;
+    *(MCD_A17_vec *)(arg0 + 0x738) = v1;
+    *(MCD_A17_vec *)(arg0 + 0x768) = v2;
+    *(long long *)(arg0 + 0x798) = D_00299940[0];
+    *(long long *)(arg0 + 0x7A0) = D_00299940[1];
+    strcpy(arg0 + 0x7EC, "slime1.ico");
+    strcpy(arg0 + 0x82C, "slime1.ico");
+    strcpy(arg0 + 0x86C, "slime1.ico");
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_0018A17C);
+#endif
 
 // NON_MATCHING: 26/56 differ, 2 relocs differ, 33 edits
 #ifdef NON_MATCHING
