@@ -1987,7 +1987,93 @@ extern "C" void TskAvoidMove__vfunc_05(int arg0)
     }
 }
 
+// NON_MATCHING: 197/254 differ, 50 relocs differ (size 0x3F8, game 0x3F0), 96 edits
+#ifdef NON_MATCHING
+extern "C" void readPosF498(int, float *) asm("func_001D890C");
+extern "C" void addVecF498(float *, float *, float *) asm("func_0025B878");
+extern "C" int testF498(int, float *) asm("func_001D8B5C");
+extern "C" void setPosF498(int, float *) asm("func_001D89C4");
+extern "C" int queryF498(int, float *, unsigned int, int, int, void *) asm("func_001D5A0C");
+extern "C" float radiusF498(int, unsigned int, int) asm("func_001D4A3C");
+extern "C" float sinF498(float) asm("sinf");
+extern "C" float cosF498(float) asm("cosf");
+struct HitF498 { char pad[16]; int flag; } ALIGNED(16);
+extern const double cF498_2FE008 asm("D_002FE008");
+extern const double cF498_2FE010 asm("D_002FE010");
+extern const double cF498_2FE018 asm("D_002FE018");
+extern const double cF498_2FE020 asm("D_002FE020");
+extern const double cF498_2FE028 asm("D_002FE028");
+extern const double cF498_2FE030 asm("D_002FE030");
+extern const double cF498_2FE038 asm("D_002FE038");
+extern const double cF498_2FE040 asm("D_002FE040");
+extern const double cF498_2FE048 asm("D_002FE048");
+extern const double cF498_2FE050 asm("D_002FE050");
+extern const double cF498_2FE058 asm("D_002FE058");
+extern "C" int func_001EF498(int arg0) {
+    float next[4] ALIGNED(16);
+    float probeData[4] ALIGNED(16);
+    register float *probe PS2_REG("$20") = probeData;
+    HitF498 hit;
+    register float *pos PS2_REG("$18") = (float *)(arg0 + 0x20);
+    register float *offset PS2_REG("$21") = (float *)(arg0 + 0x40);
+    hit.flag = 0;
+    readPosF498(M2C_FIELD(arg0, int *, 4), pos);
+    addVecF498(next, pos, (float *)(arg0 + 0x30));
+    addVecF498(probe, pos, offset);
+    if (!testF498(M2C_FIELD(arg0, int *, 4), probe)) {
+        register int i PS2_REG("$19") = 0;
+        float angle = M2C_FIELD(arg0, float *, 0x74) + cF498_2FE008;
+        float a, x;
+        goto checkFirst;
+        do {
+            ++i;
+            x = sinF498(angle) * M2C_FIELD(arg0, float *, 0x78);
+            M2C_FIELD(arg0, int *, 0x44) = 0;
+            M2C_FIELD(arg0, float *, 0x40) = x * 1.25f;
+            M2C_FIELD(arg0, float *, 0x48) = cosF498(angle) * M2C_FIELD(arg0, float *, 0x78) * 1.25f;
+            addVecF498(probe, pos, offset);
+            a = angle + cF498_2FE010;
+            if (a < cF498_2FE018) a += cF498_2FE020;
+            angle = a;
+            if (a > cF498_2FE028) angle = a - cF498_2FE030;
+checkFirst:
+            if (i < 16) {
+                if (testF498(M2C_FIELD(arg0, int *, 4), probe)) goto found;
+            } else break;
+        } while (1);
+        i = 0;
+        M2C_FIELD(arg0, float *, 0x78) = radiusF498((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0xC), 0);
+        while (i < 16 && !testF498(M2C_FIELD(arg0, int *, 4), probe)) {
+            ++i;
+            x = sinF498(angle) * M2C_FIELD(arg0, float *, 0x78);
+            M2C_FIELD(arg0, int *, 0x44) = 0;
+            M2C_FIELD(arg0, float *, 0x40) = x * 1.25f;
+            M2C_FIELD(arg0, float *, 0x48) = cosF498(angle) * M2C_FIELD(arg0, float *, 0x78) * 1.25f;
+            addVecF498(probe, (float *)(arg0 + 0x20), (float *)(arg0 + 0x40));
+            a = angle + cF498_2FE038;
+            if (a < cF498_2FE040) a += cF498_2FE048;
+            angle = a;
+            if (a > cF498_2FE050) angle = a - cF498_2FE058;
+        }
+        M2C_FIELD(arg0, int *, 0x60) = M2C_FIELD(arg0, int *, 0x50) + 1;
+found:
+        x = sinF498(angle);
+        M2C_FIELD(arg0, int *, 0x34) = 0;
+        M2C_FIELD(arg0, float *, 0x30) = x * M2C_FIELD(arg0, float *, 0x78);
+        M2C_FIELD(arg0, float *, 0x38) = cosF498(angle) * M2C_FIELD(arg0, float *, 0x78);
+        if (i >= 16) return 1;
+        M2C_FIELD(arg0, float *, 0x74) = angle;
+    } else {
+        setPosF498(M2C_FIELD(arg0, int *, 4), next);
+        if (M2C_FIELD(arg0, int *, 0x50) < M2C_FIELD(arg0, int *, 0x60)++) {
+            if (!queryF498((int)&D_007812C0, next, M2C_FIELD(arg0, unsigned int *, 0xC), 0, 0, &hit)) return 1;
+        }
+    }
+    return M2C_FIELD(arg0, int *, 0x68) < M2C_FIELD(arg0, int *, 0x70)++;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EF498);
+#endif
 
 // NON_MATCHING: 78/82 differ, 8 relocs differ (size 0x148, game 0x144), 44 edits
 #ifdef NON_MATCHING
