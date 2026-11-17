@@ -229,6 +229,9 @@ fi
 # 4. The brief: the first one for a fresh session, the follow-up otherwise.
 scr=$(screen)
 ctx=$(printf '%s' "$scr" | "$PY" tools/orca/screen.py context)
+if [ -e "$ST/$NAME.new" ]; then   # asked for by hand (e.g. after a model or effort change)
+  rm -f "$ST/$NAME.new"; NEW=1; echo "  $ST/$NAME.new: this batch starts a fresh session"
+fi
 if [ -z "$NEW" ] && [ -n "$ctx" ] && [ "$ctx" -ge 60 ]; then
   NEW=1; echo "  context at $ctx %: this batch starts a fresh session"
 elif [ -z "$NEW" ] && [ -z "$ctx" ] && [ "$SINCE_NEW" -ge 4 ]; then
