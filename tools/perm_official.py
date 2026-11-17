@@ -287,8 +287,10 @@ def apply_output(name, fn, out_dir):
         return "no match", "score 0, but its function was not found"
     func = re.sub(r"^\s*(?:extern\s+)+", "", func.strip())
     block = work.nm_block((ROOT / "src" / f"{name}.cpp").read_text(encoding="utf8"), name, fn)
-    decls = [ln for ln in (block.group(1).split("\n") if block else [])
-             if ln.strip().startswith("extern") and ln.strip().endswith(";")]
+    # everything the attempt's block holds but its function: declarations,
+    # structs, inline helpers (bSetYaw in unk/00166AD0), as they were
+    decls = [it for kind, it in top_items(block.group(1) if block else "")
+             if not (kind == "func" and re.search(rf"\b{re.escape(fn)}\s*\(", it.split("{", 1)[0]))]
     scratch = work.WORK / name / f"{fn}.cpp"
     subprocess.run([sys.executable, "tools/work.py", name, fn], cwd=ROOT, capture_output=True, text=True)
     head = scratch.read_text(encoding="utf8").split(work.FUNC, 1)[0]
