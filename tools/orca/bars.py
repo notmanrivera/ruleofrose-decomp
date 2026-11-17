@@ -299,9 +299,18 @@ def permuter():
     running = alive("permute_queue", path)
     m = re.search(r"--minutes (\S+)", run(["ps", "-ef"]))
     per = float(m.group(1)) if m else 8.0
-    queue = [ln for ln in lines if re.match(r"^\s*\d+ off\s+\S+ \S+", ln)]
+    is_q = [bool(re.match(r"^\s*\d+ off\s+\S+ \S+", ln)) for ln in lines]
+    # matches of every run; the bar for the last run only (a resumed queue
+    # lists what is left and appends to the same log)
+    all_matches = [ln.split("MATCH committed:", 1)[1].strip() for ln in lines if "MATCH committed:" in ln]
+    starts = [i for i in range(len(lines)) if is_q[i] and (i == 0 or not is_q[i - 1])]
+    runs = len(starts)
+    if starts:
+        lines = lines[starts[-1]:]
+        is_q = is_q[starts[-1]:]
+    queue = [ln for ln, q in zip(lines, is_q) if q]
     started = [i for i, ln in enumerate(lines) if ln.startswith("== ")]
-    matches = [ln.split("MATCH committed:", 1)[1].strip() for ln in lines if "MATCH committed:" in ln]
+    matches = all_matches
     total = len(queue) or len(started)
     done = len(started) - (1 if running and started else 0)
     out = [f"{col('permutador', 'bold')} " + (col("trabajando", "green") if running else col("parado", "yellow"))
@@ -313,7 +322,7 @@ def permuter():
     left = ""
     if running and per:
         left = f"  quedan \u2264{(total - done) * per / 60:.1f} h"
-    out.append(f"  cola de 'casi'  {big} {done}/{total} probadas, "
+    out.append(f"  cola de 'casi'  {big} {done}/{total} probadas" + (f" (tanda {runs})" if runs > 1 else "") + ", "
                + col(f"{len(matches)} exactas", "green" if matches else "dim") + left)
     if running and started:
         i = started[-1]
