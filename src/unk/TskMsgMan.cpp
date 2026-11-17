@@ -4457,7 +4457,28 @@ extern "C" void func_001F47F0(int arg0, int arg1, int arg2, int arg3)
 extern "C" void TskSeqEvent__vfunc_05(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskSeqEvent__vfunc_04);
+extern "C" void TskSeqEvent__vfunc_04(int arg0)
+{
+    short idx;
+    long ent;
+    int fp;
+    short base;
+    int off;
+    int p;
+
+    idx = M2C_FIELD(arg0, short *, 0x6);
+    if (idx >= 0) {
+        p = *(int *) (arg0 + M2C_FIELD(arg0, short *, 0x8));
+        p += idx * 8;
+        ent = *((long *) p - 1);
+        fp = (int) (ent >> 32);
+    } else {
+        fp = M2C_FIELD(arg0, int *, 0x8);
+    }
+    base = M2C_FIELD(arg0, short *, 0x4);
+    off = (idx >= 0) ? (short) ent + base : base;
+    ((void (*)(int)) fp)(arg0 + off);
+}
 
 extern "C" int func_001F4910()
 {
