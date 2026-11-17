@@ -275,6 +275,54 @@ def worker(name, env, idle):
     return out
 
 
+def permuter():
+    """The permuter queue (tools/permute_queue.py, log build/workers/perm-loop.log):
+    its bar, the function it is on, that one's best so far, and its matches."""
+    path = os.path.join(ST, "perm-loop.log")
+    try:
+        lines = open(path, encoding="utf-8", errors="replace").read().splitlines()
+    except OSError:
+        return []
+    running = any("permute_queue" in ln for ln in run(["ps", "-ef"]).splitlines())
+    m = re.search(r"--minutes (\S+)", run(["ps", "-ef"]))
+    per = float(m.group(1)) if m else None
+    queue = [ln for ln in lines if re.match(r"^\s*\d+ off\s+\S+ \S+", ln)]
+    started = [i for i, ln in enumerate(lines) if ln.startswith("== ")]
+    matches = [ln.split("MATCH committed:", 1)[1].strip() for ln in lines if "MATCH committed:" in ln]
+    total = len(queue) or len(started)
+    done = len(started) - (1 if running and started else 0)
+    out = [f"{col('permutador', 'bold')} " + (col("trabajando", "green") if running else col("parado", "yellow"))
+           + f"  (sin IA; log {os.path.relpath(path, MAIN)})"]
+    if not total:
+        return out + [col("  (cola vac\u00eda)", "dim")]
+    f = round(WIDTH * done / total)
+    big = "\u2588" * f + "\u2591" * (WIDTH - f)
+    left = ""
+    if running and per:
+        left = f"  quedan \u2264{(total - done) * per / 60:.1f} h"
+    out.append(f"  cola de 'casi'  {big} {done}/{total} probadas, "
+               + col(f"{len(matches)} exactas", "green" if matches else "dim") + left)
+    if running and started:
+        i = started[-1]
+        head = lines[i][3:]
+        name, _, start = head.partition(": ")
+        best = start
+        tries = 0
+        for ln in lines[i + 1:]:
+            t = re.match(r"^\s*(\d+) tries\s+(.*)$", ln)
+            if t:
+                tries, best = int(t.group(1)), t.group(2)
+        st = re.search(r"(\d+) edits", best)
+        s0 = re.search(r"(\d+) edits", start)
+        gain = ""
+        if st and s0 and int(st.group(1)) < int(s0.group(1)):
+            gain = col(f"  (empez\u00f3 en {s0.group(1)} cambios)", "green")
+        out.append(f"    \u25c0 ahora {name}: mejor {best}" + (f", {tries} variantes" if tries else "") + gain)
+    for mt in matches[-5:]:
+        out.append(f"    {col(chr(0x2713), 'green')} {mt}")
+    return out
+
+
 def render(reset=False):
     idle = terminals()
     out = []
@@ -282,6 +330,10 @@ def render(reset=False):
         if fn.endswith(".env"):
             out.extend(worker(fn[:-4], read_env(os.path.join(ST, fn)), idle))
             out.append("")
+    pq = permuter()
+    if pq:
+        out.extend(pq)
+        out.append("")
     # Session.
     s = session(reset)
     b, p = progress()
