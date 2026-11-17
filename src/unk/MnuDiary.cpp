@@ -1598,14 +1598,12 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A824);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019AE20);
 
-// NON_MATCHING: 4/36 differ, 4 edits
-#ifdef NON_MATCHING
 struct MagGameFlags_AE78 {
     int m_unk00;
     int m_flags;
 };
 struct MagGameGlobals_AE78 {
-    unsigned char m_unk0000[0xDC20];
+    char m_unk0000[0xDC20];
     MagGameFlags_AE78 *m_flags;
 };
 extern MagGameGlobals_AE78 D_007A4440;
@@ -1619,8 +1617,8 @@ extern "C" void func_0019AE78(char *arg0)
         *(int *)(arg0 + 0x1570) = b1;
         *(int *)(arg0 + 0x1568) = b1;
     } else {
-        *(int *)(arg0 + 0x1568) = 0;
         *(int *)(arg0 + 0x1570) = 0;
+        *(int *)(arg0 + 0x1568) = 0;
     }
     int f2 = D_007A4440.m_flags->m_flags & 2;
     if (f2) {
@@ -1628,14 +1626,11 @@ extern "C" void func_0019AE78(char *arg0)
         *(int *)(arg0 + 0x156C) = b2;
         *(int *)(arg0 + 0x1564) = b2;
     } else {
-        *(int *)(arg0 + 0x1564) = 0;
         *(int *)(arg0 + 0x156C) = 0;
+        *(int *)(arg0 + 0x1564) = 0;
     }
     *(int *)(arg0 + 0x1560) = hasFlag_AE78(4);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019AE78);
-#endif
 
 extern "C" int func_0019AF08(int arg0, int arg1)
 {
