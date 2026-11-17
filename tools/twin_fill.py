@@ -19,6 +19,7 @@ checked. Only a MATCH is kept: work.py --done and a commit
 else is written to src/.
 """
 import argparse
+import itertools
 import re
 import subprocess
 import sys
@@ -30,15 +31,37 @@ import work  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 INSN = re.compile(r"^\s*/\* [0-9A-F]+ [0-9A-F]{8} [0-9A-F]{8} \*/\s+(\S+)\s*(.*)$")
+MAX_CHOICES = 6                     # ambiguous literals tried in every combination
 TOKEN = re.compile(r"-?0x[0-9A-Fa-f]+|-?\d+|[A-Za-z_][\w.$]*")
 
 
-def asm_lines(name, fn):
+def asm_text(name, fn):
+    """The function's asm: its own piece, or (a matched function of a file
+    with no pieces left) its part of the whole-file asm/<name>.s."""
     path = ROOT / "asm/nonmatchings" / name / f"{fn}.s"
-    if not path.exists():
+    if path.exists():
+        return path.read_text(errors="replace")
+    whole = ROOT / "asm" / f"{name}.s"
+    if not whole.exists():
+        return None
+    out, on = [], False
+    for line in whole.read_text(errors="replace").splitlines():
+        m = twins.FUNC.match(line)
+        if m:
+            on = m.group(1) == fn
+        elif on and re.match(r"^\s*(?:end|\.size)\b|^\s*enddlabel|^\s*endlabel", line):
+            on = False
+        if on:
+            out.append(line)
+    return "\n".join(out) if out else None
+
+
+def asm_lines(name, fn):
+    text = asm_text(name, fn)
+    if text is None:
         return None
     out = []
-    for line in path.read_text(errors="replace").splitlines():
+    for line in text.splitlines():
         m = INSN.match(line)
         if m:
             # registers are the same in twins ($2, $f0); not the $ inside
@@ -57,20 +80,30 @@ def number(tok):
 
 
 def mapping(theirs, ours):
-    """{twin token: our token} from two instruction lists, or None on a clash."""
+    """({twin token: our token}, {number: other number}) from two instruction
+    lists, or None on a clash. A number that stays itself in one instruction
+    and changes in another (DwfMain: 7 is a call argument and, elsewhere, 1)
+    is ambiguous: which of its C literals change is tried (main())."""
     if theirs is None or ours is None or len(theirs) != len(ours):
         return None
-    out = {}
+    out, same, amb = {}, set(), {}
     for (m1, t1), (m2, t2) in zip(theirs, ours):
         if m1 != m2 or len(t1) != len(t2):
             return None
         for a, b in zip(t1, t2):
-            if a in ("%hi", "%lo", "hi", "lo") or a == b:
+            if a in ("%hi", "%lo", "hi", "lo"):
+                continue
+            if a == b:
+                same.add(a)
                 continue
             if out.get(a, b) != b:
                 return None
             out[a] = b
-    return out
+    for a in [a for a in out if a in same]:
+        if number(a) is None:
+            return None                       # a symbol both kept and renamed
+        amb[a] = out.pop(a)
+    return out, amb
 
 
 def apply(body, subst):
@@ -79,7 +112,9 @@ def apply(body, subst):
     syms = {a: b for a, b in subst.items() if number(a) is None}
     nums = {number(a): number(b) for a, b in subst.items() if number(a) is not None and number(b) is not None}
     for a, b in syms.items():
-        body = re.sub(rf"\b{re.escape(a)}\b", b, body)
+        # also inside an alias of it: Xiii_func_00166DA4 (declared with
+        # asm("func_00166DA4") in this project's style) -> Xiii_func_0014BE48
+        body = re.sub(rf"(?<![\w$])((?:X\w*?_)?){re.escape(a)}(?![\w$])", lambda m: m.group(1) + b, body)
 
     def num(m):
         v = int(m.group(0), 0)
@@ -138,7 +173,8 @@ def main():
     done = 0
     for name, fn, (tname, tfn) in jobs:
         body = twins.source_of(tname, tfn)
-        subst = mapping(asm_lines(tname, tfn), asm_lines(name, fn))
+        plan = mapping(asm_lines(tname, tfn), asm_lines(name, fn))
+        subst, amb = plan if plan else (None, {})
         if body is None or subst is None:
             print(f"{name} {fn}: no plan ({'no C++ for the twin' if body is None else 'operands clash'})")
             continue
@@ -155,13 +191,32 @@ def main():
             print(f"{name} {fn}: work.py could not start it")
             continue
         head = scratch.read_text(encoding="utf8").split(work.FUNC, 1)[0]
-        new_body = apply(body, subst)
-        decls = declarations(new_body, tname, name, subst) if tname != name else []
-        scratch.write_text(head.rstrip("\n") + "\n" + "".join(d + "\n" for d in decls) + "\n"
-                           + work.FUNC + "\n" + new_body + "\n", encoding="utf8", newline="\n")
-        r = subprocess.run([py, "tools/work.py", name, fn], cwd=ROOT, capture_output=True, text=True)
-        st = re.search(rf"^  0x[0-9A-F]+ {re.escape(fn)}\s+0x[0-9a-f]+\s+(.*)$", r.stdout, re.M)
-        status = st.group(1).strip() if st else "does not compile"
+        base = apply(body, subst)
+        decls = declarations(base, tname, name, subst)
+        # Ambiguous numbers: every choice of which of their C literals
+        # change (up to MAX_CHOICES positions, 2^n checks).
+        spots = [(m.start(), m.end(), amb_n)
+                 for a_tok, b_tok in amb.items()
+                 for amb_n in [(number(a_tok), number(b_tok))]
+                 for m in re.finditer(r"(?<![\w.])(?:0x[0-9A-Fa-f]+|\d+)(?![\w.])", base)
+                 if int(m.group(0), 0) == amb_n[0]]
+        if len(spots) > MAX_CHOICES:
+            print(f"{name} {fn} <- {tname} {tfn}: {len(spots)} ambiguous literals; too many to try")
+            continue
+        status = "does not compile"
+        for pick in itertools.product((False, True), repeat=len(spots)):
+            text = base
+            for (s0, e0, (_, nb)), on in sorted(zip(spots, pick), reverse=True):
+                if on:
+                    lit = text[s0:e0]
+                    text = text[:s0] + (hex(nb) if lit.lower().startswith("0x") else str(nb)) + text[e0:]
+            scratch.write_text(head.rstrip("\n") + "\n" + "".join(d + "\n" for d in decls) + "\n"
+                               + work.FUNC + "\n" + text + "\n", encoding="utf8", newline="\n")
+            r = subprocess.run([py, "tools/work.py", name, fn], cwd=ROOT, capture_output=True, text=True)
+            st = re.search(rf"^  0x[0-9A-F]+ {re.escape(fn)}\s+0x[0-9a-f]+\s+(.*)$", r.stdout, re.M)
+            status = st.group(1).strip() if st else "does not compile"
+            if status == "MATCH":
+                break
         if status != "MATCH":
             print(f"{name} {fn} <- {tname} {tfn}: {status}")
             continue
