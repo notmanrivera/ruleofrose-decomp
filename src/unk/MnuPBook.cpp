@@ -139,7 +139,46 @@ extern "C" void func_0019397C(int arg0, char *arg1, int arg2, int arg3)
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00193A1C);
 
+// NON_MATCHING: 1/56 differ, 1 edits
+#ifdef NON_MATCHING
+extern "C" int Xiii_func_00193E20(int, int) asm("func_00193E20");
+extern "C" int Xiiii_memmove(int, int, int) asm("memmove");
+extern "C" void func_00193D1C(int arg0, int arg1, int arg2)
+{
+    register int p PS2_REG("$3");
+    register int count PS2_REG("$4");
+    int i;
+
+    count = M2C_FIELD(arg0, int *, 0x20);
+    if (count <= 0) {
+        return;
+    }
+    p = M2C_FIELD(arg0, int *, 0x18);
+    arg1 &= 0xF;
+    i = 1;
+    if ((M2C_FIELD(p, int *, 8) & 0xF) == arg1) {
+        if (M2C_FIELD(p, int *, 0xC) == arg2) {
+            M2C_FIELD(arg0, int *, 4) |= 8;
+            return;
+        }
+    }
+    while (i < count) {
+        p += 0x30;
+        if ((M2C_FIELD(p, int *, 8) & 0xF) == arg1) {
+            if (M2C_FIELD(p, int *, 0xC) == arg2) {
+                Xiii_func_00193E20(arg0, i);
+                p = M2C_FIELD(arg0, int *, 0x18) + i * 0x30;
+                Xiiii_memmove(p, p + 0x30, (M2C_FIELD(arg0, int *, 0x20) - i) * 0x30 - 0x30);
+                M2C_FIELD(arg0, int *, 0x20) = M2C_FIELD(arg0, int *, 0x20) - 1;
+                return;
+            }
+        }
+        i++;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00193D1C);
+#endif
 
 extern "C" void func_00193DFC(int arg0)
 {
