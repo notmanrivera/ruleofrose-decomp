@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xii_func_00180EA8(int) asm("func_00180EA8");
+extern "C" void X_2F60_180EA8(void *, int) asm("func_00180EA8");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int X_LoadExecPS2(...) asm("LoadExecPS2");
 extern "C" int X_func_0024B3F8(...) asm("func_0024B3F8");
@@ -23,7 +25,20 @@ extern int D_007812C0;
 extern int D_007A4440;
 extern int D_007B2580;
 
-INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_002039A4);
+extern "C" void func_002039A4(void *arg0)
+{
+    void *temp_a0;
+
+    M2C_FIELD(arg0, int *, 0x48) = 1;
+    X_2F60_180EA8(&D_007B2580, M2C_FIELD(arg0, int *, 0x3c));
+    if (M2C_FIELD(arg0, int *, 4) == 0) {
+        return;
+    }
+    temp_a0 = M2C_FIELD(arg0, void **, 0x10);
+    if (temp_a0 != 0) {
+        M2C_FIELD(temp_a0, float *, 0x1E8) = 9.999999583953922e-08f;
+    }
+}
 
 extern "C" void func_00203A00(int arg0)
 {
