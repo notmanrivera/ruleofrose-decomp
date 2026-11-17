@@ -4184,7 +4184,28 @@ extern "C" void TskGenFrameFunc__vfunc_06(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskGenFrameFunc__vfunc_04);
+extern "C" void TskGenFrameFunc__vfunc_04(int arg0)
+{
+    short idx;
+    long ent;
+    int fp;
+    short base;
+    int off;
+    int p;
+
+    idx = M2C_FIELD(arg0, short *, 0xa);
+    if (idx >= 0) {
+        p = *(int *) (arg0 + M2C_FIELD(arg0, short *, 0xc));
+        p += idx * 8;
+        ent = *((long *) p - 1);
+        fp = (int) (ent >> 32);
+    } else {
+        fp = M2C_FIELD(arg0, int *, 0xc);
+    }
+    base = M2C_FIELD(arg0, short *, 0x8);
+    off = (idx >= 0) ? (short) ent + base : base;
+    ((void (*)(int)) fp)(arg0 + off);
+}
 
 extern "C" int func_001F415C(int arg0)
 {
