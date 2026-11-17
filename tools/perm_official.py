@@ -294,6 +294,10 @@ def apply_output(name, fn, out_dir):
     scratch = work.WORK / name / f"{fn}.cpp"
     subprocess.run([sys.executable, "tools/work.py", name, fn], cwd=ROOT, capture_output=True, text=True)
     head = scratch.read_text(encoding="utf8").split(work.FUNC, 1)[0]
+    # work.py may have put some of them in the scratch file's declarations
+    # already (a struct twice is an error): only the ones it lacks
+    flat = re.sub(r"\s+", " ", head.split(work.DECL, 1)[-1])   # the declarations, not the comments
+    decls = [d for d in decls if re.sub(r"\s+", " ", d.strip()) not in flat]
     scratch.write_text(head + work.FUNC + "\n" + "\n".join(decls) + "\nextern \"C\" " + func + "\n",
                        encoding="utf8", newline="\n")
     r = subprocess.run([sys.executable, "tools/work.py", name, fn], cwd=ROOT, capture_output=True, text=True)
