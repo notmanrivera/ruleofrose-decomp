@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "bed/bedpfh.h"
+extern "C" int Xiii_func_001943D8(int, int) asm("func_001943D8");
 extern "C" void X_func_00193868_v1(int) asm("func_00193868");
 extern "C" void X_func_001348B0_v1(int, int) asm("func_001348B0");
 extern "C" void X_func_00187464_v1(int) asm("func_00187464");
@@ -356,7 +357,43 @@ extern "C" int func_001943D8(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00194404);
+extern "C" int func_00194404(int arg0, int arg1, int arg2)
+{
+    register int self PS2_REG("$17");
+    register int limit PS2_REG("$18");
+    register int i PS2_REG("$5");
+    register int count PS2_REG("$6");
+    int p;
+    int idx;
+
+    idx = arg1;
+    self = arg0;
+    limit = arg2 + 1;
+    if (M2C_FIELD(self, int *, 0xA8) < limit) {
+        limit = M2C_FIELD(self, int *, 0xA8);
+    }
+    while (idx < limit) {
+        if (Xiii_func_001943D8(self, idx) == 0) {
+            count = M2C_FIELD(self, int *, 0x20);
+            i = 0;
+            p = M2C_FIELD(self, int *, 0x18);
+            while (i < count) {
+                if ((M2C_FIELD(p, int *, 8) & 0xF) == 4) {
+                    if (M2C_FIELD(p, int *, 0xC) == idx) {
+                        break;
+                    }
+                }
+                i++;
+                p += 0x30;
+            }
+            if (i == M2C_FIELD(self, int *, 0x20)) {
+                return idx;
+            }
+        }
+        idx++;
+    }
+    return -1;
+}
 
 extern "C" void func_001944D0()
 {
