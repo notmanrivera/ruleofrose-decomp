@@ -60,7 +60,80 @@ INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017CF0C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017D298);
 
+// NON_MATCHING: 124/174 differ, 1 reloc differs (size 0x2B8, game 0x2D0), 67 edits
+#ifdef NON_MATCHING
+extern "C" int Xiii_func_0017D62C(int, int) asm("func_0017D62C");
+extern "C" int Xiii_func_0017D9AC(int, int) asm("func_0017D9AC");
+extern "C" int Xiii_func_0017DFF0(int, int) asm("func_0017DFF0");
+struct InitD35C { int data[9]; };
+struct PartD35C { int data[8]; };
+struct StateD35C { PartD35C first; PartD35C second; int last; };
+extern const InitD35C D_002F30A0;
+extern "C" void func_0017D35C(int arg0, int arg1)
+{
+    struct { InitD35C initial; char pad24[12]; int sp30; int sp34; StateD35C current; StateD35C next; } stack;
+    int temp_a1, temp_v1_3, var_s3, var_s4, var_v1;
+    int var_s1, temp_a0, temp_v0, temp_v1, temp_v1_2, var_a0;    temp_a1 = M2C_FIELD(arg1, int *, 0);
+    if (temp_a1 == M2C_FIELD(arg1, int *, 4)) {
+        M2C_FIELD(M2C_FIELD(arg1, int *, 0xC), int *, 0) = (int) (M2C_FIELD(arg0, int *, 0xC) + (temp_a1 * 0x90));
+        M2C_FIELD(M2C_FIELD(arg1, int *, 0xC), int *, 0x1FC) = 1;
+        return;
+    }
+    var_s4 = 1;
+    var_s3 = 1;
+    Xiii_func_0017DFF0(arg0, M2C_FIELD(arg1, int *, 8));
+    temp_v1 = (M2C_FIELD(arg1, int *, 0) * 0x90) + M2C_FIELD(arg0, int *, 0xC);
+    M2C_FIELD(temp_v1, int *, 0x7C) = (int) (M2C_FIELD(temp_v1, int *, 0x7C) | 0x80000000);
+    M2C_FIELD(((M2C_FIELD(arg1, int *, 0) * 0x90) + M2C_FIELD(arg0, int *, 0xC)), int *, 0x80) = 0;
+    int target = (M2C_FIELD(arg1, int *, 0) * 0x90) + M2C_FIELD(arg0, int *, 0xC);
+    register int one PS2_REG("$7") = 1;
+    stack.initial = D_002F30A0;
+    M2C_FIELD(target, int *, 0x88) = (int)&stack.initial;
+    stack.current.last = one;
+    var_s1 = M2C_FIELD(arg1, int *, 8) + 4;
+    stack.current.first.data[0] = M2C_FIELD(arg1, int *, 0);
+    while (var_s3++ < M2C_FIELD(M2C_FIELD(arg1, int *, 8), int *, 0xFC)) {
+        temp_v0 = (*(int *)(var_s1));
+        var_s1 += 4;
+        stack.sp30 = (*(int *)(temp_v0));
+        if (Xiii_func_0017D62C(arg0, (int)&stack.sp30) == 0) {
+            var_s4 = 0;
+            break;
+        } else {
+            stack.current.first = stack.next.first;
+            stack.current.second = stack.next.second;
+            stack.current.last = stack.next.last;
+
+        }
+    }
+    if (var_s4 != 0) {
+        stack.sp34 = M2C_FIELD(arg1, int *, 4);
+        Xiii_func_0017D9AC(arg0, (int)&stack.sp30);
+    }
+    M2C_FIELD(M2C_FIELD(arg1, int *, 0xC), int *, 0x1FC) = 1;
+    var_v1 = stack.sp34;
+loop_11:
+    temp_a0 = M2C_FIELD(arg0, int *, 0xC) + (var_v1 * 0x90);
+    temp_v1_2 = M2C_FIELD(arg1, int *, 0xC);
+    if (M2C_FIELD(temp_a0, int *, 0) != M2C_FIELD(arg1, int *, 0)) {
+        M2C_FIELD(temp_v1_2, int *, 0x1FC) = (int) (M2C_FIELD(temp_v1_2, int *, 0x1FC) + 1);
+        var_v1 = M2C_FIELD(temp_a0, int *, 0x84);
+        goto loop_11;
+    }
+    var_s3 = M2C_FIELD(temp_v1_2, int *, 0x1FC) - 1;
+    var_a0 = M2C_FIELD(arg0, int *, 0xC) + (stack.sp34 * 0x90);
+    if (var_s3 >= 0) {
+        do {
+            temp_v1_3 = var_s3 * 4;
+            var_s3 -= 1;
+            *(int *)(M2C_FIELD(arg1, int *, 0xC) + temp_v1_3) = var_a0;
+            var_a0 = M2C_FIELD(arg0, int *, 0xC) + (M2C_FIELD(var_a0, int *, 0x84) * 0x90);
+        } while (var_s3 >= 0);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017D35C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017D62C);
 
