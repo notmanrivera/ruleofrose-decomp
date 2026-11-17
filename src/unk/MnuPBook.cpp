@@ -652,7 +652,45 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuMap__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00195430);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_0019586C);
+extern "C" void func_0019586C(int arg0, float *arg1)
+{
+    float sp[2];
+    float target;
+    float ratio;
+    float d;
+
+    Xiii_func_001959EC(arg0, (int) sp);
+
+    target = (float) M2C_FIELD(arg0, int *, 0x114);
+    ratio = sp[0];
+    if (ratio <= target) {
+        if (arg1[0] < 0.0f) {
+            arg1[0] = 0.0f;
+        } else {
+            d = target - ratio;
+            if (d < arg1[0]) {
+                arg1[0] = d;
+            }
+        }
+    } else {
+        arg1[0] = target * 0.5f - ratio * 0.5f;
+    }
+
+    target = (float) M2C_FIELD(arg0, int *, 0x118);
+    ratio = sp[1];
+    if (ratio <= target) {
+        if (arg1[1] < 0.0f) {
+            arg1[1] = 0.0f;
+        } else {
+            d = target - ratio;
+            if (d < arg1[1]) {
+                arg1[1] = d;
+            }
+        }
+    } else {
+        arg1[1] = target * 0.5f - ratio * 0.5f;
+    }
+}
 
 extern "C" int func_00195958(int arg0, float fparg0, float fparg1)
 {
