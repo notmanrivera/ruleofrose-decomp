@@ -62,7 +62,18 @@ extern "C" int func_00217CB4(int arg0)
     return var_a0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00217CF0);
+extern "C" int func_00217CF0(int arg0)
+{
+    char *p = (char *)&D_006E9840;
+    int var_a0 = 0;
+    unsigned int v;
+
+    p += 0xD0;
+    if ((M2C_FIELD(arg0, int *, 0x20) >= 9) || (v = M2C_FIELD(p, unsigned short *, 0x7A), (v >> 6) & 1)) {
+        var_a0 = 1;
+    }
+    return var_a0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00217D2C);
 
