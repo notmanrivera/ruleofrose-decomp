@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0014A78C(int) asm("func_0014A78C");
+extern "C" int Xiii_func_0014A78C(int, int) asm("func_0014A78C");
 extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
 extern "C" int Xiii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
 extern int _vt$7BdsMain;
@@ -87,7 +89,11 @@ extern "C" int func_0014A240()
 
 INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", func_0014A268);
 
-INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsOutWalk__vfunc_02);
+extern "C" void BdsOutWalk__vfunc_02(int arg0)
+{
+    Xiii_func_0014A78C(arg0, 0x1);
+    M2C_FIELD(arg0, int *, 4) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsOutWalk__vfunc_03);
 
