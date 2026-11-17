@@ -146,10 +146,20 @@ def raw_source(name, fn):
     if not m:
         return None
     before = text[:m.start()]
-    out = ['#define PS2_REG(r) __asm__(r)',
+    # include/target.h is plain C (ALIGNED, PS2_REG, u_long128, ...); of
+    # ror.h only its C part: ASSERT with the file's own name for __FILE__,
+    # and ASM_NOTHROW as a mark that compile.sh turns back into throw()
+    out = [f'#line 1 "{name}.cpp"',
+           '#include "target.h"',
            '#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))',
-           'typedef int u_long128 __attribute__((mode(TI)));',
-           'typedef unsigned int size_t;']
+           'typedef unsigned int size_t;',
+           'extern void ror_assert(const char *file, int line, const char *expr);',
+           '#ifndef ASSERT_FILE',
+           '#define ASSERT_FILE __FILE__',
+           '#endif',
+           '#define ASSERT(e) ((e) ? (void)0 : ror_assert(ASSERT_FILE, __LINE__, #e))',
+           '#define ASSERT_S(e, str) ((e) ? (void)0 : ror_assert(ASSERT_FILE, __LINE__, str))',
+           '#define ASM_NOTHROW __attribute__((ror_nothrow))']
     for kind, it in top_items(before):
         if kind == "pp":
             if re.match(r"#\s*define\s", it) and "M2C_FIELD" not in it and "PS2_REG" not in it:
@@ -162,9 +172,9 @@ def raw_source(name, fn):
     # C++ lets a struct's tag stand alone as a type name, C does not: a
     # typedef of each tag defined here (valid in both; the code is the same)
     body = "\n".join(out)
-    tags = sorted(set(re.findall(r"\b(struct|union)\s+(?:__attribute__\s*\(\([^)]*\)\)\s*)?([A-Za-z_]\w*)\s*\{", body)))
+    tags = sorted(set(re.findall(r"\b(struct|union)\s+(?:(?:__attribute__\s*\(\(.*?\)\)|ALIGNED\(\d+\))\s*)?([A-Za-z_]\w*)\s*\{", body)))
     typedefs = [f"typedef {kind} {tag} {tag};" for kind, tag in tags]
-    return "\n".join(out[:4] + typedefs + out[4:]) + "\n"
+    return "\n".join(out[:11] + typedefs + out[11:]) + "\n"
 
 
 def parses(text):
@@ -199,7 +209,7 @@ set -e
 out=$(cd "$(dirname "$3")" && pwd)/$(basename "$3")
 d=$(mktemp -d)
 trap 'rm -rf "$d"' EXIT
-{ printf 'extern "C" {\\n'; sed 's/(int, \\.\\.\\.)/(...)/g' "$1"; printf '\\n}\\n'; } > "$d/x.cpp"
+{ printf 'extern "C" {\\n'; sed 's/(int, \\.\\.\\.)/(...)/g; s/__attribute__((ror_nothrow))/throw()/g' "$1"; printf '\\n}\\n'; } > "$d/x.cpp"
 cd "$d"
 ee-cc @COMPILER@ @CFLAGS@ -c x.cpp -o out.o 2>/dev/null
 python3 /work/tools/fix_hi16.py out.o >/dev/null
@@ -230,7 +240,7 @@ def prepare(name, fn):
     code, out = dock(f"set -e; T=/tmp/t; rm -rf $T; mkdir -p $T/src $T/asm/nonmatchings/{name}; "
                      f"cp -r /work/include $T/; cp -r /work/asm/nonmatchings/{name}/. $T/asm/nonmatchings/{name}/; "
                      f"cp /work/{rel}/raw.c /work/{rel}/target.cpp $T/; "
-                     f"cd $T && ee-cc {configure.COMPILER} -E -P -x c raw.c -o pre.c; "
+                     f"cd $T && ee-cc {configure.COMPILER} -E -P -x c -Iinclude raw.c -o pre.c; "
                      f"cd $T/src && ee-cc {configure.COMPILER} {configure.CFLAGS} -c ../target.cpp -o ../target.o; "
                      f"python3 /work/tools/fix_hi16.py $T/target.o >/dev/null; "
                      f"cp $T/pre.c $T/target.o /work/{rel}/")
