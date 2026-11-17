@@ -1713,12 +1713,14 @@ def main():
         names = a.names or game_files()
         strategies = a.strategies.split(",")
         sigs = signatures(a.jobs, a.signatures)
-        total = 0
+        total = done = 0
+        print(f"files: {len(names)}", flush=True)
         with ThreadPoolExecutor(a.jobs) as ex:
             for name, size, note in ex.map(lambda n: run_file(n, strategies, sigs), names):
                 total += size
-                if note:
-                    print(f"{name}: {note}" + (f", {size:,} bytes" if size else ""), flush=True)
+                done += 1                     # "[k/N]" lines: tools/orca/bars.py reads them
+                print(f"[{done}/{len(names)}] {name}: {note or 'nothing new'}"
+                      + (f", {size:,} bytes" if size else ""), flush=True)
         print(f"total: {total:,} bytes newly matching, in build/auto/out/ (--apply to take them)")
     finally:
         lock.unlink()

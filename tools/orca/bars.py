@@ -323,6 +323,37 @@ def permuter():
     return out
 
 
+def auto_m2c():
+    """tools/auto_m2c.py's run (log build/workers/auto-run.log): the signature
+    passes, then one "[k/N] file: note" line per file."""
+    path = os.path.join(ST, "auto-run.log")
+    try:
+        lines = open(path, encoding="utf-8", errors="replace").read().splitlines()
+    except OSError:
+        return []
+    running = "auto_m2c" in run(["ps", "-ef"])
+    out = [f"{col('auto_m2c', 'bold')} " + (col("trabajando", "green") if running else col("parado", "yellow"))
+           + f"  (sin IA; log {os.path.relpath(path, MAIN)})"]
+    passes = [ln for ln in lines if ln.startswith("signatures, pass")]
+    prog = [re.match(r"^\[(\d+)/(\d+)\] (\S+): (.*)$", ln) for ln in lines]
+    prog = [m for m in prog if m]
+    if not prog:
+        out.append(f"  firmas de las funciones: {len(passes)} pasadas"
+                   + (f" (la \u00faltima cambi\u00f3 {passes[-1].split(': ')[-1]})" if passes else ""))
+        return out
+    k, n = int(prog[-1].group(1)), int(prog[-1].group(2))
+    found = [(m.group(3), m.group(4)) for m in prog if "bytes" in m.group(4)]
+    got = sum(int(re.search(r"([\d,]+) bytes", note).group(1).replace(",", "")) for _, note in found)
+    f = round(WIDTH * k / n)
+    big = "\u2588" * f + "\u2591" * (WIDTH - f)
+    out.append(f"  archivos  {big} {k}/{n}, " + col(f"{got:,} bytes nuevos en {len(found)} archivos", "green" if got else "dim"))
+    for name, note in found[-4:]:
+        out.append(f"    {col(chr(0x2713), 'green')} {name}: {note}")
+    if not running and lines and lines[-1].startswith("total:"):
+        out.append("  " + lines[-1])
+    return out
+
+
 def render(reset=False):
     idle = terminals()
     out = []
@@ -330,7 +361,7 @@ def render(reset=False):
         if fn.endswith(".env"):
             out.extend(worker(fn[:-4], read_env(os.path.join(ST, fn)), idle))
             out.append("")
-    pq = permuter()
+    pq = permuter() + ([""] if permuter() and auto_m2c() else []) + auto_m2c()
     if pq:
         out.extend(pq)
         out.append("")
