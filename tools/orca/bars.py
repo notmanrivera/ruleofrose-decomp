@@ -400,6 +400,12 @@ def twin_sweeps():
     return out
 
 
+def EXTRA_PERM_MATCHES():
+    """'(permuter)' commits in git: matches the logs may not show (--apply)."""
+    out = run(["git", "-C", MAIN, "log", "--format=%s", "--grep", "(permuter)$", "pr-merge"])
+    return [ln for ln in out.splitlines() if ln.endswith("(permuter)") and "MnuDiary: func_0019AE78" not in ln]
+
+
 def perm_official():
     """tools/perm_official.py's queue (log build/workers/perm-official.log):
     decomp-permuter on the NON_MATCHING attempts."""
@@ -410,6 +416,9 @@ def perm_official():
         return []
     running = alive("perm_official", path, 25)
     q = [ln for ln in lines if ln.startswith("queue: ")]
+    # exact ones of every run (also one taken again with --apply); the bar
+    # for the last run
+    all_ok = [m.group(1) for m in (re.match(r"^\[\d+/\d+\] (\S+ \S+): MATCH", ln) for ln in lines) if m]
     if q:
         lines = lines[max(i for i, ln in enumerate(lines) if ln.startswith("queue: ")):]
     ends = [re.match(r"^\[(\d+)/(\d+)\] (\S+ \S+): (MATCH|no match|skipped)(.*)$", ln) for ln in lines]
@@ -418,7 +427,7 @@ def perm_official():
     starts = [m for m in starts if m]
     total = int(q[-1].split()[1]) if q else (int(starts[-1].group(2)) if starts else 0)
     done = len(ends)
-    matches = [m.group(3) for m in ends if m.group(4) == "MATCH"]
+    matches = [ln.split(" (permuter)")[0] for ln in EXTRA_PERM_MATCHES()]   # git is the record
     skipped = sum(1 for m in ends if m.group(4) == "skipped")
     out = [f"{col('decomp-permuter', 'bold')} " + (col("trabajando", "green") if running else col("parado", "yellow"))
            + f"  (sin IA; log {os.path.relpath(path, MAIN)})"]
