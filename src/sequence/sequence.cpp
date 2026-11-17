@@ -1,5 +1,8 @@
 #include "ror.h"
 #include "include_asm.h"
+extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void Xv_ObjStatDtor(int arg0, int arg1) asm("_$_7ObjStat");
 extern "C" int X_func_0020E690(...) asm("func_0020E690");
 extern "C" int X_func_0020F37C(...) asm("func_0020F37C");
 extern int D_002D9910;
@@ -540,7 +543,12 @@ INCLUDE_ASM("asm/nonmatchings/sequence/sequence", func_0020E40C);
 
 INCLUDE_ASM("asm/nonmatchings/sequence/sequence", func_0020E454);
 
-INCLUDE_ASM("asm/nonmatchings/sequence/sequence", func_0020E63C);
+extern "C" void func_0020E63C(void *arg0, int arg1)
+{
+    if (arg1 & 1) {
+        return Xv___builtin_delete(arg0);
+    }
+}
 
 extern "C" void func_0020E664(int arg0)
 {
