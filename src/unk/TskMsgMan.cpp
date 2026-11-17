@@ -4277,7 +4277,28 @@ extern "C" void TskSysFunc__vfunc_05(int arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskSysFunc__vfunc_04);
+extern "C" void TskSysFunc__vfunc_04(int arg0)
+{
+    short idx;
+    long ent;
+    int fp;
+    short base;
+    int off;
+    int p;
+
+    idx = M2C_FIELD(arg0, short *, 0xa);
+    if (idx >= 0) {
+        p = *(int *) (arg0 + M2C_FIELD(arg0, short *, 0xc));
+        p += idx * 8;
+        ent = *((long *) p - 1);
+        fp = (int) (ent >> 32);
+    } else {
+        fp = M2C_FIELD(arg0, int *, 0xc);
+    }
+    base = M2C_FIELD(arg0, short *, 0x8);
+    off = (idx >= 0) ? (short) ent + base : base;
+    ((void (*)(int)) fp)(arg0 + off);
+}
 
 // NON_MATCHING: 36/51 differ, 1 reloc differs (size 0xCC, game 0xC8), 8 edits
 #ifdef NON_MATCHING
