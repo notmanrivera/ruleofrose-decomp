@@ -258,7 +258,116 @@ extern "C" void NorOutBitten__vfunc_02(int arg0)
     M2C_FIELD(arg0, int *, 0x40) = 0;
 }
 
+// NON_MATCHING: 93/178 differ, 13 relocs differ (size 0x2C8, game 0x2D8), 23 edits
+#ifdef NON_MATCHING
+extern int bittenOther asm("D_007A3354");
+extern "C" int Bitten_Xii_func_00118FEC__9MagSystem(int) asm("func_00118FEC__9MagSystem");
+extern "C" int Bitten_Xii_func_001442DC(int) asm("func_001442DC");
+extern "C" int Bitten_Xii_func_00144308(int) asm("func_00144308");
+extern "C" int Bitten_Xii_func_00151448(int) asm("func_00151448");
+extern "C" int Bitten_Xii_func_0016947C(int) asm("func_0016947C");
+extern "C" int Bitten_Xiii_func_0016649C(int, int) asm("func_0016649C");
+extern "C" int Bitten_Xiii_func_001694CC(int, int) asm("func_001694CC");
+extern "C" int Bitten_Xiiii_func_001680A0(int, int, int) asm("func_001680A0");
+extern "C" int Bitten_Xiiiii_func_001693EC(int, int, int, int) asm("func_001693EC");
+extern "C" int Bitten_Xiiu_func_001D19A8(int, unsigned int) asm("func_001D19A8");
+extern "C" int Bitten_Xiiui_func_001D10D0(int, unsigned int, int) asm("func_001D10D0");
+extern "C" int Bitten_Xiiui_func_001D1410(int, unsigned int, int) asm("func_001D1410");
+extern "C" int Bitten_Xiuiiiiui_func_001FAC60(unsigned int, int, int, int, int, unsigned int, int) asm("func_001FAC60");
+extern "C" int Bitten_Xiuiuf_func_00169F94(unsigned int, int, unsigned int, float) asm("func_00169F94");
+extern int D_007A3350;
+extern "C" int NorOutBitten__vfunc_03(int arg0)
+{
+    float var_f1;
+    int temp_a0_2;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+    register int var_s2 PS2_REG("$18");
+    unsigned int var_v1;
+    register unsigned int var_s0 PS2_REG("$16");
+    int temp_a0;
+
+    var_s2 = -1;
+    if (Bitten_Xii_func_001442DC(M2C_FIELD(arg0, int *, 0)) == var_s2 && M2C_FIELD(arg0, int *, 4) == 0) {
+        Bitten_Xii_func_00144308(1);
+        return 8;
+    }
+    {
+        switch (M2C_FIELD(arg0, int *, 4)) {        
+        case 0:
+            Bitten_Xiiiii_func_001693EC(arg0, 0xA, 0x19, 0x52);
+            if (Bitten_Xii_func_00151448(M2C_FIELD(arg0, int *, 0xC)) == 0) {
+                Bitten_Xii_func_0016947C(arg0);
+                Bitten_Xiii_func_0016649C(M2C_FIELD(arg0, int *, 0xC), 0);
+                Bitten_Xiiui_func_001D10D0((int)&D_007812C0, (unsigned int) M2C_FIELD(arg0, int *, 0), 0x400);
+                Bitten_Xiiii_func_001680A0(arg0, 0x18, 0);
+                M2C_FIELD(arg0, int *, 0x3C) = 0;
+                M2C_FIELD(arg0, int *, 0x38) = 0;
+                Bitten_Xiii_func_001694CC(arg0, 0x56);
+                Bitten_Xiii_func_001694CC(arg0, 0x63);
+                Bitten_Xiii_func_0016649C(M2C_FIELD(arg0, int *, 0xC), 0);
+                Bitten_Xiiui_func_001D10D0((int)&D_007812C0, (unsigned int) M2C_FIELD(arg0, int *, 0), 0x400);
+                M2C_FIELD(arg0, int *, 4) = 1;
+            }
+block_32:
+            return var_s2;
+        case 1:
+            temp_a0 = M2C_FIELD(arg0, int *, 0xC);
+            temp_v0 = M2C_FIELD(arg0, int *, 0x3C) + 1;
+            M2C_FIELD(arg0, int *, 0x3C) = temp_v0;
+            if (temp_v0 < 0x30) {
+                Bitten_Xiii_func_0016649C(temp_a0, 0);
+                Bitten_Xiiui_func_001D10D0((int)&D_007812C0, (unsigned int) M2C_FIELD(arg0, int *, 0), 0x400);
+            } else {
+                Bitten_Xiii_func_0016649C(temp_a0, 1);
+                Bitten_Xiiui_func_001D1410((int)&D_007812C0, (unsigned int) M2C_FIELD(arg0, int *, 0), 0x400);
+            }
+            temp_a0_2 = M2C_FIELD(arg0, int *, 0x3C);
+            var_v1 = 0;
+            if (temp_a0_2 >= 0x1D) {
+                var_v1 = (temp_a0_2 > 0x2B) == 0;
+            }
+            if (var_v1 >= 0) {
+                var_f1 = (float) var_v1;
+            } else {
+                var_f1 = 2.0f * (float) var_v1;
+            }
+            if ((var_f1 != 0.0f) && (M2C_FIELD(arg0, int *, 0x40) == 0) && (Bitten_Xii_func_00118FEC__9MagSystem((int) (int)&D_006E9840) != 9)) {
+                var_s0 = 0;
+                if ((*(int *)&D_007A3350) != 0) {
+                    var_s0 = M2C_FIELD((*(int *)&D_007A3350), unsigned int *, 0x100);
+                }
+                if (Bitten_Xiuiuf_func_00169F94((unsigned int) M2C_FIELD(arg0, int *, 0), 3, var_s0, 40.0f) != 0) {
+                    M2C_FIELD(arg0, int *, 0x40) = 1;
+                    Bitten_Xiii_func_001694CC(arg0, 0x51);
+                    Bitten_Xiuiiiiui_func_001FAC60(0xBU, (int) M2C_FIELD(arg0, int *, 0), 0, 0, 0x24, var_s0, 0);
+                }
+            }
+            temp_v0_2 = M2C_FIELD(arg0, int *, 0x38) + 1;
+            M2C_FIELD(arg0, int *, 0x38) = temp_v0_2;
+            if (temp_v0_2 == 0x17) {
+                Bitten_Xiuiiiiui_func_001FAC60(0xBU, (int) M2C_FIELD(arg0, int *, 0), 0, 0, 0x25, M2C_FIELD(bittenOther, unsigned int *, 0x100), 0);
+                Bitten_Xii_func_00144308(0);
+            }
+            temp_v0_3 = Bitten_Xiiu_func_001D19A8((int) (int)&D_007812C0, (unsigned int) M2C_FIELD(arg0, int *, 0));
+            if (temp_v0_3 != 0) {
+                M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x2C) = 1;
+                if (temp_v0_3 != 0) {
+                    var_s2 = 8;
+                    Bitten_Xiii_func_0016649C(M2C_FIELD(arg0, int *, 0xC), 1);
+                    Bitten_Xiiui_func_001D1410((int)&D_007812C0, (unsigned int) M2C_FIELD(arg0, int *, 0), 0x400);
+                }
+            }
+            goto block_32;
+        default:
+            return var_s2;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", NorOutBitten__vfunc_03);
+#endif
 
 extern "C" void NorOutBitten__vfunc_04()
 {
