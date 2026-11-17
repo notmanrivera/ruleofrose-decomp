@@ -328,7 +328,107 @@ update_node:
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017D62C);
 #endif
 
+// NON_MATCHING: 161/230 differ (size 0x398, game 0x3B0), 141 edits
+#ifdef NON_MATCHING
+struct NeighborD9AC { int data[6]; };
+extern NeighborD9AC D9AC_neighbors[] asm("D_00298E20");
+extern "C" void *D9AC_zero(void *, int, unsigned int) asm("memset");
+extern "C" void *D9AC_copy(void *, const void *, unsigned int) asm("memcpy");
+extern "C" int func_0017D9AC(int arg0, int arg1)
+{
+    int lists[64];
+    int counts[2];
+    register int *countPtr PS2_REG("$16") = counts;
+    int *starts = (int *)(arg1 + 8);
+    D9AC_zero(countPtr, 0, 8);
+    D9AC_copy(lists, starts, M2C_FIELD(arg1, int *, 0x48) * 4);
+    M2C_FIELD(arg1, int *, 0x8C) = 0;
+    register int best PS2_REG("$14") = 0;
+    countPtr[0] = M2C_FIELD(arg1, int *, 0x48);
+    register int current PS2_REG("$9") = 0;
+    register int reached PS2_REG("$15") = 0;
+    do {
+        register int n PS2_REG("$12") = 0;
+        if (countPtr[current] > 0) {
+            do {
+                int node = M2C_FIELD(arg0, int *, 0xC) + lists[(current << 5) + n] * 0x90;
+                if (M2C_FIELD(node, int *, 0) == M2C_FIELD(arg1, int *, 4)) reached = 1;
+                else {
+                    int *edges = M2C_FIELD(node, int **, 0x88);
+                    while (*edges != -1) {
+                        int bounds = node + 0xC;
+                        int edge = *edges;
+                        int next = M2C_FIELD(bounds + edge * 4, int *, 0x30);
+                        if (next != -1) {
+                            int other = M2C_FIELD(arg0, int *, 0xC) + next * 0x90;
+                            if (M2C_FIELD(other, int *, 4) == M2C_FIELD(node, int *, 4)) {
+                                int flags = M2C_FIELD(other, int *, 0x7C);
+                                if (flags >= 0 || !(M2C_FIELD(other, float *, 0x80) <= M2C_FIELD(node, float *, 0x80) + M2C_FIELD(bounds + edge * 4, float *, 0x50))) {
+                                    M2C_FIELD(other, int *, 0x7C) = flags | 0x80000000;
+                                    int id = M2C_FIELD(other, int *, 0);
+                                    M2C_FIELD(other, float *, 0x80) = M2C_FIELD(node, float *, 0x80) + M2C_FIELD(bounds + *edges * 4, float *, 0x50);
+                                    M2C_FIELD(other, int *, 0x84) = M2C_FIELD(node, int *, 0);
+                                    M2C_FIELD(other, NeighborD9AC **, 0x88) = &D9AC_neighbors[*edges];
+                                    int target = M2C_FIELD(arg1, int *, 4);
+                                    if (M2C_FIELD(other, int *, 8) & 4) {
+                                        if (best == 0 || M2C_FIELD(node, float *, 0x80) < M2C_FIELD(best, float *, 0x80)) best = node;
+                                        if (id == target) break;
+                                    } else {
+                                        if (id == target) { reached = 1; break; }
+                                        int i;
+                                        for (i = 0; i < countPtr[current]; i++) {
+                                            if (lists[(current << 5) + i] == id) break;
+                                        }
+                                        if (i >= countPtr[current]) {
+                                            int alternate = current ^ 1;
+                                            for (i = 0; i < countPtr[alternate]; i++) {
+                                                if (lists[(alternate << 5) + i] == M2C_FIELD(other, int *, 0)) break;
+                                            }
+                                            if (i == countPtr[alternate]) {
+                                                lists[(alternate << 5) + i] = M2C_FIELD(other, int *, 0);
+                                                countPtr[alternate] = i + 1;
+                                            }
+                                            current = alternate ^ 1;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        edges++;
+                    }
+                }
+                n++;
+            } while (n < countPtr[current]);
+        }
+        int previous = current;
+        current ^= 1;
+        countPtr[previous] = 0;
+    } while (countPtr[current] > 0);
+    int result = 1;
+    if (reached == 0) {
+        int id;
+        if (best == 0) {
+            int n = 1;
+            int count = M2C_FIELD(arg1, int *, 0x48);
+            int base = M2C_FIELD(arg0, int *, 0xC);
+            int selected = base + M2C_FIELD(arg1, int *, 8) * 0x90;
+            if (count > 1) {
+                do {
+                    int candidate = starts[n] * 0x90 + base;
+                    n++;
+                    if (M2C_FIELD(candidate, float *, 0x80) < M2C_FIELD(selected, float *, 0x80)) selected = candidate;
+                } while (n < count);
+            }
+            id = M2C_FIELD(selected, int *, 0);
+        } else id = M2C_FIELD(best, int *, 0);
+        M2C_FIELD(arg1, int *, 4) = id;
+        result = 0;
+    }
+    return result;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017D9AC);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017DD5C);
 
