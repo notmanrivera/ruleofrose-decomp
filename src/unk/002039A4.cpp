@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
 extern "C" int Xii_func_00180EA8(int) asm("func_00180EA8");
 extern "C" void X_2F60_180EA8(void *, int) asm("func_00180EA8");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -63,7 +65,12 @@ extern "C" int func_00203D94()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_00203DA8);
+extern "C" void func_00203DA8(void *arg0, int arg1)
+{
+    if (arg1 & 1) {
+        return Xv___builtin_delete(arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_00203DD0);
 
