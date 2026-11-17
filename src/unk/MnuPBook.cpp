@@ -1,5 +1,10 @@
 #include "include_asm.h"
 #include "bed/bedpfh.h"
+extern "C" void X_func_00193868_v1(int) asm("func_00193868");
+extern "C" void X_func_001348B0_v1(int, int) asm("func_001348B0");
+extern "C" void X_func_00187464_v1(int) asm("func_00187464");
+extern "C" void X_func_00194688_v1(int) asm("func_00194688");
+extern "C" void X_mnuBase__vfunc_03_v1(int) asm("mnuBase__vfunc_03");
 struct __attribute__((aligned(4))) PBookMnuMapName {
     char m_pad[0x24];
     char m_name[0x17];
@@ -662,7 +667,42 @@ INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F8048);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_03);
+extern "C" void MnuPBook__vfunc_03(int arg0)
+{
+    int temp_v0;
+    int temp_a0;
+    int temp_a1;
+
+    temp_v0 = *(int *)(arg0 + 0x13C);
+    if (temp_v0 != 0) {
+        X_func_00194688_v1(temp_v0);
+        *(int *)(arg0 + 0x13C) = 0;
+    }
+    temp_a0 = *(int *)(arg0 + 0x12C);
+    if (temp_a0 != 0) {
+        X_func_00194688_v1(temp_a0);
+        *(int *)(arg0 + 0x12C) = 0;
+    }
+    *(int *)(arg0 + 0x130) = 0;
+    X_func_00193868_v1(arg0);
+    temp_v0 = *(int *)(arg0 + 0x134);
+    if (temp_v0 != -1) {
+        X_func_001348B0_v1(*(int *)(arg0 + 8), temp_v0);
+        *(int *)(arg0 + 0x134) = -1;
+    }
+    temp_a1 = *(int *)(arg0 + 0x138);
+    if (temp_a1 != -1) {
+        X_func_001348B0_v1(*(int *)(arg0 + 8), temp_a1);
+        *(int *)(arg0 + 0x138) = -1;
+    }
+    X_func_00187464_v1(arg0 + 0x140);
+    *(int *)(arg0 + 0x110) = 0;
+    *(int *)(arg0 + 0x114) = -1;
+    *(int *)(arg0 + 0x118) = -1;
+    *(int *)(arg0 + 0x11C) = -1;
+    *(int *)(arg0 + 0x120) = -1;
+    X_mnuBase__vfunc_03_v1(arg0);
+}
 
 // NON_MATCHING: 20/21 differ, 1 reloc differs (size 0x54, game 0x50), 15 edits
 #ifdef NON_MATCHING
