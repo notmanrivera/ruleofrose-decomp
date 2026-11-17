@@ -1,3 +1,4 @@
+#include "ror.h"
 #include "include_asm.h"
 struct m2c_v200_18_i { char pad[512]; virtual void v1(); virtual void v2(); virtual int call(); };
 extern "C" int Xii_func_001682B0(int) asm("func_001682B0");
@@ -60,7 +61,6 @@ INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_0016768C);
 
 // NON_MATCHING: 17/119 differ (size 0x1DC, game 0x1E4), 6 edits
 #ifdef NON_MATCHING
-#include "ror.h"
 inline int flag8(int p) { return (*(int *)((char *)p+0x3ec)) & 8; }
 inline int flag16(int p) { return (*(int *)((char *)p+0x3ec)) & 16; }
 inline int oneFlag(int a) { return *(int *)((char *)*(int *)((char *)a+12)+0x100); }
@@ -234,7 +234,124 @@ extern "C" void func_00168520(int arg0)
     M2C_FIELD(arg0, int *, 0x18) = 0;
 }
 
+// NON_MATCHING: 4/127 differ, 4 edits
+#ifdef NON_MATCHING
+extern int D_007A3D80;
+extern char D_006FE6A0[];
+extern char bGlobal[] asm("D_006E9840");
+extern "C" int bE7D7C(int,int) asm("func_001E7D7C");
+extern "C" int bCBE38(int,unsigned int) asm("func_001CBE38");
+extern "C" int bCBEDC(int,unsigned int) asm("func_001CBEDC");
+extern "C" float bYaw(int) asm("func_0010A650__8DogActor");
+extern "C" void bF603C(int,int,int,int,float,float,int) asm("func_001F603C");
+extern "C" void bDA228(int,int,unsigned int*) asm("func_001DA228");
+extern "C" void b33144(int,int,int,int,int,unsigned int,float) asm("func_00133144");
+inline int bOffset(char *p) { return (int)(p+0x12540); }
+inline void bSetYaw(void *out,float v) { ((float *)out)[1] = v; }
+extern "C" void func_001685C0(int arg0,int arg1,int arg2) {
+    register int self PS2_REG("$16") = arg0;
+    register int motion PS2_REG("$18") = arg1;
+    register int flags PS2_REG("$17") = arg2;
+    float yaw[4];
+    unsigned int sp10,sp14;
+    float rate;
+    register int mode PS2_REG("$19");
+    if (flags == 0) M2C_FIELD(M2C_FIELD(self,int *,12),int *,0x2c)=0;
+    float v = M2C_FIELD(M2C_FIELD(self,int *,12),float *,0x1c4);
+    if (v != 0.0f) rate=v*0.016666666f;
+    else rate=0.016666666f;
+    if (bE7D7C((int)&D_007A3D80,M2C_FIELD(M2C_FIELD(self,int *,8),int *,0x3dc)) == 0) {
+        float angle=bYaw((int)D_006FE6A0+bCBE38((int)&D_007812C0,M2C_FIELD(self,int *,0))*0x4d0);
+        int handle=M2C_FIELD(self,int *,0);
+        bSetYaw(yaw,angle);
+        bF603C(handle,motion,-1,flags,rate,angle,1);
+    } else bF603C(M2C_FIELD(self,int *,0),motion,-1,flags,rate,32769.0f,1);
+    bDA228(M2C_FIELD(self,int *,8),0x67,&sp10);
+    if ((bCBEDC((int)&D_007812C0,sp10)^0xa2e)==0) {
+        unsigned int select = motion-10;
+        if ((unsigned)select >= 71) mode=2; else
+        switch(select) {
+        case 1: mode=4; break;
+        case 0: mode=3; break;
+        case 70: mode=12; break;
+        case 69: mode=8; break;
+        case 66: mode=6; break;
+        case 67: mode=7; break;
+        case 2:
+case 3:
+case 4:
+case 5:
+case 6:
+case 7:
+case 8:
+case 9:
+case 10:
+case 11:
+case 12:
+case 13:
+case 14:
+case 15:
+case 16:
+case 17:
+case 18:
+case 19:
+case 20:
+case 21:
+case 22:
+case 23:
+case 24:
+case 25:
+case 26:
+case 27:
+case 28:
+case 29:
+case 30:
+case 31:
+case 32:
+case 33:
+case 34:
+case 35:
+case 36:
+case 37:
+case 38:
+case 39:
+case 40:
+case 41:
+case 42:
+case 43:
+case 44:
+case 45:
+case 46:
+case 47:
+case 48:
+case 49:
+case 50:
+case 51:
+case 52:
+case 53:
+case 54:
+case 55:
+case 56:
+case 57:
+case 58:
+case 59:
+case 60:
+case 61:
+case 62:
+case 63:
+case 64:
+case 65:
+case 68:
+        default: mode=2; break;
+        }
+        bDA228(M2C_FIELD(self,int *,8),0x67,&sp14);
+        int id=bCBE38((int)&D_007812C0,sp14);
+        b33144(bOffset(bGlobal),id,mode,0,0x100,sp14,0.016666694f);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001685C0);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001687BC);
 
