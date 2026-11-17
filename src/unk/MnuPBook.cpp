@@ -319,7 +319,54 @@ extern "C" int func_001940A4(int arg0, int arg1, int arg2)
     return -1;
 }
 
+// NON_MATCHING: 48/76 differ, 7 relocs differ (size 0x130, game 0x138), 28 edits
+#ifdef NON_MATCHING
+extern "C" int func_00194148(int arg0, int arg1, int arg2)
+{
+    register int self PS2_REG("$20");
+    register int temp_s0 PS2_REG("$16");
+    register int temp_s1 PS2_REG("$17");
+    register int temp_s2 PS2_REG("$18");
+    register int temp_s3 PS2_REG("$19");
+    int base;
+    int n;
+    int p;
+
+    self = arg0;
+    temp_s0 = arg1;
+    temp_s1 = arg2 << 5;
+    if (M2C_FIELD(M2C_FIELD(self, int *, 0x94) + temp_s1, int *, 0) == 0) {
+        return 0;
+    }
+    if (X_func_001940A4(self, temp_s0, temp_s0) != temp_s0) {
+        return 0;
+    }
+    base = M2C_FIELD(self, int *, 0x94);
+    temp_s3 = base + temp_s1;
+    temp_s2 = base + (temp_s0 << 5);
+    X_func_0022B350(M2C_FIELD(temp_s3, int *, 0));
+    n = X_func_00194588(M2C_FIELD(temp_s3, int *, 0x14));
+    M2C_FIELD(temp_s2, int *, 0) = n;
+    X_memcpy(n, M2C_FIELD(temp_s3, int *, 0), M2C_FIELD(temp_s3, int *, 0x14));
+    X_func_0022B330(M2C_FIELD(temp_s2, int *, 0));
+    M2C_FIELD(temp_s2, int *, 0x14) = M2C_FIELD(temp_s3, int *, 0x14);
+    n = X_func_0022B370(M2C_FIELD(temp_s2, int *, 0));
+    p = X_func_00194588((n * 89) << 1);
+    M2C_FIELD(temp_s2, int *, 4) = p;
+    p = p + n * 48;
+    M2C_FIELD(temp_s2, int *, 8) = p;
+    p = p + n * 64;
+    M2C_FIELD(temp_s2, int *, 0xC) = p;
+    p = p + n * 64;
+    M2C_FIELD(temp_s2, int *, 0x10) = p;
+    X_func_0021A5B0(M2C_FIELD(temp_s2, int *, 0), M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 8), M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 4));
+    X_func_0021A700(M2C_FIELD(temp_s2, int *, 0), M2C_FIELD(temp_s2, int *, 8));
+    X_func_0022B330(M2C_FIELD(temp_s3, int *, 0));
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00194148);
+#endif
 
 extern "C" void func_00194280(int arg0, int arg1)
 {
