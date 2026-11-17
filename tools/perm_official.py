@@ -46,7 +46,8 @@ CXX_ONLY = re.compile(r"\bclass\b|::|\btemplate\b|\bvirtual\b|\boperator\b|\bpub
 
 
 def dock(cmd, timeout=None):
-    r = subprocess.run(["sh", str(ROOT / "tools/dock"), "sh", "-c", cmd], cwd=ROOT,
+    # every compile here is on the container's own filesystem: no ee-cc mirror
+    r = subprocess.run(["sh", str(ROOT / "tools/dock"), "sh", "-c", "export EE_CC_MIRROR=0; " + cmd], cwd=ROOT,
                        capture_output=True, text=True, timeout=timeout)
     return r.returncode, r.stdout + r.stderr
 
@@ -127,6 +128,8 @@ def top_items(text):
 
 
 def plain_c(s):
+    # C++'s f(...) is not C: (int, ...) here, and compile.sh writes it back
+    s = s.replace("(...)", "(int, ...)")
     s = re.sub(r'\bextern\s+"C"\s*', "extern ", s)
     s = re.sub(r"\bextern\s+extern\b", "extern", s)
     s = re.sub(r"\bbool\b", "int", s)
@@ -156,7 +159,12 @@ def raw_source(name, fn):
                     and not it.lstrip().startswith(("using", "static_assert", "STATIC_ASSERT")):
                 out.append(plain_c(it))
     out.append(plain_c(m.group(1)))
-    return "\n".join(out) + "\n"
+    # C++ lets a struct's tag stand alone as a type name, C does not: a
+    # typedef of each tag defined here (valid in both; the code is the same)
+    body = "\n".join(out)
+    tags = sorted(set(re.findall(r"\b(struct|union)\s+(?:__attribute__\s*\(\([^)]*\)\)\s*)?([A-Za-z_]\w*)\s*\{", body)))
+    typedefs = [f"typedef {kind} {tag} {tag};" for kind, tag in tags]
+    return "\n".join(out[:4] + typedefs + out[4:]) + "\n"
 
 
 def parses(text):
@@ -191,7 +199,7 @@ set -e
 out=$(cd "$(dirname "$3")" && pwd)/$(basename "$3")
 d=$(mktemp -d)
 trap 'rm -rf "$d"' EXIT
-{ printf 'extern "C" {\\n'; cat "$1"; printf '\\n}\\n'; } > "$d/x.cpp"
+{ printf 'extern "C" {\\n'; sed 's/(int, \\.\\.\\.)/(...)/g' "$1"; printf '\\n}\\n'; } > "$d/x.cpp"
 cd "$d"
 ee-cc @COMPILER@ @CFLAGS@ -c x.cpp -o out.o 2>/dev/null
 python3 /work/tools/fix_hi16.py out.o >/dev/null
