@@ -213,64 +213,75 @@ def worker(name, env, idle):
     if not names:
         out.append(col("  (sin lote)", "dim"))
         return out
-    file = env.get("FILE", "")
+    # A batch is one file's functions (FILE, BATCH "f1, f2"), or functions
+    # of several files ("file:func, file:func", FILE empty).
     wt = os.path.join(os.path.dirname(MAIN), f"ror-wt-{name}")
-    st = src_states(os.path.join(wt, "src", file + ".cpp"), names)
-    base = src_states(os.path.join(MAIN, "src", file + ".cpp"), names)
-    nt = tries(wt, file)
+    items = [(n.split(":", 1)[0], n.split(":", 1)[1]) if ":" in n else (env.get("FILE", ""), n) for n in names]
+    files = sorted({f for f, _ in items})
+    st, base, nt = {}, {}, {}
+    for f in files:
+        fns = [fn for ff, fn in items if ff == f]
+        st.update({(f, k): v for k, v in src_states(os.path.join(wt, "src", f + ".cpp"), fns).items()})
+        base.update({(f, k): v for k, v in src_states(os.path.join(MAIN, "src", f + ".cpp"), fns).items()})
+        nt.update({(f, k): v for k, v in tries(wt, f).items()})
     # The function it is on: the newest scratch file of the batch (work.py's
     # build/work/<file>/<fn>*.cpp), else the last one its screen names.
-    now_on, newest = "", 0.0
-    for n in names:
+    now_on, newest = None, 0.0
+    for f, n in items:
         for suffix in (".cpp", ".trial.cpp"):
             try:
-                t = os.path.getmtime(os.path.join(wt, "build", "work", file, n + suffix))
+                t = os.path.getmtime(os.path.join(wt, "build", "work", f, n + suffix))
             except OSError:
                 continue
             if t > newest and t >= float(env.get("SENT", "0") or 0):
-                now_on, newest = n, t
+                now_on, newest = (f, n), t
     if not now_on:
         for line in reversed(tail):
-            hit = [n for n in names if n in line]
+            hit = [(f, n) for f, n in items if n in line]
             if hit:
                 now_on = hit[-1]
                 break
     pcts, done, near = [], 0, 0
     rows = []
-    for n in names:
-        b = best(wt, file, n)
+    multi = len(files) > 1
+    for f, n in items:
+        b = best(wt, f, n)
         pct = closeness(b) if b else None
-        k, lo = nt.get(n, (0, None))
-        sz = size(file, n)
+        k, lo = nt.get((f, n), (0, None))
+        sz = size(f, n)
         if pct is None and lo is not None and sz:
             pct = max(0, round(100 * (1 - lo / sz)))
-        if st[n] == "done":
+        if st[(f, n)] == "done":
             done += 1
             pct = 100
-            mark, what = col("✓", "green"), col("escrita", "green")
-        elif st[n] == "near" and base[n] != "near":
+            mark, what = col("\u2713", "green"), col("escrita", "green")
+        elif st[(f, n)] == "near" and base[(f, n)] != "near":
             near += 1
             mark, what = col("~", "yellow"), "guardada casi"
         elif pct == 100:
-            mark, what = col("✓", "green"), "coincide, sin guardar"
+            mark, what = col("\u2713", "green"), "coincide, sin guardar"
         elif pct is not None:
-            mark, what = col("·", "yellow"), "probando"
+            mark, what = col("\u00b7", "yellow"), "probando"
         else:
-            mark, what = col("·", "dim"), col("sin probar", "dim")
+            mark, what = col("\u00b7", "dim"), col("sin probar", "dim")
         pcts.append(pct or 0)
         if pct is None and k:
-            what = col("no compila todavía", "yellow")
-        cur = col("  ◀ ahora", "bold") if n == now_on and status == "busy" else ""
+            what = col("no compila todav\u00eda", "yellow")
+        cur = col("  \u25c0 ahora", "bold") if (f, n) == now_on and status == "busy" else ""
         pct_s = f"{mini(pct)} {pct:3d}%" if pct is not None else f"{mini(0)}   -"
-        rows.append(f"    {mark} {n:<22} {pct_s}  {what}" + (f", {k} prueba{'s' if k != 1 else ''}" if k else "") + cur)
-    avg = sum(pcts) / len(names)
-    f = round(WIDTH * avg / 100)
+        label = f"{f.split('/')[-1]} {n}" if multi else n
+        width = 34 if multi else 22
+        rows.append(f"    {mark} {label:<{width}} {pct_s}  {what}"
+                    + (f", {k} prueba{'s' if k != 1 else ''}" if k else "") + cur)
+    avg = sum(pcts) / len(items)
+    fw = round(WIDTH * avg / 100)
     mins = ""
     if env.get("SENT", "").isdigit():
         mins = f"  {(time.time() - int(env['SENT'])) / 60:.0f} min"
-    big = "█" * f + "░" * (WIDTH - f)
-    out.append(f"  {file}  {big} {avg:3.0f}%  "
-               f"{done}/{len(names)} escritas" + (f", {near} casi" if near else "") + mins)
+    big = "\u2588" * fw + "\u2591" * (WIDTH - fw)
+    where = f"{len(files)} archivos" if multi else files[0]
+    out.append(f"  {where}  {big} {avg:3.0f}%  "
+               f"{done}/{len(items)} escritas" + (f", {near} casi" if near else "") + mins)
     out.extend(rows)
     return out
 
