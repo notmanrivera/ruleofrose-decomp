@@ -296,6 +296,9 @@ def apply_output(name, fn, out_dir):
     if not func:
         return "no match", "score 0, but its function was not found"
     func = re.sub(r"^\s*(?:extern\s+)+", "", func.strip())
+    # register variables come back with PS2_REG expanded: put the macro back,
+    # or the PC compilers of tools/host_check.py refuse "$f0" and the merge stops
+    func = re.sub(r'\b(register[^;=]*\b[A-Za-z_]\w*)\s+(?:__asm__|asm)\("(\$[a-z0-9]+)"\)', r'\1 PS2_REG("\2")', func)
     block = work.nm_block((ROOT / "src" / f"{name}.cpp").read_text(encoding="utf8"), name, fn)
     # everything the attempt's block holds but its function: declarations,
     # structs, inline helpers (bSetYaw in unk/00166AD0), as they were
