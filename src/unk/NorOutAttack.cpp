@@ -354,7 +354,98 @@ extern "C" void NorOutCounter__vfunc_02(int arg0)
     Xiii_func_00166DA4(arg0, 0x64);
 }
 
+// NON_MATCHING: 148/169 differ, 21 relocs differ (size 0x2A4, game 0x2B4), 44 edits
+#ifdef NON_MATCHING
+struct CounterWorld { char pad[0x22090]; int pc; };
+extern CounterWorld counterWorld asm("D_007812C0");
+extern int D_007A3354;
+extern "C" int Counter_func_0016649C(int, int) asm("func_0016649C");
+extern "C" int Counter_func_001D10D0(int, int, int) asm("func_001D10D0");
+extern "C" int Counter_func_00118FEC__9MagSystem(int) asm("func_00118FEC__9MagSystem");
+extern "C" int Counter_func_00169F94(int, int, int, float) asm("func_00169F94");
+extern "C" int Counter_func_001694CC(int, int) asm("func_001694CC");
+extern "C" int Counter_func_001FAC60(int, int, int, int, int, int, int) asm("func_001FAC60");
+extern "C" int Counter_func_00119090__9MagSystem(int) asm("func_00119090__9MagSystem");
+extern "C" int Counter_func_001D19A8(int, int) asm("func_001D19A8");
+extern "C" int Counter_func_001D1410(int, int, int) asm("func_001D1410");
+inline float counterRange(int n) { unsigned int r = 0; if (n >= 17) r = n <= 38; return r; }
+extern "C" int NorOutCounter__vfunc_03(int arg0) {
+    float var_f1;
+    int temp_a0;
+    int temp_v0_2;
+    int temp_v1;
+    int var_a2;
+    register int var_s2 PS2_REG("$18");
+    int var_v0;
+    int var_v1;
+    unsigned int var_s1;
+    int temp_v0;
+    int temp_v1_2;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 4);
+    var_s2 = -1;
+    switch (temp_v1) {                              /* irregular */
+    case 0:
+        M2C_FIELD(arg0, int *, 0x38) = (int) (M2C_FIELD(arg0, int *, 0x38) + 1);
+        Counter_func_0016649C(M2C_FIELD(arg0, int *, 0xC), 0);
+        Counter_func_001D10D0((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x400);
+        var_f1 = counterRange(M2C_FIELD(arg0, int *, 0x38));
+        if (var_f1 != 0.0f) {
+            if ((M2C_FIELD(arg0, int *, 0x3C) == 0) && (Counter_func_00118FEC__9MagSystem((int) &D_006E9840) != 9)) {
+                var_a2 = 0;
+                if (counterWorld.pc != 0) {
+                    var_a2 = M2C_FIELD(counterWorld.pc, int *, 0x100);
+                }
+                if (Counter_func_00169F94(M2C_FIELD(arg0, unsigned int *, 0), 4, (unsigned int) var_a2, 65.0f) != 0) {
+                    temp_v0 = M2C_FIELD(arg0, int *, 0xC);
+                    int *hits = (int *)(temp_v0 + 0x23C);
+                    (*hits)++;
+                    Counter_func_001694CC(arg0, 0x50);
+                    M2C_FIELD(arg0, int *, 0x3C) = 1;
+                    Counter_func_001FAC60(0xBU, (int ) M2C_FIELD(arg0, unsigned int *, 0), 0, 0, 0x24, (unsigned int) var_a2, 0);
+                }
+            }
+            temp_v1_2 = M2C_FIELD(arg0, int *, 0xC);
+            if (((M2C_FIELD(temp_v1_2, int *, 0x218) == 0) || (M2C_FIELD(temp_v1_2, int *, 0x230) != 0)) && (M2C_FIELD(arg0, int *, 0x40) == 0) && (Counter_func_00119090__9MagSystem((int) &D_006E9840) != 0xA) && (Counter_func_00119090__9MagSystem((int) &D_006E9840) != 0xD)) {
+                var_s1 = 0;
+                if (D_007A3354 != 0) {
+                    var_s1 = M2C_FIELD(D_007A3354, unsigned int *, 0x100);
+                }
+                if (Counter_func_00169F94(M2C_FIELD(arg0, unsigned int *, 0), 4, var_s1, 65.0f) != 0) {
+                    Counter_func_001694CC(arg0, 0x50);
+                    M2C_FIELD(arg0, int *, 0x40) = 1;
+                    Counter_func_001FAC60(0xBU, (int ) M2C_FIELD(arg0, unsigned int *, 0), 0, 0, 0x24, var_s1, 0);
+                }
+            }
+        }
+        var_v0 = -1;
+        if (M2C_FIELD(arg0, int *, 0x38) == 0x26) {
+            M2C_FIELD(arg0, int *, 4) = 2;
+block_29:
+            var_v0 = var_s2;
+        }
+        return var_v0;
+    case 2:
+        M2C_FIELD(arg0, int *, 0x38) = (int) (M2C_FIELD(arg0, int *, 0x38) + 1);
+        Counter_func_0016649C(M2C_FIELD(arg0, int *, 0xC), 0);
+        Counter_func_001D10D0((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x400);
+        temp_v0_2 = Counter_func_001D19A8((int) &D_007812C0, M2C_FIELD(arg0, unsigned int *, 0));
+        if (temp_v0_2 != 0) {
+            M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x2C) = 1;
+            if (temp_v0_2 != 0) {
+                var_s2 = 8;
+                Counter_func_0016649C(M2C_FIELD(arg0, int *, 0xC), 1);
+                Counter_func_001D1410((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x400);
+            }
+        }
+        return var_s2;
+    default:
+        return -1;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", NorOutCounter__vfunc_03);
+#endif
 
 extern "C" void NorOutCounter__vfunc_04()
 {
