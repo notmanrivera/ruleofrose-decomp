@@ -1,5 +1,27 @@
 #include "ror.h"
 #include "include_asm.h"
+extern int cGlobalA asm("D_007A3D80");
+extern char cActors[] asm("D_006FBD80");
+extern char D_002F19E0[],D_002F19F0[],D_002F1A00[],D_002F1A10[];
+extern "C" int cHas(int,int) asm("func_001E7D7C");
+extern "C" int cLookup(int,unsigned int) asm("func_001D046C");
+extern "C" int cIndex(int,unsigned int) asm("func_001CBE38");
+extern "C" void cStop(int) asm("func_001DA07C");
+extern "C" void cPos(int,float*) asm("func_00166B74");
+extern "C" void cSub(float*,float*,float*) asm("func_0025B890");
+extern "C" float cAtan(float,float) asm("func_0026CB00");
+extern "C" float cYaw(int) asm("func_0010A650__8DogActor");
+extern "C" int cBone(int,const char*) asm("func_0022B3D8");
+struct cModel { char pad[0x94]; virtual void pad1(); virtual void pad2(); virtual void pad3(); virtual void pad4(); virtual void pad5(); virtual void pad6(); virtual void pad7(); virtual void pad8(); virtual void pad9(); virtual void pad10(); virtual void pad11(); virtual void pad12(); virtual void pad13(); virtual void pad14(); virtual void pad15(); virtual void pad16(); virtual void X__vfunc_136(float*,int); float *getBone(float*,const char*); };
+inline int cAdd(int p) { return p+0x2920; }
+inline int cActor(int n) { return cAdd((int)cActors+n*0x4d0); }
+inline float *cGetBone(const char *name,float *mat,cModel *model) {
+    if (!(*(int *)((char *)model+0x11c))) ror_assert(D_002F19F0,305,D_002F1A00);
+    if (!name) ror_assert(D_002F19F0,305,D_002F1A10);
+    model->X__vfunc_136(mat,cBone(*(int *)((char *)model+0x11c),name));
+    return mat+12;
+}
+inline void cCopy(void *d,const float *s) { ((float *)d)[0]=s[0]; ((float *)d)[1]=s[1]; ((float *)d)[2]=s[2]; }
 struct m2c_v200_18_i { char pad[512]; virtual void v1(); virtual void v2(); virtual int call(); };
 extern "C" int Xii_func_001682B0(int) asm("func_001682B0");
 extern "C" int Xii_func_0016834C(int) asm("func_0016834C");
@@ -113,7 +135,38 @@ INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001677D0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001679B4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00167A64);
+INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F19E0);
+INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F19F0);
+INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A00);
+INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A10);
+INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A18);
+INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A20);
+INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A28);
+INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A30);
+INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A38);
+INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A40);
+INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A48);
+INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A50);
+
+extern "C" int func_00167A64(int arg0,float *arg1,float *arg2) {
+    float origin[4], pos[4], mat[16];
+    if (!cHas((int)&cGlobalA,M2C_FIELD(M2C_FIELD(arg0,int *,8),int *,0x3d4)) ||
+        !cLookup((int)&D_007812C0,M2C_FIELD(arg0,unsigned int *,0x14))) {
+        cStop(M2C_FIELD(arg0,int *,8));
+        return 2;
+    }
+    cCopy(pos,cGetBone(D_002F19E0,mat,(cModel *)cActor(cIndex((int)&D_007812C0,M2C_FIELD(arg0,unsigned int *,0x14)))));
+    cPos(arg0,origin);
+    cSub(arg1,pos,origin);
+    float angle=cAtan(arg1[0],arg1[2]);
+    float yaw=cYaw(cActor(cIndex((int)&D_007812C0,M2C_FIELD(arg0,unsigned int *,0))));
+    angle=angle-yaw;
+    mat[1]=yaw;
+    if (angle < -3.14159265358979323846) angle += 6.28318530717958647692;
+    if (angle > 3.14159265358979323846) angle -= 6.28318530717958647692;
+    *arg2=angle;
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00167CA0);
 
@@ -153,37 +206,37 @@ extern "C" void func_00168478(int arg0)
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F19E0);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F19F0);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A00);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A10);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A18);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A20);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A28);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A30);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A38);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A40);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A48);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A50);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A58);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A60);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A68);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A70);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F1A78);
 
