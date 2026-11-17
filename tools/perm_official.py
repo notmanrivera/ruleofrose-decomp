@@ -263,29 +263,40 @@ def run(name, fn, minutes, jobs):
     zero = [p for p in outs if p.name.startswith("output-0-")]
     if not zero:
         return "no match", best
-    src = (zero[0] / "source.c").read_text(encoding="utf8", errors="replace")
+    status, why = apply_output(name, fn, zero[0])
+    return status, best + (f" ({why})" if why else "")
+
+
+def apply_output(name, fn, out_dir):
+    """A score-0 variant (out_dir/source.c) into work.py's scratch file:
+    the attempt's own declarations (its NON_MATCHING block's extern lines)
+    and the permuter's function, as extern "C"; checked by work.py, then
+    --done and a commit. ("MATCH", None) or ("no match", why)."""
+    src = (out_dir / "source.c").read_text(encoding="utf8", errors="replace")
     func = next((it for kind, it in top_items(src) if kind == "func"
                  and re.search(rf"\b{re.escape(fn)}\s*\(", it.split("{", 1)[0])), None)
     if not func:
-        return "no match", best + " (score 0, but its function was not found)"
-    # into work.py's scratch file: the attempt's declarations stay, the
-    # function is the permuter's, as extern "C"
+        return "no match", "score 0, but its function was not found"
+    func = re.sub(r"^\s*(?:extern\s+)+", "", func.strip())
+    block = work.nm_block((ROOT / "src" / f"{name}.cpp").read_text(encoding="utf8"), name, fn)
+    decls = [ln for ln in (block.group(1).split("\n") if block else [])
+             if ln.strip().startswith("extern") and ln.strip().endswith(";")]
     scratch = work.WORK / name / f"{fn}.cpp"
     subprocess.run([sys.executable, "tools/work.py", name, fn], cwd=ROOT, capture_output=True, text=True)
-    text = scratch.read_text(encoding="utf8")
-    head, body = text.split(work.FUNC, 1)
-    decls = "\n".join(ln for ln in body.split("\n") if ln.strip().startswith("extern") and ln.strip().endswith(";"))
-    scratch.write_text(head + work.FUNC + "\n" + decls + "\nextern \"C\" " + func.strip() + "\n",
+    head = scratch.read_text(encoding="utf8").split(work.FUNC, 1)[0]
+    scratch.write_text(head + work.FUNC + "\n" + "\n".join(decls) + "\nextern \"C\" " + func + "\n",
                        encoding="utf8", newline="\n")
     r = subprocess.run([sys.executable, "tools/work.py", name, fn], cwd=ROOT, capture_output=True, text=True)
     st = re.search(rf"^  0x[0-9A-F]+ {re.escape(fn)}\s+0x[0-9a-f]+\s+(.*)$", r.stdout, re.M)
     if not st or st.group(1).strip() != "MATCH":
-        return "no match", best + f" (score 0, but work.py says {st.group(1).strip() if st else 'it does not compile'})"
+        err = re.search(r"^\S+\.cpp:\d+: .*$", r.stdout + r.stderr, re.M)
+        return "no match", "score 0, but work.py says " + (st.group(1).strip() if st else
+                                                          "it does not compile: " + (err.group(0)[:120] if err else "?"))
     dn = subprocess.run([sys.executable, "tools/work.py", name, fn, "--done"], cwd=ROOT, capture_output=True, text=True)
     if dn.returncode:
-        return "no match", best + " (MATCH, but work.py --done refused it)"
+        return "no match", "MATCH, but work.py --done refused it"
     subprocess.run(["git", "commit", "-q", "-m", f"{name}: {fn} (permuter)", "--", f"src/{name}.cpp"], cwd=ROOT)
-    return "MATCH", best
+    return "MATCH", None
 
 
 def main():
@@ -299,6 +310,7 @@ def main():
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--merge", action="store_true", help="merge each MATCH right away (tools/merge_worker.sh)")
     ap.add_argument("--prepare", action="store_true", help="only make the directory (to look at base.c)")
+    ap.add_argument("--apply", action="store_true", help="take an earlier run's score-0 variant again")
     a = ap.parse_args()
     if not PERM.exists():
         sys.exit("git clone https://github.com/simonlindholm/decomp-permuter build/decomp-permuter")
@@ -318,6 +330,13 @@ def main():
         d, why = prepare(a.name, a.function)
         print(d or why)
         return
+    if a.apply:
+        zero = sorted((WORK / a.name / a.function / "out").glob("output-0-*"))
+        print(apply_output(a.name, a.function, zero[0]) if zero else "no score-0 output")
+        return
+    # work.py must compile through this worktree's server: without it the old
+    # compiler reads the Windows mount and dies ("init_c_lex")
+    subprocess.run([sys.executable, "tools/match.py", "--server", "start"], cwd=ROOT, capture_output=True)
     print(f"queue: {len(jobs)}", flush=True)
     for k, (off, name, fn, st) in enumerate(jobs, 1):
         t0 = time.time()
