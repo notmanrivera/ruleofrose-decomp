@@ -742,7 +742,111 @@ extern "C" void func_0017EBAC(int arg0, int arg1, int arg2, int arg3)
     }
 }
 
+// NON_MATCHING: 245/248 differ, 8 relocs differ (size 0x3E0, game 0x3D8), 117 edits
+#ifdef NON_MATCHING
+extern "C" void EC1C_clear(int) asm("func_0017EFF4");
+extern "C" void *EC1C_zero(void *, int, unsigned int) asm("memset");
+extern "C" int func_0017EC1C(int in0, int in1, int in2, int in3)
+{
+    int lists[128];
+    int counts[2];
+    register int arg0 PS2_REG("$19") = in0;
+    register int arg1 PS2_REG("$22") = in1;
+    register int arg2 PS2_REG("$20") = in2;
+    register int arg3 PS2_REG("$21") = in3;
+    register int *countPtr PS2_REG("$16") = counts;
+    register int result PS2_REG("$2") = Xiii_func_0017EA44(arg0, arg1);
+    if (result != 0) {
+        result = Xiii_func_0017EA44(arg0, arg2);
+        if (result != 0) {
+            if (arg1 == arg2) {
+                M2C_FIELD(arg3, int *, 0) = Xiii_func_0017EA44(arg0, arg2);
+                M2C_FIELD(arg3, int *, 0xFC) = 1;
+                return 1;
+            }
+            EC1C_zero(countPtr, 0, 8);
+            register int current PS2_REG("$18") = 0;
+            register int limit PS2_REG("$23") = M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0xC) + 1;
+            EC1C_clear(arg0);
+            register int node PS2_REG("$17") = Xiii_func_0017EA44(arg0, arg2);
+            M2C_FIELD(M2C_FIELD(node, int *, 0x34), int *, 0) |= 1;
+            M2C_FIELD(M2C_FIELD(node, int *, 0x34), int *, 4) = 0;
+            lists[0] = arg2;
+            countPtr[0] = 1;
+            do {
+                register int n PS2_REG("$30") = 0;
+                if (counts[current] > 0) {
+                    do {
+                        node = Xiii_func_0017EA44(arg0, lists[(current << 6) + n]);
+                        if (M2C_FIELD(node, int *, 0) != arg1 && M2C_FIELD(M2C_FIELD(node, int *, 0x34), int *, 4) < limit) {
+                            register int edge PS2_REG("$16") = 0;
+                            if (M2C_FIELD(node, int *, 0x2C) > 0) {
+                                do {
+                                    int other = Xiii_func_0017EA44(arg0, M2C_FIELD(M2C_FIELD(node, int *, 0x30) + edge * 4, int *, 0));
+                                    int state = M2C_FIELD(other, int *, 0x34);
+                                    if (!(M2C_FIELD(state, int *, 0) & 1) || M2C_FIELD(M2C_FIELD(node, int *, 0x34), int *, 4) + 1 < M2C_FIELD(state, int *, 4)) {
+                                        int i;
+                                        for (i = 0; i < counts[current]; i++) {
+                                            if (lists[(current << 6) + i] == M2C_FIELD(other, int *, 0)) break;
+                                        }
+                                        if (i >= counts[current]) {
+                                            M2C_FIELD(state, int *, 0) |= 1;
+                                            M2C_FIELD(M2C_FIELD(other, int *, 0x34), int *, 4) = M2C_FIELD(M2C_FIELD(node, int *, 0x34), int *, 4) + 1;
+                                            M2C_FIELD(M2C_FIELD(other, int *, 0x34), int *, 8) = M2C_FIELD(node, int *, 0);
+                                            int id = M2C_FIELD(other, int *, 0);
+                                            if (id == arg1) {
+                                                limit = M2C_FIELD(M2C_FIELD(other, int *, 0x34), int *, 4);
+                                                break;
+                                            } else {
+                                                current ^= 1;
+                                                for (i = 0; i < counts[current]; i++) {
+                                                    if (lists[(current << 6) + i] == id) break;
+                                                }
+                                                if (i == counts[current]) {
+                                                    lists[(current << 6) + i] = M2C_FIELD(other, int *, 0);
+                                                    counts[current] = i + 1;
+                                                }
+                                                current ^= 1;
+                                            }
+                                        }
+                                    }
+                                    edge++;
+                                } while (edge < M2C_FIELD(node, int *, 0x2C));
+                            }
+                        }
+                        n++;
+                    } while (n < counts[current]);
+                }
+                int previous = current;
+                current ^= 1;
+                counts[previous] = 0;
+            } while (counts[current] > 0);
+            result = 0;
+            if (M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0xC) >= limit) {
+                M2C_FIELD(arg3, int *, 0xFC) = 0;
+                int id = arg1;
+                for (;;) {
+                    node = Xiii_func_0017EA44(arg0, id);
+                    if (M2C_FIELD(node, int *, 0) == arg2) break;
+                    int *count = (int *)(arg3 + 0xFC);
+                    int oldCount = *count;
+                    M2C_FIELD(arg3 + oldCount * 4, int *, 0) = node;
+                    *count = oldCount + 1;
+                    id = M2C_FIELD(M2C_FIELD(node, int *, 0x34), int *, 8);
+                }
+                int *count = (int *)(arg3 + 0xFC);
+                int oldCount = *count;
+                M2C_FIELD(arg3 + oldCount * 4, int *, 0) = node;
+                *count = oldCount + 1;
+                result = 1;
+            }
+        }
+    }
+    return result;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017EC1C);
+#endif
 
 extern "C" void func_0017EFF4(int arg0)
 {
