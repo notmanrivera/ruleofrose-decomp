@@ -58,7 +58,58 @@ INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001672E8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_0016768C);
 
+// NON_MATCHING: 17/119 differ (size 0x1DC, game 0x1E4), 6 edits
+#ifdef NON_MATCHING
+#include "ror.h"
+inline int flag8(int p) { return (*(int *)((char *)p+0x3ec)) & 8; }
+inline int flag16(int p) { return (*(int *)((char *)p+0x3ec)) & 16; }
+inline int oneFlag(int a) { return *(int *)((char *)*(int *)((char *)a+12)+0x100); }
+inline int objGet(int p) { return *(int *)((char *)p+12); }
+inline int bigOffset(char *p) { return (int)(p+0x12540); }
+extern int D_002F1DE0[];
+extern char D_006E9840[];
+extern "C" void qDA228(int,int,unsigned int*) asm("func_001DA228");
+extern "C" int qCBEDC(int,unsigned int) asm("func_001CBEDC");
+extern "C" int qCBE38(int,unsigned int) asm("func_001CBE38");
+extern "C" void q33144(int,int,int,int,int,unsigned int,float) asm("func_00133144");
+extern "C" int func_001677D0(int arg0, int *arg1, int *arg2) {
+    unsigned int sp0, sp4;
+    int result;
+    register int *out1 PS2_REG("$20") = arg1;
+    register int *out2 PS2_REG("$19") = arg2;
+    register int flags PS2_REG("$4") = M2C_FIELD(arg0,int *,8);
+    int obj = M2C_FIELD(arg0,int *,12);
+    if (flag8(flags) && flag16(flags)) {
+        result = M2C_FIELD(obj,int *,0xfc);
+        *out1 = M2C_FIELD(obj,int *,0x120);
+        *out2 = M2C_FIELD(M2C_FIELD(arg0,int *,12),int *,0x124);
+    } else {
+        obj = objGet(arg0);
+        if (!flag8(flags) && !flag16(flags)) {
+            if (((m2c_v200_18_i*)obj)->call() == 0 ||
+                ((m2c_v200_18_i*)M2C_FIELD(arg0,int *,12))->call() == 2 ||
+                ((m2c_v200_18_i*)M2C_FIELD(arg0,int *,12))->call() == 1) {
+                int n = M2C_FIELD(M2C_FIELD(arg0,int *,12),unsigned char *,6);
+                n = n >= 3 ? 0 : n;
+                result = D_002F1DE0[n];
+                qDA228(M2C_FIELD(arg0,int *,8),0x67,&sp0);
+                if ((qCBEDC((int)&D_007812C0,sp0) ^ 0xa2e) == 0) {
+                    qDA228(M2C_FIELD(arg0,int *,8),0x67,&sp4);
+                    int sound = qCBE38((int)&D_007812C0,sp4);
+                    q33144(bigOffset(D_006E9840),sound,4,0,0x100,sp4,0.016666694f);
+                }
+            } else result = M2C_FIELD(M2C_FIELD(arg0,int *,12),int *,0xf4);
+            *out1 = M2C_FIELD(M2C_FIELD(arg0,int *,12),int *,0x118);
+            *out2 = M2C_FIELD(M2C_FIELD(arg0,int *,12),int *,0x11c);
+        } else result = oneFlag(arg0);
+    }
+    *out1 = -1;
+    *out2 = -1;
+    return result;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001677D0);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001679B4);
 
