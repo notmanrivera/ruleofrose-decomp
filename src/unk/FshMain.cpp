@@ -260,7 +260,48 @@ extern "C" void FshOutAppear__vfunc_02(int arg0)
 }
 
 
+// NON_MATCHING: 21/48 differ (size 0xC0, game 0xCC), 13 edits
+#ifdef NON_MATCHING
+extern "C" int Xiiii_func_001D23F8(int, int, int) asm("func_001D23F8");
+extern "C" int Xiiu_func_001D19A8(int, unsigned int) asm("func_001D19A8");
+// NON_MATCHING: 21/48 differ, 13 edits (size 0xC0, game 0xCC). The state-1 path
+// in the game keeps a dead second `beqz` on the check result and pre-loads the
+// return value into $2, which gcc here folds away.
+extern "C" int FshOutAppear__vfunc_03(int arg0)
+{
+    int state;
+    int ret;
+    int res;
+    int temp;
+
+    state = M2C_FIELD(arg0, int *, 4);
+    ret = -1;
+    switch (state) {
+    case 0:
+        Xiiii_func_001D23F8((int) &D_007812C0, M2C_FIELD(arg0, int *, 0), 0);
+        Xiiii_func_001680A0(arg0, 0x17, 0);
+        M2C_FIELD(arg0, int *, 4) = 1;
+        break;
+    case 1:
+        res = Xiiu_func_001D19A8((int) &D_007812C0, M2C_FIELD(arg0, int *, 0));
+        if (res != 0) {
+            M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x2C) = state;
+            if (res != 0) {
+                ret = 0x13;
+                M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0xC) = state;
+                temp = M2C_FIELD(arg0, int *, 8);
+                M2C_FIELD(temp, int *, 0x120) &= ~0x400;
+            }
+        }
+        break;
+    default:
+        return -1;
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutAppear__vfunc_03);
+#endif
 
 // NON_MATCHING: 2/46 differ, 2 edits
 #ifdef NON_MATCHING
