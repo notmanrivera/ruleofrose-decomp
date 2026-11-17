@@ -1,5 +1,25 @@
 #include "include_asm.h"
 #include "dog/doglightpool.h"
+struct Arg_Stay2 {
+    unsigned char pad00[0x10];
+    float *m_10;
+    int m_14;
+    float m_18;
+    float m_1C;
+};
+struct Obj_Stay2 {
+    unsigned char pad00[0x4B0];
+    float *m_4B0;
+    int m_4B4;
+    float m_4B8;
+    float m_4BC;
+    float m_4C0;
+    float m_4C4;
+    int m_4C8;
+    int m_4CC;
+    float m_4D0[4];
+    float m_4E0[4];
+};
 extern "C" int X_func_0016AD94(...) asm("func_0016AD94");
 struct ALIGNED(8) Stay02Vec { float x,y,z,w; };
 extern "C" void stay02Matrix(int, Stay02Vec *) asm("func_0016FDA0");
@@ -857,61 +877,33 @@ INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016CCB8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016CEBC);
 
-// NON_MATCHING: 7/45 differ, 2 edits
-#ifdef NON_MATCHING
-struct Arg_Stay2 {
-    unsigned char pad00[0x10];
-    float *m_10;
-    int m_14;
-    float m_18;
-    float m_1C;
-};
-
-struct Obj_Stay2 {
-    unsigned char pad00[0x4B0];
-    float *m_4B0;
-    int m_4B4;
-    float m_4B8;
-    float m_4BC;
-    float m_4C0;
-    float m_4C4;
-    int m_4C8;
-    int m_4CC;
-    float m_4D0[4];
-    float m_4E0[4];
-};
-
 extern "C" int X_Eff0__vfunc_02_Stay2(Obj_Stay2 *, Arg_Stay2 *) asm("Eff0__vfunc_02");
-
 extern "C" int EffBloodStay2__vfunc_02(Obj_Stay2 *arg0, Arg_Stay2 *arg1)
 {
-    if (!X_Eff0__vfunc_02_Stay2(arg0, arg1)) {
-        return 0;
-    }
-    float *v = arg1->m_10;
-    float z = 0.0f;
-    float one = 1.0f;
-    arg0->m_4B0 = v;
-    arg0->m_4B4 = arg1->m_14;
-    arg0->m_4B8 = arg1->m_18;
-    arg0->m_4BC = arg1->m_1C / 31.0f;
-    arg0->m_4C4 = z;
-    arg0->m_4C0 = z;
-    arg0->m_4D0[0] = v[0];
-    arg0->m_4D0[1] = v[1];
-    float vz = v[2];
-    arg0->m_4D0[3] = one;
-    arg0->m_4D0[2] = vz;
-    arg0->m_4E0[0] = z;
-    arg0->m_4C8 = 0;
-    arg0->m_4E0[3] = z;
-    arg0->m_4E0[2] = z;
-    arg0->m_4E0[1] = z;
-    return 1;
+  float new_var;
+  if (!X_Eff0__vfunc_02_Stay2(arg0, arg1))
+  {
+    return 0;
+  }
+  float *v = arg1->m_10;
+  float z = 0.0f;
+  float one = 1.0f;
+  arg0->m_4B0 = v;
+  arg0->m_4B4 = arg1->m_14;
+  arg0->m_4B8 = arg1->m_18;
+  arg0->m_4BC = arg1->m_1C / 31.0f;
+  arg0->m_4C4 = z;
+  arg0->m_4C0 = z;
+  arg0->m_4D0[0] = v[0];
+  arg0->m_4D0[1] = (new_var = v[1]);
+  float vz = v[2];
+  arg0->m_4D0[3] = one;
+  arg0->m_4E0[1] = (arg0->m_4E0[2] = (arg0->m_4E0[3] = z));
+  arg0->m_4D0[2] = vz;
+  arg0->m_4E0[0] = z;
+  arg0->m_4C8 = 0;
+  return 1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay2__vfunc_02);
-#endif
 
 // NON_MATCHING: 106/196 differ, 5 relocs differ (size 0x310, game 0x314), 19 edits
 #ifdef NON_MATCHING
