@@ -55,6 +55,20 @@ def include_line(name, fn):
     return f'INCLUDE_ASM("asm/nonmatchings/{name}", {fn});'
 
 
+def class_layout(fn):
+    """tools/layouts.py's struct for the class fn belongs to, when no header
+    in src/ declares that class yet; else None."""
+    import layouts
+    c = layouts.class_of(fn)
+    if not c:
+        return None
+    decl = re.compile(rf"^\s*(?:class|struct)\s+{re.escape(c)}\b[^;]*$", re.M)
+    if any(decl.search(h.read_text(errors="replace")) for h in (ROOT / "src").rglob("*.h")):
+        return None
+    lay = layouts.layouts().get(c)
+    return layouts.struct_text(c, lay) if lay and lay["fields"] else None
+
+
 def start(name, fn, path):
     src = ROOT / f"src/{name}.cpp"
     if not src.exists():
@@ -91,6 +105,12 @@ def start(name, fn, path):
                     "// with this function's names, offsets and constants is the best start.\n"
                     + "".join(f"// {ln}\n" for ln in body.split("\n")))
         print(f"twin: {twin[0]} {twin[1]} (its C++ is in the scratch file)")
+    lay = class_layout(fn)
+    if lay:
+        comment += ("//\n// No header declares this function's class yet. Its layout as its methods'\n"
+                    "// asm uses it (tools/layouts.py: offsets and widths are facts, types the\n"
+                    "// commonest access, names placeholders):\n"
+                    + "".join(f"// {ln}\n" for ln in lay.split("\n")))
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(f"// {name}, {fn}: m2c's draft\n{comment}\n{DECL}\n" + "".join(d + "\n" for d in pre)
                     + f"\n{FUNC}\n{text}", encoding="utf8", newline="\n")
