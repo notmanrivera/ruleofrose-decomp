@@ -400,6 +400,44 @@ def twin_sweeps():
     return out
 
 
+def perm_official():
+    """tools/perm_official.py's queue (log build/workers/perm-official.log):
+    decomp-permuter on the NON_MATCHING attempts."""
+    path = os.path.join(ST, "perm-official.log")
+    try:
+        lines = open(path, encoding="utf-8", errors="replace").read().splitlines()
+    except OSError:
+        return []
+    running = alive("perm_official", path, 25)
+    q = [ln for ln in lines if ln.startswith("queue: ")]
+    if q:
+        lines = lines[max(i for i, ln in enumerate(lines) if ln.startswith("queue: ")):]
+    ends = [re.match(r"^\[(\d+)/(\d+)\] (\S+ \S+): (MATCH|no match|skipped)(.*)$", ln) for ln in lines]
+    ends = [m for m in ends if m]
+    starts = [re.match(r"^\[(\d+)/(\d+)\] (\S+ \S+): start", ln) for ln in lines]
+    starts = [m for m in starts if m]
+    total = int(q[-1].split()[1]) if q else (int(starts[-1].group(2)) if starts else 0)
+    done = len(ends)
+    matches = [m.group(3) for m in ends if m.group(4) == "MATCH"]
+    skipped = sum(1 for m in ends if m.group(4) == "skipped")
+    out = [f"{col('decomp-permuter', 'bold')} " + (col("trabajando", "green") if running else col("parado", "yellow"))
+           + f"  (sin IA; log {os.path.relpath(path, MAIN)})"]
+    if not total:
+        return out
+    f = round(WIDTH * done / total)
+    big = "\u2588" * f + "\u2591" * (WIDTH - f)
+    out.append(f"  cola de 'casi'  {big} {done}/{total} probadas, "
+               + col(f"{len(matches)} exactas", "green" if matches else "dim")
+               + (f", {skipped} no se pudieron preparar" if skipped else ""))
+    if running and starts and (not ends or int(starts[-1].group(1)) > int(ends[-1].group(1))):
+        out.append(f"    \u25c0 ahora {starts[-1].group(3)}")
+    for m in ends[-3:]:
+        if m.group(4) != "skipped":
+            mark = col(chr(0x2713), "green") if m.group(4) == "MATCH" else col("\u00b7", "dim")
+            out.append(f"    {mark} {m.group(3)}: {m.group(4)}{m.group(5)}")
+    return out
+
+
 def render(reset=False):
     idle = terminals()
     out = []
@@ -408,7 +446,7 @@ def render(reset=False):
             out.extend(worker(fn[:-4], read_env(os.path.join(ST, fn)), idle))
             out.append("")
     pq = []
-    for part in (permuter(), auto_m2c(), twin_sweeps()):
+    for part in (perm_official(), permuter(), auto_m2c(), twin_sweeps()):
         if part:
             pq += ([""] if pq else []) + part
     if pq:
