@@ -309,8 +309,77 @@ def inlines(lines):
     return out
 
 
+LOWER = ("<<", ">>", "<", ">", "<=", ">=", "==", "!=", "&", "^", "|", "&&", "||", "?", ":")
+
+
+def spans(line):
+    """(start, end) of every expression in the line: each parenthesised
+    group's contents (split at its top-level commas) and what follows an
+    '=' or 'return'."""
+    out, stack = [], []
+    for i, c in enumerate(line):
+        if c in "([":
+            stack.append(i)
+        elif c in ")]" and stack:
+            o = stack.pop()
+            depth, start = 0, o + 1
+            for j in range(o + 1, i + 1):
+                ch = line[j]
+                if ch in "([":
+                    depth += 1
+                elif ch in ")]":
+                    depth -= 1
+                if (ch == "," and depth == 0) or j == i:
+                    out.append((start, j))
+                    start = j + 1
+    m = re.search(r"(?:[^=!<>+\-*/%&|^]=|\breturn)\s*(.+?);\s*$", line)
+    if m:
+        out.append((m.start(1), m.end(1)))
+    return out
+
+
+def term_swaps(lines):
+    """In any sum (or product) whose operators bind tightest at its top
+    level, two neighbouring '+' (or '*') terms in the other order:
+    'A + B + 4' -> 'B + A + 4'. Inside casts, calls and dereferences too
+    (func_0018C794: one addu's operand order)."""
+    out = []
+    for i in body(lines):
+        line = lines[i]
+        if line.lstrip().startswith(("//", "#")):
+            continue
+        for a, b in spans(line):
+            expr = line[a:b]
+            lead = len(expr) - len(expr.lstrip())
+            core = expr.strip()
+            ops = top_split(core)
+            if not ops or any(op in LOWER for _, _, op in ops):
+                continue
+            for kind, also in (("+", "-"), ("*", "/%")):
+                sel = [o for o in ops if o[2] == kind or o[2] in also]
+                if not sel or (kind == "*" and any(o[2] in "+-" for o in ops)):
+                    continue
+                if kind == "+" and len(sel) != len([o for o in ops if o[2] in "+-"]):
+                    continue
+                cuts = [0] + [x for o in sel for x in (o[0], o[1])] + [len(core)]
+                terms = [core[cuts[k]:cuts[k + 1]] for k in range(0, len(cuts), 2)]
+                signs = [kind] + [o[2] for o in sel]
+                for k in range(len(terms) - 1):
+                    if signs[k + 1] != kind or (k > 0 and signs[k] != kind):
+                        continue
+                    t = list(terms)
+                    t[k], t[k + 1] = t[k + 1], t[k]
+                    new_core = t[0] + "".join(f" {signs[n]} {t[n]}" for n in range(1, len(t)))
+                    if new_core == core:
+                        continue
+                    new = list(lines)
+                    new[i] = line[:a] + expr[:lead] + new_core + expr[lead + len(core):] + line[b:]
+                    out.append(new)
+    return out
+
+
 MUTATIONS = [swaps, commutes, compares, ands, signedness, invert_ifs, loops, temps, inlines,
-             decl_swaps, wide_commutes]
+             decl_swaps, wide_commutes, term_swaps]
 
 
 def split(work_text):
