@@ -134,7 +134,100 @@ INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_0015246C);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFB28);
 
+// NON_MATCHING: 81/126 differ, 18 relocs differ (size 0x1F8, game 0x204), 11 edits
+#ifdef NON_MATCHING
+extern "C" int Xii_func_001442DC(int) asm("func_001442DC");
+extern "C" int Xii_func_00144308(int) asm("func_00144308");
+extern "C" int Xii_func_0015195C(int) asm("func_0015195C");
+extern "C" int Xii_func_0015246C(int) asm("func_0015246C");
+extern "C" int Xii_func_00152748(int) asm("func_00152748");
+extern "C" int Xii_func_00152B24(int) asm("func_00152B24");
+extern "C" int Xii_func_00152BB4(int) asm("func_00152BB4");
+extern "C" int Xii_func_00152C60(int) asm("func_00152C60");
+extern "C" int Xii_func_00152CFC(int) asm("func_00152CFC");
+extern "C" int Xii_func_00152DA4(int) asm("func_00152DA4");
+extern "C" int Xii_func_00152E40(int) asm("func_00152E40");
+extern "C" int Xii_func_00152E90(int) asm("func_00152E90");
+extern "C" int Xii_func_00202F10(int) asm("func_00202F10");
+extern "C" int Xiiif_func_00167D88(int, int, float) asm("func_00167D88");
+extern "C" int Xiiiiiff_func_0017C340(int, int, int, int, float, float) asm("func_0017C340");
+extern "C" int Xiiui_func_001D10D0(int, unsigned int, int) asm("func_001D10D0");
+extern "C" int Xiiui_func_001D1410(int, unsigned int, int) asm("func_001D1410");
+extern int D_006FBD80;
+extern "C" int func_00152544(int arg0)
+{
+    struct { char pad0[16]; int sp10; int sp14; char pad18[8]; } stack;
+    register int minusOne PS2_REG("$16") = -1;
+    int var_v0;
+    unsigned int temp_s2;
+    unsigned int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, unsigned int *, 4);
+    if (temp_v1 == 3 || temp_v1 == 8) {
+        if (Xii_func_001442DC(M2C_FIELD(arg0, int *, 0)) != minusOne) {
+            Xii_func_00144308(1);
+            Xii_func_0015246C(arg0);
+            return -1;
+        }
+    }
+    switch (M2C_FIELD(arg0, unsigned int *, 4)) {
+        case 0:
+            if (M2C_FIELD(arg0, unsigned int *, 0x24) != 0) {
+                Xii_func_00202F10(M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1F0));
+                temp_s2 = M2C_FIELD(arg0, unsigned int *, 0x24);
+                if (temp_s2 != 1) {
+                    return 9;
+                }
+                Xiiif_func_00167D88((int) arg0, (int)&stack, 63.0f);
+                Xiiiiiff_func_0017C340((int) ((char *)&D_006FBD80 + 0x8542C), (int) (int)&stack, (int)&stack.sp10, 0, 40.0f, 0.0f);
+                if (stack.sp14 == 0) {
+                    Xii_func_0015195C(arg0);
+                } else {
+                    Xiii_func_001694CC(arg0, 0x54);
+                    Xiii_func_001694CC(arg0, 0x61);
+                    Xiiui_func_001D1410((int)&D_007812C0, (unsigned int) M2C_FIELD(arg0, int *, 0), 0x40);
+                    Xiiui_func_001D10D0((int)&D_007812C0, (unsigned int) M2C_FIELD(arg0, int *, 0), 0x10000000);
+                    Xiiui_func_001D10D0((int)&D_007812C0, (unsigned int) M2C_FIELD(arg0, int *, 0), 0x04000000);
+                    Xiiii_func_001680A0(arg0, 0x21, 0);
+                    M2C_FIELD(arg0, int *, 0x48) = 0;
+                    M2C_FIELD(arg0, unsigned int *, 4) = temp_s2;
+                }
+block_24:
+                
+                return -1;
+            }
+            
+            return -1;
+        case 1:
+            Xii_func_00152748(arg0);
+            goto block_24;
+        case 2:
+            Xii_func_00152B24(arg0);
+            goto block_24;
+        case 3:
+            Xii_func_00152BB4(arg0);
+            goto block_24;
+        case 8:
+            Xii_func_00152E90(arg0);
+            goto block_24;
+        case 4:
+            Xii_func_00152C60(arg0);
+            goto block_24;
+        case 5:
+            Xii_func_00152CFC(arg0);
+            goto block_24;
+        case 6:
+            Xii_func_00152DA4(arg0);
+            goto block_24;
+        case 7:
+            Xii_func_00152E40(arg0);
+            goto block_24;
+        }
+    return -1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_00152544);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_00152748);
 
