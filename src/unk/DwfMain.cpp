@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xi_func_00166198() asm("func_00166198");
+extern "C" int Xii_func_00166198(int) asm("func_00166198");
+extern "C" int Xii_func_00166198(int) asm("func_00166198");
 extern "C" int Xi_func_00166128() asm("func_00166128");
 extern "C" int Xii_func_00166128(int) asm("func_00166128");
 extern "C" int Xii_func_00166128(int) asm("func_00166128");
@@ -732,7 +735,28 @@ INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D890);
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D948);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015DA00);
+extern "C" int func_0015DA00(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
+    int var_a0;
+
+    temp_v0 = Xiii_func_001696FC(M2C_FIELD(arg0, int *, 0x1C), 21);
+    if (temp_v0 == 0xB && M2C_FIELD(arg0, int *, 0x26C) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xC && M2C_FIELD(arg0, int *, 0x270) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xE) {
+        var_a0 = 0;
+        temp_v1 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC);
+        if (temp_v1 & 8) {
+            var_a0 = 1;
+            if (!(temp_v1 & 0x10)) {
+                var_a0 = 0;
+            }
+        }
+    } else var_a0 = 0;
+    if (var_a0) return 0;
+    return Xii_func_00166198((int) arg0);
+}
 
 // NON_MATCHING: 158/159 differ, 10 relocs differ (size 0x27C, game 0x2CC), 103 edits
 #ifdef NON_MATCHING
