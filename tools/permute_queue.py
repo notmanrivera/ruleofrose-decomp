@@ -95,6 +95,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--minutes", type=float, default=10, help="per function")
     ap.add_argument("--max-off", type=int, default=8, help="only attempts this close")
+    ap.add_argument("--jobs", type=int, default=4, help="compiles at once (permute.py --jobs)")
     ap.add_argument("--merge", action="store_true", help="merge each MATCH right away")
     ap.add_argument("--list", action="store_true", help="only list the queue")
     a = ap.parse_args()
@@ -122,7 +123,7 @@ def main():
         if work.score(st.group(1).strip()) > a.max_off:
             print(f"  {st.group(1).strip()}: further off than --max-off; next")
             continue
-        subprocess.run([py, "tools/permute.py", name, fn, "--minutes", str(a.minutes)], cwd=ROOT)
+        subprocess.run([py, "tools/permute.py", name, fn, "--minutes", str(a.minutes), "--jobs", str(a.jobs)], cwd=ROOT)
         LOG.parent.mkdir(parents=True, exist_ok=True)
         with open(LOG, "a") as log:
             log.write(f"{name} {fn} {a.minutes}\n")
