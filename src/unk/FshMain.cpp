@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_0016968C(int, int) asm("func_0016968C");
 extern "C" int Xii_func_0016A6B4(int) asm("func_0016A6B4");
 extern "C" int Xiii_func_00165280(int, int) asm("func_00165280");
 extern "C" int Xiiif_func_00169A98(int, int, float) asm("func_00169A98");
@@ -79,7 +80,56 @@ INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshMain__vfunc_04);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/FshMain", D_002F0AF0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshMain__vfunc_05);
+extern "C" void FshMain__vfunc_05(int arg0)
+{
+    int temp_a1;
+    int temp_v1;
+    int var_v1;
+
+    M2C_FIELD(arg0, int *, 0x40) = 0;
+    temp_v1 = M2C_FIELD(arg0, int *, 0x30);
+    if (temp_v1 & 2) {
+        M2C_FIELD(arg0, int *, 0x3C) = 4;
+        M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = 4;
+        M2C_FIELD(arg0, int *, 0x40) = 1;
+        M2C_FIELD(arg0, int *, 0x30) = 0;
+    } else if ((temp_a1 = M2C_FIELD(arg0, int *, 0x24)) != -1) {
+        M2C_FIELD(arg0, int *, 0x30) = 0;
+        var_v1 = Xiii_func_0016968C(M2C_FIELD(arg0, int *, 0x1C), temp_a1);
+        switch (var_v1) {
+        case 0:
+        case 1:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+            break;
+        case 2:
+            if (M2C_FIELD(arg0, int *, 0xC) != 0) {
+                var_v1 = Xiii_func_0016968C(M2C_FIELD(arg0, int *, 0x1C), 0x14);
+            }
+            break;
+        }
+        M2C_FIELD(arg0, signed char *, 0x258) = 0;
+        M2C_FIELD(arg0, signed char *, 0x259) = 0;
+        if (var_v1 != 0) {
+            M2C_FIELD(arg0, int *, 0x3C) = var_v1;
+            M2C_FIELD(arg0, int *, 0x40) = 1;
+        } else {
+            M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = (int) M2C_FIELD(arg0, int *, 0x3C);
+        }
+    } else if (temp_v1 & 1) {
+        M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = (int) M2C_FIELD(arg0, int *, 0x3C);
+        M2C_FIELD(arg0, int *, 0x40) = 1;
+    }
+    M2C_FIELD(arg0, int *, 0x30) = 0;
+}
 
 extern "C" void FshMain__vfunc_06(int arg0)
 {
