@@ -1,5 +1,8 @@
 #include "include_asm.h"
 #include "game/gamman.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiiii_memset(int, int, int) asm("memset");
+extern "C" int Xiiiiiii_alloc__9BedMemoryiPCciii(int, int, int, int, int, int) asm("alloc__9BedMemoryiPCciii");
 struct StatElem16_5BC8 {
     int m_unk00;
     int m_pad[3];
@@ -662,8 +665,6 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamstat", D_002FC3E8);
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamstat", D_002FC3F8);
 
-// NON_MATCHING: func_001D84C8 itself is MATCH (0xd4), blocked on .rodata alignment of D_002FC418 (.align 3 before D_002FC418)
-#ifdef NON_MATCHING
 extern "C" void *X_alloc__9BedMemoryiPCciii_p(void *, int, const char *, int, int, int) asm("alloc__9BedMemoryiPCciii");
 extern "C" void func_001D84C8(void *arg0, int arg1, int arg2)
 {
@@ -677,8 +678,5 @@ extern "C" void func_001D84C8(void *arg0, int arg1, int arg2)
     *(int *)((char *)arg0 + 0x14) = 0;
     *(int *)((char *)arg0 + 0x10) = 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D84C8);
-#endif
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamstat", D_002FC418);

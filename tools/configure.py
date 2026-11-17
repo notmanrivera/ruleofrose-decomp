@@ -312,6 +312,30 @@ def write_missing_rodata():
             print(f"wrote asm/nonmatchings/{name}/{sym}.s (splat left it out)")
 
 
+def align_manual():
+    """config/rodata_align_manual.tsv: data symbols whose asm piece needs an
+    .align that splat does not write (symbol, power of two, reason). In the
+    all-asm build the bytes before it already pad to that boundary, so the
+    .align changes nothing there; it matters once the data before it comes
+    from compiled C++."""
+    path = ROOT / "config/rodata_align_manual.tsv"
+    if not path.exists():
+        return
+    n = 0
+    for line in path.read_text().splitlines():
+        if not line.strip() or line.startswith("#"):
+            continue
+        sym, power = line.split("\t")[:2]
+        for f in (ROOT / "asm/nonmatchings").glob(f"**/{sym}.s"):
+            text = f.read_text(errors="replace")
+            new = re.sub(rf"^(?:\.align \d+\n)?(nonmatching {re.escape(sym)}\n)", rf".align {power}\n\1",
+                         text, count=1, flags=re.M)
+            if new != text:
+                f.write_text(new)
+                n += 1
+    print(f"manual .align in {n} asm files")
+
+
 def align_jump_tables():
     """ee-gcc 2.96 aligns every jump table to 16 (all 267 of the game's are
     at multiples of 16); splat writes them with .align 3. Once a function
@@ -430,6 +454,7 @@ def main():
         sh(["splat", "split", str(CONFIG)])
         write_missing_rodata()
         align_jump_tables()
+        align_manual()
         for name in a.new:
             # splat writes absolute paths; the assembler searches from the repo root
             src = ROOT / "src" / f"{name}.cpp"

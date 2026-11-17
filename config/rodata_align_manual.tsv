@@ -1,0 +1,2 @@
+# symbol	.align (power of two)	reason
+D_002FC418	3	game/gamstat's last 8 bytes, a pointer to member function (0xFFFF0000, get_o_oid__7ObjStatPv): ee-gcc 2.96 aligns 8-byte data to 8, and the game has 7 bytes of padding before it after "game/gamstat.cpp" (0x2FC400-0x2FC411). Without it func_001D84C8 (MATCH) puts it 4 bytes early.
