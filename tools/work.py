@@ -175,6 +175,42 @@ def score(status):
     return max(n, 1)
 
 
+FULL = False                           # --full: every instruction, not only the differences
+CONTEXT, MAX_LINES = 2, 120
+
+
+def compact(lines):
+    """The comparison as a worker needs it: the status line, relocation
+    notes, and the differing rows ("*") with CONTEXT rows around them; runs
+    of equal rows become one "... N equal" line, and past MAX_LINES the rest
+    is counted, not shown (work.py --full shows everything). A 300-
+    instruction function with two differences is ~15 lines, not 300."""
+    if FULL or len(lines) <= 1:
+        return lines
+    head, rows = lines[:1], lines[1:]
+    diff = [i for i, ln in enumerate(rows) if ln.lstrip().startswith("*") or "reloc" in ln]
+    if not diff:
+        return lines
+    keep = set()
+    for i in diff:
+        keep.update(range(max(0, i - CONTEXT), min(len(rows), i + CONTEXT + 1)))
+    out, skipped = list(head), 0
+    for i, ln in enumerate(rows):
+        if i in keep:
+            if skipped:
+                out.append(f"      ... {skipped} equal")
+                skipped = 0
+            out.append(ln)
+        else:
+            skipped += 1
+    if skipped:
+        out.append(f"      ... {skipped} equal")
+    if len(out) > MAX_LINES:
+        rest = sum(1 for ln in out[MAX_LINES:] if ln.lstrip().startswith("*"))
+        out = out[:MAX_LINES] + [f"      ... and {rest} more differing rows (work.py --full shows all)"]
+    return out
+
+
 def check(name, fn, path, quiet=False):
     """Print the function's comparison; return whether it and the object match."""
     trial = WORK / name / f"{fn}.trial.cpp"
@@ -194,7 +230,7 @@ def check(name, fn, path, quiet=False):
                 good = status.endswith("MATCH")
         if on:
             mine.append(line)
-    print("\n".join(mine[:1] if good or quiet else mine))
+    print("\n".join(mine[:1] if good or quiet else compact(mine)))
     if status is not None:                # compiled: log it, and is it the best one yet?
         # tools/orca/next_batch.sh counts a function checked twice or more and
         # still asm as skipped (a log apart from the scratch files, which
@@ -253,6 +289,7 @@ def main():
     ap.add_argument("name", help="file as in config/splits.tsv, e.g. mag/maglifepc")
     ap.add_argument("function")
     ap.add_argument("--watch", action="store_true", help="check again whenever the scratch file is saved")
+    ap.add_argument("--full", action="store_true", help="show every instruction of the comparison, not only the differences")
     ap.add_argument("--done", action="store_true", help="write the function into src/ if the object matches")
     ap.add_argument("--keep", action="store_true",
                     help="giving up: write the best version tried into src/ under #ifdef NON_MATCHING")
@@ -266,6 +303,8 @@ def main():
         print("compile server down (tools/match.py --server start): each check takes a minute on Windows")
     if not path.exists():
         start(name, a.function, path)
+    global FULL
+    FULL = a.full
     good, ok = check(name, a.function, path)
     if a.done:
         if not (good and ok):
