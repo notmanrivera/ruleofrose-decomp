@@ -407,43 +407,44 @@ extern "C" void FshOutAtk__vfunc_04()
 }
 
 
-// NON_MATCHING: 3/77 differ, 3 edits
-#ifdef NON_MATCHING
 extern "C" int Xi_func_001442A4() asm("func_001442A4");
 extern "C" int Xii_func_00118FEC__9MagSystem(int) asm("func_00118FEC__9MagSystem");
 extern "C" int Xiiii_func_00157230(int, int, int) asm("func_00157230");
 extern "C" int Xiuiiiiui_func_001FAC60(unsigned int, int, int, int, int, unsigned int, int) asm("func_001FAC60");
 extern "C" void func_001570FC(int arg0)
 {
-    int var_a2;
-    int var_s1;
-
-    if ((Xii_func_00118FEC__9MagSystem((int) (int)&D_006E9840) != 9) && (M2C_FIELD(arg0, int *, 0x54) < 2)) {
-        var_a2 = 0;
-        if ((*(int *)&D_007A3350) != 0) {
-            var_a2 = M2C_FIELD((*(int *)&D_007A3350), int *, 0x100);
-        }
-        if (Xiiii_func_00157230(arg0, 0, var_a2) != 0) {
-            M2C_FIELD(arg0, int *, 0x54) = (int) (M2C_FIELD(arg0, int *, 0x54) + 1);
-            M2C_FIELD(arg0, int *, 0x2C) = Xiii_func_001694CC(arg0, 0);
-            Xiuiiiiui_func_001FAC60(0xBU, (int) M2C_FIELD(arg0, int *, 0), 0, 0, 0x17, (unsigned int) var_a2, 0);
-        }
+  int var_a2;
+  int var_s1;
+  if ((Xii_func_00118FEC__9MagSystem((int) ((int) (&D_006E9840))) != 9) && ((*((int *) (((char *) arg0) + 0x54))) < 2))
+  {
+    var_a2 = 0;
+    if ((*((int *) (&D_007A3350))) != 0)
+    {
+      var_a2 = *((int *) (((char *) (*((int *) (&D_007A3350)))) + 0x100));
     }
-    if ((Xi_func_001442A4() == 0) && (M2C_FIELD(arg0, int *, 0x58) < 2)) {
-        var_s1 = 0;
-        if ((*(int *)&D_007A3354) != 0) {
-            var_s1 = M2C_FIELD((*(int *)&D_007A3354), int *, 0x100);
-        }
-        if (Xiiii_func_00157230(arg0, 1, var_s1) != 0) {
-            M2C_FIELD(arg0, int *, 0x58) = (int) (M2C_FIELD(arg0, int *, 0x58) + 1);
-            M2C_FIELD(arg0, int *, 0x2C) = Xiii_func_001694CC(arg0, 0);
-            Xiuiiiiui_func_001FAC60(0xBU, (int) M2C_FIELD(arg0, int *, 0), 0, 0, 0x17, (unsigned int) var_s1, 0);
-        }
+    var_s1 = var_a2;
+    if (Xiiii_func_00157230(arg0, 0, var_s1) != 0)
+    {
+      *((int *) (((char *) arg0) + 0x54)) = (int) ((*((int *) (((char *) arg0) + 0x54))) + 1);
+      *((int *) (((char *) arg0) + 0x2C)) = Xiii_func_001694CC(arg0, 0);
+      Xiuiiiiui_func_001FAC60(0xBU, (int) (*((int *) (((char *) arg0) + 0))), 0, 0, 0x17, (unsigned int) var_s1, 0);
     }
+  }
+  if ((Xi_func_001442A4() == 0) && ((*((int *) (((char *) arg0) + 0x58))) < 2))
+  {
+    var_s1 = 0;
+    if ((*((int *) (&D_007A3354))) != 0)
+    {
+      var_s1 = *((int *) (((char *) (*((int *) (&D_007A3354)))) + 0x100));
+    }
+    if (Xiiii_func_00157230(arg0, 1, var_s1) != 0)
+    {
+      *((int *) (((char *) arg0) + 0x58)) = (int) ((*((int *) (((char *) arg0) + 0x58))) + 1);
+      *((int *) (((char *) arg0) + 0x2C)) = Xiii_func_001694CC(arg0, 0);
+      Xiuiiiiui_func_001FAC60(0xBU, (int) (*((int *) (((char *) arg0) + 0))), 0, 0, 0x17, (unsigned int) var_s1, 0);
+    }
+  }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/FshMain", func_001570FC);
-#endif
 
 INCLUDE_RODATA("asm/nonmatchings/unk/FshMain", D_002F0B78);
 
