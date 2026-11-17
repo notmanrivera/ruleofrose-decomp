@@ -275,6 +275,19 @@ def worker(name, env, idle):
     return out
 
 
+def alive(word, log, minutes=15):
+    """Whether a background process runs: by `ps` where there is one (Git
+    Bash), else by its log having changed in the last minutes (the Orca tab
+    runs in PowerShell, without ps)."""
+    ps = run(["ps", "-ef"])
+    if ps:
+        return word in ps
+    try:
+        return time.time() - os.path.getmtime(log) < minutes * 60
+    except OSError:
+        return False
+
+
 def permuter():
     """The permuter queue (tools/permute_queue.py, log build/workers/perm-loop.log):
     its bar, the function it is on, that one's best so far, and its matches."""
@@ -283,9 +296,9 @@ def permuter():
         lines = open(path, encoding="utf-8", errors="replace").read().splitlines()
     except OSError:
         return []
-    running = any("permute_queue" in ln for ln in run(["ps", "-ef"]).splitlines())
+    running = alive("permute_queue", path)
     m = re.search(r"--minutes (\S+)", run(["ps", "-ef"]))
-    per = float(m.group(1)) if m else None
+    per = float(m.group(1)) if m else 8.0
     queue = [ln for ln in lines if re.match(r"^\s*\d+ off\s+\S+ \S+", ln)]
     started = [i for i, ln in enumerate(lines) if ln.startswith("== ")]
     matches = [ln.split("MATCH committed:", 1)[1].strip() for ln in lines if "MATCH committed:" in ln]
@@ -331,7 +344,7 @@ def auto_m2c():
         lines = open(path, encoding="utf-8", errors="replace").read().splitlines()
     except OSError:
         return []
-    running = "auto_m2c" in run(["ps", "-ef"])
+    running = alive("auto_m2c", path, 30)
     out = [f"{col('auto_m2c', 'bold')} " + (col("trabajando", "green") if running else col("parado", "yellow"))
            + f"  (sin IA; log {os.path.relpath(path, MAIN)})"]
     passes = [ln for ln in lines if ln.startswith("signatures, pass")]
