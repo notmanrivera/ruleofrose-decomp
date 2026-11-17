@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0017E9D0(int) asm("func_0017E9D0");
+extern "C" int Xiiii_alloc__9BedMemoryii(int, int, int) asm("alloc__9BedMemoryii");
+extern "C" int Xiiii_memcpy(int, int, int) asm("memcpy");
+extern "C" int Xiiii_memset(int, int, int) asm("memset");
 extern "C" int Xiii_free__9BedMemoryPv(int, int) asm("free__9BedMemoryPv");
 extern int D_006E9800;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -149,7 +153,111 @@ INCLUDE_RODATA("asm/nonmatchings/unk/WrdSrv", D_002F3118);
 
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017E5C0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017E798);
+extern "C" int func_0017E798(int arg0, int arg1, int arg2)
+{
+    int temp_a1_2;
+    int temp_v0_3;
+    int temp_v0_4;
+    int temp_v0_5;
+    int temp_v0_6;
+    int temp_v1;
+    int temp_v1_8;
+    register int var_a3 PS2_REG("$7");
+
+
+    unsigned short temp_v1_2;
+    int temp_a1;
+    int temp_a2;
+    int baseFirst;
+    int baseSecond;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v1_3;
+    int temp_v1_4;
+    int temp_v1_5;
+    int temp_v1_6;
+    int temp_v1_7;
+    int var_a0;
+
+
+    Xii_func_0017E9D0(arg0);
+    temp_v0 = Xiiii_alloc__9BedMemoryii((int) (int)&D_006E9800, M2C_FIELD(arg1, int *, 0xC) * 0x10, -1);
+    M2C_FIELD(arg0, int *, 0x10) = temp_v0;
+    Xiiii_memset(temp_v0, 0, M2C_FIELD(arg1, int *, 0xC) * 0x10);
+    if (arg2 != 0) {
+        temp_v0_2 = Xiiii_alloc__9BedMemoryii((int) (int)&D_006E9800, M2C_FIELD(arg1, int *, 4), -1);
+        Xiiii_memcpy(temp_v0_2, arg1, M2C_FIELD(arg1, int *, 4));
+        M2C_FIELD(arg0, int *, 4) = temp_v0_2;
+        M2C_FIELD(arg0, int *, 0) = (int) (M2C_FIELD(arg0, int *, 0) | 2);
+    } else {
+        M2C_FIELD(arg0, int *, 4) = arg1;
+    }
+    temp_a2 = M2C_FIELD(arg0, int *, 4);
+    temp_a1 = temp_a2 + 0x10;
+    M2C_FIELD(arg0, int *, 8) = temp_a1;
+    temp_v1 = M2C_FIELD(temp_a2, int *, 8);
+    temp_v0_3 = temp_v1 + 3;
+    M2C_FIELD(arg0, int *, 0xC) = (int) (temp_a1 + ((temp_v1 + 3) / 4 * 0x10));
+    temp_v1_2 = M2C_FIELD(temp_a2, unsigned short *, 2);
+    if (temp_v1_2 & 1 & 0xFFFF) {
+        M2C_FIELD(temp_a2, unsigned short *, 2) = (unsigned short) (temp_v1_2 & 0xFFFE);
+        var_a3 = 0;
+        if (M2C_FIELD((baseFirst = M2C_FIELD(arg0, int *, 4)), int *, 8) > 0) {
+            do {
+                temp_v0_4 = var_a3 * 4;
+                var_a3 += 1;
+                temp_a1_2 = temp_v0_4 + M2C_FIELD(arg0, int *, 8);
+                temp_v0_5 = (*(int *)(temp_a1_2));
+                if (temp_v0_5 != 0) {
+                    (*(int *)(temp_a1_2)) = temp_v0_5 + baseFirst;
+                }
+            } while (var_a3 < M2C_FIELD((baseFirst = M2C_FIELD(arg0, int *, 4)), int *, 8));
+        }
+        var_a3 = 0;
+        var_a0 = M2C_FIELD(arg0, int *, 0xC);
+        if (M2C_FIELD((baseSecond = M2C_FIELD(arg0, int *, 4)), int *, 0xC) > 0) {
+            do {
+                temp_v0_6 = M2C_FIELD(var_a0, int *, 4);
+                if (temp_v0_6 != 0) {
+                    M2C_FIELD(var_a0, int *, 4) = (int) (temp_v0_6 + baseSecond);
+                }
+                temp_v1_3 = M2C_FIELD(var_a0, int *, 8);
+                if (temp_v1_3 != 0) {
+                    M2C_FIELD(var_a0, int *, 8) = (int) (temp_v1_3 + M2C_FIELD(arg0, int *, 4));
+                }
+                temp_v1_4 = M2C_FIELD(var_a0, int *, 0xC);
+                if (temp_v1_4 != 0) {
+                    M2C_FIELD(var_a0, int *, 0xC) = (int) (temp_v1_4 + M2C_FIELD(arg0, int *, 4));
+                }
+                temp_v1_5 = M2C_FIELD(var_a0, int *, 0x10);
+                if (temp_v1_5 != 0) {
+                    M2C_FIELD(var_a0, int *, 0x10) = (int) (temp_v1_5 + M2C_FIELD(arg0, int *, 4));
+                }
+                temp_v1_6 = M2C_FIELD(var_a0, int *, 0x14);
+                if (temp_v1_6 != 0) {
+                    M2C_FIELD(var_a0, int *, 0x14) = (int) (temp_v1_6 + M2C_FIELD(arg0, int *, 4));
+                }
+                temp_v1_7 = M2C_FIELD(var_a0, int *, 0x30);
+                if (temp_v1_7 != 0) {
+                    M2C_FIELD(var_a0, int *, 0x30) = (int) (temp_v1_7 + M2C_FIELD(arg0, int *, 4));
+                }
+                var_a3 += 1;
+                var_a0 += 0x40;
+            } while (var_a3 < M2C_FIELD((baseSecond = M2C_FIELD(arg0, int *, 4)), int *, 0xC));
+        }
+    }
+    var_a3 = 0;
+    var_a0 = M2C_FIELD(arg0, int *, 0xC);
+    if (M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0xC) > 0) {
+        do {
+            temp_v1_8 = var_a3 * 0x10;
+            var_a3 += 1;
+            M2C_FIELD(var_a0, int *, 0x34) = (int) (M2C_FIELD(arg0, int *, 0x10) + temp_v1_8);
+            var_a0 += 0x40;
+        } while (var_a3 < M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0xC));
+    }
+    return 1;
+}
 
 extern "C" void func_0017E9D0(int arg0)
 {
