@@ -150,3 +150,10 @@ if [ -n "$DEFER" ] && [ -n "$COMMITS" ]; then
   ) </dev/null >/dev/null 2>&1 &
   echo "$NAME pid $! since $(date '+%F %T') (deferred build)" > "$L/owner"
 fi
+
+# New twins: a merged function may be the twin of pending ones, which
+# tools/orca/twin_sweep.sh fills with no model (in the background; not
+# after its own merges).
+if [ -n "$COMMITS" ] && [ "$NAME" != twin ] && [ -d "$(dirname "$MAIN")/ror-wt-twin" ]; then
+  nohup sh tools/orca/twin_sweep.sh </dev/null >/dev/null 2>&1 &
+fi

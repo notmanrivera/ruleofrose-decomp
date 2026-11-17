@@ -367,6 +367,30 @@ def auto_m2c():
     return out
 
 
+def twin_sweeps():
+    """tools/orca/twin_sweep.sh (log build/workers/twin-sweep.log): twins
+    filled with no model after each merge."""
+    path = os.path.join(ST, "twin-sweep.log")
+    try:
+        lines = open(path, encoding="utf-8", errors="replace").read().splitlines()
+    except OSError:
+        return []
+    running = os.path.isdir(os.path.join(ST, "twin.lock"))
+    sweeps = [i for i, ln in enumerate(lines) if ln.startswith("== ") and ln.endswith(" sweep")]
+    total = sum(1 for ln in lines if ln.endswith("MATCH, committed"))
+    out = [f"{col('gemelas', 'bold')} " + (col("pasando", "green") if running else col("en espera", "dim"))
+           + f"  (sin IA, tras cada fusi\u00f3n; log {os.path.relpath(path, MAIN)})"]
+    if sweeps:
+        last = lines[sweeps[-1]:]
+        res = next((ln for ln in reversed(last) if re.match(r"^\d+ of \d+ twins matched", ln)), None)
+        when = lines[sweeps[-1]][3:-6]
+        out.append(f"  {len(sweeps)} pasadas, " + col(f"{total} gemelas sacadas", "green" if total else "dim")
+                   + f"; la \u00faltima ({when}): {res or 'en curso'}")
+        for ln in [ln for ln in last if ln.endswith("MATCH, committed")][-3:]:
+            out.append(f"    {col(chr(0x2713), 'green')} {ln.split(' <- ')[0]}")
+    return out
+
+
 def render(reset=False):
     idle = terminals()
     out = []
@@ -374,7 +398,10 @@ def render(reset=False):
         if fn.endswith(".env"):
             out.extend(worker(fn[:-4], read_env(os.path.join(ST, fn)), idle))
             out.append("")
-    pq = permuter() + ([""] if permuter() and auto_m2c() else []) + auto_m2c()
+    pq = []
+    for part in (permuter(), auto_m2c(), twin_sweeps()):
+        if part:
+            pq += ([""] if pq else []) + part
     if pq:
         out.extend(pq)
         out.append("")
