@@ -162,6 +162,11 @@ def main():
     ap.add_argument("--list", action="store_true")
     a = ap.parse_args()
     py = sys.executable
+    # this worktree's compile server: without it work.py compiles on the
+    # Windows mount, where the old compiler dies ("init_c_lex") and every
+    # twin looks like "does not compile" (after a reboot, before resume.sh)
+    if not a.list:
+        subprocess.run([py, "tools/match.py", "--server", "start"], cwd=ROOT, capture_output=True)
     matched, pending = idx = twins.index()
     jobs = []
     for (name, fn), shape in sorted(pending.items()):
