@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiiii_ffi_func_001F603C(int, int, int, int, float, float, int) asm("func_001F603C");
 struct m2c_v200_10_i { char pad[512]; virtual void v1(); virtual int call(); };
 struct m2c_v34_20_i { char pad[52]; virtual void v1(); virtual void v2(); virtual void v3(); virtual int call(); };
 struct m2c_v34_18_i { char pad[52]; virtual void v1(); virtual void v2(); virtual int call(); };
@@ -84,7 +85,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", func_0014BAF8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", func_0014BDBC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", func_0014BE48);
+extern "C" void func_0014BE48(int arg0, int arg1)
+{
+    float v;
+
+    v = M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), float *, 0x1C4);
+    if (v != 0.0f) {
+        v = v * 0.016666666f;
+    } else {
+        v = 0.016666666f;
+    }
+    Xiiii_ffi_func_001F603C(M2C_FIELD(arg0, int *, 0), arg1, -1, 0x100, v, 32769.0f, 1);
+}
 
 extern "C" void BdlOutWalk__vfunc_04()
 {
