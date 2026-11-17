@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xi_func_00165A68() asm("func_00165A68");
+extern "C" int Xii_func_00165A68(int) asm("func_00165A68");
+extern "C" int Xii_func_00165A68(int) asm("func_00165A68");
 extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
 extern "C" int Xiii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
 extern int _vt$7DwfMain;
@@ -502,7 +505,28 @@ extern "C" int func_0015CE88(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015CF30);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D08C);
+extern "C" int func_0015D08C(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
+    int var_a0;
+
+    temp_v0 = Xiii_func_001696FC(M2C_FIELD(arg0, int *, 0x1C), 7);
+    if (temp_v0 == 0xB && M2C_FIELD(arg0, int *, 0x26C) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xC && M2C_FIELD(arg0, int *, 0x270) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xE) {
+        var_a0 = 0;
+        temp_v1 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC);
+        if (temp_v1 & 8) {
+            var_a0 = 1;
+            if (!(temp_v1 & 0x10)) {
+                var_a0 = 0;
+            }
+        }
+    } else var_a0 = 0;
+    if (var_a0) return 0;
+    return Xii_func_00165A68((int) arg0);
+}
 
 extern "C" int func_0015D134(int arg0)
 {
