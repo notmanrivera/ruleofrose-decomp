@@ -458,7 +458,43 @@ extern "C" void func_00194688(int arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00194688);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001946E4);
+extern "C" void func_001946E4()
+{
+    PBookHeapEnt *p;
+    PBookHeapEnt *q;
+    int i;
+    int j;
+
+    i = 0;
+    p = (PBookHeapEnt *)D_0029BFB4;
+    do {
+        if ((p->flags & 3) == 1) {
+            do {
+                j = i + 1;
+                q = p + 1;
+                while (j < 0x80) {
+                    if ((q->flags & 3) == 1) {
+                        if ((unsigned int)p->top + p->size == (unsigned int)q->top) {
+                            p->size += q->size;
+                            q->flags = 0;
+                            break;
+                        }
+                        if ((unsigned int)q->top + q->size == (unsigned int)p->top) {
+                            p->top = q->top;
+                            p->size += q->size;
+                            q->flags = 0;
+                            break;
+                        }
+                    }
+                    j++;
+                    q++;
+                }
+            } while (j < 0x80);
+        }
+        i++;
+        p++;
+    } while (i < 0x7F);
+}
 
 extern "C" void func_001947A4(PBookMnuMapName *arg0)
 {
