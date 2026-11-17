@@ -1,5 +1,12 @@
 #include "include_asm.h"
 #include "bed/bedpfh.h"
+struct __attribute__((aligned(4))) PBookMnuMapName {
+    char m_pad[0x24];
+    char m_name[0x17];
+};
+extern "C" int Xii_func_00192AC0_ctor(int) asm("func_00192AC0");
+extern "C" int Xii_func_0018330C_ctor(int) asm("func_0018330C");
+extern int vtbl_MnuMap_ctor asm("_vt$6MnuMap");
 struct PBookHdr {
     int unk00;
     int unk04;
@@ -417,7 +424,24 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00194688);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001946E4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001947A4);
+extern "C" void func_001947A4(PBookMnuMapName *arg0)
+{
+    register PBookMnuMapName *self PS2_REG("$16") = arg0;
+    register char *p PS2_REG("$17") = (char *)self + 0x150;
+    int i = 1;
+    Xii_func_00192AC0_ctor((int)self);
+    M2C_FIELD(self, int *, 0x10C) = (int)&vtbl_MnuMap_ctor;
+    do {
+        Xii_func_0018330C_ctor((int)p);
+        p += 0x3BC;
+        i -= 1;
+    } while (i != -1);
+    M2C_FIELD(self, int *, 0) = 4;
+    __builtin_memcpy(self->m_name, "data/mnurpk/mnumap.rpk", 0x17);
+    asm volatile("" ::: "memory");
+    M2C_FIELD(self, int *, 0x144) = i;
+    M2C_FIELD(self, int *, 0x148) = i;
+}
 
 extern "C" void X_MnuMap__vfunc_03_v1(void *) asm("MnuMap__vfunc_03");
 extern "C" void X___builtin_delete_vm(void *) asm("__builtin_delete");
