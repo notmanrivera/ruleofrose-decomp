@@ -162,7 +162,76 @@ extern "C" void func_0017DFA8(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017DFF0);
 
+// NON_MATCHING: 115/201 differ, 1 reloc differs (size 0x324, game 0x330), 64 edits
+#ifdef NON_MATCHING
+struct EdgeE0A8 { int axis, other, boundary, low, high; };
+struct TableE0A8 { EdgeE0A8 edges[4]; };
+extern const TableE0A8 D_002F30C8;
+extern "C" int FE0A8_find(int, const float *, int, float) asm("func_0017C8B8");
+extern "C" int func_0017E0A8(int arg0, const float *arg1, const float *arg2, float distance)
+{
+    TableE0A8 table;
+    int order[2];
+    float delta[4];
+    int node = FE0A8_find(arg0, arg1, 0, distance);
+    int end = FE0A8_find(arg0, arg2, 0, distance);
+    if (node != 0) {
+        if (end != 0) {
+            table = D_002F30C8;
+            float x = arg1[0];
+            float ex = arg2[0];
+            float ez = arg2[2];
+            float z = arg1[2];
+            delta[0] = ex - x;
+            delta[2] = ez - z;
+            int a = 1;
+            if (!(x <= ex)) a = 3;
+            order[0] = a;
+            int b = 0;
+            if (!(z <= ez)) b = 2;
+            order[1] = b;
+            float dz = delta[2];
+            if (dz < 0.0f) dz = -dz;
+            if (delta[0] < 0.0f) {
+                if (-delta[0] < dz) goto swap_order;
+            } else if (delta[0] < dz) {
+swap_order:
+                int t = order[1]; order[1] = order[0]; order[0] = t;
+            }
+loop_node:
+            {
+                if (M2C_FIELD(node, int *, 8) & 4) return 0;
+                int i = 0;
+                    for (;;) {
+                    int bounds = node + 0xC;
+                    EdgeE0A8 *edge = &table.edges[order[i]];
+                    int axis = edge->axis;
+                    float f = (M2C_FIELD(bounds + edge->boundary * 4, float *, 0x10) - arg1[axis]) / delta[axis];
+                    if (f >= 1.0f) { i = 2; }
+                    else {
+                        int other = edge->other;
+                        float v = arg1[other] + delta[other] * f;
+                        if (!(M2C_FIELD(bounds + edge->low * 4, float *, 0x10) <= v) || !(v <= M2C_FIELD(bounds + edge->high * 4, float *, 0x10))) {
+                            i++;
+                            if (i < 2) continue;
+                        }
+                    }
+                    if (i != 2) {
+                        int next = M2C_FIELD(bounds + order[i] * 4, int *, 0x30);
+                        if (next == -1) return 0;
+                        node = M2C_FIELD(arg0, int *, 0xC) + next * 0x90;
+                        goto loop_node;
+                    }
+                    return M2C_FIELD(node, int *, 0) == M2C_FIELD(end, int *, 0);
+                }
+            }
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017E0A8);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017E3D8);
 
