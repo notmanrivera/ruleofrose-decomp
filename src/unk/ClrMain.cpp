@@ -56,8 +56,6 @@ extern "C" void ClrMain__vfunc_01(int arg0, int arg1)
     }
 }
 
-// NON_MATCHING: 3/128 differ, 3 edits
-#ifdef NON_MATCHING
 extern "C" void ClrMain__vfunc_04(int arg0)
 {
     int temp_v0;
@@ -81,9 +79,8 @@ extern "C" void ClrMain__vfunc_04(int arg0)
             M2C_FIELD(arg0, int *, 0x24) = 9;
         }
         temp_v1 = X_func_0014E38C(arg0);
-        temp_v0 = temp_v1 & 0xFF;
         if (M2C_FIELD(arg0, unsigned char *, 0x204) != 0) {
-            M2C_FIELD(arg0, unsigned char *, 0x204) = temp_v1;
+            temp_v0 = (unsigned char)(M2C_FIELD(arg0, unsigned char *, 0x204) = temp_v1);
             if (temp_v0 == 0) {
                 
                 if (M2C_FIELD(arg0, int *, 0x210) != 0) {
@@ -113,7 +110,7 @@ extern "C" void ClrMain__vfunc_04(int arg0)
                 }
             }
         } else {
-            M2C_FIELD(arg0, unsigned char *, 0x204) = temp_v1;
+            temp_v0 = (unsigned char)(M2C_FIELD(arg0, unsigned char *, 0x204) = temp_v1);
             if (temp_v0 != 0) {
                 if (M2C_FIELD(arg0, int *, 0x208) != 0) {
                     M2C_FIELD(arg0, int *, 0x24) = 0;
@@ -127,9 +124,6 @@ block_44:
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrMain__vfunc_04);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrMain__vfunc_05);
 
