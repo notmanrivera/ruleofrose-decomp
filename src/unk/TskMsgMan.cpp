@@ -2871,7 +2871,28 @@ extern "C" void TskChrRot__vfunc_06(int arg0, int arg1)
 extern "C" void TskChrRot__vfunc_05(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskChrRot__vfunc_04);
+extern "C" void TskChrRot__vfunc_04(int arg0)
+{
+    short idx;
+    long ent;
+    int fp;
+    short base;
+    int off;
+    int p;
+
+    idx = M2C_FIELD(arg0, short *, 0x5a);
+    if (idx >= 0) {
+        p = *(int *) (arg0 + M2C_FIELD(arg0, short *, 0x5c));
+        p += idx * 8;
+        ent = *((long *) p - 1);
+        fp = (int) (ent >> 32);
+    } else {
+        fp = M2C_FIELD(arg0, int *, 0x5c);
+    }
+    base = M2C_FIELD(arg0, short *, 0x58);
+    off = (idx >= 0) ? (short) ent + base : base;
+    ((void (*)(int)) fp)(arg0 + off);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskMsgMan", D_002FDF10);
 
