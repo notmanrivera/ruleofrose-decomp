@@ -7,11 +7,12 @@ permuter for our C++ (decomp-permuter parses C only).
 It starts from the function's best version so far (tools/work.py keeps it
 in build/work/.best/; else its scratch file) and tries rewrites that can
 change what ee-gcc 2.96 emits: swapping two neighbouring independent
-statements (also two stores to different targets of one object),
-swapping two neighbouring declarations, swapping the sides of any
-'X = A op B' with one commutative operator, swapping the operands of a commutative operator, an && or a
+statements (also two stores to different targets of one object) or
+declarations, swapping the operands of a commutative operator (any
+'X = A op B', two neighbouring terms of any sum or product), an && or a
 comparison, signed/unsigned locals, inverting an if/else, for <-> while,
-putting a repeated p->m in a temporary, inlining a single-use temporary.
+putting a repeated p->m or any subexpression in a temporary, inlining a
+single-use temporary.
 Every single rewrite is tried first, then random chains of them (a random
 walk over variants no worse than the current one, back to the best after
 300 tries without progress). Each variant is compiled with the compile
@@ -378,8 +379,34 @@ def term_swaps(lines):
     return out
 
 
+def extracts(lines):
+    """A subexpression of a plain statement (a sum, product, shift, call
+    argument...) computed first into a temporary of the same type:
+    'f(a + b);' -> '__typeof__(a + b) perm_e = a + b; f(perm_e);'. It can
+    change which register holds it, as decomp-permuter's temporaries do."""
+    out = []
+    for i in body(lines):
+        line = lines[i]
+        if not SIMPLE.match(line) or CONTROL.match(line) or DECL.match(line):
+            continue
+        ind = re.match(r"\s*", line).group(0)
+        for a, b in spans(line):
+            expr = line[a:b].strip()
+            if not top_split(expr) or "=" in expr.replace("==", "").replace("!=", "").replace("<=", "").replace(">=", ""):
+                continue                      # a plain name, or an assignment inside
+            if "++" in expr or "--" in expr:
+                continue
+            k = line.index(expr, a)
+            name = f"perm_e{sum('perm_e' in ln for ln in lines)}"
+            new = list(lines)
+            new[i] = line[:k] + name + line[k + len(expr):]
+            new.insert(i, f"{ind}__typeof__({expr}) {name} = {expr};")
+            out.append(new)
+    return out
+
+
 MUTATIONS = [swaps, commutes, compares, ands, signedness, invert_ifs, loops, temps, inlines,
-             decl_swaps, wide_commutes, term_swaps]
+             decl_swaps, wide_commutes, term_swaps, extracts]
 
 
 def split(work_text):
