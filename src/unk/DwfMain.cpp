@@ -1,4 +1,12 @@
 #include "include_asm.h"
+extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
+extern "C" int Xiii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
+extern int _vt$7DwfMain;
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
+extern int _vt$7HfmMain;
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
 struct m2c_v34_10_i { char pad[52]; virtual void v1(); virtual int call(); };
 extern "C" int C304___builtin_new(unsigned int) asm("__builtin_new");
 extern "C" int C304_func_0010423C(...) asm("func_0010423C");
@@ -86,7 +94,14 @@ extern int D_007812C0;
 extern int D_007A3208;
 extern int D_007B2294;
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfMain__vfunc_01);
+extern "C" void DwfMain__vfunc_01(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x200) = (int)&_vt$7DwfMain;
+    Xii_EmyMain__vfunc_01(arg0, 0);
+    if (arg1 & 1) {
+        return Xv___builtin_delete((void *)arg0);
+    }
+}
 
 extern "C" void func_0015C304(int arg0)
 {
