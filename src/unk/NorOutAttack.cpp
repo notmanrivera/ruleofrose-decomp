@@ -450,7 +450,83 @@ block_24:
 INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_00152544);
 #endif
 
+// NON_MATCHING: 205/249 differ, 39 relocs differ (size 0x3E4, game 0x3DC), 51 edits
+#ifdef NON_MATCHING
+extern "C" int F2748_motion(int, int, int) asm("func_0013166C");
+extern "C" int F2748_near(int, int, int, float, float) asm("func_00169BAC");
+extern "C" int F2748_actor(int, unsigned int) asm("func_001CBE38");
+extern "C" float F2748_yaw(int) asm("func_0010A650__8DogActor");
+extern "C" float F2748_angle(int) asm("func_00167E38");
+extern "C" void F2748_point(int, float *, float) asm("func_00167D88");
+extern "C" int F2748_doneCall(int, unsigned int) asm("func_001D19A8");
+inline int F2748_done(int world, int obj) { register int self PS2_REG("$16") = obj; int r = F2748_doneCall(world, *(unsigned int *)self); if (r) *(int *)(*(int *)(self + 12) + 44) = 1; return r; }
+extern "C" void func_00152748(int incoming)
+{
+    register int arg0 PS2_REG("$16") = incoming;
+    register int actor PS2_REG("$5") = M2C_FIELD(arg0, int *, 0xC);
+    unsigned int frame = M2C_FIELD(arg0, unsigned int *, 0x48) + 1;
+    M2C_FIELD(arg0, unsigned int *, 0x48) = frame;
+    if (frame >= 11U) {
+        Xiii_func_0016649C(actor, 0);
+        F19_Xiiui_func_001D10D0((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x400);
+    } else {
+        Xiii_func_0016649C(actor, 1);
+        F19_Xiiui_func_001D1410((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x400);
+    }
+    if (!F2748_done((int)&D_007812C0, arg0)) {
+        float active = (float)f19Range(M2C_FIELD(arg0, int *, 0x48), 21, 25);
+        if (active != 0.0f && F2748_near(1, M2C_FIELD(arg0, int *, 0x14), M2C_FIELD(arg0, int *, 8), 80.0f, 0.7853981633974483f)) {
+            register int base PS2_REG("$2") = (int)&D_006E9840;
+            register int offset PS2_REG("$18") = 0x12540;
+            int motion = base + offset;
+            register int four PS2_REG("$20") = 4;
+            if (!(bool)F2748_motion(motion, 22, 0) && !(M2C_FIELD(&D_007812C0, unsigned int *, 0x21F48) & 0x2000) && (M2C_FIELD(&D_007812C0, unsigned int *, 0x21F48) & four)) {
+                register int work PS2_REG("$19") = arg0 + 0x68;
+                Xiii_func_0016649C(M2C_FIELD(arg0, int *, 0xC), 0);
+                F19_Xiiui_func_001D1410((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x40);
+                F19_Xiiui_func_001D10D0((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x10000000);
+                F19_Xiiui_func_001D10D0((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x04000000);
+                M2C_FIELD(arg0, float *, 0x74) = F2748_yaw(F2748_actor((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0)) * 0x4D0 + motion + 0x2920);
+                F2748_actor((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0x14));
+                int side = (double)F2748_angle(arg0) >= 1.57079632679489661923;
+                M2C_FIELD(arg0, int *, 0x50) = side;
+                M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x24C) = side;
+                int sub = M2C_FIELD(arg0, int *, 0xC);
+                if (M2C_FIELD(arg0, int *, 0x50) == 0) {
+                    M2C_FIELD(sub, int *, 0x150) = 3;
+                    double pi = 3.14159265358979323846;
+                    F2748_motion(motion, 2, 0);
+                    F2748_point(arg0, (float *)work, 60.0f);
+                    work = 0x28;
+                    float yaw = (float)((double)M2C_FIELD(arg0, float *, 0x74) - pi);
+                    if ((double)yaw < (-3.14159265358979323846)) yaw = (float)((double)yaw + 6.28318530717958647692);
+                    if ((double)yaw > pi) yaw = (float)((double)yaw - 6.28318530717958647692);
+                    M2C_FIELD(arg0, float *, 0x74) = yaw;
+                } else {
+                    M2C_FIELD(sub, int *, 0x150) = four;
+                    F2748_motion(motion, 7, 0);
+                    F2748_point(arg0, (float *)work, 60.0f);
+                    work = 0x29;
+                }
+                Xiiii_func_001680A0(arg0, work, 0);
+                M2C_FIELD(arg0, int *, 0x54) = 0;
+                M2C_FIELD(arg0, unsigned int *, 0x48) = 0;
+                M2C_FIELD(arg0, int *, 4) = 2;
+            }
+        }
+    } else {
+        F19_Xiiui_func_001D1410((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x04000000);
+        F19_Xiiui_func_001D10D0((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x40);
+        F19_Xiiui_func_001D1410((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x10000000);
+        F19_Xiiui_func_001D1410((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x400);
+        Xiii_func_0016649C(M2C_FIELD(arg0, int *, 0xC), 1);
+        F19_Xiiui_func_001D1410((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x400);
+        Xii_func_001517E0(arg0);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_00152748);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_00152B24);
 
