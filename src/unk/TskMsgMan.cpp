@@ -3332,7 +3332,28 @@ extern "C" void TskFrameFunc__vfunc_05(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskFrameFunc__vfunc_04);
+extern "C" void TskFrameFunc__vfunc_04(int arg0)
+{
+    short idx;
+    long ent;
+    int fp;
+    short base;
+    int off;
+    int p;
+
+    idx = M2C_FIELD(arg0, short *, 0xa);
+    if (idx >= 0) {
+        p = *(int *) (arg0 + M2C_FIELD(arg0, short *, 0xc));
+        p += idx * 8;
+        ent = *((long *) p - 1);
+        fp = (int) (ent >> 32);
+    } else {
+        fp = M2C_FIELD(arg0, int *, 0xc);
+    }
+    base = M2C_FIELD(arg0, short *, 0x8);
+    off = (idx >= 0) ? (short) ent + base : base;
+    ((void (*)(int)) fp)(arg0 + off);
+}
 
 // NON_MATCHING: 4/80 differ, 6 edits
 #ifdef NON_MATCHING
