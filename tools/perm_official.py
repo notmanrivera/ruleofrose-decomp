@@ -297,6 +297,7 @@ def main():
     ap.add_argument("--queue", action="store_true", help="every attempt within --max-off, closest first")
     ap.add_argument("--max-off", type=int, default=12)
     ap.add_argument("--list", action="store_true")
+    ap.add_argument("--merge", action="store_true", help="merge each MATCH right away (tools/merge_worker.sh)")
     ap.add_argument("--prepare", action="store_true", help="only make the directory (to look at base.c)")
     a = ap.parse_args()
     if not PERM.exists():
@@ -323,6 +324,12 @@ def main():
         print(f"[{k}/{len(jobs)}] {name} {fn}: start ({st})", flush=True)
         status, best = run(name, fn, a.minutes, a.jobs)
         print(f"[{k}/{len(jobs)}] {name} {fn}: {status}, {best} ({(time.time() - t0) / 60:.1f} min)", flush=True)
+        if status == "MATCH" and a.merge:
+            main_dir = permute_queue.main_checkout()
+            worker = ROOT.name.removeprefix("ror-wt-")
+            m = subprocess.run(["sh", str(main_dir / "tools/merge_worker.sh"), worker, "--defer"],
+                               cwd=main_dir, capture_output=True, text=True)
+            print("  " + (m.stdout + m.stderr).strip().replace("\n", "\n  "), flush=True)
         if status != "skipped":
             LOG.parent.mkdir(parents=True, exist_ok=True)
             with open(LOG, "a") as log:
