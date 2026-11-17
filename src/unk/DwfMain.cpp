@@ -1,4 +1,23 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0015CE88(int) asm("func_0015CE88");
+extern "C" int Xii_func_0015CF30(int) asm("func_0015CF30");
+extern "C" int Xii_func_0015D08C(int) asm("func_0015D08C");
+extern "C" int Xii_func_0015D134(int) asm("func_0015D134");
+extern "C" int Xii_func_0015D1DC(int) asm("func_0015D1DC");
+extern "C" int Xii_func_0015D284(int) asm("func_0015D284");
+extern "C" int Xii_func_0015D32C(int) asm("func_0015D32C");
+extern "C" int Xii_func_0015D3E0(int) asm("func_0015D3E0");
+extern "C" int Xii_func_0015D488(int) asm("func_0015D488");
+extern "C" int Xii_func_0015D530(int) asm("func_0015D530");
+extern "C" int Xii_func_0015D5D8(int) asm("func_0015D5D8");
+extern "C" int Xii_func_0015D680(int) asm("func_0015D680");
+extern "C" int Xii_func_0015D738(int) asm("func_0015D738");
+extern "C" int Xii_func_0015D7F0(int) asm("func_0015D7F0");
+extern "C" int Xii_func_0015D890(int) asm("func_0015D890");
+extern "C" int Xii_func_0015D948(int) asm("func_0015D948");
+extern "C" int Xii_func_0015DA00(int) asm("func_0015DA00");
+extern "C" int Xii_func_0015DAA8(int) asm("func_0015DAA8");
+extern "C" int Xii_func_0015DD74(int) asm("func_0015DD74");
 extern "C" int Xi_func_00166198() asm("func_00166198");
 extern "C" int Xii_func_00166198(int) asm("func_00166198");
 extern "C" int Xii_func_00166198(int) asm("func_00166198");
@@ -248,178 +267,299 @@ extern "C" void func_0015C304(int arg0)
     M2C_FIELD(arg0, int *, 0x270) = C304_func_0015DD74(M2C_FIELD(arg0, int *, 0x20));
 }
 
-// NON_MATCHING: 3/349 differ, 3 edits
-#ifdef NON_MATCHING
 extern "C" void DwfMain__vfunc_04(int arg0)
 {
-    int temp_v0;
-    int temp_v0_2;
-    int temp_v0_3;
-    int temp_v0_4;
-    int temp_v0_5;
-    int temp_v0_6;
-    int temp_v1_2;
-    int temp_v1_3;
-    int temp_v1_4;
-    int temp_v1_5;
-    int temp_v1_6;
-    int var_a0;
-    int var_a0_2;
-    int var_a0_3;
-    int var_a0_4;
-    int var_a0_5;
-    int var_v0;
-    int temp_v1;
-
-    if ((*(int *)&D_007A3208) & 0x40000) {
-        M2C_FIELD(arg0, int *, 0x26C) = X_func_0015DAA8(M2C_FIELD(arg0, int *, 0x20));
-        M2C_FIELD(arg0, int *, 0x270) = X_func_0015DD74(M2C_FIELD(arg0, int *, 0x20));
+  int temp_v0;
+  int temp_v0_2;
+  int temp_v0_3;
+  int temp_v0_4;
+  int temp_v0_5;
+  int temp_v0_6;
+  int temp_v1_2;
+  int temp_v1_3;
+  int temp_v1_4;
+  int temp_v1_5;
+  int temp_v1_6;
+  int var_a0;
+  int var_a0_2;
+  int var_a0_3;
+  int var_a0_4;
+  int var_a0_5;
+  int var_v0;
+  int temp_v1;
+  if ((*((int *) (&D_007A3208))) & 0x40000)
+  {
+    *((int *) (((char *) arg0) + 0x26C)) = X_func_0015DAA8(*((int *) (((char *) arg0) + 0x20)));
+    *((int *) (((char *) arg0) + 0x270)) = X_func_0015DD74(*((int *) (((char *) arg0) + 0x20)));
+  }
+  if ((((*((int *) (((char *) arg0) + 0x28))) != 0) && ((*((int *) (((char *) arg0) + 0x2C))) != 0)) && ((*((int *) (((char *) arg0) + 0x24))) == (-1)))
+  {
+    if (((*((int *) (((char *) arg0) + 0x258))) != 0) && (X_func_0015DA00(arg0) != 0))
+    {
+      *((int *) (((char *) arg0) + 0x24)) = 0x15;
     }
-    if ((M2C_FIELD(arg0, int *, 0x28) != 0) && (M2C_FIELD(arg0, int *, 0x2C) != 0) && (M2C_FIELD(arg0, int *, 0x24) == -1)) {
-        if ((M2C_FIELD(arg0, int *, 0x258) != 0) && (X_func_0015DA00(arg0) != 0)) {
-            M2C_FIELD(arg0, int *, 0x24) = 0x15;
-        }
-        if ((M2C_FIELD(arg0, int *, 0x254) != 0) && (X_func_0015D948(arg0) != 0)) {
-            M2C_FIELD(arg0, int *, 0x24) = 0x14;
-        }
-        if ((M2C_FIELD(arg0, int *, 0x250) != 0) && (X_func_0015D890(arg0) != 0)) {
-            M2C_FIELD(arg0, int *, 0x24) = 0x13;
-        }
-        if ((M2C_FIELD(arg0, int *, 0x24C) != 0) && (X_func_0015D7F0(arg0) != 0)) {
-            M2C_FIELD(arg0, int *, 0x24) = 0x12;
-        }
-        if ((M2C_FIELD(arg0, int *, 0x248) != 0) && (X_func_0015D738(arg0) != 0)) {
-            M2C_FIELD(arg0, int *, 0x24) = 0x11;
-        }
-        if ((M2C_FIELD(arg0, int *, 0x244) != 0) && (X_func_0015D680(arg0) != 0)) {
-            M2C_FIELD(arg0, int *, 0x24) = 0x10;
-        }
-        if ((M2C_FIELD(arg0, int *, 0x240) != 0) && (X_func_0015D5D8(arg0) != 0)) {
-            M2C_FIELD(arg0, int *, 0x24) = 0xF;
-        }
-        if ((M2C_FIELD(arg0, int *, 0x23C) != 0) && (X_func_0015D530(arg0) != 0)) {
-            M2C_FIELD(arg0, int *, 0x24) = 0xE;
-        }
-        if ((M2C_FIELD(arg0, int *, 0x238) != 0) && (X_func_0015D488(arg0) != 0)) {
-            M2C_FIELD(arg0, int *, 0x24) = 0xD;
-        }
-        temp_v1 = X_func_0015CF30(arg0);
-        if (M2C_FIELD(arg0, unsigned char *, 0x266) != 0) {
-            M2C_FIELD(arg0, unsigned char *, 0x266) = temp_v1;
-            if ((temp_v1 & 0xFF) == 0) {
-                if (M2C_FIELD(arg0, int *, 0x21C) != 0) {
-                    temp_v0_2 = X_func_001696FC(M2C_FIELD(arg0, int *, 0x1C), 6);
-                    if (temp_v0_2 == 0xB && M2C_FIELD(arg0, int *, 0x26C) == 0) var_a0 = 1;
-else if (temp_v0_2 == 0xC && M2C_FIELD(arg0, int *, 0x270) == 0) var_a0 = 1;
-else if (temp_v0_2 == 0xE) {
-    var_a0 = 0;
-    temp_v1_2 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC);
-    if (temp_v1_2 & 8) {
-        var_a0 = 1;
-        if (!(temp_v1_2 & 0x10)) var_a0 = 0;
+    if (((*((int *) (((char *) arg0) + 0x254))) != 0) && (X_func_0015D948(arg0) != 0))
+    {
+      *((int *) (((char *) arg0) + 0x24)) = 0x14;
     }
-} else var_a0 = 0;
-if (var_a0 == 0) {
-                        M2C_FIELD(arg0, int *, 0x24) = 6;
-                    }
-                }
-            } else {
-                if ((M2C_FIELD(arg0, int *, 0x234) != 0) && (X_func_0015D3E0(arg0) != 0)) {
-                    M2C_FIELD(arg0, int *, 0x24) = 0xC;
-                }
-                if ((M2C_FIELD(arg0, int *, 0x230) != 0) && (X_func_0015D32C(arg0) != 0)) {
-                    M2C_FIELD(arg0, int *, 0x24) = 0xB;
-                }
-                if ((M2C_FIELD(arg0, int *, 0x22C) != 0) && (X_func_0015D284(arg0) != 0)) {
-                    M2C_FIELD(arg0, int *, 0x24) = 0xA;
-                }
-                if ((M2C_FIELD(arg0, int *, 0x228) != 0) && (X_func_0015D1DC(arg0) != 0)) {
-                    M2C_FIELD(arg0, int *, 0x24) = 9;
-                }
-                if ((M2C_FIELD(arg0, int *, 0x224) != 0) && (X_func_0015D134(arg0) != 0)) {
-                    M2C_FIELD(arg0, int *, 0x24) = 8;
-                }
-                if (M2C_FIELD(arg0, int *, 0x220) != 0) {
-                    if (X_func_0015D08C(arg0) != 0) {
-                        M2C_FIELD(arg0, int *, 0x24) = 7;
-                    }
-                }
+    if (((*((int *) (((char *) arg0) + 0x250))) != 0) && (X_func_0015D890(arg0) != 0))
+    {
+      *((int *) (((char *) arg0) + 0x24)) = 0x13;
+    }
+    if (((*((int *) (((char *) arg0) + 0x24C))) != 0) && (X_func_0015D7F0(arg0) != 0))
+    {
+      *((int *) (((char *) arg0) + 0x24)) = 0x12;
+    }
+    if (((*((int *) (((char *) arg0) + 0x248))) != 0) && (X_func_0015D738(arg0) != 0))
+    {
+      *((int *) (((char *) arg0) + 0x24)) = 0x11;
+    }
+    if (((*((int *) (((char *) arg0) + 0x244))) != 0) && (X_func_0015D680(arg0) != 0))
+    {
+      *((int *) (((char *) arg0) + 0x24)) = 0x10;
+    }
+    if (((*((int *) (((char *) arg0) + 0x240))) != 0) && (X_func_0015D5D8(arg0) != 0))
+    {
+      *((int *) (((char *) arg0) + 0x24)) = 0xF;
+    }
+    if (((*((int *) (((char *) arg0) + 0x23C))) != 0) && (X_func_0015D530(arg0) != 0))
+    {
+      *((int *) (((char *) arg0) + 0x24)) = 0xE;
+    }
+    if (((*((int *) (((char *) arg0) + 0x238))) != 0) && (X_func_0015D488(arg0) != 0))
+    {
+      *((int *) (((char *) arg0) + 0x24)) = 0xD;
+    }
+    temp_v1 = X_func_0015CF30(arg0);
+    if ((*((unsigned char *) (((char *) arg0) + 0x266))) != 0)
+    {
+      temp_v0_3 = temp_v1;
+      *((unsigned char *) (((char *) arg0) + 0x266)) = temp_v0_3;
+      if ((temp_v1 & 0xFF) == 0)
+      {
+        if ((*((int *) (((char *) arg0) + 0x21C))) != 0)
+        {
+          temp_v0_2 = X_func_001696FC(*((int *) (((char *) arg0) + 0x1C)), 6);
+          if ((temp_v0_2 == 0xB) && ((*((int *) (((char *) arg0) + 0x26C))) == 0))
+          {
+            var_a0 = 1;
+          }
+          else
+            if ((temp_v0_2 == 0xC) && ((*((int *) (((char *) arg0) + 0x270))) == 0))
+          {
+            var_a0 = 1;
+          }
+          else
+            if (temp_v0_2 == 0xE)
+          {
+            var_a0 = 0;
+            temp_v1_2 = *((int *) (((char *) (*((int *) (((char *) arg0) + 0x20)))) + 0x3EC));
+            if (temp_v1_2 & 8)
+            {
+              var_a0 = 1;
+              if (!(temp_v1_2 & 0x10))
+              {
+                var_a0 = 0;
+              }
             }
-        } else {
-            M2C_FIELD(arg0, unsigned char *, 0x266) = temp_v1;
-            if (((temp_v1 & 0xFF) != 0) && (M2C_FIELD(arg0, int *, 0x218) != 0)) {
-                temp_v0_3 = X_func_001696FC(M2C_FIELD(arg0, int *, 0x1C), 5);
-                if (temp_v0_3 == 0xB && M2C_FIELD(arg0, int *, 0x26C) == 0) var_a0_2 = 1;
-else if (temp_v0_3 == 0xC && M2C_FIELD(arg0, int *, 0x270) == 0) var_a0_2 = 1;
-else if (temp_v0_3 == 0xE) {
-    var_a0_2 = 0;
-    temp_v1_3 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC);
-    if (temp_v1_3 & 8) {
-        var_a0_2 = 1;
-        if (!(temp_v1_3 & 0x10)) var_a0_2 = 0;
-    }
-} else var_a0_2 = 0;
-if (var_a0_2 == 0) {
-                    M2C_FIELD(arg0, int *, 0x24) = 5;
-                }
-            }
+          }
+          else
+          {
+            var_a0 = 0;
+          }
+          if (var_a0 == 0)
+          {
+            *((int *) (((char *) arg0) + 0x24)) = 6;
+          }
         }
-        if ((M2C_FIELD(arg0, int *, 0x214) != 0) && (M2C_FIELD(arg0, int *, 0x30) & 1)) {
-            temp_v0_4 = X_func_001696FC(M2C_FIELD(arg0, int *, 0x1C), 4);
-            if (temp_v0_4 == 0xB && M2C_FIELD(arg0, int *, 0x26C) == 0) var_a0_3 = 1;
-else if (temp_v0_4 == 0xC && M2C_FIELD(arg0, int *, 0x270) == 0) var_a0_3 = 1;
-else if (temp_v0_4 == 0xE) {
-    var_a0_3 = 0;
-    temp_v1_4 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC);
-    if (temp_v1_4 & 8) {
+      }
+      else
+      {
+        if (((*((int *) (((char *) arg0) + 0x234))) != 0) && (X_func_0015D3E0(arg0) != 0))
+        {
+          *((int *) (((char *) arg0) + 0x24)) = 0xC;
+        }
+        if (((*((int *) (((char *) arg0) + 0x230))) != 0) && (X_func_0015D32C(arg0) != 0))
+        {
+          *((int *) (((char *) arg0) + 0x24)) = 0xB;
+        }
+        if (((*((int *) (((char *) arg0) + 0x22C))) != 0) && (X_func_0015D284(arg0) != 0))
+        {
+          *((int *) (((char *) arg0) + 0x24)) = 0xA;
+        }
+        if (((*((int *) (((char *) arg0) + 0x228))) != 0) && (X_func_0015D1DC(arg0) != 0))
+        {
+          *((int *) (((char *) arg0) + 0x24)) = 9;
+        }
+        if (((*((int *) (((char *) arg0) + 0x224))) != 0) && (X_func_0015D134(arg0) != 0))
+        {
+          *((int *) (((char *) arg0) + 0x24)) = 8;
+        }
+        if ((*((int *) (((char *) arg0) + 0x220))) != 0)
+        {
+          if (X_func_0015D08C(arg0) != 0)
+          {
+            *((int *) (((char *) arg0) + 0x24)) = 7;
+          }
+        }
+      }
+    }
+    else
+    {
+      *((unsigned char *) (((char *) arg0) + 0x266)) = temp_v1;
+      if (((temp_v1 & 0xFF) != 0) && ((*((int *) (((char *) arg0) + 0x218))) != 0))
+      {
+        temp_v0_3 = X_func_001696FC(*((int *) (((char *) arg0) + 0x1C)), 5);
+        if ((temp_v0_3 == 0xB) && ((*((int *) (((char *) arg0) + 0x26C))) == 0))
+        {
+          var_a0_2 = 1;
+        }
+        else
+          if ((temp_v0_3 == 0xC) && ((*((int *) (((char *) arg0) + 0x270))) == 0))
+        {
+          var_a0_2 = 1;
+        }
+        else
+          if (temp_v0_3 == 0xE)
+        {
+          var_a0_2 = 0;
+          temp_v1_3 = *((int *) (((char *) (*((int *) (((char *) arg0) + 0x20)))) + 0x3EC));
+          if (temp_v1_3 & 8)
+          {
+            var_a0_2 = 1;
+            if (!(temp_v1_3 & 0x10))
+            {
+              var_a0_2 = 0;
+            }
+          }
+        }
+        else
+        {
+          var_a0_2 = 0;
+        }
+        if (var_a0_2 == 0)
+        {
+          *((int *) (((char *) arg0) + 0x24)) = 5;
+        }
+      }
+    }
+    if (((*((int *) (((char *) arg0) + 0x214))) != 0) && ((*((int *) (((char *) arg0) + 0x30))) & 1))
+    {
+      temp_v0_4 = X_func_001696FC(*((int *) (((char *) arg0) + 0x1C)), 4);
+      if ((temp_v0_4 == 0xB) && ((*((int *) (((char *) arg0) + 0x26C))) == 0))
+      {
         var_a0_3 = 1;
-        if (!(temp_v1_4 & 0x10)) var_a0_3 = 0;
-    }
-} else var_a0_3 = 0;
-if (var_a0_3 == 0) {
-                M2C_FIELD(arg0, int *, 0x24) = 4;
-            }
+      }
+      else
+        if (1)
+      {
+        if ((temp_v0_4 == 0xC) && ((*((int *) (((char *) arg0) + 0x270))) == 0))
+        {
+          var_a0_3 = 1;
         }
-        if ((M2C_FIELD(arg0, int *, 0x210) != 0) && (M2C_FIELD(arg0, int *, 0x30) & 8)) {
-            temp_v0_5 = X_func_001696FC(M2C_FIELD(arg0, int *, 0x1C), 3);
-            if (temp_v0_5 == 0xB && M2C_FIELD(arg0, int *, 0x26C) == 0) var_a0_4 = 1;
-else if (temp_v0_5 == 0xC && M2C_FIELD(arg0, int *, 0x270) == 0) var_a0_4 = 1;
-else if (temp_v0_5 == 0xE) {
-    var_a0_4 = 0;
-    temp_v1_5 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC);
-    if (temp_v1_5 & 8) {
+        else
+          if (temp_v0_4 == 0xE)
+        {
+          var_a0_3 = 0;
+          temp_v1_4 = *((int *) (((char *) (*((int *) (((char *) arg0) + 0x20)))) + 0x3EC));
+          if (temp_v1_4 & 8)
+          {
+            var_a0_3 = 1;
+            if (!(temp_v1_4 & 0x10))
+            {
+              var_a0_3 = 0;
+            }
+          }
+        }
+        else
+        {
+          var_a0_3 = 0;
+        }
+      }
+      if (var_a0_3 == 0)
+      {
+        *((int *) (((char *) arg0) + 0x24)) = 4;
+      }
+    }
+    if (((*((int *) (((char *) arg0) + 0x210))) != 0) && ((*((int *) (((char *) arg0) + 0x30))) & 8))
+    {
+      temp_v0_5 = X_func_001696FC(*((int *) (((char *) arg0) + 0x1C)), 3);
+      if ((temp_v0_5 == 0xB) && ((*((int *) (((char *) arg0) + 0x26C))) == 0))
+      {
         var_a0_4 = 1;
-        if (!(temp_v1_5 & 0x10)) var_a0_4 = 0;
-    }
-} else var_a0_4 = 0;
-if (var_a0_4 == 0) {
-                M2C_FIELD(arg0, int *, 0x24) = 3;
-            }
+      }
+      else
+      {
+        temp_v1_3 = temp_v0_5;
+        if ((temp_v1_3 == 0xC) && ((*((int *) (((char *) arg0) + 0x270))) == 0))
+        {
+          var_a0_4 = 1;
         }
-        if ((M2C_FIELD(arg0, int *, 0x20C) != 0) && (M2C_FIELD(arg0, int *, 0x30) & 4)) {
-            temp_v0_6 = X_func_001696FC(M2C_FIELD(arg0, int *, 0x1C), 2);
-            if (temp_v0_6 == 0xB && M2C_FIELD(arg0, int *, 0x26C) == 0) var_a0_5 = 1;
-else if (temp_v0_6 == 0xC && M2C_FIELD(arg0, int *, 0x270) == 0) var_a0_5 = 1;
-else if (temp_v0_6 == 0xE) {
-    var_a0_5 = 0;
-    temp_v1_6 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC);
-    if (temp_v1_6 & 8) {
+        else
+          if (temp_v1_3 == 0xE)
+        {
+          var_a0_4 = 0;
+          temp_v1_5 = *((int *) (((char *) (*((int *) (((char *) arg0) + 0x20)))) + 0x3EC));
+          if (temp_v1_5 & 8)
+          {
+            var_a0_4 = 1;
+            if (!(temp_v1_5 & 0x10))
+            {
+              var_a0_4 = 0;
+            }
+          }
+        }
+        else
+        {
+          var_a0_4 = 0;
+        }
+      }
+      if (var_a0_4 == 0)
+      {
+        *((int *) (((char *) arg0) + 0x24)) = 3;
+      }
+    }
+    if (((*((int *) (((char *) arg0) + 0x20C))) != 0) && ((*((int *) (((char *) arg0) + 0x30))) & 4))
+    {
+      temp_v0_6 = X_func_001696FC(*((int *) (((char *) arg0) + 0x1C)), 2);
+      if ((temp_v0_6 == 0xB) && ((*((int *) (((char *) arg0) + 0x26C))) == 0))
+      {
         var_a0_5 = 1;
-        if (!(temp_v1_6 & 0x10)) var_a0_5 = 0;
-    }
-} else var_a0_5 = 0;
-if (var_a0_5 == 0) {
-                M2C_FIELD(arg0, int *, 0x24) = 2;
-            }
+      }
+      else
+        if ((temp_v0_6 == 0xC) && ((*((int *) (((char *) arg0) + 0x270))) == 0))
+      {
+        var_a0_5 = 1;
+      }
+      else
+        if (temp_v0_6 == 0xE)
+      {
+        var_a0_5 = 0;
+        temp_v1_6 = *((int *) (((char *) (*((int *) (((char *) arg0) + 0x20)))) + 0x3EC));
+        if (temp_v1_6 & 8)
+        {
+          var_a0_5 = 1;
+          if (!(temp_v1_6 & 0x10))
+          {
+            var_a0_5 = 0;
+          }
         }
-        if ((M2C_FIELD(arg0, int *, 0x208) != 0) && (X_func_0015CE88(arg0) != 0)) {
-            M2C_FIELD(arg0, int *, 0x24) = 1;
-        }
+      }
+      else
+      {
+        var_a0_5 = 0;
+      }
+      if (var_a0_5 == 0)
+      {
+        *((int *) (((char *) arg0) + 0x24)) = 2;
+      }
     }
+    if (((*((int *) (((char *) arg0) + 0x208))) != 0) && (X_func_0015CE88(arg0) != 0))
+    {
+      *((int *) (((char *) arg0) + 0x24)) = 1;
+    }
+  }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfMain__vfunc_04);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfMain__vfunc_05);
 
