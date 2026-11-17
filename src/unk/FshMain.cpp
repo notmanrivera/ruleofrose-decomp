@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xii_func_00202F10(int) asm("func_00202F10");
 struct m2c_v200_10_i { char pad[512]; virtual void v1(); virtual int call(); };
 struct m2c_v34_18_i { char pad[52]; virtual void v1(); virtual void v2(); virtual int call(); };
 struct m2c_v34_20_i { char pad[52]; virtual void v1(); virtual void v2(); virtual void v3(); virtual int call(); };
@@ -287,7 +288,28 @@ extern "C" void FshOutRound__vfunc_02(int arg0)
     Xiiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), 10.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutRound__vfunc_03);
+extern "C" int FshOutRound__vfunc_03(int arg0)
+{
+    register int res PS2_REG("$2");
+    register int self PS2_REG("$17");
+    register int ret PS2_REG("$16");
+    register int one PS2_REG("$3");
+
+    self = arg0;
+    ret = -1;
+    res = Xiiiiff_func_001679B4(self, M2C_FIELD(self, int *, 0x14), 0, 30.0f, 3.141592562198639f);
+    if (res != 0) {
+        one = 1;
+        if (res == one) {
+            Xii_func_00202F10(M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x1F0));
+            ret = 0x13;
+        } else {
+            Xii_func_00202F10(M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x1F0));
+            ret = 0x14;
+        }
+    }
+    return ret;
+}
 
 extern "C" void FshOutRound__vfunc_04()
 {
