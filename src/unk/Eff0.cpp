@@ -1188,9 +1188,9 @@ extern "C" void EffBloodStay3Prim__vfunc_08(int obj, int render, int state, int 
   color = temp;
   prim08Light(new_var);
   int age = *((int *) (((char *) obj) + 0x48));
-  register float fade asm("$f0");
-  register float alpha asm("$f1");
-  register float denominator asm("$f2");
+  register float fade PS2_REG("$f0");
+  register float alpha PS2_REG("$f1");
+  register float denominator PS2_REG("$f2");
   if (age < 15)
   {
     fade = (float) age;
