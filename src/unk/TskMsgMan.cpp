@@ -560,31 +560,21 @@ extern "C" int func_001EAB54(int arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAB54);
 #endif
 
-// NON_MATCHING: 4/32 differ, 4 edits
-#ifdef NON_MATCHING
-extern "C" int X_func_0025B878(...) asm("func_0025B878");
-extern "C" int Xiii_func_001D8B9C(int, int) asm("func_001D8B9C");
-extern "C" int Xiii_func_001E7D7C(int, int) asm("func_001E7D7C");
 extern "C" int func_001EAC38(int arg0)
 {
     int temp_s1;
 
-    int ret;
-
     temp_s1 = arg0 + 0x30;
-    if ((M2C_FIELD(arg0, int *, 0xA8) & 1) != 0 && Xiii_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0x3D8)) != 0) {
-        ret = 0;
-    } else {
-        X_func_0025B878(temp_s1, temp_s1, arg0 + 0x50);
-        Xiii_func_001D8B9C(M2C_FIELD(arg0, int *, 4), temp_s1);
-        M2C_FIELD(arg0, int *, 0x60)--;
-        ret = 0;
+    if ((M2C_FIELD(arg0, int *, 0xa8) & 1) != 0) {
+        if (X_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0x3D8)) != 0) {
+            return 0;
+        }
     }
-    return ret;
+    Xv_func_0025B878(temp_s1, temp_s1, arg0 + 0x50);
+    Xvii_func_001D8B9C(M2C_FIELD(arg0, int *, 4), temp_s1);
+    M2C_FIELD(arg0, int *, 0x60) = M2C_FIELD(arg0, int *, 0x60) - 1;
+    return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001EAC38);
-#endif
 
 extern "C" int func_001EACB8(int arg0)
 {
