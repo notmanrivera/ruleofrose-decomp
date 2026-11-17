@@ -1,4 +1,10 @@
 #include "include_asm.h"
+extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern int _vt$7ObjStat;
+extern "C" void Xv_ObjStatDtor(int arg0, int arg1) asm("TskEnemyTurn__vfunc_06");
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void Xv_ObjStatDtor(int arg0, int arg1) asm("TskEnemyTurn__vfunc_06");
 extern int _vt$12TskEnemyTurn;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
@@ -34,7 +40,13 @@ extern "C" void func_002034C0(int arg0)
     M2C_FIELD(arg0, int *, 0) = (int)&_vt$12TskEnemyTurn;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyTurn", TskEnemyTurn__vfunc_06);
+extern "C" void Xv_ObjStatDtor(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x0) = (int)&_vt$12TskEnemyTurn;
+    if (arg1 & 1) {
+        return Xv___builtin_delete((void *)arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyTurn", func_0020350C);
 
