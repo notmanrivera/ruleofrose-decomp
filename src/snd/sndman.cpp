@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_0017F584(int, int) asm("func_0017F584");
 extern "C" int X4_func_001E4908(int, int, int, int) asm("func_001E4908");
 extern "C" int X4_func_001809D8(int, int, int, int) asm("func_001809D8");
 extern "C" int atoi(const char *);
@@ -253,7 +254,35 @@ extern "C" int func_0017FD3C(int arg0, int arg1, int arg2)
 
 INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017FD58);
 
-INCLUDE_ASM("asm/nonmatchings/snd/sndman", func_0017FF58);
+extern "C" int func_0017FF58(int arg0, int arg1, int arg2, int arg3, int arg4, float fparg0)
+{
+    int p = X_func_0017F584();
+    if (p == 0) {
+        return -1;
+    }
+    if (*(int *)p != 1) {
+        return -1;
+    }
+    if (arg2 != -0x400) {
+        *(int *)(p + 0x2c) = arg2;
+    }
+    if (arg3 != -0x400) {
+        *(int *)(p + 0x30) = arg3;
+    }
+    if (fparg0 != -1024.0f) {
+        *(float *)(p + 0x3c) = fparg0;
+    }
+    if (arg4 != -0x400) {
+        *(int *)(p + 0x34) = arg4;
+    }
+    int v = *(int *)(p + 0x10);
+    if (v != 0) {
+        if (v == 2) {
+            *(int *)(p + 0x10) = 3;
+        }
+    }
+    return 0;
+}
 
 extern "C" int func_0018000C(int arg0, int arg1, int arg2)
 {
