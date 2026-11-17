@@ -176,7 +176,13 @@ INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A5070);
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A5368);
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A5540);
+extern "C" int func_001A5540(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 0) == 0) {
+        return -2;
+    }
+    return M2C_FIELD(arg0, int *, 0x7d4);
+}
 
 extern "C" void func_001A5558(int arg0)
 {
