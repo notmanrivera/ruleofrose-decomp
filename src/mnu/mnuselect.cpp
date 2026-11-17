@@ -1,5 +1,9 @@
 #include "ror.h"
 #include "include_asm.h"
+extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
+extern "C" int Xii_func_001A074C(int) asm("func_001A074C");
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void Xv_func_001879C4(void *) asm("func_001A074C");
 struct MnuSel;
 #define I(p, off) (*(int *)((char *)(p) + (off)))
 extern "C" void __builtin_delete(void *);
@@ -15,18 +19,13 @@ extern "C" void func_001A066C(int *self)
 }
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
-extern "C" void func_001A0684(MnuSel *self, int theFlag)
+extern "C" void func_001A0684(int arg0, int arg1)
 {
-    func_001A074C(self);
-    if (theFlag & 1) {
-        __builtin_delete(self);
+    Xv_func_001879C4((void *)arg0);
+    if (arg1 & 1) {
+        return Xv___builtin_delete((void *)arg0);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mnu/mnuselect", func_001A0684);
-#endif
 
 
 extern "C" void func_001A06D4(MnuSel *self)
