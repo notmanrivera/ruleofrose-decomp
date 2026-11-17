@@ -1,5 +1,13 @@
 #include "include_asm.h"
 #include "ror.h"
+extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
+extern "C" int Xiii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
+extern int _vt$7ClrMain;
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
+extern int _vt$7HfmMain;
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
 extern "C" int Xii_func_00202F10(int) asm("func_00202F10");
 extern "C" int Xiiii_func_001680A0(int, int, int) asm("func_001680A0");
 extern "C" int Xiiiiff_func_001679B4(int, int, int, float, float) asm("func_001679B4");
@@ -38,7 +46,14 @@ extern int D_007B205C;
 
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrMain__vfunc_07);
 
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrMain__vfunc_01);
+extern "C" void ClrMain__vfunc_01(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x200) = (int)&_vt$7ClrMain;
+    Xii_EmyMain__vfunc_01(arg0, 0);
+    if (arg1 & 1) {
+        return Xv___builtin_delete((void *)arg0);
+    }
+}
 
 // NON_MATCHING: 3/128 differ, 3 edits
 #ifdef NON_MATCHING
