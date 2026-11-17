@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "bed/bedpfh.h"
+extern "C" int Xiiiii_func_00197E68(int, int, int, int) asm("func_00197E68");
 extern "C" int Xiii_func_001943D8(int, int) asm("func_001943D8");
 extern "C" void X_func_00193868_v1(int) asm("func_00193868");
 extern "C" void X_func_001348B0_v1(int, int) asm("func_001348B0");
@@ -949,7 +950,53 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00197A74);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00197D28);
+extern "C" void func_00197D28(int arg0)
+{
+    register int self PS2_REG("$17");
+    register int p PS2_REG("$16");
+    register int i PS2_REG("$18");
+    int temp_v0;
+
+    self = arg0;
+    temp_v0 = M2C_FIELD(self, int *, 0x130);
+    if (temp_v0 != 0) {
+        p = M2C_FIELD(self, int *, 0x12C);
+        i = 0;
+        if (temp_v0 > 0) {
+            do {
+                if (M2C_FIELD(p, int *, 0x10) < M2C_FIELD(M2C_FIELD(self, int *, 0x9C) + (M2C_FIELD(p, int *, 0xC) << 4), int *, 4)) {
+                    M2C_FIELD(p, int *, 0x10)++;
+                }
+                i += 1;
+                p += 0x20;
+            } while (i < M2C_FIELD(self, int *, 0x130));
+        }
+        i = 0;
+        p = M2C_FIELD(self, int *, 0x12C);
+        if (M2C_FIELD(self, int *, 0x130) > 0) {
+            do {
+                if (M2C_FIELD(p, int *, 0) & 1) {
+                    if (M2C_FIELD(p, int *, 4) != -1) {
+                        if (Xiii_func_001943D8(self, M2C_FIELD(p, int *, 4)) != 0) {
+                            Xiiiii_func_00197E68(self, i, M2C_FIELD(p, int *, 4), 0);
+                            M2C_FIELD(p, int *, 0) = M2C_FIELD(p, int *, 0) & ~1;
+                        }
+                    }
+                }
+                if (M2C_FIELD(p, int *, 0) & 2) {
+                    if (M2C_FIELD(p, int *, 8) != -1) {
+                        if (Xiii_func_001943D8(self, M2C_FIELD(p, int *, 8)) != 0) {
+                            Xiiiii_func_00197E68(self, i, M2C_FIELD(p, int *, 8), 1);
+                            M2C_FIELD(p, int *, 0) = M2C_FIELD(p, int *, 0) & ~2;
+                        }
+                    }
+                }
+                i += 1;
+                p += 0x20;
+            } while (i < M2C_FIELD(self, int *, 0x130));
+        }
+    }
+}
 
 extern "C" void func_00197E68(int arg0, int arg1, int arg2, int arg3)
 {
