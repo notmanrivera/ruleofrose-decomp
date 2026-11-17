@@ -1,4 +1,25 @@
 #include "include_asm.h"
+#define F20_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int F20_Xii_func_00118FEC__9MagSystem(int) asm("func_00118FEC__9MagSystem");
+extern "C" int F20_Xii_func_00119090__9MagSystem(int) asm("func_00119090__9MagSystem");
+extern "C" int F20_Xii_func_001517E0(int) asm("func_001517E0");
+extern "C" int F20_Xii_func_00202F10(int) asm("func_00202F10");
+extern "C" int F20_Xiii_func_0016649C(int, int) asm("func_0016649C");
+extern "C" int F20_Xiii_func_001694CC(int, int) asm("func_001694CC");
+extern "C" int F20_Xiiii_func_001680A0(int, int, int) asm("func_001680A0");
+extern "C" int F20_Xiiu_func_001D19A8(int, unsigned int) asm("func_001D19A8");
+extern "C" int F20_Xiiui_func_001D10D0(int, unsigned int, int) asm("func_001D10D0");
+extern "C" int F20_Xiiui_func_001D1410(int, unsigned int, int) asm("func_001D1410");
+extern "C" int F20_Xiuiiiiui_func_001FAC60(unsigned int, int, int, int, int, unsigned int, int) asm("func_001FAC60");
+extern "C" int F20_Xiuiuf_func_0016A1DC(unsigned int, int, unsigned int, float) asm("func_0016A1DC");
+inline void f20Inc(int *p) { (*p)++; }
+inline void f20Hit(int arg0, unsigned int var_a2) { int temp_v0_4; if (F20_Xiuiuf_func_0016A1DC(F20_FIELD(arg0, unsigned int *, 0), 2, var_a2, 20.0f) != 0) {
+                temp_v0_4 = F20_FIELD(arg0, int *, 0xC);
+                f20Inc((int *)(temp_v0_4 + 0x23C));
+                F20_Xiii_func_001694CC(arg0, 0x50);
+                F20_FIELD(arg0, int *, 0x60) = 1;
+                F20_Xiuiiiiui_func_001FAC60(0xBU, (int) F20_FIELD(arg0, unsigned int *, 0), 0, 0, 0x21, var_a2, 0);
+            } }
 extern int f19pc asm("D_007A3350");
 extern int f19other asm("D_007A3354");
 extern "C" int F19_Xii_func_00118FEC__9MagSystem(int) asm("func_00118FEC__9MagSystem");
@@ -235,7 +256,100 @@ INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_00151D4C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_00151F1C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_001520CC);
+extern "C" int func_001520CC(int arg0)
+{
+    float var_f1;
+    int temp_v0_2;
+    int temp_v1;
+    int temp_v1_2;
+    int var_v1;
+    unsigned int temp_a0_3;
+    unsigned int temp_v0;
+    unsigned int temp_v0_3;
+    register unsigned int var_a2 PS2_REG("$6");
+    unsigned int var_s1;
+    int temp_a0;
+    int temp_a0_2;
+    int temp_v0_4;
+    int temp_v1_3;
+
+    switch (M2C_FIELD(arg0, int *, 4)) {
+    case 0:
+            temp_v1_2 = M2C_FIELD(arg0, int *, 0x24);
+            if (temp_v1_2 == 2) {
+                F20_Xii_func_00202F10(M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1F0));
+                return 9;
+            }
+            if ((temp_v1_2 == 1) || ((unsigned int) M2C_FIELD(arg0, unsigned int *, 0x3C) >= (unsigned int) M2C_FIELD(arg0, unsigned int *, 0x38))) {
+                F20_Xii_func_00202F10(M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1F0));
+                F20_Xiii_func_001694CC(arg0, 0x53);
+                F20_Xiii_func_001694CC(arg0, 0x63);
+                M2C_FIELD(arg0, int *, 0x64) = 0;
+                M2C_FIELD(arg0, int *, 0x60) = 0;
+                F20_Xiiii_func_001680A0(arg0, 0x1C, 0);
+                M2C_FIELD(arg0, unsigned int *, 0x48) = 0U;
+                M2C_FIELD(arg0, int *, 4) = 1;
+            }
+            
+            break;
+    case 1:
+    temp_a0_2 = M2C_FIELD(arg0, int *, 0xC);
+    temp_v0_3 = M2C_FIELD(arg0, unsigned int *, 0x48) + 1;
+    M2C_FIELD(arg0, unsigned int *, 0x48) = temp_v0_3;
+    if (temp_v0_3 >= 0xFU) {
+        F20_Xiii_func_0016649C(temp_a0_2, 0);
+        F20_Xiiui_func_001D10D0((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x400);
+    } else {
+        F20_Xiii_func_0016649C(temp_a0_2, 1);
+        F20_Xiiui_func_001D1410((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x400);
+    }
+    var_f1 = (float)f19Range(M2C_FIELD(arg0, int *, 0x48), 19, 25);
+    if (var_f1 != 0.0f) {
+        if ((M2C_FIELD(arg0, int *, 0x60) == 0) && (F20_Xii_func_00118FEC__9MagSystem((int) (int)&D_006E9840) != 9)) {
+            var_a2 = 0;
+            if (f19pc != 0) {
+                var_a2 = M2C_FIELD(f19pc, unsigned int *, 0x100);
+            }
+            f20Hit(arg0, var_a2);
+        }
+        temp_v1_3 = M2C_FIELD(arg0, int *, 0xC);
+        if (((M2C_FIELD(temp_v1_3, int *, 0x218) == 0) || (M2C_FIELD(temp_v1_3, int *, 0x230) != 0)) && (M2C_FIELD(arg0, int *, 0x64) == 0) && (F20_Xii_func_00119090__9MagSystem((int) (int)&D_006E9840) != 0xA) && (F20_Xii_func_00119090__9MagSystem((int) (int)&D_006E9840) != 0xD)) {
+            var_s1 = 0;
+            if (f19other != 0) {
+                var_s1 = M2C_FIELD(f19other, unsigned int *, 0x100);
+            }
+            if (F20_Xiuiuf_func_0016A1DC(M2C_FIELD(arg0, unsigned int *, 0), 2, var_s1, 20.0f) != 0) {
+                F20_Xiii_func_001694CC(arg0, 0x50);
+                M2C_FIELD(arg0, int *, 0x64) = 1;
+                F20_Xiuiiiiui_func_001FAC60(0xBU, (int) M2C_FIELD(arg0, unsigned int *, 0), 0, 0, 0x21, var_s1, 0);
+            }
+        }
+    }
+    if (M2C_FIELD(arg0, unsigned int *, 0x48) == 0x19) {
+        M2C_FIELD(arg0, int *, 4) = 3;
+    }
+    break;
+    case 3:
+        temp_a0 = M2C_FIELD(arg0, int *, 0xC);
+        temp_v0 = M2C_FIELD(arg0, unsigned int *, 0x48) + 1;
+        M2C_FIELD(arg0, unsigned int *, 0x48) = temp_v0;
+        if (temp_v0 < 0x1EU) {
+            F20_Xiii_func_0016649C(temp_a0, 0);
+            F20_Xiiui_func_001D10D0((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x400);
+        } else {
+            F20_Xiii_func_0016649C(temp_a0, 1);
+            F20_Xiiui_func_001D1410((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x400);
+        }
+        if (f19Done((int)&D_007812C0, arg0)) {
+                F20_Xiii_func_0016649C(M2C_FIELD(arg0, int *, 0xC), 1);
+                F20_Xiiui_func_001D1410((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x400);
+                M2C_FIELD(arg0, unsigned int *, 0x48) = 0U;
+                F20_Xii_func_001517E0(arg0);
+        }
+        break;
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_0015246C);
 
