@@ -1,4 +1,16 @@
 #include "include_asm.h"
+extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
+extern "C" int Xii_func_001F723C(int) asm("func_001F723C");
+extern int _vt$10EmyManager;
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void EmyManager_vfunc06(int arg0, int arg1) asm("SeManager__vfunc_01");
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void EmyManager_vfunc06(int arg0, int arg1) asm("SeManager__vfunc_01");
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void EmyManager_vfunc06(int arg0, int arg1) asm("SeManager__vfunc_01");
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void func_001F723C(int);
+extern "C" void EmyManager_vfunc06(int arg0, int arg1) asm("SeManager__vfunc_01");
 extern int _vt$9SeManager;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xii_func_001CF95C(int) asm("func_001CF95C");
@@ -65,4 +77,11 @@ extern "C" void func_001F6EDC(int arg0)
     M2C_FIELD(arg0, int *, 0x304) = (int)&_vt$9SeManager;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/SeManager", SeManager__vfunc_01);
+extern "C" void EmyManager_vfunc06(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 772) = (int)&_vt$9SeManager;
+    func_001F723C(arg0);
+    if (arg1 & 1) {
+        return X___builtin_delete((void *)arg0);
+    }
+}
