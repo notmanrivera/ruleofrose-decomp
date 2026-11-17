@@ -1,4 +1,19 @@
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
+extern "C" int Xii_func_0017C754(int) asm("func_0017C754");
+extern int _vt$8SctLayer;
+extern int _vt$10EmyManager;
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void EmyManager_vfunc06(int arg0, int arg1) asm("SctLayer__vfunc_01");
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void EmyManager_vfunc06(int arg0, int arg1) asm("SctLayer__vfunc_01");
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void EmyManager_vfunc06(int arg0, int arg1) asm("SctLayer__vfunc_01");
+extern int _vt$8SctLayer;
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void func_0017C754(int);
+extern "C" void EmyManager_vfunc06(int arg0, int arg1) asm("SctLayer__vfunc_01");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_alloc__9BedMemoryii(...) asm("alloc__9BedMemoryii");
 extern "C" int X_free__9BedMemoryPv(...) asm("free__9BedMemoryPv");
@@ -71,7 +86,14 @@ INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C4F4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C58C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", SctLayer__vfunc_01);
+extern "C" void EmyManager_vfunc06(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 20) = (int)&_vt$8SctLayer;
+    func_0017C754(arg0);
+    if (arg1 & 1) {
+        return X___builtin_delete((void *)arg0);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/SctLayer", D_002F3060);
 
