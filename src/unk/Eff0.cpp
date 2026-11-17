@@ -1117,8 +1117,6 @@ extern "C" int EffBloodStay3Prim__vfunc_05(int arg0)
 }
 
 
-// NON_MATCHING: 2/161 differ, 2 edits
-#ifdef NON_MATCHING
 struct ALIGNED(8) Prim08Vec { float x,y,z,w; };
 struct Prim08Pair { long long a,b; };
 extern "C" int prim08Write(int,int,unsigned long long) asm("func_0021B550");
@@ -1135,59 +1133,101 @@ extern "C" void prim08Scale(void *,void *,Prim08Vec *) asm("func_00237A40");
 extern "C" int prim08Packet(int,void *) asm("func_0021E428");
 extern "C" int prim08Vertex(int,void *,Prim08Vec *) asm("func_0021E690");
 extern "C" void prim08End(int) asm("func_0021E688");
-extern "C" void EffBloodStay3Prim__vfunc_08(int obj,int render,int state,int packet)
+extern "C" void EffBloodStay3Prim__vfunc_08(int obj, int render, int state, int packet)
 {
-    Prim08Vec uv;
-    Prim08Vec color;
-    Prim08Vec temp;
-    long long matrix[8];
-    float size = 0.0f;
-    int cmd = prim08Texture(prim08Write(packet,0x42,0x44),M2C_FIELD(render,int *,8));
-    cmd = prim08Start(prim08Join(cmd,prim08State(state,0)),M2C_FIELD(render,int *,8),1);
-    switch (M2C_FIELD(obj,int *,0x24)) {
+  Prim08Vec uv;
+  Prim08Vec color;
+  Prim08Vec *new_var;
+  Prim08Vec temp;
+  long long matrix[8];
+  float size = 0.0f;
+  int cmd = prim08Texture(prim08Write(packet, 0x42, 0x44), *((int *) (((char *) render) + 8)));
+  cmd = prim08Start(prim08Join(cmd, prim08State(state, 0)), *((int *) (((char *) render) + 8)), 1);
+  switch (*((int *) (((char *) obj) + 0x24)))
+  {
     case 0:
-        if (M2C_FIELD(obj,int *,0x28) == 0) { uv.x=0.0f; uv.z=0.5f; }
-        else { uv.x=0.5f; uv.z=-0.5f; }
-        uv.y=0.0f; uv.w=1.0f;
-        size=1.0f;
-        break;
+      if ((*((int *) (((char *) obj) + 0x28))) == 0)
+    {
+      uv.x = 0.0f;
+      uv.z = 0.5f;
+    }
+    else
+    {
+      uv.x = 0.5f;
+      uv.z = -0.5f;
+    }
+      uv.y = 0.0f;
+      uv.w = 1.0f;
+      size = 1.0f;
+      break;
+
     case 1:
-        if (!(M2C_FIELD(obj,int *,0x28)&2)) { uv.x=0.5f; uv.z=0.5f; }
-        else { uv.x=1.0f; uv.z=-0.5f; }
-        uv.y=0.0f; uv.w=1.0f;
-        size=1.0f;
-        break;
+      if (!((*((int *) (((char *) obj) + 0x28))) & 2))
+    {
+      uv.x = 0.5f;
+      uv.z = 0.5f;
     }
-    cmd=prim08UV(cmd,&uv);
-    temp.w=M2C_FIELD(obj,float *,0x44);
-    temp.x=1.0f; temp.y=1.0f; temp.z=1.0f;
-    color=temp;
-    prim08Light(&color);
-    int age=M2C_FIELD(obj,int *,0x48);
-    register float fade PS2_REG("$f0");
-    register float alpha PS2_REG("$f1");
-    register float denominator PS2_REG("$f2");
-    if (age<15) { fade=(float)age; denominator=15.0f; fade /= denominator; alpha=color.w; goto fadeAlpha; }
-    if (age>=135) {
-        denominator=30.0f;
-        fade=(float)(age-135);
-        alpha=color.w;
-        fade=1.0f-fade/denominator;
-fadeAlpha:
-        alpha *= fade;
-        color.w = alpha;
+    else
+    {
+      uv.x = 1.0f;
+      uv.z = -0.5f;
     }
-    prim08Clear(&temp,0,16);
-    temp.y=-1.0f;
-    prim08Matrix(matrix,&temp);
-    prim08Rotate(matrix,matrix,M2C_FIELD(obj,float *,0x40));
-    temp.y=size; temp.x=size; temp.w=1.0f; temp.z=1.0f;
-    prim08Scale(matrix,matrix,&temp);
-    prim08End(prim08Vertex(prim08Packet(cmd,matrix),(void *)(obj+0x30),&color));
+      uv.y = 0.0f;
+      uv.w = 1.0f;
+      size = 1.0f;
+      break;
+
+  }
+
+  cmd = prim08UV(cmd, &uv);
+  temp.w = *((float *) (((char *) obj) + 0x44));
+  temp.x = 1.0f;
+  temp.y = 1.0f;
+  new_var = &color;
+  temp.z = 1.0f;
+  color = temp;
+  prim08Light(new_var);
+  int age = *((int *) (((char *) obj) + 0x48));
+  register float fade asm("$f0");
+  register float alpha asm("$f1");
+  register float denominator asm("$f2");
+  if (age < 15)
+  {
+    fade = (float) age;
+    denominator = 15.0f;
+    fade /= denominator;
+    alpha = color.w;
+    goto fadeAlpha;
+  }
+  if (age >= 135)
+  {
+    denominator = 30.0f;
+    fade = (float) (age - 135);
+    alpha = color.w;
+    fade = 1.0f - (fade / denominator);
+    fadeAlpha:
+    alpha *= fade;
+
+    if (age || obj)
+    {
+      color.w = alpha;
+    }
+    else
+    {
+      color.w = alpha;
+    }
+  }
+  prim08Clear(&temp, 0, 16);
+  temp.y = -1.0f;
+  prim08Matrix(matrix, &temp);
+  prim08Rotate(matrix, matrix, *((float *) (((char *) obj) + 0x40)));
+  temp.y = size;
+  temp.x = size;
+  temp.w = 1.0f;
+  temp.z = 1.0f;
+  prim08Scale(matrix, matrix, &temp);
+  prim08End(prim08Vertex(prim08Packet(cmd, matrix), (void *) (obj + 0x30), new_var));
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay3Prim__vfunc_08);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBreath1__vfunc_02);
 
