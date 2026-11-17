@@ -7,7 +7,9 @@ permuter for our C++ (decomp-permuter parses C only).
 It starts from the function's best version so far (tools/work.py keeps it
 in build/work/.best/; else its scratch file) and tries rewrites that can
 change what ee-gcc 2.96 emits: swapping two neighbouring independent
-statements, swapping the operands of a commutative operator, an && or a
+statements (also two stores to different targets of one object),
+swapping two neighbouring declarations, swapping the sides of any
+'X = A op B' with one commutative operator, swapping the operands of a commutative operator, an && or a
 comparison, signed/unsigned locals, inverting an if/else, for <-> while,
 putting a repeated p->m in a temporary, inlining a single-use temporary.
 Every single rewrite is tried first, then random chains of them (a random
@@ -65,15 +67,107 @@ def idents(line):
     return set(IDENT.findall(line)) - KEYWORDS
 
 
+def lhs(stmt):
+    """The target of 'X = ...;' / 'X op= ...;' (top level), or None."""
+    depth = 0
+    for i, c in enumerate(stmt):
+        depth += {"(": 1, "[": 1, ")": -1, "]": -1}.get(c, 0)
+        if depth == 0 and c == "=" and stmt[i + 1:i + 2] != "=" and stmt[i - 1:i] not in ("=", "!", "<", ">"):
+            j = i - 1 if stmt[i - 1:i] in "+-*/%&|^" and stmt[i - 1:i] else i
+            if stmt[j - 1:j + 1] in ("<<", ">>"):
+                j -= 1
+            return stmt[:j].strip()
+    return None
+
+
+def uses(text, target):
+    """Whether text mentions target (a whole name, or the same expression)."""
+    if IDENT.fullmatch(target):
+        return re.search(rf"\b{re.escape(target)}\b", text) is not None
+    return target.replace(" ", "") in text.replace(" ", "")
+
+
+def independent(a, b):
+    """Two plain statements that can trade places: identifiers apart, or two
+    stores whose targets the other one does not mention (stores to
+    different fields of one object; the bytes decide the rest)."""
+    if not idents(a) & idents(b):
+        return True
+    la, lb = lhs(a), lhs(b)
+    if la is None or lb is None or la.replace(" ", "") == lb.replace(" ", ""):
+        return False
+    return not uses(b, la) and not uses(a, lb)
+
+
 def swaps(lines):
     out = []
     for i in body(lines):
         a, b = lines[i], lines[i + 1] if i + 1 < len(lines) else ""
         if (SIMPLE.match(a) and SIMPLE.match(b) and not CONTROL.match(a) and not CONTROL.match(b)
-                and not DECL.match(a) and not DECL.match(b) and not idents(a) & idents(b)):
+                and not DECL.match(a) and not DECL.match(b) and independent(a.strip(), b.strip())):
             new = list(lines)
             new[i], new[i + 1] = b, a
             out.append(new)
+    return out
+
+
+def decl_swaps(lines):
+    """Two neighbouring declarations in the other order (it can change which
+    register a local gets)."""
+    out = []
+    pat = re.compile(r"^\s*(?:(?:unsigned|signed|const|volatile|register|struct)\s+)*[A-Za-z_]\w*[\s*]+[A-Za-z_]\w*"
+                     r"(?:\s*\[[^\]]*\])?\s*(?:=\s*[^;]+)?;\s*$")
+    for i in body(lines):
+        a, b = lines[i], lines[i + 1] if i + 1 < len(lines) else ""
+        if pat.match(a) and pat.match(b) and not CONTROL.match(a) and not CONTROL.match(b):
+            na = re.findall(r"([A-Za-z_]\w*)\s*(?:\[[^\]]*\])?\s*(?:=|;)", a)[:1]
+            if na and "=" in b and re.search(rf"\b{na[0]}\b", b.split("=", 1)[1]):
+                continue                      # b's initialiser reads a
+            new = list(lines)
+            new[i], new[i + 1] = b, a
+            out.append(new)
+    return out
+
+
+def top_split(expr):
+    """[(start, end, op)] of the operators at paren depth 0 of expr."""
+    out, depth, i = [], 0, 0
+    while i < len(expr):
+        c = expr[i]
+        if c in "([":
+            depth += 1
+        elif c in ")]":
+            depth -= 1
+        elif depth == 0 and expr[i:i + 3] in (" + ", " * ", " & ", " | ", " ^ ", " - ", " / ", " % ",
+                                               " < ", " > ", " ? ", " : "):
+            out.append((i, i + 3, expr[i + 1]))
+            i += 3
+            continue
+        elif depth == 0 and expr[i:i + 4] in (" << ", " >> ", " && ", " || ", " == ", " != ", " <= ", " >= "):
+            out.append((i, i + 4, expr[i + 1:i + 3]))
+            i += 4
+            continue
+        i += 1
+    return out
+
+
+def wide_commutes(lines):
+    """'X = A op B;' -> 'X = B op A;' for one commutative top-level operator,
+    whatever A and B are (casts, calls, parentheses)."""
+    out = []
+    pat = re.compile(r"^(\s*[^=;]*?[^=!<>+\-*/%&|^]=\s*)([^;]+?)(;\s*)$")
+    for i in body(lines):
+        m = pat.match(lines[i])
+        if not m or CONTROL.match(lines[i]):
+            continue
+        ops = top_split(m.group(2))
+        if len(ops) == 1 and ops[0][2] in ("+", "*", "&", "|", "^"):
+            s0, e0, _ = ops[0]
+            rhs = m.group(2)
+            new = list(lines)
+            new[i] = f"{m.group(1)}{rhs[e0:].strip()} {ops[0][2]} {rhs[:s0].strip()}{m.group(3)}"
+            if new[i] != lines[i]:
+                out.append(new)
     return out
 
 
@@ -215,7 +309,8 @@ def inlines(lines):
     return out
 
 
-MUTATIONS = [swaps, commutes, compares, ands, signedness, invert_ifs, loops, temps, inlines]
+MUTATIONS = [swaps, commutes, compares, ands, signedness, invert_ifs, loops, temps, inlines,
+             decl_swaps, wide_commutes]
 
 
 def split(work_text):
