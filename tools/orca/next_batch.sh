@@ -131,9 +131,12 @@ fi
 
 # On the reserve model past the main one's reset: back to the main model.
 if [ -z "$DRY" ] && [ -n "$ON_RESERVE" ] && [ "$(date +%s)" -ge "$ON_RESERVE" ] && [ -n "$PRIMARY" ]; then
-  HANDLE=$(runcopy orca/switch_model.sh "$NAME" "$PRIMARY" | tail -1)
-  ON_RESERVE=""; NEW=1; save
-  echo "$NAME: the main model's quota is back: $PRIMARY"
+  h=$(runcopy orca/switch_model.sh "$NAME" "$PRIMARY" | tail -1) || true
+  case $h in
+    term_*) HANDLE=$h; ON_RESERVE=""; NEW=1; save; echo "$NAME: the main model's quota is back: $PRIMARY" ;;
+    *) ON_RESERVE=$(( $(date +%s) + 3600 )); save
+       echo "$NAME: switching back to $PRIMARY failed ($h); staying on the reserve one more hour" ;;
+  esac
 fi
 
 # A worker still busy gets nothing new (its TUI would queue the text).
@@ -179,6 +182,17 @@ if [ -n "$BATCH" ] && [ -n "$FILE" ] && [ -n "$MERGE" ]; then
     if [ "$FZERO" -ge 2 ] && [ -z "$NEWFILE" ]; then
       echo "$NAME: no bytes from its last $FZERO batches on $FILE; moving to another file"
       DROPPED="${DROPPED:+$DROPPED,}$FILE"; FILE=""; FZERO=0
+    fi
+    # A file that keeps giving a little but slowly (game/gamman: 714 min for
+    # 1,296 B): 4 h or more of this worker's last day on it at under 5 B/min.
+    if [ -n "$FILE" ] && [ -z "$NEWFILE" ]; then
+      since=$(date -d '24 hours ago' '+%F %H:%M' 2>/dev/null || echo "")
+      slow=$(awk -F'\t' -v w="$NAME" -v f="$FILE" -v s="$since" \
+        '$2 == w && $4 == f && $1 >= s {m += $9; b += $8} END {if (m >= 240 && b < 5 * m) printf "%d %d", m, b}' "$STATS")
+      if [ -n "$slow" ]; then
+        echo "$NAME: $FILE gave $(echo "$slow" | cut -d' ' -f2) B in $(echo "$slow" | cut -d' ' -f1) min over the last day; moving to another file"
+        DROPPED="${DROPPED:+$DROPPED,}$FILE"; FILE=""; FZERO=0
+      fi
     fi
   fi
   n=0
@@ -278,20 +292,64 @@ save
 [ -n "$LOOP" ] || exit $code
 again=""
 if [ $code -eq 3 ]; then
+  # The quota cut the batch: save what it reached before anything else, so
+  # a fresh session (or another model) does not start from nothing. Per
+  # function still plain INCLUDE_ASM in the worker's src/: its best check
+  # (build/work/.best) goes in with work.py --done when it matched, or
+  # --keep (NON_MATCHING) when it compiled; both verify the object. Only
+  # with a clean src/ there (else the worker's own edits are in the way).
+  # Its INCLUDE_ASM line, outside any #ifdef NON_MATCHING block.
+  plain_asm() {
+    awk -v f="$1" '/^#if/ {d++; if ($0 ~ /^#ifdef NON_MATCHING/) nm = d}
+      /^#endif/ {if (d == nm) nm = 0; d--}
+      !nm && index($0, "INCLUDE_ASM(") == 1 && $0 ~ ("\", *" f "[)];$") {hit = 1}
+      END {exit !hit}' "$2"
+  }
+  msg=""
+  if [ -n "$BATCH" ] && [ -n "$FILE" ] && git -C "$WT" diff --quiet -- src 2>/dev/null; then
+    for f in $(echo "$BATCH" | tr ',' ' '); do
+      b="$WT/build/work/.best/$FILE/$f.cpp"
+      [ -e "$b" ] && plain_asm "$f" "$WT/src/$FILE.cpp" || continue
+      st=$(head -1 "$b" | sed 's|^// best: ||')
+      case $st in
+        asm) continue ;;
+        *MATCH) tail -n +2 "$b" > "$WT/build/work/$FILE/$f.cpp"
+                (cd "$WT" && "$PY" tools/work.py "$FILE" "$f" --done >/dev/null 2>&1) && msg="$FILE: $f" ;;
+        *) (cd "$WT" && "$PY" tools/work.py "$FILE" "$f" --keep >/dev/null 2>&1) && msg="$FILE: $f (NON_MATCHING)" ;;
+      esac
+      if ! git -C "$WT" diff --quiet -- "src/$FILE.cpp"; then
+        git -C "$WT" commit -q -m "$msg" -- "src/$FILE.cpp" && echo "  saved after the quota cut: $msg ($st)"
+      fi
+      msg=""
+    done
+  fi
   secs=$(screen | "$PY" tools/orca/screen.py wait)
+  # "long <secs>": a reset days away (a weekly limit), not waited for.
+  long=""; case $secs in long*) long=${secs#long }; secs="" ;; esac
+  switched=""
   if [ -n "$RESERVE" ] && [ -z "$ON_RESERVE" ]; then
     # Out of quota on the main model: go on with the reserve one until the
-    # main one resets (4 h if the screen does not say).
-    ON_RESERVE=$(( $(date +%s) + ${secs:-14400} ))
-    HANDLE=$(runcopy orca/switch_model.sh "$NAME" "$RESERVE" | tail -1)
-    save
-    echo "$NAME: out of quota; on the reserve model $RESERVE until $(date -d "@$ON_RESERVE" '+%H:%M' 2>/dev/null)"
-  else
+    # main one resets (4 h if the screen does not say). switch_model.sh
+    # prints the new handle last only when the model on screen is the one
+    # asked for.
+    h=$(runcopy orca/switch_model.sh "$NAME" "$RESERVE" | tail -1) || true
+    case $h in
+      term_*)
+        HANDLE=$h; ON_RESERVE=$(( $(date +%s) + ${long:-${secs:-14400}} )); switched=1; save
+        echo "$NAME: out of quota; on the reserve model $RESERVE until $(date -d "@$ON_RESERVE" '+%F %H:%M' 2>/dev/null)" ;;
+      *) echo "$NAME: out of quota, and switching to the reserve $RESERVE failed: $h" ;;
+    esac
+  fi
+  if [ -z "$switched" ]; then
     # No reserve, or the reserve is out too: wait for the reset (the main
     # model's, if that comes first), when the screen says when it is.
     if [ -n "$ON_RESERVE" ]; then
       left=$(( ON_RESERVE - $(date +%s) )); [ "$left" -gt 0 ] || left=60
       [ -n "$secs" ] && [ "$secs" -lt "$left" ] || secs=$left
+    fi
+    if [ -z "$secs" ] && [ -n "$long" ]; then
+      echo "$NAME: out of quota until $(date -d "@$(( $(date +%s) + long ))" '+%F %H:%M' 2>/dev/null) ($((long / 3600)) h); loop stopped"
+      exit 3
     fi
     [ -n "$secs" ] || { echo "$NAME: out of quota, no reset time on screen; loop stopped"; exit 3; }
     echo "$NAME: out of quota; waiting $((secs / 60)) min for the reset"

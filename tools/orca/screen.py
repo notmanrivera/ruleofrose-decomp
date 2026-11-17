@@ -5,6 +5,7 @@
     orca terminal read --terminal H --screen --json | python tools/orca/screen.py model
     ... | python tools/orca/screen.py context   # context use in %, if the TUI shows it
     ... | python tools/orca/screen.py wait      # seconds until a usage limit resets
+                                                # ("long <secs>" past LIMIT_HOURS)
 
 Prints nothing when the screen does not say. Known screens: OpenCode
 ("Build · DeepSeek V4.1 Flash OpenCode Go · high", "778.6K (78%)",
@@ -69,7 +70,7 @@ def wait(tail, now=None):
             return ""
         secs = int(m.group(1) or 0) * 3600 + int(m.group(2) or 0) * 60 + int(m.group(3) or 0)
     if secs > LIMIT_HOURS * 3600:
-        return ""
+        return f"long {int(secs)}"   # not worth waiting for: the loop stops
     return str(int(secs) + 180)   # a few minutes' margin
 
 
