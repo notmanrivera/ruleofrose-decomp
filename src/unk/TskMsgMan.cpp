@@ -2284,7 +2284,28 @@ extern "C" float func_001EF100(float fparg0)
     return 24.0f - (fparg0 * 16.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", TskMovePhysic__vfunc_04);
+extern "C" void TskMovePhysic__vfunc_04(int arg0)
+{
+    short idx;
+    long ent;
+    int fp;
+    short base;
+    int off;
+    int p;
+
+    idx = M2C_FIELD(arg0, short *, 0x72);
+    if (idx >= 0) {
+        p = *(int *) (arg0 + M2C_FIELD(arg0, short *, 0x74));
+        p += idx * 8;
+        ent = *((long *) p - 1);
+        fp = (int) (ent >> 32);
+    } else {
+        fp = M2C_FIELD(arg0, int *, 0x74);
+    }
+    base = M2C_FIELD(arg0, short *, 0x70);
+    off = (idx >= 0) ? (short) ent + base : base;
+    ((void (*)(int)) fp)(arg0 + off);
+}
 
 // NON_MATCHING: 151/163 differ, 19 relocs differ (size 0x28C, game 0x290), 20 edits
 #ifdef NON_MATCHING
