@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0016A6B4(int) asm("func_0016A6B4");
+extern "C" int Xiii_func_00165280(int, int) asm("func_00165280");
+extern "C" int Xiiif_func_00169A98(int, int, float) asm("func_00169A98");
+extern "C" float Xiii_func_001D4A3C(int, int, int) asm("func_001D4A3C");
 extern "C" int Xii_func_00202F10(int) asm("func_00202F10");
 struct m2c_v200_10_i { char pad[512]; virtual void v1(); virtual int call(); };
 struct m2c_v34_18_i { char pad[52]; virtual void v1(); virtual void v2(); virtual int call(); };
@@ -106,7 +110,20 @@ extern "C" int func_00156298()
 
 INCLUDE_ASM("asm/nonmatchings/unk/FshMain", func_001562AC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/FshMain", func_0015640C);
+extern "C" int func_0015640C(int arg0)
+{
+    struct { char pad0[16]; float sp10; } stack;
+    float temp_f20;
+    int var_a1;
+    int pc;
+
+    Xiii_func_00165280(arg0, (int) &stack);
+    Xii_func_0016A6B4((int) &stack.sp10);
+    temp_f20 = Xiii_func_001D4A3C((int) &D_007812C0, M2C_FIELD(arg0, int *, 0), 0);
+    pc = M2C_FIELD(&D_007812C0, int *, 0x22090);
+    var_a1 = (pc != 0) ? M2C_FIELD(pc, int *, 0x100) : 0;
+    return Xiiif_func_00169A98((int) &stack, (int) &stack.sp10, temp_f20 + Xiii_func_001D4A3C((int) &D_007812C0, var_a1, 0) + 10.0f);
+}
 
 extern "C" int func_001564C0()
 {
