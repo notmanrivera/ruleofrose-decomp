@@ -12,7 +12,7 @@ extrae sus archivos de su propio disco.
 
 ## Fuente
 
-- ISO original: `~/Downloads/Rule of Rose/Rule of Rose.iso` (3.4 GB, dump propio).
+- ISO original: `E:/Rule of Rose decomp - discos/Rule of Rose (USA)/Rule of Rose.iso` (3.4 GB, dump propio). Los demás discos de referencia (Ape Escape 3, Chulip, Chain Dive, demos...) están en la misma carpeta de E:, uno por subcarpeta; `disc/` guarda solo los ejecutables extraídos que usan las herramientas.
 - Versión: **SLUS-21448**, NTSC-U, v1.00 (Atlus, 2006).
 - Otras versiones que existen: la japonesa original (Sony, 2006) y la europea
   (505 Games, 2006). No están comparadas; podrían diferir en código o
