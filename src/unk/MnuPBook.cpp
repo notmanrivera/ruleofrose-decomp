@@ -769,7 +769,47 @@ extern "C" void func_001959EC(int arg0, int arg1)
     M2C_FIELD(arg1, float *, 0) = var_f1;
 }
 
+// NON_MATCHING: 24/81 differ, 4 relocs differ, 9 edits
+#ifdef NON_MATCHING
+extern "C" float func_00196790(int arg0);
+extern "C" int X_func_00279C98(...) asm("func_00279C98");
+extern "C" int func_00195A34(int arg0)
+{
+    float t;
+    float v;
+    int count;
+    int limit;
+    int i;
+    char sp[0x20];
+
+    t = func_00196790(arg0);
+    v = M2C_FIELD(arg0, float *, 0x124) + (M2C_FIELD(arg0, float *, 0x11C) - M2C_FIELD(arg0, float *, 0x124)) * t;
+    count = (int) v / 0x80;
+    limit = count - 3;
+    i = 0;
+    while (i < limit) {
+        func_00194370(arg0, i + 2);
+        i++;
+    }
+    limit = count + 6;
+    i = count + 9;
+    while (i < M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 0x18)) {
+        func_00194370(arg0, i + 2);
+        i++;
+    }
+    i = (count > 0) ? count - 2 : 0;
+    while (i < limit + 2 && i < M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 0x18)) {
+        if (Xiii_func_001943D8(arg0, i + 2) == 0) {
+            X_func_00279C98(sp, "%s_%02d.tm2", M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 8), i + 1);
+            Xiiiii_func_0019397C(arg0, (int) sp, 4, i + 2);
+        }
+        i++;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00195A34);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00195B78);
 
