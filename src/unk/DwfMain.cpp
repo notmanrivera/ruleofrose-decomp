@@ -1,4 +1,5 @@
 #include "include_asm.h"
+struct m2c_v34_10_i { char pad[52]; virtual void v1(); virtual int call(); };
 extern "C" int C304___builtin_new(unsigned int) asm("__builtin_new");
 extern "C" int C304_func_0010423C(...) asm("func_0010423C");
 extern "C" int C304_func_0015DAA8(...) asm("func_0015DAA8");
@@ -408,7 +409,44 @@ extern "C" void DwfMain__vfunc_06(int arg0)
     M2C_FIELD(arg0, int *, 0x24) = ((m2c_v34_18_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfMain__vfunc_02);
+extern "C" int DwfMain__vfunc_02(int arg0)
+{
+    int v;
+    int obj;
+    int vt;
+    register int e8 PS2_REG("$3");
+    int count;
+    register int base PS2_REG("$7");
+    register int v2 PS2_REG("$2");
+    int i;
+    int *dst;
+
+    v = M2C_FIELD(arg0, int *, 0x3C);
+    if (v != 0) {
+        if (v >= 0) {
+            if (v < 0x10) {
+                obj = M2C_FIELD(arg0 + v * 4, int *, 0x48);
+                M2C_FIELD(arg0, int *, 0x44) = obj;
+                vt = M2C_FIELD(obj, int *, 0x34) + 0x10;
+                ((void (*)(int)) M2C_FIELD(vt, int *, 4))(obj + M2C_FIELD(vt, short *, 0));
+            }
+        }
+    }
+    i = 0;
+    e8 = M2C_FIELD(arg0, int *, 0xE8);
+    count = M2C_FIELD(e8, unsigned char *, 1);
+    v2 = M2C_FIELD(arg0, int *, 0x3C);
+    base = M2C_FIELD(e8, int *, 0xC) + (v2 * count);
+    for (; i < count; i++) {
+        dst = (int *) (arg0 + 4);
+        if (M2C_FIELD(base, signed char *, i) != 0) {
+            M2C_FIELD(dst + i, int *, 0x200) = 1;
+        } else {
+            M2C_FIELD(dst + i, int *, 0x200) = 0;
+        }
+    }
+    return 0;
+}
 
 extern "C" int func_0015CE74()
 {
