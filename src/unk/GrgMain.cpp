@@ -1,4 +1,12 @@
 #include "include_asm.h"
+extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
+extern "C" int Xiii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
+extern int _vt$7GrgMain;
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
+extern int _vt$7HfmMain;
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
 struct m2c_v34_10_i { char pad[52]; virtual void v1(); virtual int call(); };
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xii_func_0015558C(int) asm("func_0015558C");
@@ -32,7 +40,14 @@ extern int D_007B205C;
 
 INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", func_00153E40);
 
-INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgMain__vfunc_01);
+extern "C" void GrgMain__vfunc_01(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x200) = (int)&_vt$7GrgMain;
+    Xii_EmyMain__vfunc_01(arg0, 0);
+    if (arg1 & 1) {
+        return Xv___builtin_delete((void *)arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgMain__vfunc_04);
 
