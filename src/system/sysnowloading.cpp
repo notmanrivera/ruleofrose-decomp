@@ -3561,8 +3561,6 @@ extern "C" int func_0020C6F4()
 
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_0020C6FC);
 
-// NON_MATCHING: 4/127 differ, 4 edits
-#ifdef NON_MATCHING
 extern "C" int X_func_0017F5E8(...) asm("func_0017F5E8");
 extern "C" int X_func_00182BE8(...) asm("func_00182BE8");
 extern "C" int X_func_001E7724(...) asm("func_001E7724");
@@ -3574,52 +3572,75 @@ extern int D_007A3574;
 extern int D_007B2580;
 extern "C" int func_0020D428(unsigned int arg0, int arg1)
 {
-    int info[4];
-    int base;
-    int *field;
-    int *field2;
-    int temp_s0;
-    int temp_v0;
-
-    X_getInfo__9BedMemoryP13BedMemoryInfoi((int)&D_006E9800, (int)info, 0);
-    switch (arg0) {
+  int info[4];
+  int base;
+  int *field;
+  int *field2;
+  int temp_s0;
+  int new_var;
+  int temp_v0;
+  X_getInfo__9BedMemoryP13BedMemoryInfoi((int) (&D_006E9800), (int) info, 0);
+  switch (arg0)
+  {
     case 1:
-        base = (int)&D_007812C0;
-        if (X_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(base, int *, 0x222B4)) == 0) {
-            field = (int *)(base + 0x222B4);
-            X_func_0017F5E8((int)&D_007B2580, 1);
-            if (X_func_001E7D7C((int)&D_007A3D80, *field) == 0) {
-                temp_v0 = X___builtin_new(0x80);
-                X_func_001F438C(temp_v0, arg1);
-                X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0, 0, (int)field, 0x11);
-                return 0xCCCCCCCD;
-            }
-        }
-        break;
-    case 2:
-        base = (int)&D_007812C0;
-        field2 = (int *)(base + 0x222B4);
-        if (X_func_001E7D7C((int)&D_007A3D80, *field2) != 0) {
-            X_func_001E7724((int)&D_007A3D80, *field2);
-        }
-        temp_v0 = loadingSetMode((int)&D_007A4440, 5U);
-        if (temp_v0 == 0) return 0;
-        return 0xCCCCCCCC;
-    case 3:
-        return X_func_001E7D7C((int)&D_007A3D80, (*(int *)&D_007A3574));
-    case 4:
-        temp_s0 = (*(int *)&D_007A3574);
-        if (X_func_001E7D7C((int)&D_007A3D80, temp_s0) == 0) {
-            return (M2C_FIELD(X_func_001E79C0((int)&D_007A3D80, temp_s0), int *, 8) >= 0x65) ? 0 : 0xCCCCCCCC;
-        }
-        break;
-    case 5:
-        return X_func_00182BE8();
-    case 0: case 6: case 7: case 8: case 9: case 10:
-        break;
+      base = (int) (field2 = &D_007812C0);
+      if (X_func_001E7D7C((int) (&D_007A3D80), *((int *) (((char *) base) + 0x222B4))) == 0)
+    {
+      field = (int *) (base + 0x222B4);
+      X_func_0017F5E8((int) (&D_007B2580), 1);
+      if (X_func_001E7D7C((int) (&D_007A3D80), *field) == 0)
+      {
+        temp_v0 = X___builtin_new(0x80);
+        X_func_001F438C(temp_v0, arg1);
+        new_var = -1;
+        X_func_001E71FC((int) (&D_007A3D80), 1, new_var, 1, 0, temp_v0, 0, (int) field, 0x11);
+        return 0xCCCCCCCD;
+      }
     }
-    return 0;
+      break;
+
+    case 2:
+      base = (int) (&D_007812C0);
+      field2 = (int *) (base + 0x222B4);
+      if (X_func_001E7D7C((int) (&D_007A3D80), *field2) != 0)
+    {
+      X_func_001E7724((int) (&D_007A3D80), *field2);
+    }
+      temp_v0 = loadingSetMode((int) (&D_007A4440), 5U);
+      if (temp_v0 == 0)
+    {
+      return 0;
+    }
+      return 0xCCCCCCCC;
+
+    case 3:
+      return X_func_001E7D7C((int) (&D_007A3D80), *((int *) (&D_007A3574)));
+
+    case 4:
+      temp_s0 = *((int *) (&D_007A3574));
+      if (X_func_001E7D7C((int) (&D_007A3D80), temp_s0) == 0)
+    {
+      return ((*((int *) (((char *) X_func_001E79C0((int) (&D_007A3D80), temp_s0)) + 8))) >= 0x65) ? (0) : (0xCCCCCCCC);
+    }
+      break;
+
+    case 5:
+      return X_func_00182BE8();
+
+    case 0:
+
+    case 6:
+
+    case 7:
+
+    case 8:
+
+    case 9:
+
+    case 10:
+      break;
+
+  }
+
+  return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_0020D428);
-#endif
