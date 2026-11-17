@@ -41,7 +41,9 @@ def asm_lines(name, fn):
     for line in path.read_text(errors="replace").splitlines():
         m = INSN.match(line)
         if m:
-            ops = re.sub(r"\$\w+", "", m.group(2))          # registers are the same in twins
+            # registers are the same in twins ($2, $f0); not the $ inside
+            # a symbol such as _vt$7BdlMain
+            ops = re.sub(r"(?<![\w$])\$\w+", "", m.group(2))
             ops = re.sub(r"\.L[0-9A-F_]+|\.\s*\+.*", "", ops)    # local branch targets
             out.append((m.group(1), TOKEN.findall(ops)))
     return out
@@ -88,6 +90,37 @@ def apply(body, subst):
     return re.sub(r"(?<![\w.])(?:0x[0-9A-Fa-f]+|\d+)(?![\w.])", num, body)
 
 
+IDENT = re.compile(r"[A-Za-z_][\w$]*")
+
+
+def declarations(body, twin_file, target_file, subst):
+    """The one-line 'extern ...;' declarations of the twin's file that the
+    body needs and the target file lacks, substitutions applied (so the
+    function's own asm("label") alias and its vtable get this function's
+    names)."""
+    twin_text = (ROOT / "src" / f"{twin_file}.cpp").read_text(errors="replace")
+    # A name only inside an asm("label") or a string is not declared there.
+    target_text = re.sub(r'asm\("[^"]*"\)|"[^"]*"', "",
+                         (ROOT / "src" / f"{target_file}.cpp").read_text(errors="replace"))
+    need = set(IDENT.findall(body))
+    out = []
+    for line in twin_text.splitlines():
+        s = line.strip()
+        if not s.startswith("extern") or not s.endswith(";") or "{" in s:
+            continue
+        new = apply(s, subst)                 # compared with the body, which is substituted too
+        names = set(IDENT.findall(re.sub(r'asm\("[^"]*"\)|"[^"]*"', "", new)))
+        hit = [n for n in names & need if n not in ("extern", "int", "void", "char", "short", "unsigned", "C")]
+        if not hit:
+            continue
+        declared = [n for n in IDENT.findall(re.sub(r'asm\("[^"]*"\)|"[^"]*"', "", new)) if n in need]
+        if all(re.search(rf"(?<![\w$]){re.escape(n)}(?![\w$])", target_text) for n in declared):
+            continue                          # the target file has them already
+        if new not in out:
+            out.append(new)
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--file", help="only this file's pending twins")
@@ -122,7 +155,10 @@ def main():
             print(f"{name} {fn}: work.py could not start it")
             continue
         head = scratch.read_text(encoding="utf8").split(work.FUNC, 1)[0]
-        scratch.write_text(head + work.FUNC + "\n" + apply(body, subst) + "\n", encoding="utf8", newline="\n")
+        new_body = apply(body, subst)
+        decls = declarations(new_body, tname, name, subst) if tname != name else []
+        scratch.write_text(head.rstrip("\n") + "\n" + "".join(d + "\n" for d in decls) + "\n"
+                           + work.FUNC + "\n" + new_body + "\n", encoding="utf8", newline="\n")
         r = subprocess.run([py, "tools/work.py", name, fn], cwd=ROOT, capture_output=True, text=True)
         st = re.search(rf"^  0x[0-9A-F]+ {re.escape(fn)}\s+0x[0-9a-f]+\s+(.*)$", r.stdout, re.M)
         status = st.group(1).strip() if st else "does not compile"
