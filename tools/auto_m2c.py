@@ -929,6 +929,53 @@ def callee(ctx, name, counts):
     return f"X{code}_{name}", f'extern "C" {rt} X{code}_{name}({", ".join(params)}) asm("{name}");'
 
 
+FLOATS = ("f32",)
+
+
+def bitwise(b):
+    """M2C_BITWISE(T, x) as C: m2c writes it where a value changes type
+    without a conversion instruction. Between integers of any width, or
+    pointers and integers, that is a plain cast in C; between f32 and a
+    32-bit integer the bits are kept with a union. Inner ones first; what
+    does not compile or match is dropped as always."""
+    out, i = [], 0
+    while True:
+        k = b.find("M2C_BITWISE(", i)
+        if k < 0:
+            return "".join(out) + b[i:]
+        e = close_paren(b, k + 11)
+        args = split_args(b[k + 12:e])
+        if len(args) != 2:
+            raise Reject("M2C_BITWISE")
+        ty, x = args[0].strip(), bitwise(args[1])
+        # an inner one stands for its result's type, not for the text inside
+        flat = re.sub(r"\(\{ union \{[^}]*\} m2c_u; .*?m2c_u\.([if]); \}\)",
+                      lambda m: " FLT_V " if m.group(1) == "f" else " INT_V ", x)
+        flat = re.sub(r"\(\*\((?:s|u)32 \*\)&\([^()]*\)\)", " INT_V ", flat)
+        flat = re.sub(r"\(\*\(f32 \*\)&\([^()]*\)\)", " FLT_V ", flat)
+        flat = re.sub(r"\(\((?:s|u)(?:8|16|32|64|128)\) ", "(", flat)
+        if re.search(r"INT_V|[|&^]|<<|>>", flat) and "FLT_V" not in flat:
+            flat = re.sub(r"\bvar_f\w*|\btemp_f\w*", "", flat)   # an integer made of float bits
+        src_float = bool(re.search(r"FLT_V|\bf32\b|\d\.\d+(?:e[-+]?\d+)?f\b|\bvar_f|\btemp_f", flat))
+        # an lvalue (a local, stack.spNN, a field) is read through a pointer
+        # of the other type, as the original likely did (-fno-strict-aliasing);
+        # anything else through a union (gcc 2.96 refuses that one inside
+        # a call's arguments, so it is the second choice)
+        lvalue = re.fullmatch(r"\(?\s*[A-Za-z_][\w.]*(?:\[[^\[\]]+\])?\s*\)?", x.strip()) is not None
+        if ty in FLOATS and not src_float:
+            expr = (f"(*(f32 *)&({x}))" if lvalue
+                    else f"({{ union {{ f32 f; s32 i; }} m2c_u; m2c_u.i = ({x}); m2c_u.f; }})")
+        elif ty in ("s32", "u32") and src_float:
+            expr = (f"(*({ty} *)&({x}))" if lvalue
+                    else f"({{ union {{ f32 f; {ty} i; }} m2c_u; m2c_u.f = ({x}); m2c_u.i; }})")
+        elif ty in FLOATS:
+            expr = f"({x})"
+        else:
+            expr = f"(({ty}) ({x}))"
+        out.append(b[i:k] + expr)
+        i = e + 1
+
+
 def typed(ctx, fn, hdr, body):
     body = flag_chain(body)
     body = re.sub(r"/\*.*?\*/", "", body)
@@ -937,6 +984,7 @@ def typed(ctx, fn, hdr, body):
     body = re.sub(r"^(\s*\w+:)\n(\s*\})", r"\1;\n\2", body, flags=re.M)  # a label needs a statement
     m = re.match(r"^(.*?)\b(\w+)\((.*)\) \{$", hdr)
     ret, params = m.group(1).strip(), m.group(3).strip()
+    body = bitwise(body)
     bad = TYPED_BAD.search(hdr + "\n" + body)
     if bad:
         raise Reject(re.sub(r"(?<!M)\d", "N", bad.group(0))[:16])
