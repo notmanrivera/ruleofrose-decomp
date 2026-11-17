@@ -1,4 +1,10 @@
 #include "include_asm.h"
+extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern int _vt$7ObjStat;
+extern "C" void Xv_ObjStatDtor(int arg0, int arg1) asm("DisplayMessage__vfunc_01");
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void Xv_ObjStatDtor(int arg0, int arg1) asm("DisplayMessage__vfunc_01");
 extern int _vt$14DisplayMessage;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xff_cosf(float) asm("cosf");
@@ -98,4 +104,10 @@ extern "C" void func_001F6C64(int arg0)
     M2C_FIELD(arg0, int *, 0x88) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", DisplayMessage__vfunc_01);
+extern "C" void Xv_ObjStatDtor(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x8c) = (int)&_vt$14DisplayMessage;
+    if (arg1 & 1) {
+        return Xv___builtin_delete((void *)arg0);
+    }
+}
