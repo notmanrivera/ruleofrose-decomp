@@ -208,7 +208,38 @@ extern "C" void func_00193F98(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00193FEC);
+extern "C" void func_00193FEC(int arg0, int arg1, int arg2)
+{
+    register int temp_a1 PS2_REG("$5");
+    register int temp_a2 PS2_REG("$6");
+    int temp_s3;
+    int temp_s1;
+    int temp_v0;
+    int temp_a0;
+    int var_s2;
+
+    var_s2 = 0;
+    temp_a1 = arg1 << 5;
+    temp_a2 = arg2 << 4;
+    temp_s3 = M2C_FIELD(arg0, int *, 0x9C) + temp_a2;
+    temp_s1 = M2C_FIELD(arg0, int *, 0x94) + temp_a1;
+    temp_v0 = X_func_0022B6F8(*(int *)temp_s3, temp_a1, temp_a2);
+    *(short *)M2C_FIELD(temp_s1, int *, 0x10) = temp_v0;
+    if (temp_v0 > 0) {
+        do {
+            short *out;
+            temp_a0 = X_func_0022B3D8(*(int *)temp_s1,
+                                      X_func_0022B730(*(int *)temp_s3, var_s2 & 0xFFFF));
+            out = (short *)(var_s2 * 2 + M2C_FIELD(temp_s1, int *, 0x10) + 2);
+            var_s2++;
+            if (temp_a0 >= 0) {
+                out[0] = temp_a0;
+            } else {
+                out[0] = -1;
+            }
+        } while (var_s2 < temp_v0);
+    }
+}
 
 extern "C" int func_001940A4(int arg0, int arg1, int arg2)
 {
