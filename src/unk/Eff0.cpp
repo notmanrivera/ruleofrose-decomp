@@ -731,8 +731,6 @@ extern "C" int EffBloodStay1__vfunc_05(Obj_Stay1_v5 *arg0)
     return 1;
 }
 
-// NON_MATCHING: 2/126 differ, 2 edits
-#ifdef NON_MATCHING
 extern "C" float Stay08_distance(int, int) asm("func_0016FF18");
 extern "C" int X_func_0016CCB8(...) asm("func_0016CCB8");
 extern "C" int X_func_0021B260(...) asm("func_0021B260");
@@ -771,7 +769,7 @@ extern "C" void EffBloodStay1__vfunc_08(int arg0, int arg1, int arg2, int arg3)
     stack.sp20 = arg1;
     stack.sp24 = temp_v0;
     float distance = Stay08_distance((*(int *)&D_00298E08) + 0x2AB70, arg0 + 0xA0);
-    int count = M2C_FIELD(arg0, int *, 0x64);
+    register int count PS2_REG("$4") = M2C_FIELD(arg0, int *, 0x64);
     stack.sp14 = distance;
     stack.words = *(Stay08Words *)&D_002F20B0;
     stack.scales = *(Stay08Words *)&D_002F20C0;
@@ -792,7 +790,7 @@ loop_3:
         count = M2C_FIELD(arg0, int *, 0x64);
         stack.sp24 = temp_v0;
         stack.sp10 = next;
-        if (var_s4 < count) {
+        if ((count = var_s4 < count)) {
             age = M2C_FIELD(arg0, int *, 0xB4);
             if ((*(int *)(var_s0)) < age) {
                 goto loop_3;
@@ -801,9 +799,6 @@ loop_3:
     }
     Stay08_write(X_func_0021E688(stack.sp24), 0x47, 0x5000D);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay1__vfunc_08);
-#endif
 
 // NON_MATCHING: 106/129 differ, 9 relocs differ, 76 edits
 #ifdef NON_MATCHING
