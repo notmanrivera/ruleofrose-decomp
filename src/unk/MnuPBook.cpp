@@ -1,5 +1,18 @@
 #include "include_asm.h"
 #include "bed/bedpfh.h"
+extern "C" float Xfi_getLeftX__C6BedPad(int) asm("getLeftX__C6BedPad");
+extern "C" int Xii_func_001874AC(int) asm("func_001874AC");
+extern "C" int Xiii_func_0017F8FC(int, int) asm("func_0017F8FC");
+extern "C" int Xiii_func_00198318(int, int) asm("func_00198318");
+extern "C" int Xiiii_func_00197F18(int, int, int) asm("func_00197F18");
+extern "C" int Xiiiii_func_001C5094(int, int, int, int) asm("func_001C5094");
+extern "C" void Xiiu_func_001985B0(int, unsigned int) asm("func_001985B0");
+extern "C" int Xiiui_func_001351B0(int, unsigned int, int) asm("func_001351B0");
+extern int D_007B2580;
+static inline int PBookButton(unsigned int buttons, int bit)
+{
+    return (buttons >> bit) & 1;
+}
 struct PBookMapCoords { float v[8]; };
 struct PBookMapTable { PBookMapCoords row[13]; };
 extern PBookMapTable D_002F7DC0;
@@ -1027,7 +1040,76 @@ INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F80F0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00197A74);
+extern "C" int func_00197A74(int arg0, int arg1)
+{
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v1;
+    int temp_v1_3;
+    int var_a1;
+    int var_a1_2;
+    unsigned int temp_v1_2;
+
+    if (M2C_FIELD(arg0, int *, 4) & 0x40000) {
+        Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 1, 0);
+        Xiiui_func_001351B0(M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x134), 0);
+    }
+    temp_v0 = M2C_FIELD(arg0, int *, 0x124);
+    if (temp_v0 > 0) {
+        temp_v0--;
+        M2C_FIELD(arg0, int *, 0x124) = temp_v0;
+        if (temp_v0 == 0) {
+            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & 0xFFE7FFFD);
+            Xiiu_func_001985B0(arg0, M2C_FIELD(arg0, unsigned int *, 0x128));
+            if ((M2C_FIELD(arg0, int *, 0x128) + 1) >= M2C_FIELD(arg0, int *, 0x120)) {
+                M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x40000);
+            }
+        }
+    }
+    Xii_func_001874AC(arg0 + 0x140);
+    temp_v1 = M2C_FIELD(arg0, int *, 4);
+    if (!(temp_v1 & 2)) {
+        if (PBookButton(M2C_FIELD(arg1, unsigned short *, 0x7A), 13) && (temp_v1 & 0x40000)) {
+            Xiiui_func_001351B0(M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x138), 1);
+            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 2);
+            return 0;
+        }
+        if (M2C_FIELD(arg0, int *, 0x124) == 0) {
+            if ((((M2C_FIELD(arg1, unsigned short *, 0x78) >> 5) & 1 & 0xFFFF) || Xfi_getLeftX__C6BedPad(arg1) >= 0.75f) && Xiii_func_00198318(arg0, 1)) {
+                temp_v1_3 = M2C_FIELD(arg0, unsigned int *, 0x128) + 2;
+                M2C_FIELD(arg0, unsigned int *, 0x128) = temp_v1_3;
+                if (temp_v1_3 >= 0) {
+                    var_a1_2 = temp_v1_3 / 2;
+                } else {
+                    var_a1_2 = -1;
+                }
+                Xiiii_func_00197F18(arg0, var_a1_2, 1);
+                M2C_FIELD(arg0, int *, 4) |= 0x100002;
+                Xiii_func_0017F8FC((int)&D_007B2580, 8);
+                Xiiu_func_001985B0(arg0, -0x63U);
+            } else if ((((M2C_FIELD(arg1, unsigned short *, 0x78) >> 7) & 1 & 0xFFFF) || Xfi_getLeftX__C6BedPad(arg1) <= -0.75f) && Xiii_func_00198318(arg0, 0)) {
+                temp_v1_2 = M2C_FIELD(arg0, unsigned int *, 0x128);
+                if ((int)temp_v1_2 >= 0) {
+                    var_a1 = (int)temp_v1_2 / 2;
+                } else {
+                    var_a1 = -1;
+                }
+                Xiiii_func_00197F18(arg0, var_a1, 0);
+                M2C_FIELD(arg0, unsigned int *, 0x128) -= 2;
+                M2C_FIELD(arg0, int *, 4) |= 0x80002;
+                Xiii_func_0017F8FC((int)&D_007B2580, 8);
+                Xiiu_func_001985B0(arg0, -0x63U);
+            }
+        }
+        if (!(M2C_FIELD(arg0, int *, 4) & 2)) {
+            goto done;
+        }
+    }
+block_30:
+    M2C_FIELD(arg0, unsigned int *, 0x8B8) = (unsigned int) ((unsigned int) (M2C_FIELD(arg0, unsigned int *, 0x8B8) + 1) % 300U);
+done:
+    return 1;
+}
 
 extern "C" void func_00197D28(int arg0)
 {
