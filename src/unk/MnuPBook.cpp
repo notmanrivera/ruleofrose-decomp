@@ -1,5 +1,19 @@
 #include "include_asm.h"
 #include "bed/bedpfh.h"
+extern "C" int Xii_func_0018741C(int) asm("func_0018741C");
+extern "C" void Xiiiii_func_001874F4(int, int, int, int) asm("func_001874F4");
+extern "C" int Xiiii_func_001C51E0(int, int, int) asm("func_001C51E0");
+extern "C" int Xiiiii_func_0019844C(int, int, int, int) asm("func_0019844C");
+extern "C" int Xiiiii_func_001C5168(int, int, int, int) asm("func_001C5168");
+extern "C" int Xiiiiii_func_00134730(int, int, int, int, int) asm("func_00134730");
+extern "C" int Xiiu_func_00135594(int, unsigned int) asm("func_00135594");
+extern "C" int Xiiui_func_00135418(int, unsigned int, int) asm("func_00135418");
+extern "C" int Xiiui_func_00135494(int, unsigned int, int) asm("func_00135494");
+extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func_00134A00");
+extern "C" int Xiiuiiii_func_00134CD0(int, unsigned int, int, int, int, int) asm("func_00134CD0");
+extern "C" int Xiu_func_001832E8(unsigned int) asm("func_001832E8");
+extern int D_002F80F0;
+struct PBookPageLabel { char text[3]; };
 extern "C" float Xfi_getLeftX__C6BedPad(int) asm("getLeftX__C6BedPad");
 extern "C" int Xii_func_001874AC(int) asm("func_001874AC");
 extern "C" int Xiii_func_0017F8FC(int, int) asm("func_0017F8FC");
@@ -1030,7 +1044,71 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196EFC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_0019722C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001973FC);
+extern "C" void func_001973FC(int arg0)
+{
+    int temp_a1;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v1;
+    int temp_v1_2;
+    int temp_v1_4;
+    int var_a1;
+    int var_s0;
+    int var_s0_2;
+    int var_s1;
+    int temp_s1;
+    int temp_v1_3;
+    int temp_v1_5;
+    int temp_v1_6;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x128);
+    if (temp_v1 >= 0) {
+        var_s1 = (int) (temp_v1 + ((unsigned int) temp_v1 >> 0x1F)) >> 1;
+    } else {
+        var_s1 = -1;
+    }
+    for (var_s0 = 0; var_s0 <= var_s1; var_s0++) {
+        Xiiiii_func_0019844C(arg0, var_s0, 1, 0);
+    }
+    for (; var_s0 < M2C_FIELD(arg0, int *, 0x130); var_s0++) {
+        Xiiiii_func_0019844C(arg0, var_s0, 0, 1);
+    }
+    for (var_s0 = 0; var_s0 <= var_s1; var_s0++) {
+        int row = (var_s0 << 5) + M2C_FIELD(arg0, int *, 0x9C);
+        M2C_FIELD(row, int *, 4) *= 2;
+    }
+    for (; var_s0 < M2C_FIELD(arg0, int *, 0x130); var_s0++) {
+        int row = (var_s0 << 5) + M2C_FIELD(arg0, int *, 0x9C) + 0x10;
+        M2C_FIELD(row, int *, 4) *= 2;
+    }
+    temp_v1_6 = M2C_FIELD(arg0, int *, 0x13C);
+    temp_s1 = arg0 + 0x140;
+    *(PBookPageLabel *)temp_v1_6 = *(PBookPageLabel *)&D_002F80F0;
+    Xii_func_0018741C(temp_s1);
+    temp_v0 = Xiiiiii_func_00134730(M2C_FIELD(arg0, int *, 8), 0x200, 0x100, 0, -1);
+    M2C_FIELD(arg0, int *, 0x138) = temp_v0;
+    Xiiuiii_func_00134A00((int) M2C_FIELD(arg0, int *, 8), (unsigned int) temp_v0, 0, 0x20, 0x7FFF);
+    Xiiuiiii_func_00134CD0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x138), 0, 0, 0x200, 0x100);
+    Xiiui_func_00135494((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x138), 1);
+    Xiiui_func_00135418((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x138), 0);
+    Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x138), 0);
+    Xiiu_func_00135594(M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x138));
+    Xiiu_func_001985B0(arg0, (unsigned int) M2C_FIELD(arg0, int *, 0x128));
+    Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 4, 0xDC, 0x198);
+    Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 4, 0);
+    Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 0, 0);
+    Xii_func_0018741C(temp_s1);
+    temp_v0_2 = Xiiiiii_func_00134730(M2C_FIELD(arg0, int *, 8), 0x40, 0x20, 0, -1);
+    M2C_FIELD(arg0, int *, 0x134) = temp_v0_2;
+    Xiiuiii_func_00134A00((int) M2C_FIELD(arg0, int *, 8), (unsigned int) temp_v0_2, 0xF6, 0x19A, 0x7FFF);
+    Xiiuiiii_func_00134CD0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 0, 0, 0x40, 0x20);
+    Xiiui_func_00135494((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 1);
+    Xiiui_func_00135418((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 0);
+    Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 1);
+    Xiiu_func_00135594(M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134));
+    int texture = Xiu_func_001832E8(0x1AU);
+    Xiiiii_func_001874F4(temp_s1, M2C_FIELD(arg0, int *, 0x134), texture, 0);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F80D0);
 
