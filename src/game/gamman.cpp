@@ -1,6 +1,13 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern int D_007A4440_CD25C asm("D_007A4440");
+extern "C" void X_func_0020F0C8_CD25C(void *, int) asm("func_0020F0C8");
+extern "C" void X_func_0020F1FC_CD25C(void *) asm("func_0020F1FC");
+extern "C" void X_func_001DD7BC_CD25C(void *, int) asm("func_001DD7BC");
+extern "C" void X_func_001DDDBC_CD25C(void *, int) asm("func_001DDDBC");
+extern "C" void X_func_001CBD0C_CD25C(GamMan *, int) asm("func_001CBD0C");
+extern "C" void X_func_001CD7C8_CD25C(GamMan *) asm("func_001CD7C8");
 extern "C" void X_func_001D95C4_CF518(ObjStat *, int) asm("func_001D95C4");
 struct Tbl4_C58C0 {
     int a, b, c, d; };
@@ -2361,7 +2368,44 @@ extern "C" void func_001CD224(int arg0)
     func_001CDF5C((GamMan *)(arg0), 2, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CD25C);
+extern "C" void func_001CD25C(GamMan *self)
+{
+    if (self->chkSysFlg(0x8000)) {
+        return;
+    }
+    unsigned int flg = self->m_sysFlg2;
+    if ((flg & 3) != 0) {
+        if (flg & 2) {
+            if (self->m_pc != 0) {
+                Xiii_func_001D9F10((int)self->m_pc, 1);
+            }
+            if (self->m_dog != 0) {
+                Xiii_func_001D9F10((int)self->m_dog, 1);
+            }
+            self->m_unk21F74 = -1;
+            Xiiuhi_func_001C7210((int)self, 1, 0, 0);
+            X_func_001C6A40(self, 0x100000);
+            if (self->m_unk2221C != 3) {
+                if (self->m_unk2221C == 5) {
+                    func_001CDBF0(self);
+                    func_001CB01C(self, 0);
+                    X_func_0020F1FC_CD25C(&D_007A4440_CD25C);
+                }
+            } else {
+                X_func_0020F0C8_CD25C(&D_007A4440_CD25C, 2);
+                X_func_001DD7BC_CD25C(self->m_trg, 2);
+                X_func_001DDDBC_CD25C(self->m_trg, 2);
+                X_func_001CBD0C_CD25C(self, 2);
+            }
+            X_func_001CD7C8_CD25C(self);
+            self->unsetSysFlg2(2);
+        } else if (flg & 1) {
+            if (func_001E7D7C(&D_007A3D80, self->m_bgLoadTaskID) != 0) {
+                self->unsetSysFlg2(1);
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CD404);
 
