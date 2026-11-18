@@ -46,18 +46,6 @@ judgement and go to Sonnet.
     0x2FEF80).
   - unk/WrdSrv's .rodata start (EffWater type names) stays unsettled.
 
-- [ ] R17 **[flash]** Survey of other PS2 matching decomps (web, GitHub).
-  For each repo: compiler and version (ee-gcc 2.95/2.96/3.x, SN, MWCC),
-  flags (-O2/-Os/-G0...), C or C++, build system (splat? ninja?),
-  progress %, and tools we lack: permuter setup, objdiff, register-hint
-  tricks, AI-agent workflow, native PC port layer (how they keep matching
-  code portable). Repos: AshfordFamily/recvx-decomp (complete),
-  TheOnlyZac/sly1, parappadev/parappa2, gustavocanepa/gt4-decomp (AI
-  agents), LucasPicoli/god-hand-decomp (SLUS-21503),
-  OpenRAC/rac1-decomp, OpenRAC/rac2-decomp, snaku/Persona3-FES-Decompilation,
-  Raikaru/Persona4-Decompilation, TheRealestNwah/sotc-decomp (PC port).
-  Output: one table row per repo, then the 3 repos most worth a deep read
-  for us (ee-gcc 2.96 C++ -Os, register-allocation near misses, PC port).
 - [ ] R18 Deep read of R17's top 3 repos (Sonnet, after R17): concrete
   techniques we could adopt for our open problems: NON_MATCHING near
   misses (register allocation, bnel, store order), the permuter queue,
@@ -65,6 +53,12 @@ judgement and go to Sonnet.
   macro). Each lead with the repo file it comes from and how we would try it.
 ## Done
 
+- [x] R17 Survey of 10 PS2 decomps (2026-11-18, Flash): all use -O2
+  (we are the only -Os); gt4-decomp is ee-gcc 2.96 C++ at 98 % with an
+  agent harness and knowledge/ee-gcc-2.96.md; god-hand (2.96) audits
+  forced registers and per-file flags; sotc (2.96) has per-file cflags
+  (-fno-rerun-loop-opt). gt4 counts register-asm pins as fakematches and
+  rac1 forbids them (our PS2_REG). Top 3 for R18: gt4, god-hand, sotc.
 - [x] R7 gamtrg func_001DBA3C / func_001DD00C (2026-11-16, Codex): both
   match in the whole object (cd350e0, 85b1060). Cause: in the game, a
   jump table is followed by padding our compile does not emit (5-entry
