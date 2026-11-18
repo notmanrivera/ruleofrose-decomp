@@ -1,5 +1,8 @@
 #include "include_asm.h"
 #include "bed/bedpfh.h"
+extern "C" int Xiii_func_001874F4(int, int) asm("func_001874F4");
+extern "C" int Xiiu_func_001348B0(int, unsigned int) asm("func_001348B0");
+extern "C" int Xiiuii_func_00134AB8(int, unsigned int, int, int) asm("func_00134AB8");
 extern "C" int Xii_func_0018741C(int) asm("func_0018741C");
 extern "C" void Xiiiii_func_001874F4(int, int, int, int) asm("func_001874F4");
 extern "C" int Xiiii_func_001C51E0(int, int, int) asm("func_001C51E0");
@@ -978,7 +981,58 @@ extern "C" int func_00195A34(int arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00195A34);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00195B78);
+extern "C" void func_00195B78(int arg0, int arg1)
+{
+    int temp_a1;
+    int temp_s0;
+
+    if (arg1 != 0) {
+        Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 7, 0x10, 0x198);
+        Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 7, 0);
+        Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 7, 1, 0);
+        Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 6, 0x88, 0x198);
+        Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 6, 0);
+        Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 6, 1, 0);
+        Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 0xC, 0xFC, 0x198);
+        Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 0xC, 0);
+        Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 0xC, 1, 0);
+        Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 0xA, 0x118, 0x198);
+        Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 0xA, 0);
+        Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 0xA, 1, 0);
+        Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 9, 0x184, 0x198);
+        Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 9, 0);
+        Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 9, 1, 0);
+        Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 4, 0x1A8, 0x198);
+        Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 4, 0);
+        Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 1, 0);
+        if (M2C_FIELD(arg0, int *, 0x148) == -1) {
+            M2C_FIELD(arg0, int *, 0x148) = Xiiiiii_func_00134730(M2C_FIELD(arg0, int *, 8), 0x200, 0x20, 0, -1);
+        }
+        int ctrl = arg0 + 0x150;
+        Xiiuiii_func_00134A00((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148), 0, 0x19A, 0x7FFF);
+        Xiiuii_func_00134AB8((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148), 0x200, 0x20);
+        Xiiuiiii_func_00134CD0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148), 0, 0, 0x200, 0x20);
+        Xiiui_func_00135494((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148), 1);
+        Xiiui_func_00135418((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148), 0);
+        Xiiu_func_00135594(M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148));
+        Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148), 0);
+        temp_s0 = M2C_FIELD(arg0, int *, 0x148);
+        int texture = Xiu_func_001832E8(0x18U);
+        return Xiiiii_func_001874F4(ctrl, temp_s0, texture, 0);
+    }
+    Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 7, 0, 0);
+    Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 6, 0, 0);
+    Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 0xC, 0, 0);
+    Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 0xA, 0, 0);
+    Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 9, 0, 0);
+    Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 0, 0);
+    Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148), 1);
+    temp_a1 = M2C_FIELD(arg0, int *, 0x148);
+    if (temp_a1 != -1) {
+        Xiiu_func_001348B0(M2C_FIELD(arg0, int *, 8), (unsigned int) temp_a1);
+        M2C_FIELD(arg0, int *, 0x148) = -1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuMap__vfunc_06);
 
