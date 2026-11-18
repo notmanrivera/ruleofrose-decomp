@@ -1,6 +1,27 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+struct ActorStub_CA72C {
+    char pad00[0x60];
+    float m_x;
+    float m_y;
+    float m_z;
+    float m_w;
+    char pad70[0x20];
+    int m_unk90;
+    char pad94[0x4D0 - 0x94]; };
+struct SceneStub_CA72C {
+    char pad00[0x2920];
+    ActorStub_CA72C m_actor[128];
+    void setScale(int theNo, float x)
+    {
+        ActorStub_CA72C *p = &m_actor[theNo];
+        p->m_z = p->m_y = p->m_x = x;
+        p->m_unk90 = 1;
+    } };
+extern "C" int X_func_00138BC4_CA72C(void *, void *, const char *, int, const char *) asm("func_00138BC4__8MagSceneP7I3dDrawiiPCc");
+extern "C" void X_func_001D1D5C_CA72C(GamMan *, unsigned int, int, const void *) asm("func_001D1D5C");
+extern "C" int X_strcmp_CA72C(const char *, const char *) asm("strcmp");
 extern "C" int X_func_00138BC4_CABD4(void *, void *, void *, int, const char *) asm("func_00138BC4__8MagSceneP7I3dDrawiiPCc");
 extern "C" void X_func_001DB520_CABD4(void *, int, void *) asm("func_001DB520");
 extern int D_007A4440_CD25C asm("D_007A4440");
@@ -1836,7 +1857,36 @@ extern "C" const char *func_001CA604(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CA72C);
+extern "C" unsigned int func_001CA72C(GamMan *self, unsigned short arg1, const char *arg2, int unused, unsigned int arg4, unsigned short arg5, int arg6, int arg7)
+{
+    unsigned int oid = arg4;
+    if (oid == 0) {
+        unsigned int idx = arg1 >> 10;
+        unsigned short type = idx;
+        int kind;
+        if (type != 0) {
+            kind = (type >= 8U) ? 1 : 2;
+        } else {
+            kind = 1;
+        }
+        oid = func_001C6FE0(self, kind, self->m_unk225F4[4 + idx], -1);
+    } else if (Xiiu_func_001D046C((int)self, oid) != 0) {
+        return 0;
+    }
+    const char *pack = func_001CA604((int)self, arg1 >> 10);
+    char *sys = (char *)&D_006E9840;
+    SceneStub_CA72C *scene = (SceneStub_CA72C *)(sys + 0x12540);
+    int no = X_func_00138BC4_CA72C(scene, sys + 0x3A0, arg2, -1, pack);
+    func_001CA598((int)self, no, oid);
+    func_001CC250(&D_007812C0, no, oid, arg5, arg6, arg7);
+    unsigned int tmp = arg1;
+    X_func_001D1D5C_CA72C(self, oid, 0x1004, arg2);
+    X_func_001D1D5C_CA72C(self, oid, 0x1000, &tmp);
+    if (X_strcmp_CA72C(arg2, "target") == 0) {
+        scene->setScale(no, 9.999999583953922e-08f);
+    }
+    return oid;
+}
 
 extern "C" int func_001CA8E8(int arg0, unsigned short arg1, unsigned int arg2, unsigned short arg3, int arg4, int arg5, int arg6)
 {
