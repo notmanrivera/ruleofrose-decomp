@@ -694,8 +694,6 @@ INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFB88);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFB90);
 
-// NON_MATCHING: 41/203 differ, 3 relocs differ (size 0x32C, game 0x334), 10 edits
-#ifdef NON_MATCHING
 extern "C" int Walk_func_00166B74(int, float *) asm("func_00166B74");
 extern "C" int Walk_func_0010423C(int, int) asm("func_0010423C");
 extern "C" float Walk_func_001044B8(float, float) asm("func_001044B8");
@@ -706,127 +704,167 @@ extern "C" int Walk_func_001680A0(int, int, int) asm("func_001680A0");
 extern "C" int Walk_func_00202F10(int) asm("func_00202F10");
 extern "C" int Walk_func_001D19A8(int, unsigned int) asm("func_001D19A8");
 extern "C" int Walk_func_001682B0(int) asm("func_001682B0");
-extern "C" int NorOutWalk__vfunc_03(int arg0) {
-    struct { int flags[3]; int pad; float target[4]; float origin[4]; } stack;
-    float *var_a1;
-    float *var_v1;
-    float temp_f0;
-    float var_f0;
-    int temp_s4;
-    int temp_v0;
-    int temp_v0_2;
-    int temp_v0_4;
-    int var_a0;
-    register int var_s2 PS2_REG("$18");
-    unsigned int temp_a0;
-    unsigned int temp_v0_3;
-
-    temp_a0 = M2C_FIELD(arg0, unsigned int *, 4);
-    M2C_FIELD(arg0, int *, 0x44) = (int) (M2C_FIELD(arg0, int *, 0x44) - 1);
-    switch (temp_a0) {
+extern "C" int NorOutWalk__vfunc_03(int arg0)
+{
+  struct 
+  {
+    int flags[3];
+    int pad;
+    float target[4];
+    float origin[4];
+  } stack;
+  float *var_a1;
+  float *var_v1;
+  float temp_f0;
+  float var_f0;
+  int temp_s4;
+  int temp_v0;
+  int temp_v0_2;
+  int temp_v0_4;
+  int var_a0;
+  register int var_s2 PS2_REG("$18");
+  unsigned int temp_a0;
+  unsigned int temp_v0_3;
+  temp_a0 = *((unsigned int *) (((char *) arg0) + 4));
+  *((int *) (((char *) arg0) + 0x44)) = (int) ((*((int *) (((char *) arg0) + 0x44))) - 1);
+  switch (temp_a0)
+  {
     case 2:
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-        break;
-walk_success:
-        Walk_func_001670DC(arg0, &stack.target[0], 0.0f);
-        M2C_FIELD(arg0, unsigned int *, 4) = 1U;
-        goto walk_after;
-    case 0:
-        stack.flags[2] = 0;
-        var_s2 = 0;
-        stack.flags[1] = 0;
-        stack.flags[0] = 0;
-        Walk_func_00166B74(arg0, &stack.origin[0]);
-        temp_s4 = Walk_func_0010423C(0, 0x59);
-        do {
-        var_a1 = &stack.target[0];
-        var_a0 = 3;
-        var_v1 = &stack.origin[0];
-        do {
-            temp_f0 = *var_v1;
-            var_v1++;
-            var_a0 -= 1;
-            *var_a1 = temp_f0;
-            var_a1++;
-        } while (var_a0 != -1);
-        if (stack.flags[0] == 0) {
-            if (temp_s4 >= 0x1E) {
-                goto block_11;
-            }
-            stack.target[0] += Walk_func_001044B8(-120.0f, -80.0f);
-            stack.target[2] += Walk_func_001044B8(80.0f, 120.0f);
-            stack.flags[0] = 1;
-        } else {
-block_11:
-            if ((stack.flags[1] == 0) && (temp_s4 < 0x3C)) {
-                stack.target[0] += Walk_func_001044B8(-20.0f, 20.0f);
-                stack.target[2] += Walk_func_001044B8(120.0f, 160.0f);
-                stack.flags[1] = 1;
-            } else {
-                stack.target[0] += Walk_func_001044B8(-20.0f, 20.0f);
-                stack.target[2] += Walk_func_001044B8(120.0f, 160.0f);
-                stack.flags[2] = 1;
-            }
-        }
-        stack.target[1] += Walk_func_001D7DE4((int)&D_007812C0, (int) &stack.origin[0]);
-        if (Walk_func_0016976C((int) &stack.origin[0], (int) &stack.target[0]) == 0) {
-            var_s2 += 1;
 
-        } else {
-            goto walk_success;
+    case 5:
+
+    case 6:
+
+    case 7:
+
+    case 8:
+      break;
+      walk_success:
+    Walk_func_001670DC(arg0, &stack.target[0], 0.0f);
+
+      *((unsigned int *) (((char *) arg0) + 4)) = 1U;
+      goto walk_after;
+
+    case 0:
+      stack.flags[2] = 0;
+      var_s2 = 0;
+      stack.flags[1] = 0;
+      stack.flags[0] = 0;
+      Walk_func_00166B74(arg0, &stack.origin[0]);
+      temp_s4 = Walk_func_0010423C(0, 0x59);
+      do
+    {
+      var_a1 = &stack.target[0];
+      var_a0 = 3;
+      var_v1 = &stack.origin[0];
+      do
+      {
+        temp_f0 = *var_v1;
+        var_v1++;
+        var_a0 -= 1;
+        *var_a1 = temp_f0;
+        var_a1++;
+      }
+      while (var_a0 != (-1));
+      if (stack.flags[0] == 0)
+      {
+        if (temp_s4 >= 0x1E)
+        {
+          goto block_11;
         }
-        } while (var_s2 < 3);
-walk_after:
-        if (var_s2 == 3) {
-            if ((unsigned int) M2C_FIELD(arg0, unsigned int *, 0x40) >= 2U) {
-                Walk_func_0010423C(0, 0x63);
-            }
-            Walk_func_001680A0(arg0, 0xC, 0);
-            M2C_FIELD(arg0, unsigned int *, 4) = 4U;
+        stack.target[0] += Walk_func_001044B8(-120.0f, -80.0f);
+        stack.target[2] += Walk_func_001044B8(80.0f, 120.0f);
+        stack.flags[0] = 1;
+      }
+      else
+      {
+        block_11:
+        if ((stack.flags[1] == 0) && (temp_s4 < 0x3C))
+        {
+          stack.target[0] += Walk_func_001044B8(-20.0f, 20.0f);
+          stack.target[2] += Walk_func_001044B8(120.0f, 160.0f);
+          stack.flags[1] = 1;
         }
-        break;
-    case 1:
-        if (M2C_FIELD(arg0, int *, 0x24) != 0) {
-            Walk_func_00202F10(M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1F0));
-            M2C_FIELD(arg0, unsigned int *, 0x40) = 0U;
-            M2C_FIELD(arg0, unsigned int *, 4) = 0U;
+        else
+        {
+          stack.target[0] += Walk_func_001044B8(-20.0f, 20.0f);
+          stack.target[2] += Walk_func_001044B8(120.0f, 160.0f);
+          stack.flags[2] = 1;
         }
-        break;
-    case 3:
-        temp_v0 = M2C_FIELD(arg0, int *, 0x48) - 1;
-        M2C_FIELD(arg0, int *, 0x48) = temp_v0;
-        if (temp_v0 < 0) {
-            M2C_FIELD(arg0, unsigned int *, 4) = 0U;
-            M2C_FIELD(arg0, unsigned int *, 0x40) = (unsigned int) (M2C_FIELD(arg0, unsigned int *, 0x40) + 1);
-        }
-        break;
-    case 4:
-        temp_v0_2 = Walk_func_001D19A8((int) &D_007812C0, M2C_FIELD(arg0, unsigned int *, 0));
-        if (temp_v0_2 != 0) {
-            M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x2C) = 1;
-            if (temp_v0_2 != 0) {
-                temp_v0_3 = M2C_FIELD(arg0, unsigned int *, 0x40) + 1;
-                M2C_FIELD(arg0, unsigned int *, 0x40) = temp_v0_3;
-                if ((temp_v0_3 < 3U) && (Walk_func_0010423C(0, 0x63) < 0x32)) {
-                    M2C_FIELD(arg0, unsigned int *, 4) = 0U;
-                } else {
-                    Walk_func_001682B0(arg0);
-                    temp_v0_4 = Walk_func_0010423C(0x14, 0x32);
-                    M2C_FIELD(arg0, int *, 0x48) = temp_v0_4;
-                    M2C_FIELD(arg0, unsigned int *, 4) = 3U;
-                }
-            }
-        }
-        break;
+
+      }
+      stack.target[1] += Walk_func_001D7DE4((int) (&D_007812C0), (int) (&stack.origin[0]));
+      if (Walk_func_0016976C((int) (&stack.origin[0]), (int) (&stack.target[0])) == 0)
+      {
+        var_s2 += 1;
+      }
+      else
+      {
+        goto walk_success;
+      }
     }
-    return -1;
+    while (var_s2 < 3);
+      walk_after:
+    if (var_s2 == 3)
+    {
+      if (((unsigned int) (*((unsigned int *) (((char *) arg0) + 0x40)))) >= 2U)
+      {
+        Walk_func_0010423C(0, 0x63);
+      }
+      Walk_func_001680A0(arg0, 0xC, 0);
+      *((unsigned int *) (((char *) arg0) + 4)) = 4U;
+    }
+
+      break;
+
+    case 1:
+      if ((*((int *) (((char *) arg0) + 0x24))) != 0)
+    {
+      Walk_func_00202F10(*((int *) (((char *) (*((int *) (((char *) arg0) + 0xC)))) + 0x1F0)));
+      *((unsigned int *) (((char *) arg0) + 0x40)) = 0U;
+      *((unsigned int *) (((char *) arg0) + 4)) = 0U;
+    }
+      break;
+
+    case 3:
+      temp_v0 = (*((int *) (((char *) arg0) + 0x48))) - 1;
+      *((int *) (((char *) arg0) + 0x48)) = temp_v0;
+      if (temp_v0 < 0)
+    {
+      *((unsigned int *) (((char *) arg0) + 4)) = 0U;
+      *((unsigned int *) (((char *) arg0) + 0x40)) = (unsigned int) ((*((unsigned int *) (((char *) arg0) + 0x40))) + 1);
+    }
+      break;
+
+    case 4:
+      temp_v0_2 = Walk_func_001D19A8((int) (&D_007812C0), *((unsigned int *) (((char *) arg0) + 0)));
+      if (temp_v0_2 != 0)
+    {
+      var_s2 = temp_v0_2 != 0;
+      *((int *) (((char *) (*((int *) (((char *) arg0) + 0xC)))) + 0x2C)) = 1;
+      if (var_s2)
+      {
+        temp_v0_3 = (*((unsigned int *) (((char *) arg0) + 0x40))) + 1;
+        *((unsigned int *) (((char *) arg0) + 0x40)) = temp_v0_3;
+        if ((temp_v0_3 < 3U) && (Walk_func_0010423C(0, 0x63) < 0x32))
+        {
+          *((unsigned int *) (((char *) arg0) + 4)) = 0U;
+        }
+        else
+        {
+          Walk_func_001682B0(arg0);
+          temp_v0_4 = Walk_func_0010423C(0x14, 0x32);
+          *((int *) (((char *) arg0) + 0x48)) = temp_v0_4;
+          *((unsigned int *) (((char *) arg0) + 4)) = 3U;
+        }
+      }
+    }
+      break;
+
+  }
+
+  return -1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", NorOutWalk__vfunc_03);
-#endif
 
 extern "C" int func_001536CC()
 {
