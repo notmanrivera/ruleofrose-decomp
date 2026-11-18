@@ -1449,7 +1449,110 @@ extern "C" void func_00197F18(int arg0, int arg1, int arg2)
     M2C_FIELD(arg0, int *, 0x124) = 0xA;
 }
 
+// NON_MATCHING: 19/200 differ, 1 reloc differs, 11 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_0021B550(...) asm("func_0021B550");
+extern "C" int X_func_00237340(...) asm("func_00237340");
+extern "C" int X_func_002378B0(...) asm("func_002378B0");
+extern "C" int Xiii_func_00192F68(int, int) asm("func_00192F68");
+extern "C" int Xiii_func_001930F8(int, int) asm("func_001930F8");
+extern "C" int Xiii_func_00193210(int, int) asm("func_00193210");
+extern "C" int Xiiiff_func_00193258(int, float, float, int) asm("func_00193258");
+extern "C" int Xiiiiiii_func_0019368C(int, int, int, int, int, int) asm("func_0019368C");
+extern int D_002F8140;
+struct PBookV6Pair { long long a, b; };
+extern "C" void MnuPBook__vfunc_06(int arg0, int arg1)
+{
+    struct { float sp0; float sp4; float sp8; float spC; float sp10; float sp14; float sp18; float sp1C; float sp20; float sp24; float sp28; float sp2C; float sp30; char pad34[12]; PBookV6Pair vec; int sp50; char pad54[44]; float sp80; float sp84; float sp88; } stack;
+    register float zero PS2_REG("$f12");
+    register float bgHeight PS2_REG("$f2");
+    register float uvBottom PS2_REG("$f1");
+    register float white PS2_REG("$f0");
+    float temp_f0;
+    float temp_f0_2;
+    int temp_a3;
+    int temp_a4;
+    int temp_a5;
+    int var_s0;
+    int var_s1;
+
+    if ((unsigned int) (M2C_FIELD(arg0, int *, 0x10) - 2) < 3U) {
+        Xiii_func_00192F68(arg0, arg1);
+        Xiii_func_00193210(arg0, 1);
+        stack.sp0 = 0.0f;
+        stack.sp8 = 512.0f;
+        bgHeight = 448.0f;
+        uvBottom = 0.875f;
+        stack.spC = bgHeight;
+        stack.sp1C = uvBottom;
+        white = 1.0f;
+        stack.sp20 = white;
+        zero = stack.sp0;
+        stack.sp4 = zero;
+        stack.sp30 = zero;
+        stack.sp10 = zero;
+        stack.sp14 = zero;
+        stack.sp18 = white;
+        stack.sp2C = white;
+        stack.sp28 = white;
+        stack.sp24 = white;
+        Xiiiff_func_00193258(arg0, zero, zero, (int)&stack);
+        Xiii_func_00193210(arg0, 0);
+        if ((M2C_FIELD(arg0, int *, 0x128) - 1) >= 0) {
+            if (M2C_FIELD(arg0, int *, 4) & 0x80000) {
+                var_s0 = (unsigned int) ((unsigned int) M2C_FIELD(arg0, unsigned int *, 0x8B8) >> 1) % 3U;
+            } else {
+                var_s0 = 0;
+            }
+            stack.spC = 16.0f;
+            temp_f0 = ((float) var_s0 * 16.0f) + 48.0f;
+            stack.sp8 = 28.0f;
+            stack.sp18 = 0.21875f;
+            stack.sp10 = 0.0f;
+            stack.sp14 = temp_f0 * 0.0078125f;
+            stack.sp1C = (temp_f0 + 16.0f) * 0.0078125f;
+            Xiiiff_func_00193258(arg0, 100.0f, 412.0f, (int)&stack);
+        }
+        if ((M2C_FIELD(arg0, int *, 0x128) + 2) < M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 8)) {
+            if (M2C_FIELD(arg0, int *, 4) & 0x100000) {
+                var_s0 = (unsigned int) ((unsigned int) M2C_FIELD(arg0, unsigned int *, 0x8B8) >> 1) % 3U;
+            } else {
+                var_s0 = 0;
+            }
+            stack.sp10 = 0.0f;
+            stack.spC = 16.0f;
+            temp_f0_2 = ((float) var_s0 * 16.0f) + stack.sp10;
+            stack.sp8 = 28.0f;
+            stack.sp18 = 0.21875f;
+            stack.sp14 = temp_f0_2 * 0.0078125f;
+            stack.sp1C = (temp_f0_2 + 16.0f) * 0.0078125f;
+            Xiiiff_func_00193258(arg0, 384.0f, 412.0f, (int)&stack);
+        }
+        var_s0 = 0;
+        M2C_FIELD(arg0, int *, 0xB0) = X_func_0021B550(M2C_FIELD(arg0, int *, 0xB0), 0x47, 0x503FD);
+        Xiii_func_001930F8(arg0, arg1);
+        stack.vec = *(PBookV6Pair *)&D_002F8140;
+        X_func_00237340((int)&stack.sp50);
+        X_func_002378B0((int)&stack.sp50, (int)&stack.sp50, (int)&stack.vec);
+        stack.sp80 = 25.0f;
+        stack.sp84 = 8.0f;
+        stack.sp88 = 220.0f;
+        var_s1 = M2C_FIELD(arg0, int *, 0x12C);
+        if (M2C_FIELD(arg0, int *, 0x130) > 0) {
+            do {
+                temp_a4 = M2C_FIELD(var_s1, int *, 0xC);
+                temp_a3 = var_s0;
+                temp_a5 = M2C_FIELD(var_s1, int *, 0x10);
+                var_s1 += 0x20;
+                var_s0 += 1;
+                Xiiiiiii_func_0019368C(arg0, arg1, (int)&stack.sp50, temp_a3, temp_a4, temp_a5);
+            } while (var_s0 < M2C_FIELD(arg0, int *, 0x130));
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_06);
+#endif
 
 // NON_MATCHING: 11/34 differ, 6 edits
 #ifdef NON_MATCHING
