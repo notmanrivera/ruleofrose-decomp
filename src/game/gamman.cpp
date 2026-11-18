@@ -1,6 +1,30 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void X_func_001CAA14_C387C(GamMan *, unsigned short, unsigned int, void *) asm("func_001CAA14");
+extern "C" void X_func_001D95C4_C387C(ObjStat *, int) asm("func_001D95C4");
+struct GamList_C387C {
+    struct Node { Node *m_prev; Node *m_next; ObjStat *m_data; };
+    struct Chain {
+        Node m_head; int m_num;
+        void splice(Chain &theOther) {
+            if (theOther.m_num != 0) {
+                m_head.m_prev->m_next = theOther.m_head.m_next;
+                Node *last = m_head.m_prev;
+                last->m_next->m_prev = last;
+                Node *tail = theOther.m_head.m_prev;
+                m_head.m_prev = tail;
+                tail->m_next = &m_head;
+                m_num += theOther.m_num;
+                theOther.m_num = 0;
+                theOther.m_head.m_prev = &theOther.m_head;
+                theOther.m_head.m_next = &theOther.m_head;
+            }
+        }
+    };
+    Chain m_free; Chain m_used; int m_max;
+    int size() const { return m_used.m_num; }
+    void clear() { m_free.splice(m_used); } };
 struct ActorStub_CA72C {
     char pad00[0x60];
     float m_x;
@@ -663,7 +687,38 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C2848);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C2F50);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C387C);
+extern "C" void func_001C387C(GamMan *self)
+{
+    GamList<ObjStat *>::iterator it;
+    GamList<ObjStat *>::iterator last;
+    int area;
+    int no;
+    int model;
+    float pos[4];
+
+    if (self->m_avfchrList.size() != 0) {
+        ((GamList_C387C *)&self->m_avfchrList)->clear();
+    }
+
+    it = self->m_vfchrList.begin();
+    last = self->m_vfchrList.end();
+    while (it != last) {
+        int oid = (*it)->getOID();
+        func_001DB31C(*it, 8, &area);
+        if (area == self->m_unk21F7C) {
+            func_001DB31C(*it, 0x1000, &model);
+            func_001DB71C(*it, pos);
+            if (model != 0xFFFF && model != 0) {
+                X_func_001CAA14_C387C(self, model, oid, pos);
+                func_001DB31C(*it, 3, &no);
+                if ((*it)->checkFlg(1) || (*it)->checkFlg(0x200000)) {
+                    X_func_001D95C4_C387C(*it, 1);
+                }
+            }
+        }
+        ++it;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C3A48);
 
