@@ -1,6 +1,14 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+struct Tbl4_C58C0 {
+    int a, b, c, d; };
+extern const Tbl4_C58C0 D_002FB920;
+extern int D_007B45C0;
+extern "C" int X_func_001CBDB8_C58C0(GamMan *, unsigned int) asm("func_001CBDB8");
+extern "C" void X_func_001DA130_C58C0(ACHRstat *, int, int) asm("func_001DA130");
+extern "C" void X_func_001E747C_C58C0(void *, void *, int) asm("func_001E747C");
+extern "C" void X_func_001E7414_C58C0(void *, int, int) asm("func_001E7414");
 extern "C" void X_func_001CBB80_CB74C(GamMan *, int) asm("func_001CBB80");
 extern "C" void X_func_0013166C_CB74C(void *, int, int) asm("func_0013166C");
 class EntityStub_C5A5C {
@@ -823,7 +831,36 @@ extern "C" int func_001C58B8()
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C58C0);
+extern "C" int X_func_001C58C0(GamMan *self, int arg1) asm("func_001C58C0");
+extern "C" int X_func_001C58C0(GamMan *self, int arg1)
+{
+    GamList<ACHRstat *>::iterator it;
+    GamList<ACHRstat *>::iterator last;
+
+    if (self->chkSysFlg2(0x10000) ? (arg1 == 1) : (arg1 == 0)) {
+        return 0;
+    }
+
+    it = self->m_achrList.begin();
+    last = self->m_achrList.end();
+    while (it != last) {
+        if ((((unsigned int)(*it)->getOID() >> 23) & 0x1F) == 2) {
+            X_func_001CBDB8_C58C0(self, (*it)->getOID());
+            X_func_001DA130_C58C0(*it, arg1, 1);
+        }
+        ++it;
+    }
+
+    Tbl4_C58C0 tbl = D_002FB920;
+    X_func_001E747C_C58C0(&D_007A3D80, &tbl, arg1);
+    X_func_001E7414_C58C0(&D_007A3D80, D_007B45C0, arg1);
+    if (arg1 == 1) {
+        self->setSysFlg2(0x10000);
+    } else {
+        self->unsetSysFlg2(0x30000);
+    }
+    return 1;
+}
 
 extern "C" void func_001C5A5C(GamMan *self, int arg1)
 {
