@@ -4290,42 +4290,35 @@ extern "C" void TskSysFunc__vfunc_04(int arg0)
     ((void (*)(int)) fp)(arg0 + off);
 }
 
-// NON_MATCHING: 36/51 differ, 1 reloc differs (size 0xCC, game 0xC8), 8 edits
-#ifdef NON_MATCHING
 extern "C" int func_001F42C4(int arg0)
 {
-    switch (M2C_FIELD(arg0, int *, 0x10)) {
+  int new_var;
+  switch (*((int *) (((char *) arg0) + 0x10)))
+  {
     case 0x64:
-        {
-            char *base = (char *)&D_006FBD80;
-            char *p = base + 0x42BB0;
-            M2C_FIELD(p, volatile int *, 0x93C) = M2C_FIELD(arg0, int *, 0x18);
-            if (M2C_FIELD(p, volatile int *, 0x944) == 0) {
-                M2C_FIELD(p, volatile int *, 0x94C) = M2C_FIELD(arg0, int *, 0x1C);
-                M2C_FIELD(p, volatile int *, 0x944) = 1;
-            }
-            M2C_FIELD(arg0, int *, 0x10) = 0x65;
-            M2C_FIELD(arg0, int *, 0x14) = M2C_FIELD(arg0, int *, 0x24);
-        }
-        break;
+ do { { char *base = (char *) (&D_006FBD80); char *p = base + 0x42BB0; *((volatile int *) (0x93C + ((char *) p))) = *((int *) (((char *) arg0) + 0x18)); new_var = *((int *) (((char *) arg0) + 0x1C)); if ((*((volatile int *) (((char *) p) + 0x944))) == 0) { *((volatile int *) (((char *) p) + 0x94C)) = new_var; *((volatile int *) (((char *) p) + 0x944)) = 1; } *((int *) (((char *) arg0) + 0x10)) = 0x65; *((int *) (((char *) arg0) + 0x14)) = *((int *) (((char *) arg0) + 0x24)); } } while (0);
+      break;
+
     case 0x65:
-        if (M2C_FIELD(arg0, int *, 0x14)-- <= 0) {
-            int val = M2C_FIELD(arg0, int *, 0x20);
-            char *base = (char *)&D_006FBD80;
-            char *p = base + 0x42BB0;
-            if (M2C_FIELD(p, volatile int *, 0x944) == 1) {
-                M2C_FIELD(p, volatile int *, 0x94C) = val;
-                M2C_FIELD(p, volatile int *, 0x944) = 0;
-            }
-            return 1;
-        }
-        break;
+      if (((*((int *) (((char *) arg0) + 0x14)))--) <= 0)
+    {
+      unsigned int val = *((int *) (((char *) arg0) + 0x20));
+      char *base = (char *) (&D_006FBD80);
+      char *p = base + 0x42BB0;
+      if ((*((volatile int *) (((char *) p) + 0x944))) == 1)
+      {
+        *((volatile int *) (((char *) p) + 0x94C)) = val;
+        *((volatile int *) (((char *) p) + 0x944)) = 0;
+      }
+      return 1;
     }
-    return 0;
+      break;
+
+  }
+
+  new_var = 0;
+  return new_var;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F42C4);
-#endif
 
 extern "C" void func_001F438C(int arg0, const char *arg1)
 {
