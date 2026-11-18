@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" int X_func_00138BC4_CABD4(void *, void *, void *, int, const char *) asm("func_00138BC4__8MagSceneP7I3dDrawiiPCc");
+extern "C" void X_func_001DB520_CABD4(void *, int, void *) asm("func_001DB520");
 extern int D_007A4440_CD25C asm("D_007A4440");
 extern "C" void X_func_0020F0C8_CD25C(void *, int) asm("func_0020F0C8");
 extern "C" void X_func_0020F1FC_CD25C(void *) asm("func_0020F1FC");
@@ -1854,7 +1856,26 @@ extern "C" int func_001CA8E8(int arg0, unsigned short arg1, unsigned int arg2, u
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CAA14);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CABD4);
+extern "C" void func_001CABD4(GamMan *self, unsigned short arg1, void *arg2, unsigned int arg3, int arg4)
+{
+    int no;
+    ObjStat *stat = (ObjStat *)Xiiu_func_001D2D00((int)self, arg3);
+    const char *pack = func_001CA604((int)self, arg1 >> 10);
+    char *sys = (char *)&D_006E9840;
+    char *scene = sys + 0x12540;
+    no = X_func_00138BC4_CABD4(scene, sys + 0x3A0, arg2, -1, pack);
+    func_001CA598((int)self, no, arg3);
+    unsigned int tmp = arg1;
+    X_func_001DB520_CABD4(stat, 0x1000, &tmp);
+    X_func_001DB520_CABD4(stat, 0x1004, arg2);
+    X_func_001DB520_CABD4(stat, 3, &no);
+    func_001DB7CC((int)stat, arg4);
+    func_001331F4(scene, no, 1, 0, 0, 0, 0.016666694f);
+    if (X_func_001C96C8(self, arg3) != 0) {
+        X_func_001CB8E4(self, arg3, 0x32, 0);
+    }
+    self->m_avfchrList.push_back(stat);
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CAD88);
 
