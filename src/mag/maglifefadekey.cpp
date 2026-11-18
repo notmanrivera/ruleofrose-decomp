@@ -13,6 +13,7 @@ extern const char D_002ED200[];
 #include "bed/bedpfh.h"
 #include "dog/dogtexinfo.h"
 #include "sdk/string.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern BedMemory D_006E9800;
 struct MagFader {
     int m_mode;                     // +0x00
@@ -41,18 +42,15 @@ extern "C" void func_0012F048(MagFader *self, int theMode, int theCount)
 }
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" void func_0012F060(MagFader *self, MagFadeReq *theReq)
 {
-    self->m_unk04 = -1;
-    self->m_mode = theReq->m_mode;
-    self->m_time = 0;
-    self->m_count = theReq->m_count;
+  MagFader *new_var;
+  self->m_mode = theReq->m_mode;
+  self->m_unk04 = -1;
+  new_var = self;
+  self->m_time = 0;
+  new_var->m_count = theReq->m_count;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglifefadekey", func_0012F060);
-#endif
 
 
 extern "C" void func_0012F080(MagFader *self)
