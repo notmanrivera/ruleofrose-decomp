@@ -1,6 +1,29 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+class EntityStub_C5A5C {
+public:
+    char pad00[0x94];
+    virtual void vfunc01();
+    virtual void vfunc02();
+    virtual void vfunc03();
+    virtual void vfunc04();
+    virtual void vfunc05();
+    virtual void vfunc06();
+    virtual void vfunc07();
+    virtual void setHide(bool theHide); };
+class ActorStub_C5A5C : public EntityStub_C5A5C {
+public:
+    char pad98[0x4D0 - 0x98]; };
+struct SceneStub_C5A5C {
+    char pad00[0x2920];
+    ActorStub_C5A5C m_actor[128];
+    void setActorHide(int theNo, bool theHide) { m_actor[theNo].setHide(theHide); } };
+extern SceneStub_C5A5C gScene_C5A5C asm("D_006FBD80");
+extern "C" void X_func_001DA228_C5A5C(ACHRstat *, int, unsigned int *) asm("func_001DA228");
+extern "C" void X_func_001D1410_C5A5C(GamMan *, unsigned int, int) asm("func_001D1410");
+static inline unsigned int &flg3F4_C5A5C(ACHRstat *p) { return *(unsigned int *)((char *)p + 0x3F4); }
+static inline bool chk3F4_C5A5C(ACHRstat *p, unsigned int f) { return (flg3F4_C5A5C(p) & f) != 0; }
 extern "C" void X_ror_assert_D1A5C(const char *, int, const char *) asm("ror_assert");
 extern char D_002FBB78[];
 extern char D_002FBB88[];
@@ -800,7 +823,34 @@ extern "C" int func_001C58B8()
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C58C0);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C5A5C);
+extern "C" void func_001C5A5C(GamMan *self, int arg1)
+{
+    GamList<ACHRstat *>::iterator it;
+    GamList<ACHRstat *>::iterator last;
+    unsigned int sp20;
+
+    it = self->m_achrList.begin();
+    last = self->m_achrList.end();
+    while (it != last) {
+        if ((((unsigned int)(*it)->getOID() >> 23) & 0x1F) == 2) {
+            int chrID = (*it)->getChrID();
+            if (arg1 == 0) {
+                if (chk3F4_C5A5C(*it, 1)) {
+                    X_func_001DA228_C5A5C(*it, 0x67, &sp20);
+                    if (sp20 != 0) {
+                        X_func_001D1410_C5A5C(self, sp20, 1);
+                    }
+                    gScene_C5A5C.setActorHide(chrID, false);
+                    flg3F4_C5A5C(*it) &= ~1;
+                }
+            } else {
+                gScene_C5A5C.setActorHide(chrID, true);
+                flg3F4_C5A5C(*it) |= 1;
+            }
+        }
+        ++it;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C5BF4);
 
