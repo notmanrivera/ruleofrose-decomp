@@ -2430,7 +2430,54 @@ extern "C" void func_001CD25C(GamMan *self)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CD404);
 
+// NON_MATCHING: 105/109 differ, 11 relocs differ, 48 edits
+#ifdef NON_MATCHING
+extern char D_007A4440_CD60C[] asm("D_007A4440");
+static inline int *sysWork_CD60C() { char *p = D_007A4440_CD60C; return *(int **)(p + 0xDC1C); }
+extern "C" float X_sinf_CD60C(float) asm("sinf");
+extern "C" float X_cosf_CD60C(float) asm("cosf");
+extern "C" float X_func_001DB9C4_CD60C(void *) asm("func_001DB9C4");
+extern "C" float X_func_001DBA00_CD60C(void *) asm("func_001DBA00");
+extern "C" void X_func_0025B878_CD60C(float *, float *, float *) asm("func_0025B878");
+extern "C" void X_func_001CD404_CD60C(GamMan *) asm("func_001CD404");
+extern "C" void func_001CD60C(GamMan *self)
+{
+    if (self->chkSysFlg(0x20)) {
+        self->m_sysFlg |= 0x4000;
+        char *d = D_007B205C;
+        float vec0[4];
+        vec0[0] = (float)*(int *)(d + 0x14);
+        vec0[2] = (float)*(int *)(d + 0x1C);
+        vec0[1] = 0.0f;
+        vec0[3] = 0.0f;
+        float vec1[4];
+        int angTmp[2];
+        angTmp[0] = *(int *)(d + 0x28);
+        angTmp[1] = *(int *)(d + 0x24);
+        float ang = *(float *)&angTmp[0];
+        vec1[0] = X_sinf_CD60C(ang) * 50.0f;
+        vec1[1] = 0.0f;
+        vec1[2] = X_cosf_CD60C(ang) * 50.0f;
+        vec1[3] = 0.0f;
+        vec1[0] += X_func_001DB9C4_CD60C(self->getMapObjPtr()) - vec0[0];
+        vec1[2] += X_func_001DBA00_CD60C(self->getMapObjPtr()) - vec0[2];
+        float *pcPos = self->m_pcPos;
+        *(u_long128 *)pcPos = *(u_long128 *)self->m_pcPosAMJ;
+        X_func_0025B878_CD60C(vec0, pcPos, vec1);
+        func_001D89C4((int)self->m_pc, (int)vec0);
+        if (self->m_dog != 0) {
+            X_func_001CD404_CD60C(self);
+        }
+    }
+    {
+        void *mapObj2 = self->getMapObjPtr();
+        sysWork_CD60C()[5] = (int)X_func_001DB9C4_CD60C(mapObj2);
+        sysWork_CD60C()[7] = (int)X_func_001DBA00_CD60C(mapObj2);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CD60C);
+#endif
 
 extern "C" void func_001CD7C0(void) {
 }
