@@ -1,6 +1,7 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void X_func_001D95C4_CF518(ObjStat *, int) asm("func_001D95C4");
 struct Tbl4_C58C0 {
     int a, b, c, d; };
 extern const Tbl4_C58C0 D_002FB920;
@@ -2474,7 +2475,27 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CED18);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CF2E8);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CF518);
+extern "C" void func_001CF518(GamMan *self, int arg1)
+{
+    GamList<ACHRstat *>::iterator it1;
+    GamList<ACHRstat *>::iterator last1;
+    GamList<ObjStat *>::iterator it2;
+    GamList<ObjStat *>::iterator last2;
+
+    func_001D3588(self);
+
+    for (it1 = self->m_achrList.begin(), last1 = self->m_achrList.end(); it1 != last1; ++it1) {
+        X_func_001D95C4_CF518(*it1, arg1);
+    }
+
+    for (it2 = ((GamList<ObjStat *> *)&self->m_fchrList)->begin(), last2 = ((GamList<ObjStat *> *)&self->m_fchrList)->end(); it2 != last2; ++it2) {
+        X_func_001D95C4_CF518(*it2, arg1);
+    }
+
+    for (it2 = self->m_avfchrList.begin(), last2 = self->m_avfchrList.end(); it2 != last2; ++it2) {
+        X_func_001D95C4_CF518(*it2, arg1);
+    }
+}
 
 struct S2dMes {
     void setMessageSpriteDispOn_(int a, int b, bool c = true)
