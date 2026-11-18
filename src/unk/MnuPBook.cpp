@@ -177,7 +177,135 @@ extern "C" void func_0019397C(int arg0, char *arg1, int arg2, int arg3)
     *(int *)((char *)arg0 + 0x20) = *(int *)((char *)arg0 + 0x20) + 1;
 }
 
+// NON_MATCHING: 4/192 differ, 4 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_0022B518(...) asm("func_0022B518");
+extern "C" float Xfi_func_0022E958(int) asm("func_0022E958");
+extern "C" int Xii_clear__6BedPfh(int) asm("clear__6BedPfh");
+extern "C" int Xii_func_00194588(int) asm("func_00194588");
+extern "C" int Xiii_func_00193E20_queue(int, int) asm("func_00193E20");
+extern "C" int Xiii_func_001BE564(int, int) asm("func_001BE564");
+extern "C" int Xiii_getIndex__C6BedPfhPCc(int, int) asm("getIndex__C6BedPfhPCc");
+extern "C" int Xiii_setTop__6BedPfhPv(int, int) asm("setTop__6BedPfhPv");
+extern "C" int Xiiii_func_001BE524__10FileReaderP11FileReadReqi(int, int, int) asm("func_001BE524__10FileReaderP11FileReadReqi");
+extern "C" int Xiiii_memmove_queue(int, int, int) asm("memmove");
+extern "C" int Xiiiiii_loadTM2__10DogTexInfoPCcPvii(int, int, int, int, int) asm("loadTM2__10DogTexInfoPCcPvii");
+extern "C" char *Xpi_func_00194588(int) asm("func_00194588");
+extern "C" void func_00193A1C(int arg0)
+{
+    char *temp_v0_2;
+    int temp_a0_2;
+    int temp_a0_3;
+    int temp_s0;
+    int temp_s0_4;
+    int temp_s1;
+    int temp_v0;
+    int temp_v1;
+    int var_a0;
+    int var_v0;
+    unsigned int temp_a0;
+    int temp_a0_4;
+    int temp_a0_5;
+    int temp_a1;
+    int temp_s0_2;
+    int temp_s0_3;
+    int temp_s2;
+    int temp_s4;
+    register int temp_s4_2 PS2_REG("$20");
+    int temp_v0_3;
+
+loop_1:
+    temp_s4 = M2C_FIELD(arg0, int *, 0x18);
+    if (M2C_FIELD(arg0, int *, 4) & 4) {
+        if (Xiii_func_001BE564(arg0 + 0x68, 1) == 0) {
+            if (M2C_FIELD(arg0, int *, 4) & 8) {
+                Xiii_func_00193E20_queue(arg0, 0);
+                M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & ~8);
+            } else {
+                temp_a0 = M2C_FIELD(temp_s4, int *, 8) & 0xF;
+                switch (temp_a0) {
+                case 1:
+                    temp_a0_2 = M2C_FIELD(temp_s4, int *, 0);
+                    temp_s2 = M2C_FIELD(arg0, int *, 0x94) + (M2C_FIELD(temp_s4, int *, 0xC) << 5);
+                    M2C_FIELD(temp_s2, int *, 0) = temp_a0_2;
+                    X_func_0022B330(temp_a0_2);
+                    M2C_FIELD(temp_s2, int *, 0x14) = (int) M2C_FIELD(temp_s4, int *, 4);
+                    temp_s1 = X_func_0022B370(M2C_FIELD(temp_s2, int *, 0));
+                    temp_s0 = temp_s1 * 0x30;
+                    temp_v0 = ((((((temp_s1 * 3) << 2) - temp_s1) << 3) + temp_s1) << 1) + 2;
+                    temp_s1 <<= 6;
+                    temp_v0_2 = Xpi_func_00194588(temp_v0);
+                    temp_s0 = (int)(temp_v0_2 + temp_s0);
+                    temp_v1 = temp_s0 + temp_s1;
+                    M2C_FIELD(temp_s2, int *, 4) = (int)temp_v0_2;
+                    M2C_FIELD(temp_s2, int *, 8) = temp_s0;
+                    M2C_FIELD(temp_s2, int *, 0xC) = temp_v1;
+                    M2C_FIELD(temp_s2, int *, 0x10) = (int) (temp_v1 + temp_s1);
+                    temp_v0_3 = M2C_FIELD(arg0, int *, 0xC);
+                    X_func_0021A5B0(M2C_FIELD(temp_s2, int *, 0), M2C_FIELD(temp_v0_3, int *, 8), M2C_FIELD(temp_v0_3, int *, 4));
+                    X_func_0021A700(M2C_FIELD(temp_s2, int *, 0), M2C_FIELD(temp_s2, int *, 8));
+                    break;
+                case 2:
+                    temp_a0_3 = M2C_FIELD(temp_s4, int *, 0);
+                    temp_s0_3 = M2C_FIELD(arg0, int *, 0x9C) + (M2C_FIELD(temp_s4, int *, 0xC) * 0x10);
+                    M2C_FIELD(temp_s0_3, int *, 0) = temp_a0_3;
+                    X_func_0022B518(temp_a0_3);
+                    M2C_FIELD(temp_s0_3, int *, 4) = (int)(Xfi_func_0022E958(M2C_FIELD(temp_s0_3, int *, 0)) * 30.0f);
+                    break;
+                case 4:
+                    temp_s0_2 = M2C_FIELD(arg0, int *, 0xA4) + (M2C_FIELD(temp_s4, int *, 0xC) * 0x10);
+                    M2C_FIELD(temp_s0_2, int *, 8) = Xiiiiii_loadTM2__10DogTexInfoPCcPvii((int) M2C_FIELD(arg0, int *, 0xC), (int) (temp_s4 + 0x10), M2C_FIELD(temp_s4, int *, 0), 0, -1);
+                    M2C_FIELD(temp_s0_2, int *, 0) = (int) M2C_FIELD(temp_s4, int *, 0);
+                    M2C_FIELD(temp_s0_2, int *, 4) = (int) M2C_FIELD(temp_s4, int *, 4);
+                    break;
+                }
+            }
+            M2C_FIELD(temp_s4, int *, 0) = 0;
+            Xiii_func_00193E20_queue(arg0, 0);
+            temp_a0_4 = M2C_FIELD(arg0, int *, 0x18);
+            Xiiii_memmove_queue(temp_a0_4, temp_a0_4 + 0x30, (M2C_FIELD(arg0, int *, 0x20) * 0x30) - 0x30);
+            M2C_FIELD(arg0, int *, 0x20) = (int) (M2C_FIELD(arg0, int *, 0x20) - 1);
+            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & ~4);
+            goto block_19;
+        }
+    } else {
+block_19:
+        if (M2C_FIELD(arg0, int *, 0x20) != 0) {
+            BedPfh stack;
+            temp_s4_2 = M2C_FIELD(arg0, int *, 0x18);
+            stack.setTop(M2C_FIELD(arg0, void **, 0x64));
+            temp_s0_4 = stack.getIndex((const char *)(temp_s4_2 + 0x10));
+            if (stack.m_file_size != 0) {
+                var_a0 = stack.m_file_size[temp_s0_4];
+            } else {
+                var_a0 = -1;
+            }
+            M2C_FIELD(temp_s4_2, int *, 4) = var_a0;
+            M2C_FIELD(temp_s4_2, int *, 0) = Xii_func_00194588(var_a0);
+            M2C_FIELD(arg0, int *, 0x84) = 0;
+            if (stack.m_file_offset != 0) {
+                var_v0 = stack.m_file_offset[temp_s0_4];
+            } else {
+                var_v0 = -1;
+            }
+            M2C_FIELD(arg0, int *, 0x80) = var_v0;
+            temp_a0_5 = arg0 + 0x68;
+            M2C_FIELD(arg0, int *, 0x8C) = (int) M2C_FIELD(temp_s4_2, int *, 4);
+            M2C_FIELD(arg0, int *, 0x88) = (int) M2C_FIELD(temp_s4_2, int *, 0);
+            temp_a1 = arg0 + 0x70;
+            if (M2C_FIELD(temp_s4_2, int *, 8) & 0x10) {
+                Xiiii_func_001BE524__10FileReaderP11FileReadReqi((int) temp_a0_5, (int) temp_a1, 0);
+                M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 4);
+                goto loop_1;
+            }
+            Xiiii_func_001BE524__10FileReaderP11FileReadReqi((int) temp_a0_5, (int) temp_a1, 1);
+            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 4);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00193A1C);
+#endif
 
 // NON_MATCHING: 1/56 differ, 1 edits
 #ifdef NON_MATCHING
