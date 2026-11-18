@@ -46,13 +46,32 @@ judgement and go to Sonnet.
     0x2FEF80).
   - unk/WrdSrv's .rodata start (EffWater type names) stays unsettled.
 
-- [ ] R18 Deep read of R17's top 3 repos (Sonnet, after R17): concrete
-  techniques we could adopt for our open problems: NON_MATCHING near
-  misses (register allocation, bnel, store order), the permuter queue,
-  worker briefs, and keeping matched C++ compilable on PC (our PS2_REG
-  macro). Each lead with the repo file it comes from and how we would try it.
+- [ ] R19 Per-file flags (from R18: sotc config/ee_cflags.json, gt4 build
+  markers, rac1): for files whose near misses no source change fixes,
+  compile the whole file with -fno-gcse, -fno-rerun-loop-opt,
+  -fno-sched-interblock, -mno-split-addresses, -fno-schedule-insns,
+  -Wa,--asm-fill-delay-slots; keep a flag only if every matched function
+  still matches and the file gains. Gate it like god-hand's
+  scripts/checks/c_flags_necessary.py (fail if the flag changes nothing).
+- [ ] R20 Register-allocation dump (rac1 tools/regalloc.py, levers.md
+  13/16/18; gt4 knowledge/ee-gcc-2.96.md priority formulas): a tool that
+  prints cc1's -dg/-dl pseudo priorities for our attempt vs what the
+  target needs, tried on ten register-swap near misses.
+- [ ] R21 Worker-side levers (gt4 knowledge/ + agent harness): add gt4's
+  register/scheduling/bnel source levers missing from
+  docs/EE_GCC_TECHNIQUES.md (pointer locals vs address at each use,
+  static inline with constant parameter, callee return type for v0/v1,
+  early-return instead of a||f() for bnel, volatile store kept out of a
+  delay slot) after checking each at -Os; an "already tried" block per
+  function in the worker brief (gt4 attempts.jsonl).
 ## Done
 
+- [x] R18 Deep read of gt4/god-hand/sotc/rac1 (2026-11-18, Sonnet):
+  leads became R19-R21. gt4 and god-hand treat register-asm pins as
+  fakematches (gt4 tools/asm_policy.py, god-hand
+  scripts/check_forced_regs.py with an allowlist meant to stay empty);
+  our PS2_REG has 373 uses in 29 files. Our perm_official already sets
+  compiler_type = "gcc" (god-hand's pitfall).
 - [x] R17 Survey of 10 PS2 decomps (2026-11-18, Flash): all use -O2
   (we are the only -Os); gt4-decomp is ee-gcc 2.96 C++ at 98 % with an
   agent harness and knowledge/ee-gcc-2.96.md; god-hand (2.96) audits
