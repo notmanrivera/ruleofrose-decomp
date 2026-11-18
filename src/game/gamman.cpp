@@ -1,6 +1,25 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void X_ror_assert_D1A5C(const char *, int, const char *) asm("ror_assert");
+extern char D_002FBB78[];
+extern char D_002FBB88[];
+extern char D_002FBB98[];
+extern "C" void *X_memset_D1A5C(void *, int, unsigned int) asm("memset");
+extern "C" int func_0022B3D8(void *, const char *);
+extern "C" int func_00260110(const char *, ...);
+extern "C" void attachActor__9MagSystemiii(void *, int, int, int);
+struct ModelStub_D1A5C {
+    char pad00[0x11C];
+    void *m_i3r_root;
+    char pad120[0x4D0 - 0x120];
+    int getNodeIndexByName(const char *p)
+    {
+        if (!m_i3r_root) X_ror_assert_D1A5C(D_002FBB78, 0x131, D_002FBB88);
+        if (!p) X_ror_assert_D1A5C(D_002FBB78, 0x131, D_002FBB98);
+        return func_0022B3D8(m_i3r_root, p);
+    } };
+extern ModelStub_D1A5C D_006FE6A0_D1A5C[] asm("D_006FE6A0");
 class EntityStub_687C {
 public:
     char pad00[0x94];
@@ -2858,4 +2877,22 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC070);
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC078);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D1A5C);
+extern "C" void func_001D1A5C(GamMan *self, unsigned int oid1, unsigned int oid2, const char *nodeName)
+{
+    if (Xiiu_func_001D046C((int)self, oid1) != 0 && Xiiu_func_001D046C((int)self, oid2) != 0) {
+        int buf[4];
+        X_memset_D1A5C(buf, 0, 0x10);
+        int chr1 = Xiiu_func_001CBE38((int)&D_007812C0, oid1);
+        int chr2 = Xiiu_func_001CBE38((int)&D_007812C0, oid2);
+        func_001CFBE4((int)self, oid1, (int)buf);
+        int node = D_006FE6A0_D1A5C[chr2].getNodeIndexByName(nodeName);
+        if (chr1 == -1 || chr2 == -1 || node == -1) {
+            func_00260110("chr_id : %d , %d node %s invalid attach param. \n", chr1, chr2, nodeName);
+        } else {
+            attachActor__9MagSystemiii(&D_006E9840, chr1, chr2, node);
+            if (((oid2 >> 28) & 3) == 1) {
+                *(unsigned int *)((char *)Xiiu_func_001D2B8C((int)self, oid2) + 0x254) = oid1;
+            }
+        }
+    }
+}
