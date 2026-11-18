@@ -2515,7 +2515,54 @@ extern "C" void func_001CC970(GamMan *self, int theOID)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CCC30);
 
+// NON_MATCHING: 2/120 differ, 2 edits
+#ifdef NON_MATCHING
+extern char D_007A4440_CD044[] asm("D_007A4440");
+extern int D_007A3D80_CD044 asm("D_007A3D80");
+static inline int *sysWork_CD044() { char *p = D_007A4440_CD044; return *(int **)(p + 0xDC1C); }
+extern "C" void X_func_001C65E8_CD044(GamMan *, int) asm("func_001C65E8");
+extern "C" void X_func_001E7544_CD044(void *, int) asm("func_001E7544");
+extern "C" void func_001CD044(GamMan *arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
+    arg0->m_unk1A684 = arg5;
+    arg0->setSysFlg2(0x80000000);
+    if (arg1 == 1) {
+        if (arg4 != arg0->m_chapter) {
+            *(int *)((char *)sysWork_CD044() + 0xBC) = arg4;
+            *(int *)((char *)sysWork_CD044() + 0xC0) = arg0->m_chapter;
+            arg0->m_unk2221C = 5;
+            arg0->m_chapter = arg4;
+            goto block_9;
+        }
+    } else {
+        if (arg1 == arg0->m_curStat && arg1 == 2 && arg0->m_unk21F7C == arg2) {
+            X_func_001C65E8_CD044(arg0, 0x100000);
+        } else {
+            arg0->m_unk2221C = 3;
+        block_9:
+            *(int *)arg0->m_pad21F44 = arg0->m_curStat;
+            arg0->setSysFlg2(2);
+            arg0->m_unk21F84 = arg0->m_unk21F7C;
+            arg0->m_unk21F88 = arg0->m_unk21F80;
+            arg0->m_curStat = arg1;
+            switch (arg1) {
+            case 2:
+                arg0->m_unk21F7C = arg2;
+                break;
+            case 3:
+                arg0->m_unk21F80 = arg3;
+                break;
+            default:
+                arg0->m_unk21F7C = -1;
+                arg0->m_unk21F80 = -1;
+                break;
+            }
+            X_func_001E7544_CD044(&D_007A3D80_CD044, 1);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CD044);
+#endif
 
 extern "C" void func_001CD224(int arg0)
 {
