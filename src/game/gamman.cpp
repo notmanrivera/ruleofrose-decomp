@@ -3091,7 +3091,51 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D091C);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D0C64);
 
+// NON_MATCHING: 96/116 differ, 9 relocs differ (size 0x1D0, game 0x1D4), 19 edits
+#ifdef NON_MATCHING
+struct ColTaskParam_D0EFC { int unk00; float unk04; int unk08[2]; tagColParam col; };
+static inline void getColPrm_D0EFC(ObjStat *o, void *theOut) { *(tagColParam *)theOut = o->m_colPrm; }
+extern int D_007A3D80_D0EFC asm("D_007A3D80");
+extern "C" int X_func_001D544C_D0EFC(int, unsigned int, void *, int) asm("func_001D544C");
+extern "C" int X_func_001E7D7C_D0EFC(void *, int) asm("func_001E7D7C");
+extern "C" char *X_func_001E79C0_D0EFC(void *, int) asm("func_001E79C0");
+extern "C" void *X___builtin_new_D0EFC(unsigned int) asm("__builtin_new");
+extern "C" void X_func_001F47F0_D0EFC(void *, unsigned int, int, void *) asm("func_001F47F0");
+extern "C" int X_func_001E71FC_D0EFC(void *, int, int, int, int, void *, int, int *, int) asm("func_001E71FC");
+extern "C" void func_001D0EFC(int arg0, ObjStat *arg1, int arg2, float fparg0) {
+    char sp10[32];
+    int *s2 = (int *)((char *)arg1 + 0x3E4);
+    X_func_001D544C_D0EFC(arg0, arg1->m_oid, sp10, 1);
+    if (!arg1->checkFlg(0x08000000)) {
+        tagColParam sp30;
+        getColPrm_D0EFC(arg1, &sp30);
+        int flag = 0;
+        if (*(int *)&sp30 != 2 || X_func_001E7D7C_D0EFC(&D_007A3D80_D0EFC, *s2) != 0) {
+            flag = 1;
+        }
+        if (flag == 0) {
+            ((int *)&sp30)[4] = 0;
+            ((int *)&sp30)[1] = 4;
+            arg1->m_colPrm = sp30;
+            ColTaskParam_D0EFC sp60;
+            sp60.unk00 = 0x3C;
+            sp60.unk04 = fparg0;
+            sp60.col = sp30;
+            if (X_func_001E7D7C_D0EFC(&D_007A3D80_D0EFC, *s2) != 0) {
+                if (arg2 == 0) {
+                    *(float *)(X_func_001E79C0_D0EFC(&D_007A3D80_D0EFC, *s2) + 0x48) = fparg0;
+                }
+            } else if (X_func_001E7D7C_D0EFC(&D_007A3D80_D0EFC, *s2) == 0) {
+                void *obj = X___builtin_new_D0EFC(0x80);
+                X_func_001F47F0_D0EFC(obj, arg1->m_oid, 0, &sp60);
+                X_func_001E71FC_D0EFC(&D_007A3D80_D0EFC, 1, -1, 1, 0, obj, 0, s2, 0x11);
+            }
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D0EFC);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D10D0);
 
