@@ -1,5 +1,17 @@
 #include "include_asm.h"
 #include "bed/bedpfh.h"
+struct PBookMapCoords { float v[8]; };
+struct PBookMapTable { PBookMapCoords row[13]; };
+extern PBookMapTable D_002F7DC0;
+extern int D_00298EE0;
+extern "C" int Xii_func_001C6C38(int) asm("func_001C6C38");
+extern "C" int Xii_func_001DBD90(int) asm("func_001DBD90");
+extern "C" int Xii_func_001C6C28(int) asm("func_001C6C28");
+extern "C" int Xiii_func_0017EA44(int, int) asm("func_0017EA44");
+static inline int PBookMapObject(int game)
+{
+    return game + 0x18C00;
+}
 extern "C" int Xiiiii_func_00197E68(int, int, int, int) asm("func_00197E68");
 extern "C" int Xiii_func_001943D8(int, int) asm("func_001943D8");
 extern "C" void X_func_00193868_v1(int) asm("func_00193868");
@@ -842,7 +854,34 @@ extern "C" float func_00196804(int arg0)
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F7DC0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196878);
+extern "C" void func_00196878(int arg0, float *arg1)
+{
+    PBookMapTable table = D_002F7DC0;
+    int mapObj = PBookMapObject((int)&D_007812C0);
+    int map = Xii_func_001C6C38((int)&D_007812C0);
+    int mode = Xii_func_001DBD90(mapObj);
+    int id = Xii_func_001C6C28((int)&D_007812C0);
+    int obj = Xiii_func_0017EA44((int)&D_00298EE0, id);
+    if (map != -1) {
+        PBookMapCoords *row = &table.row[map];
+        if (map == 0 && mode == 3) {
+            switch (id) {
+            case 0x63: row = &table.row[3]; break;
+            case 0x64: row = &table.row[4]; break;
+            case 0x65: row = &table.row[5]; break;
+            case 0x66: row = &table.row[6]; break;
+            case 0x67: row = &table.row[7]; break;
+            case 0x68: row = &table.row[8]; break;
+            case 0x69: row = &table.row[9]; break;
+            case 0x6A: row = &table.row[10]; break;
+            case 0x33: row = &table.row[11]; break;
+            case 0x32: row = &table.row[12]; break;
+            }
+        }
+        arg1[0] = row->v[2] * -(arg1[0] + M2C_FIELD(obj, float *, 0x20)) / row->v[0] + row->v[4];
+        arg1[2] = row->v[3] * (arg1[2] + M2C_FIELD(obj, float *, 0x28)) / row->v[1] + row->v[5];
+    }
+}
 
 // NON_MATCHING: 6/36 differ, 5 edits
 #ifdef NON_MATCHING
