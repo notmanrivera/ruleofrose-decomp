@@ -1904,7 +1904,36 @@ extern "C" int func_001CA8E8(int arg0, unsigned short arg1, unsigned int arg2, u
     return temp_v0;
 }
 
+// NON_MATCHING: 4/112 differ, 4 edits
+#ifdef NON_MATCHING
+struct ActorStub_CAA14 { char pad00_caa14[0x60]; float x_caa14, y_caa14, z_caa14, w_caa14; char pad70_caa14[0x20]; int unk90_caa14; char pad94_caa14[0x4D0 - 0x94]; void setScale(float x) { z_caa14 = y_caa14 = x_caa14 = x; unk90_caa14 = 1; } };
+struct SceneStub_CAA14 { char pad00_caa14[0x2920]; ActorStub_CAA14 m_actor[128]; };
+extern "C" void X_func_001DB520_CAA14(void *, int, void *) asm("func_001DB520");
+extern "C" void func_001CAA14(GamMan *self, unsigned short arg1, unsigned int arg2, int arg3)
+{
+    int no;
+    unsigned int tmp;
+    char *sys = (char *)&D_006E9840;
+    ObjStat *stat = (ObjStat *)Xiiu_func_001D2D00((int)self, arg2);
+    SceneStub_CAA14 *scene = (SceneStub_CAA14 *)(sys + 0x12540);
+    no = X_loadModel__9MagSystemii(sys, arg1, -1);
+    func_001CA598((int)self, no, arg2);
+    tmp = arg1;
+    X_func_001DB520_CAA14(stat, 3, &no);
+    X_func_001DB520_CAA14(stat, 0x1000, &tmp);
+    func_001DB7CC((int)stat, arg3);
+    func_001331F4(scene, no, 1, 0, 0, 0, 0.016666694f);
+    if (X_func_001C96C8(self, arg2) != 0) {
+        X_func_001CB8E4(self, arg2, 0x32, 0);
+    }
+    if (arg1 == 0x800) {
+        scene->m_actor[no].setScale(9.999999583953922e-08f);
+    }
+    self->m_avfchrList.push_back(stat);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CAA14);
+#endif
 
 extern "C" void func_001CABD4(GamMan *self, unsigned short arg1, void *arg2, unsigned int arg3, int arg4)
 {
