@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void X_func_001CBB80_CB74C(GamMan *, int) asm("func_001CBB80");
+extern "C" void X_func_0013166C_CB74C(void *, int, int) asm("func_0013166C");
 class EntityStub_C5A5C {
 public:
     char pad00[0x94];
@@ -2006,7 +2008,42 @@ extern "C" void func_001CB638(GamMan *arg0)
     arg0->m_inuMode = 2;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CB74C);
+extern "C" void func_001CB74C(GamMan *self, int theKey, int theOn)
+{
+    GamPair pair;
+    GamList<GamPair>::iterator it;
+    GamList<GamPair>::iterator last;
+
+    it = self->m_unk20B00.begin();
+    last = self->m_unk20B00.end();
+    if (theOn != 0) {
+        while (it != last) {
+            if ((*it).m_key == theKey) {
+                return;
+            }
+            ++it;
+        }
+        pair.m_key = theKey;
+        pair.m_val = -1;
+        self->m_unk20B00.push_back(pair);
+        if (theKey == (int)0x85FFFE01) {
+            char *p = (char *)&D_006E9840;
+            X_func_0013166C_CB74C(p + 0x12540, 14, 0);
+        }
+    } else {
+        while (it != last) {
+            if ((*it).m_key == theKey) {
+                X_func_001CBB80_CB74C(self, theKey);
+                if (theKey == (int)0x85FFFE01) {
+                    char *p = (char *)&D_006E9840;
+                    X_func_0013166C_CB74C(p + 0x12540, 15, 0);
+                }
+                return;
+            }
+            ++it;
+        }
+    }
+}
 
 extern "C" void func_001CB8E4(int arg0, int arg1, int arg2)
 {
