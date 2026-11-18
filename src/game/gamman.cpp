@@ -2226,7 +2226,41 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CD60C);
 extern "C" void func_001CD7C0(void) {
 }
 
+// NON_MATCHING: 22/99 differ, 1 reloc differs, 25 edits
+#ifdef NON_MATCHING
+extern char D_007A4440[];
+static inline int *sysWork_CD7C8() { char *p = D_007A4440; return *(int **)(p + 0xDC1C); }
+extern "C" void func_001C47C4(GamMan *);
+extern "C" void func_001CD60C(GamMan *);
+extern "C" void func_001FBBD0();
+extern "C" void func_001C204C(GamMan *, int);
+extern "C" void func_001C65E8(GamMan *, int);
+extern "C" void func_001CD7C8(GamMan *self)
+{
+    if (self->m_curStat == 2) {
+        func_001CD224((int)self);
+        func_001C47C4(self);
+        self->m_unk225E4 = 0;
+        func_001CD60C(self);
+        func_001FBBD0();
+    } else if (self->m_curStat == 3) {
+        func_001C4F30();
+    } else if (self->m_curStat == 1) {
+        self->m_sysFlg &= ~0x20;
+        sysWork_CD7C8()[5] = 0;
+        sysWork_CD7C8()[7] = 0;
+        func_001C204C(self, self->m_chapter);
+    }
+    sysWork_CD7C8()[3] = self->m_unk21F84;
+    sysWork_CD7C8()[4] = self->m_unk21F88;
+    sysWork_CD7C8()[1] = self->m_unk21F7C;
+    sysWork_CD7C8()[2] = (self->m_unk2221C != 2) ? self->m_unk21F80 : -1;
+    func_001C65E8(self, 2);
+    func_001E7544(&D_007A3D80, 0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CD7C8);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FBF50);
 
