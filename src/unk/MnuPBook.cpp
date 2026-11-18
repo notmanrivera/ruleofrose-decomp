@@ -1222,7 +1222,121 @@ extern "C" void func_00196EA4(int arg0)
     Xiiiii_func_0019397C(arg0, (int) (int) "ehontex01_tcc", 4, 0);
 }
 
+// NON_MATCHING: 23/204 differ, 28 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_00279C98_init(...) asm("func_00279C98");
+extern "C" int Xii_func_00194588_init(int) asm("func_00194588");
+extern char D_002F80D0[];
+extern char D_002F80E0[];
+extern "C" void func_00196EFC(int arg0)
+{
+    register int self PS2_REG("$16");
+    self = arg0;
+    struct { char pad0[32]; } stack;
+    int var_a2;
+    int temp_a0;
+    int temp_a0_2;
+    int temp_a1;
+    int temp_a1_2;
+    int temp_a3;
+    int temp_a3_2;
+    int temp_v0_2;
+    int temp_v1;
+    int temp_v1_2;
+    int temp_v1_3;
+    int var_a0;
+    int var_s1;
+    register int var_s2 PS2_REG("$18");
+    int var_s3;
+    int temp_v0;
+
+    temp_a0 = (int) (M2C_FIELD(M2C_FIELD(self, int *, 0x110), int *, 8) + 1) / 2;
+    M2C_FIELD(self, int *, 0x130) = temp_a0;
+    M2C_FIELD(self, int *, 0x12C) = Xii_func_00194588_init(temp_a0 << 5);
+    temp_v1 = M2C_FIELD(self, int *, 0x128);
+    if (temp_v1 >= 0) {
+        var_s3 = (int) (temp_v1 + ((unsigned int) temp_v1 >> 0x1F)) >> 1;
+    } else {
+        var_s3 = -1;
+    }
+    var_a2 = M2C_FIELD(self, int *, 0x12C);
+    for (var_s1 = 0; var_s1 <= var_s3; var_s1++, var_a2 += 0x20) {
+        M2C_FIELD(var_a2, int *, 0) = 3;
+        M2C_FIELD(var_a2, int *, 8) = -1;
+        M2C_FIELD(var_a2, int *, 4) = -1;
+        M2C_FIELD(var_a2, int *, 0xC) = var_s1 * 2 + 1;
+        M2C_FIELD(var_a2, int *, 0x10) = 0;
+    }
+    for (; var_s1 < M2C_FIELD(self, int *, 0x130); var_s1++, var_a2 += 0x20) {
+        M2C_FIELD(var_a2, int *, 0) = 3;
+        M2C_FIELD(var_a2, int *, 8) = -1;
+        M2C_FIELD(var_a2, int *, 4) = -1;
+        M2C_FIELD(var_a2, int *, 0xC) = var_s1 * 2;
+        M2C_FIELD(var_a2, int *, 0x10) = 0;
+    }
+    temp_v0 = M2C_FIELD(self, int *, 0x110);
+    M2C_FIELD(self, int *, 0x120) = (int) (M2C_FIELD(temp_v0, int *, 8) - 1);
+    temp_v1_2 = M2C_FIELD(temp_v0, int *, 0xC);
+    if (temp_v1_2 & 2) {
+        if (M2C_FIELD(self, int *, 0x11C) > 0) {
+            var_s1 = 0;
+            var_a2 = M2C_FIELD(self, int *, 0x12C);
+            if (M2C_FIELD(self, int *, 0x130) > 0) {
+                do {
+                    temp_v0_2 = (var_s1 >= 0) ? (var_s1 * 2) : -1;
+                    temp_v1_3 = temp_v0_2 + 1;
+                    var_s1 += 1;
+                    if (temp_v0_2 >= M2C_FIELD(self, int *, 0x11C)) {
+                        (*(int *)(var_a2)) |= 4;
+                    }
+                    if (temp_v1_3 >= M2C_FIELD(self, int *, 0x11C)) {
+                        (*(int *)(var_a2)) |= 8;
+                    }
+                    var_a2 += 0x20;
+                } while (var_s1 < M2C_FIELD(self, int *, 0x130));
+            }
+            M2C_FIELD(self, int *, 0x120) = M2C_FIELD(self, int *, 0x11C);
+        }
+    } else if (temp_v1_2 & 1) {
+        if (M2C_FIELD(self, int *, 0x11C) == 0) {
+            var_a2 = M2C_FIELD(self, int *, 0x12C) + 0xE0;
+            M2C_FIELD(var_a2, int *, 0) |= 0x30;
+        } else {
+            M2C_FIELD(self, int *, 0x120) = M2C_FIELD(self, int *, 0x11C);
+        }
+    }
+    if ((M2C_FIELD(self, int *, 0x128) + 1) >= M2C_FIELD(self, int *, 0x120)) {
+        M2C_FIELD(self, int *, 4) = (int) (M2C_FIELD(self, int *, 4) | 0x40000);
+    }
+    var_s1 = 0;
+    Xiiiii_func_0019397C(self, (int) (int) "pb_pagedmy00_tcc\0\0\0\0", 0x14, 0x20);
+    Xiiiii_func_0019397C(self, (int) (int) "pb_pagedmy01_tcc\0\0\0\0", 0x14, 0x21);
+    if (M2C_FIELD(self, int *, 0x130) > 0) {
+        do {
+            X_func_00279C98_init((int)&stack, (int) "%s%d_base.i3s", M2C_FIELD(self, int *, 0x110) + 0x10, var_s1);
+            Xiiiii_func_0019397C(self, (int)&stack, 0x11, var_s1++);
+        } while (var_s1 < M2C_FIELD(self, int *, 0x130));
+    }
+    var_s1 = 0;
+    if (var_s3 >= 0) {
+        var_s2 = 1;
+        do {
+            X_func_00279C98_init((int)&stack, (int) D_002F80D0, M2C_FIELD(self, int *, 0x110) + 0x10, var_s1);
+            temp_a3_2 = var_s2;
+            var_s2 += 2;
+            Xiiiii_func_0019397C(self, (int) (int)&stack, 0x12, temp_a3_2);
+            Xiiiii_func_0019844C(self, var_s1++, 0, 1);
+        } while (var_s3 >= var_s1);
+    }
+    for (; var_s1 < M2C_FIELD(self, int *, 0x130); var_s1++) {
+        X_func_00279C98_init((int)&stack, (int) D_002F80E0, M2C_FIELD(self, int *, 0x110) + 0x10, var_s1);
+        Xiiiii_func_0019397C(self, (int) (int)&stack, 0x12, var_s1 * 2);
+        Xiiiii_func_0019844C(self, var_s1, 1, 0);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196EFC);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_0019722C);
 
