@@ -12,6 +12,7 @@
 #include "sdk/string.h"
 #include "utl/utlbtl.h"
 #include "include_asm.h"
+extern "C" void Xvpi_func_002375D8(float *, int) asm("func_002375D8");
 
 // The __FILE__ string, shared with the asm functions (INCLUDE_RODATA).
 #undef ASSERT_FILE
@@ -244,7 +245,6 @@ INCLUDE_RODATA("asm/nonmatchings/utl/utlbtl", D_002E75F8);
 
 // NON_MATCHING: three instructions differ; the game loads m_rotate into $a1
 // where ours uses $v0.
-#ifdef NON_MATCHING
 // 0x0010456C
 extern "C" void func_0010456C(UtlHitLine *theHitCheck)
 {
@@ -254,7 +254,7 @@ extern "C" void func_0010456C(UtlHitLine *theHitCheck)
     ASSERT(theHitCheck->m_target_pos);
     if (theHitCheck->m_rotate) {
         float q[4];
-        func_002375D8(q);
+        Xvpi_func_002375D8(q, theHitCheck->m_rotate);
         func_00237390(q, theHitCheck->m_angle, q);
         if (theHitCheck->m_scale == 0.0f) {
             func_00234DC0(theHitCheck->m_target_pos, theHitCheck->m_origin_pos, q);
@@ -279,9 +279,6 @@ extern "C" void func_0010456C(UtlHitLine *theHitCheck)
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/utl/utlbtl", func_0010456C);
-#endif
 
 // 0x001046B4
 extern "C" int func_001046B4(UtlHitCone *theHitCheck)
