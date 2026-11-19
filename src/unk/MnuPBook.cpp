@@ -1596,39 +1596,40 @@ extern "C" void func_00196878(int arg0, float *arg1)
     }
 }
 
-// NON_MATCHING: 6/36 differ, 5 edits
-#ifdef NON_MATCHING
-extern "C" int Xii_func_0018330C(int) asm("func_0018330C");
-extern "C" int Xii_func_00192AC0(int) asm("func_00192AC0");
-extern int _vt$8MnuPBook;
-extern "C" void func_00196A9C(int arg0)
+struct PBookBase6A9C {
+    int m_00;
+    unsigned char m_pad04[0x108];
+    virtual void vfunc0();
+    PBookBase6A9C() asm("func_00192AC0");
+};
+struct PBookMsg6A9C {
+    unsigned char m_data[0x3BC];
+    PBookMsg6A9C() asm("func_0018330C");
+};
+inline void *operator new(unsigned int, void *p) { return p; }
+struct MnuPBook : public PBookBase6A9C {
+    int m_110, m_114, m_118, m_11C, m_120, m_124, m_128, m_12C;
+    int m_130, m_134, m_138, m_13C;
+    unsigned char m_msgs[2*0x3BC];
+    void vfunc0();
+    MnuPBook() asm("func_00196A9C");
+};
+MnuPBook::MnuPBook()
 {
-    int i;
-    int p;
-
-    p = arg0 + 0x140;
-    i = 1;
-    Xii_func_00192AC0(arg0);
-    M2C_FIELD(arg0, int *, 0x10C) = (int)&_vt$8MnuPBook;
-    do {
-        Xii_func_0018330C(p);
-        p += 0x3BC;
-        i -= 1;
-    } while (i != -1);
-    M2C_FIELD(arg0, int *, 0x120) = i;
-    M2C_FIELD(arg0, int *, 0) = 7;
-    M2C_FIELD(arg0, int *, 0x134) = i;
-    M2C_FIELD(arg0, int *, 0x138) = i;
-    M2C_FIELD(arg0, int *, 0x114) = i;
-    M2C_FIELD(arg0, int *, 0x118) = i;
-    M2C_FIELD(arg0, int *, 0x11C) = -1;
-    M2C_FIELD(arg0, int *, 0x12C) = 0;
-    M2C_FIELD(arg0, int *, 0x13C) = 0;
-    M2C_FIELD(arg0, int *, 0x110) = 0;
+    int i = 1;
+    register PBookMsg6A9C *p PS2_REG("$18") = (PBookMsg6A9C *)m_msgs;
+    do { new (p) PBookMsg6A9C; p++; } while (--i != -1);
+    m_134 = i;
+    m_138 = i;
+    m_114 = i;
+    m_118 = i;
+    m_11C = -1;
+    m_120 = i;
+    m_00 = 7;
+    m_13C = 0;
+    m_110 = 0;
+    m_12C = 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196A9C);
-#endif
 
 extern "C" void X_MnuPBook__vfunc_03_v1(void *) asm("MnuPBook__vfunc_03");
 extern int vtbl_MnuPBook_v1 asm("_vt$8MnuPBook");
