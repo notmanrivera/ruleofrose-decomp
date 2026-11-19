@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void X_func_00176C50(void *) asm("func_00176C50");
+extern "C" void X_dtor_10FileReader(void *, int) asm("_$_10FileReader");
 struct EffManEntry_1781D0 {
     char pad0[4];
     int field_4;
@@ -65,7 +68,14 @@ extern "C" int func_00176A3C(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00176AA0);
+extern "C" void func_00176AA0(char *arg0, int arg1)
+{
+    X_func_00176C50(arg0);
+    X_dtor_10FileReader(arg0 + 0x129C, 2);
+    if (arg1 & 1) {
+        return X___builtin_delete(arg0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00176AFC);
 
