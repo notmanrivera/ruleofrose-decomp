@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" float Xii_func_0016FF18(int, int) asm("func_0016FF18");
+extern int D_00298E08;
 struct m2c_v94_10_i { char pad[148]; virtual void v1(); virtual int call(); };
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int X_func_00237408(...) asm("func_00237408");
@@ -15,7 +17,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2Prim__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2Prim__vfunc_08);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", updateZDepth__14EffBreath2Prim);
+extern "C" void updateZDepth__14EffBreath2Prim(int arg0)
+{
+    M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, arg0 + 0x30);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2Ground__vfunc_02);
 
