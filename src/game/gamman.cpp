@@ -1819,7 +1819,92 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FBB98);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C9920);
 
+// NON_MATCHING: 4/129 differ, 4 edits
+#ifdef NON_MATCHING
+extern "C" void GamSetSound(int, int, int, int, int, int) asm("func_001E6734");
+extern "C" void GamUseSound(int) asm("func_00237F90");
+extern "C" void GamRefreshSound(int, int) asm("func_001D3A38");
+extern int D_006E9848;
+extern int D_00780D04;
+static inline void GamGetSound15(int sound, int *left, int *right) { int l = *(int *)((char *)sound + 0x1598); int r = *(int *)((char *)sound + 0x159C); *left = l; *right = r; }
+static inline void GamGetSound14(int sound, int *left, int *right) { int l = *(int *)((char *)sound + 0x1590); int r = *(int *)((char *)sound + 0x1594); *left = l; *right = r; }
+static inline void GamApplySound(int sound, int channel, int *pair, int left, int right, int zero, int unused) { GamSetSound(sound, channel, pair[0] = left, pair[1] = right, zero, unused); }
+static inline void GamMasterStore(int raw, int bias) { D_00780D04 = raw + bias; }
+extern "C" int func_001C9C1C(int self, unsigned int mode, int value)
+{
+    int pair[2];
+    register int sound PS2_REG("$3");
+    register int receiver PS2_REG("$4");
+    register int left PS2_REG("$2");
+    register int right PS2_REG("$3");
+    register int channel PS2_REG("$5");
+    register int zero PS2_REG("$8");
+    register int unused PS2_REG("$9");
+    switch (mode) {
+    case 0: {
+        register int level PS2_REG("$4") = value < 0 ? 0 : value;
+        level = level < 9 ? level : 8;
+        GamMasterStore((int)((float)level * 0.125f * 192.0f), 32);
+        break;
+    }
+    case 1: {
+        register int upper PS2_REG("$4") = 8;
+        value = value < 0 ? 0 : value;
+        register int level PS2_REG("$2") = value;
+        level = level < 9 ? level : upper;
+        M2C_FIELD(self, int *, 0x21FA0) = (int)((float)level * 0.125f * 192.0f + 32.0f);
+        GamRefreshSound(self, M2C_FIELD(self, int *, 0x22218));
+        break;
+    }
+    case 2:
+        value = value < 0 ? 0 : value;
+        sound = self + 0x18E00;
+        receiver = sound;
+        channel = 8;
+        value = value < 9 ? value : channel;
+        M2C_FIELD(self, int *, 0x21FA8) = value;
+        channel = 15;
+        zero = 0;
+        unused = -1;
+        left = M2C_FIELD(sound, int *, 0x1598);
+        right = M2C_FIELD(sound, int *, 0x159C);
+        goto apply;
+    case 3:
+        value = value < 0 ? 0 : value;
+        sound = self + 0x18E00;
+        receiver = sound;
+        channel = 8;
+        value = value < 9 ? value : channel;
+        M2C_FIELD(self, int *, 0x21FA4) = value;
+        channel = 14;
+        zero = 0;
+        unused = -1;
+        left = M2C_FIELD(sound, int *, 0x1590);
+        right = M2C_FIELD(sound, int *, 0x1594);
+apply:
+        GamApplySound(receiver, channel, pair, left, right, zero, unused);
+        break;
+    case 4:
+        *(int *)value = M2C_FIELD(self, int *, 0x21FA8);
+        break;
+    case 5:
+        *(int *)value = M2C_FIELD(self, int *, 0x21FA4);
+        break;
+    case 6:
+        M2C_FIELD(self, int *, 0x21F8C) = value;
+        GamUseSound(value != 1);
+        break;
+    case 7:
+        int enabled = value != 0;
+        M2C_FIELD(self, int *, 0x21F90) = enabled;
+        D_006E9848 = enabled;
+        break;
+    }
+    return -1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C9C1C);
+#endif
 
 extern "C" void func_001C9E20(GamMan *self, int theStat)
 {
