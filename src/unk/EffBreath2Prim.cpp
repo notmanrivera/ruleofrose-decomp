@@ -148,7 +148,52 @@ extern "C" void updateZDepth__14EffBreath2Prim(int arg0)
     M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, arg0 + 0x30);
 }
 
+// NON_MATCHING: 62/120 differ, 1 reloc differs, 44 edits
+#ifdef NON_MATCHING
+struct Bg2Block16 { int w[4]; };
+extern "C" int EffBreath2Ground__vfunc_02(int arg0, int arg1)
+{
+    int temp_s0;
+    int temp_s1;
+    int temp_v0;
+    int var_s4;
+    int temp_s2;
+
+    if (!Xiii_Eff0__vfunc_02(arg0, arg1)) {
+        return 0;
+    }
+    var_s4 = 0;
+    M2C_FIELD(arg0, unsigned short *, 0) = (unsigned short) (M2C_FIELD(arg0, unsigned short *, 0) | 0x10);
+    M2C_FIELD(arg0, float *, 0x70) = (float) M2C_FIELD(arg1, float *, 0x10);
+    M2C_FIELD(arg0, float *, 0x74) = (float) (M2C_FIELD(arg1, float *, 0x14) - 2.0f);
+    M2C_FIELD(arg0, float *, 0x7C) = 1.0f;
+    M2C_FIELD(arg0, float *, 0x78) = (float) M2C_FIELD(arg1, float *, 0x18);
+    M2C_FIELD(arg0, float *, 0x80) = (float) M2C_FIELD(arg1, float *, 0x1C);
+    *(Bg2Block16 *)((char *)(arg0) + 144) = *(Bg2Block16 *)((char *)(arg1) + 32);
+    int min_life = 0x11;
+    M2C_FIELD(arg0, int *, 0xA4) = min_life;
+    temp_v0 = M2C_FIELD(arg1, int *, 0x30);
+    M2C_FIELD(arg0, int *, 0xA0) = 0;
+    if (temp_v0 < min_life) {
+        temp_v0 = min_life;
+    }
+    M2C_FIELD(arg0, int *, 0xA4) = temp_v0;
+    do {
+        float r0 = (float) Xi_func_0016AD94();
+        temp_s0 = var_s4 * 0x10;
+        temp_s1 = temp_s0 + 0x20;
+        temp_s2 = arg0 + 4;
+        var_s4 += 1;
+        *(float *)(temp_s2 + temp_s1) = M2C_FIELD(arg0, float *, 0x80) * (((r0 / 255.0f) * 1.1999999582767487f) - 0.5999999791383743f);
+        M2C_FIELD((temp_s0 + temp_s2), float *, 0x24) = (float) (M2C_FIELD(arg0, float *, 0x80) * ((((float) Xi_func_0016AD94() / 255.0f) * 1.1999999582767487f) - 0.5999999791383743f));
+        ((float *)(arg0 + temp_s1))[3] = (float) (((((float) Xi_func_0016AD94() * 360.0f) / 255.0f) * 3.141592562198639f) / 180.0f);
+    } while (var_s4 < 4);
+    M2C_FIELD(arg0, float *, 0x24) = M2C_FIELD(arg0, float *, 0x28) = 0.0f;
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2Ground__vfunc_02);
+#endif
 
 extern "C" int EffBreath2Ground__vfunc_05(EffBreath2Ground *arg0)
 {
