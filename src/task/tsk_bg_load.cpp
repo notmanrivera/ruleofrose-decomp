@@ -99,15 +99,11 @@ extern "C" char *func_001FCDA4(BgIter *self)
 }
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" char *func_001FCDB8(BgIter *self)
 {
-    return self->m_top + *(int *)(self->m_top + self->m_no * 0x10 + 8);
+  int new_var;
+  return self->m_top + (*((int *) ((self->m_top + (new_var = self->m_no * 0x10)) + 8)));
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/task/tsk_bg_load", func_001FCDB8);
-#endif
 
 
 // NON_MATCHING: close, not identical yet.
