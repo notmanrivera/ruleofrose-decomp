@@ -4,6 +4,9 @@
 #define I(p, off) (*(int *)((char *)(p) + (off)))
 #include "bed/bedpad.h"
 #include "dog/dogcamera.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xi_func_0011C464() asm("func_0011C464");
+extern "C" int Xi_func_0011C4C0() asm("func_0011C4C0");
 extern "C" float cosf(float);
 #define PC_ASSERT(e, line) ((e) ? (void)0 : ror_assert(D_002E9F28, line, #e))
 extern "C" void func_0011A738_c(MagPC *self, void *theTable) asm("func_0011A738");
@@ -50,8 +53,6 @@ extern "C" void func_0011AB40(MagPC *self)
     func_0011C2AC(self, 0);
 }
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" int func_0011AB88(MagPC *self)
 {
     if (I(self, 0x1B4) >= 0) {
@@ -64,14 +65,14 @@ extern "C" int func_0011AB88(MagPC *self)
         return 4;
     }
     float life = (float)func_0011C464(self, I(self, 0x54));
-    if (life / (float)func_0011C4C0(self) <= 0.29999999f) {
+    register float maxLife PS2_REG("$f0") = (float)func_0011C4C0(self);
+    float threshold = 0.29999999f;
+    life /= maxLife;
+    if (life <= threshold) {
         return 2;
     }
     return I(self, 0xD0) < 0x12D;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011AB88);
-#endif
 
 
 extern "C" int func_0011AC24(MagPC *self, BedPad *thePad)
