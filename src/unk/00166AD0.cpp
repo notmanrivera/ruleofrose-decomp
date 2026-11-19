@@ -316,7 +316,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00167E38);
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001680A0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001681C8);
+extern "C" void func_001681C8(int arg0, int arg1, int arg2, float fparg0)
+{
+    float yaw[4];
+    if (arg2 == 0) {
+        M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x2C) = 0;
+    }
+    if (cHas((int)&cGlobalA, M2C_FIELD(M2C_FIELD(arg0, int *, 8), int *, 0x3DC)) == 0) {
+        float angle = cYaw((int)(D_006FE6A0 + cIndex((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0)) * 0x4D0));
+        int handle = M2C_FIELD(arg0, int *, 0);
+        yaw[1] = angle;
+        Xiiii_ffi_func_001F603C(handle, arg1, -1, arg2, fparg0, angle, 1);
+    } else {
+        Xiiii_ffi_func_001F603C(M2C_FIELD(arg0, int *, 0), arg1, -1, arg2, fparg0, 32769.0f, 1);
+    }
+}
 
 extern "C" void func_001682B0(int arg0)
 {
