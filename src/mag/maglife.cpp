@@ -360,11 +360,11 @@ extern "C" void func_0011A144(MagLifeControlChara *self, MagLifeMotionState *the
 // branch (delay-slot filling sees $a0 as live at the branch target); see
 // func_0011A320 below, whose only difference has the same cause.
 
+// NON_MATCHING: 2/76 differ, 2 edits
 #ifdef NON_MATCHING
 void MagLifeControlChara::func_0011A14C()
 {
-
-        ASSERT_S(m_actor, D_002E95E8);
+        if (!m_actor) ror_assert(D_002E9598, 0x16F, D_002E95E8);
 
     if (func_0011A054() == 0 && func_0011A048() != 0) {
         int theState = func_0011A028();
