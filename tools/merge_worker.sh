@@ -103,7 +103,9 @@ else
 
   BEFORE="$(git rev-parse HEAD)"; P0="$(progress)"
   # shellcheck disable=SC2086
-  git cherry-pick $COMMITS >/dev/null || { git cherry-pick --abort; echo "cherry-pick failed; nothing merged"; exit 1; }
+  # --empty=drop: a function another route (twin sweep, permuter) already
+  # matched leaves the worker's commit empty
+  git cherry-pick --empty=drop $COMMITS >/dev/null || { git cherry-pick --abort; echo "cherry-pick failed; nothing merged"; exit 1; }
   verify HEAD
   [ "$FAIL" = 0 ] || { git reset -q --hard "$BEFORE"; echo "not merged"; exit 1; }
   # Still valid C++ for a PC (tools/host_check.py): no file may get worse
