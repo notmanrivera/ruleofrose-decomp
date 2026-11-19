@@ -1,4 +1,45 @@
 #include "include_asm.h"
+struct Mat4_render9 {
+    float m[4][4];
+} __attribute__((aligned(8)));
+struct Vec4_render9 {
+    float x, y, z, w;
+} __attribute__((aligned(8)));
+class Cam_render9 {
+public:
+    Mat4_render9 m_mat;
+    char pad40[0x54];
+    virtual void vfunc0();
+    virtual void transform();
+};
+struct RenderParam_render9 {
+    int f00;
+    int f04;
+    int f08;
+};
+class Eff0_render9 {
+public:
+    unsigned short flags;       // 0x00
+    char pad2[0x1A];
+    int f1C;                    // 0x1C
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6(RenderParam_render9 *);
+};
+class EffLight2_render9 : public Eff0_render9 {
+public:
+    char pad24[0xC];
+    Vec4_render9 f30;           // 0x30
+    char pad40[0x28];
+    float f68;                  // 0x68
+    float f6C;                  // 0x6C
+};
+extern "C" void X_render9_237408(Vec4_render9 *, Vec4_render9 *, float *) asm("func_00237408");
+extern "C" float X_render9_16FC20(Vec4_render9 *) asm("func_0016FC20");
 struct Eff0_172E4C {
     char pad[0x20];
     void *vptr;
@@ -713,7 +754,22 @@ extern "C" int EffLight2__vfunc_05(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", render__9EffLight2PQ24Eff011RENDERPARAM);
+extern "C" void render__9EffLight2PQ24Eff011RENDERPARAM(EffLight2_render9 *self, RenderParam_render9 *arg1)
+{
+    if ((self->f1C < 0) && ((self->flags & 0xC) != 4)) {
+        Cam_render9 *cam = (Cam_render9 *)(D_00298E08 + 0x2AB70);
+        cam->transform();
+        Mat4_render9 mat = cam->m_mat;
+        Vec4_render9 vec;
+        X_render9_237408(&vec, &self->f30, mat.m[3]);
+        float dist = X_render9_16FC20(&vec);
+        self->f6C = dist;
+        if (!(self->f68 <= dist)) {
+            arg1->f08 = arg1->f04;
+            self->v6(arg1);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffLight2__vfunc_08);
 
