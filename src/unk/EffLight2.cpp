@@ -600,7 +600,36 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffLight3__vfunc_02);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffLight3__vfunc_05);
 
+// NON_MATCHING: 47/49 differ, 2 relocs differ (size 0xC4, game 0xCC), 35 edits
+#ifdef NON_MATCHING
+struct Entry_176430 {
+    int a;
+    int b;
+}; // Entry_176430
+struct Obj_176430 {
+    char pad[0x24];
+    Entry_176430 entries[6][16];
+}; // Obj_176430
+struct Scene_176430 {
+    char pad[0x20B0];
+    unsigned int bits[4];
+}; // Scene_176430
+extern "C" int Xiiii_func_0013FE64__8MagSceneii(int, int, int) asm("func_0013FE64__8MagSceneii");
+extern "C" void func_00176430(Obj_176430 *arg0, int arg1)
+{
+    int count = 0;
+    unsigned int bits = ((Scene_176430 *)D_00298E08)->bits[arg1];
+    for (int i = 0; i < 16; i++) {
+        if (bits & (1 << i)) {
+            arg0->entries[arg1][count].a = i;
+            arg0->entries[arg1][count].b = Xiiii_func_0013FE64__8MagSceneii(D_00298E08, arg1, 2);
+            count++;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00176430);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F28B0);
 
