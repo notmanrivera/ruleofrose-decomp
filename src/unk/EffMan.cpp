@@ -1,4 +1,18 @@
 #include "include_asm.h"
+struct EffObj_17772C {
+    char pad[32];
+    virtual int vfunc_08(int);
+    virtual void vfunc_10();
+    virtual void vfunc_18();
+    virtual int vfunc_20();
+};
+struct EffMan_17772C {
+    int field_0;
+    EffObj_17772C *ptrs[0x110];
+    int field_444;
+    int field_448;
+};
+extern "C" void X_17772C_756C(EffMan_17772C *, int) asm("func_0017756C");
 extern "C" int X_177D20_21A158(...) asm("func_0021A158");
 extern "C" int X_177D20_21F7E0(...) asm("func_0021F7E0");
 extern "C" int X_177D20_223240(...) asm("func_00223240");
@@ -282,7 +296,31 @@ extern "C" int func_001776C4(EffMan_1776C4 *self)
     return -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_0017772C);
+extern "C" void func_0017772C(EffMan_17772C *self)
+{
+    int i;
+    EffObj_17772C **p = &self->ptrs[0x100];
+    for (i = 0x100; i < 0x110; i++, p++) {
+        if (*p != 0) {
+            if ((*p)->vfunc_20() == 0) {
+                if (self->ptrs[i] != 0) {
+                    self->ptrs[i]->vfunc_08(3);
+                }
+                self->ptrs[i] = 0;
+            }
+        }
+    }
+    if (self->field_448 != 0) {
+        p = self->ptrs;
+        for (i = 0; i < 0x100; i++, p++) {
+            if (*p != 0) {
+                if ((*p)->vfunc_20() == 0) {
+                    X_17772C_756C(self, i);
+                }
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177830);
 
