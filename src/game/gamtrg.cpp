@@ -749,8 +749,6 @@ extern "C" void func_001DB1B8(ACHRstat *arg0, float fparg0)
     X_func_001333C0((char *)&D_006E9840 + off, arg0->m_chrID, fparg0);
 }
 
-// NON_MATCHING: 5/75 differ, 5 edits
-#ifdef NON_MATCHING
 static inline GamUnqMan *gamSub22220_db1f0() { void *p = (void *)&D_007812C0; return (GamUnqMan *)((char *)p + 0x22220); }
 extern "C" void func_001DB1F0(FCHRstat *arg0, int arg1)
 {
@@ -778,9 +776,11 @@ extern "C" void func_001DB1F0(FCHRstat *arg0, int arg1)
         GamUnq200 *p = func_001DBFA0(gamSub22220_db1f0(), id);
         arg0->m_unk134 = 0;
         arg0->m_unk288 = p;
-        arg0->m_flg = p->m_flg;
+        register void *sub PS2_REG("$5") = p->m_sub80;
+        int flags = p->m_flg;
         arg0->m_unk290 = 1;
-        arg0->m_unk284 = p->m_sub80;
+        arg0->m_flg = flags;
+        arg0->m_unk284 = sub;
         arg0->m_unq = p;
         break;
     }
@@ -797,9 +797,6 @@ extern "C" void func_001DB1F0(FCHRstat *arg0, int arg1)
         arg0->m_smellRange = arg0->m_unq->m_common.m_smellRange;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB1F0);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DB31C);
 
