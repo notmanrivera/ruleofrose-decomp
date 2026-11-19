@@ -1,4 +1,38 @@
 #include "include_asm.h"
+struct EffVec3_175170 { float x, y, z; };
+struct EffVec4_175170 { float x, y, z, w; };
+struct EffLight2_175170 {
+    unsigned short flags;       // 0x00
+    char pad2[0xE];
+    float f10;                  // 0x10
+    char pad14[0x1C];
+    EffVec3_175170 f30;         // 0x30
+    float f3C;                  // 0x3C
+    float f40;                  // 0x40
+    float f44;                  // 0x44
+    float f48;                  // 0x48
+    float f4C;                  // 0x4C
+    EffVec4_175170 f50;         // 0x50
+    float f60;                  // 0x60
+    float f64;                  // 0x64
+    float f68;                  // 0x68
+    int f6C;                    // 0x6C
+    int f70;                    // 0x70
+    int f74;                    // 0x74
+    int f78;                    // 0x78
+};
+struct EffLight2Arg_175170 {
+    char pad0[0x10];
+    EffVec3_175170 f10;         // 0x10
+    float f1C;                  // 0x1C
+    float f20;                  // 0x20
+    EffVec4_175170 f24;         // 0x24
+    int f34;                    // 0x34
+    float f38;                  // 0x38
+    float f3C;                  // 0x3C
+    int f40;                    // 0x40
+};
+extern "C" int X_EffLight2_Eff0_vfunc02(EffLight2_175170 *, EffLight2Arg_175170 *) asm("Eff0__vfunc_02");
 struct EffItem3C_174C4C {
     float x, y, z, w;
 };
@@ -555,7 +589,32 @@ extern "C" void liveActivateExec__9EffLight1(int arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffLight2__vfunc_02);
+extern "C" int EffLight2__vfunc_02(EffLight2_175170 *self, EffLight2Arg_175170 *arg1)
+{
+    if (X_EffLight2_Eff0_vfunc02(self, arg1) == 0) {
+        return 0;
+    }
+    self->f30 = arg1->f10;
+    self->f3C = 1.0f;
+    self->f40 = arg1->f1C;
+    self->f44 = arg1->f20;
+    self->f4C = 1.0f;
+    self->f48 = 1.0f;
+    self->f50 = arg1->f24;
+    int flags = self->flags;
+    self->f60 = self->f50.w;
+    self->f64 = arg1->f38;
+    self->f68 = arg1->f3C;
+    self->f70 = arg1->f34;
+    if (arg1->f40) {
+        flags |= 0x8000;
+    }
+    self->f10 = 1.1754945259845955e-38f;
+    self->f74 = 0;
+    self->flags = flags;
+    self->f78 = 0;
+    return 1;
+}
 
 extern "C" int EffLight2__vfunc_05(int arg0)
 {
