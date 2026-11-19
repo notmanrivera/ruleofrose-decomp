@@ -1,4 +1,14 @@
 #include "include_asm.h"
+struct EffItem_177EF8 {
+    int field_0;
+    int field_4;
+};
+struct EffMan_177EF8 {
+    int field_0;
+    EffItem_177EF8 *ptrs[0x110];
+    int field_444;
+    int field_448;
+};
 struct EffMan_177E9C {
     char pad[0x88C];
     int arr[256];
@@ -144,7 +154,18 @@ extern "C" int func_00177E9C(EffMan_177E9C *self)
     return first;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177EF8);
+extern "C" void func_00177EF8(EffMan_177EF8 *self, int arg1)
+{
+    for (int i = 0x100; i < 0x110; i++) {
+        if (self->ptrs[i] == 0) {
+            self->ptrs[i] = self->ptrs[arg1];
+            self->ptrs[arg1] = 0;
+            self->ptrs[i]->field_4 = 0;
+            self->field_448--;
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177F54);
 
