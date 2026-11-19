@@ -1,5 +1,8 @@
 #include "ror.h"
 #include "include_asm.h"
+extern "C" void Xv_func_0016A6B4(float *) asm("func_0016A6B4");
+extern "C" void Xv_func_0016A7AC(float *) asm("func_0016A7AC");
+extern "C" void Xv_func_00166DA4(int, int) asm("func_00166DA4");
 extern "C" void Xiiii_func_001685C0(int, int, int) asm("func_001685C0");
 extern "C" int Xiiu_func_001D19A8(int, unsigned int) asm("func_001D19A8");
 extern "C" int Xiiii_ffi_func_001F603C(int, int, int, int, float, float, int) asm("func_001F603C");
@@ -82,7 +85,25 @@ INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00166C8C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00166DA4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00166EB4);
+extern "C" void func_00166EB4(int arg0, int arg1)
+{
+    float a[4];
+    float b[4];
+    float c[4];
+    float dx1, dz1, dx2, dz2;
+
+    cPos(arg0, c);
+    Xv_func_0016A6B4(a);
+    Xv_func_0016A7AC(b);
+    dx1 = a[0] - c[0];
+    dz1 = a[2] - c[2];
+    dx2 = b[0] - c[0];
+    dz2 = b[2] - c[2];
+    if ((dx1 * dx1 + dz1 * dz1) < (dx2 * dx2 + dz2 * dz2)) {
+        arg1 = 0x64;
+    }
+    Xv_func_00166DA4(arg0, arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00166F50);
 
