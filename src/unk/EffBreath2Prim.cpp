@@ -1,5 +1,10 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+extern "C" int X_func_0022B3D8(void *, int) asm("func_0022B3D8");
+extern "C" int X_func_0022B6F8(void *) asm("func_0022B6F8");
+extern "C" int X_func_0022B730(void *, int) asm("func_0022B730");
+extern "C" short *X_alloc(void *, int, int) asm("alloc__9BedMemoryii");
+extern int D_006E9800;
 extern "C" int Xii_strlen(int) asm("strlen");
 extern "C" int Xpi_func_0022AEC0(void *) asm("func_0022AEC0");
 extern "C" void *Xpi_func_0022AED8(void *, int) asm("func_0022AED8");
@@ -199,7 +204,34 @@ extern "C" void func_0016FF78(int arg0, int arg1, int arg2, float fparg0)
     Xviii_func_002373D8(arg0, v, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016FFEC);
+extern "C" short *func_0016FFEC(void *arg0, void *arg1)
+{
+    short *temp_v0;
+    short *var_s0;
+    int temp_v0_2;
+    int temp_v0_3;
+    int var_s3;
+
+    var_s3 = 0;
+    temp_v0_2 = X_func_0022B6F8(arg1);
+    temp_v0 = X_alloc(&D_006E9800, (temp_v0_2 * 2) + 2, -1);
+    *temp_v0 = temp_v0_2;
+    if (temp_v0_2 > 0) {
+        var_s0 = temp_v0 + 1;
+        do {
+            int temp_a1 = var_s3 & 0xFFFF;
+            var_s3 += 1;
+            temp_v0_3 = X_func_0022B3D8(arg0, X_func_0022B730(arg1, temp_a1));
+            if (temp_v0_3 >= 0) {
+                *var_s0 = temp_v0_3;
+            } else {
+                *var_s0 = -1;
+            }
+            var_s0 += 1;
+        } while (var_s3 < temp_v0_2);
+    }
+    return temp_v0;
+}
 
 extern "C" void *func_001700B0(void *arg0, const char *arg1, int *arg2)
 {
