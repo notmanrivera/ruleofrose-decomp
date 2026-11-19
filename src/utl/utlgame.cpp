@@ -59,22 +59,17 @@ extern "C" int func_00102490(unsigned short theA)
     return (unsigned short)v;
 }
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" const char *func_001024D0(int theN)
 {
-    int no = theN;
-    int alias = tbl_sound[theN].m_alias;
-    if (alias >= 0) {
-        no = alias;
-#line 325
-        ASSERT_S(tbl_sound[no].m_tag == no, D_002E5738);
-    }
-    return tbl_sound[no].m_name;
+  int alias = tbl_sound[theN].m_alias;
+  int no = theN;
+  if (alias >= 0)
+  {
+    no = alias;
+    (tbl_sound[no].m_tag == no) ? ((void) 0) : (ror_assert(D_002E5728, 325, D_002E5738));
+  }
+  return tbl_sound[no].m_name;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_001024D0);
-#endif
 
 
 extern "C" int func_0010254C(int theOID, int theA)
