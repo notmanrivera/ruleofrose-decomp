@@ -1,6 +1,7 @@
 #include "ror.h"
 #include "include_asm.h"
 #include "utl/filereader.h"
+extern "C" int Xiiui_func_001E649C(int, unsigned int, int) asm("func_001E649C");
 extern "C" void position3138(void *, int, void *, int) asm("func_001DBA3C");
 extern "C" int play3138(void *, unsigned int, int, int, float, int, int, int) asm("func_001E5428");
 struct Vec2DB4 { float m_x,m_y,m_z; }; // vec2DB4
@@ -1447,8 +1448,6 @@ extern "C" void func_001E2704(Obj2DB4 *self, unsigned int id, int key, int flags
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2704);
 #endif
 
-// NON_MATCHING: 22/104 differ, 25 edits
-#ifdef NON_MATCHING
 struct ALIGNED(16) Ent2AA0 { // 2AA0
     char pad00[0x20]; // 2AA0
     unsigned int unk20; // 2AA0
@@ -1532,9 +1531,10 @@ struct Obj2AA0 {
 }; // Obj2AA0
 extern "C" void X_2AA0_func_001E649C(Obj2AA0 *, unsigned int, int) asm("func_001E649C");
 extern "C" void func_001E2AA0(Obj2AA0 *arg0, unsigned int arg1, int arg2) {
+    register SndChain2AA0 *idle PS2_REG("$17") = &arg0->m_que.m_free;
     SndIt2AA0 it;
     SndIt2AA0 last;
-    it = arg0->m_que.begin();
+    it = ((SndQue2AA0 *)idle)->begin();
     last = arg0->m_que.end();
     while (it != last) {
         if ((*it).unk20 == arg1 && (arg2 == -1 || (*it).unk30 == arg2)) {
@@ -1546,9 +1546,6 @@ extern "C" void func_001E2AA0(Obj2AA0 *arg0, unsigned int arg1, int arg2) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2AA0);
-#endif
 
 struct ALIGNED(16) Ent2C40 {
     char pad00_2C40[0x20];
