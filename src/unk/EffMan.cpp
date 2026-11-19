@@ -1,4 +1,12 @@
 #include "include_asm.h"
+extern "C" int X_177D20_21A158(...) asm("func_0021A158");
+extern "C" int X_177D20_21F7E0(...) asm("func_0021F7E0");
+extern "C" int X_177D20_223240(...) asm("func_00223240");
+extern "C" int X_177D20_223250(...) asm("func_00223250");
+extern "C" int X_177D20_223260(...) asm("func_00223260");
+extern "C" int X_177D20_226C58(...) asm("func_00226C58");
+extern "C" int X_177D20_getViewMatrix(int) asm("getViewMatrix__9DogCamera");
+extern "C" int X_177D20_apply(int, int, int, float, int) asm("apply__C12DogLightPoolPvifi");
 struct EffObj_1779B8 {
     char pad[0x10];
     float field_10;
@@ -298,7 +306,23 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177A8C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177C00);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177D20);
+extern "C" int func_00177D20(int arg0, int arg1)
+{
+    int temp_s2;
+    int temp_a0;
+    int temp_v0;
+
+    temp_s2 = X_177D20_21F7E0(arg1);
+    X_177D20_223240(temp_s2, X_177D20_apply((int)((*(int *)(arg0)) + 0x2050), arg1, 0, 1.0f, 0));
+    temp_v0 = (*(int *)(arg0));
+    if (M2C_FIELD(temp_v0, int *, 0x2AA84) != 0) {
+        X_177D20_223250(temp_s2, X_177D20_21A158(arg1, temp_v0 + 0x2AAE0));
+    }
+    temp_a0 = (*(int *)(arg0));
+    int p = temp_a0 + 0x2AA10;
+    X_177D20_223260(temp_s2, X_177D20_226C58(arg1, p, X_177D20_getViewMatrix(temp_a0 + 0x2AB70)));
+    return temp_s2;
+}
 
 extern "C" void func_00177E04(EffMan_177E04 *self, int arg1)
 {
