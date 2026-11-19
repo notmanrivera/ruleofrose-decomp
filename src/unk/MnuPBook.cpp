@@ -866,7 +866,219 @@ extern "C" void func_00194FA4(int arg0)
     Xii_func_0019381C(arg0);
 }
 
+// NON_MATCHING: 18/275 differ, 24 edits
+#ifdef NON_MATCHING
+extern "C" int Map05_Xii_func_00131550(int) asm("func_00131550");
+extern "C" int Map05_Xii_func_0018741C(int) asm("func_0018741C");
+extern "C" int Map05_Xii_func_00192F3C(int) asm("func_00192F3C");
+extern "C" int Map05_Xii_func_00193A1C(int) asm("func_00193A1C");
+extern "C" int Map05_Xii_func_00193DFC(int) asm("func_00193DFC");
+extern "C" int Map05_Xii_func_00194FA4(int) asm("func_00194FA4");
+extern "C" int Map05_Xii_func_00195A34(int) asm("func_00195A34");
+extern "C" int Map05_Xii_func_00196760(int) asm("func_00196760");
+extern "C" int Map05_Xiii_func_0017F8FC(int, int) asm("func_0017F8FC");
+extern "C" int Map05_Xiii_func_00194370(int, int) asm("func_00194370");
+extern "C" int Map05_Xiii_func_001943D8(int, int) asm("func_001943D8");
+extern "C" int Map05_Xiii_func_00195430(int, int) asm("func_00195430");
+extern "C" int Map05_Xiii_func_0019586C(int, int) asm("func_0019586C");
+extern "C" int Map05_Xiii_func_00195B78(int, int) asm("func_00195B78");
+extern "C" int Map05_Xiiiii_func_00131184(int, int, int, int) asm("func_00131184");
+extern "C" int Map05_Xiiiii_func_001311BC(int, int, int, int) asm("func_001311BC");
+extern "C" int Map05_Xiiui_func_001351B0(int, unsigned int, int) asm("func_001351B0");
+struct Map05VTable18 { char pad[268]; virtual void v1(); virtual void v2(); virtual int call(); };
+static inline bool Map05Ready(int object) { return Map05_Xii_func_00131550(object) >= 5; }
+extern "C" int MnuMap__vfunc_05(int arg0, int arg1)
+{
+    float baseX;
+    float baseY;
+    register float var_f0 PS2_REG("$f0");
+    register float var_f1 PS2_REG("$f1");
+    int temp_a0;
+    int temp_v0;
+    int temp_v1;
+    int temp_v1_3;
+    int temp_v1_4;
+    int temp_v1_6;
+    int temp_v1_7;
+    int var_a0;
+    int var_a1;
+    int var_s1;
+    int var_s2;
+    int var_v0;
+    unsigned int temp_v1_2;
+    unsigned int temp_v1_5;
+    unsigned int var_v0_2;
+    int transitionDir;
+    int temp_v0_2;
+    int var_v0_3;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0x12C);
+    temp_a0 = M2C_FIELD(arg0, int *, 0x130);
+    var_s2 = 0;
+    if (temp_v1 < temp_a0) {
+        temp_v0 = temp_v1 + 1;
+        M2C_FIELD(arg0, int *, 0x12C) = temp_v0;
+        if (temp_v0 == temp_a0) {
+            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & 0xFFF9FFFD);
+        }
+    }
+    temp_v1_2 = M2C_FIELD(arg0, unsigned int *, 0x134);
+    if (temp_v1_2 < 0x12U) {
+        M2C_FIELD(arg0, unsigned int *, 0x134) = (unsigned int) (temp_v1_2 + 1);
+    }
+    temp_v1_3 = M2C_FIELD(arg0, int *, 0x13C);
+    if (temp_v1_3 != 0) {
+        var_a0 = 0xF;
+        temp_v1_4 = M2C_FIELD(arg0, int *, 0x138) + temp_v1_3;
+        M2C_FIELD(arg0, int *, 0x138) = temp_v1_4;
+        if (temp_v1_4 < 0x10) {
+            var_a0 = (temp_v1_4 < 0) ? 0 : temp_v1_4;
+        }
+        M2C_FIELD(arg0, int *, 0x138) = var_a0;
+        if ((unsigned int) (var_a0 - 1) >= 0xEU) {
+            M2C_FIELD(arg0, int *, 0x13C) = 0;
+        }
+    }
+    Map05_Xii_func_00193A1C(arg0);
+    temp_v1_5 = M2C_FIELD(arg0, unsigned int *, 0x14);
+    M2C_FIELD(arg0, unsigned int *, 0x10) = temp_v1_5;
+    switch (temp_v1_5) {
+    case 0:
+        if (Map05Ready(M2C_FIELD(arg0, int *, 8))) {
+            M2C_FIELD(arg0, unsigned int *, 0x14) = 1U;
+        }
+        break;
+    case 1:
+        if (Map05_Xiii_func_001943D8(arg0, 1) != 0) {
+                if (Map05_Xiii_func_001943D8(arg0, 0) != 0) {
+                Map05_Xii_func_00194FA4(arg0);
+                Map05_Xiiiii_func_00131184((int) M2C_FIELD(arg0, int *, 8), 0xF, 7, 0);
+                M2C_FIELD(arg0, unsigned int *, 0x134) = 0U;
+                Map05_Xiii_func_0017F8FC((int) (int)&D_007B2580, 5);
+                M2C_FIELD(arg0, unsigned int *, 0x14) = 2U;
+                break;
+            }
+        } else {
+            break;
+        }
+        break;
+    case 2:
+        if (Map05Ready(M2C_FIELD(arg0, int *, 8))) {
+                if ((int) M2C_FIELD(arg0, unsigned int *, 0x134) >= 0x12) {
+                if (M2C_FIELD(arg0, int *, 0x20) == 0) {
+                    transitionDir = 1;
+                    var_v0_2 = 3;
+                    goto block_48;
+                }
+                break;
+            }
+        }
+        break;
+    case 3:
+        if (M2C_FIELD(arg0, int *, 0x13C) == 0) {
+            Map05_Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x144), 0);
+            Map05_Xii_func_0018741C(arg0 + 0x150);
+            Map05_Xiii_func_00195B78(arg0, 1);
+            int flags = M2C_FIELD(arg0, int *, 4) & ~2;
+            M2C_FIELD(arg0, unsigned int *, 0x14) = 4U;
+            M2C_FIELD(arg0, int *, 4) = flags;
+        }
+        break;
+    case 4:
+        if (Map05_Xiii_func_00195430(arg0, arg1) == 0) {
+            Map05_Xiiiii_func_001311BC((int) M2C_FIELD(arg0, int *, 8), 0xF, 7, 0);
+            Map05_Xiii_func_0017F8FC((int) (int)&D_007B2580, 2);
+            Map05_Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x144), 1);
+            Map05_Xiii_func_00195B78(arg0, 0);
+            M2C_FIELD(arg0, unsigned int *, 0x14) = 5U;
+        }
+        break;
+    case 5:
+        if (Map05Ready(M2C_FIELD(arg0, int *, 8))) {
+            M2C_FIELD(arg0, unsigned int *, 0x14) = 0xAU;
+        }
+        break;
+    case 6:
+        Map05_Xii_func_00193DFC(arg0);
+        Map05_Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x144), 1);
+        M2C_FIELD(arg0, int *, 0x13C) = -1;
+        M2C_FIELD(arg0, unsigned int *, 0x14) = 7U;
+        break;
+    case 7:
+        if (M2C_FIELD(arg0, int *, 0x138) == 0) {
+                if (M2C_FIELD(arg0, int *, 0x20) == 0) {
+                temp_v1_6 = M2C_FIELD(arg0, int *, 4);
+                if (temp_v1_6 & 0x200000) {
+                    register float *position PS2_REG("$5") = (float *)(arg0 + 0x11C);
+                    baseX = M2C_FIELD(arg0, float *, 0x8CC);
+                    baseY = M2C_FIELD(arg0, float *, 0x8D0);
+                    if (!(temp_v1_6 & 0x10000)) {
+                        var_f0 = 384.0f;
+                        var_f1 = 256.0f;
+                    } else {
+                        var_f0 = 192.0f;
+                        var_f1 = 128.0f;
+                    }
+                    *position = baseX - var_f0;
+                    M2C_FIELD(arg0, float *, 0x120) = (float) (baseY - var_f1);
+                    Map05_Xiii_func_0019586C(arg0, (int)position);
+                } else {
+                    var_s1 = 0;
+                    if (M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 0x18) > 0) {
+                        var_a1 = 2;
+                        do {
+                            var_s1 += 1;
+                            Map05_Xiii_func_00194370(arg0, var_a1);
+                            var_a1 = var_s1 + 2;
+                        } while (var_s1 < M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 0x18));
+                    }
+                    temp_v1_7 = M2C_FIELD(arg0, int *, 4);
+                    if (temp_v1_7 & 0x80000) {
+                        var_v0_3 = M2C_FIELD(arg0, int *, 0x110) + 0x20;
+                    } else if (temp_v1_7 & 0x100000) {
+                        var_v0_3 = M2C_FIELD(arg0, int *, 0x110) - 0x20;
+                    } else {
+                        goto page_unchanged;
+                    }
+                    M2C_FIELD(arg0, int *, 0x110) = var_v0_3;
+page_unchanged:;
+                }
+                Map05_Xii_func_00195A34(arg0);
+                M2C_FIELD(arg0, unsigned int *, 0x14) = 8U;
+                break;
+            }
+        }
+        break;
+    case 8:
+        if (M2C_FIELD(arg0, int *, 0x20) == 0) {
+            transitionDir = 1;
+            var_v0_2 = 9;
+block_48:
+                    M2C_FIELD(arg0, unsigned int *, 0x14) = var_v0_2;
+                    M2C_FIELD(arg0, int *, 0x13C) = transitionDir;
+        }
+        break;
+    case 9:
+        if (M2C_FIELD(arg0, int *, 0x138) == 0xF) {
+            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & 0xFFC7FFFD);
+            if (Map05_Xii_func_00196760(arg0) != 0) {
+                Map05_Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x144), 0);
+            }
+            M2C_FIELD(arg0, unsigned int *, 0x14) = 4U;
+            break;
+        }
+        break;
+    case 10:
+        var_s2 = 1;
+        Map05_Xii_func_00192F3C(arg0);
+        ((Map05VTable18 *)(arg0))->call();
+        break;
+    }
+    return var_s2;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuMap__vfunc_05);
+#endif
 
 // NON_MATCHING: 204/261 differ, 14 relocs differ (size 0x414, game 0x43C), 110 edits
 #ifdef NON_MATCHING
