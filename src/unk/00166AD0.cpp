@@ -86,7 +86,14 @@ extern "C" void func_00166B74(unsigned int *arg0, float *arg1) {
     arg1[1] = sp[1];
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00166C8C);
+extern "C" void func_00166C8C(unsigned int *arg0, float *arg1) {
+    float sp[4];
+    float mat[16];
+    float *temp_s3 = func_001D2B8C((int)&D_007812C0, arg0[5]);
+    cCopy(arg1, cGetBone(D_002F19E0, mat, (cModel *)(D_006FE6A0 + cIndex((int)&D_007812C0, arg0[5]) * 0x4d0)));
+    func_001D890C(temp_s3, sp);
+    arg1[1] = sp[1];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00166DA4);
 
