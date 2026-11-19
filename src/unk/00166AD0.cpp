@@ -1,5 +1,8 @@
 #include "ror.h"
 #include "include_asm.h"
+extern "C" float *func_001D2B8C(int, unsigned int);
+extern "C" void func_001D890C(float *, float *);
+extern char D_006FE6A0 [];
 extern int cGlobalA asm("D_007A3D80");
 extern char cActors[] asm("D_006FBD80");
 extern char D_002F19E0[],D_002F19F0[],D_002F1A00[],D_002F1A10[];
@@ -63,7 +66,14 @@ extern "C" void func_00166AD0(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00166B74);
+extern "C" void func_00166B74(unsigned int *arg0, float *arg1) {
+    float sp[4];
+    float mat[16];
+    float *temp_s3 = func_001D2B8C((int)&D_007812C0, *arg0);
+    cCopy(arg1, cGetBone(D_002F19E0, mat, (cModel *)(D_006FE6A0 + cIndex((int)&D_007812C0, *arg0) * 0x4d0)));
+    func_001D890C(temp_s3, sp);
+    arg1[1] = sp[1];
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00166C8C);
 
