@@ -1,5 +1,8 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+extern "C" void Xvp_func_00237340(float *) asm("func_00237340");
+extern "C" void Xvppf_func_00237848(float *, float *, float) asm("func_00237848");
+extern "C" void Xviip_func_002377D0(int, int, float *) asm("func_002377D0");
 struct EffBreath2Ground {
     unsigned short m_unk0;
     unsigned char m_pad2[0x9E];
@@ -64,7 +67,13 @@ extern "C" float func_0016FC20(const float *v)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016FC74);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016FD4C);
+extern "C" void func_0016FD4C(int arg0, float fparg0)
+{
+    float mat[16];
+    Xvp_func_00237340(mat);
+    Xvppf_func_00237848(mat, mat, fparg0);
+    Xviip_func_002377D0(arg0, arg0, mat);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016FDA0);
 
