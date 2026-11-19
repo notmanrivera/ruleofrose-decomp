@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" float Xfif_modff(int, float) asm("modff");
 extern "C" int X_173688_CheckId(int) asm("I3rRoot__CheckIdString");
 extern "C" void X_173688_173840(int, void *, void *) asm("func_00173840");
 extern "C" void X_173688_assert(const char *, int, const char *) asm("ror_assert");
@@ -721,7 +722,36 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F2820);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffGeneric1__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffGeneric1__vfunc_05);
+extern "C" int EffGeneric1__vfunc_05(int arg0)
+{
+    struct { char pad0[16]; } stack;
+    float temp_f12;
+    int var_s2;
+    int temp_v0;
+    int var_s0;
+
+    M2C_FIELD(arg0, unsigned short *, 0x44)++;
+    if (M2C_FIELD(arg0, unsigned short *, 0x44) > M2C_FIELD(arg0, unsigned short *, 0x46)) {
+        M2C_FIELD(arg0, unsigned short *, 0x44) -= M2C_FIELD(arg0, unsigned short *, 0x46) + 1;
+    }
+    temp_v0 = M2C_FIELD(arg0, int *, 0x40);
+    var_s2 = 0;
+    var_s0 = temp_v0 + 0x10;
+    if (M2C_FIELD(temp_v0, unsigned short *, 2) != 0) {
+        do {
+            if (M2C_FIELD(var_s0, unsigned short *, 0) == 4) {
+                temp_f12 = M2C_FIELD(var_s0, float *, 0x2C) + (M2C_FIELD(var_s0, float *, 0x24) / 60.0f);
+                M2C_FIELD(var_s0, float *, 0x2C) = temp_f12;
+                M2C_FIELD(var_s0, float *, 0x30) = (float) (M2C_FIELD(var_s0, float *, 0x30) + (M2C_FIELD(var_s0, float *, 0x28) / 60.0f));
+                M2C_FIELD(var_s0, float *, 0x2C) = Xfif_modff((int)&stack, temp_f12);
+                M2C_FIELD(var_s0, float *, 0x30) = Xfif_modff((int)&stack, M2C_FIELD(var_s0, float *, 0x30));
+            }
+            var_s2 += 1;
+            var_s0 += M2C_FIELD(var_s0, unsigned short *, 2);
+        } while (var_s2 < (int) M2C_FIELD(M2C_FIELD(arg0, int *, 0x40), unsigned short *, 2));
+    }
+    return 1;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F2870);
 
