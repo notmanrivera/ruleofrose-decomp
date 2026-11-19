@@ -86,31 +86,36 @@ INCLUDE_RODATA("asm/nonmatchings/utl/utlgame", D_002E5728);
 
 INCLUDE_RODATA("asm/nonmatchings/utl/utlgame", D_002E5738);
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" int func_001025C0(unsigned int theN)
 {
-    if (theN >= 200) {
-        return 0;
-    }
+  if (theN >= 200)
+  {
+    return 0;
+  }
+  {
+    (tbl_sound[theN].m_tag == theN) ? ((void) 0) : (ror_assert(D_002E5728, 356, "tbl_sound[theN].m_tag == theN"));
+    unsigned int no = theN;
+    if (tbl_sound[theN].m_alias >= 0)
     {
-#line 356
-        ASSERT(tbl_sound[theN].m_tag == theN);
-        unsigned int no = theN;
-        if (tbl_sound[theN].m_alias >= 0) {
-            no = tbl_sound[theN].m_alias;
-#line 379
-            ASSERT_S(tbl_sound[no].m_tag == no, D_002E5738);
-        }
-        int oid = tbl_sound[no].m_oid;
-#line 388
-        ASSERT(oid != 0);
-        return oid;
+      no = tbl_sound[theN].m_alias;
+      if (((!tbl_sound) && (!tbl_sound)) && (!tbl_sound))
+      {
+      }
+      (tbl_sound[no].m_tag == no) ? ((void) 0) : (ror_assert(D_002E5728, 379, D_002E5738));
     }
+    int oid = tbl_sound[no].m_oid;
+    if (tbl_sound)
+    {
+      (oid != 0) ? ((void) 0) : (ror_assert(D_002E5728, 388, "oid != 0"));
+      return oid;
+    }
+    else
+    {
+      (oid != 0) ? ((void) 0) : (ror_assert(D_002E5728, 388, "oid != 0"));
+      return oid;
+    }
+  }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_001025C0);
-#endif
 
 
 // NON_MATCHING: close, not identical yet.
