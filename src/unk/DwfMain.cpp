@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0015F37C(int) asm("func_0015F37C");
+extern "C" int Xii_func_0015F8AC(int) asm("func_0015F8AC");
+extern "C" int Xii_func_0015FF54(int) asm("func_0015FF54");
 extern "C" int Xii_func_0015CE88(int) asm("func_0015CE88");
 extern "C" int Xii_func_0015CF30(int) asm("func_0015CF30");
 extern "C" int Xii_func_0015D08C(int) asm("func_0015D08C");
@@ -1892,7 +1895,23 @@ block_43:
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfOutAtkNear__vfunc_02);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfOutAtkNear__vfunc_03);
+extern "C" int DwfOutAtkNear__vfunc_03(int arg0)
+{
+    int var_a2 = -1;
+
+    switch (M2C_FIELD(arg0, int *, 0x3C)) {
+    case 0:
+        var_a2 = Xii_func_0015F37C(arg0);
+        break;
+    case 1:
+        var_a2 = Xii_func_0015F8AC(arg0);
+        break;
+    case 2:
+        var_a2 = Xii_func_0015FF54(arg0);
+        break;
+    }
+    return var_a2;
+}
 
 // NON_MATCHING: 161/238 differ, 20 relocs differ (size 0x3B8, game 0x3C8), 120 edits
 #ifdef NON_MATCHING
