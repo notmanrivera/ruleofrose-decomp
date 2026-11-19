@@ -1,5 +1,18 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+struct Bg8Pair { long long a, b; };
+extern const int D_002F2200;
+extern const float D_002F2278[4];
+extern const float D_002F2288[4];
+extern const int D_002F2298[4];
+extern "C" int X_bg8_func_0021B260(int, int) asm("func_0021B260");
+extern "C" int X_bg8_func_0021B4F8(int, int) asm("func_0021B4F8");
+extern "C" int X_bg8_func_0021B550(int, int, unsigned long long) asm("func_0021B550");
+extern "C" int X_bg8_func_0021B5A0(int, int) asm("func_0021B5A0");
+extern "C" int X_bg8_func_0021E488(int, void *) asm("func_0021E488");
+extern "C" int X_bg8_func_0021E5A0(int, int, int) asm("func_0021E5A0");
+extern "C" int X_bg8_func_0021E688(int) asm("func_0021E688");
+extern "C" int X_bg8_func_0016F55C(int, void *) asm("func_0016F55C");
 struct m2c_block12 { int w[3]; };
 struct m2c_block16 { int w[4]; };
 struct EffBreath2Prim_v2 { unsigned char m_pad0[0x30]; m2c_block12 m_unk30; float m_unk3C; float m_unk40; float m_unk44; float m_unk48; int m_unk4C; float m_unk50; float m_unk54; float m_unk58; unsigned char m_pad5C[0x4]; m2c_block16 m_unk60; int m_unk70; };
@@ -139,7 +152,38 @@ extern "C" int EffBreath2Ground__vfunc_05(EffBreath2Ground *arg0)
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2Ground__vfunc_08);
+extern "C" void EffBreath2Ground__vfunc_08(int arg0, int arg1, int arg2, int arg3)
+{
+    struct { int sp0[4]; int sp10; float sp14; float sp18; float sp1C; int sp20; int sp24; int sp28; } stack;
+    int var_s4;
+    int temp_s0;
+    int temp_v0;
+
+    var_s4 = 0;
+    temp_s0 = X_bg8_func_0021B550(X_bg8_func_0021B5A0(arg3, M2C_FIELD(arg1, int *, 8)), 0x42, 0x44);
+    temp_v0 = X_bg8_func_0021B550(X_bg8_func_0021B4F8(temp_s0, X_bg8_func_0021B260(arg2, 1)), 0x47, 0x51001);
+    int texture = M2C_FIELD(arg1, int *, 8);
+    *(Bg8Pair *)&stack.sp0 = *(const Bg8Pair *)&D_002F2200;
+    temp_v0 = X_bg8_func_0021E488(X_bg8_func_0021E5A0(temp_v0, texture, 1), &stack);
+    stack.sp24 = arg1;
+    stack.sp10 = arg0 + 0x24;
+    stack.sp28 = temp_v0;
+    stack.sp14 = Xii_func_0016FF18((*(int *)&D_00298E08) + 0x2AB70, arg0 + 0x70);
+    do {
+        int temp_v1 = M2C_FIELD(arg0, int *, 0xA0);
+        int thresh = D_002F2298[var_s4];
+        if (temp_v1 >= thresh) {
+            int val = ((M2C_FIELD(arg0, int *, 0xA4) - temp_v1) < 0x10) ? (temp_v1 - thresh) : temp_v1;
+            stack.sp18 = D_002F2278[var_s4];
+            stack.sp1C = D_002F2288[var_s4];
+            stack.sp20 = val;
+            stack.sp28 = X_bg8_func_0016F55C(arg0, &stack.sp10);
+        }
+        var_s4 += 1;
+        stack.sp10 += 0x10;
+    } while (var_s4 < 4);
+    X_bg8_func_0021B550(X_bg8_func_0021E688(stack.sp28), 0x47, 0x5000D);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016F55C);
 
