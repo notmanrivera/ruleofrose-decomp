@@ -1,6 +1,15 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" int Xii_func_001D966C(int) asm("func_001D966C");
+extern "C" int Xiii_strcmp(int, int) asm("strcmp");
+extern "C" int Xiiii_func_001D9044(int, int, int) asm("func_001D9044");
+extern "C" int Xiiii_func_001D932C(int, int, int) asm("func_001D932C");
+extern "C" int Xiiii_loadModel__9MagSystemii(int, int, int) asm("loadModel__9MagSystemii");
+extern "C" int Xiiiiii_func_00138BC4__8MagSceneP7I3dDrawiiPCc(int, int, int, int, int) asm("func_00138BC4__8MagSceneP7I3dDrawiiPCc");
+extern "C" int Xiiit_func_001CA598(int, int, unsigned short) asm("func_001CA598");
+extern "C" int Xiit_func_001CA604(int, unsigned short) asm("func_001CA604");
+extern "C" int Xiiui_func_001CFBE4(int, unsigned int, int) asm("func_001CFBE4");
 extern "C" void GamClearRate(GamMan *, int) asm("func_001CB24C");
 extern "C" int GamClearActor(void *) asm("func_0010A834__8DogActor");
 extern "C" void GamClearMotion(int, int, int, int, float, float) asm("func_001F5E48");
@@ -2050,7 +2059,68 @@ extern "C" void func_001CABD4(GamMan *self, unsigned short arg1, void *arg2, uns
     self->m_avfchrList.push_back(stat);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CAD88);
+extern "C" int func_001CAD88(int arg0, int arg1, int arg2, int arg3, int arg4)
+{
+    struct { int sp0; unsigned int sp4; char pad8[8]; char sp10[16]; int sp20; char pad24[12]; char sp30[16]; } stack;
+    int var_s3;
+    int var_v0_2;
+    register int var_v0 PS2_REG("$2");
+    unsigned int temp_a0;
+    unsigned int temp_s5;
+
+    temp_s5 = arg1 & 0xFFFF;
+    var_s3 = 0;
+    stack.sp4 = temp_s5;
+    var_v0 = Xiiu_func_001D046C(arg0, (unsigned int) arg3);
+    if (var_v0 != 0) {
+        if (arg4 != 0) {
+            Xiiui_func_001D05F4(arg0, (unsigned int) arg3, (int)&stack.sp30);
+        }
+        temp_a0 = ((unsigned int) arg3 >> 0x1C) & 3;
+        switch (temp_a0) {
+        case 0:
+            var_s3 = Xiiu_func_001D2D00(arg0, (unsigned int)arg3);
+            break;
+        case 2:
+            var_s3 = Xiiu_func_001D2BA8(arg0, (unsigned int)arg3);
+            break;
+        case 1:
+            var_s3 = Xiiu_func_001D2B8C(arg0, (unsigned int)arg3);
+            break;
+        default:
+            break;
+        }
+        if (arg2 != 0) {
+            Xiiii_func_001D9044(var_s3, 0x1004, (int)&stack.sp10);
+            var_v0 = Xiii_strcmp(arg2, (int)&stack.sp10);
+            if (var_v0 != 0) {
+                Xii_func_001D966C(var_s3);
+                const char *pack = func_001CA604(arg0, temp_s5 >> 10);
+                char *sys = (char *)&D_006E9840;
+                char *scene = sys + 0x12540;
+                stack.sp0 = X_func_00138BC4_CABD4(scene, sys + 0x3A0, (void *)arg2, -1, pack);
+                Xiiii_func_001D932C(var_s3, 0x1004, (int) arg2);
+                goto block_20;
+            }
+        } else {
+            Xiiii_func_001D9044(var_s3, 0x1000, (int)&stack.sp20);
+            var_v0 = 0;
+            if (temp_s5 != ((int) (stack.sp20))) {
+                Xii_func_001D966C(var_s3);
+                stack.sp0 = Xiiii_loadModel__9MagSystemii((int) (int)&D_006E9840, (int) temp_s5, -1);
+block_20:
+                func_001CA598((int) arg0, stack.sp0, (unsigned int) arg3);
+                Xiiii_func_001D932C(var_s3, 3, (int)&stack);
+                Xiiii_func_001D932C(var_s3, 0x1000, (int) (int)&stack.sp4);
+                if (arg4 != 0) {
+                    Xiiui_func_001CFBE4(arg0, (unsigned int) arg3, (int)&stack.sp30);
+                }
+                var_v0 = arg3;
+            }
+        }
+    }
+    return var_v0;
+}
 
 extern "C" int func_001CAF78(int arg0, unsigned short arg1, int arg2)
 {
