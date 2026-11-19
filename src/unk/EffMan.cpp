@@ -1,4 +1,20 @@
 #include "include_asm.h"
+struct EffMan_176AFC {
+    void *field_0;
+    void *ptrs[0x110];
+    int field_444;
+    int field_448;
+    int list[0x110];
+    int field_88C[256];
+    int field_C8C;
+    char pad_C90[0x1294 - 0xC90];
+    int field_1294;
+    int field_1298;
+};
+extern "C" int X_176AFC_16AC84() asm("func_0016AC84");
+extern "C" void X_176AFC_1780C0(EffMan_176AFC *) asm("func_001780C0");
+extern "C" void *X_176AFC_memset(void *, int, unsigned int) asm("memset");
+extern "C" int X_176AFC_17820C(EffMan_176AFC *, int, const char *, void *) asm("func_0017820C");
 struct EffObj_177C00 {
     char pad[0x10];
     float field_10;
@@ -222,7 +238,33 @@ extern "C" void func_00176AA0(char *arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00176AFC);
+extern "C" int func_00176AFC(EffMan_176AFC *self, int arg1, void *arg2)
+{
+    self->field_0 = arg2;
+    self->field_444 = 0;
+    self->field_448 = 0;
+    X_176AFC_memset(self->ptrs, 0, 0x440);
+    for (int i = 0; i < 0x110; i++) {
+        self->list[i] = i;
+    }
+    self->field_1294 = -1;
+    self->field_1298 = -1;
+    self->field_C8C = 0;
+    D_00298E08 = (int)self->field_0;
+    D_00298E0C = arg1;
+    X_176AFC_16AC84();
+    X_176AFC_1780C0(self);
+    X_176AFC_17820C(self, 1, 0, (void *)1);
+    X_176AFC_17820C(self, 2, 0, (void *)1);
+    X_176AFC_17820C(self, 3, 0, (void *)1);
+    X_176AFC_17820C(self, 4, 0, (void *)1);
+    X_176AFC_17820C(self, 0x32, 0, (void *)1);
+    X_176AFC_17820C(self, 0x1F, 0, (void *)1);
+    X_176AFC_17820C(self, 0x26, 0, (void *)1);
+    X_176AFC_17820C(self, 0x27, 0, (void *)1);
+    X_176AFC_17820C(self, 0x1A, 0, (void *)1);
+    return 1;
+}
 
 extern "C" void func_00176C50(int arg0)
 {
