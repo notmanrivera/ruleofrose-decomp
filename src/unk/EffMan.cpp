@@ -1,4 +1,9 @@
 #include "include_asm.h"
+struct EffMan_177E04 {
+    char pad[0x88C];
+    int arr[256];
+    int count;
+};
 extern "C" int Xiii_Eff0__vfunc_02(int, int) asm("Eff0__vfunc_02");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
@@ -96,7 +101,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177C00);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177D20);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177E04);
+extern "C" void func_00177E04(EffMan_177E04 *self, int arg1)
+{
+    self->arr[self->count++] = arg1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177E24);
 
