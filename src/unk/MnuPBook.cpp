@@ -858,7 +858,142 @@ extern "C" void MnuMap__vfunc_03(int arg0)
 }
 
 
+// NON_MATCHING: 296/383 differ, 33 relocs differ (size 0x5FC, game 0x5E8), 163 edits
+#ifdef NON_MATCHING
+#define INIT_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int MapInitArea(int) asm("func_001C6C28");
+extern "C" int MapInitInfo(int, int) asm("func_0017EA44");
+extern "C" int MapInitRoom(int) asm("func_001C6C38");
+extern "C" int MapInitFloor(int) asm("func_001DBD90");
+extern "C" int MapInitObjects(int, int, void *) asm("func_001DBDF0");
+extern "C" void MapInitConvert(int, void *) asm("func_00196878");
+extern "C" void MapInitSize(int, int) asm("func_001959EC");
+extern "C" void MapInitClamp(int, int) asm("func_0019586C");
+extern "C" int MapInitAlloc(int, int, int, int, int) asm("func_00134730");
+extern "C" int MapInitText(int, int, int) asm("func_0013555C");
+extern "C" void MapInitHeight(int, unsigned int, int *) asm("func_00134E18");
+extern "C" void MapInitDraw(int, int, int, int, int, int) asm("func_00135234__8MagSceneiiiii");
+extern "C" void MapInitUpdate(int) asm("func_00195A34");
+extern char MapInitEntries[] asm("D_0029BFB8");
+struct MapInitMessage { char text[14]; };
+static inline void MapInitPlayer(int game, u_long128 *dst) { *dst = INIT_FIELD(game, u_long128 *, 0x22020); }
+static inline void MapInitTarget(int game, u_long128 *dst) { *dst = INIT_FIELD(game, u_long128 *, 0x22040); }
+static inline void MapInitRotation(int game, u_long128 *dst) { *dst = INIT_FIELD(game, u_long128 *, 0x22030); }
+struct MapInitView { char pad0[4]; int flags; char pad8[0x11C]; float backupX; float backupY; int frame; int limit; int progress; int fade; int fadeStep; int icon; char pad144[0x784]; int map; float playerX; float playerY; float angle; float targetX; float targetY; };
+static inline int MapInitEmpty(int scene, int x, int y, int mode, int res, MapInitMessage *text, int *height) { *text = *(MapInitMessage *)"N O     M A P"; *height = 0; return MapInitAlloc(scene, x, y, mode, res); }
+extern "C" void func_001949BC(int self)
+{
+    struct { char list[0x1000]; u_long128 vector; int height; } stack;
+    MapInitView *view = (MapInitView *)self;
+    int game = (int)&D_007812C0;
+    int mapObj = PBookMapObject(game);
+    int info = MapInitInfo((int)&D_00298EE0, MapInitArea(game));
+    view->backupX = view->backupY = 0.0f;
+    int one = 1;
+    view->frame = one;
+    view->limit = one;
+    view->flags |= 2;
+    view->progress = -1;
+    view->fade = 0;
+    view->fadeStep = 0;
+    view->icon = 0;
+    int room = MapInitRoom(game);
+    int floor = MapInitFloor(mapObj);
+    INIT_FIELD(self, int *, 0x8C8) = (int)MapInitEntries;
+    int selected = INIT_FIELD(info, int *, 0x18) != 0 ? floor : 0;
+    if (INIT_FIELD(MapInitEntries, int *, 0) != -1) {
+        if (INIT_FIELD(MapInitEntries, int *, 0) != room || INIT_FIELD(MapInitEntries, int *, 4) != selected) {
+scan_next:
+            INIT_FIELD(self, int *, 0x8C8) += 0x20;
+            int current = INIT_FIELD(self, int *, 0x8C8);
+            int id = INIT_FIELD(current, int *, 0);
+            if (id != -1) {
+                if (id != room) goto scan_next;
+                if (INIT_FIELD(current, int *, 4) != selected) goto scan_next;
+            }
+        }
+    }
+    INIT_FIELD(self, int *, 0x110) = INIT_FIELD(self, int *, 0x8C8);
+    if (INIT_FIELD(INIT_FIELD(self, int *, 0x8C8), int *, 0) == -1) {
+        view->flags |= 0x01000000;
+    }
+    int entry = INIT_FIELD(self, int *, 0x110);
+    INIT_FIELD(self, int *, 0x118) = 0x200;
+    INIT_FIELD(self, int *, 0x114) = INIT_FIELD(entry, int *, 0x18) << 7;
+    int count = MapInitObjects(mapObj, INIT_FIELD(entry, int *, 4), stack.list);
+    view->targetY = view->playerX = view->playerY = view->targetX = -100000.0f;
+    if (!(view->flags & 0x01000000)) {
+        char *object = stack.list;
+        for (int i = 0; i < count; ++i, object += 0x20) {
+                int kind = INIT_FIELD(object, int *, 4);
+                if (kind == 1) {
+                    MapInitPlayer((int)&D_007812C0, &stack.vector);
+                    MapInitConvert(self, &stack.vector);
+                    view->playerX = INIT_FIELD(&stack.vector, float *, 0);
+                    view->playerY = INIT_FIELD(&stack.vector, float *, 8);
+                } else if (kind == 2) {
+                    MapInitTarget((int)&D_007812C0, &stack.vector);
+                    MapInitConvert(self, &stack.vector);
+                    view->targetX = INIT_FIELD(&stack.vector, float *, 0);
+                    view->targetY = INIT_FIELD(&stack.vector, float *, 8);
+                }
+        }
+        MapInitRotation((int)&D_007812C0, &stack.vector);
+        float angle = INIT_FIELD(&stack.vector, float *, 4) + 3.1415923f;
+        view->angle = angle;
+        if (angle < -3.1415923f) {
+            do { angle += 6.2831845f; } while (angle < -3.1415923f);
+            view->angle = angle;
+        }
+        angle = view->angle;
+        if (angle >= 3.1415923f) {
+            float next;
+            do { next = angle - 6.2831845f; angle = next; } while (next >= 3.1415923f);
+            view->angle = next;
+        }
+    }
+    int position = self + 0x11C;
+    MapInitSize(self, position);
+    INIT_FIELD(position, float *, 0) = view->playerX - INIT_FIELD(position, float *, 0) * 0.5f;
+    INIT_FIELD(self, float *, 0x120) = view->playerY - INIT_FIELD(self, float *, 0x120) * 0.5f;
+    MapInitClamp(self, position);
+    if (!(view->flags & 0x01000000)) {
+        stack.height = 0;
+        int handle = MapInitAlloc(INIT_FIELD(self, int *, 8), 0x100, 0x20, 0, -1);
+        INIT_FIELD(self, int *, 0x144) = handle;
+        int width = MapInitText(INIT_FIELD(self, int *, 8), handle, INIT_FIELD(info, int *, 0x10));
+        MapInitHeight(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), &stack.height);
+        Xiiuiii_func_00134A00(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), (0x200 - width) / 2, 0x188 - stack.height, 0x7FFF);
+        Xiiuii_func_00134AB8(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 0x100, 0x20);
+        Xiiuiiii_func_00134CD0(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 0, 0, 0x100, 0x20);
+        Xiiui_func_00135494(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 1);
+        Xiiui_func_00135418(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 0);
+        Xiiu_func_00135594(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144));
+        Xiiui_func_001351B0(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 1);
+        MapInitDraw(INIT_FIELD(self, int *, 8), INIT_FIELD(self, int *, 0x144), 0, 0, INIT_FIELD(info, int *, 0x10), 0);
+        if (view->flags & 0x01000000) goto no_map;
+    } else {
+no_map:
+        int handle = MapInitEmpty(INIT_FIELD(self, int *, 8), 0x100, 0x20, 0, -1, (MapInitMessage *)stack.list, &stack.height);
+        INIT_FIELD(self, int *, 0x144) = handle;
+        int width = MapInitText(INIT_FIELD(self, int *, 8), handle, (int)stack.list);
+        MapInitHeight(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), &stack.height);
+        Xiiuiii_func_00134A00(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), (0x200 - width) / 2, 0xF0 - stack.height / 2, 0x7FFF);
+        Xiiuii_func_00134AB8(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 0x100, 0x20);
+        Xiiuiiii_func_00134CD0(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 0, 0, 0x100, 0x20);
+        Xiiui_func_00135494(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 1);
+        Xiiui_func_00135418(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 0);
+        Xiiu_func_00135594(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144));
+        Xiiui_func_001351B0(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 1);
+        MapInitDraw(INIT_FIELD(self, int *, 8), INIT_FIELD(self, int *, 0x144), 0, 0, (int)stack.list, 0);
+    }
+    Xiiiii_func_0019397C(self, (int)"map01_tcc.tm2", 4, 0);
+    Xiiiii_func_0019397C(self, (int)"map_bg_tcc.tm2", 4, 1);
+    MapInitUpdate(self);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001949BC);
+#endif
 
 extern "C" void func_00194FA4(int arg0)
 {
