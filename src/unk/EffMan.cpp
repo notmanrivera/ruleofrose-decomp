@@ -1,4 +1,17 @@
 #include "include_asm.h"
+struct EffObj_1779B8 {
+    char pad[0x10];
+    float field_10;
+};
+struct EffMan_1779B8 {
+    int field_0;
+    EffObj_1779B8 *ptrs[0x110];
+    int field_444;
+    int field_448;
+    int list[0x110];
+};
+extern "C" int X_1779B8_7A8C(EffMan_1779B8 *) asm("func_00177A8C");
+extern "C" void X_1779B8_7C00(EffMan_1779B8 *, int) asm("func_00177C00");
 struct EffObj_17756C {
     unsigned short flags;
     char pad[30];
@@ -265,7 +278,21 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_0017772C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177830);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_001779B8);
+extern "C" int func_001779B8(EffMan_1779B8 *self)
+{
+    int n = X_1779B8_7A8C(self);
+    EffObj_1779B8 *prev = self->ptrs[self->list[0]];
+    for (int i = 1; i < n; i++) {
+        EffObj_1779B8 *cur = self->ptrs[self->list[i]];
+        if (prev->field_10 < cur->field_10) {
+            X_1779B8_7C00(self, i);
+            prev = self->ptrs[self->list[i]];
+        } else {
+            prev = cur;
+        }
+    }
+    return n;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177A8C);
 
