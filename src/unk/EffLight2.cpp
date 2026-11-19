@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" float X_12EffFindItem1_16FF18(int, int) asm("func_0016FF18");
 extern "C" int Xiiiff_func_00174C4Cb(int, int, float, float) asm("func_00174C4C");
 extern "C" int Xiiii_func_00173618(int, int, int, int) asm("func_00173618");
 extern "C" int Xiiii_func_00173628(int, int, int, int) asm("func_00173628");
@@ -486,7 +487,10 @@ extern "C" void render__12EffFindItem1PQ24Eff011RENDERPARAM(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFindItem1__vfunc_08);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", updateZDepth__12EffFindItem1);
+extern "C" void updateZDepth__12EffFindItem1(int arg0)
+{
+    M2C_FIELD(arg0, float *, 0x10) = X_12EffFindItem1_16FF18(D_00298E08 + 0x2AB70, arg0 + 0x30) - M2C_FIELD(arg0, float *, 0x40);
+}
 
 
 
