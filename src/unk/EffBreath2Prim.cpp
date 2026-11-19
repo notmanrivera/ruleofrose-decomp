@@ -1,5 +1,9 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+extern "C" void Xvpff_func_00237360(float *, float *, float) asm("func_00237360");
+extern "C" void Xviii_func_002373D8(int, float *, int) asm("func_002373D8");
+extern "C" void Xviii_func_00237408(float *, int, int) asm("func_00237408");
+extern "C" void Xvpp_func_002375D8(float *, float *) asm("func_002375D8");
 extern "C" void Xvp_func_00237340(float *) asm("func_00237340");
 extern "C" void Xvppf_func_00237848(float *, float *, float) asm("func_00237848");
 extern "C" void Xviip_func_002377D0(int, int, float *) asm("func_002377D0");
@@ -89,7 +93,14 @@ extern "C" void func_0016FF18(int arg0, int arg1)
     X_func_00237580(arg0 + 0x20, (int)&stack);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016FF78);
+extern "C" void func_0016FF78(int arg0, int arg1, int arg2, float fparg0)
+{
+    float v[4];
+    Xviii_func_00237408(v, arg2, arg1);
+    Xvpp_func_002375D8(v, v);
+    Xvpff_func_00237360(v, v, fparg0);
+    Xviii_func_002373D8(arg0, v, arg1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016FFEC);
 
