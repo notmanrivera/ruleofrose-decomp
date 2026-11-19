@@ -999,7 +999,42 @@ extern "C" int func_0015D680(int arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D680);
 #endif
 
+// NON_MATCHING: 10/45 differ (size 0xB4, game 0xB8), 3 edits
+#ifdef NON_MATCHING
+extern "C" int func_0015D738(int arg0)
+{
+    int temp_v0;
+    int temp_v1;
+    int var_a0;
+
+    temp_v0 = Xiii_func_001696FC(M2C_FIELD(arg0, int *, 0x1C), 0x11);
+    if (temp_v0 == 0xB && M2C_FIELD(arg0, int *, 0x26C) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xC && M2C_FIELD(arg0, int *, 0x270) == 0) var_a0 = 1;
+    else if (temp_v0 == 0xE) {
+        var_a0 = 0;
+        temp_v1 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC);
+        if (temp_v1 & 8) {
+            var_a0 = 1;
+            if (!(temp_v1 & 0x10)) {
+                var_a0 = 0;
+            }
+        }
+    } else var_a0 = 0;
+    if (var_a0 == 0) {
+        register int obj20 PS2_REG("$2") = M2C_FIELD(arg0, int *, 0x20);
+        register int temp_v1_2 PS2_REG("$3") = M2C_FIELD(obj20, int *, 0x3EC);
+        if (temp_v1_2 & 2) {
+            if (temp_v1_2 & 4) {
+                return 1;
+            }
+        }
+        return 0;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015D738);
+#endif
 
 extern "C" int func_0015D7F0(int arg0)
 {
