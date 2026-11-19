@@ -1,4 +1,13 @@
 #include "include_asm.h"
+struct EffMan_1774E0 {
+    int field_0;
+    void *ptrs[0x110];
+    int field_444;
+    int field_448;
+};
+extern "C" int X_1774E0_76C4(EffMan_1774E0 *) asm("func_001776C4");
+extern "C" int X_1774E0_7E9C(EffMan_1774E0 *) asm("func_00177E9C");
+extern "C" void X_1774E0_7EF8(EffMan_1774E0 *, int) asm("func_00177EF8");
 struct EffManEntry_178148 {
     int active;
     char name[0x5C];
@@ -158,7 +167,20 @@ extern "C" void func_00176C50(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00176CC8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_001774E0);
+extern "C" int func_001774E0(EffMan_1774E0 *self, void *arg1)
+{
+    int idx = X_1774E0_76C4(self);
+    if (idx == -1) {
+        idx = X_1774E0_7E9C(self);
+        if (idx == -1) {
+            return -1;
+        }
+        X_1774E0_7EF8(self, idx);
+    }
+    self->ptrs[idx] = arg1;
+    self->field_448++;
+    return idx;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_0017756C);
 
