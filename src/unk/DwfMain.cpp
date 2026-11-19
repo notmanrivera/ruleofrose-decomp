@@ -690,7 +690,69 @@ extern "C" int func_0015CE88(int arg0)
 
 // D_002F0E08: the end of unk/PigMain's .rodata now (config/splits_manual.tsv)
 
+// NON_MATCHING: 42/86 differ, 2 relocs differ (size 0x158, game 0x15C), 24 edits
+#ifdef NON_MATCHING
+struct Cf30Globals { char pad[0x22090]; int pc; int dog; };
+extern Cf30Globals cf30Globals asm("D_007812C0");
+extern int Cf30_D_006E9840 asm("D_006E9840");
+extern "C" void Cf30_func_001DA228(int, int, void *) asm("func_001DA228");
+extern "C" int Cf30_func_00118FEC__9MagSystem(void *) asm("func_00118FEC__9MagSystem");
+extern "C" int Cf30_func_00169BAC(int, int, int, float, float) asm("func_00169BAC");
+extern "C" int func_0015CF30(int arg0)
+{
+    float sp0;
+    float var_f1;
+    int temp_s2;
+    int var_a1;
+    int var_a1_2;
+    int var_s1;
+    unsigned int temp_v0;
+
+    Cf30_func_001DA228(M2C_FIELD(arg0, int *, 0x20), 0x5F, &sp0);
+    if ((M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x3EC) & 1) || (M2C_FIELD(arg0, int *, 0x3C) == 1)) {
+        temp_v0 = Cf30_func_00118FEC__9MagSystem(&Cf30_D_006E9840);
+        switch (temp_v0) {
+        case 2:
+        case 3:
+        case 7:
+            var_f1 = 200.0f;
+            break;
+        case 6:
+            var_f1 = 100.0f;
+            break;
+        case 0:
+        case 12:
+        default:
+            var_f1 = 60.0f;
+            break;
+        }
+        var_s1 = 0;
+        if (var_f1 < sp0) {
+            sp0 = var_f1;
+        }
+    } else {
+        var_s1 = 1;
+    }
+    var_a1_2 = 0;
+    if (cf30Globals.pc != 0) {
+        var_a1_2 = M2C_FIELD(cf30Globals.pc, int *, 0x100);
+    }
+    {
+        register float pi1 PS2_REG("$f13") = 3.141592562198639f;
+        temp_s2 = Cf30_func_00169BAC(var_s1, var_a1_2, M2C_FIELD(arg0, int *, 0x20), sp0, pi1);
+    }
+    var_a1 = 0;
+    if (cf30Globals.dog != 0) {
+        var_a1 = M2C_FIELD(cf30Globals.dog, int *, 0x100);
+    }
+    {
+        register float pi2 PS2_REG("$f13") = 3.141592562198639f;
+        return (temp_s2 != 0) | (Cf30_func_00169BAC(var_s1, var_a1, M2C_FIELD(arg0, int *, 0x20), sp0, pi2) != 0);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015CF30);
+#endif
 
 extern "C" int func_0015D08C(int arg0)
 {
