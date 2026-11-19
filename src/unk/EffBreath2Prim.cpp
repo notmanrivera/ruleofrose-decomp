@@ -1,5 +1,11 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+struct EffBreath2Ground {
+    unsigned short m_unk0;
+    unsigned char m_pad2[0x9E];
+    int m_unkA0;
+    int m_unkA4;
+};
 extern "C" float Xii_func_0016FF18(int, int) asm("func_0016FF18");
 extern int D_00298E08;
 struct m2c_v94_10_i { char pad[148]; virtual void v1(); virtual int call(); };
@@ -25,7 +31,19 @@ extern "C" void updateZDepth__14EffBreath2Prim(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2Ground__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2Ground__vfunc_05);
+extern "C" int EffBreath2Ground__vfunc_05(EffBreath2Ground *arg0)
+{
+    if (++arg0->m_unkA0 >= arg0->m_unkA4) {
+        return 0;
+    }
+    if (arg0->m_unk0 & 2) {
+        int v = arg0->m_unkA4 - 0xF;
+        if (arg0->m_unkA0 < v) {
+            arg0->m_unkA0 = v;
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2Ground__vfunc_08);
 
