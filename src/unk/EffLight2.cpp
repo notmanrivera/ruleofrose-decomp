@@ -1,4 +1,24 @@
 #include "include_asm.h"
+extern "C" const char D_002F28D0[];
+extern "C" const char D_002F28E8[];
+extern "C" const char D_002F2910[];
+extern "C" void ror_assert(const char *file, int line, const char *expr);
+struct DogLightAmbient_1765E8 {
+    float m_color[4];
+} __attribute__((aligned(8)));
+struct DogLightPool_1765E8 {
+    void *m_light[6];
+    int m_num[6];
+    DogLightAmbient_1765E8 *getAmbient(int n) {
+        if (!(n >= 0 && n < m_num[0])) ror_assert(D_002F28D0, 0x81, D_002F28E8);
+        if (!m_light[0]) ror_assert(D_002F28D0, 0x81, D_002F2910);
+        return &((DogLightAmbient_1765E8 *)m_light[0])[n];
+    }
+};
+struct EffFindItem1_1765E8 {
+    char pad[0x330];
+    float m_color[3];
+};
 struct EffVec3_v2 {
     float x, y, z;
 };
@@ -517,7 +537,13 @@ extern "C" void func_0017653C(char *arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_0017653C);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_001765E8);
+extern "C" void func_001765E8(EffFindItem1_1765E8 *self, float scale)
+{
+    DogLightAmbient_1765E8 *amb = ((DogLightPool_1765E8 *)(D_00298E08 + 0x2050))->getAmbient(0);
+    amb->m_color[0] = self->m_color[0] * scale;
+    amb->m_color[1] = self->m_color[1] * scale;
+    amb->m_color[2] = self->m_color[2] * scale;
+}
 
 extern "C" int Xiii_Eff0__vfunc_02(int, int) asm("Eff0__vfunc_02");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
