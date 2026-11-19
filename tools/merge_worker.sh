@@ -134,8 +134,16 @@ fi
 if [ -n "$(git cherry "$BRANCH" "wt/$NAME" | grep '^+' || true)" ]; then
   echo "wt/$NAME has commits made meanwhile; left as is (run again)"
 elif [ -z "$(git -C "$WT" status --porcelain --untracked-files=no)" ]; then
+  OLDWT="$(git -C "$WT" rev-parse HEAD)"
   git -C "$WT" reset -q --hard "$BRANCH"
   echo "wt/$NAME reset to $BRANCH"
+  # New file boundaries or alignment (config/) need the worktree's asm/ and
+  # build.ninja made again, or its next match.py compares the wrong ranges.
+  if ! git diff --quiet "$OLDWT" "$BRANCH" -- config/splits.tsv config/splits_manual.tsv \
+       config/rodata_align_manual.tsv config/symbol_addrs_manual.txt; then
+    (cd "$WT" && "$MAIN/tools/dock" python3 tools/configure.py >/dev/null 2>&1) &&
+      echo "wt/$NAME reconfigured (config/ changed)" || echo "wt/$NAME: configure failed"
+  fi
 else
   echo "wt/$NAME has uncommitted work; left as is"
 fi
