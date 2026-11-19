@@ -1,5 +1,8 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+struct EffVec4 { float x, y, z, w; };
+extern "C" int Xiii_Eff0__vfunc_02(int, int) asm("Eff0__vfunc_02");
+extern "C" int Xi_func_0016AD94() asm("func_0016AD94");
 extern "C" void Xvpff_func_00237360(float *, float *, float) asm("func_00237360");
 extern "C" void Xviii_func_002373D8(int, float *, int) asm("func_002373D8");
 extern "C" void Xviii_func_00237408(float *, int, int) asm("func_00237408");
@@ -21,7 +24,23 @@ extern "C" int X_func_00237408(...) asm("func_00237408");
 extern "C" int X_func_00237580(...) asm("func_00237580");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2__vfunc_02);
+extern "C" int EffBreath2__vfunc_02(int arg0, int arg1)
+{
+    if (!Xiii_Eff0__vfunc_02(arg0, arg1)) {
+        return 0;
+    }
+    M2C_FIELD(arg0, int *, 0x24) = M2C_FIELD(arg1, int *, 0x10);
+    M2C_FIELD(arg0, int *, 0x28) = M2C_FIELD(arg1, int *, 0x14);
+    M2C_FIELD(arg0, int *, 0x4C) = M2C_FIELD(arg1, int *, 0x34);
+    M2C_FIELD(arg0, float *, 0x2C) = M2C_FIELD(arg1, float *, 0x18);
+    M2C_FIELD(arg0, float *, 0x30) = M2C_FIELD(arg1, float *, 0x1C);
+    M2C_FIELD(arg0, float *, 0x34) = M2C_FIELD(arg1, float *, 0x20);
+    *(EffVec4 *)((char *)arg0 + 0x38) = *(EffVec4 *)((char *)arg1 + 0x24);
+    int rnd = Xi_func_0016AD94();
+    M2C_FIELD(arg0, int *, 0x48) = 0;
+    M2C_FIELD(arg0, int *, 0x50) = rnd;
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2__vfunc_05);
 
