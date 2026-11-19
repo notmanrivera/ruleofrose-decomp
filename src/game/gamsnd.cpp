@@ -1,6 +1,8 @@
 #include "ror.h"
 #include "include_asm.h"
 #include "utl/filereader.h"
+extern "C" int Xi_func_001E4CBC() asm("func_001E4CBC");
+extern "C" int Xiiiii_func_001E5660(int, int, int, int) asm("func_001E5660");
 extern "C" int Xiiui_func_001E649C(int, unsigned int, int) asm("func_001E649C");
 extern "C" void position3138(void *, int, void *, int) asm("func_001DBA3C");
 extern "C" int play3138(void *, unsigned int, int, int, float, int, int, int) asm("func_001E5428");
@@ -1730,8 +1732,6 @@ extern "C" void func_001E3138(Obj2DB4 *self, unsigned int id, unsigned int key, 
     queue->push(item);
 }
 
-// NON_MATCHING: 22/107 differ, 25 edits
-#ifdef NON_MATCHING
 struct ALIGNED(16) Ent34EC { // 34EC
     char pad00[0x20]; // 34EC
     int unk20; // 34EC
@@ -1820,9 +1820,10 @@ struct Obj34EC { // 34EC
 extern "C" int X_34EC_func_001E5660(Obj34EC *, int, int, int) asm("func_001E5660");
 extern "C" int X_34EC_func_001E4CBC(Obj34EC *, int) asm("func_001E4CBC");
 extern "C" void func_001E34EC(Obj34EC *arg0, int arg1, int arg2) {
+    register GamList34EC<Ent34EC>::Chain *idle PS2_REG("$17") = &arg0->m_que.m_free;
     GamList34EC<Ent34EC>::iterator it;
     GamList34EC<Ent34EC>::iterator last;
-    it = arg0->m_que.begin();
+    it = ((GamList34EC<Ent34EC> *)idle)->begin();
     last = arg0->m_que.end();
     while (it != last) {
         if ((*it).unk20 == arg1 && (arg2 == -1 || (*it).unk30 == arg2)) {
@@ -1834,9 +1835,6 @@ extern "C" void func_001E34EC(Obj34EC *arg0, int arg1, int arg2) {
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E34EC);
-#endif
 
 // NON_MATCHING: 24/91 differ, 27 edits
 #ifdef NON_MATCHING
