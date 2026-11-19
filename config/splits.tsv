@@ -121,9 +121,11 @@ text	rodata	data	bss	file	confidence
 001F6CB8	002FE738	-	-	unk/SeManager	family
 001F6F4C	002FE7D8	-	-	unk/VoiceManager	family
 001F7570	002FE810	-	-	task/tsk_scene	likely
-001F836C	002FE888	-	-	unk/001F836C	likely
-001F8F70	-	-	-	task/naga_chunk	likely
-001F8FB8	002FE980	-	-	unk/TskCamera	family
+001F8FB8	002FEA00	-	-	unk/TskSnd	manual
+001F985C	002FEA90	-	-	unk/TskAttack	manual
+001F9E38	002FEB60	-	-	unk/TskDamage	manual
+001FBBA4	002FEF80	-	-	unk/TskCamera	manual
+001FC47C	002FEFF0	-	-	task/naga_chunk	manual
 001FCC20	002FF010	-	-	task/tsk_bg_load	likely
 001FD424	002FF040	-	-	unk/TskEnemyMove	likely
 00203468	002FF620	-	-	unk/TskEnemyTurn	manual

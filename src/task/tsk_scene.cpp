@@ -1,11 +1,9 @@
 #include "include_asm.h"
-extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
-extern int _vt$15ScenePlaySingle;
+extern "C" char vtbl_15ScenePlaySingle[] asm("_vt$15ScenePlaySingle");
+extern "C" char vtbl_11PLScenePlay[] asm("_vt$11PLScenePlay");
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
-extern int _vt$7ObjStat;
-extern "C" void Xv_ObjStatDtor(int arg0, int arg1) asm("ScenePlaySingle__vfunc_01");
-extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
-extern "C" void Xv_ObjStatDtor(int arg0, int arg1) asm("ScenePlaySingle__vfunc_01");
+extern "C" void ScenePlaySingle__vfunc_01(int arg0, int arg1);
+extern "C" void PLScenePlay__vfunc_06(int arg0, int arg1);
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_001F6CB8(...) asm("func_001F6CB8");
@@ -40,9 +38,9 @@ extern "C" void func_001F7644(void) {
 
 INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F764C);
 
-extern "C" void Xv_ObjStatDtor(int arg0, int arg1)
+extern "C" void ScenePlaySingle__vfunc_01(int arg0, int arg1)
 {
-    M2C_FIELD(arg0, int *, 0x9c) = (int)&_vt$15ScenePlaySingle;
+    M2C_FIELD(arg0, void **, 0x9c) = vtbl_15ScenePlaySingle;
     if (arg1 & 1) {
         return Xv___builtin_delete((void *)arg0);
     }
@@ -86,3 +84,45 @@ INCLUDE_RODATA("asm/nonmatchings/task/tsk_scene", D_002FE858);
 INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F81A8);
 
 INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", ScenePlay__vfunc_04);
+
+INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F836C);
+
+INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F839C);
+
+INCLUDE_RODATA("asm/nonmatchings/task/tsk_scene", D_002FE898);
+
+INCLUDE_RODATA("asm/nonmatchings/task/tsk_scene", D_002FE8A0);
+
+INCLUDE_RODATA("asm/nonmatchings/task/tsk_scene", D_002FE8B0);
+
+INCLUDE_RODATA("asm/nonmatchings/task/tsk_scene", D_002FE8B8);
+
+INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F83F4);
+
+INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F8CEC);
+
+extern "C" void func_001F8F70(int arg0)
+{
+    M2C_FIELD(arg0, int *, 4) = 0;
+    M2C_FIELD(arg0, void **, 0) = vtbl_11PLScenePlay;
+}
+
+extern "C" void PLScenePlay__vfunc_06(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, void **, 0x0) = vtbl_11PLScenePlay;
+    if (arg1 & 1) {
+        return Xv___builtin_delete((void *)arg0);
+    }
+}
+
+INCLUDE_RODATA("asm/nonmatchings/task/tsk_scene", D_002FE980);
+
+INCLUDE_RODATA("asm/nonmatchings/task/tsk_scene", D_002FE998);
+
+INCLUDE_RODATA("asm/nonmatchings/task/tsk_scene", D_002FE9A8);
+
+INCLUDE_RODATA("asm/nonmatchings/task/tsk_scene", D_002FE9B8);
+
+INCLUDE_RODATA("asm/nonmatchings/task/tsk_scene", D_002FE9D0);
+
+INCLUDE_RODATA("asm/nonmatchings/task/tsk_scene", D_002FE9E0);

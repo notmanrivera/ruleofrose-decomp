@@ -17,34 +17,21 @@ judgement and go to Sonnet.
 
 ## Open
 
-- [ ] R16 Split unk/TskCamera (game/gamman done in c6d41ad; R15's findings, Sonnet,
-  2026-11-16; needs moving decompiled C++ between files, so a careful
-  session, not a worker):
-  - mnu/mnuSelectLanguage is text [0x1BDAE4, 0x1BE2CC), .rodata from
-    0x2FB1A0 ("location.tm2"; "mnusllg.rpk" ends 0x2FB398), .data from
-    0x2B89E0. Evidence: its asserts (0x1BDCB8...), MagLifeMenuSelLang calls
-    func_001BDC00/func_001BDE58 on self+0x40 (src/mag/maglifemenu.cpp:49-72),
-    all functions use one layout (+0x78C, +0x1078..0x1084). 14 of its 16
-    functions are decompiled in src/game/gamman.cpp (lines ~315-519).
-  - After it, 0x1BE2CC (FileReader, a date helper with the days table
-    0x2B8DA8; .rodata 0x2FB398, tags BIT/CDH/CDF/PRP) is another file;
-    game/gamman proper has .rodata from 0x2FB3C0 ("game/gamman.cpp" at
-    0x2FB3C8, first used by 0x1C0D70) and text from at most 0x1C0D44 (exact
-    start unsettled; no function in 0x1BE2CC-0x1C0D44 reads .rodata).
-    gamman.cpp has compiled switches, so its .rodata must start at a
-    multiple of 16: 0x2FB398 cannot be gamman's.
-  - Before it, 0x1B64C4-0x1BDAE4 is probably not gamman either (no
-    gamman.cpp assert before 0x1C0EF8; its data points into the previous
-    mnu file's .rodata, "mnuboard.rpk").
-  - task/naga_chunk is text [0x1FC47C, 0x1FCC20), .rodata 0x2FEFF0-0x2FF010
-    ("task/naga_chunk.cpp", "host:%s"); its row at 0x1F8F70 is PLScenePlay's
-    constructor + deleting destructor, which belong to unk/001F836C (whose
-    .rodata start 0x2FE888 must become a multiple of 16: it has 2 jump
-    tables). TskCamera's .rodata starts at 0x2FEA00 (0x2FE980-0x2FE9FF are
-    001F836C's type names), and the range is several files: TskSnd
-    (vtable 0x1F8FC4), TskAttack, TskDamage, TskCamera (~0x1FBBA4, .rodata
-    0x2FEF80).
-  - unk/WrdSrv's .rodata start (EffWater type names) stays unsettled.
+- [x] R16 Split unk/TskCamera (game/gamman done in c6d41ad; TskCamera
+  range done in wt/fable):
+  - task/tsk_scene absorbs unk/001F836C (0x1F836C-0x1F8FB7, including
+    PLScenePlay ctor/dtor previously misassigned to task/naga_chunk;
+    contiguous .rodata 0x2FE810-0x2FE9FF with 16-aligned jump tables and
+    shared RTTI tail 0x2FE980-0x2FE9FF).
+  - Split TskCamera's range into unk/TskSnd (0x1F8FB8, .rodata 0x2FEA00),
+    unk/TskAttack (0x1F985C, .rodata 0x2FEA90), unk/TskDamage (0x1F9E38,
+    .rodata 0x2FEB60), unk/TskCamera (0x1FBBA4, .rodata 0x2FEF80), and
+    task/naga_chunk (0x1FC47C, .rodata 0x2FEFF0).
+  - Open from it: unk/DisplayMessage, unk/SeManager, unk/VoiceManager share
+    tsk_scene's reverse vtable block (0x2E4D90-0x2E4E58) and RTTI tail
+    (0x2FE980-0x2FE9B7); exact text placement of func_001F8FB8,
+    func_001F97C8, and func_001FBBA4/001FBBD0; unk/WrdSrv's .rodata start
+    (EffWater type names) stays unsettled.
 
 - [x] External deep research (2026-11-18, owner): no public inspection of
   SLUS-28063/28064 for symbols; checked locally again: the trade demo
