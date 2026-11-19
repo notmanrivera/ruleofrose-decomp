@@ -81,7 +81,16 @@ extern "C" void func_0016FD4C(int arg0, float fparg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016FDA0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016FE88);
+extern "C" float func_0016FE88(float fparg0)
+{
+    while (fparg0 < -3.1415923f) {
+        fparg0 += 6.2831847f;
+    }
+    while (fparg0 > 3.1415923f) {
+        fparg0 -= 6.2831847f;
+    }
+    return fparg0;
+}
 
 extern "C" void func_0016FF18(int arg0, int arg1)
 {
