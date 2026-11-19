@@ -394,7 +394,57 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00174C4C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00174D14);
 
+// NON_MATCHING: 13/50 differ (size 0xC8, game 0xC4), 7 edits (xori $v1, $v1, 0x0 before movn)
+#ifdef NON_MATCHING
+struct EffVec2_174DD8 { float x, y; };
+struct EffVec3_174DD8 { float x, y, z; };
+struct EffVec4_174DD8 { float x, y, z, w; };
+struct EffLight1_v2 {
+    unsigned short flags;       // 0x00
+    char pad2[0xE];
+    float f10;                  // 0x10
+    char pad14[0x1C];
+    EffVec3_174DD8 f30;         // 0x30
+    float f3C;                  // 0x3C
+    EffVec2_174DD8 f40;         // 0x40
+    char pad48[0x8];
+    EffVec4_174DD8 f50;         // 0x50
+    float f60;                  // 0x60
+    int f64;                    // 0x64
+    int f68;                    // 0x68
+};
+struct EffLight1Arg_v2 {
+    char pad0[0x10];
+    EffVec3_174DD8 f10;         // 0x10
+    EffVec2_174DD8 f1C;         // 0x1C
+    EffVec4_174DD8 f24;         // 0x24
+    float f34;                  // 0x34
+    int f38;                    // 0x38
+};
+extern "C" int X_EffLight1_Eff0_vfunc02(EffLight1_v2 *, EffLight1Arg_v2 *) asm("Eff0__vfunc_02");
+extern "C" int EffLight1__vfunc_02(EffLight1_v2 *self, EffLight1Arg_v2 *arg1)
+{
+    if (X_EffLight1_Eff0_vfunc02(self, arg1) == 0) {
+        return 0;
+    }
+    self->f30 = arg1->f10;
+    self->f3C = 1.0f;
+    self->f40 = arg1->f1C;
+    self->f50 = arg1->f24;
+    self->f60 = arg1->f34;
+    self->f64 = 0;
+    unsigned short flags = self->flags;
+    if (arg1->f38) {
+        flags |= 0x8000;
+    }
+    self->f68 = 0;
+    self->f10 = 1.1754945259845955e-38f;
+    self->flags = flags;
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffLight1__vfunc_02);
+#endif
 
 extern "C" int EffLight1__vfunc_05(int arg0)
 {
