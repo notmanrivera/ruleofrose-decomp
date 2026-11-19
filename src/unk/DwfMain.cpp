@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xiiiii_func_001679B4(int, int, int, float, float) asm("func_001679B4");
+extern "C" void Xv_func_00202F10(int) asm("func_00202F10");
 extern "C" int Xii_func_0015F37C(int) asm("func_0015F37C");
 extern "C" int Xii_func_0015F8AC(int) asm("func_0015F8AC");
 extern "C" int Xii_func_0015FF54(int) asm("func_0015FF54");
@@ -1571,7 +1573,32 @@ extern "C" void DwfOutSerch__vfunc_02(int arg0)
     Xiiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), 10.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfOutSerch__vfunc_03);
+extern "C" int DwfOutSerch__vfunc_03(int arg0)
+{
+    int var_s1;
+    int temp_v1;
+    int temp_v0_2;
+
+    if (Xiiiii_func_001679B4(arg0, M2C_FIELD(arg0, int *, 0x14), 0, 200.0f, 3.141592562198639f) == 0) {
+        var_s1 = -1;
+    } else {
+        temp_v1 = M2C_FIELD(arg0, int *, 0xC);
+        temp_v0_2 = ((m2c_v200_18_i *)(temp_v1))->call();
+        switch ((unsigned int)temp_v0_2) {
+        case 1:
+            var_s1 = 0x16;
+            break;
+        case 0:
+            var_s1 = 0x16;
+            break;
+        case 2:
+            var_s1 = 0x16;
+            break;
+        }
+        Xv_func_00202F10(M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1F0));
+    }
+    return var_s1;
+}
 
 extern "C" void DwfOutSerch__vfunc_04()
 {
