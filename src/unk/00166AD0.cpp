@@ -1,6 +1,7 @@
 #include "ror.h"
 #include "include_asm.h"
 extern "C" int Xiiiiif_func_001F603C(int, int, int, int, float) asm("func_001F603C");
+extern "C" int *Xipp_func_001D7F48(int, float *, int) asm("func_001D7F48");
 extern "C" void Xv_func_001F603C(int, int, int, int, float, float, int) asm("func_001F603C");
 extern "C" float Xff_sinf(float) asm("sinf");
 extern "C" float Xff_cosf(float) asm("cosf");
@@ -193,7 +194,25 @@ INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00167230);
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001672E8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_0016768C);
+extern "C" int func_0016768C(int arg0, unsigned int arg1)
+{
+    float pos1[4];
+    float pos2[4];
+    float mat[16];
+
+    cPos(arg0, pos1);
+    cCopy(pos2, cGetBone(D_002F19E0, mat, (cModel *)(D_006FE6A0 + cIndex((int)&D_007812C0, arg1) * 0x4D0)));
+    int *a = Xipp_func_001D7F48((int)&D_007812C0, pos1, 0);
+    int *b = Xipp_func_001D7F48((int)&D_007812C0, pos2, 0);
+    if (a != 0) {
+        if (b != 0) {
+            if (*a == *b) {
+                return 0;
+            }
+        }
+    }
+    return 0;
+}
 
 // NON_MATCHING: 17/119 differ (size 0x1DC, game 0x1E4), 6 edits
 #ifdef NON_MATCHING
