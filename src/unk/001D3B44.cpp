@@ -192,9 +192,81 @@ extern "C" void func_001D49D0(int arg0, unsigned int arg1, float fparg0)
 
 INCLUDE_RODATA("asm/nonmatchings/unk/001D3B44", D_002FC130);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D3B44", func_001D4A3C);
+extern "C" float func_001D4A3C(void *arg0, unsigned int arg1, int *arg2)
+{
+    struct {
+        int f0;
+        int f4;
+        int f8;
+        int fC;
+        float f10;
+        char pad[0x1C];
+    } stack;
+    float ret = 0.0f;
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D3B44", func_001D4AEC);
+    X_func_001D1C80(arg0, arg1, 0x18, &stack);
+    switch (stack.f4) {
+    case 0:
+        ret = 0.0f;
+        break;
+    case 1:
+        ret = 17.0f;
+        break;
+    case 2:
+        ret = 25.0f;
+        break;
+    case 3:
+        ret = 45.0f;
+        break;
+    case 4:
+        ret = stack.f10;
+        break;
+    default:
+        return ret;
+    }
+    if (arg2 != 0) {
+        *arg2 = stack.f0;
+    }
+    return ret;
+}
+
+extern "C" float func_001D4AEC(void *arg0, unsigned int arg1, int *arg2)
+{
+    struct {
+        int f0;
+        int f4;
+        int f8;
+        int fC;
+        float f10;
+        char pad[0x1C];
+    } stack;
+    float ret = 0.0f;
+
+    X_func_001D1C80(arg0, arg1, 0x1005, &stack);
+    switch (stack.f4) {
+    case 0:
+        ret = 0.0f;
+        break;
+    case 1:
+        ret = 17.0f;
+        break;
+    case 2:
+        ret = 25.0f;
+        break;
+    case 3:
+        ret = 45.0f;
+        break;
+    case 4:
+        ret = stack.f10;
+        break;
+    default:
+        return ret;
+    }
+    if (arg2 != 0) {
+        *arg2 = stack.f0;
+    }
+    return ret;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/001D3B44", D_002FC178);
 
