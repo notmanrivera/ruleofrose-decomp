@@ -1,4 +1,9 @@
 #include "include_asm.h"
+struct EffMan_1776C4 {
+    int field_0;
+    void *ptrs[0x110];
+    int field_444;
+};
 struct EffItem_177EF8 {
     int field_0;
     int field_4;
@@ -122,7 +127,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_0017756C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_0017762C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_001776C4);
+extern "C" int func_001776C4(EffMan_1776C4 *self)
+{
+    int idx = self->field_444;
+    for (int i = 0; i < 0x100; i++) {
+        if (self->ptrs[idx] == 0) {
+            self->field_444 = (idx + 1) % 0x100;
+            return idx;
+        }
+        idx = (idx + 1) % 0x100;
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_0017772C);
 
