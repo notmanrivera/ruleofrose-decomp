@@ -1412,7 +1412,130 @@ INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F80E0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F80F0);
 
+// NON_MATCHING: 1/239 differ, 1 edits
+#ifdef NON_MATCHING
+# define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int PBookStateFormat(...) asm("func_00279C98");
+extern "C" int Xii_func_00131550(int) asm("func_00131550");
+extern "C" int Xii_func_00192F3C(int) asm("func_00192F3C");
+extern "C" int Xii_func_00193A1C(int) asm("func_00193A1C");
+extern "C" int Xii_func_00196EFC(int) asm("func_00196EFC");
+extern "C" int Xii_func_0019722C(int) asm("func_0019722C");
+extern "C" int Xii_func_001973FC(int) asm("func_001973FC");
+extern "C" int Xii_func_00197D28(int) asm("func_00197D28");
+extern "C" int Xii_func_001D44E4(int) asm("func_001D44E4");
+extern "C" int Xiii_func_00197A74(int, int) asm("func_00197A74");
+extern "C" int Xiiiii_func_00131184(int, int, int, int) asm("func_00131184");
+extern "C" int Xiiiii_func_001311BC(int, int, int, int) asm("func_001311BC");
+extern "C" int Xiiiii_func_001D83D0(int, int, int, int) asm("func_001D83D0");
+extern int D_007A4440;
+struct m2c_v10C_18_i { char pad[268]; virtual void v1(); virtual void v2(); virtual int call(); };
+struct PBookStateVTable50 { char pad[268]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual int call(); };
+struct m2c_v10C_58_i { char pad[268]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual int call(); };
+static inline bool PBookStateReady(int object) { return Xii_func_00131550(object) >= 5; }
+extern int D_007812C0, D_007B2580;
+static inline int PBookStateObject1(int game) { return M2C_FIELD(game, int *, 0xDC1C); }
+static inline int PBookStateObject2(int game) { return M2C_FIELD(game, int *, 0xDC20); }
+static inline void PBookStateSetPage(int object, int value) { M2C_FIELD(object, int *, 0x194) = value; }
+static inline void PBookStateClear(int address, int mask) { *(int *)address &= ~mask; }
+static inline void PBookStateSet(int address, int mask) { *(int *)address |= mask; }
+static inline void PBookStateBitClear(int array, unsigned int bit) { ((unsigned int *)array)[bit >> 5] &= ~(1U << (bit & 31)); }
+extern "C" int MnuPBook__vfunc_05(int arg0, int arg1)
+{
+    int temp_a1;
+    int temp_a0;
+    int temp_v1_2;
+    int var_s2;
+    int var_v0;
+    unsigned int temp_v0_3;
+    unsigned int temp_v1;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_4;
+
+    var_s2 = 0;
+    Xii_func_00193A1C(arg0);
+    Xii_func_00197D28(arg0);
+    temp_v1 = M2C_FIELD(arg0, unsigned int *, 0x14);
+    M2C_FIELD(arg0, unsigned int *, 0x10) = temp_v1;
+    switch (temp_v1) {
+    case 0:
+        if (!(M2C_FIELD(arg0, int *, 4) & 0x20000) && (PBookStateReady(M2C_FIELD(arg0, int *, 8)))) {
+            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x20000);
+        }
+        temp_v1_2 = M2C_FIELD(arg0, int *, 4);
+        if (!(temp_v1_2 & 0x10000) && (M2C_FIELD(arg0, int *, 0x20) == 0)) {
+            M2C_FIELD(arg0, int *, 4) = (int) (temp_v1_2 | 0x10000);
+            ((m2c_v10C_58_i *)(arg0))->call();
+            PBookStateFormat(arg0 + 0x24, (int) "data/mnurpk/mnupbook/%s.rpk", M2C_FIELD(arg0, int *, 0x110) + 0x10);
+            ((PBookStateVTable50 *)(arg0))->call();
+            Xii_func_00196EFC(arg0);
+            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x20000);
+        }
+        if ((M2C_FIELD(arg0, int *, 4) & 0x30000) == 0x30000) {
+            M2C_FIELD(arg0, unsigned int *, 0x14) = 1U;
+        }
+        break;
+    case 1:
+        if (M2C_FIELD(arg0, int *, 0x20) == 0) {
+            Xii_func_0019722C(arg0);
+            Xiiiii_func_00131184((int) M2C_FIELD(arg0, int *, 8), 0xF, 7, 0);
+            int flags = M2C_FIELD(arg0, int *, 4);
+            M2C_FIELD(arg0, unsigned int *, 0x14) = 2U;
+            M2C_FIELD(arg0, int *, 4) = flags & 0xFFFCFFFF;
+        }
+        break;
+    case 2:
+        if (!(M2C_FIELD(arg0, int *, 4) & 0x20000)) {
+            if (PBookStateReady(M2C_FIELD(arg0, int *, 8))) {
+                M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x20000);
+            }
+        }
+        if (!(M2C_FIELD(arg0, int *, 4) & 0x10000) && (M2C_FIELD(arg0, int *, 0x20) == 0)) {
+            Xii_func_001973FC(arg0);
+            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x10000);
+        }
+        temp_a0 = M2C_FIELD(arg0, int *, 4);
+        if ((temp_a0 & 0x30000) == 0x30000) {
+            M2C_FIELD(arg0, unsigned int *, 0x14) = 3U;
+            M2C_FIELD(arg0, int *, 4) = (int) (temp_a0 & ~2);
+        }
+        break;
+    case 3:
+        if (Xiii_func_00197A74(arg0, arg1) == 0) {
+            Xiiiii_func_001311BC((int) M2C_FIELD(arg0, int *, 8), 0xF, 7, 0);
+            Xiii_func_0017F8FC((int) (int)&D_007B2580, 2);
+            Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 0, 0);
+            Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x134), 1);
+            M2C_FIELD(arg0, unsigned int *, 0x14) = 4U;
+        }
+        break;
+    case 4:
+        if (PBookStateReady(M2C_FIELD(arg0, int *, 8))) {
+            M2C_FIELD(arg0, unsigned int *, 0x14) = 5U;
+        }
+        break;
+    case 5: {
+        M2C_FIELD(PBookStateObject1((int)&D_007A4440), int *, 0x44) = Xiiiii_func_001D83D0((int) (int)&D_007812C0, 1, M2C_FIELD(arg0, int *, 0x114), 2);
+        int page = M2C_FIELD(arg0, int *, 0x118);
+        PBookStateSetPage(PBookStateObject1((int)&D_007A4440), page);
+        PBookStateClear(PBookStateObject2((int)&D_007A4440) + 4, 0x04000000);
+        if (Xii_func_001D44E4((int)&D_007812C0) != 0) {
+            PBookStateSet(PBookStateObject2((int)&D_007A4440) + 4, 0x02000000);
+        }
+        temp_v0_3 = Xiiiii_func_001D83D0((int) (int)&D_007812C0, 1, M2C_FIELD(arg0, int *, 0x114), 6);
+        PBookStateBitClear(PBookStateObject2((int)&D_007A4440), temp_v0_3);
+        var_s2 = 1;
+        Xii_func_00192F3C(arg0);
+        ((m2c_v10C_18_i *)(arg0))->call();
+        break;
+    }
+    }
+    return var_s2;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_05);
+#endif
 
 extern "C" int func_00197A74(int arg0, int arg1)
 {
