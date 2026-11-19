@@ -382,7 +382,62 @@ extern "C" void func_0017772C(EffMan_17772C *self)
     }
 }
 
+// NON_MATCHING: 5/98 differ, 9 edits (ori/daddu order at 21B550 calls and addu operand order in loop 2)
+#ifdef NON_MATCHING
+struct EffObj_177830 {
+    char pad[32];
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void vfunc_30(int *);
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual void v11();
+    virtual void vfunc_60();
+};
+struct EffMan_177830 {
+    int field_0;
+    EffObj_177830 *ptrs[0x110];
+    int field_444;
+    int field_448;
+    int list[0x110];
+};
+extern "C" int X_177830_21B550(int, int, int) asm("func_0021B550");
+extern "C" int X_177830_223378(int) asm("func_00223378");
+extern "C" void X_177830_223398(int, int) asm("func_00223398");
+extern "C" void X_177830_16ADD8() asm("func_0016ADD8");
+extern "C" int X_177830_79B8(EffMan_177830 *) asm("func_001779B8");
+extern "C" int X_177830_7D20(EffMan_177830 *, int, float) asm("func_00177D20");
+extern "C" void func_00177830(EffMan_177830 *self, int arg1)
+{
+    int sp[2];
+    if (self->field_448 != 0) {
+        int i;
+        EffObj_177830 **ptrs = self->ptrs;
+        EffObj_177830 **p = ptrs;
+        sp[0] = X_177830_7D20(self, arg1, 850.0f);
+        X_177830_223398(sp[0], X_177830_21B550(X_177830_21B550(X_177830_223378(sp[0]), 8, 0), 0x47, 0x5000D));
+        sp[1] = X_177830_7D20(self, arg1, 855.0f);
+        X_177830_223398(sp[1], X_177830_21B550(X_177830_21B550(X_177830_223378(sp[1]), 8, 0), 0x47, 0x3000D));
+        for (i = 0; i < 0x110; i++, p++) {
+            if (*p != 0) {
+                (*p)->vfunc_60();
+            }
+        }
+        int n = X_177830_79B8(self);
+        X_177830_16ADD8();
+        for (i = 0; i < n; i++) {
+            ptrs[self->list[i]]->vfunc_30(sp);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177830);
+#endif
 
 extern "C" int func_001779B8(EffMan_1779B8 *self)
 {
