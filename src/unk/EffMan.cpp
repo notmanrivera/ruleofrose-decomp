@@ -1,4 +1,10 @@
 #include "include_asm.h"
+struct EffMan_177E9C {
+    char pad[0x88C];
+    int arr[256];
+    int count;
+};
+extern "C" void *X_177E9C_memmove(void *, const void *, unsigned int) asm("memmove");
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
 extern "C" void X_func_00176C50(void *) asm("func_00176C50");
 extern "C" void X_dtor_10FileReader(void *, int) asm("_$_10FileReader");
@@ -127,7 +133,16 @@ extern "C" void func_00177E04(EffMan_177E04 *self, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177E24);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177E9C);
+extern "C" int func_00177E9C(EffMan_177E9C *self)
+{
+    if (self->count == 0) {
+        return -1;
+    }
+    int first = self->arr[0];
+    X_177E9C_memmove(&self->arr[0], &self->arr[1], (self->count - 1) * 4);
+    self->count--;
+    return first;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177EF8);
 
