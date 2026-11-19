@@ -117,7 +117,37 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffCameraAnim1__vfunc_02);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016F80C);
 
+// NON_MATCHING: 10/52 differ, 7 edits
+#ifdef NON_MATCHING
+extern "C" int Xiifff_setRot__9DogEntityfff(int, float, float, float) asm("setRot__9DogEntityfff");
+extern "C" int Xiii_func_0016F80C(int, int) asm("func_0016F80C");
+extern "C" int Xiiiii_func_0013CAF0__8MagSceneii(int, int, int, int) asm("func_0013CAF0__8MagSceneii");
+struct Cam_v5 { unsigned char m_pad0[0x40]; float m_unk40; float m_unk44; float m_unk48; unsigned char m_pad4C[0x44]; int m_unk90; unsigned char m_pad94[0xAC]; float m_unk140; void setPos(float x, float y, float z) { m_unk40 = x; m_unk44 = y; m_unk48 = z; } };
+extern "C" int EffCameraAnim1__vfunc_05(int arg0)
+{
+    int temp_v0;
+    Cam_v5 *temp_s0;
+    int temp_v0_2;
+
+    temp_v0 = M2C_FIELD(arg0, int *, 0x24) + 1;
+    M2C_FIELD(arg0, int *, 0x24) = temp_v0;
+    if (temp_v0 < M2C_FIELD(arg0, int *, 0x28)) {
+        temp_v0_2 = M2C_FIELD(arg0, int *, 0x2C) + 0x1C;
+        M2C_FIELD(arg0, int *, 0x2C) = temp_v0_2;
+        Xiii_func_0016F80C((int) arg0, temp_v0_2);
+        return 1;
+    }
+    temp_s0 = (Cam_v5 *)((*(int *)&D_00298E08) + 0x2AB70);
+    M2C_FIELD(temp_s0, int *, 0x90) = 1;
+    temp_s0->setPos(M2C_FIELD(arg0, float *, 0x34), M2C_FIELD(arg0, float *, 0x38), M2C_FIELD(arg0, float *, 0x3C));
+    Xiifff_setRot__9DogEntityfff((int) temp_s0, M2C_FIELD(arg0, float *, 0x40), M2C_FIELD(arg0, float *, 0x44), M2C_FIELD(arg0, float *, 0x48));
+    temp_s0->m_unk140 = M2C_FIELD(arg0, float *, 0x4C);
+    Xiiiii_func_0013CAF0__8MagSceneii((int) (*(int *)&D_00298E08), M2C_FIELD(arg0, int *, 0x30), 0, 0);
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffCameraAnim1__vfunc_05);
+#endif
 
 extern "C" int func_0016FB70(int arg0, int arg1)
 {
