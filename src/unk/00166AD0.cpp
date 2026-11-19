@@ -156,7 +156,80 @@ extern "C" void func_00166EB4(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00166F50);
 
+// NON_MATCHING: 29/85 differ, 2 relocs differ, 27 edits
+#ifdef NON_MATCHING
+struct Tbl1C90 { float unk0; int unk4; float unk8; int unkC; };
+struct Tbl1D80 { float unk0; float unk4; };
+struct Ret1669A4 { int a[4]; float f; };
+extern int D_002F1D50[];
+extern Tbl1D80 D_002F1D80[];
+extern Tbl1C90 D_002F1C90[];
+extern "C" Ret1669A4 *Xp_func_001669A4(int) asm("func_001669A4");
+extern "C" void Xvp_func_00200700(int, void *) asm("func_00200700");
+extern "C" void func_001670DC(int arg0, float *arg1, float fparg0)
+{
+    struct {
+        int unk00;
+        int unk04;
+        int unk08;
+        float unk0C;
+        float unk10;
+        int unk14;
+        float unk18;
+        float unk1C;
+        int unk20;
+        int unk24;
+        int unk28;
+        float unk2C;
+        float unk30;
+        float unk34;
+        float unk38;
+        float unk3C;
+        int unk40;
+        int unk44;
+        int unk48;
+        int unk4C;
+        int unk50;
+        int unk54;
+        float unk58;
+        float unk5C;
+    } sp;
+
+    int obj = M2C_FIELD(arg0, int *, 0xC);
+    int mode = ((m2c_v200_18_i *)obj)->call();
+    sp.unk00 = M2C_FIELD(arg0, int *, 0);
+    sp.unk04 = arg0 + 0x24;
+    sp.unk08 = D_002F1D50[mode];
+    obj = M2C_FIELD(arg0, int *, 0xC);
+    float d18 = D_002F1D80[mode].unk0;
+    float d1c = D_002F1D80[mode].unk4;
+    sp.unk0C = M2C_FIELD(obj, float *, 0x1C4);
+    sp.unk10 = D_002F1C90[mode].unk0;
+    sp.unk14 = 0;
+    sp.unk18 = d18;
+    sp.unk1C = d1c;
+    sp.unk20 = M2C_FIELD(obj, unsigned char *, 6);
+    sp.unk5C = fparg0;
+    sp.unk2C = arg1[0];
+    sp.unk30 = arg1[1];
+    sp.unk34 = arg1[2];
+    sp.unk3C = D_002F1C90[mode].unk8;
+    sp.unk24 = 0;
+    sp.unk28 = 0;
+    Ret1669A4 *ret = Xp_func_001669A4(obj);
+    int stop = M2C_FIELD(arg0, int *, 8);
+    sp.unk44 = ret->a[0];
+    sp.unk48 = ret->a[1];
+    sp.unk4C = ret->a[2];
+    sp.unk50 = ret->a[3];
+    sp.unk54 = mode;
+    sp.unk58 = ret->f;
+    cStop(stop);
+    Xvp_func_00200700(M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1F0), &sp);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001670DC);
+#endif
 
 // NON_MATCHING: 38/44 differ, 3 relocs differ (size 0xB0, game 0xB8), 14 edits
 #ifdef NON_MATCHING
