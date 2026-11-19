@@ -2319,7 +2319,30 @@ block_88:
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015F8AC);
 #endif
 
+// NON_MATCHING: 18/26 differ, 2 relocs differ (size 0x68, game 0x6C), 5 edits
+#ifdef NON_MATCHING
+extern "C" int Xiii_func_001694CC(int, int) asm("func_001694CC");
+extern "C" int Xiiii_func_001687BC(int, int, int) asm("func_001687BC");
+extern "C" int func_0015FEE8(int arg0)
+{
+    int temp_a1;
+    int var_a1;
+    register int var_v0 PS2_REG("$2") = 0;
+
+    temp_a1 = M2C_FIELD(M2C_FIELD(arg0, int *, 8), int *, 0x3EC);
+    if (!(temp_a1 & 1)) {
+        if (!(temp_a1 & 8) || (var_a1 = 0x3C, ((temp_a1 & 0x10) == 0))) {
+            var_a1 = 0x3F;
+        }
+        Xiiii_func_001687BC(arg0, var_a1, 0);
+        Xiii_func_001694CC(arg0, 0xB);
+        var_v0 = 1;
+    }
+    return var_v0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015FEE8);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015FF54);
 
