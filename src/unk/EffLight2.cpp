@@ -316,7 +316,54 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot2Prim__vfunc_08);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00173DF8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", _$_11EffGeneric1);
+extern int _vt$11EffGeneric1;
+extern int D_006E9800;
+extern "C" void X_dtor11_free(void *, void *) asm("free__9BedMemoryPv");
+extern "C" void X_dtor11_Eff0(void *, int) asm("_$_4Eff0");
+extern "C" void X_dtor11_delete(void *) asm("__builtin_delete");
+struct EffGeneric1_dtor {
+    char pad0[0x20];
+    void *vtable;
+    void *f24;
+    int f28;
+    void *f2C;
+    int f30;
+    int f34;
+    void *f38;
+    void *f3C;
+    void *f40;
+};
+extern "C" void dtor_11EffGeneric1(EffGeneric1_dtor *self, int arg1) asm("_$_11EffGeneric1");
+extern "C" void dtor_11EffGeneric1(EffGeneric1_dtor *self, int arg1)
+{
+    self->vtable = &_vt$11EffGeneric1;
+    if (self->f24 != 0) {
+        X_dtor11_free(&D_006E9800, self->f24);
+        self->f24 = 0;
+    }
+    if (self->f2C != 0) {
+        X_dtor11_free(&D_006E9800, self->f2C);
+        self->f2C = 0;
+        self->f30 = 0;
+        self->f34 = 0;
+    }
+    if (self->f38 != 0) {
+        X_dtor11_free(&D_006E9800, self->f38);
+        self->f38 = 0;
+    }
+    if (self->f3C != 0) {
+        X_dtor11_free(&D_006E9800, self->f3C);
+        self->f3C = 0;
+    }
+    if (self->f40 != 0) {
+        X_dtor11_free(&D_006E9800, self->f40);
+        self->f40 = 0;
+    }
+    X_dtor11_Eff0(self, 0);
+    if (arg1 & 1) {
+        return X_dtor11_delete(self);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F27E0);
 
