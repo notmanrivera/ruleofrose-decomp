@@ -1363,8 +1363,6 @@ extern "C" void func_00210CFC(unsigned int arg0, unsigned int arg1, short arg2)
 extern "C" void func_00210D34(void) {
 }
 
-// NON_MATCHING: 6/96 differ, 6 edits
-#ifdef NON_MATCHING
 typedef void (*Cop1Func210D3C)(unsigned int, unsigned int, unsigned int, unsigned int);
 extern Cop1Func210D3C D_002D9B08[];
 extern "C" void func_00210D3C(int arg0, int arg1, int arg2, unsigned int arg3)
@@ -1378,12 +1376,22 @@ extern "C" void func_00210D3C(int arg0, int arg1, int arg2, unsigned int arg3)
         return;
     }
     switch (arg3 & 0xFFE00000U) {
-    case 0x44000000U:
-        *(int *)((char *)&D_007B4700 + ((arg3 >> 14) & 0x7C)) = *(int *)((char *)&D_007B4680 + ((arg3 >> 9) & 0x7C));
+    case 0x44000000U: {
+        register unsigned int fs PS2_REG("$3") = arg3 >> 9;
+        register unsigned int ft PS2_REG("$4") = arg3 >> 14;
+        register unsigned int src PS2_REG("$2") = fs & 0x7C;
+        register unsigned int dst PS2_REG("$3") = ft & 0x7C;
+        *(int *)((char *)&D_007B4700 + dst) = *(int *)((char *)&D_007B4680 + src);
         return;
-    case 0x44800000U:
-        *(int *)((char *)&D_007B4680 + ((arg3 >> 9) & 0x7C)) = *(int *)((char *)&D_007B4700 + ((arg3 >> 14) & 0x7C));
+    }
+    case 0x44800000U: {
+        register unsigned int ft PS2_REG("$4") = arg3 >> 14;
+        register unsigned int fs PS2_REG("$3") = arg3 >> 9;
+        register unsigned int src PS2_REG("$2") = ft & 0x7C;
+        register unsigned int dst PS2_REG("$3") = fs & 0x7C;
+        *(int *)((char *)&D_007B4680 + dst) = *(int *)((char *)&D_007B4700 + src);
         break;
+    }
     case 0x45000000U:
         if ((arg3 & 0x10000) == 0) {
             if (D_007B4840 == 0) {
@@ -1400,9 +1408,6 @@ block_branch:
         break;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00210D3C);
-#endif
 
 extern "C" void func_00210EBC(void) {
 }
