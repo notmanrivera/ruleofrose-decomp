@@ -563,7 +563,7 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magloader", D_002EEF88);
 INCLUDE_RODATA("asm/nonmatchings/mag/magloader", D_002EEFA0);
 INCLUDE_RODATA("asm/nonmatchings/mag/magloader", D_002EEFB8);
 INCLUDE_RODATA("asm/nonmatchings/mag/magloader", D_002EEFD0);
-// NON_MATCHING: a few instructions in another order.
+// NON_MATCHING: 5 edits: the address pair is reversed; the game has 2 lines
 #ifdef NON_MATCHING
 int MagCharaLoader::func_00142908()
 {
@@ -582,10 +582,10 @@ int MagCharaLoader::func_00142908()
         if (func_001BE84C(D_00298D80[i])) {
             new (&req) FileReadReq;
             req.m_name = D_00298D80[i];
+            req.m_unk08 = 1;
             req.m_unk20 = 1;
             req.m_buf = tmp + pad;
             req.m_size = 0x2000;
-            req.m_unk08 = 1;
             if (reader.func_001BE524(&req, 0) >= 0) {
                 BedPfh pfh(req.m_buf);
                 int num = pfh.getNumFile();
