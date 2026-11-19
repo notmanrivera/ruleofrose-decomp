@@ -4534,19 +4534,23 @@ extern "C" void func_001F50B8(TskMsgMan *arg0, const char *arg1, int arg2, int a
     X_func_001874F4_50b8(sub, 0, (int)arg0->m_msgPtr, arg0->m_rect.m_unk14);
 }
 
-// NON_MATCHING: 2/25 differ, 2 edits (epilogue ld $s0/$s2 swap)
-#ifdef NON_MATCHING
-extern "C" void func_001F5244(TskAttach *arg0, unsigned int arg1, int *arg2, const char *arg3)
+struct TskAttachCtor {
+    void *vt;
+    unsigned int m_oid;
+    int m_chrID;
+    const char *m_nodeName;
+    int m_attachID;
+    TskAttachCtor(unsigned int arg1, int *arg2, const char *arg3) asm("func_001F5244");
+};
+
+TskAttachCtor::TskAttachCtor(unsigned int arg1, int *arg2, const char *arg3)
+    : m_oid(arg1)
 {
-    arg0->m_oid = arg1;
-    *(void **)arg0 = vtbl_TskAttach;
-    arg0->m_chrID = Xiiu_func_001CBE38(&D_007812C0, arg1);
-    arg0->m_nodeName = arg3;
-    arg0->m_attachID = *arg2;
+    vt = vtbl_TskAttach;
+    m_chrID = Xiiu_func_001CBE38(&D_007812C0, arg1);
+    m_nodeName = arg3;
+    m_attachID = *arg2;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F5244);
-#endif
 
 extern "C" void TskAttach__vfunc_06(TskAttach *arg0, int arg1)
 {
