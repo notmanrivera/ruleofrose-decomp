@@ -1,5 +1,7 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+extern "C" void X_func_00237560(float *, float *, float *) asm("func_00237560");
+extern "C" void X_func_00237390(float *, float *, float) asm("func_00237390");
 extern "C" int X_func_0022B3D8(void *, int) asm("func_0022B3D8");
 extern "C" int X_func_0022B6F8(void *) asm("func_0022B6F8");
 extern "C" int X_func_0022B730(void *, int) asm("func_0022B730");
@@ -192,7 +194,25 @@ extern "C" float func_0016FC20(const float *v)
     return sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016FC74);
+extern "C" void func_0016FC74(float *arg0)
+{
+    float *temp_s1 = arg0 + 8;
+    float f20 = func_0016FC20(arg0);
+    float f21 = func_0016FC20(temp_s1);
+    arg0[9] = 0.0f;
+    if (func_0016FC20(temp_s1) <= 1.1754945e-38f) {
+        temp_s1[0] = 0.0f;
+        arg0[10] = 1.0f;
+    } else {
+        Xvpp_func_002375D8(temp_s1, temp_s1);
+    }
+    arg0[4] = 0.0f;
+    arg0[5] = 1.0f;
+    arg0[6] = 0.0f;
+    X_func_00237560(arg0, arg0 + 4, temp_s1);
+    X_func_00237390(arg0, arg0, f20);
+    X_func_00237390(temp_s1, temp_s1, f21);
+}
 
 extern "C" void func_0016FD4C(int arg0, float fparg0)
 {
