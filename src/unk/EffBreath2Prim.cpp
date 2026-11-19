@@ -1,5 +1,8 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+struct Vec4_fda0 { float x, y, z, w; } __attribute__((aligned(8)));
+struct Mat4_fda0 { Vec4_fda0 x, y, z, w; };
+extern "C" void *X_memset(void *, int, unsigned int) asm("memset");
 extern "C" void X_func_00237560(float *, float *, float *) asm("func_00237560");
 extern "C" void X_func_00237390(float *, float *, float) asm("func_00237390");
 extern "C" int X_func_0022B3D8(void *, int) asm("func_0022B3D8");
@@ -222,7 +225,26 @@ extern "C" void func_0016FD4C(int arg0, float fparg0)
     Xviip_func_002377D0(arg0, arg0, mat);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016FDA0);
+extern "C" void func_0016FDA0(Mat4_fda0 *arg0, const Vec4_fda0 *arg1)
+{
+    float stack[4];
+    float temp_f1;
+
+    X_memset(stack, 0, 0x10);
+    temp_f1 = arg1->y;
+    if (temp_f1 > 0.9999990016222f) {
+        stack[2] = -1.0f;
+    } else if (temp_f1 < -0.9999990016222f) {
+        stack[2] = 1.0f;
+    } else {
+        stack[1] = 1.0f;
+    }
+    X_func_00237560(&arg0->x.x, stack, (float *)&arg1->x);
+    X_func_00237560(&arg0->y.x, (float *)&arg1->x, &arg0->x.x);
+    arg0->z = *arg1;
+    arg0->w.x = arg0->w.y = arg0->w.z = 0.0f;
+    arg0->w.w = 1.0f;
+}
 
 extern "C" float func_0016FE88(float fparg0)
 {
