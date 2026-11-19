@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_0016968C(int, int) asm("func_0016968C");
+extern "C" int Xiii_func_0016968C(int, int) asm("func_0016968C");
 extern "C" int Xi_func_0014A230() asm("func_0014A230");
 extern "C" int Xi_func_0014A240() asm("func_0014A240");
 extern "C" int Xii_func_0014A21C(int) asm("func_0014A21C");
@@ -106,7 +108,32 @@ fallback:
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsMain__vfunc_05);
+extern "C" void BdsMain__vfunc_05(int self)
+{
+    M2C_FIELD(self, int *, 0x40) = 0;
+    int flags = M2C_FIELD(self, int *, 0x30);
+    if (flags & 2) {
+        int next = 6;
+        int object = M2C_FIELD(self, int *, 0x1C);
+        M2C_FIELD(self, int *, 0x3C) = next;
+        M2C_FIELD(object, int *, 0xA4) = next;
+        M2C_FIELD(self, int *, 0x40) = 1;
+    } else if (M2C_FIELD(self, int *, 0x24) != -1) {
+        int next = Xiii_func_0016968C(M2C_FIELD(self, int *, 0x1C), M2C_FIELD(self, int *, 0x24));
+        M2C_FIELD(self, signed char *, 0x205) = 0;
+        M2C_FIELD(self, signed char *, 0x204) = 0;
+        if (next != 0) {
+            M2C_FIELD(self, int *, 0x3C) = next;
+            M2C_FIELD(self, int *, 0x40) = 1;
+        } else {
+            M2C_FIELD(M2C_FIELD(self, int *, 0x1C), int *, 0xA4) = M2C_FIELD(self, int *, 0x3C);
+        }
+    } else if (flags & 1) {
+        M2C_FIELD(M2C_FIELD(self, int *, 0x1C), int *, 0xA4) = M2C_FIELD(self, int *, 0x3C);
+        M2C_FIELD(self, int *, 0x40) = 1;
+    }
+    M2C_FIELD(self, int *, 0x30) = 0;
+}
 
 extern "C" void BdsMain__vfunc_06(int arg0)
 {
