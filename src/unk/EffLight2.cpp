@@ -484,7 +484,38 @@ extern "C" int func_001764FC(int arg0, int arg1)
     return tbl[arg1];
 }
 
+// NON_MATCHING: function matches (0xac); blocked on D_002F2A18 .align 3 in config/rodata_align_manual.tsv
+#ifdef NON_MATCHING
+struct EffSceneObj_17653C {
+    char pad0[0x11C];
+    char *f11C;
+};
+extern "C" int X_17653C_sprintf(char *, const char *, ...) asm("func_00279C98");
+extern "C" int X_17653C_22B3D8(char *, char *) asm("func_0022B3D8");
+extern "C" void *X_17653C_22B0E8(char *, int) asm("func_0022B0E8");
+extern "C" void **X_17653C_22AC08(void *) asm("func_0022AC08");
+extern "C" void func_0017653C(char *arg0)
+{
+    char buf[0x20];
+    EffSceneObj_17653C *p = (EffSceneObj_17653C *)(D_00298E08 + 0x29550);
+    if (p != 0) {
+        char *obj = p->f11C;
+        if (obj != 0) {
+            char *sub = obj + 0x10;
+            for (int i = 0; ; i++) {
+                X_17653C_sprintf(buf, "light3_%02d", i);
+                int idx = X_17653C_22B3D8(obj, buf);
+                if (idx < 0) {
+                    break;
+                }
+                *X_17653C_22AC08(X_17653C_22B0E8(sub, idx)) = arg0 + 0x340;
+            }
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_0017653C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_001765E8);
 
