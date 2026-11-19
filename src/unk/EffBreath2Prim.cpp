@@ -1,5 +1,9 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+struct EffCameraAnim1_v2 { unsigned char m_pad0[0x24]; int m_unk24; int m_unk28; int m_unk2C; int m_unk30; float m_unk34; float m_unk38; float m_unk3C; float m_unk40; float m_unk44; float m_unk48; float m_unk4C; };
+extern "C" int X_v2_func_0013D5AC(int, int) asm("func_0013D5AC__8MagScenePi");
+extern "C" int X_v2_func_0016F80C(int, int) asm("func_0016F80C");
+extern "C" int X_v2_func_0013CAF0(int, int, int, int) asm("func_0013CAF0__8MagSceneii");
 struct Vec4_fda0 { float x, y, z, w; } __attribute__((aligned(8)));
 struct Mat4_fda0 { Vec4_fda0 x, y, z, w; };
 extern "C" void *X_memset(void *, int, unsigned int) asm("memset");
@@ -118,7 +122,34 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2Ground__vfunc_08);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016F55C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffCameraAnim1__vfunc_02);
+extern "C" int EffCameraAnim1__vfunc_02(EffCameraAnim1_v2 *arg0, int arg1)
+{
+    int temp_s0;
+    int temp_s3;
+
+    if (!Xiii_Eff0__vfunc_02((int) arg0, arg1)) {
+        return 0;
+    }
+    temp_s3 = M2C_FIELD(arg1, int *, 0x10);
+    if (M2C_FIELD(temp_s3, int *, 0) != 1) {
+        return 0;
+    }
+    temp_s0 = (*(int *)&D_00298E08) + 0x2AB70;
+    arg0->m_unk30 = X_v2_func_0013D5AC((int) (*(int *)&D_00298E08), 0);
+    arg0->m_unk34 = M2C_FIELD(temp_s0, float *, 0x40);
+    arg0->m_unk38 = M2C_FIELD(temp_s0, float *, 0x44);
+    arg0->m_unk3C = M2C_FIELD(temp_s0, float *, 0x48);
+    arg0->m_unk40 = M2C_FIELD(temp_s0, float *, 0x50);
+    arg0->m_unk44 = M2C_FIELD(temp_s0, float *, 0x54);
+    arg0->m_unk48 = M2C_FIELD(temp_s0, float *, 0x58);
+    arg0->m_unk4C = M2C_FIELD(temp_s0, float *, 0x140);
+    arg0->m_unk24 = 0;
+    arg0->m_unk28 = M2C_FIELD(temp_s3, int *, 4);
+    arg0->m_unk2C = temp_s3 + 0x10;
+    X_v2_func_0013CAF0((int) (*(int *)&D_00298E08), 0, 0, 0);
+    X_v2_func_0016F80C((int) arg0, arg0->m_unk2C);
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016F80C);
 
