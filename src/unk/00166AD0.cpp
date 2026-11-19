@@ -1,5 +1,6 @@
 #include "ror.h"
 #include "include_asm.h"
+extern "C" int Xiiiiif_func_001F603C(int, int, int, int, float) asm("func_001F603C");
 extern "C" float Xff_sinf(float) asm("sinf");
 extern "C" float Xff_cosf(float) asm("cosf");
 extern "C" void Xv_func_00202F10(int) asm("func_00202F10");
@@ -259,7 +260,28 @@ extern "C" void func_001682B0(int arg0)
     Xiiii_ffi_func_001F603C(M2C_FIELD(arg0, int *, 0), var_a1, -1, 0x100, var_f12, 32769.0f, 1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_0016834C);
+extern "C" void func_0016834C(int arg0)
+{
+    int temp_v0 = M2C_FIELD(M2C_FIELD(arg0, int *, 8), int *, 0x3EC);
+    int var_a1;
+    if (temp_v0 & 8) {
+        if (temp_v0 & 0x10) {
+            var_a1 = M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0xF0);
+        } else {
+            var_a1 = M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0xEC);
+        }
+    } else {
+        var_a1 = M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0xEC);
+    }
+    float temp_f12 = M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), float *, 0x1C4);
+    float var_f12;
+    if (temp_f12 != 0.0f) {
+        var_f12 = temp_f12 * 0.016666666f;
+    } else {
+        var_f12 = 0.016666666f;
+    }
+    Xiiii_ffi_func_001F603C(M2C_FIELD(arg0, int *, 0), var_a1, -1, 0x100, var_f12, 32769.0f, 1);
+}
 
 extern "C" void func_001683E8(int arg0)
 {
