@@ -33,23 +33,18 @@ struct MagFadeReq {
 extern "C" void func_001C0078(MagFntMan *theMan, int a, int b, int c, int d);
 extern "C" void func_001C047C(MagFntMan *theMan, const char *theStr);
 
-// NON_MATCHING: the stores come out in another order.
-#ifdef NON_MATCHING
 extern "C" void func_0012F7F4(MagFadeKey *self, int theMode, int theCount)
 {
-    self->m_ratio1 = 1.0f;
-    self->m_count = theCount;
-    self->m_unk04 = 0;
-    self->m_unk08 = theCount;
-    self->m_unk0C = 0;
-    self->m_time = 0;
-    self->m_ratio0 = 1.0f;
-    self->m_ratio2 = 1.0f;
-    self->m_mode = theMode;
+    M2C_FIELD(self, int *, 0x0) = theMode;
+    M2C_FIELD(self, int *, 0x4) = 0;
+    M2C_FIELD(self, int *, 0x8) = theCount;
+    M2C_FIELD(self, int *, 0x34) = theCount;
+    M2C_FIELD(self, int *, 0xC) = 0;
+    M2C_FIELD(self, int *, 0x30) = 0;
+    M2C_FIELD(self, float *, 0x44) = 1.0f;
+    M2C_FIELD(self, float *, 0x4C) = 1.0f;
+    M2C_FIELD(self, float *, 0x48) = 1.0f;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglifewindow", func_0012F7F4);
-#endif
 
 
 extern "C" void func_0012F824(MagFadeKey *self, MagFadeReq *theReq)
