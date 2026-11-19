@@ -33,6 +33,15 @@ earlier attempt and the class layout; grep the file for the names you need.
 
 - The allocator follows live ranges and use counts, not declaration order
   (reordering declarations alone did nothing in 813 of our functions).
+  `tools/regalloc.py <file> <func> [--nm] [--src variant.cpp]` prints each
+  pseudo's register, uses, live length and priority (about
+  floor(log2 uses) * uses * size / live length): the value that should win
+  a register needs more uses or a shorter life.
+- Two constants stored one after the other (`... = 1; q[2] = 2;`) become two
+  registers loaded at the top; one local set twice (`c = 1; ... = c; c = 2;
+  q[2] = c;`) shares one register and keeps the second load late
+  (MnuPBook__vfunc_07, confirmed at -Os). Give it its own local, not one
+  that also holds a call's result.
 - Add or remove a temporary; assign a value later (after the early returns)
   or before a call; read a field again after a call instead of keeping it.
 - One variable used for two roles is one register: split it, or merge two.
@@ -83,6 +92,42 @@ earlier attempt and the class layout; grep the file for the names you need.
   delay slot differently.
 - `return f(...)` (non-void) is a tail call `j`; a final call with the result
   unused keeps `jal` and the epilogue.
+
+## More ideas from gt4-decomp (`-O2`; unverified here)
+
+From its knowledge/ee-gcc-2.96.md (ee) and gcc296-codegen-map.md (map),
+same compiler build. Try them when the items above fail; report which work.
+
+- Pointer local vs the address written at each use: `Sub *s = &self->sub;`
+  at the top blocks hoisting; `&self->sub` at each use is rematerialised
+  (map 495-509).
+- A loop-free function is scheduled as one region only up to 10 basic
+  blocks / 100 insns: one more `if` changes what moves up (map 227-232).
+- Split `if (a) return 0; if (f()) return 0;` gives plain branches; one
+  `if (a || f()) return 0;` gives the likely form (map 243-246).
+- A store through a `volatile` pointer never goes into a delay slot (ee
+  148-151): a likely slot filled with a store means it was not volatile.
+- A store written in both arms of an `if`/`else` can come out as a likely
+  slot after it (ee 280-281); a load in a `bne` slot can be one load per
+  arm in the source (ee 366-370).
+- C++ class members have alias set 0: a store through a class-type member
+  keeps later loads below it, where an `int *` access may not (map 379-394).
+- A `const` table removes false load/store dependences (ee 171-172).
+- Float locals: reading a field into a local first (`float ay = a->y;`)
+  moves where its register dies; the field read last in the source is often
+  loaded first (map 135-143). Declaration order of `float` locals did pick
+  `$f20`+ registers there (ee 838-842), unlike our integer experience.
+- Loops: a count-down with the bound in a register comes from setting the
+  bound again inside the body (ee 136-140); a loop entered at its bottom test
+  is `k = 0; goto test; do { ... test:; } while (k < n);` (ee 832-837);
+  `if (j < n) do { ... } while (j < n);` is the rotated form (ee 232-235).
+- Switch: a 2-value range as a compare tree is still a `switch` (ee
+  424-427); cases that look shared are often full copies merged later (ee
+  481-485).
+- `name(n ? n : D_x)` in a constructor's initializer list makes a short-lived
+  parameter plus a result value, unlike `if (n == 0) n = D_x;` (map 117-122).
+- A callee declared `__attribute__((const))` lets loads stay across the call
+  (ee 517-521).
 
 ## Data (.rodata)
 

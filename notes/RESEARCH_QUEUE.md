@@ -46,26 +46,13 @@ judgement and go to Sonnet.
     0x2FEF80).
   - unk/WrdSrv's .rodata start (EffWater type names) stays unsettled.
 
-- [ ] R19 Per-file flags (from R18: sotc config/ee_cflags.json, gt4 build
+- [ ] R19 (running 2026-11-18: tools/flag_sweep.py, results build/flag_sweep.tsv) Per-file flags (from R18: sotc config/ee_cflags.json, gt4 build
   markers, rac1): for files whose near misses no source change fixes,
   compile the whole file with -fno-gcse, -fno-rerun-loop-opt,
   -fno-sched-interblock, -mno-split-addresses, -fno-schedule-insns,
   -Wa,--asm-fill-delay-slots; keep a flag only if every matched function
   still matches and the file gains. Gate it like god-hand's
   scripts/checks/c_flags_necessary.py (fail if the flag changes nothing).
-- [ ] R20 Register-allocation dump (rac1 tools/regalloc.py, levers.md
-  13/16/18; gt4 knowledge/ee-gcc-2.96.md priority formulas): a tool that
-  prints cc1's -dg/-dl pseudo priorities for our attempt vs what the
-  target needs, tried on ten register-swap near misses.
-- [ ] R21 Worker-side levers (gt4 knowledge/ + agent harness): add gt4's
-  register/scheduling/bnel source levers missing from
-  docs/EE_GCC_TECHNIQUES.md (pointer locals vs address at each use,
-  static inline with constant parameter, callee return type for v0/v1,
-  early-return instead of a||f() for bnel, volatile store kept out of a
-  delay slot) after checking each at -Os; an "already tried" block per
-  function in the worker brief (gt4 attempts.jsonl).
-## Done
-
 - [x] External deep research (2026-11-18, owner): no public inspection of
   SLUS-28063/28064 for symbols; checked locally again: the trade demo
   (SYSTEM.CNF boots SLUS_280.63), the JP SCPS_150.93 and retail have no
