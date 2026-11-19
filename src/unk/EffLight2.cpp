@@ -993,7 +993,50 @@ extern "C" void liveActivateExec__9EffLight2(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_0017562C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", _$_9EffLight3);
+extern int _vt$9EffLight3;
+extern "C" void X_dtor9_17653C(void *) asm("func_0017653C");
+extern "C" void X_dtor9_1765E8(void *, float) asm("func_001765E8");
+extern "C" void X_dtor9_freeID(void *, int, int) asm("freeID__12DogLightPoolii");
+extern "C" void X_dtor9_Eff0(void *, int) asm("_$_4Eff0");
+extern "C" void X_dtor9_delete(void *) asm("__builtin_delete");
+struct Eff0_dtor9 {
+    int unk0;
+    char pad4[0x1C];
+    void *vtable;
+};
+struct EffLight3_dtor9 : public Eff0_dtor9 {
+    int entries[6][16][2];      // 0x24..0x324
+    char pad324[0x1C];
+    float f340[4];              // 0x340..0x34C
+    float f350[4];              // 0x350..0x35C
+    float f360;                 // 0x360
+    unsigned char f364;         // 0x364
+    unsigned char f365;         // 0x365
+    char pad366[0x2A];
+    int f390;                   // 0x390
+};
+extern "C" void dtor_9EffLight3(EffLight3_dtor9 *self, int arg1) asm("_$_9EffLight3");
+extern "C" void dtor_9EffLight3(EffLight3_dtor9 *self, int arg1)
+{
+    self->vtable = &_vt$9EffLight3;
+    if (self->f390 != -1) {
+        self->f365 = self->f364 = 1;
+        self->f360 = self->f340[0] = self->f340[1] = self->f340[2] = self->f340[3] = 0.0f;
+        self->f350[0] = self->f350[1] = self->f350[2] = self->f350[3] = 1.0f;
+        X_dtor9_17653C(self);
+        X_dtor9_1765E8(self, 1.0f);
+        void *pool = (void *)(D_00298E08 + 0x2050);
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; self->entries[i][j][1] != -1; j++) {
+                X_dtor9_freeID(pool, i, self->entries[i][j][1]);
+            }
+        }
+    }
+    X_dtor9_Eff0(self, 0);
+    if (arg1 & 1) {
+        return X_dtor9_delete(self);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffLight3__vfunc_02);
 
