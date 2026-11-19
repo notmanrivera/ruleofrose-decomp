@@ -66,6 +66,12 @@ judgement and go to Sonnet.
   function in the worker brief (gt4 attempts.jsonl).
 ## Done
 
+- [x] External deep research (2026-11-18, owner): no public inspection of
+  SLUS-28063/28064 for symbols; checked locally again: the trade demo
+  (SYSTEM.CNF boots SLUS_280.63), the JP SCPS_150.93 and retail have no
+  .symtab/.strtab and an empty .mdebug.eabi64. No other PS2 game known
+  with ee-gcc 2.96 -Os. Its -Os branch/register advice is already in
+  docs/DECOMPILING.md; GT4's -O2 levers are R21.
 - [x] R18 Deep read of gt4/god-hand/sotc/rac1 (2026-11-18, Sonnet):
   leads became R19-R21. gt4 and god-hand treat register-asm pins as
   fakematches (gt4 tools/asm_policy.py, god-hand
