@@ -216,7 +216,27 @@ extern "C" void func_001682B0(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_0016834C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001683E8);
+extern "C" void func_001683E8(int arg0)
+{
+    int temp_v0 = M2C_FIELD(M2C_FIELD(arg0, int *, 8), int *, 0x3EC);
+    int var_a1;
+    if (temp_v0 & 8) {
+        if (temp_v0 & 0x10) {
+            var_a1 = 0xA;
+            goto call;
+        }
+    }
+    var_a1 = 2;
+call:
+    float temp_f12 = M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), float *, 0x1C4);
+    float var_f12;
+    if (temp_f12 != 0.0f) {
+        var_f12 = temp_f12 * 0.016666666f;
+    } else {
+        var_f12 = 0.016666666f;
+    }
+    Xiiii_ffi_func_001F603C(M2C_FIELD(arg0, int *, 0), var_a1, -1, 0, var_f12, 32769.0f, 1);
+}
 
 extern "C" void func_00168478(int arg0)
 {
