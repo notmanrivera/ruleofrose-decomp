@@ -1,4 +1,25 @@
 #include "include_asm.h"
+struct FileReadReq_1780C0 {
+    int m_unk00;
+    int m_unk04;
+    int m_unk08;
+    const char *m_name;
+    int m_offset;
+    int m_unk14;
+    void *m_buf;
+    int m_size;
+    int m_unk20;
+};
+struct EffMan_1780C0 {
+    char pad0[0xC90];
+    void *m_buf;
+    char pad1[0x129C - 0xC94];
+    int m_reader[2]; // 0x129C..0x12A4
+    FileReadReq_1780C0 m_req; // 0x12A4
+};
+extern "C" void X_1780C0_FileReadReq(FileReadReq_1780C0 *) asm("__11FileReadReq");
+extern "C" void *X_1780C0_alloc(void *, int, int) asm("alloc__9BedMemoryii");
+extern "C" int X_1780C0_read(int *, FileReadReq_1780C0 *, int) asm("func_001BE524__10FileReaderP11FileReadReqi");
 struct EffMan_177E24 {
     char pad[0x88C];
     int arr[256];
@@ -266,7 +287,19 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffMan", D_002F2CC8);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffMan", D_002F2CD0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_001780C0);
+extern "C" void func_001780C0(EffMan_1780C0 *self)
+{
+    self->m_buf = X_1780C0_alloc(&D_006E9800, 0x800, -1);
+    X_1780C0_FileReadReq(&self->m_req);
+    self->m_req.m_name = "data/eff/eff.bin";
+    self->m_req.m_size = 0x800;
+    self->m_req.m_buf = self->m_buf;
+    self->m_req.m_unk14 = 0;
+    self->m_req.m_offset = 0;
+    self->m_req.m_unk20 = 0;
+    X_1780C0_read(self->m_reader, &self->m_req, 0);
+    self->m_req.m_buf = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00178148);
 
