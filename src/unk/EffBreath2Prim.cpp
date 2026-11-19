@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "sdk/math.h"
 extern "C" float Xii_func_0016FF18(int, int) asm("func_0016FF18");
 extern int D_00298E08;
 struct m2c_v94_10_i { char pad[148]; virtual void v1(); virtual int call(); };
@@ -38,7 +39,10 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffCameraAnim1__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016FB70);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016FC20);
+extern "C" float func_0016FC20(const float *v)
+{
+    return sqrtf(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016FC74);
 
