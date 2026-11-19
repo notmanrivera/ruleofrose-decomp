@@ -1,6 +1,10 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void GamRotGetActor(void *, float *) asm("func_001D8964");
+extern "C" void GamRotSetActor(void *, const float *) asm("func_001D8A8C");
+extern "C" void GamRotGetObject(void *, float *) asm("func_001DB774");
+extern "C" void GamRotSetObject(void *, const float *) asm("func_001DB898");
 extern "C" int Xii_func_001D966C(int) asm("func_001D966C");
 extern "C" int Xiii_strcmp(int, int) asm("strcmp");
 extern "C" int Xiiii_func_001D9044(int, int, int) asm("func_001D9044");
@@ -3084,7 +3088,59 @@ extern "C" int func_001CFE1C(int arg0, unsigned int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CFE78);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D024C);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FBFD0);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FBFE0);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FBFE8);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FBFF0);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FBFF8);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC000);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC008);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC010);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC018);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC020);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC028);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC030);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC038);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC040);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC048);
+INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC050);
+
+extern "C" void func_001D024C(int self, unsigned int oid, float angle)
+{
+    float rotation[4];
+    register double lower PS2_REG("$19") = (-3.1415926535897932384626433832795);
+    if (angle < lower || angle > 3.1415926535897932384626433832795) {
+        if (angle < lower) angle += 6.283185307179586476925286766559;
+        register double upper PS2_REG("$20") = 3.1415926535897932384626433832795;
+        if (angle > upper) angle -= 6.283185307179586476925286766559;
+        if (angle < lower || angle > upper) return;
+    }
+    switch ((oid >> 28) & 3) {
+    case 0: {
+        void *object = (void *)Xiiu_func_001D2D00(self, oid);
+        GamRotGetObject(object, rotation);
+        rotation[1] = angle;
+        GamRotSetObject(object, rotation);
+        break;
+    }
+    case 1: {
+        void *object = (void *)Xiiu_func_001D2B8C(self, oid);
+        GamRotGetActor(object, rotation);
+        rotation[1] = angle;
+        GamRotSetActor(object, rotation);
+        break;
+    }
+    case 2: {
+        void *object = (void *)Xiiu_func_001D2BA8(self, oid);
+        GamRotGetObject(object, rotation);
+        rotation[1] = angle;
+        GamRotSetObject(object, rotation);
+        break;
+    }
+    default:
+        break;
+    }
+}
 
 extern "C" int func_001D044C(GamMan *arg0)
 {
@@ -3426,47 +3482,31 @@ extern "C" int func_001D1A48()
     return ~(*(int *)((int)&D_00727BD0)) != 0;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FBFD0);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FBFE0);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FBFE8);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FBFF0);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FBFF8);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC000);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC008);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC010);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC018);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC020);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC028);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC030);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC038);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC040);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC048);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC050);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC058);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC060);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC068);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC070);
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FC078);
+
+
+
+
+
 
 extern "C" void func_001D1A5C(GamMan *self, unsigned int oid1, unsigned int oid2, const char *nodeName)
 {
