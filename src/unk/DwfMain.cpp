@@ -2282,7 +2282,79 @@ block_64:
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015F37C);
 #endif
 
+// NON_MATCHING: 48/90 differ, 4 relocs differ, 20 edits
+#ifdef NON_MATCHING
+extern float Xf744_D_002F0FC0[] asm("D_002F0FC0");
+extern float Xf744_D_002F0FD0[] asm("D_002F0FD0");
+extern "C" int Xf744_func_0010423C(int, int) asm("func_0010423C");
+extern "C" void Xf744_func_0016649C(int, int) asm("func_0016649C");
+extern "C" unsigned short Xf744_func_001CBEDC(void *, unsigned int) asm("func_001CBEDC");
+extern "C" void Xf744_func_001DA228(int, int, void *) asm("func_001DA228");
+extern "C" void Xf744_func_001DC48C(void *, int, int, void *) asm("func_001DC48C");
+extern "C" void Xf744_func_001F9D90(int, void *) asm("func_001F9D90");
+extern "C" int func_0015F744(int arg0)
+{
+    struct {
+        unsigned int sp0;
+        char pad4[0xC];
+        int sp10;
+        int sp14;
+        int sp18;
+        char pad1C[0x8];
+        unsigned int sp24;
+        char pad28[0x10];
+        float sp38;
+        char pad3C[0x4];
+        unsigned short sp40;
+        char pad42[0xE];
+    } stack;
+    int temp_v1;
+    unsigned short temp_a1;
+
+    Xf744_func_001DA228(M2C_FIELD(arg0, int *, 8), 0x67, &stack);
+    if (stack.sp0 != 0) {
+        char *base;
+        M2C_FIELD(arg0, int *, 0x44) = M2C_FIELD(arg0, int *, 0x44) + 1;
+        Xf744_func_0016649C(M2C_FIELD(arg0, int *, 0xC), 0);
+        stack.sp10 = M2C_FIELD(arg0, int *, 0x14);
+        stack.sp14 = M2C_FIELD(arg0, int *, 0x38);
+        base = (char *)&D_007812C0;
+        temp_a1 = Xf744_func_001CBEDC(base, stack.sp0);
+        if (M2C_FIELD(arg0, int *, 0x38) == 2 && temp_a1 == 0xA2E) {
+            temp_v1 = M2C_FIELD(arg0, int *, 0x44);
+            stack.sp24 = stack.sp0;
+            if (temp_v1 != 0) {
+                if (temp_v1 != 1) {
+                    stack.sp18 = 0x13;
+                } else {
+                    stack.sp18 = 0x14;
+                }
+            } else {
+                if (Xf744_func_0010423C(0, 0x63) < 0x32) {
+                    stack.sp18 = 0x14;
+                    M2C_FIELD(arg0, int *, 0x44) = 1;
+                } else {
+                    stack.sp18 = 0x13;
+                }
+            }
+            stack.sp38 = M2C_FIELD(arg0, float *, 0x68);
+        } else {
+            stack.sp18 = 0x12;
+            Xf744_func_001DC48C(base + 0x22220, temp_a1, 0x28, &stack.sp40);
+            if (4 == stack.sp40) {
+                stack.sp38 = Xf744_D_002F0FC0[M2C_FIELD(arg0, int *, 0x38)];
+            } else {
+                stack.sp38 = Xf744_D_002F0FD0[M2C_FIELD(arg0, int *, 0x38)];
+            }
+        }
+        Xf744_func_001F9D90(M2C_FIELD(arg0, int *, 0), &stack.sp10);
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", func_0015F744);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/unk/DwfMain", D_002F0F00);
 
