@@ -93,41 +93,85 @@ earlier attempt and the class layout; grep the file for the names you need.
 - `return f(...)` (non-void) is a tail call `j`; a final call with the result
   unused keeps `jal` and the epilogue.
 
-## More ideas from gt4-decomp (`-O2`; unverified here)
+## Ideas from gt4-decomp: confirmed at `-Os`
 
-From its knowledge/ee-gcc-2.96.md (ee) and gcc296-codegen-map.md (map),
-same compiler build. Try them when the items above fail; report which work.
+Tested at `-Os` against this repo's `NON_MATCHING` functions (sources: gt4-decomp
+`knowledge/ee-gcc-2.96.md` (ee) and `gcc296-codegen-map.md` (map)):
 
-- Pointer local vs the address written at each use: `Sub *s = &self->sub;`
-  at the top blocks hoisting; `&self->sub` at each use is rematerialised
-  (map 495-509).
-- A loop-free function is scheduled as one region only up to 10 basic
-  blocks / 100 insns: one more `if` changes what moves up (map 227-232).
-- Split `if (a) return 0; if (f()) return 0;` gives plain branches; one
-  `if (a || f()) return 0;` gives the likely form (map 243-246).
-- A store through a `volatile` pointer never goes into a delay slot (ee
-  148-151): a likely slot filled with a store means it was not volatile.
-- A store written in both arms of an `if`/`else` can come out as a likely
-  slot after it (ee 280-281); a load in a `bne` slot can be one load per
-  arm in the source (ee 366-370).
-- C++ class members have alias set 0: a store through a class-type member
-  keeps later loads below it, where an `int *` access may not (map 379-394).
-- A `const` table removes false load/store dependences (ee 171-172).
-- Float locals: reading a field into a local first (`float ay = a->y;`)
-  moves where its register dies; the field read last in the source is often
-  loaded first (map 135-143). Declaration order of `float` locals did pick
-  `$f20`+ registers there (ee 838-842), unlike our integer experience.
-- Loops: a count-down with the bound in a register comes from setting the
-  bound again inside the body (ee 136-140); a loop entered at its bottom test
-  is `k = 0; goto test; do { ... test:; } while (k < n);` (ee 832-837);
-  `if (j < n) do { ... } while (j < n);` is the rotated form (ee 232-235).
-- Switch: a 2-value range as a compare tree is still a `switch` (ee
-  424-427); cases that look shared are often full copies merged later (ee
-  481-485).
-- `name(n ? n : D_x)` in a constructor's initializer list makes a short-lived
-  parameter plus a result value, unlike `if (n == 0) n = D_x;` (map 117-122).
-- A callee declared `__attribute__((const))` lets loads stay across the call
-  (ee 517-521).
+- **A `const` table removes false load/store dependences** (ee 171-172):
+  **MATCH** on `unk/FshMain::FshOutAtk__vfunc_02` — changing `extern int D_002F0BF8;`
+  to `extern const int D_002F0BF8[];` flipped the `sh $zero, 0x42($s0)` / `0x40($s0)`
+  store order (works even under `-fno-strict-aliasing` via `RTX_UNCHANGING_P`).
+- **Constructor initializer list vs body assignments (`name(n ? n : D_x)` vs `if`)**
+  (map 117-122): **MATCH** on `unk/TskMsgMan::func_001F5244` — writing it as a C++
+  constructor with `: m_oid(arg1)` fixed the epilogue `ld $s0/$s2` swap. Comparing
+  `: m_nodeName(arg3 ? arg3 : D_002FDBF0)` (`0x64` bytes) against
+  `if (arg3 == 0) arg3 = D_002FDBF0; m_nodeName = arg3;` in the body (`0x70` bytes)
+  also confirmed distinct live ranges and register allocation.
+- **Pointer local vs the address written at each use** (map 495-509):
+  confirmed on `game/gamman::func_001CD044` — caching `char *sw = (char *)sysWork_CD044();`
+  vs rematerialising `sysWork_CD044()` at each use changed codegen by `0x18` bytes
+  (`0x1E0` -> `0x1C8`).
+- **Loop-free scheduling region 10 basic blocks / 100 insns** (map 227-232):
+  confirmed on `unk/FshMain::FshOutAtk__vfunc_02` — adding one extra `||` branch
+  (crossing 10 BBs) stopped hoisting `daddu $a0, $s0`, `addiu $a3, 0x20`,
+  `addiu $a2, 0x100`, `addiu $t0, 1` above the branch chain (`0xB8` -> `0xC0`);
+  similarly on `game/gamman::func_001CD044` when removing a condition.
+- **Split `if (a) return 0; if (f()) return 0;` (plain) vs `if (a || f()) return 0;`
+  (likely)** (map 243-246): confirmed on `game/gamstat::func_001D5A0C` —
+  `if (arg2 == 0 || func_001D1720(...) != 0) return 0;` emitted `beql $v0, $zero`,
+  whereas split `if (arg2 == 0) return 0; if (func_001D1720(...) != 0) return 0;`
+  emitted plain branches. (Tried on `unk/00166AD0::func_00167CA0` and
+  `unk/MnuPBook::func_00193D1C` without a match.)
+- **A store through a `volatile` pointer never goes into a delay slot** (ee 148-151):
+  diagnostic confirmed on `game/gamstat::func_001D5A0C` (not committed) — making
+  the `u_long128 *` store `volatile` pulled `sq $a2, 0x0($v0)` out of the `beqz $s3`
+  delay slot (`6/111` -> `4/111` differ). A branch delay slot filled with a store
+  proves it was not `volatile`.
+- **A store written in both arms of an `if`/`else` can come out as a likely slot
+  after it** (ee 280-281, 366-370): confirmed on `unk/FshMain::FshOutAtk__vfunc_02`
+  — writing the `0x42`/`0x40` stores in both arms emits `bnel` with `sh $zero, 0x42($s0)`
+  in its delay slot (matching the game), whereas factoring them into a local `v`
+  after the `if` drops `bnel` to plain `bne` + `andi`. Also changed branching on
+  `unk/0020ED9C::func_002107AC`.
+- **Float locals: reading a field into a local first (`float ay = a->y;`) and
+  initialization order picking `$f20`+** (map 135-143, ee 838-842): reading fields
+  into locals first changed float register allocation (`$f0` -> `$f2`) and load/store
+  interleaving on `game/gamstat::func_001D811C`. For `$f20`+, **initialization order**
+  (`float life = spread * 3.0f; float size = spread * 0.5f;` vs `size` then `life` on
+  `unk/Eff0::EffBloodSpray1__vfunc_02`) swapped `$f20` and `$f21` cleanly (bare
+  uninitialized declaration order alone did nothing; see below).
+- **Bottom-tested loop `k = 0; goto test; do { ... test:; } while (...)`**
+  (ee 832-837): confirmed on `unk/MnuPBook::func_00194688` — produced the game's
+  `b .Ltest` bottom-entry loop without `volatile` (`5` edits vs `for`'s `14`).
+- **2-value range `switch` as a compare tree** (ee 424-427): confirmed on
+  `unk/0020ED9C::func_002107AC` — `switch (arg1)` with `case 0`/`case 1` emits a
+  2-value compare tree distinct from `if (arg1 != 1) ... else ...`.
+- **Callee declared `__attribute__((const))` lets loads stay across the call**
+  (ee 517-521): confirmed on `unk/MnuPBook::func_00193D1C` (`func_00193E20`,
+  `0xE0` -> `0xCC`, eliminated post-call reloads of `arg0+0x18`/`0x20`) and
+  `unk/TskMsgMan::func_001F2920` (`func_001311F4`, `0x164` -> `0x11C`). Caveats:
+  `__attribute__((const))` must follow `asm("...")`, and GCC will drop calls to
+  `const` functions whose return value is unused.
+
+## Ideas from gt4-decomp: no effect seen at `-Os`
+
+- **C++ class members having alias set 0 vs `int *` / `M2C_FIELD`** (map 379-394):
+  zero instruction change on `unk/FshMain::FshOutAtk__vfunc_02` (without `const`),
+  `mcd/mcdman::func_00188EC0`, and `unk/Eff0::EffBloodSpray1__vfunc_02` (struct
+  `int` store before `float` load). Explained by `-fno-strict-aliasing` in
+  `tools/configure.py`'s `CFLAGS`: every access already has alias set 0.
+- **Bare declaration order of uninitialized `float` locals picking `$f20`+**
+  (ee 838-842): zero change on `unk/Eff0::EffBloodSpray1__vfunc_02` when reordering
+  `float life, size, speed, spread;` before identical assignment order (reordering
+  first initializations does swap `$f20`/`$f21`; see above).
+- **Loop bound reset inside body / rotated `if (j < n) do ... while (j < n);`**
+  (ee 136-140, 232-235): zero change on `unk/EffFire1::EffDust2__vfunc_05`
+  (`n = 12;` reset inside loop) and `unk/MnuPBook::func_00193D1C`
+  (`if (i < count) do { ... } while (i < count);` vs `while (i < count)`).
+- **Switch full-copy cases merged later** (ee 481-485): not merged at `-Os` on
+  `unk/TskMsgMan::func_001EC344` — duplicating `case 0..3` into `case 4..7` grew
+  the function from `0x258` to `0x2A8` instead of merging back.
 
 ## Data (.rodata)
 
