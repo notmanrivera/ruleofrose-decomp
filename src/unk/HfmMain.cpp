@@ -157,7 +157,26 @@ extern int D_007B2580;
 
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001445D8);
+extern "C" int Xii_func_00119090__9MagSystem(int) asm("func_00119090__9MagSystem");
+extern "C" int func_001445D8(void)
+{
+    switch (Xii_func_00119090__9MagSystem((int)&D_006E9840)) {
+    case 0: return 0x4E554C4C;
+    case 1: return 0x57414954;
+    case 2: return 0x464F4C57;
+    case 3: return 0x53544159;
+    case 4: return 0x46494E44;
+    case 5: return 0x46444544;
+    case 6: return 0x4D4F5645;
+    case 7: return 0x4D564544;
+    case 8: return 0x524F5441;
+    case 9: return 0x52544544;
+    case 10: return 0x44414D47;
+    case 11: return 0x4241524B;
+    case 12: return 0x00485547;
+    default: return 0;
+    }
+}
 
 extern "C" int Xi_func_00103DE4(void) asm("func_00103DE4");
 extern "C" void Xviii_func_001357B0(int, int, int) asm("func_001357B0");
@@ -1106,8 +1125,6 @@ INCLUDE_RODATA("asm/nonmatchings/unk/HfmMain", D_002EF410);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/HfmMain", D_002EF418);
 
-// NON_MATCHING: .text MATCH (0x134); blocked by .rodata split 0x2EF238 (8 mod 16) vs switch jtbl .align 4 (0x338 vs 0x330)
-#ifdef NON_MATCHING
 extern "C" void Xv_func_00146BF0(int) asm("func_00146BF0");
 extern "C" void Xv_func_00148620(int) asm("func_00148620");
 extern "C" void Xv_func_00148AF0(int) asm("func_00148AF0");
@@ -1152,9 +1169,6 @@ extern "C" int func_001484EC(int arg0)
     }
     return -1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_001484EC);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", func_00148620);
 
