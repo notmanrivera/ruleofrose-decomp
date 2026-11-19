@@ -1,6 +1,11 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" int Xiii_func_001DB7CC(int, int) asm("func_001DB7CC");
+extern "C" int Xiiii_func_001CB8E4(int, int, int) asm("func_001CB8E4");
+extern "C" int Xiiii_func_001DB520(int, int, int) asm("func_001DB520");
+extern "C" int Xiiiiiif_func_001331F4(int, int, int, int, int, float) asm("func_001331F4");
+extern "C" int Xiiu_func_001C96C8(int, unsigned int) asm("func_001C96C8");
 extern "C" void GamRotGetActor(void *, float *) asm("func_001D8964");
 extern "C" void GamRotSetActor(void *, const float *) asm("func_001D8A8C");
 extern "C" void GamRotGetObject(void *, float *) asm("func_001DB774");
@@ -2096,9 +2101,7 @@ extern "C" int func_001CA8E8(int arg0, unsigned short arg1, unsigned int arg2, u
     return temp_v0;
 }
 
-// NON_MATCHING: 4/112 differ, 4 edits
-#ifdef NON_MATCHING
-struct ActorStub_CAA14 { char pad00_caa14[0x60]; float x_caa14, y_caa14, z_caa14, w_caa14; char pad70_caa14[0x20]; int unk90_caa14; char pad94_caa14[0x4D0 - 0x94]; void setScale(float x) { z_caa14 = y_caa14 = x_caa14 = x; unk90_caa14 = 1; } };
+struct ActorStub_CAA14 { char pad00_caa14[0x60]; float x_caa14, y_caa14, z_caa14, w_caa14; char pad70_caa14[0x20]; int unk90_caa14; char pad94_caa14[0x4D0 - 0x94]; void setScale(float x, int changed) { z_caa14 = y_caa14 = x_caa14 = x; unk90_caa14 = changed; } };
 struct SceneStub_CAA14 { char pad00_caa14[0x2920]; ActorStub_CAA14 m_actor[128]; };
 extern "C" void X_func_001DB520_CAA14(void *, int, void *) asm("func_001DB520");
 extern "C" void func_001CAA14(GamMan *self, unsigned short arg1, unsigned int arg2, int arg3)
@@ -2119,13 +2122,15 @@ extern "C" void func_001CAA14(GamMan *self, unsigned short arg1, unsigned int ar
         X_func_001CB8E4(self, arg2, 0x32, 0);
     }
     if (arg1 == 0x800) {
-        scene->m_actor[no].setScale(9.999999583953922e-08f);
+        register int changed PS2_REG("$3") = 0x4D0;
+        register int offset PS2_REG("$4") = no * changed;
+        ActorStub_CAA14 *actor = (ActorStub_CAA14 *)((char *)scene + offset + 0x2920);
+        actor->z_caa14 = actor->y_caa14 = actor->x_caa14 = 9.999999583953922e-08f;
+        changed = 1;
+        actor->unk90_caa14 = changed;
     }
     self->m_avfchrList.push_back(stat);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CAA14);
-#endif
 
 extern "C" void func_001CABD4(GamMan *self, unsigned short arg1, void *arg2, unsigned int arg3, int arg4)
 {
