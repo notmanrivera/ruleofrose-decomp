@@ -1,6 +1,7 @@
 #include "ror.h"
 #include "include_asm.h"
 extern "C" int Xiiiiif_func_001F603C(int, int, int, int, float) asm("func_001F603C");
+extern "C" void Xv_func_001F603C(int, int, int, int, float, float, int) asm("func_001F603C");
 extern "C" float Xff_sinf(float) asm("sinf");
 extern "C" float Xff_cosf(float) asm("cosf");
 extern "C" void Xv_func_00202F10(int) asm("func_00202F10");
@@ -344,7 +345,25 @@ extern "C" void func_00167D88(unsigned int *arg0, float *arg1, float fparg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00167E38);
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001680A0);
+extern "C" void func_001680A0(int arg0, int arg1, int arg2)
+{
+    if (arg2 == 0) {
+        M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x2C) = 0;
+    }
+    float temp_f12 = M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), float *, 0x1C4);
+    float rate;
+    if (temp_f12 != 0.0f) {
+        rate = temp_f12 * 0.016666666f;
+    } else {
+        rate = 0.016666666f;
+    }
+    if (cHas((int)&cGlobalA, M2C_FIELD(M2C_FIELD(arg0, int *, 8), int *, 0x3DC)) == 0) {
+        float angle = cYaw((int)(D_006FE6A0 + cIndex((int)&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0)) * 0x4D0));
+        Xv_func_001F603C(M2C_FIELD(arg0, int *, 0), arg1, -1, arg2, rate, angle, 1);
+        return;
+    }
+    Xv_func_001F603C(M2C_FIELD(arg0, int *, 0), arg1, -1, arg2, rate, 32769.0f, 1);
+}
 
 extern "C" void func_001681C8(int arg0, int arg1, int arg2, float fparg0)
 {
