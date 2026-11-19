@@ -117,27 +117,21 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001316B8__8MagSceneii);
 #endif
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 void MagScene::func_00131790(int theNo, int theType)
 {
-    void *bwn = (char *)this + 0x2AFE0;
     *(int *)((char *)this + 0x853B4) = theNo;
     if (theNo >= 0) {
-        setActor__10MagLifeBwnP8DogActorii(bwn, &m_actor[theNo], theNo, theType);
+        setActor__10MagLifeBwnP8DogActorii((char *)this + 0x2AFE0, &m_actor[theNo], theNo, theType);
         char *ctrl = (char *)this + 0x2BD20;
-        *(void **)(ctrl + 0x70) = bwn;
+        *(void **)(ctrl + 0x70) = (char *)this + 0x2AFE0;
         *(void **)(ctrl + 0x74) = &m_pc;
     } else {
-        setActor__10MagLifeBwnP8DogActorii(bwn, 0, -1, 0);
+        setActor__10MagLifeBwnP8DogActorii((char *)this + 0x2AFE0, 0, -1, 0);
         char *ctrl = (char *)this + 0x2BD20;
         *(void **)(ctrl + 0x70) = 0;
         *(void **)(ctrl + 0x74) = 0;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131790__8MagSceneii);
-#endif
 
 
 INCLUDE_RODATA("asm/nonmatchings/mag/magscene", D_002ED500);
