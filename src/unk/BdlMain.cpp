@@ -224,7 +224,18 @@ extern "C" void BdlOutSearch__vfunc_02(int arg0)
     Xiiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), 10.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", BdlOutSearch__vfunc_03);
+extern "C" int BdlOutSearch__vfunc_03(int self)
+{
+    int next;
+    int result = Xiiiiff_func_001679B4(self, M2C_FIELD(self, int *, 0x14), 0, 300.0f, 3.141592562198639f);
+    switch (result) {
+    case 0: next = -1; break;
+    case 1: next = 6; Xii_func_00202F10(M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x1F0)); break;
+    case 2: next = 4; Xii_func_00202F10(M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x1F0)); break;
+    default: next = 7; Xii_func_00202F10(M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x1F0)); break;
+    }
+    return next;
+}
 
 extern "C" void BdlOutSearch__vfunc_04()
 {
