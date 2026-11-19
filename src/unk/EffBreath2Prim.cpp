@@ -1,5 +1,9 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+struct m2c_block12 { int w[3]; };
+struct m2c_block16 { int w[4]; };
+struct EffBreath2Prim_v2 { unsigned char m_pad0[0x30]; m2c_block12 m_unk30; float m_unk3C; float m_unk40; float m_unk44; float m_unk48; int m_unk4C; float m_unk50; float m_unk54; float m_unk58; unsigned char m_pad5C[0x4]; m2c_block16 m_unk60; int m_unk70; };
+struct EffBreath2Param_v2 { unsigned char m_pad0[0x10]; m2c_block12 m_unk10; float m_unk1C; float m_unk20; float m_unk24; float m_unk28; float m_unk2C; float m_unk30; m2c_block16 m_unk34; int m_unk44; };
 struct EffCameraAnim1_v2 { unsigned char m_pad0[0x24]; int m_unk24; int m_unk28; int m_unk2C; int m_unk30; float m_unk34; float m_unk38; float m_unk3C; float m_unk40; float m_unk44; float m_unk48; float m_unk4C; };
 extern "C" int X_v2_func_0013D5AC(int, int) asm("func_0013D5AC__8MagScenePi");
 extern "C" int X_v2_func_0016F80C(int, int) asm("func_0016F80C");
@@ -63,7 +67,24 @@ extern "C" int EffBreath2__vfunc_02(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2Prim__vfunc_02);
+extern "C" int EffBreath2Prim__vfunc_02(EffBreath2Prim_v2 *arg0, EffBreath2Param_v2 *arg1)
+{
+    if (!Xiii_Eff0__vfunc_02((int)arg0, (int)arg1)) {
+        return 0;
+    }
+    arg0->m_unk30 = arg1->m_unk10;
+    arg0->m_unk3C = 1.0f;
+    arg0->m_unk60 = arg1->m_unk34;
+    arg0->m_unk40 = arg1->m_unk1C * 7.5f * arg1->m_unk28;
+    arg0->m_unk44 = arg1->m_unk20 * 7.5f * arg1->m_unk28;
+    arg0->m_unk48 = arg1->m_unk24 * 7.5f * arg1->m_unk28;
+    arg0->m_unk4C = 0;
+    arg0->m_unk50 = arg1->m_unk30;
+    arg0->m_unk58 = arg1->m_unk2C;
+    arg0->m_unk70 = arg1->m_unk44;
+    arg0->m_unk54 += 5.0f;
+    return 1;
+}
 
 // NON_MATCHING: 47/50 differ, 1 reloc differs (size 0xC8, game 0xC0), 24 edits
 #ifdef NON_MATCHING
