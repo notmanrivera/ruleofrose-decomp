@@ -62,7 +62,42 @@ extern int D_007B2060;
 
 // func_001A4E88 .. func_001A4FF0 were game/mnudlg's: config/splits_manual.tsv
 extern "C" int Xiiiii_func_001A4DB8(int, int, int, int) asm("func_001A4DB8");
-INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A4E88);
+extern "C" int Xiii_func_001A5584(int, int) asm("func_001A5584");
+extern "C" void Xvii_func_001A557C(int, int) asm("func_001A557C");
+extern "C" int func_001A4E88(int arg0, int arg1)
+{
+    int ret = 0;
+
+    if (M2C_FIELD(arg0, int *, 0) == 0) {
+        return -1;
+    }
+    switch (M2C_FIELD(arg0, int *, 0x3C)) {
+    case 0:
+        M2C_FIELD(arg0, int *, 0x3C) = 1;
+        break;
+    case 1:
+        M2C_FIELD(arg0, int *, 0x3C) = 2;
+        break;
+    case 2:
+        if (M2C_FIELD(arg0, int *, 0x40) == 0) {
+            int r = Xiii_func_001A5584(arg0, arg1);
+            if (r == 0) {
+            } else if (r == 1) {
+                M2C_FIELD(arg0, int *, 0x3C) = 4;
+            }
+        }
+        Xvii_func_001A557C(arg0, arg1);
+        break;
+    case 4:
+        M2C_FIELD(arg0, int *, 0x3C) = 5;
+    case 3:
+    case 5:
+    default:
+        ret = 1;
+        break;
+    }
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A4F60);
 
