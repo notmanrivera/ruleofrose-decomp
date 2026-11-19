@@ -1,4 +1,41 @@
 #include "include_asm.h"
+struct CheckArg_1730D4 {
+    unsigned int flags;         // 0x00
+    void *actor;                // 0x04
+    float cx;                   // 0x08
+    float cy;                   // 0x0C
+    float cz;                   // 0x10
+    float r1;                   // 0x14
+    float hy;                   // 0x18
+    float unk1C;                // 0x1C
+    float r2;                   // 0x20
+    float pts[4][3];            // 0x24
+    char pad54[0xC];            // 0x54
+};
+struct EffParam_1730D4 {
+    int kind;                   // 0x00
+    int unk04;                  // 0x04
+    int unk08;                  // 0x08
+    int unk0C;                  // 0x0C
+    float pos[3];               // 0x10
+    int unk1C;                  // 0x1C
+    int unk20;                  // 0x20
+    float f24;                  // 0x24
+    float f28;                  // 0x28
+    char pad2C[0x54];           // 0x2C
+};
+struct EffFoot1_1730D4 {
+    char pad0[0x24];
+    float cx, cy, cz;           // 0x24..0x2C
+    float r1, hy, unk38;        // 0x30..0x38
+    int f3C;                    // 0x3C
+    int f40;                    // 0x40
+    float f44;                  // 0x44
+    float f48;                  // 0x48
+};
+extern "C" int Xii_func_001702E4(CheckArg_1730D4 *) asm("func_001702E4");
+extern "C" void Xii_func_001703C0(CheckArg_1730D4 *) asm("func_001703C0");
+extern "C" void Xiii_func_00176CC8(int, EffParam_1730D4 *) asm("func_00176CC8");
 struct Mat4_render9 {
     float m[4][4];
 } __attribute__((aligned(8)));
@@ -225,7 +262,37 @@ extern "C" int EffFoot1__vfunc_02(EffFoot1_172E4C *self, EffFoot1Arg_172E4C *arg
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot1__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_001730D4);
+extern "C" void func_001730D4(EffFoot1_1730D4 *arg0, void *arg1)
+{
+    CheckArg_1730D4 chk;
+    chk.actor = arg1;
+    chk.cx = arg0->cx;
+    chk.cy = arg0->cy;
+    chk.cz = arg0->cz;
+    chk.r1 = arg0->r1;
+    chk.hy = arg0->hy;
+    chk.unk1C = arg0->unk38;
+    chk.r2 = 100.0f;
+    chk.flags = 0;
+    if (Xii_func_001702E4(&chk) != 0) {
+        EffParam_1730D4 param;
+        param.kind = 0x1E;
+        param.unk1C = arg0->f3C;
+        param.unk20 = arg0->f40;
+        param.f24 = arg0->f44;
+        param.f28 = arg0->f48;
+        param.unk08 = 0;
+        Xii_func_001703C0(&chk);
+        for (int i = 0; i < 4; i++) {
+            if (chk.flags & (1 << i)) {
+                param.pos[0] = chk.pts[i][0];
+                param.pos[1] = chk.pts[i][1];
+                param.pos[2] = chk.pts[i][2];
+                Xiii_func_00176CC8(D_00298E08 + 0x837E0, &param);
+            }
+        }
+    }
+}
 
 extern "C" int EffFoot1Prim__vfunc_02(EffFoot1Prim_v2 *self, EffFoot1Arg_v2 *arg1)
 {
