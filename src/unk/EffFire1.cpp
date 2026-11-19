@@ -2,6 +2,7 @@
 #include "game/gamtrg.h"
 #include "game/gamman.h"
 #include "bed/bedpfh.h"
+extern "C" int Xiii_func_00170624(int, int) asm("func_00170624");
 extern int D_007A3210;
 struct Fog3Entry {
     int id;
@@ -169,8 +170,6 @@ extern "C" int EffDust2__vfunc_02(int arg0, int arg1)
     return 1;
 }
 
-// NON_MATCHING: 4/36 differ, 5 edits
-#ifdef NON_MATCHING
 struct Dust2Struct {
     char pad00[0x88];
     int unk88[12];
@@ -181,15 +180,15 @@ extern "C" int EffDust2__vfunc_05(int arg0)
 {
     Dust2Struct *self = (Dust2Struct *)arg0;
     for (int i = 0; i < 12; i++) {
-        if (((int *)D_00298E08)[self->unk88[i] + 0x20DF9] == 0) {
+        register int entry PS2_REG("$3") = D_00298E08;
+        register int index PS2_REG("$2") = self->unk88[i] * 4;
+        entry += index;
+        if (*(int *)(entry + 0x837E4) == 0) {
             self->unk88[i] = X_0594_func_00170624(arg0, 0);
         }
     }
     return 1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffDust2__vfunc_05);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", func_00170624);
 
