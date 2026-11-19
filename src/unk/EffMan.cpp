@@ -1,4 +1,20 @@
 #include "include_asm.h"
+struct EffObj_17762C {
+    char pad[32];
+    virtual int call(int);
+};
+struct EffMan_17762C {
+    int field_0;
+    EffObj_17762C *ptrs[0x110];
+    int field_444;
+    int field_448;
+    char pad_44C[0xC8C - 0x44C];
+    int field_C8C;
+    char pad_C90[0x1294 - 0xC90];
+    int field_1294;
+    int field_1298;
+};
+extern "C" int X_17762C_8894(EffMan_17762C *, int) asm("func_00178894");
 struct EffMan_1774E0 {
     int field_0;
     void *ptrs[0x110];
@@ -184,7 +200,20 @@ extern "C" int func_001774E0(EffMan_1774E0 *self, void *arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_0017756C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_0017762C);
+extern "C" void func_0017762C(EffMan_17762C *self)
+{
+    for (int i = 0; i < 0x110; i++) {
+        if (self->ptrs[i] != 0) {
+            self->ptrs[i]->call(3);
+            self->ptrs[i] = 0;
+        }
+    }
+    self->field_448 = 0;
+    self->field_1294 = -1;
+    self->field_1298 = -1;
+    self->field_C8C = 0;
+    X_17762C_8894(self, 0);
+}
 
 extern "C" int func_001776C4(EffMan_1776C4 *self)
 {
