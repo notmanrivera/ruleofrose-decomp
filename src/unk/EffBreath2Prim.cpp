@@ -51,7 +51,35 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2Prim__vfunc_02);
 
+// NON_MATCHING: 47/50 differ, 1 reloc differs (size 0xC8, game 0xC0), 24 edits
+#ifdef NON_MATCHING
+struct EffBreath2Prim_v5 { unsigned char m_pad0[0x30]; float m_unk30[4]; float m_unk40[4]; unsigned char m_pad50[0x4]; float m_unk54; float m_unk58; };
+extern "C" void X_func_002373D8(float *, float *, float *) asm("func_002373D8");
+extern "C" int EffBreath2Prim__vfunc_05(EffBreath2Prim_v5 *arg0)
+{
+    X_func_002373D8(arg0->m_unk30, arg0->m_unk30, arg0->m_unk40);
+    if (arg0->m_unk30[1] > 0.0f) {
+        return 0;
+    }
+    float temp_f0 = arg0->m_unk58;
+    float temp_f0_2 = 1.0f - (temp_f0 * 0.024999998975545168f);
+    float var_f2 = 1.0f;
+    if (!(temp_f0_2 > 1.0f)) {
+        var_f2 = temp_f0_2;
+    }
+    float vx = arg0->m_unk40[0] * var_f2;
+    float vz = arg0->m_unk40[2] * var_f2;
+    float vy = arg0->m_unk40[1] + temp_f0 * 0.5f;
+    float s = arg0->m_unk54 + 2.5f;
+    arg0->m_unk40[0] = vx;
+    arg0->m_unk40[2] = vz;
+    arg0->m_unk40[1] = vy;
+    arg0->m_unk54 = s;
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2Prim__vfunc_05);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffBreath2Prim__vfunc_08);
 
