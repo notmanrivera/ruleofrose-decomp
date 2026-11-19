@@ -1,4 +1,21 @@
 #include "include_asm.h"
+struct EffItem3C_174C4C {
+    float x, y, z, w;
+};
+struct EffObj_174C4C {
+    char pad0[0x24];
+    char *f24;
+    char pad28[0x14];
+    EffItem3C_174C4C *f3C;
+};
+struct EffRetSub_174C4C {
+    char pad0[8];
+    unsigned short f8;
+};
+extern "C" EffRetSub_174C4C **X_174C4C_1700B0(char *, float *, int *) asm("func_001700B0");
+extern "C" int X_174C4C_22AAB8(EffRetSub_174C4C **) asm("func_0022AAB8");
+extern "C" int X_174C4C_22AAD0(EffRetSub_174C4C **, int) asm("func_0022AAD0");
+extern "C" void X_174C4C_21AB30(int, EffItem3C_174C4C *) asm("func_0021AB30");
 extern "C" const char D_002F28D0[];
 extern "C" const char D_002F28E8[];
 extern "C" const char D_002F2910[];
@@ -390,7 +407,21 @@ extern "C" void func_00174BD8(int arg0, int arg1)
 extern "C" void func_00174C44(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00174C4C);
+extern "C" void func_00174C4C(EffObj_174C4C *arg0, float *arg1, float fp0, float fp1)
+{
+    int idx;
+    EffRetSub_174C4C **p = X_174C4C_1700B0(arg0->f24 + 0x10, arg1, &idx);
+    if (p != 0) {
+        EffItem3C_174C4C *item = &arg0->f3C[idx];
+        item->x = fp0;
+        item->y = fp1;
+        int n = X_174C4C_22AAB8(p);
+        for (idx = 0; idx < n; idx++) {
+            X_174C4C_21AB30(X_174C4C_22AAD0(p, idx), item);
+        }
+        (*p)->f8++;
+    }
+}
 
 // NON_MATCHING: 30/47 differ (size 0xBC, game 0xC4), 19 edits
 #ifdef NON_MATCHING
