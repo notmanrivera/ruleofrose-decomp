@@ -1550,7 +1550,27 @@ extern "C" void DwfOutSerch__vfunc_04()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfOutPickup__vfunc_02);
+extern "C" void DwfOutPickup__vfunc_02(int arg0)
+{
+    int temp_v0_2;
+    int temp_v0;
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0xC);
+    temp_v0_2 = ((m2c_v200_18_i *)(temp_v1))->call();
+    switch ((unsigned int)temp_v0_2) {
+    case 1:
+        M2C_FIELD(arg0, int *, 0x38) = temp_v0_2;
+        break;
+    case 0:
+        M2C_FIELD(arg0, int *, 0x38) = 0;
+        break;
+    case 2:
+        M2C_FIELD(arg0, int *, 0x38) = temp_v0_2;
+        break;
+    }
+    M2C_FIELD(arg0, int *, 4) = 1;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/DwfMain", D_002F0EC0);
 
