@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "001A6830.h"
 extern "C" void Xvp_func_001AEBC8(void *) asm("func_001AEBC8");
 struct SprAE9F4 {
     unsigned char m_unk[0x8EC];
@@ -36,12 +37,8 @@ extern "C" unsigned int Xvp_strlen(const char *) asm("strlen");
 extern int D_002F9428;
 extern int D_002F9430;
 static inline unsigned int padTrigU_F40(int p) { return *(unsigned short *)((char *)p + 0x7A); }
-struct EntAEC50 {
-    int unk0;
-    const char *unk4;
-    char pad[0x10];
-};
-extern EntAEC50 X_D_002ACA20_AEC50[] asm("D_002ACA20");
+extern MnuRpkEntry X_D_002ACA20[] asm("D_002ACA20");
+extern MnuBoardTblEnt X_D_002ABDB8[] asm("D_002ABDB8");
 extern "C" void Xvp_func_0018F744(void *, void *, const char *) asm("func_0018F744");
 extern "C" int Xvp_func_0018FEBC(void *) asm("func_0018FEBC");
 extern "C" void Xvp_func_001AB5E4(void *) asm("func_001AB5E4");
@@ -97,75 +94,6 @@ extern "C" int X_func_001AB4E0(...) asm("func_001AB4E0");
 extern "C" int X_func_0018C190_1(int, int) asm("func_0018C190");
 extern int D_002A8848;
 extern int D_002AAD70;
-struct SubABA98 {
-    int unk0;
-    int unk4;
-    char pad8[0x4B0 - 8];
-    int vtbl;
-};
-struct ObjABA98 {
-    int unk0;
-    int unk4;
-    int unk8;
-    int unkC;
-    int unk10;
-    int unk14;
-    int unk18;
-    int unk1C;
-    char pad20[0x7D0 - 0x20];
-    SubABA98 sub;
-    char padC84[0x10BC - (0x7D0 + sizeof(SubABA98))];
-    int sys;
-};
-struct EntEF9C {
-    int unk0;
-    char pad[0x18 - 4];
-};
-extern EntEF9C X_D_002ACA20_EF9C[] asm("D_002ACA20");
-struct EntEF14 {
-    int unk0;
-    char pad[0x18 - 4];
-};
-extern EntEF14 X_D_002ACA20_EF14[] asm("D_002ACA20");
-struct EntEE8C {
-    int unk0;
-    char pad[0x18 - 4];
-};
-extern EntEE8C X_D_002ACA20[] asm("D_002ACA20");
-extern "C" int X_func_00279C98_68E0(char *, const char *, ...) asm("func_00279C98");
-struct Ent68E0 {
-    int f0;
-    int f4;
-    int f8;
-    int fC;
-    int f10;
-    char pad[0x2C - 0x14];
-};
-struct Sub68E0 {
-    char pad[0x2500];
-    Ent68E0 arr[12];
-};
-struct Obj68E0 {
-    char pad[8];
-    Sub68E0 sub;
-};
-extern "C" int X_func_00279C98_1(char *, const char *, ...) asm("func_00279C98");
-struct Ent6858 {
-    int f0;
-    int f4;
-    int f8;
-    int fC;
-    int f10;
-    char pad[0x2C - 0x14];
-};
-struct Sub6858 {
-    char pad[0x2500];
-    Ent6858 arr[12];
-};
-struct Obj6858 {
-    char pad[8];
-    Sub6858 sub;
-};
 extern "C" int X_func_001AF024(...) asm("func_001AF024");
 extern "C" int X_func_001AF3F0(...) asm("func_001AF3F0");
 extern "C" int X_func_001DC48C(...) asm("func_001DC48C");
@@ -328,10 +256,8 @@ extern const char D_002F9278[];
 extern int D_002A7798;
 extern int D_002A87E8;
 extern int D_002ABAD8;
-extern int D_002ABDB8;
 extern int D_002AC4E0;
 extern int D_002AC788;
-extern int D_002ACA20;
 extern int D_002B5F38;
 extern int D_002B60C0;
 extern int D_006E9840;
@@ -343,63 +269,62 @@ extern int D_007B205C;
 extern int D_007B2060;
 extern int D_007B2580;
 
-extern "C" void func_001A90EC(int arg0)
+extern "C" void func_001A90EC(MnuTitle *arg0)
 {
-    int temp_s1;
+    MnuSvldStub *svld = &arg0->m_svld;
 
-    temp_s1 = arg0 + 0x1400;
     X_func_001A1244();
-    X_func_001A59B8(temp_s1);
-    (*(int *)(int *)((char *)(temp_s1) + 0x24E8)) = 0;
-    X_func_001AB474(arg0 + 0x3B80);
-    X_func_001A066C(arg0 + 0x4C68);
-    X_func_0018BB8C(arg0 + 0x4DF0);
-    (*(int *)(int *)((char *)(arg0) + 0x4D6C)) = 0;
+    X_func_001A59B8(svld);
+    svld->m_unk24E8 = 0;
+    X_func_001AB474(&arg0->m_opt);
+    X_func_001A066C(&arg0->m_sub4C68);
+    X_func_0018BB8C(&arg0->m_rpk);
+    arg0->m_open = 0;
     X_func_001A9844(arg0);
-    (*(int *)(int *)((char *)(arg0) + 0x56F4)) = 0;
+    arg0->m_active = 0;
 }
 
 
-extern "C" void func_001A9150(int arg0, int arg1)
+extern "C" void func_001A9150(MnuTitle *arg0, int arg1)
 {
     X_func_001A9828();
-    if (M2C_FIELD(arg0, int *, 0x56F4) == 1) {
+    if (arg0->m_active == 1) {
         X_func_001A9258(arg0);
     }
-    X_func_0018BC18(arg0 + 0x4DF0, 2);
-    X_func_001A0684(arg0 + 0x4C68, 2);
-    X_func_001AB4E0(arg0 + 0x3B80, 2);
-    X_func_001A5A34(arg0 + 0x1400, 2);
+    X_func_0018BC18(&arg0->m_rpk, 2);
+    X_func_001A0684(&arg0->m_sub4C68, 2);
+    X_func_001AB4E0(&arg0->m_opt, 2);
+    X_func_001A5A34(&arg0->m_svld, 2);
     X_func_001A12A8(arg0, 2);
     if (arg1 & 1) {
-        return Xv___builtin_delete_9150((void *)arg0);
+        return Xv___builtin_delete_9150(arg0);
     }
 }
 
-extern "C" void func_001A91F4(int arg0, int arg1)
+extern "C" void func_001A91F4(MnuTitle *arg0, int arg1)
 {
     (*(int *)&D_006FE04C) = 0;
-    Xiii_func_0018BCC0(arg0 + 0x4DF0, 0xF);
-    M2C_FIELD(arg0, int *, 0x520C) = arg1;
-    M2C_FIELD(arg0, int *, 0x56E4) = arg1;
-    M2C_FIELD(arg0, int *, 0x56DC) = (int) (*(int *)&_9MagSystem$m_current_system);
-    Xii_func_001A97F4(arg0);
-    M2C_FIELD(arg0, int *, 0x56F4) = 1;
+    Xiii_func_0018BCC0((int)&arg0->m_rpk, 0xF);
+    arg0->m_rpk.m_param = arg1;
+    arg0->m_param = arg1;
+    arg0->m_sys = _9MagSystem$m_current_system;
+    Xii_func_001A97F4((int)arg0);
+    arg0->m_active = 1;
 }
 
-extern "C" void func_001A9258(int arg0)
+extern "C" void func_001A9258(MnuTitle *arg0)
 {
-    if ((*(int *)(int *)((char *)(arg0) + 0x56F4)) != 0) {
-        X_func_0018C130(arg0 + 0x4DF0);
+    if (arg0->m_active != 0) {
+        X_func_0018C130(&arg0->m_rpk);
         X_func_001A9828(arg0);
-        (*(int *)(int *)((char *)(arg0) + 0x56F4)) = 0;
+        arg0->m_active = 0;
     }
 }
 
 
-extern "C" int func_001A9298(int arg0)
+extern "C" int func_001A9298(MnuTitle *arg0)
 {
-    return (*(int *)(int *)((char *)(arg0) + 0x56F4));
+    return arg0->m_active;
 }
 
 
@@ -475,71 +400,67 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A92A0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001A972C);
 
-extern "C" void func_001A97B0(int arg0)
+extern "C" void func_001A97B0(MnuTitle *arg0)
 {
-    int temp_s0;
+    unsigned char *loader = arg0->m_rpk.m_loader;
 
-    temp_s0 = arg0 + 0x4DF8;
-    Xiiii_func_0018F744(temp_s0, (int)&D_002A7798, (int) "data/mnurpk/mnutitle.rpk");
+    Xiiii_func_0018F744((int)loader, (int)&D_002A7798, (int) "data/mnurpk/mnutitle.rpk");
     do {
 
-    } while (Xii_func_0018FEBC(temp_s0) == 0);
+    } while (Xii_func_0018FEBC((int)loader) == 0);
 }
 
-extern "C" int func_001A97F4(int arg0)
+extern "C" int func_001A97F4(MnuTitle *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0x4D6C) == 1) {
+    if (arg0->m_open == 1) {
         return -1;
     }
-    M2C_FIELD(arg0, int *, 0x4D6C) = 1;
-    M2C_FIELD(arg0, int *, 0x4DC4) = 0;
-    M2C_FIELD(arg0, int *, 0x4DC8) = 0;
-    M2C_FIELD(arg0, int *, 0x4DCC) = 0;
-    M2C_FIELD(arg0, int *, 0x4DEC) = 7;
+    arg0->m_open = 1;
+    arg0->m_step0 = 0;
+    arg0->m_mode = 0;
+    arg0->m_subStep = 0;
+    arg0->m_unk4DEC = 7;
     return 0;
 }
 
-extern "C" int func_001A9828(int arg0)
+extern "C" int func_001A9828(MnuTitle *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0x4D6C) == 0) {
+    if (arg0->m_open == 0) {
         return -1;
     }
-    M2C_FIELD(arg0, int *, 0x4D6C) = 0;
+    arg0->m_open = 0;
     return 0;
 }
 
-extern "C" int func_001A9844(int arg0)
+extern "C" int func_001A9844(MnuTitle *arg0)
 {
-    int var_v0;
-    int var_v1;
+    int i = 8;
+    int *p = &arg0->m_cursor[8];
 
-    var_v1 = 8;
-    var_v0 = arg0 + 0x4D90;
     do {
-        var_v1 -= 1;
-        (*(int *)(var_v0)) = 0;
-        var_v0 -= 4;
-    } while (var_v1 >= 0);
-    M2C_FIELD(arg0, int *, 0x4D98) = 5;
-    M2C_FIELD(arg0, int *, 0x4D94) = 3;
-    M2C_FIELD(arg0, int *, 0x4D9C) = 2;
+        i -= 1;
+        *p = 0;
+        p -= 1;
+    } while (i >= 0);
+    arg0->m_max[1] = 5;
+    arg0->m_max[0] = 3;
+    arg0->m_max[2] = 2;
     return 0;
 }
 
-extern "C" void func_001A988C(int arg0)
+extern "C" void func_001A988C(MnuTitle *arg0)
 {
-    int temp_s0;
+    MnuRpk *rpk = &arg0->m_rpk;
 
-    temp_s0 = arg0 + 0x4DF0;
-    M2C_FIELD(arg0, int *, 0x56DC) = (int) (*(int *)&_9MagSystem$m_current_system);
-    M2C_FIELD(temp_s0, int *, 0x4B0) = (int)&D_002A7858;
-    Xiii_func_0018C190(temp_s0, (int)&D_002A80C0);
-    M2C_FIELD(temp_s0, int *, 4) = 1;
+    arg0->m_sys = _9MagSystem$m_current_system;
+    rpk->m_tbl = &D_002A7858;
+    Xiii_func_0018C190((int)rpk, (int)&D_002A80C0);
+    rpk->m_unk04 = 1;
 }
 
-extern "C" int func_001A98DC(int arg0)
+extern "C" int func_001A98DC(MnuTitle *arg0)
 {
-    X_func_0018C068(arg0 + 0x4DF0);
+    X_func_0018C068(&arg0->m_rpk);
     return 0;
 }
 
@@ -552,27 +473,52 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AA7D0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AABB4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AAED0);
+extern "C" int func_001AAED0(MnuTitle *arg0)
+{
+    register MnuTitle *self PS2_REG("$16") = arg0;
+    int ret = 0;
 
-extern "C" int func_001AAF98(int arg0)
+    switch (self->m_subStep) {
+    case 0:
+        self->m_cursor[3] = 0;
+        self->m_unk4DB8 = 0;
+        X_func_001A5AF4(&self->m_svld, self->m_param);
+        self->m_subStep = 1;
+    case 1:
+        self->m_subStep = 0xF;
+        break;
+    case 0xF: {
+        MnuSvldStub *p = &self->m_svld;
+        if (X_func_001A5CC4(p) != 0) {
+            ret = (p->m_result == 0) ? 1 : 2;
+            X_func_001A5BF4(p);
+            self->m_subStep = 0;
+        }
+        break;
+    }
+    }
+    return ret;
+}
+
+extern "C" int func_001AAF98(MnuTitle *arg0)
 {
     int ret = 0;
 
-    switch (M2C_FIELD(arg0, int *, 0x4DCC)) {
+    switch (arg0->m_subStep) {
     case 0:
-        M2C_FIELD(arg0, int *, 0x4D80) = 0;
-        M2C_FIELD(arg0, int *, 0x4DB8) = 0;
-        X_func_001AB598(arg0 + 0x3B80, M2C_FIELD(arg0, int *, 0x56E4));
-        M2C_FIELD(arg0, int *, 0x4DCC) = 1;
+        arg0->m_cursor[4] = 0;
+        arg0->m_unk4DB8 = 0;
+        X_func_001AB598(&arg0->m_opt, arg0->m_param);
+        arg0->m_subStep = 1;
     case 1:
-        M2C_FIELD(arg0, int *, 0x4DCC) = 0xF;
+        arg0->m_subStep = 0xF;
         break;
     case 0xF: {
-        int p = arg0 + 0x3B80;
+        MnuOpt *p = &arg0->m_opt;
         if (X_func_001AB66C(p) != 0) {
             ret = 1;
             X_func_001AB5E4(p);
-            M2C_FIELD(arg0, int *, 0x4DCC) = 0;
+            arg0->m_subStep = 0;
         }
         break;
     }
@@ -674,24 +620,21 @@ INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002FA1F0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AB04C);
 
-extern "C" void func_001AB474(int arg0)
+extern "C" void func_001AB474(MnuOpt *arg0)
 {
-    int var_s2;
-    int temp_a0;
-    int var_s0;
+    int i = 1;
+    MnuMsgWin *w = arg0->m_msgWin;
 
-    var_s0 = arg0 + 0x58;
-    var_s2 = 1;
     do {
-        temp_a0 = var_s0;
-        var_s0 += 0x3BC;
-        X_func_0018330C(temp_a0);
-        var_s2 -= 1;
-    } while (var_s2 != -1);
-    X_func_0018BB8C(arg0 + 0x7D0);
-    (*(int *)(int *)((char *)(arg0) + 0x0)) = 0;
+        MnuMsgWin *cur = w;
+        w += 1;
+        X_func_0018330C(cur);
+        i -= 1;
+    } while (i != -1);
+    X_func_0018BB8C(&arg0->m_rpk);
+    arg0->m_open = 0;
     X_func_001ABA44(arg0);
-    (*(int *)(int *)((char *)(arg0) + 0x10CC)) = 0;
+    arg0->m_active = 0;
 }
 
 
@@ -703,34 +646,34 @@ ObjAB4E0::~ObjAB4E0()
     }
 }
 
-extern "C" void func_001AB598(int arg0, int arg1)
+extern "C" void func_001AB598(MnuOpt *arg0, int arg1)
 {
-    X_func_0018BCC0(arg0 + 0x7D0, 0x41);
-    (*(int *)(int *)((char *)(arg0) + 0xBEC)) = arg1;
+    X_func_0018BCC0(&arg0->m_rpk, 0x41);
+    arg0->m_rpk.m_param = arg1;
     X_func_001AB6AC(arg0);
-    (*(int *)(int *)((char *)(arg0) + 0x10CC)) = 1;
+    arg0->m_active = 1;
 }
 
 
-extern "C" void func_001AB5E4(int arg0)
+extern "C" void func_001AB5E4(MnuOpt *arg0)
 {
     int temp_s0;
 
-    if (M2C_FIELD(arg0, int *, 0x10CC) != 0) {
-        X_func_0018C130(arg0 + 0x7D0);
+    if (arg0->m_active != 0) {
+        X_func_0018C130(&arg0->m_rpk);
         temp_s0 = (int)&D_006E9840;
         temp_s0 += 0x12540;
-        X_func_00135594(temp_s0, M2C_FIELD(arg0, int *, 0x10E0));
-        X_func_001348B0(temp_s0, M2C_FIELD(arg0, int *, 0x10E0));
-        X_func_00187464(arg0 + 0x58);
+        X_func_00135594(temp_s0, arg0->m_winId);
+        X_func_001348B0(temp_s0, arg0->m_winId);
+        X_func_00187464(&arg0->m_msgWin[0]);
         X_func_001AB6F4(arg0);
-        M2C_FIELD(arg0, int *, 0x10CC) = 0;
+        arg0->m_active = 0;
     }
 }
 
-extern "C" int func_001AB65C(int arg0)
+extern "C" int func_001AB65C(MnuOpt *arg0)
 {
-    return (*(int *)(int *)((char *)(arg0) + 0x10CC));
+    return arg0->m_active;
 }
 
 
@@ -743,39 +686,38 @@ extern "C" int func_001AB66C()
 }
 
 
-extern "C" void func_001AB680(int arg0, int arg1)
+extern "C" void func_001AB680(MnuOpt *arg0, int arg1)
 {
-    int temp_v0;
+    MnuRpk *rpk = &arg0->m_rpk;
 
-    temp_v0 = arg0 + 0x7D0;
-    (*(int *)(int *)((char *)(arg0) + 0x10C0)) = arg1;
+    arg0->m_renderCtx = arg1;
     if (arg1 != 0) {
-        (*(int *)(int *)((char *)(temp_v0) + 0x4D0)) = arg1;
-        X_func_0018BD94(temp_v0);
+        rpk->m_renderCtx = arg1;
+        X_func_0018BD94(rpk);
     }
 }
 
 
-extern "C" int func_001AB6AC(int arg0)
+extern "C" int func_001AB6AC(MnuOpt *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0) == 1) {
+    if (arg0->m_open == 1) {
         return -1;
     }
-    M2C_FIELD(arg0, int *, 0) = 1;
-    M2C_FIELD(arg0, int *, 0x54) = 1;
-    M2C_FIELD(arg0, int *, 0x44) = 0;
-    M2C_FIELD(arg0, int *, 0x48) = 0;
-    M2C_FIELD(arg0, int *, 0x4C) = 0;
-    Xii_func_0018741C(arg0 + 0x58);
+    arg0->m_open = 1;
+    arg0->m_unk54 = 1;
+    arg0->m_step0 = 0;
+    arg0->m_mode = 0;
+    arg0->m_subStep = 0;
+    Xii_func_0018741C((int)&arg0->m_msgWin[0]);
     return 0;
 }
 
-extern "C" int func_001AB6F4(int arg0)
+extern "C" int func_001AB6F4(MnuOpt *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0) == 0) {
+    if (arg0->m_open == 0) {
         return -1;
     }
-    M2C_FIELD(arg0, int *, 0) = 0;
+    arg0->m_open = 0;
     return 0;
 }
 
@@ -807,30 +749,43 @@ INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002FA2E8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AB720);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001ABA44);
+extern "C" int func_001ABA44(MnuOpt *arg0)
+{
+    for (int i = 0; i < 8; i++) {
+        arg0->m_cursor[i] = 0;
+    }
+    arg0->m_max[0] = 6;
+    arg0->m_max[1] = 2;
+    arg0->m_max[2] = 9;
+    arg0->m_max[3] = 9;
+    arg0->m_max[4] = 9;
+    arg0->m_max[6] = 2;
+    arg0->m_max[5] = 9;
+    return 0;
+}
 
-extern "C" void func_001ABA98(ObjABA98 *arg0)
+extern "C" void func_001ABA98(MnuOpt *arg0)
 {
     int one = 1;
     int five = 5;
-    SubABA98 *sub = &arg0->sub;
-    arg0->sys = (int) (*(int *)&_9MagSystem$m_current_system);
-    sub->vtbl = (int)&D_002A8848;
-    X_func_0018C190_1((int)sub, (int)&D_002AAD70);
-    arg0->unk4 = 0;
-    arg0->unkC = five;
-    arg0->unk10 = five;
-    arg0->unk14 = five;
-    arg0->unk18 = five;
-    arg0->unk1C = 0;
-    arg0->unk8 = 0;
-    sub->unk4 = one;
+    MnuRpk *rpk = &arg0->m_rpk;
+    arg0->m_sys = _9MagSystem$m_current_system;
+    rpk->m_tbl = &D_002A8848;
+    X_func_0018C190_1((int)rpk, (int)&D_002AAD70);
+    arg0->m_cursor[0] = 0;
+    arg0->m_cursor[2] = five;
+    arg0->m_cursor[3] = five;
+    arg0->m_cursor[4] = five;
+    arg0->m_cursor[5] = five;
+    arg0->m_cursor[6] = 0;
+    arg0->m_cursor[1] = 0;
+    rpk->m_unk04 = one;
 }
 
-extern "C" int func_001ABB24(int arg0)
+extern "C" int func_001ABB24(MnuOpt *arg0)
 {
-    X_func_0018C068(arg0 + 0x7D0);
-    X_func_001874AC(arg0 + 0x58);
+    X_func_0018C068(&arg0->m_rpk);
+    X_func_001874AC(&arg0->m_msgWin[0]);
     return 0;
 }
 
@@ -839,25 +794,22 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001ABB58);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AC5B0);
 
-extern "C" void func_001AD6B4(int arg0)
+extern "C" void func_001AD6B4(MnuBoard *arg0)
 {
-    int var_s2;
-    int temp_a0;
-    int var_s0;
+    int i = 1;
+    MnuMsgWin *w = arg0->m_msgWin;
 
-    var_s0 = arg0;
-    var_s2 = 1;
     do {
-        temp_a0 = var_s0;
-        var_s0 += 0x3BC;
-        X_func_0018330C(temp_a0);
-        var_s2 -= 1;
-    } while (var_s2 != -1);
-    X_func_0018BB8C(arg0 + 0x7A4);
-    (*(int *)(int *)((char *)(arg0) + 0x778)) = 0;
-    (*(int *)(int *)((char *)(arg0) + 0x10B8)) = 0x40001;
+        MnuMsgWin *cur = w;
+        w += 1;
+        X_func_0018330C(cur);
+        i -= 1;
+    } while (i != -1);
+    X_func_0018BB8C(&arg0->m_rpk);
+    arg0->m_open = 0;
+    arg0->m_unk10B8 = 0x40001;
     X_func_001ADBD8(arg0);
-    (*(int *)(int *)((char *)(arg0) + 0x10B4)) = 0;
+    arg0->m_active = 0;
 }
 
 
@@ -870,32 +822,40 @@ ObjAD72C::~ObjAD72C()
     Xvp_func_0018BC18((char *)this + 0x7A4, 2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AD7D4);
-
-extern "C" void func_001AD824(int arg0, int arg1)
+extern "C" int func_001AD7D4(int arg0)
 {
-    X_func_0018BCC0(arg0 + 0x7A4, 3);
-    (*(int *)(int *)((char *)(arg0) + 0xBC0)) = arg1;
+    for (int i = 0; X_D_002ABDB8[i].m_key != -1; i++) {
+        if (arg0 == X_D_002ABDB8[i].m_key) {
+            return X_D_002ABDB8[i].m_val;
+        }
+    }
+    return 0;
+}
+
+extern "C" void func_001AD824(MnuBoard *arg0, int arg1)
+{
+    X_func_0018BCC0(&arg0->m_rpk, 3);
+    arg0->m_rpk.m_param = arg1;
     X_func_001AD90C(arg0);
-    (*(int *)(int *)((char *)(arg0) + 0x10B4)) = 1;
+    arg0->m_active = 1;
 }
 
 
-extern "C" void func_001AD870(int arg0)
+extern "C" void func_001AD870(MnuBoard *arg0)
 {
-    if ((*(int *)(int *)((char *)(arg0) + 0x10B4)) != 0) {
-        if ((*(int *)(int *)((char *)(arg0) + 0x109C)) == 0) {
-            X_func_0018C130(arg0 + 0x7A4);
+    if (arg0->m_active != 0) {
+        if (arg0->m_skipClose == 0) {
+            X_func_0018C130(&arg0->m_rpk);
         }
         X_func_001AD940(arg0);
-        (*(int *)(int *)((char *)(arg0) + 0x10B4)) = 0;
+        arg0->m_active = 0;
     }
 }
 
 
-extern "C" int func_001AD8BC(int arg0)
+extern "C" int func_001AD8BC(MnuBoard *arg0)
 {
-    return (*(int *)(int *)((char *)(arg0) + 0x10B4));
+    return arg0->m_active;
 }
 
 
@@ -908,38 +868,37 @@ extern "C" int func_001AD8CC()
 }
 
 
-extern "C" void func_001AD8E0(int arg0, int arg1)
+extern "C" void func_001AD8E0(MnuBoard *arg0, int arg1)
 {
-    int temp_v0;
+    MnuRpk *rpk = &arg0->m_rpk;
 
-    temp_v0 = arg0 + 0x7A4;
-    (*(int *)(int *)((char *)(arg0) + 0x1094)) = arg1;
+    arg0->m_renderCtx = arg1;
     if (arg1 != 0) {
-        (*(int *)(int *)((char *)(temp_v0) + 0x4D0)) = arg1;
-        X_func_0018BD94(temp_v0);
+        rpk->m_renderCtx = arg1;
+        X_func_0018BD94(rpk);
     }
 }
 
 
-extern "C" int func_001AD90C(int arg0)
+extern "C" int func_001AD90C(MnuBoard *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0x778) == 1) {
+    if (arg0->m_open == 1) {
         return -1;
     }
-    M2C_FIELD(arg0, int *, 0x778) = 1;
-    M2C_FIELD(arg0, int *, 0x78C) = 0;
-    M2C_FIELD(arg0, int *, 0x790) = 0;
-    M2C_FIELD(arg0, int *, 0x794) = 0;
-    M2C_FIELD(arg0, int *, 0x7A0) = 2;
+    arg0->m_open = 1;
+    arg0->m_step0 = 0;
+    arg0->m_mode = 0;
+    arg0->m_subStep = 0;
+    arg0->m_unk7A0 = 2;
     return 0;
 }
 
-extern "C" int func_001AD940(int arg0)
+extern "C" int func_001AD940(MnuBoard *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0x778) == 0) {
+    if (arg0->m_open == 0) {
         return -1;
     }
-    M2C_FIELD(arg0, int *, 0x778) = 0;
+    arg0->m_open = 0;
     return 0;
 }
 
@@ -1417,27 +1376,33 @@ INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002FABF0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AD96C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001ADBD8);
-
-extern "C" void func_001ADC0C(int arg0)
+extern "C" int func_001ADBD8(MnuBoard *arg0)
 {
-    int temp_s0;
-
-    temp_s0 = arg0 + 0x7A4;
-    M2C_FIELD(arg0, int *, 0x1090) = (int) (*(int *)&_9MagSystem$m_current_system);
-    M2C_FIELD(temp_s0, int *, 0x4B0) = (int)&D_002ABB08;
-    Xiii_func_0018C190(temp_s0, (int)&D_002ABCE8);
-    M2C_FIELD(arg0, int *, 0x77C) = 0;
-    M2C_FIELD(temp_s0, int *, 4) = 1;
+    for (int i = 0; i < 2; i++) {
+        arg0->m_cursor[i] = 0;
+    }
+    arg0->m_max0 = 1;
+    return 0;
 }
 
-extern "C" int func_001ADC6C(int arg0)
+extern "C" void func_001ADC0C(MnuBoard *arg0)
+{
+    MnuRpk *rpk = &arg0->m_rpk;
+
+    arg0->m_sys = _9MagSystem$m_current_system;
+    rpk->m_tbl = &D_002ABB08;
+    Xiii_func_0018C190((int)rpk, (int)&D_002ABCE8);
+    arg0->m_cursor[0] = 0;
+    rpk->m_unk04 = 1;
+}
+
+extern "C" int func_001ADC6C(MnuBoard *arg0)
 {
     int *p;
     bool ok;
 
-    X_func_0018C068(arg0 + 0x7A4);
-    ok = !(X_func_00131550(M2C_FIELD(arg0, int *, 0x1090) + 0x12540) < 5);
+    X_func_0018C068(&arg0->m_rpk);
+    ok = !(X_func_00131550(arg0->m_sys + 0x12540) < 5);
     if (ok == 1) {
         p = (int *)(*(int *)&D_007B2060 + 4);
         *p = *p | 0x40000000;
@@ -1449,47 +1414,47 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001ADCD8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001ADDD0);
 
-extern "C" void func_001ADF04(int arg0)
+extern "C" void func_001ADF04(MnuMovie *arg0)
 {
-    X_func_0018BB8C(arg0 + 0x54);
-    (*(int *)(int *)((char *)(arg0) + 0x0)) = 0;
+    X_func_0018BB8C(&arg0->m_rpk);
+    arg0->m_open = 0;
     X_func_001AE2D8(arg0);
-    (*(int *)(int *)((char *)(arg0) + 0x970)) = 0;
+    arg0->m_active = 0;
 }
 
 
-extern "C" void func_001ADF3C(int arg0, int arg1)
+extern "C" void func_001ADF3C(MnuMovie *arg0, int arg1)
 {
     X_func_001AE1BC(arg0);
-    if (M2C_FIELD(arg0, int *, 0x970) == 1) {
-        Xv_func_001ADFE4(arg0);
+    if (arg0->m_active == 1) {
+        Xv_func_001ADFE4((int)arg0);
     }
-    Xii_func_0018BC18(arg0 + 0x54, 2);
+    Xii_func_0018BC18((int)&arg0->m_rpk, 2);
     if (arg1 & 1) {
-        return Xv___builtin_delete((void *)arg0);
+        return Xv___builtin_delete(arg0);
     }
 }
 
-extern "C" void func_001ADFB0(int arg0)
+extern "C" void func_001ADFB0(MnuMovie *arg0)
 {
     X_func_001AE188();
     X_func_001AE024(arg0);
-    (*(int *)(int *)((char *)(arg0) + 0x970)) = 1;
+    arg0->m_active = 1;
 }
 
 
-extern "C" void func_001ADFE4(int arg0)
+extern "C" void func_001ADFE4(MnuMovie *arg0)
 {
-    if ((*(int *)(int *)((char *)(arg0) + 0x970)) != 0) {
+    if (arg0->m_active != 0) {
         X_func_001AE1BC();
-        (*(int *)(int *)((char *)(arg0) + 0x970)) = 0;
+        arg0->m_active = 0;
     }
 }
 
 
-extern "C" int func_001AE01C(int arg0)
+extern "C" int func_001AE01C(MnuMovie *arg0)
 {
-    return (*(int *)(int *)((char *)(arg0) + 0x970));
+    return arg0->m_active;
 }
 
 
@@ -1504,25 +1469,25 @@ extern "C" int func_001AE02C()
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE040);
 
-extern "C" int func_001AE188(int arg0)
+extern "C" int func_001AE188(MnuMovie *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0) == 1) {
+    if (arg0->m_open == 1) {
         return -1;
     }
-    M2C_FIELD(arg0, int *, 0) = 1;
-    M2C_FIELD(arg0, int *, 0x3C) = 0;
-    M2C_FIELD(arg0, int *, 0x40) = 0;
-    M2C_FIELD(arg0, int *, 0x44) = 0;
-    M2C_FIELD(arg0, int *, 0x50) = 2;
+    arg0->m_open = 1;
+    arg0->m_step0 = 0;
+    arg0->m_mode = 0;
+    arg0->m_subStep = 0;
+    arg0->m_unk50 = 2;
     return 0;
 }
 
-extern "C" int func_001AE1BC(int arg0)
+extern "C" int func_001AE1BC(MnuMovie *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0) == 0) {
+    if (arg0->m_open == 0) {
         return -1;
     }
-    M2C_FIELD(arg0, int *, 0) = 0;
+    arg0->m_open = 0;
     return 0;
 }
 
@@ -1544,11 +1509,20 @@ INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002FAC58);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE1E8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE2D8);
-
-extern "C" void func_001AE318(int arg0)
+extern "C" int func_001AE2D8(MnuMovie *arg0)
 {
-    M2C_FIELD(arg0, int *, 0x940) = (int) (*(int *)&_9MagSystem$m_current_system);
+    for (int i = 0; i < 7; i++) {
+        arg0->m_cursor[i] = 0;
+    }
+    arg0->m_max[0] = 5;
+    arg0->m_max[1] = 2;
+    arg0->m_max[2] = 2;
+    return 0;
+}
+
+extern "C" void func_001AE318(MnuMovie *arg0)
+{
+    arg0->m_sys = _9MagSystem$m_current_system;
 }
 
 extern "C" int func_001AE328()
@@ -1559,50 +1533,50 @@ extern "C" int func_001AE328()
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE330);
 
-extern "C" void func_001AE474(int arg0)
+extern "C" void func_001AE474(MnuNow *arg0)
 {
-    X_func_0018BB8C(arg0 + 0x14);
-    (*(int *)(int *)((char *)(arg0) + 0x0)) = 0;
+    X_func_0018BB8C(&arg0->m_rpk);
+    arg0->m_open = 0;
     X_func_001AE7F0(arg0);
-    (*(int *)(int *)((char *)(arg0) + 0x910)) = 0;
+    arg0->m_active = 0;
 }
 
 
-extern "C" void func_001AE4AC(int arg0, int arg1)
+extern "C" void func_001AE4AC(MnuNow *arg0, int arg1)
 {
     X_func_001AE674(arg0);
-    if (M2C_FIELD(arg0, int *, 0x910) == 1) {
-        Xv_func_001AE574(arg0);
+    if (arg0->m_active == 1) {
+        Xv_func_001AE574((int)arg0);
     }
-    Xii_func_0018BC18(arg0 + 0x14, 2);
+    Xii_func_0018BC18((int)&arg0->m_rpk, 2);
     if (arg1 & 1) {
-        return Xv___builtin_delete((void *)arg0);
+        return Xv___builtin_delete(arg0);
     }
 }
 
-extern "C" void func_001AE520(int arg0, int arg1)
+extern "C" void func_001AE520(MnuNow *arg0, int arg1)
 {
-    X_func_0018BCC0(arg0 + 0x14, 2);
-    (*(int *)(int *)((char *)(arg0) + 0x430)) = arg1;
+    X_func_0018BCC0(&arg0->m_rpk, 2);
+    arg0->m_rpk.m_param = arg1;
     X_func_001AE640(arg0);
     X_func_001AE5BC(arg0);
-    (*(int *)(int *)((char *)(arg0) + 0x910)) = 1;
+    arg0->m_active = 1;
 }
 
 
-extern "C" void func_001AE574(int arg0)
+extern "C" void func_001AE574(MnuNow *arg0)
 {
-    if ((*(int *)(int *)((char *)(arg0) + 0x910)) != 0) {
-        X_func_0018C130(arg0 + 0x14);
+    if (arg0->m_active != 0) {
+        X_func_0018C130(&arg0->m_rpk);
         X_func_001AE674(arg0);
-        (*(int *)(int *)((char *)(arg0) + 0x910)) = 0;
+        arg0->m_active = 0;
     }
 }
 
 
-extern "C" int func_001AE5B4(int arg0)
+extern "C" int func_001AE5B4(MnuNow *arg0)
 {
-    return (*(int *)(int *)((char *)(arg0) + 0x910));
+    return arg0->m_active;
 }
 
 
@@ -1614,15 +1588,14 @@ INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002FACB0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002FACB8);
 
-extern "C" void func_001AE5BC(int arg0)
+extern "C" void func_001AE5BC(MnuNow *arg0)
 {
-    int temp_s0;
+    unsigned char *loader = arg0->m_rpk.m_loader;
 
-    temp_s0 = arg0 + 0x1C;
-    Xiiii_func_0018F744(temp_s0, (int)&D_002AC788, (int) "data/mnurpk/mnunow.rpk");
+    Xiiii_func_0018F744((int)loader, (int)&D_002AC788, (int) "data/mnurpk/mnunow.rpk");
     do {
 
-    } while (Xii_func_0018FEBC(temp_s0) == 0);
+    } while (Xii_func_0018FEBC((int)loader) == 0);
 }
 
 extern "C" int func_001AE600()
@@ -1631,38 +1604,37 @@ extern "C" int func_001AE600()
 }
 
 
-extern "C" void func_001AE614(int arg0, int arg1)
+extern "C" void func_001AE614(MnuNow *arg0, int arg1)
 {
-    int temp_v0;
+    MnuRpk *rpk = &arg0->m_rpk;
 
-    temp_v0 = arg0 + 0x14;
-    (*(int *)(int *)((char *)(arg0) + 0x904)) = arg1;
+    arg0->m_renderCtx = arg1;
     if (arg1 != 0) {
-        (*(int *)(int *)((char *)(temp_v0) + 0x4D0)) = arg1;
-        X_func_0018BD94(temp_v0);
+        rpk->m_renderCtx = arg1;
+        X_func_0018BD94(rpk);
     }
 }
 
 
-extern "C" int func_001AE640(int arg0)
+extern "C" int func_001AE640(MnuNow *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0) == 1) {
+    if (arg0->m_open == 1) {
         return -1;
     }
-    M2C_FIELD(arg0, int *, 0) = 1;
-    M2C_FIELD(arg0, int *, 4) = 0;
-    M2C_FIELD(arg0, int *, 8) = 0;
-    M2C_FIELD(arg0, int *, 0xC) = 0;
-    M2C_FIELD(arg0, int *, 0x10) = 2;
+    arg0->m_open = 1;
+    arg0->m_step0 = 0;
+    arg0->m_mode = 0;
+    arg0->m_subStep = 0;
+    arg0->m_unk10 = 2;
     return 0;
 }
 
-extern "C" int func_001AE674(int arg0)
+extern "C" int func_001AE674(MnuNow *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0) == 0) {
+    if (arg0->m_open == 0) {
         return -1;
     }
-    M2C_FIELD(arg0, int *, 0) = 0;
+    arg0->m_open = 0;
     return 0;
 }
 
@@ -1686,52 +1658,49 @@ extern "C" int func_001AE7F0()
 }
 
 
-extern "C" void func_001AE7F8(int arg0)
+extern "C" void func_001AE7F8(MnuNow *arg0)
 {
-    int temp_s0;
+    MnuRpk *rpk = &arg0->m_rpk;
 
-    temp_s0 = arg0 + 0x14;
-    M2C_FIELD(arg0, int *, 0x900) = (int) (*(int *)&_9MagSystem$m_current_system);
-    M2C_FIELD(temp_s0, int *, 0x4B0) = (int)&D_002AC7B8;
-    Xiii_func_0018C190(temp_s0, (int)&D_002AC980);
-    M2C_FIELD(temp_s0, int *, 4) = 1;
+    arg0->m_sys = _9MagSystem$m_current_system;
+    rpk->m_tbl = &D_002AC7B8;
+    Xiii_func_0018C190((int)rpk, (int)&D_002AC980);
+    rpk->m_unk04 = 1;
 }
 
-extern "C" int func_001AE848(int arg0)
+extern "C" int func_001AE848(MnuNow *arg0)
 {
-    X_func_0018C068(arg0 + 0x14);
+    X_func_0018C068(&arg0->m_rpk);
     return 0;
 }
 
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE868);
 
-extern "C" void func_001AE954(int arg0)
+extern "C" void func_001AE954(MnuItem *arg0)
 {
-    int var_s2;
-    int temp_a0;
-    int var_s1;
+    int i = 1;
+    MnuMsgWin *w;
 
-    var_s2 = 1;
-    Xii_func_0018BB8C(arg0 + 0x98);
-    var_s1 = arg0 + 0x1C68;
-    Xii_func_0018BB8C(arg0 + 0x984);
-    Xii_func_0018BB8C(arg0 + 0x1270);
-    Xii_func_001A066C(arg0 + 0x1B64);
+    Xii_func_0018BB8C((int)&arg0->m_rpk[0]);
+    w = arg0->m_msgWin;
+    Xii_func_0018BB8C((int)&arg0->m_rpk[1]);
+    Xii_func_0018BB8C((int)&arg0->m_rpk[2]);
+    Xii_func_001A066C((int)&arg0->m_sub1B64);
     do {
-        temp_a0 = var_s1;
-        var_s1 += 0x3BC;
-        Xii_func_0018330C(temp_a0);
-        var_s2 -= 1;
-    } while (var_s2 != -1);
-    M2C_FIELD(arg0, int *, 0) = 0;
-    Xii_func_001AEB7C(arg0);
-    M2C_FIELD(arg0, int *, 0x2480) = 0;
-    M2C_FIELD(arg0, int *, 0x242C) = 0xA00;
-    M2C_FIELD(arg0, int *, 0x2430) = 0xA23;
-    M2C_FIELD(arg0, int *, 0x2490) = 0;
-    M2C_FIELD(arg0, int *, 0x249C) = 0;
-    M2C_FIELD(arg0, int *, 0x24A0) = 0;
+        MnuMsgWin *cur = w;
+        w += 1;
+        Xii_func_0018330C((int)cur);
+        i -= 1;
+    } while (i != -1);
+    arg0->m_open = 0;
+    Xii_func_001AEB7C((int)arg0);
+    arg0->m_active = 0;
+    arg0->m_weaponId = 0xA00;
+    arg0->m_subItemId = 0xA23;
+    arg0->m_unk2490 = 0;
+    arg0->m_unk249C = 0;
+    arg0->m_unk24A0 = 0;
 }
 
 ObjAE9F4::~ObjAE9F4()
@@ -1785,136 +1754,144 @@ INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002FAE58);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002FAE68);
 
-extern "C" void func_001AEACC(int arg0, int arg1)
+extern "C" void func_001AEACC(MnuItem *arg0, int arg1)
 {
-    int temp_s0;
-    int temp_s3;
+    const char *font;
+    MnuRpk *rpk = &arg0->m_rpk[0];
 
-    temp_s3 = arg0 + 0x98;
-    if (M2C_FIELD(arg0, int *, 0x2480) == 0) {
-        M2C_FIELD(arg0, int *, 0x23E0) = arg1;
-        M2C_FIELD(arg0, int *, 0x24A0) = 0;
-        M2C_FIELD(arg0, int *, 0x2490) = 0;
-        M2C_FIELD(arg0, int *, 0x249C) = 0;
-        X_func_0018BCC0(temp_s3, 0x78);
-        M2C_FIELD(temp_s3, int *, 0x8E8) = 1;
-        M2C_FIELD(arg0, int *, 0x4B4) = arg1;
-        temp_s0 = (int) "fnt16US.bin";
+    if (arg0->m_active == 0) {
+        arg0->m_param = arg1;
+        arg0->m_unk24A0 = 0;
+        arg0->m_unk2490 = 0;
+        arg0->m_unk249C = 0;
+        X_func_0018BCC0(rpk, 0x78);
+        rpk->m_unk8E8 = 1;
+        arg0->m_rpk[0].m_param = arg1;
+        font = "fnt16US.bin";
         X_func_001AED5C(arg0);
         X_func_001AEC50(arg0);
-        M2C_FIELD(temp_s3, int *, 0x8E8) = 1;
-        X_func_0018C2E4(temp_s3, temp_s0, 0);
-        X_func_0018C2E4(temp_s3, temp_s0, 1);
-        M2C_FIELD(arg0, int *, 0x2480) = 1;
+        rpk->m_unk8E8 = 1;
+        X_func_0018C2E4(rpk, font, 0);
+        X_func_0018C2E4(rpk, font, 1);
+        arg0->m_active = 1;
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AEB7C);
+extern "C" void func_001AEB7C(MnuItem *arg0)
+{
+    arg0->m_canDog2 = 1;
+    arg0->m_canDog = 1;
+    arg0->m_canOpt2 = 1;
+    arg0->m_canOpt = 1;
+    for (int i = 0; i < 10; i++) {
+        arg0->m_cursor[i] = 0;
+    }
+    arg0->m_max[0] = 4;
+    arg0->m_max[1] = 2;
+    arg0->m_max[2] = 2;
+}
 
-extern "C" void func_001AEBC8(int arg0)
+extern "C" void func_001AEBC8(MnuItem *arg0)
 {
     int temp_s0;
 
-    if (M2C_FIELD(arg0, int *, 0x2480) != 0) {
-        M2C_FIELD(arg0, int *, 0x2490) = 0;
-        M2C_FIELD(arg0, int *, 0x249C) = 0;
-        X_func_0018C130(arg0 + 0x98);
+    if (arg0->m_active != 0) {
+        arg0->m_unk2490 = 0;
+        arg0->m_unk249C = 0;
+        X_func_0018C130(&arg0->m_rpk[0]);
         char *base = (char *)&D_006E9840;
         temp_s0 = (int)(base + 0x12540);
-        X_func_00135594(temp_s0, M2C_FIELD(arg0, int *, 0x2700));
-        X_func_001348B0(temp_s0, M2C_FIELD(arg0, int *, 0x2700));
-        X_func_00187464(arg0 + 0x1C68);
+        X_func_00135594(temp_s0, arg0->m_winId);
+        X_func_001348B0(temp_s0, arg0->m_winId);
+        X_func_00187464(&arg0->m_msgWin[0]);
         X_func_001AEE50(arg0);
-        M2C_FIELD(arg0, int *, 0x2480) = 0;
+        arg0->m_active = 0;
     }
 }
 
-extern "C" int func_001AEC48(int arg0)
+extern "C" int func_001AEC48(MnuItem *arg0)
 {
-    return (*(int *)(int *)((char *)(arg0) + 0x2480));
+    return arg0->m_active;
 }
 
 
-extern "C" void func_001AEC50(int arg0)
+extern "C" void func_001AEC50(MnuItem *arg0)
 {
     int lang = D_007812AC;
     int i;
     void *p;
 
-    for (i = 0; X_D_002ACA20_AEC50[i].unk0 != -1; i++) {
-        if (X_D_002ACA20_AEC50[i].unk0 == 1) {
+    for (i = 0; X_D_002ACA20[i].m_id != -1; i++) {
+        if (X_D_002ACA20[i].m_id == 1) {
             if (lang != 0) {
                 if (lang >= 0) {
                     if (lang < 5) {
-                        X_D_002ACA20_AEC50[i].unk4 = "tex01_eu.tm2";
+                        X_D_002ACA20[i].m_name = "tex01_eu.tm2";
                     }
                 }
             }
             break;
         }
     }
-    p = (char *)arg0 + 0xA0;
-    Xvp_func_0018F744(p, X_D_002ACA20_AEC50, "data/mnurpk/mnuitem.rpk");
+    p = arg0->m_rpk[0].m_loader;
+    Xvp_func_0018F744(p, X_D_002ACA20, "data/mnurpk/mnuitem.rpk");
     while (Xvp_func_0018FEBC(p) == 0) {
     }
 }
 
-extern "C" void func_001AED08(int arg0, int arg1)
+extern "C" void func_001AED08(MnuItem *arg0, int arg1)
 {
-    int temp_a0;
-    int temp_a0_2;
-    int temp_a0_3;
+    MnuRpk *rpk2 = &arg0->m_rpk[2];
 
-    temp_a0 = arg0 + 0x1270;
     if (arg1 != 0) {
-        (*(int *)(int *)((char *)(temp_a0) + 0x4D0)) = arg1;
-        X_func_0018BD94(temp_a0);
-        temp_a0_2 = arg0 + 0x984;
-        (*(int *)(int *)((char *)(temp_a0_2) + 0x4D0)) = arg1;
-        X_func_0018BD94(temp_a0_2);
-        temp_a0_3 = arg0 + 0x98;
-        (*(int *)(int *)((char *)(temp_a0_3) + 0x4D0)) = arg1;
-        X_func_0018BD94(temp_a0_3);
+        rpk2->m_renderCtx = arg1;
+        X_func_0018BD94(rpk2);
+        MnuRpk *rpk1 = &arg0->m_rpk[1];
+        rpk1->m_renderCtx = arg1;
+        X_func_0018BD94(rpk1);
+        MnuRpk *rpk0 = &arg0->m_rpk[0];
+        rpk0->m_renderCtx = arg1;
+        X_func_0018BD94(rpk0);
     }
 }
 
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AED5C);
 
-extern "C" int func_001AEE50(int arg0)
+extern "C" int func_001AEE50(MnuItem *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0) == 0) {
+    if (arg0->m_open == 0) {
         return -1;
     }
-    Xiii_func_001AF44C(arg0, 1);
-    M2C_FIELD(arg0, int *, 0) = 0;
+    Xiii_func_001AF44C((int)arg0, 1);
+    arg0->m_open = 0;
     return 0;
 }
 
-extern "C" void func_001AEE8C(int arg0)
+extern "C" void func_001AEE8C(MnuItem *arg0)
 {
-    for (int i = 0; X_D_002ACA20[i].unk0 != -1; i++) {
-        X_func_0018FBB0(arg0 + 0xA0, X_D_002ACA20[i].unk0);
+    for (int i = 0; X_D_002ACA20[i].m_id != -1; i++) {
+        X_func_0018FBB0(arg0->m_rpk[0].m_loader, X_D_002ACA20[i].m_id);
     }
 }
 
-extern "C" void func_001AEF14(int arg0)
+extern "C" void func_001AEF14(MnuItem *arg0)
 {
-    for (int i = 0; X_D_002ACA20_EF14[i].unk0 != -1; i++) {
-        X_func_0018F9CC(arg0 + 0xA0, X_D_002ACA20_EF14[i].unk0);
+    for (int i = 0; X_D_002ACA20[i].m_id != -1; i++) {
+        X_func_0018F9CC(arg0->m_rpk[0].m_loader, X_D_002ACA20[i].m_id);
     }
 }
 
-extern "C" void func_001AEF9C(int arg0)
+extern "C" void func_001AEF9C(MnuItem *arg0)
 {
-    for (int i = 0; X_D_002ACA20_EF9C[i].unk0 != -1; i++) {
-        X_func_0018FAB4(arg0 + 0xA0, X_D_002ACA20_EF9C[i].unk0);
+    for (int i = 0; X_D_002ACA20[i].m_id != -1; i++) {
+        X_func_0018FAB4(arg0->m_rpk[0].m_loader, X_D_002ACA20[i].m_id);
     }
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF024);
 
-extern "C" void func_001AF130(int arg0)
+extern "C" void func_001AF130(MnuItem *arg0)
 {
     int temp_v0;
     int temp_v0_2;
@@ -1924,26 +1901,26 @@ extern "C" void func_001AF130(int arg0)
 
     temp_v0 = sysFlags_F130()[1] & one;
     if (temp_v0 == one) {
-        M2C_FIELD(arg0, int *, 0x241C) = one;
-        M2C_FIELD(arg0, int *, 0x2414) = one;
+        arg0->m_canDog2 = one;
+        arg0->m_canDog = one;
     } else {
-        M2C_FIELD(arg0, int *, 0x241C) = 0;
-        M2C_FIELD(arg0, int *, 0x2414) = 0;
+        arg0->m_canDog2 = 0;
+        arg0->m_canDog = 0;
     }
     if (D_007A3210 == 7) {
-        M2C_FIELD(arg0, int *, 0x2414) = 0;
+        arg0->m_canDog = 0;
     }
     temp_v0_2 = sysFlags_F130()[1] & 2;
     if (temp_v0_2 != 0) {
         int temp_v1 = temp_v0_2 != 0;
-        M2C_FIELD(arg0, int *, 0x2418) = temp_v1;
-        M2C_FIELD(arg0, int *, 0x2410) = temp_v1;
+        arg0->m_canOpt2 = temp_v1;
+        arg0->m_canOpt = temp_v1;
     } else {
-        M2C_FIELD(arg0, int *, 0x2418) = 0;
-        M2C_FIELD(arg0, int *, 0x2410) = 0;
+        arg0->m_canOpt2 = 0;
+        arg0->m_canOpt = 0;
     }
     temp_v0_3 = sysFlags_F130()[1] & 4;
-    M2C_FIELD(arg0, int *, 0x240C) = (temp_v0_3 != 0);
+    arg0->m_canMap = (temp_v0_3 != 0);
 }
 
 extern "C" int func_001AF1D4()
@@ -1974,15 +1951,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF21C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF3F0);
 
-extern "C" void func_001AF44C(int arg0, int arg1)
+extern "C" void func_001AF44C(MnuItem *arg0, int arg1)
 {
     if (arg1 == 0) {
         X_func_001AF024();
         X_func_001AF21C(arg0, -1);
         char *base = (char *)&D_007812C0;
-        M2C_FIELD(arg0, int *, 0x2424) = X_func_001AF3F0(arg0, M2C_FIELD(base, unsigned short *, 0x2220C));
-        M2C_FIELD(arg0, int *, 0x242C) = (int) M2C_FIELD(base, unsigned short *, 0x2220E);
-        M2C_FIELD(arg0, int *, 0x2428) = X_func_001AF3F0(arg0, M2C_FIELD(base, unsigned short *, 0x2220E));
+        arg0->m_equipIdx = X_func_001AF3F0(arg0, M2C_FIELD(base, unsigned short *, 0x2220C));
+        arg0->m_weaponId = (int) M2C_FIELD(base, unsigned short *, 0x2220E);
+        arg0->m_weaponIdx = X_func_001AF3F0(arg0, M2C_FIELD(base, unsigned short *, 0x2220E));
     }
 }
 
@@ -2016,7 +1993,17 @@ extern "C" int func_001AF4FC(int arg0, int arg1)
     return (temp_v0 >= 0x2B2) ? 0xD0 : temp_v0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF578);
+extern "C" void func_001AF578(MnuItem *arg0, int arg1)
+{
+    MnuItemStockEnt *ent = arg0->m_slots[arg1];
+    if (ent->m_count > 1) {
+        ent->m_count--;
+    } else {
+        X_func_001C8214(&D_007812C0, arg1);
+    }
+    X_func_001AF21C(arg0, -1);
+    X_func_001AF5E0(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF5E0);
 
@@ -2032,16 +2019,26 @@ INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002FAEB0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B0784);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B0908);
+extern "C" int func_001B0908(MnuItem *arg0, int arg1)
+{
+    if (arg1 >= 12) {
+        return 0;
+    }
+    unsigned short id = arg0->m_slots[arg1]->m_itemId;
+    if (id == 0xA00) {
+        return 0;
+    }
+    return id == *(unsigned short *)&D_007A34CC;
+}
 
-extern "C" int func_001B0948(int arg0, int arg1)
+extern "C" int func_001B0948(MnuItem *arg0, int arg1)
 {
     unsigned short temp_v1;
 
     if (arg1 == 0xD) {
-        return M2C_FIELD(arg0, int *, 0x242C) == (*(unsigned short *)&D_007A34CE);
+        return arg0->m_weaponId == (*(unsigned short *)&D_007A34CE);
     }
-    temp_v1 = M2C_FIELD(M2C_FIELD(((arg1 * 4) + arg0), int *, 0x2434), unsigned short *, 8);
+    temp_v1 = arg0->m_slots[arg1]->m_itemId;
     if (temp_v1 == 0xA00) {
         return 0;
     }
@@ -2052,19 +2049,19 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B099C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B113C);
 
-extern "C" int func_001B1B34(int arg0, int arg1)
+extern "C" int func_001B1B34(MnuItem *arg0, int arg1)
 {
     if (arg1 < 0) {
         return 0xA00;
     }
     if (arg1 < 0xC) {
-        return M2C_FIELD(M2C_FIELD(((arg1 * 4) + arg0), int *, 0x2434), unsigned short *, 8);
+        return arg0->m_slots[arg1]->m_itemId;
     }
     if (arg1 == 0xC) {
-        return M2C_FIELD(arg0, int *, 0x2430);
+        return arg0->m_subItemId;
     }
     if (arg1 == 0xD) {
-        return M2C_FIELD(arg0, int *, 0x242C);
+        return arg0->m_weaponId;
     }
     return 0xA00;
 }
