@@ -1,4 +1,12 @@
 #include "include_asm.h"
+extern "C" int Xi_func_0014A230() asm("func_0014A230");
+extern "C" int Xi_func_0014A240() asm("func_0014A240");
+extern "C" int Xii_func_0014A21C(int) asm("func_0014A21C");
+extern "C" int Xii_func_0014A268(int) asm("func_0014A268");
+extern "C" int Xii_func_0014A21C(int) asm("func_0014A21C");
+extern "C" int Xii_func_0014A230(int) asm("func_0014A230");
+extern "C" int Xii_func_0014A240(int) asm("func_0014A240");
+extern "C" int Xii_func_0014A268(int) asm("func_0014A268");
 extern "C" int Xii_func_0014A78C(int) asm("func_0014A78C");
 extern "C" int Xiii_func_0014A78C(int, int) asm("func_0014A78C");
 extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
@@ -54,7 +62,49 @@ extern "C" void BdsMain__vfunc_01(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsMain__vfunc_04);
+extern "C" void BdsMain__vfunc_04(int self)
+{
+    if (M2C_FIELD(self, int *, 0x28) && M2C_FIELD(self, int *, 0x2C) && M2C_FIELD(self, int *, 0x24) == -1) {
+        if (M2C_FIELD(self, int *, 0x208)) {
+            if (!Xii_func_0014A21C(self)) {
+                if (M2C_FIELD(self, unsigned char *, 0x205)) {
+                    M2C_FIELD(self, int *, 0x24) = 0;
+                    M2C_FIELD(self, unsigned char *, 0x205) = 0;
+                }
+                return;
+            }
+            M2C_FIELD(self, unsigned char *, 0x205) = 1;
+        }
+        if (M2C_FIELD(self, int *, 0x20C) && Xii_func_0014A230(self)) {
+            M2C_FIELD(self, int *, 0x24) = 1;
+        } else if (M2C_FIELD(self, int *, 0x210) && (M2C_FIELD(self, int *, 0x30) & 1)) {
+            M2C_FIELD(self, int *, 0x24) = 2;
+        } else {
+            int result = Xii_func_0014A268(self);
+            if (M2C_FIELD(self, unsigned char *, 0x204)) {
+                if (!result) {
+                    M2C_FIELD(self, unsigned char *, 0x204) = 0;
+                    if (M2C_FIELD(self, int *, 0x218)) {
+                        M2C_FIELD(self, int *, 0x24) = 4;
+                        return;
+                    }
+                }
+            } else if (result) {
+                M2C_FIELD(self, unsigned char *, 0x204) = 1;
+                if (M2C_FIELD(self, int *, 0x214)) {
+                    M2C_FIELD(self, int *, 0x24) = 3;
+                    return;
+                }
+                goto fallback;
+            }
+fallback:
+            if (M2C_FIELD(self, int *, 0x21C) && Xii_func_0014A240(self)) {
+                M2C_FIELD(self, int *, 0x24) = 5;
+            } else return;
+        }
+
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsMain__vfunc_05);
 
