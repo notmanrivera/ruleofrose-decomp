@@ -180,7 +180,7 @@ extern "C" void func_0019397C(int arg0, char *arg1, int arg2, int arg3)
     *(int *)((char *)arg0 + 0x20) = *(int *)((char *)arg0 + 0x20) + 1;
 }
 
-// NON_MATCHING: 4/192 differ, 4 edits
+// NON_MATCHING: 3/192 differ, 3 edits
 #ifdef NON_MATCHING
 extern "C" int X_func_0022B518(...) asm("func_0022B518");
 extern "C" float Xfi_func_0022E958(int) asm("func_0022E958");
@@ -196,6 +196,7 @@ extern "C" int Xiiiiii_loadTM2__10DogTexInfoPCcPvii(int, int, int, int, int) asm
 extern "C" char *Xpi_func_00194588(int) asm("func_00194588");
 extern "C" void func_00193A1C(int arg0)
 {
+    int first, second;
     char *temp_v0_2;
     int temp_a0_2;
     int temp_a0_3;
@@ -238,12 +239,12 @@ loop_1:
                     temp_v0 = ((((((temp_s1 * 3) << 2) - temp_s1) << 3) + temp_s1) << 1) + 2;
                     temp_s1 <<= 6;
                     temp_v0_2 = Xpi_func_00194588(temp_v0);
-                    temp_s0 = (int)(temp_v0_2 + temp_s0);
-                    temp_v1 = temp_s0 + temp_s1;
+                    first = (int)temp_v0_2 + temp_s0;
+                    second = first + temp_s1;
                     M2C_FIELD(temp_s2, int *, 4) = (int)temp_v0_2;
-                    M2C_FIELD(temp_s2, int *, 8) = temp_s0;
-                    M2C_FIELD(temp_s2, int *, 0xC) = temp_v1;
-                    M2C_FIELD(temp_s2, int *, 0x10) = (int) (temp_v1 + temp_s1);
+                    M2C_FIELD(temp_s2, int *, 8) = first;
+                    M2C_FIELD(temp_s2, int *, 0xC) = second;
+                    M2C_FIELD(temp_s2, int *, 0x10) = (int) (second + temp_s1);
                     temp_v0_3 = M2C_FIELD(arg0, int *, 0xC);
                     X_func_0021A5B0(M2C_FIELD(temp_s2, int *, 0), M2C_FIELD(temp_v0_3, int *, 8), M2C_FIELD(temp_v0_3, int *, 4));
                     X_func_0021A700(M2C_FIELD(temp_s2, int *, 0), M2C_FIELD(temp_s2, int *, 8));
