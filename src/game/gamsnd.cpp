@@ -1550,8 +1550,6 @@ extern "C" void func_001E2AA0(Obj2AA0 *arg0, unsigned int arg1, int arg2) {
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2AA0);
 #endif
 
-// NON_MATCHING: 22/93 differ, 25 edits
-#ifdef NON_MATCHING
 struct ALIGNED(16) Ent2C40 {
     char pad00_2C40[0x20];
     unsigned int unk20;
@@ -1631,10 +1629,11 @@ struct Obj2C40 {
 }; // Obj2C40
 extern "C" int X_2C40_func_001E649C(Obj2C40 *, unsigned int, int) asm("func_001E649C");
 extern "C" void func_001E2C40(Obj2C40 *arg0, int arg1) {
+    register SndChain2C40 *idle PS2_REG("$17") = &arg0->m_que2C40.m_free2C40;
     SndChain2C40 *used = &arg0->m_que2C40.m_used2C40;
     SndIt2C40 it;
     SndIt2C40 last;
-    it = arg0->m_que2C40.begin();
+    it = ((SndQue2C40 *)idle)->begin();
     last = SndIt2C40(&used->m_head2C40);
     while (it != last) {
         if ((*it).unk2C == arg1) {
@@ -1648,9 +1647,6 @@ extern "C" void func_001E2C40(Obj2C40 *arg0, int arg1) {
 }
 
 // ---- end
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2C40);
-#endif
 
 extern "C" void func_001E2DB4(Obj2DB4 *self, unsigned int id, Vec2DB4 *position, int scene, int flags)
 {
