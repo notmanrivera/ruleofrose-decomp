@@ -1,4 +1,10 @@
 #include "include_asm.h"
+struct EffMan_177E24 {
+    char pad[0x88C];
+    int arr[256];
+    int count;
+};
+extern "C" void *X_177E24_memmove(void *, const void *, unsigned int) asm("memmove");
 struct EffMan_1776C4 {
     int field_0;
     void *ptrs[0x110];
@@ -157,7 +163,16 @@ extern "C" void func_00177E04(EffMan_177E04 *self, int arg1)
     self->arr[self->count++] = arg1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177E24);
+extern "C" void func_00177E24(EffMan_177E24 *self, int arg1)
+{
+    for (int i = 0; i < self->count; i++) {
+        if (self->arr[i] == arg1) {
+            X_177E24_memmove(&self->arr[i], &self->arr[i + 1], (self->count - i - 1) * 4);
+            self->count--;
+            return;
+        }
+    }
+}
 
 extern "C" int func_00177E9C(EffMan_177E9C *self)
 {
