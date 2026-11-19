@@ -243,14 +243,12 @@ extern "C" int EffFire1__vfunc_02(int arg0, int arg1)
     return 1;
 }
 
-// NON_MATCHING: 6/52 differ, 8 edits
-#ifdef NON_MATCHING
 extern int D_002F23E0;
 extern "C" int EffFire1__vfunc_05(int arg0)
 {
     unsigned int bits[3];
     float temp_f0;
-    float var_f0;
+    register float var_f0 PS2_REG("$f0");
     float var_f2;
     unsigned int temp_hi;
 
@@ -275,9 +273,6 @@ extern "C" int EffFire1__vfunc_05(int arg0)
     }
     return 1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFire1__vfunc_05);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffFire1", EffFire1__vfunc_08);
 
