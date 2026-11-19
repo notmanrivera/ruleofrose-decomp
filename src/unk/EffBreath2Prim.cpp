@@ -1,5 +1,17 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+struct Vec4_f55c { float x, y, z, w; } __attribute__((aligned(8)));
+struct Param_f55c { float *sp10; float sp14; float sp18; float sp1C; int sp20; int sp24; int sp28; };
+struct Obj_f55c { unsigned char pad0[0x70]; float m_unk70; float m_unk74; float m_unk78; float m_unk7C; float m_unk80; unsigned char pad84[0xC]; Vec4_f55c m_unk90; int m_unkA0; int m_unkA4; };
+extern const Vec4_f55c D_002F2230;
+extern "C" void X_f55c_func_00237340(void *) throw() asm("func_00237340");
+extern "C" void X_f55c_func_00237A40(void *, void *, void *) throw() asm("func_00237A40");
+extern "C" void X_f55c_func_00237818(void *, void *, float) throw() asm("func_00237818");
+extern "C" void X_f55c_func_00237830(void *, void *, float) throw() asm("func_00237830");
+extern "C" void X_f55c_func_0016AF20(void *) throw() asm("func_0016AF20");
+extern "C" void X_f55c_func_0016AE00(void *, float) throw() asm("func_0016AE00");
+extern "C" int X_f55c_func_0021E428(int, void *) throw() asm("func_0021E428");
+extern "C" int X_f55c_func_0021E690(int, void *, void *) throw() asm("func_0021E690");
 struct Bg8Pair { long long a, b; };
 extern const int D_002F2200;
 extern const float D_002F2278[4];
@@ -185,7 +197,44 @@ extern "C" void EffBreath2Ground__vfunc_08(int arg0, int arg1, int arg2, int arg
     X_bg8_func_0021B550(X_bg8_func_0021E688(stack.sp28), 0x47, 0x5000D);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016F55C);
+extern "C" int func_0016F55C(Obj_f55c *arg0, Param_f55c *arg1)
+{
+    float mat[4][4] __attribute__((aligned(8)));
+    Vec4_f55c scale;
+    Vec4_f55c color;
+    float var_f3;
+    float temp_f2;
+    float var_f2;
+
+    X_f55c_func_00237340(mat);
+    temp_f2 = (float)arg0->m_unkA0 * 0.5f;
+    scale = D_002F2230;
+    var_f3 = (temp_f2 > 1.0f) ? 1.0f : temp_f2;
+    float s = arg0->m_unk80 * arg1->sp18 * var_f3;
+    scale.y = s;
+    scale.x = s;
+    X_f55c_func_00237A40(mat, mat, &scale);
+    X_f55c_func_00237818(mat, mat, -1.5707962f);
+    X_f55c_func_00237830(mat, mat, arg1->sp10[2]);
+    float *pos = arg1->sp10;
+    mat[3][0] = arg0->m_unk70 + pos[0];
+    mat[3][1] = arg0->m_unk74;
+    mat[3][2] = arg0->m_unk78 + pos[1];
+    color = arg0->m_unk90;
+    int temp_a3 = arg1->sp20;
+    if (temp_a3 < 2) {
+        var_f2 = (float)temp_a3 * 0.5f;
+    } else {
+        int rem = arg0->m_unkA4 - temp_a3;
+        var_f2 = (rem < 0xF) ? ((float)rem / 15.0f) : 1.0f;
+    }
+    color.w *= var_f2 * arg1->sp1C;
+    X_f55c_func_0016AF20(&color);
+    X_f55c_func_0016AE00(&color, arg1->sp14);
+    int pkt = X_f55c_func_0021E428(arg1->sp28, mat);
+    arg1->sp28 = pkt;
+    return X_f55c_func_0021E690(pkt, mat[3], &color);
+}
 
 extern "C" int EffCameraAnim1__vfunc_02(EffCameraAnim1_v2 *arg0, int arg1)
 {
