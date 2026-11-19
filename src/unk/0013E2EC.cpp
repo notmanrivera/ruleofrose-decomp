@@ -102,21 +102,20 @@ INCLUDE_ASM("asm/nonmatchings/unk/0013E2EC", func_0013E2EC);
 #endif
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" void func_0013E4C0(MagScene *self, int theN, float *theA, float *theB)
 {
     if (theN == 0) {
         *theA = *theB = 0.0f;
         return;
     }
-    int n = theN / 8;
-    *theA = (float)n * 1.5707963f / 3.0f;
-    *theB = (float)(theN - n * 8) * 1.5707963f / 9.0f;
+    register int n PS2_REG("$2") = theN / 8;
+    register float quarterTurn PS2_REG("$f3") = 1.5707963f;
+    register float divisor PS2_REG("$f4") = 3.0f;
+    *theA = (float)n * quarterTurn / divisor;
+    register int scaled PS2_REG("$3") = n * 8;
+    n = theN - scaled;
+    *theB = (float)n * quarterTurn / 9.0f;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/0013E2EC", func_0013E4C0);
-#endif
 
 
 INCLUDE_ASM("asm/nonmatchings/unk/0013E2EC", func_0013E548);
