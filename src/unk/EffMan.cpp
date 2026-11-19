@@ -1,4 +1,13 @@
 #include "include_asm.h"
+struct EffManEntry_1781D0 {
+    char pad0[4];
+    int field_4;
+    char pad8[0x58];
+};
+struct EffMan_1781D0 {
+    char pad[0xC90];
+    EffManEntry_1781D0 entries[16];
+};
 struct EffMan_177E04 {
     char pad[0x88C];
     int arr[256];
@@ -184,7 +193,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_001780C0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00178148);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_001781D0);
+extern "C" int func_001781D0(EffMan_1781D0 *self)
+{
+    for (int i = 0; i < 16; i++) {
+        if (self->entries[i].field_4 == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_0017820C);
 
