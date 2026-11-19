@@ -3363,8 +3363,9 @@ extern "C" int func_001F2A84(TskFrameFunc *arg0)
     return 0;
 }
 
-// NON_MATCHING: 12/91 differ, 10 edits
+// NON_MATCHING: 5/91 differ, 5 edits
 #ifdef NON_MATCHING
+extern "C" int Xiiiii_func_00131184(int, int, int, int) asm("func_00131184");
 extern "C" int X_func_001311F4_2bcc(int, int *) asm("func_001311F4");
 extern "C" int X_func_00131184_2bcc(int, int, int, int) asm("func_00131184");
 extern "C" int func_001F2BCC(TskFrameFunc *arg0)
@@ -3375,9 +3376,9 @@ extern "C" int func_001F2BCC(TskFrameFunc *arg0)
     {
         int t = arg0->m_param.i[0] / 4;
         int off = 0x12540;
+        arr[1] = 6;
         arr[0] = 2;
         arr[2] = t;
-        arr[1] = 6;
         X_func_001311F4_2bcc((int)&D_006E9840 + off, arr);
         arg0->m_step++;
         arg0->m_cnt = arg0->m_param.i[0] / 2;
