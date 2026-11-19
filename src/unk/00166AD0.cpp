@@ -1,5 +1,7 @@
 #include "ror.h"
 #include "include_asm.h"
+extern "C" void Xv_func_00202F10(int) asm("func_00202F10");
+extern "C" int Xiffii_func_00169BAC(int, float, float, int, int) asm("func_00169BAC");
 extern "C" void Xv_func_0016A6B4(float *) asm("func_0016A6B4");
 extern "C" void Xv_func_0016A7AC(float *) asm("func_0016A7AC");
 extern "C" void Xv_func_00166DA4(int, int) asm("func_00166DA4");
@@ -167,7 +169,18 @@ extern "C" int func_001677D0(int arg0, int *arg1, int *arg2) {
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001677D0);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001679B4);
+extern "C" int func_001679B4(int arg0, unsigned int arg1, int arg2, float fparg0, float fparg1)
+{
+    if (!cLookup((int)&D_007812C0, arg1) || M2C_FIELD(arg0, int *, 0x24) == 2) {
+        Xv_func_00202F10(M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1F0));
+        return 2;
+    }
+    if (Xiffii_func_00169BAC(arg2, fparg0, fparg1, arg1, M2C_FIELD(arg0, int *, 8)) != 0) {
+        Xv_func_00202F10(M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1F0));
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F19E0);
 INCLUDE_RODATA("asm/nonmatchings/unk/00166AD0", D_002F19F0);
