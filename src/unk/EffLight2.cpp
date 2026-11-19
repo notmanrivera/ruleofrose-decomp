@@ -1,4 +1,22 @@
 #include "include_asm.h"
+struct EffFoot1Prim_v2 {
+    char pad0[0x30];
+    float x, y, z, w;
+    int f40;
+    int f44;
+    int f48;
+    float f4C;
+    float f50;
+};
+struct EffFoot1Arg_v2 {
+    char pad0[0x10];
+    float x, y, z;
+    int f1C;
+    int f20;
+    float f24;
+    float f28;
+};
+extern "C" int X_12EffFoot1Prim_Eff0_vfunc02(EffFoot1Prim_v2 *, EffFoot1Arg_v2 *) asm("Eff0__vfunc_02");
 extern "C" float X_12EffFindItem1_16FF18(int, int) asm("func_0016FF18");
 extern "C" int Xiiiff_func_00174C4Cb(int, int, float, float) asm("func_00174C4C");
 extern "C" int Xiiii_func_00173618(int, int, int, int) asm("func_00173618");
@@ -32,7 +50,22 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot1__vfunc_05);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_001730D4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot1Prim__vfunc_02);
+extern "C" int EffFoot1Prim__vfunc_02(EffFoot1Prim_v2 *self, EffFoot1Arg_v2 *arg1)
+{
+    if (X_12EffFoot1Prim_Eff0_vfunc02(self, arg1) == 0) {
+        return 0;
+    }
+    self->x = arg1->x;
+    self->y = arg1->y;
+    self->z = arg1->z;
+    self->w = 1.0f;
+    self->f40 = arg1->f1C;
+    self->f44 = arg1->f20;
+    self->f4C = arg1->f24;
+    self->f50 = arg1->f28;
+    self->f48 = 0;
+    return 1;
+}
 
 extern "C" int EffFoot1Prim__vfunc_05(int arg0)
 {
