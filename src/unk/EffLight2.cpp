@@ -392,7 +392,52 @@ extern "C" void func_00174C44(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00174C4C);
 
+// NON_MATCHING: 30/47 differ (size 0xBC, game 0xC4), 19 edits
+#ifdef NON_MATCHING
+struct EffKey_174D14 {
+    unsigned short frame;
+    unsigned short flags;
+    float value;
+};
+struct EffTrack_174D14 {
+    char pad0[4];
+    unsigned short numKeys;
+    unsigned short flags;
+    EffKey_174D14 keys[1];
+};
+struct EffObj_174D14 {
+    char pad0[0x44];
+    unsigned short curFrame;
+};
+extern "C" float func_00174D14(EffObj_174D14 *obj, EffTrack_174D14 *track)
+{
+    int i;
+    EffKey_174D14 *p = track->keys;
+    for (i = 0; i < track->numKeys; i++, p++) {
+        if (obj->curFrame < p->frame) {
+            break;
+        }
+    }
+    if (i > 0) {
+        if (i != track->numKeys) {
+            goto check_flags;
+        }
+    ret_prev:
+        return (p - 1)->value;
+    check_flags:
+        if (!(p->flags & 1)) {
+            goto ret_prev;
+        }
+        EffKey_174D14 *prev = p - 1;
+        unsigned short f0 = prev->frame;
+        float v0 = prev->value;
+        return v0 + (p->value - v0) * (float)(obj->curFrame - f0) / (float)(p->frame - f0);
+    }
+    return 0.0f;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00174D14);
+#endif
 
 // NON_MATCHING: 13/50 differ (size 0xC8, game 0xC4), 7 edits (xori $v1, $v1, 0x0 before movn)
 #ifdef NON_MATCHING
