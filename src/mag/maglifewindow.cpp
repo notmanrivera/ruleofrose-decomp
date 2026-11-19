@@ -108,23 +108,18 @@ extern "C" void func_0012FDDC(MagLifeWindow *self, int a)
 }
 
 
-// NON_MATCHING: the stores come out in another order.
-#ifdef NON_MATCHING
 void MagLifeWindow::func_0012FE30(int theW, int theH)
 {
+    m_buf_w = 0x200;
+    m_unkB4 = 128.0f;
     m_unkBC = 128.0f;
     m_w = theW;
     m_h = theH;
     m_unkAC = -1;
-    m_buf_w = 0x200;
-    m_unkB4 = 128.0f;
     m_unkB8 = 0.0f;
     m_unkB0 = 0.0f;
     m_buf_h = 0x200;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglifewindow", func_0012FE30);
-#endif
 
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifewindow", func_0012FE68);
