@@ -1,4 +1,10 @@
 #include "include_asm.h"
+struct EffNameTable_177F54 {
+    const char *names[54];
+};
+extern "C" const EffNameTable_177F54 D_002F2CD0;
+extern "C" unsigned int X_177F54_strlen(const char *) asm("strlen");
+extern "C" void *X_177F54_memcpy(void *, const void *, unsigned int) asm("memcpy");
 struct EffMan_176AFC {
     void *field_0;
     void *ptrs[0x110];
@@ -479,7 +485,19 @@ extern "C" void func_00177EF8(EffMan_177EF8 *self, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177F54);
+extern "C" void func_00177F54(int arg0, char *arg1, const char *arg2)
+{
+    EffNameTable_177F54 table = D_002F2CD0;
+    const char *s = table.names[arg0];
+    int len = X_177F54_strlen(s);
+    X_177F54_memcpy(arg1, s, len);
+    if (arg2 != 0) {
+        int len2 = X_177F54_strlen(arg2);
+        X_177F54_memcpy(arg1 + len, arg2, len2);
+        len += len2;
+    }
+    arg1[len] = 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffMan", D_002F2B90);
 
