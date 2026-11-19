@@ -419,16 +419,16 @@ extern "C" void *func_001D8064(void *arg0, void *arg1, void *arg2, int arg3)
 extern "C" void func_001D8114(void) {
 }
 
-// NON_MATCHING: 6/24 differ, 6 edits
-#ifdef NON_MATCHING
 extern "C" void *func_001D811C(int arg0, int arg1, float *arg2, int arg3)
 {
-    char *entry = (char *)&D_007811B4 + arg3 * 0x18;
+    register int offset PS2_REG("$2") = arg3 * 0x18;
+    char *entry = (char *)&D_007811B4 + offset;
     register char *ptr PS2_REG("$4") = 0;
     if (*(int *)(entry + 4) != 0) {
-        char *base = *(char **)(entry + 0xC);
-        if (base != 0) {
-            ptr = base + arg1 * 0x90;
+        entry = *(char **)(entry + 0xC);
+        if (entry != 0) {
+            offset = arg1 * 0x90;
+            ptr = entry + offset;
         }
     }
     arg2[0] = *(float *)(ptr + 0x10);
@@ -436,9 +436,6 @@ extern "C" void *func_001D811C(int arg0, int arg1, float *arg2, int arg3)
     arg2[2] = *(float *)(ptr + 0x18);
     return ptr;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D811C);
-#endif
 
 extern "C" float func_001D817C(int arg0, int *arg1, void *arg2, int arg3)
 {
