@@ -1,5 +1,9 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+extern "C" int Xpi_func_0022AEC0(void *) asm("func_0022AEC0");
+extern "C" void *Xpi_func_0022AED8(void *, int) asm("func_0022AED8");
+extern "C" const char *Xpi_func_0022AF08(void *, int) asm("func_0022AF08");
+extern "C" const char *X_strstr(const char *, const char *) asm("strstr");
 struct EffVec4 { float x, y, z, w; };
 extern "C" int Xiii_Eff0__vfunc_02(int, int) asm("Eff0__vfunc_02");
 extern "C" int Xi_func_0016AD94() asm("func_0016AD94");
@@ -132,7 +136,19 @@ extern "C" void func_0016FF78(int arg0, int arg1, int arg2, float fparg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016FFEC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_001700B0);
+extern "C" void *func_001700B0(void *arg0, const char *arg1, int *arg2)
+{
+    int n = Xpi_func_0022AEC0(arg0);
+    for (int i = 0; i < n; i++) {
+        if (X_strstr(Xpi_func_0022AF08(arg0, i), arg1)) {
+            if (arg2) {
+                *arg2 = i;
+            }
+            return Xpi_func_0022AED8(arg0, i);
+        }
+    }
+    return 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffBreath2Prim", D_002F2278);
 
