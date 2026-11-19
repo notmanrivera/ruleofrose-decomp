@@ -1,5 +1,6 @@
 #include "ror.h"
 #include "include_asm.h"
+extern "C" void Xiiii_func_001685C0(int, int, int) asm("func_001685C0");
 extern "C" int Xiiu_func_001D19A8(int, unsigned int) asm("func_001D19A8");
 extern "C" int Xiiii_ffi_func_001F603C(int, int, int, int, float, float, int) asm("func_001F603C");
 extern "C" float *func_001D2B8C(int, unsigned int);
@@ -439,7 +440,15 @@ case 68:
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001685C0);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001687BC);
+extern "C" void func_001687BC(int arg0, int arg1, int arg2)
+{
+    int temp_v1 = M2C_FIELD(arg0, int *, 0xC);
+    if (((m2c_v200_18_i *)(temp_v1))->call() == 2) {
+        Xiiii_func_001685C0(arg0, arg1, arg2);
+        return;
+    }
+    Xiiii_func_001680A0(arg0, arg1, arg2);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00168844);
 
