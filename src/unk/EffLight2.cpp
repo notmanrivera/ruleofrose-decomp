@@ -1,4 +1,27 @@
 #include "include_asm.h"
+extern "C" int X_172F4C_CheckId(int) asm("I3rRoot__CheckIdString");
+extern "C" void X_172F4C_1730D4(int, int) asm("func_001730D4");
+extern "C" void X_172F4C_assert(const char *, int, const char *) asm("ror_assert");
+extern const char D_002F2700[];
+extern const char D_002F2710[];
+extern const char X_172F4C_2F2720[] asm("D_002F2720");
+extern const char D_002F2730[];
+struct m2c_v14_58_i { char pad[20]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual int call(); };
+struct m2c_v94_48_i { char pad[148]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual int call(); };
+struct Scene_172F4C {
+    char pad0[0x2920];
+    char actors[128][0x4D0];
+    char pad29120[0x1CA0];
+    m2c_v14_58_i m_pc;
+    char pad2ADD8[0x5A5DC];
+    int m_curdog;
+    int getCurDog() {
+        if (m_curdog < 0) {
+            X_172F4C_assert(D_002F2700, 0x2C4, D_002F2710);
+        }
+        return (int)actors[m_curdog];
+    }
+};
 struct CheckArg_1730D4 {
     unsigned int flags;         // 0x00
     void *actor;                // 0x04
@@ -260,7 +283,33 @@ extern "C" int EffFoot1__vfunc_02(EffFoot1_172E4C *self, EffFoot1Arg_172E4C *arg
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot1__vfunc_05);
+extern "C" int EffFoot1__vfunc_05(int arg0)
+{
+    m2c_v14_58_i *pc = (m2c_v14_58_i *)(D_00298E08 + 0x2ADC0);
+    int temp_s1 = pc->call();
+    int temp_s0_2 = ((Scene_172F4C *)D_00298E08)->getCurDog();
+    if (temp_s1 != 0) {
+        int temp_a0_2 = M2C_FIELD(temp_s1, int *, 0x11C);
+        if ((temp_a0_2 != 0) && (X_172F4C_CheckId(temp_a0_2) != 0)) {
+            X_172F4C_assert(X_172F4C_2F2720, 0xF8, D_002F2730);
+        }
+        if (M2C_FIELD(temp_s1, int *, 0x11C) != 0) {
+            if (((m2c_v94_48_i *)(temp_s1))->call() == 0) {
+                X_172F4C_1730D4(arg0, temp_s1);
+            }
+        }
+    }
+    int temp_a0_3 = M2C_FIELD(temp_s0_2, int *, 0x11C);
+    if ((temp_a0_3 != 0) && (X_172F4C_CheckId(temp_a0_3) != 0)) {
+        X_172F4C_assert(X_172F4C_2F2720, 0xF8, D_002F2730);
+    }
+    if (M2C_FIELD(temp_s0_2, int *, 0x11C) != 0) {
+        if (((m2c_v94_48_i *)(temp_s0_2))->call() == 0) {
+            X_172F4C_1730D4(arg0, temp_s0_2);
+        }
+    }
+    return 1;
+}
 
 extern "C" void func_001730D4(EffFoot1_1730D4 *arg0, void *arg1)
 {
