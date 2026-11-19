@@ -387,6 +387,27 @@ def auto_m2c():
     return out
 
 
+def flag_sweep():
+    """tools/flag_sweep.py (log build/workers/flag-sweep.log): one
+    "[k/N] file: done" line per file; leads in build/flag_sweep.tsv."""
+    path = os.path.join(ST, "flag-sweep.log")
+    try:
+        lines = open(path, encoding="utf-8", errors="replace").read().splitlines()
+    except OSError:
+        return []
+    running = alive("flag_sweep", path, 10)
+    prog = [m for m in (re.match(r"^\[(\d+)/(\d+)\] (\S+): (.*)$", ln) for ln in lines) if m]
+    if not running and not prog:
+        return []
+    out = [f"{col('flag_sweep', 'bold')} " + (col("trabajando", "green") if running else col("terminado", "dim"))
+           + f"  (opciones por archivo, R19; log {os.path.relpath(path, MAIN)})"]
+    if prog:
+        k, n = int(prog[-1].group(1)), int(prog[-1].group(2))
+        f = round(WIDTH * k / n)
+        out.append(f"  archivos  {chr(0x2588) * f}{chr(0x2591) * (WIDTH - f)} {k}/{n}  (último: {prog[-1].group(3)})")
+    return out
+
+
 def twin_sweeps():
     """tools/orca/twin_sweep.sh (log build/workers/twin-sweep.log): twins
     filled with no model after each merge."""
@@ -466,7 +487,7 @@ def render(reset=False):
             out.extend(worker(fn[:-4], read_env(os.path.join(ST, fn)), idle))
             out.append("")
     pq = []
-    for part in (perm_official(), permuter(), auto_m2c(), twin_sweeps()):
+    for part in (perm_official(), permuter(), auto_m2c(), twin_sweeps(), flag_sweep()):
         if part:
             pq += ([""] if pq else []) + part
     if pq:

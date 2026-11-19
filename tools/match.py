@@ -122,12 +122,13 @@ def server(action):
     print(f"{SERVER}: {'up' if server_up() else 'down'}")
 
 
-def compile_file(name, source=None, extra="", sync=True):
+def compile_file(name, source=None, extra="", sync=True, dumps=None):
     """build/match/<name>.o from src/<name>.cpp, or build/match/<name>.<stem>.o
     from another source (so variants of one file can compile at once).
     With the server, sync=False skips bringing its copy of the headers and of
     the file's asm up to date (for many compiles in a row). Returns the
-    object's path and the compiler's warnings."""
+    object's path and the compiler's warnings. dumps: a directory under the
+    repo that receives cc1's dump files (<file>.cpp.* from -d flags in extra)."""
     src_path = (ROOT / "src" / f"{name}.cpp" if source is None else Path(source).resolve())
     tag = "" if source is None else "." + re.sub(r"\W", "_", src_path.stem)
     out = ROOT / f"build/match/{name}{tag}.o"
@@ -161,11 +162,15 @@ cp /work/{rel} {v}/src/{name}.cpp
 cd {v}/src
 ee-cc {configure.COMPILER} {configure.CFLAGS} {extra} -c {name}.cpp -o {v}/out.o
 cp {v}/out.o /work/{out_rel}
+{f'mkdir -p /work/{dumps}; for f in {parts[-1]}.cpp.*; do [ -e "$f" ] && cp "$f" /work/{dumps}/; done' if dumps else ''}
 """
         r = subprocess.run([docker(), "exec", SERVER, "sh", "-c", cmd], capture_output=True, text=True)
     else:
         src = f"{name}.cpp" if source is None else f"../{rel}"
         cmd = f"cd src && ee-cc {configure.COMPILER} {configure.CFLAGS} {extra} -c {src} -o ../{out_rel}"
+        if dumps:
+            base = Path(src).name
+            cmd += f"; s=$?; mkdir -p ../{dumps}; for f in {base}.*; do [ \"$f\" != {base} ] && mv \"$f\" ../{dumps}/; done; exit $s"
         r = subprocess.run([docker(), "run", "--rm", *image_args(), "sh", "-c", cmd],
                            capture_output=True, text=True)
     if r.returncode:
