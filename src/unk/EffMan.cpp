@@ -1,4 +1,14 @@
 #include "include_asm.h"
+struct EffManEntry_178148 {
+    int active;
+    char name[0x5C];
+};
+struct EffMan_178148 {
+    char pad[0xC94];
+    EffManEntry_178148 entries[16];
+};
+extern "C" unsigned int X_178148_strlen(const char *) asm("strlen");
+extern "C" int X_178148_memcmp(const void *, const void *, unsigned int) asm("memcmp");
 struct FileReadReq_1780C0 {
     int m_unk00;
     int m_unk04;
@@ -301,7 +311,17 @@ extern "C" void func_001780C0(EffMan_1780C0 *self)
     self->m_req.m_buf = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00178148);
+extern "C" int func_00178148(EffMan_178148 *self, int arg1, const char *arg2)
+{
+    EffManEntry_178148 *p = self->entries;
+    for (int i = 0; i < 16; i++, p++) {
+        if (p->active != 0 &&
+            X_178148_memcmp(p->name, arg2, X_178148_strlen(p->name)) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 extern "C" int func_001781D0(EffMan_1781D0 *self)
 {
