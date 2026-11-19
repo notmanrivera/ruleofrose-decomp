@@ -389,4 +389,42 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffBreath2Prim", D_002F22F8);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffBreath2Prim", D_002F2310);
 
+// NON_MATCHING: 11/99 differ, 12 edits
+#ifdef NON_MATCHING
+extern "C" int X_170158_func_0022B3D8(int, const char *) asm("func_0022B3D8");
+extern "C" void Xiiii_ror_assert(const char *, int, const char *) asm("ror_assert");
+struct m2c_v94_90_iis { char pad[148]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16(); virtual void v17(); virtual int call(void *, int); };
+struct DogModel_170158 : public m2c_v94_90_iis { char pad1[0x11C - 0x98]; int m_i3r_root; int getNodeIndexByName(const char *p) { if (!m_i3r_root) Xiiii_ror_assert("dog/dogmodel.h", 0x131, "m_i3r_root"); if (!p) Xiiii_ror_assert("dog/dogmodel.h", 0x131, "p"); return X_170158_func_0022B3D8(m_i3r_root, p); } };
+struct Vec3_170158 { float x, y, z; };
+struct Pts_170158 { int pad; Vec3_170158 pts[1]; };
+struct Sub_170158 { DogModel_170158 *model; float cx, cy, cz; float hx, hy, hz; };
+struct Obj_170158 { int mask; Sub_170158 sub; Pts_170158 m_pts; };
+extern "C" void func_00170158(Obj_170158 *arg0, int arg1, const char *arg2)
+{
+    struct { float x, y, z, w; } stack;
+    DogModel_170158 *temp_s1;
+
+    stack.z = stack.y = stack.x = 0.0f;
+    stack.w = 1.0f;
+    temp_s1 = arg0->sub.model;
+    temp_s1->call(&stack, temp_s1->getNodeIndexByName(arg2));
+    float cx = arg0->sub.cx;
+    float hx = arg0->sub.hx;
+    if (!(stack.x < (cx - hx)) && !((cx + hx) < stack.x)) {
+        float cz = arg0->sub.cz;
+        float hz = arg0->sub.hz;
+        if (!(stack.z < (cz - hz)) && !((cz + hz) < stack.z)) {
+            float cy = arg0->sub.cy;
+            float hy = arg0->sub.hy;
+            if (!(stack.y < (cy - hy)) && !((cy + hy) < stack.y)) {
+                arg0->mask |= (1 << arg1);
+                arg0->m_pts.pts[arg1].x = stack.x;
+                arg0->m_pts.pts[arg1].y = stack.y;
+                arg0->m_pts.pts[arg1].z = stack.z;
+            }
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_00170158);
+#endif
