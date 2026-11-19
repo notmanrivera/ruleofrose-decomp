@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+extern "C" int Xii_strlen(int) asm("strlen");
 extern "C" int Xpi_func_0022AEC0(void *) asm("func_0022AEC0");
 extern "C" void *Xpi_func_0022AED8(void *, int) asm("func_0022AED8");
 extern "C" const char *Xpi_func_0022AF08(void *, int) asm("func_0022AF08");
@@ -85,7 +86,43 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016F80C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffCameraAnim1__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016FB70);
+extern "C" int func_0016FB70(int arg0, int arg1)
+{
+    int temp_a1;
+    int temp_s1;
+    int var_a2;
+    int var_a3;
+    int var_a0;
+
+    temp_s1 = Xii_strlen((int) arg0);
+    var_a3 = 0;
+    temp_a1 = Xii_strlen(arg1);
+    if (temp_s1 > 0) {
+loop_1:
+        var_a2 = 0;
+        if (temp_a1 > 0) {
+            var_a0 = arg0 + var_a3;
+            if ((*(signed char *)(var_a0)) == (*(signed char *)(arg1))) {
+loop_3:
+                var_a2 += 1;
+                var_a0 += 1;
+                if (var_a2 < temp_a1) {
+                    if ((*(signed char *)(var_a0)) == ((signed char *)(arg1))[var_a2]) {
+                        goto loop_3;
+                    }
+                }
+            }
+        }
+        if (var_a2 == temp_a1) {
+            return var_a3;
+        }
+        var_a3 += 1;
+        if (var_a3 < temp_s1) {
+            goto loop_1;
+        }
+    }
+    return -1;
+}
 
 extern "C" float func_0016FC20(const float *v)
 {
