@@ -417,6 +417,38 @@ extern "C" int func_001781D0(EffMan_1781D0 *self)
     return -1;
 }
 
+// NON_MATCHING: 30/50 differ, 2 relocs differ (size 0xC8, game 0xC0), 5 edits
+#ifdef NON_MATCHING
+struct EffLoadInfo_17820C {
+    EffManEntry_178148 *entry; // 0x00
+    int arg1;                  // 0x04
+    char name[0x20];           // 0x08
+    void *arg3;                // 0x28
+    int pad_2C;                // 0x2C
+};
+extern "C" void X_17820C_7F54(int, char *, const char *) asm("func_00177F54");
+extern "C" int X_17820C_8148(EffMan_178148 *, int, const char *) asm("func_00178148");
+extern "C" int X_17820C_81D0(EffMan_178148 *) asm("func_001781D0");
+extern "C" int X_17820C_82CC(EffMan_178148 *, EffLoadInfo_17820C *) asm("func_001782CC");
+extern "C" int func_0017820C(EffMan_178148 *self, int arg1, const char *arg2, void *arg3)
+{
+    EffLoadInfo_17820C info;
+    X_17820C_7F54(arg1, info.name, arg2);
+    if (info.name[0] == 0) {
+        return -1;
+    }
+    int res = X_17820C_8148(self, arg1, info.name);
+    if (res != -1) {
+        return res;
+    }
+    int idx = X_17820C_81D0(self);
+    info.arg1 = arg1;
+    info.arg3 = arg3;
+    info.entry = &self->entries[idx];
+    return X_17820C_82CC(self, &info) ? idx : -1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_0017820C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_001782CC);
