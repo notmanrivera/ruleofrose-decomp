@@ -1,4 +1,16 @@
 #include "include_asm.h"
+struct EffObj_177C00 {
+    char pad[0x10];
+    float field_10;
+};
+struct EffMan_177C00 {
+    int field_0;
+    EffObj_177C00 *ptrs[0x110];
+    int field_444;
+    int field_448;
+    int list[0x110];
+};
+extern "C" void *X_177C00_memmove(void *, const void *, unsigned int) asm("memmove");
 struct EffObj_17772C {
     char pad[32];
     virtual int vfunc_08(int);
@@ -342,7 +354,30 @@ extern "C" int func_001779B8(EffMan_1779B8 *self)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177A8C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177C00);
+extern "C" void func_00177C00(EffMan_177C00 *self, int arg1)
+{
+    int lo = 0;
+    int hi = arg1 - 1;
+    int idx;
+    EffObj_177C00 *target = self->ptrs[self->list[arg1]];
+    while (hi - lo > 0) {
+        idx = lo + (hi - lo + 1) / 2;
+        EffObj_177C00 *obj = self->ptrs[self->list[idx]];
+        if (target->field_10 < obj->field_10) {
+            lo = idx + 1;
+        } else if (obj->field_10 < target->field_10) {
+            hi = idx - 1;
+        } else {
+            break;
+        }
+    }
+    if (target->field_10 < self->ptrs[self->list[lo]]->field_10) {
+        lo++;
+    }
+    idx = self->list[arg1];
+    X_177C00_memmove(&self->list[lo + 1], &self->list[lo], (arg1 - lo) * 4);
+    self->list[lo] = idx;
+}
 
 extern "C" int func_00177D20(int arg0, int arg1)
 {
