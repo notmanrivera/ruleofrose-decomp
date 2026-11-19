@@ -1,4 +1,26 @@
 #include "include_asm.h"
+struct Eff0_172E4C {
+    char pad[0x20];
+    void *vptr;
+};
+struct EffFoot1_172E4C : public Eff0_172E4C {
+    float min[3];               // 0x24
+    float ext[3];               // 0x30
+    int f3C;                    // 0x3C
+    int f40;                    // 0x40
+    float f44;                  // 0x44
+    float f48;                  // 0x48
+};
+struct EffFoot1Arg_172E4C {
+    char pad[0x10];
+    float p1[3];                // 0x10
+    float p2[3];                // 0x1C
+    int f28;                    // 0x28
+    int f2C;                    // 0x2C
+    float f30;                  // 0x30
+    float f34;                  // 0x34
+};
+extern "C" int X_EffFoot1_Eff0_vfunc02(EffFoot1_172E4C *, EffFoot1Arg_172E4C *) asm("Eff0__vfunc_02");
 struct EffVec3_175170 { float x, y, z; };
 struct EffVec4_175170 { float x, y, z, w; };
 struct EffLight2_175170 {
@@ -137,7 +159,28 @@ extern "C" int X_func_00174C4C(...) asm("func_00174C4C");
 extern "C" float Xii_func_0016FF18(int, int) asm("func_0016FF18");
 extern int D_00298E08;
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot1__vfunc_02);
+extern "C" int EffFoot1__vfunc_02(EffFoot1_172E4C *self, EffFoot1Arg_172E4C *arg1)
+{
+    if (X_EffFoot1_Eff0_vfunc02(self, arg1) == 0) {
+        return 0;
+    }
+    for (int i = 0; i < 3; i++) {
+        if (arg1->p1[i] <= arg1->p2[i]) {
+            self->min[i] = arg1->p1[i];
+            self->ext[i] = arg1->p2[i];
+        } else {
+            self->min[i] = arg1->p2[i];
+            self->ext[i] = arg1->p1[i];
+        }
+        self->ext[i] -= self->min[i];
+        self->min[i] += self->ext[i] * 0.5f;
+    }
+    self->f3C = arg1->f28;
+    self->f40 = arg1->f2C;
+    self->f44 = arg1->f30;
+    self->f48 = arg1->f34;
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot1__vfunc_05);
 
