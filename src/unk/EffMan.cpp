@@ -400,7 +400,49 @@ extern "C" int func_001779B8(EffMan_1779B8 *self)
     return n;
 }
 
+// NON_MATCHING: 1/93 differ, 1 edits (addu $a0, $s2, $a0 vs addu $a0, $a0, $s2)
+#ifdef NON_MATCHING
+struct EffMan_177A8C {
+    int field_0;
+    void *ptrs[0x110];
+    int field_444;
+    int field_448;
+    int list[0x110];
+};
+extern "C" void *X_177A8C_memcpy(void *, const void *, unsigned int) asm("memcpy");
+extern "C" void *X_177A8C_memmove(void *, const void *, unsigned int) asm("memmove");
+extern "C" int func_00177A8C(EffMan_177A8C *self)
+{
+    int tmp[0x110];
+    int i;
+    for (i = 0; i < 0x110; i++) {
+        if (self->ptrs[self->list[i]] == 0) {
+            int j;
+            for (j = i + 1; j < 0x110; j++) {
+                if (self->ptrs[self->list[j]] != 0) {
+                    break;
+                }
+            }
+            if (j == 0x110) {
+                break;
+            }
+            int count = j - i;
+            if (count == 1) {
+                tmp[0] = self->list[i];
+                X_177A8C_memmove(&self->list[i], &self->list[j], (0x110 - j) * 4);
+                self->list[0x110 - 1] = tmp[0];
+            } else {
+                X_177A8C_memcpy(tmp, &self->list[i], count * 4);
+                X_177A8C_memmove(&self->list[i], &self->list[j], (0x110 - j) * 4);
+                X_177A8C_memcpy(&self->list[0x110 - count], tmp, count * 4);
+            }
+        }
+    }
+    return i;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffMan", func_00177A8C);
+#endif
 
 extern "C" void func_00177C00(EffMan_177C00 *self, int arg1)
 {
