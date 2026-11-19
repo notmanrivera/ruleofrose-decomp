@@ -3,6 +3,10 @@
 #include "mag/magscene.h"
 #include "mag/maglifewindow.h"
 #include "dog/dogtexinfo.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
+extern const char D_002ED4A0[];
+extern const char D_002ED680[];
 
 #undef ASSERT_FILE
 #define ASSERT_FILE D_002ED4A0
@@ -371,21 +375,24 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00134944__8MagSceneiPi);
 #endif
 
 
-// NON_MATCHING: the float registers come out in another order.
-#ifdef NON_MATCHING
 extern "C" void func_00134A00(MagScene *self, int winNo, int theX, int theY, int theZ)
 {
 #line 2179
     ASSERT_S(winNo >= 0 && winNo < MAX_WINDOW, D_002ED680);
     MagLifeWindow *w = self->m_window[winNo];
     if (w) {
-        DogVector pos((float)theX, (float)theY, (float)theZ, 1.0f);
-        w->m_pos = pos;
+        register float x PS2_REG("$f3") = (float)theX;
+        register float y PS2_REG("$f1") = (float)theY;
+        register float z PS2_REG("$f2") = (float)theZ;
+        register float weight PS2_REG("$f0") = 1.0f;
+        float pos[4] __attribute__((aligned(16)));
+        pos[3] = weight;
+        pos[0] = x;
+        pos[1] = y;
+        pos[2] = z;
+        *(u_long128 *)&w->m_pos = *(u_long128 *)pos;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00134A00);
-#endif
 
 
 extern "C" void func_00134AB8(MagScene *self, int winNo, int theW, int theH)
