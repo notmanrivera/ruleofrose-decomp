@@ -144,18 +144,16 @@ extern "C" void BdlMain__vfunc_06(int arg0)
     M2C_FIELD(arg0, int *, 0x24) = ((m2c_v34_18_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
 }
 
-// NON_MATCHING: 11/49 differ, 11 edits
-#ifdef NON_MATCHING
 struct m2c_v34_10_i { char pad[52]; virtual void v1(); virtual int call(); };
 static inline bool BdlStateBelowLimit(int state) { return state < 7; }
 static inline void BdlWriteFlag(int slot, int value) { *(int *)((char *)slot + 0x200) = value; }
-static inline void BdlWriteStateFlag(int self, int index, int value) { int *slot = index + (int *)self; BdlWriteFlag((int)slot, value); }
+static inline void BdlWriteStateFlag(int self, int index, int value) { int slot = index * 4 + self; BdlWriteFlag(slot, value); }
 extern "C" int BdlMain__vfunc_02(int arg0)
 {
     int temp_v1;
     int temp_v1_3;
     int var_a5;
-    int temp_a3;
+    register int temp_a3 PS2_REG("$7");
     int var_v0;
     unsigned char temp_a2;
     int temp_a0;
@@ -172,7 +170,8 @@ extern "C" int BdlMain__vfunc_02(int arg0)
     temp_v1_2 = M2C_FIELD(arg0, int *, 0xE8);
     var_a5 = 0;
     temp_a2 = M2C_FIELD(temp_v1_2, unsigned char *, 1);
-    temp_a3 = M2C_FIELD(temp_v1_2, int *, 0xC) + (M2C_FIELD(arg0, int *, 0x3C) * temp_a2);
+    temp_a3 = M2C_FIELD(temp_v1_2, int *, 0xC);
+    temp_a3 += M2C_FIELD(arg0, int *, 0x3C) * temp_a2;
     for (int i = 0; i < temp_a2; ++i) {
         if (((signed char *)temp_a3)[i] != 0) {
             BdlWriteStateFlag(arg0 + 8, i, 1);
@@ -182,9 +181,6 @@ extern "C" int BdlMain__vfunc_02(int arg0)
     }
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", BdlMain__vfunc_02);
-#endif
 
 extern "C" int func_0014B8C0()
 {
