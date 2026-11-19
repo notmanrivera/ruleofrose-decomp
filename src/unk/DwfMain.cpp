@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_0016968C(int, int) asm("func_0016968C");
 extern "C" int Xiiiii_func_001679B4(int, int, int, float, float) asm("func_001679B4");
 extern "C" void Xv_func_00202F10(int) asm("func_00202F10");
 extern "C" int Xii_func_0015F37C(int) asm("func_0015F37C");
@@ -566,7 +567,38 @@ extern "C" void DwfMain__vfunc_04(int arg0)
   }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfMain__vfunc_05);
+extern "C" void DwfMain__vfunc_05(int arg0)
+{
+    int temp_a0;
+    int temp_v0;
+    int temp_v0_2;
+
+    M2C_FIELD(arg0, int *, 0x40) = 0;
+    temp_a0 = M2C_FIELD(arg0, int *, 0x30);
+    if (temp_a0 & 2) {
+        M2C_FIELD(arg0, int *, 0x3C) = 4;
+        M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = 4;
+        M2C_FIELD(arg0, int *, 0x40) = 1;
+    } else {
+        temp_v0 = M2C_FIELD(arg0, int *, 0x24);
+        if (temp_v0 != -1) {
+            temp_v0_2 = Xiii_func_0016968C(M2C_FIELD(arg0, int *, 0x1C), temp_v0);
+            M2C_FIELD(arg0, signed char *, 0x265) = 0;
+            M2C_FIELD(arg0, signed char *, 0x264) = 0;
+            M2C_FIELD(arg0, signed char *, 0x266) = 0;
+            if (temp_v0_2 != 0) {
+                M2C_FIELD(arg0, int *, 0x3C) = temp_v0_2;
+                M2C_FIELD(arg0, int *, 0x40) = 1;
+            } else {
+                M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = M2C_FIELD(arg0, int *, 0x3C);
+            }
+        } else if (temp_a0 & 1) {
+            M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = M2C_FIELD(arg0, int *, 0x3C);
+            M2C_FIELD(arg0, int *, 0x40) = 1;
+        }
+    }
+    M2C_FIELD(arg0, int *, 0x30) = 0;
+}
 
 extern "C" void DwfMain__vfunc_06(int arg0)
 {
