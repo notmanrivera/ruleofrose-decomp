@@ -1,6 +1,11 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern "C" void GamClearRate(GamMan *, int) asm("func_001CB24C");
+extern "C" int GamClearActor(void *) asm("func_0010A834__8DogActor");
+extern "C" void GamClearMotion(int, int, int, int, float, float) asm("func_001F5E48");
+extern "C" int GamClearDog(GamMan *, int) asm("func_001CB384");
+extern "C" void GamClearCamera(int) asm("func_0014457C");
 extern "C" void X_func_001CAA14_C387C(GamMan *, unsigned short, unsigned int, void *) asm("func_001CAA14");
 extern "C" void X_func_001D95C4_C387C(ObjStat *, int) asm("func_001D95C4");
 struct GamList_C387C {
@@ -1130,7 +1135,41 @@ extern "C" void func_001C6A04(int arg0)
     X_func_00163AB8((int)&D_007B2140, arg0 + 0x22004, arg0 + 0x22008);
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C6A40);
+extern "C" void func_001C6A40(GamMan *self, unsigned int flags)
+{
+    if (flags & 0x100000) {
+        func_001C5E1C(self, -1);
+    }
+    if (flags & 0x100004) {
+        self->m_sysFlg |= 0x10000;
+        self->m_sysFlg2 = (self->m_sysFlg2 | 0x800) & 0xFFF7FFFF;
+        X_func_001C58C0(self, 1);
+        X_func_001C58B8(self, 1);
+        if (self->m_pc != 0) {
+            GamClearRate(self, -1);
+        }
+    }
+    if (flags & 0x100104) {
+        Xii_func_00144334(0);
+        if (self->m_dog != 0) {
+            if (GamClearActor((char *)&D_006FE6A0 + self->m_dogChrNo * 0x4D0) == 0) {
+                GamClearMotion(self->m_unk21FD0, 1, -1, 0x100, 0.016666666f, 32769.0f);
+            }
+            GamClearDog(self, -1);
+        }
+    }
+    if (flags & 0x80000) {
+        GamClearCamera(0);
+    }
+    if (flags & 0x200000) {
+        ObjStat *dog = self->m_dog;
+        if (dog != 0) {
+            X_func_001D95C4_C387C(dog, 0);
+            M2C_FIELD(self->m_dog, unsigned int *, 0x120) &= 0xEFFFFFFF;
+        }
+    }
+    self->m_sysFlg &= ~flags;
+}
 
 extern "C" int func_001C6C28(GamMan *arg0)
 {
