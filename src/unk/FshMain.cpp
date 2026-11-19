@@ -368,12 +368,8 @@ extern "C" int FshOutAppear__vfunc_03(int arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutAppear__vfunc_03);
 #endif
 
-// NON_MATCHING: 2/46 differ, 2 edits
-#ifdef NON_MATCHING
 extern "C" int Xiii_func_0010423C(int, int) asm("func_0010423C");
-extern int D_002F0BF8;
-// NON_MATCHING: 2/46 differ, 2 edits (the 0x42/0x40 stores of the else path are
-// emitted in the opposite order; the interesting bits all match).
+extern const int D_002F0BF8[];
 extern "C" void FshOutAtk__vfunc_02(int arg0)
 {
     int temp_v1;
@@ -389,15 +385,12 @@ extern "C" void FshOutAtk__vfunc_02(int arg0)
         M2C_FIELD(arg0, unsigned short *, 0x42) = 0;
         M2C_FIELD(arg0, unsigned short *, 0x40) = 0;
     }
-    entry = ((int *) &D_002F0BF8)[M2C_FIELD(arg0, unsigned short *, 0x40)];
+    entry = D_002F0BF8[M2C_FIELD(arg0, unsigned short *, 0x40)];
     M2C_FIELD(arg0, int *, 4) = 0;
     Xiiii_func_001680A0(arg0, entry, 0x100);
     M2C_FIELD(arg0, int *, 0x54) = 0;
     M2C_FIELD(arg0, int *, 0x58) = 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutAtk__vfunc_02);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/FshMain", FshOutAtk__vfunc_03);
 
