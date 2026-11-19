@@ -1,4 +1,52 @@
 #include "include_asm.h"
+extern "C" int X_173688_CheckId(int) asm("I3rRoot__CheckIdString");
+extern "C" void X_173688_173840(int, void *, void *) asm("func_00173840");
+extern "C" void X_173688_assert(const char *, int, const char *) asm("ror_assert");
+extern const char X_173688_2F2700[] asm("D_002F2700");
+extern const char X_173688_2F2710[] asm("D_002F2710");
+extern const char X_173688_2F2720[] asm("D_002F2720");
+extern const char X_173688_2F2730[] asm("D_002F2730");
+struct Foot2Sub_173688 {
+    int f0;
+    int f4;
+};
+extern Foot2Sub_173688 D_00828618;
+extern Foot2Sub_173688 D_00828648;
+struct PC_173688 {
+    char pad[20];
+    virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
+    virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8();
+    virtual void v9(); virtual void v10();
+    virtual struct Actor_173688 *call();
+};
+struct Entity_173688 {
+    char pad0[0x94];
+    virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
+    virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8();
+    virtual int call();
+};
+struct Actor_173688 : public Entity_173688 {
+    char pad98[0x84];
+    int m_i3r_root;
+    int hasRoot() {
+        if (m_i3r_root != 0 && X_173688_CheckId(m_i3r_root) != 0) {
+            X_173688_assert(X_173688_2F2720, 0xF8, X_173688_2F2730);
+        }
+        return m_i3r_root != 0;
+    }
+};
+struct Scene_173688 {
+    char pad0[0x2920];
+    char actors[128][0x4D0];
+    char pad29120[0x5C294];
+    int m_curdog;
+    Actor_173688 *getCurDog() {
+        if (m_curdog < 0) {
+            X_173688_assert(X_173688_2F2700, 0x2C4, X_173688_2F2710);
+        }
+        return (Actor_173688 *)actors[m_curdog];
+    }
+};
 extern "C" int X_172F4C_CheckId(int) asm("I3rRoot__CheckIdString");
 extern "C" void X_172F4C_1730D4(int, int) asm("func_001730D4");
 extern "C" void X_172F4C_assert(const char *, int, const char *) asm("ror_assert");
@@ -433,7 +481,25 @@ extern "C" int func_00173628(int arg0, int arg1, int arg2, int arg3)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot2__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot2__vfunc_05);
+extern "C" int EffFoot2__vfunc_05(int arg0)
+{
+    if (D_00828648.f4 > 0) {
+        PC_173688 *pc = (PC_173688 *)(D_00298E08 + 0x2ADC0);
+        Actor_173688 *a = pc->call();
+        if (a != 0) {
+            if (a->hasRoot() && a->call() == 0) {
+                X_173688_173840(arg0, a, &D_00828648);
+            }
+        }
+    }
+    if (D_00828618.f4 > 0) {
+        Actor_173688 *dog = ((Scene_173688 *)D_00298E08)->getCurDog();
+        if (dog->hasRoot() && dog->call() == 0) {
+            X_173688_173840(arg0, dog, &D_00828618);
+        }
+    }
+    return 1;
+}
 
 // D_002F2698: the end of unk/EffFire1's .rodata now (config/splits_manual.tsv)
 
