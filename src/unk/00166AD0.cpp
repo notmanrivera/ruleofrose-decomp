@@ -1,5 +1,10 @@
 #include "ror.h"
 #include "include_asm.h"
+extern char X844_D_006E9840[] asm("D_006E9840");
+extern "C" void X844_DA228(int, int, unsigned int *) asm("func_001DA228");
+extern "C" int X844_CBEDC(int, unsigned int) asm("func_001CBEDC");
+extern "C" void X844_33144(int, int, int, int, int, unsigned int, float) asm("func_00133144");
+static inline int bigOffset844(char *p) { return (int)(p + 0x12540); }
 extern "C" int Xiiiiif_func_001F603C(int, int, int, int, float) asm("func_001F603C");
 extern "C" int *Xipp_func_001D7F48(int, float *, int) asm("func_001D7F48");
 extern "C" void Xv_func_001F603C(int, int, int, int, float, float, int) asm("func_001F603C");
@@ -700,7 +705,37 @@ extern "C" void func_001687BC(int arg0, int arg1, int arg2)
     Xiiii_func_001680A0(arg0, arg1, arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00168844);
+extern "C" void func_00168844(int arg0)
+{
+    unsigned int sp0, sp4;
+    int p8 = M2C_FIELD(arg0, int *, 8);
+    int flags = M2C_FIELD(p8, int *, 0x3EC);
+    int var_s1;
+    if (flags & 8) {
+        if (flags & 0x10) {
+            var_s1 = M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0xF0);
+            goto play;
+        }
+    }
+    X844_DA228(p8, 0x67, &sp0);
+    if ((X844_CBEDC((int)&D_007812C0, sp0) ^ 0xA2E) == 0) {
+        var_s1 = 0xA;
+        X844_DA228(M2C_FIELD(arg0, int *, 8), 0x67, &sp4);
+        int id = cIndex((int)&D_007812C0, sp4);
+        X844_33144(bigOffset844(X844_D_006E9840), id, 3, 0, 0x100, sp4, 0.016666694f);
+    } else {
+        var_s1 = M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0xEC);
+    }
+play:
+    float temp_f12 = M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), float *, 0x1C4);
+    float var_f12;
+    if (temp_f12 != 0.0f) {
+        var_f12 = temp_f12 * 0.016666666f;
+    } else {
+        var_f12 = 0.016666666f;
+    }
+    Xiiii_ffi_func_001F603C(M2C_FIELD(arg0, int *, 0), var_s1, -1, 0x100, var_f12, 32769.0f, 1);
+}
 
 extern "C" void func_0016898C()
 {
