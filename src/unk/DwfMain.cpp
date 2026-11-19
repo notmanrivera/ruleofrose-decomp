@@ -1314,7 +1314,33 @@ extern "C" int DwfOutWait__vfunc_03()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfOutWalk__vfunc_02);
+extern "C" void DwfOutWalk__vfunc_02(int arg0)
+{
+    int temp_v0_2;
+    int temp_v0;
+    int temp_v1;
+
+    temp_v1 = M2C_FIELD(arg0, int *, 0xC);
+    temp_v0_2 = ((m2c_v200_18_i *)(temp_v1))->call();
+    switch ((unsigned int)temp_v0_2) {                            
+    case 1:
+        M2C_FIELD(arg0, int *, 0x38) = temp_v0_2;
+        break;
+    case 0:
+        M2C_FIELD(arg0, int *, 0x38) = 0;
+        break;
+    case 2:
+        M2C_FIELD(arg0, int *, 0x38) = temp_v0_2;
+        break;
+    }
+    if (M2C_FIELD(arg0, int *, 0x38) == 2) {
+        Xii_func_00168844(arg0);
+    } else {
+        Xii_func_001682B0(arg0);
+    }
+    Xiii_func_00166DA4(arg0, 0x64);
+    M2C_FIELD(arg0, int *, 4) = 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/DwfMain", D_002F0E58);
 
