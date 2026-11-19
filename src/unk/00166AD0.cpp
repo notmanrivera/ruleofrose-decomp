@@ -1,5 +1,7 @@
 #include "ror.h"
 #include "include_asm.h"
+extern "C" float Xff_sinf(float) asm("sinf");
+extern "C" float Xff_cosf(float) asm("cosf");
 extern "C" void Xv_func_00202F10(int) asm("func_00202F10");
 extern "C" int Xiffii_func_00169BAC(int, float, float, int, int) asm("func_00169BAC");
 extern "C" void Xv_func_0016A6B4(float *) asm("func_0016A6B4");
@@ -217,7 +219,16 @@ extern "C" int func_00167A64(int arg0,float *arg1,float *arg2) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00167CA0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00167D88);
+extern "C" void func_00167D88(unsigned int *arg0, float *arg1, float fparg0)
+{
+    float rot[4];
+    rot[1] = cYaw((int)(D_006FE6A0 + cIndex((int)&D_007812C0, *arg0) * 0x4d0));
+    func_00166B74(arg0, arg1);
+    float x = arg1[0] + Xff_sinf(rot[1]) * fparg0;
+    arg1[1] += 0.0f;
+    arg1[0] = x;
+    arg1[2] += Xff_cosf(rot[1]) * fparg0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00167E38);
 
