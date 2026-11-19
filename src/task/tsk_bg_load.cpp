@@ -114,15 +114,12 @@ extern "C" int func_001FCDD4(BgIter *self)
 }
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" int func_001FCDF4(BgIter *self)
 {
-    return *(int *)(self->m_top + self->m_no * 0x10 + 0xC);
+  char *new_var;
+  new_var = self->m_top + (self->m_no * 0x10);
+  return *((int *) (new_var + 0xC));
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/task/tsk_bg_load", func_001FCDF4);
-#endif
 
 
 extern "C" void TskBGLoad__vfunc_03(void) {
