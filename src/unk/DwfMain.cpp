@@ -1441,7 +1441,59 @@ extern "C" void DwfOutAppear__vfunc_02(int arg0)
 }
 
 
+// NON_MATCHING: 35/88 differ, 3 relocs differ (size 0x160, game 0x16C), 11 edits
+#ifdef NON_MATCHING
+extern "C" void Ap_func_001687BC(int, int, int) asm("func_001687BC");
+extern "C" void Ap_func_001D23F8(void *, unsigned int, int) asm("func_001D23F8");
+extern "C" int Ap_func_001D19A8(void *, unsigned int) asm("func_001D19A8");
+extern "C" void Ap_func_001D10D0(void *, unsigned int, int) asm("func_001D10D0");
+extern "C" void Ap_func_001D1410(void *, unsigned int, int) asm("func_001D1410");
+extern "C" int DwfOutAppear__vfunc_03(int arg0)
+{
+    int temp_s0;
+    int temp_v0;
+    int var_s3;
+    int temp_v1;
+    int temp_v1_2;
+
+    temp_s0 = M2C_FIELD(arg0, int *, 4);
+    var_s3 = -1;
+    switch (temp_s0) {
+    case 0:
+        Ap_func_001D23F8(&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0);
+        Ap_func_001D1410(&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x40);
+        Ap_func_001D10D0(&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x10000000);
+        Ap_func_001D10D0(&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x400);
+        Ap_func_001687BC(arg0, *(int *)((char *)&D_007B2294 + (M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1C8) * 0x3C)), 0);
+        M2C_FIELD(arg0, int *, 4) = 1;
+        break;
+    case 1:
+        temp_v0 = Ap_func_001D19A8(&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0));
+        if (temp_v0 != 0) {
+            M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x2C) = temp_s0;
+        }
+        switch (temp_v0) {
+        case 0:
+            break;
+        default:
+            var_s3 = 0x16;
+            Ap_func_001D10D0(&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x40);
+            Ap_func_001D1410(&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x10000000);
+            Ap_func_001D1410(&D_007812C0, M2C_FIELD(arg0, unsigned int *, 0), 0x400);
+            M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0xC) = temp_s0;
+            temp_v1 = M2C_FIELD(arg0, int *, 8);
+            M2C_FIELD(temp_v1, int *, 0x120) = M2C_FIELD(temp_v1, int *, 0x120) & ~0x400;
+            temp_v1_2 = M2C_FIELD(arg0, int *, 8);
+            M2C_FIELD(temp_v1_2, int *, 0x120) = M2C_FIELD(temp_v1_2, int *, 0x120) & ~0x2000;
+            break;
+        }
+        break;
+    }
+    return var_s3;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/DwfMain", DwfOutAppear__vfunc_03);
+#endif
 
 extern "C" void DwfOutWait__vfunc_02(int arg0)
 {
