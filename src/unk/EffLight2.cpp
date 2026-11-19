@@ -433,7 +433,85 @@ extern "C" void func_00173840(int arg0, int arg1, int arg2)
     }
 }
 
+// NON_MATCHING: 2/82 differ, 2 edits
+#ifdef NON_MATCHING
+extern "C" void X_173948_assert(const char *, int, const char *) asm("ror_assert");
+extern "C" const char D_002F2720[];
+extern "C" int X_173948_22B3D8(void *, const char *) asm("func_0022B3D8");
+extern "C" void X_173948_176CC8(int, void *) asm("func_00176CC8");
+struct Vec3_173948 {
+    float x, y, z; // Vec3_173948
+}; // Vec3_173948
+struct Vec4_173948 {
+    float x, y, z, w; // Vec4_173948
+    Vec4_173948() {
+        z = y = x = 0.0f;
+        w = 1.0f;
+    } // Vec4_173948 ctor
+} __attribute__((aligned(16)));
+struct EffParam_173948 {
+    int kind; // EffParam_173948
+    int unk04; // EffParam_173948
+    int unk08; // EffParam_173948
+    int unk0C; // EffParam_173948
+    int unk10; // EffParam_173948
+    float pos[3]; // EffParam_173948
+    float f20; // EffParam_173948
+    float f24; // EffParam_173948
+    char pad28[0x58]; // EffParam_173948
+}; // EffParam_173948
+struct Arg3_173948 {
+    int f00; // Arg3_173948
+    int f04; // Arg3_173948
+    float f08; // Arg3_173948
+}; // Arg3_173948
+class DogEntity_173948 {
+public: // DogEntity_173948
+    char pad0[0x40]; // DogEntity_173948
+    float x, y, z;              // 0x40..0x48
+    char pad4C[0x8]; // DogEntity_173948
+    float f54;                  // 0x54
+    char pad58[0x3C]; // DogEntity_173948
+    virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
+    virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8();
+    virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12();
+    virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16();
+    virtual void v17();
+    virtual void v18(Vec4_173948 *, int);
+}; // DogEntity_173948
+class DogModel_173948 : public DogEntity_173948 {
+public: // DogModel_173948
+    char pad98[0x84]; // DogModel_173948
+    void *m_i3r_root;           // 0x11C
+    int getNodeIndexByName(const char *p) {
+        if (!m_i3r_root) X_173948_assert(D_002F2720, 0x131, "m_i3r_root");
+        if (!p) X_173948_assert(D_002F2720, 0x131, "p");
+        return X_173948_22B3D8(m_i3r_root, p);
+    } // getNodeIndexByName
+}; // DogModel_173948
+extern "C" void func_00173948(int arg0, DogModel_173948 *arg1, const char *arg2, Arg3_173948 *arg3)
+{
+    Vec3_173948 pos;
+    pos.x = arg1->x;
+    pos.y = arg1->y;
+    pos.z = arg1->z;
+    Vec4_173948 vec;
+    arg1->v18(&vec, arg1->getNodeIndexByName(arg2));
+    EffParam_173948 param;
+    param.kind = 0x20;
+    param.unk10 = arg3->f00;
+    param.pos[0] = vec.x;
+    param.pos[1] = pos.y;
+    param.pos[2] = vec.z;
+    param.f20 = arg1->f54;
+    param.f24 = arg3->f08;
+    param.unk08 = 0;
+    X_173948_176CC8(D_00298E08 + 0x837E0, &param);
+    arg3->f04--;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00173948);
+#endif
 
 extern "C" int EffFoot2Prim__vfunc_02(EffFoot2Prim_v2 *self, EffFoot2Arg_v2 *arg1)
 {
