@@ -188,6 +188,44 @@ def stats():
     return rows
 
 
+def task_rows(name):
+    """A worker on a list of tasks instead of a batch of functions
+    (build/workers/<name>-tasks.tsv: id, state done|now|todo, title, note;
+    the coordinator keeps it up to date): one bar for the tasks, one row
+    per task, and for the current one what its worktree holds (files
+    changed and commits not merged yet)."""
+    rows = []
+    try:
+        for ln in open(os.path.join(ST, f"{name}-tasks.tsv"), encoding="utf-8"):
+            p = ln.rstrip("\n").split("\t")
+            if len(p) >= 3 and not ln.startswith("#"):
+                rows.append((p[0], p[1], p[2], p[3] if len(p) > 3 else ""))
+    except OSError:
+        return []
+    if not rows:
+        return []
+    done = sum(r[1] == "done" for r in rows)
+    f = round(WIDTH * done / len(rows))
+    out = [f"  tareas  {chr(0x2588) * f}{chr(0x2591) * (WIDTH - f)} {done}/{len(rows)} hechas"]
+    wt = os.path.join(os.path.dirname(MAIN), f"ror-wt-{name}")
+    changed = [ln[3:] for ln in run(["git", "-C", wt, "status", "--porcelain"]).splitlines() if ln.strip()]
+    # commits whose change is not in pr-merge yet (cherry-picked ones drop out)
+    ahead = str(sum(ln.startswith("+") for ln in run(["git", "-C", wt, "cherry", "pr-merge", "HEAD"]).splitlines()))
+    for tid, state, title, note in rows:
+        mark = {"done": col("✓", "green"), "now": col("▶", "bold")}.get(state, col("·", "dim"))
+        line = f"    {mark} {tid}  {title}" + (f"  {col(note, 'dim')}" if note else "")
+        if state == "now":
+            extra = []
+            if changed:
+                extra.append(f"{len(changed)} archivos a medias ({', '.join(os.path.basename(c) for c in changed[:3])}"
+                             + (", ..." if len(changed) > 3 else "") + ")")
+            if ahead and ahead != "0":
+                extra.append(f"{ahead} commits sin fusionar")
+            line += col("  ◀ ahora", "bold") + ("\n        " + "; ".join(extra) if extra else "")
+        out.append(line)
+    return out
+
+
 def worker(name, env, idle):
     out = []
     status = env.get("STATUS", "?")
@@ -210,6 +248,9 @@ def worker(name, env, idle):
         q = f"sin cambios en pantalla {quiet / 60:.0f} min"
         state += "  " + (col(q, "red") if quiet > STALE_MIN * 60 else col(q, "dim"))
     out.append(f"{col(f'{name:<9}', 'bold')} {model:<28} {state}")
+    if not names and os.path.exists(os.path.join(ST, f"{name}-tasks.tsv")):
+        out.extend(task_rows(name))
+        return out
     if not names:
         out.append(col("  (sin lote)", "dim"))
         return out
