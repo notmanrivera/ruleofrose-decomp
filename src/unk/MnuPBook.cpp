@@ -868,7 +868,163 @@ extern "C" void func_00194FA4(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuMap__vfunc_05);
 
+// NON_MATCHING: 204/261 differ, 14 relocs differ (size 0x414, game 0x43C), 110 edits
+#ifdef NON_MATCHING
+extern "C" float Xfi_getLeftY__C6BedPad(int) asm("getLeftY__C6BedPad");
+extern "C" int Xii_func_00195A34(int) asm("func_00195A34");
+extern "C" int Xii_func_00196760(int) asm("func_00196760");
+extern "C" int Xiii_func_0019586C(int, int) asm("func_0019586C");
+extern int D_0029BFB8;
+extern "C" void PBookMoveSoundC(int, int) asm("func_0017F8FC");
+static inline void PBookMoveSound(int sound, int code) { PBookMoveSoundC(sound, code); }
+extern "C" int func_00195430(int arg0, int arg1)
+{
+    struct { float sp0; float sp4; } stack;
+    float temp_f0;
+    float temp_f2;
+    float temp_f2_2;
+    float temp_f2_3;
+    float temp_f3;
+    float var_f0;
+    float var_f0_2;
+    float var_f1;
+    float var_f1_2;
+    int temp_a0_2;
+    int temp_a1;
+    int temp_v0_2;
+    int temp_v1_3;
+    int var_s2;
+    int var_v0;
+    int var_v0_2;
+    unsigned short temp_a0_3;
+    unsigned short temp_v1;
+    unsigned int temp_v0_3;
+    unsigned int temp_v1_2;
+    int temp_a0;
+    int temp_v0;
+
+    Xii_func_001874AC(arg0 + 0x150);
+    temp_a1 = M2C_FIELD(arg0, int *, 4);
+    if (!(temp_a1 & 2)) {
+        temp_v1 = M2C_FIELD(arg1, unsigned short *, 0x7A);
+        if (PBookButton(temp_v1, 13) || PBookButton(temp_v1, 0)) {
+            M2C_FIELD(arg0, int *, 4) = temp_a1 | 2;
+            return 0;
+        }
+        if (PBookButton(temp_v1, 11)) {
+            temp_v0 = M2C_FIELD(arg0, int *, 0x110);
+            if (M2C_FIELD(temp_v0, int *, 0) != M2C_FIELD(temp_v0, int *, 0x20) || (temp_a1 & 0x01000000)) goto fail;
+            var_v0 = 0x80002;
+            goto turn;
+        }
+        if (PBookButton(temp_v1, 10)) {
+            temp_a0 = M2C_FIELD(arg0, int *, 0x110);
+            if ((unsigned int)&D_0029BFB8 >= (unsigned int)temp_a0 || M2C_FIELD(temp_a0, int *, 0) != M2C_FIELD(temp_a0, int *, -0x20) || (temp_a1 & 0x01000000)) goto fail;
+            var_v0 = 0x100002;
+turn:
+        M2C_FIELD(arg0, int *, 0x14) = 6;
+        M2C_FIELD(arg0, int *, 4) = temp_a1 | var_v0;
+        PBookMoveSound((int)&D_007B2580, 4);
+        goto update;
+        } else {
+            if ((temp_v1 >> 15) != 0) {
+                if (temp_a1 & 0x01000000) goto fail;
+                temp_f2 = M2C_FIELD(arg0, float *, 0x11C);
+                temp_f3 = M2C_FIELD(arg0, float *, 0x120);
+                temp_v0_2 = (temp_a1 | 0x20002) ^ 0x10000;
+                M2C_FIELD(arg0, int *, 0x130) = 0x12;
+                M2C_FIELD(arg0, int *, 0x12C) = 0;
+                M2C_FIELD(arg0, int *, 4) = temp_v0_2;
+                M2C_FIELD(arg0, float *, 0x124) = temp_f2;
+                M2C_FIELD(arg0, float *, 0x128) = temp_f3;
+                if (!(temp_v0_2 & 0x10000)) {
+                    var_f0 = -192.0f;
+                    var_f1 = -128.0f;
+                } else {
+                    var_f0 = 192.0f;
+                    var_f1 = 128.0f;
+                }
+                M2C_FIELD(arg0, float *, 0x11C) = (float) (temp_f2 + var_f0);
+                M2C_FIELD(arg0, float *, 0x120) = (float) (temp_f3 + var_f1);
+                Xiii_func_0019586C(arg0, arg0 + 0x11C);
+                goto confirm;
+            } else if (PBookButton(temp_v1, 12)) {
+                if (!Xii_func_00196760(arg0)) goto fail;
+                temp_a0_2 = M2C_FIELD(arg0, int *, 4);
+                if (temp_a0_2 & 0x01000000) goto fail;
+                M2C_FIELD(arg0, int *, 0x14) = 6;
+                M2C_FIELD(arg0, int *, 4) = temp_a0_2 | 0x200002;
+confirm:
+                PBookMoveSound((int)&D_007B2580, 4);
+                goto update;
+            }
+            goto movement;
+            {
+fail:
+                PBookMoveSound((int)&D_007B2580, 3);
+                goto update;
+            }
+        }
+movement:
+                var_s2 = 1;
+                stack.sp0 = Xfi_getLeftX__C6BedPad((int) arg1) * 16.0f;
+                temp_f0 = Xfi_getLeftY__C6BedPad((int) arg1) * 16.0f;
+                stack.sp4 = temp_f0;
+                if ((stack.sp0 == 0.0f) && (temp_f0 == 0.0f)) {
+                    temp_a0_3 = M2C_FIELD(arg1, unsigned short *, 0x78);
+                    temp_v0_3 = temp_a0_3 & 0xFFFF;
+                    var_v0_2 = PBookButton(temp_v0_3, 5);
+                    if (PBookButton(temp_v0_3, 7)) {
+                        var_v0_2 -= 1;
+                    }
+                    temp_v1_2 = temp_a0_3 & 0xFFFF;
+                    stack.sp0 = (float) var_v0_2 * 16.0f;
+                    temp_v1_3 = PBookButton(temp_v1_2, 6);
+                    if (PBookButton(temp_v1_2, 4)) {
+                        var_f1_2 = 16.0f;
+                        var_f0_2 = (float) (temp_v1_3 - 1);
+                    } else {
+                        var_f1_2 = (float) temp_v1_3;
+                        var_f0_2 = 16.0f;
+                    }
+                    stack.sp4 = var_f1_2 * var_f0_2;
+                }
+                stack.sp0 += M2C_FIELD(arg0, float *, 0x11C);
+                stack.sp4 += M2C_FIELD(arg0, float *, 0x120);
+                Xiii_func_0019586C(arg0, (int)&stack);
+                temp_f2_2 = stack.sp0 - M2C_FIELD(arg0, float *, 0x11C);
+                if (temp_f2_2 >= 0.5f) {
+                    M2C_FIELD(arg0, float *, 0x11C) = stack.sp0;
+                    var_s2 = 0;
+                    M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x400000);
+                } else if (temp_f2_2 <= -0.5f) {
+                    M2C_FIELD(arg0, float *, 0x11C) = stack.sp0;
+                    var_s2 = 0;
+                    M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & 0xFFBFFFFF);
+                }
+                temp_f2_3 = stack.sp4 - M2C_FIELD(arg0, float *, 0x120);
+                if (temp_f2_3 >= 0.5f) {
+                    M2C_FIELD(arg0, float *, 0x120) = stack.sp4;
+                    var_s2 = 0;
+                    M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x800000);
+                } else if (temp_f2_3 <= -0.5f) {
+                    M2C_FIELD(arg0, float *, 0x120) = stack.sp4;
+                    var_s2 = 0;
+                    M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & 0xFF7FFFFF);
+                }
+                if (var_s2 == 0) {
+                    M2C_FIELD(arg0, int *, 0x140) = (int) ((int) (M2C_FIELD(arg0, int *, 0x140) + 1) % 12);
+                } else {
+                    M2C_FIELD(arg0, int *, 0x140) = 0;
+                }
+    }
+update:
+    Xii_func_00195A34(arg0);
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00195430);
+#endif
 
 extern "C" void func_0019586C(int arg0, float *arg1)
 {
