@@ -1,5 +1,6 @@
 #include "ror.h"
 #include "include_asm.h"
+extern "C" int Xiiu_func_001D19A8(int, unsigned int) asm("func_001D19A8");
 extern "C" int Xiiii_ffi_func_001F603C(int, int, int, int, float, float, int) asm("func_001F603C");
 extern "C" float *func_001D2B8C(int, unsigned int);
 extern "C" void func_001D890C(float *, float *);
@@ -448,7 +449,14 @@ extern "C" void func_0016898C()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001689A8);
+extern "C" int func_001689A8(int arg0)
+{
+    int r = Xiiu_func_001D19A8((int)&D_007812C0, *(unsigned int *)arg0);
+    if (r) {
+        *(int *)(*(int *)(arg0 + 0xC) + 0x2C) = 1;
+    }
+    return r;
+}
 
 extern "C" void func_001689E8(int arg0)
 {
