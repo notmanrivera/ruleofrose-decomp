@@ -95,7 +95,37 @@ extern "C" void func_00166C8C(unsigned int *arg0, float *arg1) {
     arg1[1] = sp[1];
 }
 
+// NON_MATCHING: 15/68 differ, 17 edits
+#ifdef NON_MATCHING
+extern "C" int Xffiii_func_00169BAC(float, float, int, int, int) asm("func_00169BAC");
+extern "C" int Xiii_func_0010423C(int, int) asm("func_0010423C");
+extern "C" void func_00166DA4(int arg0, int arg1)
+{
+    register int self PS2_REG("$16") = arg0;
+    register int g PS2_REG("$3") = (int)&D_007812C0;
+    register int one PS2_REG("$20") = 1;
+    int temp_a2 = M2C_FIELD(self, int *, 8);
+    register int dog PS2_REG("$18") = M2C_FIELD(M2C_FIELD(g, int *, 0x22094), int *, 0x100);
+    register int rate PS2_REG("$19") = (M2C_FIELD(temp_a2, int *, 0x3EC) & 1) ? 0x64 : arg1;
+    register int pc PS2_REG("$17") = M2C_FIELD(M2C_FIELD(g, int *, 0x22090), int *, 0x100);
+    if (rate < 0x63) {
+        register float f60 PS2_REG("$f21") = 60.0f;
+        register float f2pi PS2_REG("$f20") = 6.283185124397278f;
+        if (Xffiii_func_00169BAC(f60, f2pi, 0, pc, temp_a2) == 0) {
+            if (Xffiii_func_00169BAC(f60, f2pi, 0, dog, M2C_FIELD(self, int *, 8)) != 0 ||
+                Xiii_func_0010423C(0, 0x63) >= rate) {
+                M2C_FIELD(self, int *, 0x14) = dog;
+                M2C_FIELD(self, int *, 0x10) = one;
+                return;
+            }
+        }
+    }
+    M2C_FIELD(self, int *, 0x14) = pc;
+    M2C_FIELD(self, int *, 0x10) = 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00166DA4);
+#endif
 
 extern "C" void func_00166EB4(int arg0, int arg1)
 {
