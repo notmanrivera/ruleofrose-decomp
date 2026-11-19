@@ -1,6 +1,7 @@
 #include "ror.h"
 #include "include_asm.h"
 #include "mag/maglifewindow.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 
 #undef ASSERT_FILE
 #define ASSERT_FILE D_002ED328
@@ -51,20 +52,15 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifewindow", func_0012F7F4);
 #endif
 
 
-// NON_MATCHING: the stores come out in another order.
-#ifdef NON_MATCHING
 extern "C" void func_0012F824(MagFadeKey *self, MagFadeReq *theReq)
 {
-    self->m_mode = theReq->m_mode;
-    self->m_unk0C = 0;
-    self->m_unk08 = theReq->m_count;
-    self->m_time = 0;
-    self->m_count = theReq->m_count;
-    self->m_unk04 = 0;
+  self->m_mode = theReq->m_mode;
+  self->m_unk04 = 0;
+  self->m_unk08 = theReq->m_count;
+  self->m_unk0C = 0;
+  self->m_time = 0;
+  self->m_count = theReq->m_count;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglifewindow", func_0012F824);
-#endif
 
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifewindow", MagLifeFadeKeyHole__vfunc_02);
