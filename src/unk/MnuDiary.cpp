@@ -678,8 +678,6 @@ extern "C" int MnuDiary__vfunc_05(int arg0, int arg1)
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", MnuDiary__vfunc_05);
 #endif
 
-// NON_MATCHING: 18/169 differ (size 0x2A4, game 0x2A8), 6 edits
-#ifdef NON_MATCHING
 inline int diaryPressed(unsigned int bits) { return (bits >> 13) & 1; }
 inline void diaryTick(unsigned int *counter) { *counter = (*counter + 1) % 300U; }
 extern "C" float Xfi_getLeftX__C6BedPad(int) asm("getLeftX__C6BedPad");
@@ -713,7 +711,8 @@ extern "C" int func_0019946C(int arg0, int arg1)
     }
     Xii_func_001874AC(arg0 + 0x13C);
     temp_v1 = M2C_FIELD(arg0, int *, 4);
-    if (!(temp_v1 & 2)) {
+    if (temp_v1 & 2) goto tick;
+    {
         if (diaryPressed(M2C_FIELD(arg1, unsigned short *, 0x7A)) && (temp_v1 & 0x40000)) {
             Xiiui_func_001351B0(M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x134), 1);
             M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 2);
@@ -739,13 +738,11 @@ extern "C" int func_0019946C(int arg0, int arg1)
 
     }
     if (M2C_FIELD(arg0, int *, 4) & 2) {
+tick:
         M2C_FIELD(arg0, unsigned int *, 0x8B4) = (M2C_FIELD(arg0, unsigned int *, 0x8B4) + 1) % 300U;
     }
     return 1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019946C);
-#endif
 
 // NON_MATCHING: 178/184 differ, 9 relocs differ (size 0x2E0, game 0x2F4), 136 edits
 #ifdef NON_MATCHING
