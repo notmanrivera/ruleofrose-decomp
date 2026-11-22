@@ -383,7 +383,84 @@ extern "C" void func_001BE548(int *theOut, int theA, int theB)
     return X_func_001BE564(theOut, theB);
 }
 
+// NON_MATCHING: 3/116 differ, 3 edits
+#ifdef NON_MATCHING
+struct FileReadReq1BE564 { int fd; int state; int unk8; int path; int seekOffset; int seekWhence; int buf; int size; int closeFlag; };
+struct FileReader1BE564 { FileReadReq1BE564 *req; int fd; };
+extern "C" int X_func_002051CC(int) asm("func_002051CC");
+extern int D_002D8FFC;
+extern "C" int func_001BE564(FileReader1BE564 *self, int arg1)
+{
+    while (1) {
+        while ((self->req->state & 1) == 0) {
+            FileReadReq1BE564 *req = self->req;
+            int state = req->state;
+            switch (state >> 1) {
+            case 0:
+                if (req->path != 0) {
+                    func_001BE338((int)self, req->path);
+                    FileReadReq1BE564 *r = self->req;
+                    r->fd = self->fd;
+                    self->req->path = 0;
+                    goto inc_state;
+                }
+                req->state = state + 2;
+                continue;
+            case 1:
+                if (req->seekWhence >= 0) {
+                    func_001BE444((int)self, req->fd, req->seekOffset, req->seekWhence);
+                    self->req->seekWhence = -1;
+                    goto inc_state;
+                }
+                req->state = state + 2;
+                continue;
+            case 2:
+                if (req->size > 0) {
+                    func_001BE36C((int)self, req->fd, req->buf, req->size);
+                    self->req->size = 0;
+                    goto inc_state;
+                }
+                req->state = state + 2;
+                continue;
+            case 3:
+                if (req->closeFlag != 0) {
+                    func_001BE3C4((int)self, req->fd);
+                    self->req->closeFlag = 0;
+                inc_state:
+                    self->req->state++;
+                    continue;
+                }
+                req->state = state + 2;
+                return 0;
+            default:
+                return 0;
+            }
+        }
+
+        if (arg1 == 0) {
+            do {
+                if (D_002D8FFC != 0) {
+                    X_func_002051CC(D_002D8FFC);
+                } else {
+                    X_func_0024B3F8(1);
+                    X_func_0017F200(&D_007B2580);
+                }
+            } while (func_001BE4C8((int)self, 0, 0) != 1);
+        } else {
+            int r = func_001BE4C8((int)self, 0, 0);
+            if (r < 0) {
+                return -100;
+            }
+            if (r == 0) {
+                return 1;
+            }
+        }
+        self->req->state++;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BE564);
+#endif
 
 extern "C" void __11FileReadReq(int arg0)
 {
