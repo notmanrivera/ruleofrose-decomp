@@ -1,4 +1,8 @@
 #include "include_asm.h"
+#include "sysnowloading.h"
+#include "game/gamman.h"
+#include "sdk/stdlib.h"
+#include "sdk/string.h"
 extern "C" int loadingA7_func_001C6CCC(...) asm("func_001C6CCC");
 extern "C" int loadingA7_func_001C6FE0(...) asm("func_001C6FE0");
 extern "C" int loadingA7_func_001C7DA8(...) asm("func_001C7DA8");
@@ -69,10 +73,16 @@ extern int D_007A3898;
 extern int D_007A3D80;
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_FlushCache(...) asm("FlushCache");
-extern "C" int X_SetDebugHandler(...) asm("SetDebugHandler");
-extern "C" int X_alloc__9BedMemoryiPCciii(...) asm("alloc__9BedMemoryiPCciii");
-extern "C" int X_free__9BedMemoryPv(...) asm("free__9BedMemoryPv");
+extern "C" void *X_alloc__9BedMemoryiPCciii(void *, int, const char *, int, int, int) asm("alloc__9BedMemoryiPCciii");
+extern "C" void X_free__9BedMemoryPv(void *, void *) asm("free__9BedMemoryPv");
+extern "C" int X_func_00117F80__9MagSystemiiiiiii(...) asm("func_00117F80__9MagSystemiiiiiii");
+extern "C" int X_func_0013F980__8MagSceneiiiPfi(void *, int, int, int, float *, int) asm("func_0013F980__8MagSceneiiiPfi");
+extern "C" int X_func_00144AE0(...) asm("func_00144AE0");
+extern "C" int X_func_001C541C(...) asm("func_001C541C");
+extern "C" int X_func_001D2724(...) asm("func_001D2724");
+extern const float D_002FF8F0[4];
+extern const float D_002FF900[4];
+extern int D_007A3294;
 extern "C" int X_func_00162AFC(...) asm("func_00162AFC");
 extern "C" int X_func_0016366C(...) asm("func_0016366C");
 extern "C" int X_func_00163B20(...) asm("func_00163B20");
@@ -87,73 +97,221 @@ extern "C" int X_func_001CB01C(...) asm("func_001CB01C");
 extern "C" int X_func_001CCC30(...) asm("func_001CCC30");
 extern "C" int X_func_001CF7D0(...) asm("func_001CF7D0");
 extern "C" int X_func_001CF95C(...) asm("func_001CF95C");
-extern "C" int X_func_00204E98(...) asm("func_00204E98");
-extern "C" int X_func_00205078(...) asm("func_00205078");
-extern "C" int X_func_002050E8(...) asm("func_002050E8");
+extern "C" int rand(void);
+extern "C" void func_00204A00();
 extern "C" int X_func_0020F140(...) asm("func_0020F140");
 extern "C" int X_func_0020F1A8(...) asm("func_0020F1A8");
 extern "C" int X_func_002113A4(...) asm("func_002113A4");
-extern "C" int X_func_0025A9D0(...) asm("func_0025A9D0");
-extern "C" int X_memset(...) asm("memset");
-extern "C" int X_rand(...) asm("rand");
-extern "C" int X_sceDmaSend(...) asm("sceDmaSend");
-extern "C" int X_sceGsExecLoadImage(...) asm("sceGsExecLoadImage");
-extern "C" int X_sceGsSetDefLoadImage(...) asm("sceGsSetDefLoadImage");
-extern "C" int X_sceGsSwapDBuff(...) asm("sceGsSwapDBuff");
-extern "C" int X_sceGsSyncPath(...) asm("sceGsSyncPath");
-extern "C" int X_sceGsSyncV(...) asm("sceGsSyncV");
+extern "C" int X_func_0025A9D0(sceGsDrawEnv1 *, int, int, int) asm("func_0025A9D0");
 extern const char D_002FF8D0[];
-extern int D_002D90A8;
+extern const unsigned int D_002FF8C0[4];
+extern void *D_002D90A8[];
 extern int D_002D90E8;
 extern int D_006E9800;
 extern int D_00725410;
-extern int D_007812C0;
+extern GamMan D_007812C0;
 extern int D_007A4440;
 extern int D_007B2140;
 extern int D_007B2294;
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00204BF8);
-
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00204CA4);
-
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00204D38);
-
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00204E68);
-
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00204E98);
-
-extern "C" void func_00205078(int arg0)
+extern "C" void func_00204BF8()
 {
-    int temp_s0;
+    int i;
 
-    temp_s0 = arg0 + 0x230;
-    X_sceGsSetDefLoadImage(temp_s0, 0x1A40, 4, 0x13, 0, 0, 0x100, 0x100);
-    X_FlushCache(0);
-    X_sceGsExecLoadImage(temp_s0, M2C_FIELD(arg0, int *, 0x290));
-    X_sceGsSyncPath(0, 0);
+    if (D_002D90E8 != 0) {
+        return;
+    }
+    D_002D90E8 = 1;
+    for (i = 1; i < 8; i++) {
+        D_002D90A8[i] = SetDebugHandler(i, (void *)func_00204A00);
+    }
+    for (i = 10; i < 14; i++) {
+        D_002D90A8[i] = SetDebugHandler(i, (void *)func_00204A00);
+    }
 }
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_002050E8);
-
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_002051CC);
-
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_002052AC);
-
-extern "C" void func_00205394(int arg0)
+extern "C" void func_00204CA4()
 {
-    int temp_a1;
-    int temp_v0;
+    int i;
 
-    X_func_002050E8();
-    temp_v0 = (*(int *)(int *)((char *)(arg0) + 0x290));
-    if (temp_v0 != 0) {
-        X_free__9BedMemoryPv((int)&D_006E9800, temp_v0);
-        (*(int *)(int *)((char *)(arg0) + 0x290)) = 0;
+    if (D_002D90E8 == 0) {
+        return;
     }
-    temp_a1 = (*(int *)(int *)((char *)(arg0) + 0x294));
-    if (temp_a1 != 0) {
-        X_free__9BedMemoryPv((int)&D_006E9800, temp_a1);
-        (*(int *)(int *)((char *)(arg0) + 0x294)) = 0;
+    D_002D90E8 = 0;
+    for (i = 1; i < 8; i++) {
+        SetDebugHandler(i, D_002D90A8[i]);
+    }
+    for (i = 10; i < 14; i++) {
+        SetDebugHandler(i, D_002D90A8[i]);
+    }
+}
+
+struct SysNowLoadTex64K {
+    unsigned long m_d[0x2000];
+};
+
+extern "C" void func_00204D38(SysNowLoading *self)
+{
+    char path[32] = "cdrom0:\\DATA\\CMNTEX\\LOADING.BIN";
+    sceGsLoadImage img;
+    int fd;
+    register unsigned char *tex PS2_REG("$16");
+
+    fd = sceOpen(path, 1);
+    sceRead(fd, self->m_texBuf, 0x20000);
+    sceClose(fd);
+
+    *(SysNowLoadTex64K *)self->m_texBuf = *(SysNowLoadTex64K *)self->m_texBuf;
+
+    tex = (unsigned char *)self->m_texBuf;
+    sceGsSetDefLoadImage(&img, 0x1F40, 1, 0, 0, 0, 16, 16);
+    tex += 0x10000;
+    FlushCache(0);
+    sceGsExecLoadImage(&img, tex);
+    sceGsSyncPath(0, 0);
+}
+
+extern "C" void func_00204E68(SysNowLoading *self, unsigned int *dst, float u, float v)
+{
+    dst[0] = *(unsigned int *)&u;
+    dst[1] = *(unsigned int *)&v;
+    dst[2] = 0x3F800000;
+    dst[3] = 0;
+}
+
+extern "C" void func_00204E98(SysNowLoading *self, int idx);
+// NON_MATCHING: 86/121 differ, 2 relocs differ (size 0x1E4, game 0x1E0), 66 edits
+#ifdef NON_MATCHING
+#ifdef TARGET_PS2
+static inline void zeroQuad(void *p) { *(u_long128 *)p = 0; }
+#else
+static inline void zeroQuad(void *p) { u_long128 z = {{0, 0, 0, 0}}; *(u_long128 *)p = z; }
+#endif
+
+static inline void setDmaTag(void *p, unsigned int tag)
+{
+    zeroQuad(p);
+    *(unsigned int *)p = tag;
+}
+
+static inline void setGifAD(void *p, unsigned long addr, unsigned long val)
+{
+    unsigned long *q = (unsigned long *)p;
+    q[1] = addr;
+    q[0] = val;
+}
+
+static inline void setXYZ2(void *p, unsigned int x, unsigned int y, unsigned int z)
+{
+    unsigned int *q = (unsigned int *)p;
+    q[0] = x;
+    q[1] = y;
+    q[2] = z;
+    q[3] = 0;
+}
+
+extern "C" void func_00204E98(SysNowLoading *self, int idx)
+{
+    SysNowLoadQuad col = *(const SysNowLoadQuad *)D_002FF8C0;
+    SysNowLoadQuad *p = (SysNowLoadQuad *)self->m_dmaBuf;
+
+    setDmaTag(p + 0, 0x1000000D);
+    setGifAD(p + 1, 0xE, 0x1000000000000005ULL);
+    setGifAD(p + 2, 0x3F, 0);
+    setGifAD(p + 4, 0x6, 0x2003E80E21311A40ULL);
+    setGifAD(p + 5, 0x14, 0x60);
+    setGifAD(p + 6, 0x8, 0x5);
+    setGifAD(p + 7, 0x412412, 0x600B400000008001ULL);
+
+    func_00204E68(self, p[8].m_w, 0.0f, (float)idx * 0.25f);
+    *(u_long128 *)&p[9] = *(u_long128 *)&col;
+    setXYZ2(p + 10, 0x8200, 0x8980, 0x10);
+
+    func_00204E68(self, p[11].m_w, 1.0f, (float)(idx + 1) * 0.25f);
+    *(u_long128 *)&p[12] = *(u_long128 *)&col;
+    setXYZ2(p + 13, 0x8E00, 0x8C80, 0x10);
+
+    setDmaTag(p + 14, 0x70000000);
+}
+#else
+INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00204E98);
+#endif
+
+extern "C" void func_00205078(SysNowLoading *self)
+{
+    sceGsLoadImage *img = &self->m_loadImage;
+
+    sceGsSetDefLoadImage(img, 0x1A40, 4, 0x13, 0, 0, 0x100, 0x100);
+    FlushCache(0);
+    sceGsExecLoadImage(img, self->m_texBuf);
+    sceGsSyncPath(0, 0);
+}
+
+extern "C" void func_002050E8(SysNowLoading *self)
+{
+    void *buf;
+    unsigned int i;
+
+    buf = X_alloc__9BedMemoryiPCciii(&D_006E9800, 0x100000, D_002FF8D0, 0xF6, 0, 2);
+    memset(buf, 0, 0x100000);
+    for (i = 0; i < 16; i++) {
+        sceGsSetDefLoadImage(&self->m_loadImage, (short)(i << 10), 4, 0, 0, 0, 0x100, 0x100);
+        FlushCache(0);
+        sceGsExecLoadImage(&self->m_loadImage, buf);
+        sceGsSyncPath(0, 0);
+    }
+    X_free__9BedMemoryPv(&D_006E9800, buf);
+}
+
+extern "C" void func_002051CC(SysNowLoading *self)
+{
+    int odd;
+
+    func_00205078(self);
+    odd = (sceGsSyncV(0) == 0);
+    X_func_0025A9D0((self->m_frame & 1) ? &self->m_dbuff.draw1 : &self->m_dbuff.draw0,
+                    0x800, 0x800, odd);
+    FlushCache(0);
+    sceGsSwapDBuff(&self->m_dbuff, self->m_frame & 1);
+    sceGsSyncPath(0, 0);
+    FlushCache(0);
+    sceDmaSend(self->m_dmaChan, self->m_dmaBuf);
+    self->m_frame++;
+    sceGsSyncPath(0, 0);
+    if ((self->m_frame % 8) == 0) {
+        func_00204E98(self, (self->m_frame / 8) % 4);
+    }
+}
+
+extern "C" void func_002052AC(SysNowLoading *self)
+{
+    self->m_texBuf = X_alloc__9BedMemoryiPCciii(&D_006E9800, 0x100000, D_002FF8D0, 0x130, 0, 2);
+    self->m_dmaBuf = X_alloc__9BedMemoryiPCciii(&D_006E9800, 0x4000, D_002FF8D0, 0x131, 0, 2);
+    self->m_dmaChan = sceDmaGetChan(2);
+    sceGsSetDefDBuff(&self->m_dbuff, 0, 0x200, 0x1C0, 2, 0x3A, 1);
+    *(unsigned long *)&self->m_dbuff.clear0.rgbaq = 0x3F80000000000000ULL;
+    *(unsigned long *)&self->m_dbuff.clear1.rgbaq = 0x3F80000000000000ULL;
+    func_00204E98(self, 0);
+    func_002050E8(self);
+    func_00204D38(self);
+    *T0_MODE = 0x83;
+}
+
+extern "C" void func_00205394(SysNowLoading *self)
+{
+    void *texBuf;
+    void *dmaBuf;
+
+    func_002050E8(self);
+    texBuf = self->m_texBuf;
+    if (texBuf != 0) {
+        X_free__9BedMemoryPv(&D_006E9800, texBuf);
+        self->m_texBuf = 0;
+    }
+    dmaBuf = self->m_dmaBuf;
+    if (dmaBuf != 0) {
+        X_free__9BedMemoryPv(&D_006E9800, dmaBuf);
+        self->m_dmaBuf = 0;
     }
 }
 
@@ -173,7 +331,31 @@ extern "C" int func_0020541C()
 }
 
 
+struct SysNowLoadVec4 {
+    float m_v[4];
+};
+
+// NON_MATCHING: 3/70 differ, 2 relocs differ, 3 edits (prologue lui schedule)
+#ifdef NON_MATCHING
+extern "C" int func_0020544C()
+{
+    char *scene = (char *)&D_006FBD80;
+    float c0[4];
+    float c1[4];
+
+    *(int *)(scene + 0x22B4) = 0;
+    memcpy(c0, D_002FF8F0, sizeof(c0));
+    memcpy(c1, D_002FF900, sizeof(c1));
+    X_func_00117F80__9MagSystemiiiiiii((int)&D_006E9840, 1, 1, 1, 1, 1, 1, 0);
+    X_func_0013F980__8MagSceneiiiPfi(scene, 0, 0, 2, c0, 0);
+    X_func_0013F980__8MagSceneiiiPfi(scene, 1, 0, 1, c1, 0);
+    X_func_0013F980__8MagSceneiiiPfi(scene, 1, 0, 2, c0, 0);
+    X_func_001D2724((int)&D_007812C0, 1, 0);
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_0020544C);
+#endif
 
 extern "C" int func_00205564()
 {
@@ -314,7 +496,11 @@ extern "C" int func_00205570(unsigned int arg0, unsigned int arg1, int arg2)
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00205570);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_002058F0);
+extern "C" unsigned int func_002058F0(int arg0, unsigned int arg1)
+{
+    unsigned int mod = (arg1 != 0) ? arg1 : 1;
+    return (unsigned int)rand() % mod;
+}
 
 extern "C" int func_00205928(int arg0, int arg1, int arg2)
 {
@@ -409,7 +595,17 @@ extern "C" int func_0020660C()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00206614);
+extern "C" int func_00206614(int arg0, int arg1)
+{
+    switch (arg0) {
+    case 0:
+        break;
+    case 1:
+        D_00725410 = (arg1 == 0);
+        break;
+    }
+    return 0;
+}
 
 extern "C" int func_00206638()
 {
@@ -955,7 +1151,77 @@ extern "C" int func_00208394()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_0020839C);
+extern "C" void X_func_001DD5E8(void *, void *, int, int) asm("func_001DD5E8");
+extern "C" void X_func_001DDC80(void *, void *) asm("func_001DDC80");
+extern "C" void X_func_001DE4E4(void *, void *) asm("func_001DE4E4");
+extern "C" void X_func_001DE6FC(void *, void *) asm("func_001DE6FC");
+
+extern "C" int func_0020839C(unsigned int arg0, float *arg1)
+{
+    register char *gm PS2_REG("$4");
+
+    switch (arg0) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5: {
+        int flg = *(int *)((char *)arg1 + 0x20) | 0x3000000;
+        *(int *)((char *)arg1 + 0x20) = flg;
+        if (flg & 0x103) {
+            if (arg1[0] > arg1[2]) {
+                float tmp = arg1[0];
+                arg1[0] = arg1[2];
+                arg1[2] = tmp;
+            }
+            if (arg1[1] > arg1[3]) {
+                float tmp = arg1[1];
+                arg1[1] = arg1[3];
+                arg1[3] = tmp;
+            }
+        }
+        switch (arg0) {
+        case 1:
+            gm = (char *)&D_007812C0;
+            X_func_001DD5E8(gm + 0x40, arg1, 0, -1);
+            break;
+        case 2:
+            gm = (char *)&D_007812C0;
+            X_func_001DD5E8(gm + 0x40, arg1, 1, -1);
+            break;
+        case 3:
+            gm = (char *)&D_007812C0;
+            X_func_001DD5E8(gm + 0x40, arg1, 1, 0);
+            break;
+        case 4:
+            gm = (char *)&D_007812C0;
+            X_func_001DD5E8(gm + 0x40, arg1, 1, 1);
+            break;
+        case 5:
+            gm = (char *)&D_007812C0;
+            X_func_001DD5E8(gm + 0x40, arg1, 1, 2);
+            break;
+        }
+        break;
+    }
+    case 10:
+        gm = (char *)&D_007812C0;
+        X_func_001DE4E4(gm + 0x40, arg1);
+        break;
+    case 11:
+        gm = (char *)&D_007812C0;
+        X_func_001DDC80(gm + 0x40, arg1);
+        break;
+    case 30:
+        gm = (char *)&D_007812C0;
+        X_func_001DE6FC(gm + 0x40, arg1);
+        break;
+    case 0:
+    default:
+        break;
+    }
+    return 0;
+}
 
 extern "C" int func_00208508()
 {
@@ -969,7 +1235,48 @@ extern "C" int func_00208510()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00208518);
+extern "C" int func_00208518(unsigned int arg0, int arg1, int arg2, int arg3, int arg4)
+{
+    register int base11 PS2_REG("$11");
+
+    switch (arg0) {
+    case 1: {
+        int params[4];
+        int p;
+        params[0] = arg1;
+        params[1] = arg2;
+        params[2] = arg3;
+        params[3] = arg4;
+        p = X___builtin_new(0x80);
+        X_func_001F184C(p, 8, (int)params, 0);
+        base11 = (int)&D_007812C0;
+        base11 += 0x222AC;
+        X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, p, 0, base11, 0x11);
+        break;
+    }
+    case 2: {
+        int params[4];
+        int p;
+        params[0] = arg1;
+        params[1] = arg2;
+        params[2] = arg3;
+        params[3] = arg4;
+        p = X___builtin_new(0x80);
+        X_func_001F184C(p, 8, (int)params, 0);
+        base11 = (int)&D_007812C0;
+        base11 += 0x222A4;
+        X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, p, 0, base11, 0x11);
+        break;
+    }
+    case 0:
+    case 3:
+    case 4:
+    case 5:
+    default:
+        break;
+    }
+    return 0;
+}
 
 // NON_MATCHING: 240/306 differ, 36 relocs differ (size 0x4C8, game 0x4D0), 44 edits
 #ifdef NON_MATCHING
@@ -1359,7 +1666,31 @@ extern "C" int func_00208640(unsigned int arg0, unsigned int arg1, unsigned int 
 INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00208640);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00208B10);
+extern "C" int func_00208B10(unsigned int arg0)
+{
+    switch (arg0) {
+    case 0:
+        break;
+    case 1:
+        X_func_001CB01C((int)&D_007812C0, 2);
+        break;
+    case 2:
+        X_func_001CB01C((int)&D_007812C0, 3);
+        break;
+    case 3:
+        X_func_001CCC30((int)&D_007812C0);
+        break;
+    case 10:
+        X_func_001CB01C((int)&D_007812C0, 0);
+        break;
+    case 20:
+        X_func_001C4F70((int)&D_007812C0);
+        break;
+    case 30:
+        break;
+    }
+    return 0;
+}
 
 // NON_MATCHING: 113/133 differ, 11 relocs differ (size 0x214, game 0x21C), 58 edits
 #ifdef NON_MATCHING
@@ -1430,7 +1761,18 @@ extern "C" int func_00208DBC()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00208DC4);
+extern "C" int func_00208DC4(int arg0, unsigned char *arg1)
+{
+    if (arg0 == 10 && (unsigned int)arg1 <= 0x7FFFFFFU) {
+        int n = 0;
+        while (*arg1++ && n++ < 0x200) {}
+        if (n >= 0x1FE) {
+            arg1[0] = 0;
+            arg1[1] = 0;
+        }
+    }
+    return 0;
+}
 
 extern "C" int func_00208E24(unsigned int arg0, int arg1)
 {
@@ -1526,7 +1868,16 @@ extern "C" int func_00209098()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_002090A0);
+extern "C" int func_002090A0(int arg0)
+{
+    switch (arg0) {
+    case 0:
+        break;
+    case 1:
+        return X_func_0020F140((int)&D_007A4440);
+    }
+    return 0;
+}
 
 extern "C" int func_002090D8()
 {
@@ -1534,9 +1885,89 @@ extern "C" int func_002090D8()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_002090E0);
+extern "C" int X_func_001C9920(void *, int, int, void *, void *) asm("func_001C9920");
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_00209270);
+extern "C" int func_002090E0(unsigned int arg0, int arg1, int arg2, int *arg3)
+{
+    switch (arg0) {
+    case 1:
+        X_func_001C9920(&D_007812C0, arg1, 0, &arg2, 0);
+        break;
+    case 2:
+        X_func_001C9920(&D_007812C0, arg1, 1, &arg2, 0);
+        break;
+    case 3:
+        return X_func_001C9920(&D_007812C0, arg1, 2, &arg2, 0);
+    case 4:
+        X_func_001C9920(&D_007812C0, arg1, 4, &arg2, 0);
+        break;
+    case 5: {
+        int ret;
+        X_func_001C9920(&D_007812C0, arg1, 5, &ret, 0);
+        return ret;
+    }
+    case 6:
+        X_func_001C9920(&D_007812C0, arg1, 9, &arg2, 0);
+        break;
+    case 10:
+        X_func_001C9920(&D_007812C0, arg1, 11, (void *)arg2, 0);
+        break;
+    case 11: {
+        int out[4];
+        X_func_001C9920(&D_007812C0, arg1, 12, out, 0);
+        *(int *)arg2 = out[0];
+        *arg3 = out[1];
+        break;
+    }
+    case 12:
+        X_func_001C9920(&D_007812C0, arg1, 13, (void *)arg2, 0);
+        break;
+    case 13:
+        X_func_001C9920(&D_007812C0, arg1, 14, (void *)arg2, 0);
+        break;
+    case 14:
+        X_func_001C9920(&D_007812C0, arg1, 15, (void *)arg2, 0);
+        break;
+    case 15:
+        X_func_001C9920(&D_007812C0, arg1, 16, (void *)arg2, 0);
+        break;
+    case 99:
+        X_func_001C9920(&D_007812C0, arg1, 5, &arg2, arg3);
+        break;
+    case 0:
+    default:
+        break;
+    }
+    return 0;
+}
+
+extern "C" int func_00209270(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
+{
+    if (arg0 == 0x65716473) {
+        if (arg1 != 0) {
+            D_007812C0.setSysFlg2(0x4000000);
+        } else {
+            D_007812C0.unsetSysFlg2(0x4000000);
+        }
+    }
+    switch (arg0) {
+    case 100:
+        X_func_001C541C((int)&D_007812C0);
+        return 0;
+    case 101:
+        return D_007A3294;
+    default: {
+        int args[6];
+        args[0] = arg0;
+        args[1] = arg1;
+        args[2] = arg2;
+        args[3] = arg3;
+        args[4] = arg4;
+        args[5] = arg5;
+        return X_func_00144AE0((int)args);
+    }
+    }
+}
 
 extern "C" int func_00209344()
 {
@@ -2051,7 +2482,31 @@ extern "C" int func_002098D8()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_002098E0);
+extern "C" int X_hasActor_001D046C(void *, int) asm("func_001D046C");
+extern "C" void *X_getActor_001D2B8C(void *, int) asm("func_001D2B8C");
+extern "C" void X_func_001333C0(void *, int, float) asm("func_001333C0");
+extern "C" void X_func_001DB1B8(void *, float) asm("func_001DB1B8");
+
+extern "C" int func_002098E0(unsigned int arg0, int arg1, float *arg2)
+{
+    if (X_hasActor_001D046C(&D_007812C0, arg1) == 0) {
+        return 0;
+    }
+    char *obj = (char *)X_getActor_001D2B8C(&D_007812C0, arg1);
+    register char *base4 PS2_REG("$4") = (char *)&D_006E9840;
+    char *scene = base4 + 0x12540;
+    switch (arg0) {
+    case 0:
+        break;
+    case 1:
+        X_func_001333C0(scene, *(int *)(obj + 0x108), *arg2);
+        break;
+    case 2:
+        X_func_001DB1B8(obj, *arg2);
+        break;
+    }
+    return 0;
+}
 
 extern "C" int func_002099A4()
 {
@@ -3251,7 +3706,47 @@ extern "C" int func_0020B3B8()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_0020B3C0);
+extern "C" void X_func_001F0E90(int, float, int) asm("func_001F0E90");
+extern "C" int X_func_001F6B8C(float, float) asm("func_001F6B8C");
+extern "C" void X_func_001F0F9C(int, float, float) asm("func_001F0F9C");
+extern "C" void X_func_001F10A4(int, float, int) asm("func_001F10A4");
+extern "C" float X_func_001CFB48(void *, int, float *) asm("func_001CFB48");
+
+extern "C" int func_0020B3C0(unsigned int arg0, int arg1, float *arg2, float *arg3)
+{
+    if (X_hasActor_001D046C(&D_007812C0, arg1) == 0) {
+        return 0;
+    }
+    switch (arg0) {
+    case 1:
+        X_func_001F0E90(arg1, *arg2, 0);
+        break;
+    case 2: {
+        float v = *arg2;
+        X_func_001F0E90(arg1, v, X_func_001F6B8C(v, *arg3));
+        break;
+    }
+    case 3:
+        X_func_001F0E90(arg1, *arg2, (int)arg3);
+        break;
+    case 4:
+        X_func_001F0F9C(arg1, *arg2, *arg3);
+        break;
+    case 5:
+        X_func_001F10A4(arg1, *arg2, (int)arg3);
+        break;
+    case 6:
+        X_func_001F0F9C(arg1, X_func_001CFB48(&D_007812C0, arg1, arg2), *arg3);
+        break;
+    case 7:
+        X_func_001F10A4(arg1, X_func_001CFB48(&D_007812C0, arg1, arg2), (int)arg3);
+        break;
+    case 0:
+    default:
+        break;
+    }
+    return 0;
+}
 
 extern "C" int func_0020B520()
 {
@@ -3323,7 +3818,39 @@ INCLUDE_RODATA("asm/nonmatchings/system/sysnowloading", D_00301198);
 
 INCLUDE_RODATA("asm/nonmatchings/system/sysnowloading", D_003011A0);
 
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_0020C4C8);
+extern "C" int func_0020C4C8(unsigned int arg0, int arg1, int arg2)
+{
+    switch (arg0) {
+    case 10:
+        X_func_0016366C((int)&D_007B2140, arg1, arg2 != 0);
+        break;
+    case 20:
+        return X_func_00163B20((int)&D_007B2140, arg1);
+    case 21:
+        X_func_00163B48((int)&D_007B2140, arg1);
+        break;
+    case 22:
+        return X_func_00163B80((int)&D_007B2140, arg1);
+    case 23:
+        X_func_00163BB8((int)&D_007B2140, arg1);
+        break;
+    case 24:
+        *(int *)((char *)&D_007B2294 + arg1 * 0x3C) = arg2;
+        break;
+    case 30:
+        X_func_00162AFC((int)&D_007B2140, arg1, arg2 != 0);
+        break;
+    case 40:
+        return X_func_00164078((int)&D_007B2140, arg1) != 0;
+    case 50:
+        X_func_001C5A5C((int)&D_007812C0, arg1 != 0);
+        break;
+    case 0:
+    default:
+        break;
+    }
+    return 0;
+}
 
 extern "C" int func_0020C5C4()
 {
@@ -3583,7 +4110,7 @@ extern "C" int func_0020D428(unsigned int arg0, int arg1)
   switch (arg0)
   {
     case 1:
-      base = (int) (field2 = &D_007812C0);
+      base = (int) (field2 = (int *)&D_007812C0);
       if (X_func_001E7D7C((int) (&D_007A3D80), *((int *) (((char *) base) + 0x222B4))) == 0)
     {
       field = (int *) (base + 0x222B4);
