@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0011A028(int) asm("func_0011A028");
+extern "C" int Xii_func_0011A054(int) asm("func_0011A054");
+extern "C" int Xii_func_00123BB8(int) asm("func_00123BB8");
+extern "C" int Xiiis_func_0011A320(int, int, short) asm("func_0011A320");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00119B60(...) asm("func_00119B60");
@@ -48,7 +52,24 @@ INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", init__18MagLifeBwnModeWait
 
 INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", init__17MagLifeBwnModeSitR10MagLifeBwn);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", term__17MagLifeBwnModeSitR10MagLifeBwni);
+extern "C" int term__17MagLifeBwnModeSitR10MagLifeBwni(int arg0, int arg1, int arg2)
+{
+    int var_v0;
+
+    if (arg2 == 0) {
+        if (M2C_FIELD(arg1, int *, 0x80) == 4) {
+            return 1;
+        }
+        if (Xii_func_0011A028((int) arg1) == 8) {
+            Xiiis_func_0011A320((int) arg1, 9, -1);
+            return 0;
+        }
+        return 1;
+    }
+    Xii_func_00123BB8((int) arg1);
+    var_v0 = Xii_func_0011A054((int) arg1) != 0;
+    return var_v0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", init__18MagLifeBwnModeFuseR10MagLifeBwn);
 
