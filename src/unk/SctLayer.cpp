@@ -40,7 +40,42 @@ extern "C" void X_func_0017C754(SctLayer *) asm("func_0017C754");
 
 INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017B7CC);
 
+// NON_MATCHING: 18/79 differ, 17 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_0016AD94_17B918() asm("func_0016AD94");
+extern "C" void func_0017B918(const char *arg0, float *arg1, const float *arg2)
+{
+    register float c PS2_REG("$f20") = 255.0f;
+    float s = *(const float *)(arg0 + 0x34) * *(const float *)(arg0 + 0x54);
+    float r0 = (float)X_func_0016AD94_17B918();
+    *(int *)(arg1 + 1) = 0;
+    arg1[0] = s * (r0 / c);
+    arg1[2] = s * ((float)X_func_0016AD94_17B918() / c);
+    arg1[3] = s + s * 0.5f * ((float)X_func_0016AD94_17B918() / c);
+    float x = arg1[0];
+    float w = arg2[2] - arg2[0];
+    if (w <= x) {
+        float nx;
+        do {
+            nx = x - w;
+            x = nx;
+        } while (w <= nx);
+        arg1[0] = nx;
+    }
+    float z = arg1[2];
+    float h = arg2[3] - arg2[1];
+    if (h <= z) {
+        float nz;
+        do {
+            nz = z - h;
+            z = nz;
+        } while (h <= nz);
+        arg1[2] = nz;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017B918);
+#endif
 
 extern "C" int func_0017BA54(const SctCell *arg0, const float *arg1, int arg2)
 {
