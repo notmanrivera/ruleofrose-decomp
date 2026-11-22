@@ -1,3 +1,4 @@
+#include "ror.h"
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
@@ -886,12 +887,11 @@ extern "C" int func_001BC760()
 
 INCLUDE_ASM("asm/nonmatchings/unk/001B64C4", func_001BC790);
 
-// NON_MATCHING: 117/160 differ, 17 relocs differ (size 0x280, game 0x28C), 13 edits
-#ifdef NON_MATCHING
+static inline int BC8F8_game(char *p) { return (int)(p + 0x22220); }
 extern "C" int X_func_0018C4D8(...) asm("func_0018C4D8");
 extern "C" int X_func_0018EBA4(...) asm("func_0018EBA4");
 extern "C" int X_func_0018EC58(...) asm("func_0018EC58");
-extern "C" int X_func_001B1B34(int,int) asm("func_001B1B34");
+extern "C" int X_func_001B1B34(int,int) ASM_NOTHROW asm("func_001B1B34");
 extern "C" int X_func_001DC48C(...) asm("func_001DC48C");
 extern int D_002B8848;
 extern int D_002B8850;
@@ -919,7 +919,7 @@ extern "C" void func_001BC8F8(int arg0, int arg1, int arg2)
         else if (arg1==13) var_a2=M2C_FIELD(arg0,int *,0x242C);
         if (var_a2 != 0xA00) {
             temp_s0 = var_a2 & 0xFFFF;
-            temp_s1 = (int)&D_007812C0 + 0x22220;
+            temp_s1 = BC8F8_game((char *)&D_007812C0);
             X_func_001DC48C(temp_s1, temp_s0, 0xB, (int)&stack);
             if (stack.sp0 == 0) {
                 stack.sp0 = (*(int *)&D_002B8848);
@@ -930,9 +930,10 @@ extern "C" void func_001BC8F8(int arg0, int arg1, int arg2)
                 stack.sp0 = (*(int *)&D_002B8848);
             }
             X_func_0018EC58(temp_s4, stack.sp0);
+            int value = stack.sp0;
             M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7B74) = 0;
             M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7B78) = 0;
-            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7B7C) = stack.sp0;
+            M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7B7C) = value;
             X_func_0018C4D8(temp_s4, 0x5C, 0);
             M2C_FIELD(M2C_FIELD(temp_s4, int *, 0x4AC), int *, 0x7A3C) = 1;
             X_func_001DC48C(temp_s1, temp_s0, 0x25, (int)&stack);
@@ -963,9 +964,6 @@ extern "C" void func_001BC8F8(int arg0, int arg1, int arg2)
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/001B64C4", func_001BC8F8);
-#endif
 
 static inline void *gamSub22220() {
     void *p = (void *)&D_007812C0;
