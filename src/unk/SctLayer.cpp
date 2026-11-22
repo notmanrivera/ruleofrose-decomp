@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "unk/WrdSrv.h"
+extern "C" int X_func_0016AD94_17B7CC() asm("func_0016AD94");
 extern "C" void X_func_00237340_17BA54(float (*)[4]) asm("func_00237340");
 extern "C" void X_func_00237A40_17BA54(float (*)[4], float (*)[4], float *) asm("func_00237A40");
 extern "C" int X_func_002268B0_17BA54(int, float (*)[4]) asm("func_002268B0");
@@ -38,7 +39,33 @@ extern "C" int X_func_0017C3F0(SctMapHeader *) asm("func_0017C3F0");
 extern "C" void X_func_0017C60C(SctLayer *, void *, int) asm("func_0017C60C");
 extern "C" void X_func_0017C754(SctLayer *) asm("func_0017C754");
 
-INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017B7CC);
+extern "C" void func_0017B7CC(const float *arg0, float *arg1, const float *arg2)
+{
+    arg1[0] = arg0[0x34 / 4] * ((float)X_func_0016AD94_17B7CC() / 255.0f);
+    arg1[1] = arg0[0x2C / 4] - arg0[0x40 / 4];
+    arg1[2] = arg0[0x34 / 4] * ((float)X_func_0016AD94_17B7CC() / 255.0f);
+    arg1[3] = arg0[0x34 / 4] + arg0[0x34 / 4] * 0.5f * ((float)X_func_0016AD94_17B7CC() / 255.0f);
+    float x = arg1[0];
+    register float w PS2_REG("$f0") = arg2[2] - arg2[0];
+    if (w <= x) {
+        float nx;
+        do {
+            nx = x - w;
+            x = nx;
+        } while (w <= nx);
+        arg1[0] = nx;
+    }
+    float z = arg1[2];
+    float h = arg2[3] - arg2[1];
+    if (h <= z) {
+        float nz;
+        do {
+            nz = z - h;
+            z = nz;
+        } while (h <= nz);
+        arg1[2] = nz;
+    }
+}
 
 // NON_MATCHING: 18/79 differ, 17 edits
 #ifdef NON_MATCHING
