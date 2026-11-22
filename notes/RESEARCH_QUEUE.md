@@ -17,7 +17,7 @@ judgement and go to Sonnet.
 
 ## Open
 
-- [ ] R22 Plan shared class headers for the class families (2026-11-22).
+- [x] R22 Plan shared class headers for the class families (2026-11-22).
   Lesson of the day: a class header (real fields and types instead of
   M2C_FIELD offsets) gave +76 functions in one session (worker Neon, task E),
   far more than function-by-function work; but families spread over several
@@ -32,7 +32,10 @@ judgement and go to Sonnet.
   plan: one header per family or base, what it declares, which files
   include it, an order by expected yield (pending functions + NON_MATCHING
   attempts + M2C_FIELD uses each unlocks). Output:
-  notes/research/R22-class-families.md.
+  notes/research/R22-class-families.md. Done 2026-11-22 (Sonnet); checked:
+  MagLifePC defined twice, CmnITask only in TskMsgMan.h, MnuPBook/mnuBase
+  include no header, EmyMain/EmyOut/Eff0/mnuBase are game classes. Became
+  task F of build/workers/fable-brief.md.
 
 - [x] R16 Split unk/TskCamera (game/gamman done in c6d41ad; TskCamera
   range done in wt/fable):
