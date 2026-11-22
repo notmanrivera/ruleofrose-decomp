@@ -369,8 +369,10 @@ extern "C" int func_0016768C(int arg0, unsigned int arg1)
     return 0;
 }
 
-// NON_MATCHING: 17/119 differ (size 0x1DC, game 0x1E4), 6 edits
+// NON_MATCHING: 3/121 differ, 3 edits
 #ifdef NON_MATCHING
+// Preserve assertion line numbers.
+
 inline int flag8(int p) { return (*(int *)((char *)p+0x3ec)) & 8; }
 inline int flag16(int p) { return (*(int *)((char *)p+0x3ec)) & 16; }
 inline int oneFlag(int a) { return *(int *)((char *)*(int *)((char *)a+12)+0x100); }
@@ -395,7 +397,7 @@ extern "C" int func_001677D0(int arg0, int *arg1, int *arg2) {
         *out2 = M2C_FIELD(M2C_FIELD(arg0,int *,12),int *,0x124);
     } else {
         obj = objGet(arg0);
-        if (!flag8(flags) && !flag16(flags)) {
+        if (!__builtin_expect(flag8(flags), 0) && !flag16(flags)) {
             if (((m2c_v200_18_i*)obj)->call() == 0 ||
                 ((m2c_v200_18_i*)M2C_FIELD(arg0,int *,12))->call() == 2 ||
                 ((m2c_v200_18_i*)M2C_FIELD(arg0,int *,12))->call() == 1) {
@@ -417,6 +419,9 @@ extern "C" int func_001677D0(int arg0, int *arg1, int *arg2) {
     *out2 = -1;
     return result;
 }
+
+
+// Preserve subsequent assertion line numbers.
 #else
 INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_001677D0);
 #endif
