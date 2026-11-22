@@ -1,5 +1,12 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+extern "C" void X_builtin_delete(void *) asm("__builtin_delete");
+extern "C" void Xvi_func_001D859C(void *, int) asm("func_001D859C");
+struct S_16957C {
+    int m_count;
+    void *m_arr[0x28];
+    int m_max;
+}; // S_16957C
 extern "C" int X_func_0025B890(...) asm("func_0025B890");
 extern "C" int Xii_func_00169A14(int) asm("func_00169A14");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
@@ -89,7 +96,17 @@ extern "C" void func_00169538(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016957C);
+extern "C" void func_0016957C(S_16957C *arg0, int arg1)
+{
+    for (int i = 0; i < 0x28; i++) {
+        if (arg0->m_arr[i] != 0) {
+            Xvi_func_001D859C(arg0->m_arr[i], 3);
+        }
+    }
+    if (arg1 & 1) {
+        return X_builtin_delete(arg0);
+    }
+}
 
 extern "C" int func_00169604(int arg0, int arg1)
 {
