@@ -622,12 +622,12 @@ extern "C" int func_001BEA18(const unsigned char *arg0, const unsigned char *arg
 INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BEA18);
 #endif
 
-// NON_MATCHING: 2/21 differ, 2 edits
-#ifdef NON_MATCHING
 extern "C" void func_001BEB70(int arg0)
 {
-    M2C_FIELD(arg0, int *, 0x34) = 2;
-    M2C_FIELD(arg0, int *, 0x18) = 4;
+    register int state PS2_REG("$2") = 2;
+    register int mode PS2_REG("$3") = 4;
+    M2C_FIELD(arg0, int *, 0x18) = mode;
+    M2C_FIELD(arg0, int *, 0x34) = state;
     M2C_FIELD(arg0, int *, 0x64) = 0x80;
     M2C_FIELD(arg0, int *, 0x68) = 1;
     M2C_FIELD(arg0, int *, 4) = 0;
@@ -643,9 +643,6 @@ extern "C" void func_001BEB70(int arg0)
     M2C_FIELD(arg0, int *, 0x30) = 0;
     M2C_FIELD(arg0, int *, 0) = 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BEB70);
-#endif
 
 extern "C" void func_001BEBC4(void *self, int theFlags)
 {
