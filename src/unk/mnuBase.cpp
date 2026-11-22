@@ -629,7 +629,30 @@ INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192BA4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", mnuBase__vfunc_03);
 
+// NON_MATCHING: 4/42 differ, 10 edits
+#ifdef NON_MATCHING
+extern "C" int Xii_func_001C5FFC(int) asm("func_001C5FFC");
+extern "C" int Xiifff_setRot__9DogEntityfff(int, float, float, float) asm("setRot__9DogEntityfff");
+extern "C" void func_00192E94(int arg0, float fparg0, float fparg1)
+{
+    int temp_a0;
+    int temp_s0;
+
+    Xii_func_001C5FFC((int)&D_007812C0);
+    temp_s0 = M2C_FIELD(arg0, int *, 8) + 0x2AB70;
+    M2C_FIELD(temp_s0, float *, 0x48) =
+        M2C_FIELD(temp_s0, float *, 0x44) =
+        M2C_FIELD(temp_s0, float *, 0x40) = 0.0f;
+    M2C_FIELD(temp_s0, int *, 0x90) = 1;
+    Xiifff_setRot__9DogEntityfff((int) temp_s0, 0.0f, 0.0f, 0.0f);
+    M2C_FIELD(temp_s0, float *, 0x140) = fparg1;
+    temp_a0 = M2C_FIELD(arg0, int *, 8);
+    M2C_FIELD(arg0, float *, 0x108) = (float) M2C_FIELD(temp_a0, float *, 0x2AA14);
+    Xiif_func_00131618(temp_a0, fparg0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192E94);
+#endif
 
 extern "C" void func_00192F3C(int arg0)
 {
