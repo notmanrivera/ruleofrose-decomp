@@ -112,6 +112,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", init__18MagLifeBwnModeFuse
 
 INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", term__18MagLifeBwnModeFuseR10MagLifeBwni);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", init__18MagLifeBwnModeMoveR10MagLifeBwn);
+extern "C" void init__18MagLifeBwnModeMoveR10MagLifeBwn(int arg0, int arg1)
+{
+    int idx = M2C_FIELD(arg1, int *, 8);
+    if (M2C_FIELD(arg1, int *, 0xCB8) >= 3) {
+        idx = 1;
+    }
+    int table[4] = { 0x57, 0x4E, 0x60, 0x45 };
+    int motion = table[idx] + M2C_FIELD(arg1, int *, 0xC);
+    M2C_FIELD(arg0, int *, 4) = motion;
+    Xiiis_func_0011A320((int) arg1, motion, -1);
+    Xii_func_00124D7C((int) arg1);
+    M2C_FIELD(arg0, int *, 8) = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", live__18MagLifeBwnModeMoveR10MagLifeBwn);
