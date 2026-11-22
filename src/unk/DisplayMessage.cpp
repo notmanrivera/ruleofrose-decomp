@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int X_loadModel__9MagSystemii(int, int, int) asm("loadModel__9MagSystemii");
+extern int D_006E9840;
 extern "C" int X_func_001C6FE0(int, int, int, int) asm("func_001C6FE0");
 extern "C" void X_func_001CC250(int, int, int, int, int, int) asm("func_001CC250");
 extern "C" void X_func_001CFBE4(int, int, int) asm("func_001CFBE4");
@@ -92,7 +94,42 @@ extern "C" void func_001F6570(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6578);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6694);
+extern "C" int func_001F6694(unsigned short arg0, int arg1, int arg2, int arg3)
+{
+    int type = -1;
+    int model;
+
+    if (arg0 != 0xFFFF) {
+        model = X_loadModel__9MagSystemii((int)&D_006E9840, arg0, -1);
+    } else {
+        model = -1;
+    }
+    switch (arg1) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+        type = 1;
+        break;
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+        type = 2;
+        break;
+    }
+    int r = X_func_001C6FE0((int)&D_007812C0, type, arg1, -1);
+    X_func_001CC250((int)&D_007812C0, model, r, (unsigned short)arg1, 0, 0);
+    if (arg2 != 0) {
+        X_func_001CFBE4((int)&D_007812C0, r, arg2);
+    }
+    if (arg3 != 0) {
+        X_func_001CFE78((int)&D_007812C0, r, arg3);
+    }
+    return r;
+}
 
 extern "C" int func_001F67A0(int arg0, int arg1, short arg2, float fparg0)
 {
