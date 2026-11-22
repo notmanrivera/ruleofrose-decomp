@@ -1916,15 +1916,13 @@ INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F80E0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F80F0);
 
-// NON_MATCHING: 1/239 differ, 1 edits
-#ifdef NON_MATCHING
 # define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int PBookStateFormat(...) asm("func_00279C98");
 extern "C" int Xii_func_00131550(int) asm("func_00131550");
 extern "C" int Xii_func_00192F3C(int) asm("func_00192F3C");
 extern "C" int Xii_func_00193A1C(int) asm("func_00193A1C");
 extern "C" int Xii_func_00196EFC(int) asm("func_00196EFC");
-extern "C" int Xii_func_0019722C(int) asm("func_0019722C");
+extern "C" int Xii_func_0019722C(int) ASM_NOTHROW asm("func_0019722C");
 extern "C" int Xii_func_001973FC(int) asm("func_001973FC");
 extern "C" int Xii_func_00197D28(int) asm("func_00197D28");
 extern "C" int Xii_func_001D44E4(int) asm("func_001D44E4");
@@ -2037,9 +2035,6 @@ extern "C" int MnuPBook__vfunc_05(int arg0, int arg1)
     }
     return var_s2;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_05);
-#endif
 
 extern "C" int func_00197A74(int arg0, int arg1)
 {
@@ -2200,7 +2195,7 @@ extern "C" int Xiii_func_001930F8(int, int) asm("func_001930F8");
 extern "C" int Xiii_func_00193210(int, int) asm("func_00193210");
 extern "C" int Xiiiff_func_00193258(int, float, float, int) asm("func_00193258");
 extern "C" int Xiiiiiii_func_0019368C(int, int, int, int, int, int) asm("func_0019368C");
-extern int D_002F8140;
+extern const unsigned int D_002F8140[4] __attribute__((aligned(16)));
 struct PBookV6Pair { long long a, b; };
 extern "C" void MnuPBook__vfunc_06(int arg0, int arg1)
 {
@@ -2326,4 +2321,6 @@ extern "C" void MnuPBook__vfunc_07(int arg0, int arg1)
     X_func_00223228(arg1, v);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F8140);
+extern const unsigned int D_002F8140[4] __attribute__((aligned(16))) = {
+    0xBF860A91, 0x40490FD9, 0, 0
+};
