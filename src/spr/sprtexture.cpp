@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" void Xvi_func_00191248(int) asm("func_00191248");
+extern "C" int Xii_func_00191258(int) asm("func_00191258");
+extern "C" int Xii_func_00191278(int) asm("func_00191278");
 extern char D_0029A180[];
 struct TexEntry { int m_0; int m_4; int m_8; int m_C; int m_10; int m_14; };
 extern TexEntry D_00299C60[];
@@ -386,7 +389,50 @@ INCLUDE_RODATA("asm/nonmatchings/spr/sprtexture", D_002F7B50);
 
 INCLUDE_RODATA("asm/nonmatchings/spr/sprtexture", D_002F7B60);
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00191174);
+extern "C" int func_00191174(int arg0)
+{
+    int temp_v0;
+    int var_s1 = 0;
+    unsigned int temp_v1;
+
+    if (M2C_FIELD(arg0, int *, 0x30) == 0) {
+        return -1;
+    }
+    temp_v1 = M2C_FIELD(arg0, unsigned int *, 0x38);
+    switch (temp_v1) {
+    case 0:
+        M2C_FIELD(arg0, unsigned int *, 0x38) = 3U;
+    case 3:
+        M2C_FIELD(arg0, unsigned int *, 0x38) = 4U;
+        Xvi_func_00191248(arg0);
+        break;
+    case 4:
+        if (M2C_FIELD(arg0, int *, 0x3C) == 0) {
+            temp_v0 = Xii_func_00191278(arg0);
+            switch (temp_v0) {
+            case 0:
+                break;
+            case 1:
+                M2C_FIELD(arg0, unsigned int *, 0x38) = 6U;
+                break;
+            }
+        }
+        Xii_func_00191258(arg0);
+        break;
+    case 6:
+        M2C_FIELD(arg0, unsigned int *, 0x38) = 7U;
+    case 1:
+    case 2:
+    case 5:
+    case 7:
+    default:
+        M2C_FIELD(arg0, unsigned int *, 0x38) = 0U;
+        var_s1 = 1;
+        M2C_FIELD(arg0, int *, 0x40) = 0;
+        break;
+    }
+    return var_s1;
+}
 
 
 
