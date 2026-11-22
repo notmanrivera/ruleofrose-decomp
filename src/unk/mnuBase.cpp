@@ -823,7 +823,79 @@ extern "C" void mnuBase__vfunc_01(int arg0, int arg1)
     }
 }
 
+// NON_MATCHING: 2/111 differ, 2 edits
+#ifdef NON_MATCHING
+extern "C" int Xi_func_001946E4() asm("func_001946E4");
+extern "C" int Xiiii_memset(int, int, int) asm("memset");
+extern "C" void func_00192BA4(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
+{
+    int temp_v0;
+    int temp_s0;
+    int temp_s3;
+    int temp_s6;
+    int temp_v1;
+    int var_a0;
+    int var_a1;
+    int var_a1_2;
+    int temp_s0_2;
+    int temp_v0_2;
+
+    temp_s0 = arg2 * 0x30;
+    temp_s6 = arg4 * 0x10;
+    M2C_FIELD(arg0, int *, 0xC) = arg1;
+    temp_s3 = arg3 << 5;
+    Xi_func_001946E4();
+    register int sz2 PS2_REG("$2") = (arg4 + arg5) * 0x10;
+    temp_v0 = Xii_func_00194588(sz2 + (temp_s0 + temp_s3));
+    M2C_FIELD(arg0, int *, 0x1C) = arg2;
+    temp_s0_2 = temp_v0 + temp_s0;
+    M2C_FIELD(arg0, int *, 0x18) = temp_v0;
+    temp_v0_2 = temp_s0_2 + temp_s3;
+    M2C_FIELD(arg0, int *, 0x94) = temp_s0_2;
+    M2C_FIELD(arg0, int *, 0x9C) = temp_v0_2;
+    M2C_FIELD(arg0, int *, 0xA4) = (int) (temp_v0_2 + temp_s6);
+    var_a1 = 0;
+    if (arg2 > 0) {
+        var_a0 = 0;
+        do {
+            var_a1 += 1;
+            M2C_FIELD((var_a0 + M2C_FIELD(arg0, int *, 0x18)), int *, 8) = 0;
+            M2C_FIELD((var_a0 + M2C_FIELD(arg0, int *, 0x18)), signed char *, 0x10) = 0;
+            *(int *)(var_a0 + M2C_FIELD(arg0, int *, 0x18)) = 0;
+            M2C_FIELD((var_a0 + M2C_FIELD(arg0, int *, 0x18)), int *, 4) = 0;
+            M2C_FIELD((var_a0 + M2C_FIELD(arg0, int *, 0x18)), int *, 0xC) = -1;
+            var_a0 += 0x30;
+        } while (var_a1 < M2C_FIELD(arg0, int *, 0x1C));
+    }
+    M2C_FIELD(arg0, int *, 0x98) = arg3;
+    Xiiii_memset(M2C_FIELD(arg0, int *, 0x94), 0, temp_s3);
+    M2C_FIELD(arg0, int *, 0xA0) = arg4;
+    Xiiii_memset(M2C_FIELD(arg0, int *, 0x9C), 0, temp_s6);
+    M2C_FIELD(arg0, int *, 0xA8) = arg5;
+    var_a1_2 = 0;
+    if (arg5 > 0) {
+        do {
+            temp_v1 = var_a1_2 * 0x10;
+            var_a1_2 += 1;
+            *(int *)(temp_v1 + M2C_FIELD(arg0, int *, 0xA4)) = 0;
+            M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0xA4)), int *, 4) = 0;
+            M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0xA4)), int *, 8) = -1;
+            M2C_FIELD((temp_v1 + M2C_FIELD(arg0, int *, 0xA4)), int *, 0xC) = -1;
+        } while (var_a1_2 < M2C_FIELD(arg0, int *, 0xA8));
+    }
+    if (M2C_FIELD(arg0, int *, 0x98) == 0) {
+        M2C_FIELD(arg0, int *, 0x94) = 0;
+    }
+    if (M2C_FIELD(arg0, int *, 0xA0) == 0) {
+        M2C_FIELD(arg0, int *, 0x9C) = 0;
+    }
+    if (M2C_FIELD(arg0, int *, 0xA8) == 0) {
+        M2C_FIELD(arg0, int *, 0xA4) = 0;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192BA4);
+#endif
 
 extern "C" void mnuBase__vfunc_03(int arg0, int arg1)
 {
