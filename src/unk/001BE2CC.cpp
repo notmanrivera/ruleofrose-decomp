@@ -472,7 +472,23 @@ extern "C" int func_001BEDB8()
 
 INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BEDC0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BEE8C);
+extern "C" int func_001BEE8C(int arg0)
+{
+    if (M2C_FIELD(arg0, int *, 4) == 1) {
+        if (M2C_FIELD(arg0, int *, 0xC) == 0) {
+            return 0;
+        }
+        M2C_FIELD(arg0, int *, 4) = 0;
+        M2C_FIELD(arg0, int *, 0xC) = 0;
+    } else {
+        if (M2C_FIELD(arg0, int *, 0xC) == 0) {
+            return 0;
+        }
+        M2C_FIELD(arg0, int *, 4) = 0;
+        M2C_FIELD(arg0, int *, 0xC) = 0;
+    }
+    return 1;
+}
 
 extern "C" int func_001BEEB4(int self)
 {
