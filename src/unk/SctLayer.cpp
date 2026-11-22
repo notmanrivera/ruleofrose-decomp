@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "unk/WrdSrv.h"
+extern "C" int X_func_0017C7B0_17C3F0(void *) asm("func_0017C7B0");
 extern "C" void X_func_0017C58C_17C0F0(SctLayer *) throw() asm("func_0017C58C");
 extern "C" void X_func_0017E464_17C45C(SctLayer *, int, int) asm("func_0017E464");
 
@@ -71,7 +72,17 @@ INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C2C0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C340);
 
-INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C3F0);
+extern "C" int func_0017C3F0(SctMapHeader *hdr)
+{
+    int size = 0x20;
+    for (int i = 0; i < 4; i++) {
+        int off = hdr->m_layerOff[i];
+        if (off != 0) {
+            size += X_func_0017C7B0_17C3F0((char *)hdr + off);
+        }
+    }
+    return size;
+}
 
 extern "C" void func_0017C45C(SctMap *self, int arg1, int arg2, int arg3)
 {
