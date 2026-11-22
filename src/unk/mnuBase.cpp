@@ -1,4 +1,10 @@
 #include "include_asm.h"
+extern int D_0029BBA8;
+extern int D_0029BBE0;
+extern int D_0029BC18;
+extern int D_0029BC50;
+extern int D_0029BC88;
+extern int D_0029BCC0;
 extern "C" void Xvii_func_00223228(int, int) asm("func_00223228");
 extern "C" int Xii_func_00223558(int, void *) asm("func_00223558");
 extern "C" int Xiii_func_001943D8(int, int) asm("func_001943D8");
@@ -343,7 +349,24 @@ extern "C" int func_00191F98(int arg0, int arg1)
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00191FF0);
+extern "C" int func_00191FF0(int arg0, int arg1)
+{
+    int temp_a0;
+    int temp_a3;
+
+    temp_a3 = arg0 + 0x48;
+    if (arg1 >= 0xE) {
+        return 0;
+    }
+    temp_a0 = ((int *)&D_0029BB70)[arg1] * 0x154;
+    ((int *)&D_0029BBA8)[arg1] = M2C_FIELD((temp_a0 + M2C_FIELD(temp_a3, int *, 0x4AC)), int *, 4) & 2;
+    ((int *)&D_0029BBE0)[arg1] = M2C_FIELD((temp_a0 + M2C_FIELD(temp_a3, int *, 0x4AC)), int *, 0x58);
+    ((int *)&D_0029BC18)[arg1] = M2C_FIELD((temp_a0 + M2C_FIELD(temp_a3, int *, 0x4AC)), int *, 0x58);
+    ((int *)&D_0029BC50)[arg1] = M2C_FIELD((temp_a0 + M2C_FIELD(temp_a3, int *, 0x4AC)), int *, 0x64);
+    ((int *)&D_0029BC88)[arg1] = M2C_FIELD((temp_a0 + M2C_FIELD(temp_a3, int *, 0x4AC)), int *, 0x68);
+    ((int *)&D_0029BCC0)[arg1] = M2C_FIELD((temp_a0 + M2C_FIELD(temp_a3, int *, 0x4AC)), int *, 0x10);
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001920C4);
 
