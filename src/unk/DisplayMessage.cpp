@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int X_func_001C6FE0(int, int, int, int) asm("func_001C6FE0");
+extern "C" void X_func_001CC250(int, int, int, int, int, int) asm("func_001CC250");
+extern "C" void X_func_001CFBE4(int, int, int) asm("func_001CFBE4");
+extern "C" void X_func_001CFE78(int, int, int) asm("func_001CFE78");
+extern "C" void X_func_001D1D5C(int, int, int, void *) asm("func_001D1D5C");
 extern "C" int X_func_001D046C(int, unsigned int) asm("func_001D046C");
 extern "C" void X_func_001E7724(int, int) asm("func_001E7724");
 extern "C" void X_func_001F6308(int, int, int, int, unsigned int, float, int) asm("func_001F6308");
@@ -89,7 +94,20 @@ INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6578);
 
 INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6694);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F67A0);
+extern "C" int func_001F67A0(int arg0, int arg1, short arg2, float fparg0)
+{
+    int r = X_func_001C6FE0((int)&D_007812C0, 2, 6, -1);
+    X_func_001CC250((int)&D_007812C0, -1, r, 0xFFFF, 0, 0);
+    if (arg0 != 0) {
+        X_func_001CFBE4((int)&D_007812C0, r, arg0);
+    }
+    if (arg1 != 0) {
+        X_func_001CFE78((int)&D_007812C0, r, arg1);
+    }
+    X_func_001D1D5C((int)&D_007812C0, r, 0x32, &arg2);
+    X_func_001D1D5C((int)&D_007812C0, r, 0x33, &fparg0);
+    return r;
+}
 
 extern "C" int func_001F6878(unsigned int arg0)
 {
