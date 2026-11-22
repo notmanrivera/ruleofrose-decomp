@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0018BD94(int) asm("func_0018BD94");
 extern int D_0029BBA8;
 extern int D_0029BBE0;
 extern int D_0029BC18;
@@ -465,7 +466,27 @@ extern "C" void func_0019241C(int arg0, int arg1, int arg2, int arg3)
 extern "C" void func_001924D8(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001924E0);
+extern "C" void func_001924E0(int arg0, int arg1, int arg2, int arg3)
+{
+    int temp_v0;
+    int temp_s0;
+    int temp_s1;
+
+    temp_s1 = Xiiif_func_001925F0(arg0, arg1, 900.0f);
+    temp_s0 = Xiiif_func_001925F0(arg0, arg1, 1000.0f);
+    if ((temp_s1 != 0) && (temp_s0 != 0)) {
+        Xvii_func_00223240(temp_s1, arg2);
+        Xvii_func_00223260(temp_s1, arg3);
+        Xvii_func_00223398(temp_s1, Xiii_func_0021B550(Xii_func_00223378(temp_s1), 0x47, 0x5000D));
+        Xvii_func_00223240(temp_s0, arg2);
+        Xvii_func_00223260(temp_s0, arg3);
+        Xvii_func_00223398(temp_s0, Xiii_func_0021B550(Xii_func_00223378(temp_s0), 0x47, 0x5000D));
+        temp_v0 = arg0 + 0x18;
+        M2C_FIELD(temp_v0, int *, 0x4D0) = temp_s1;
+        M2C_FIELD(temp_v0, int *, 0x4D4) = temp_s0;
+        Xii_func_0018BD94(temp_v0);
+    }
+}
 
 extern "C" int func_001925F0(int arg0, int arg1)
 {
