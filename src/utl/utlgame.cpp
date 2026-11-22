@@ -12,6 +12,48 @@ extern const char D_002E57A8[];
 extern const char D_002E5728[];
 #include "game/gamman.h"
 #include "game/gamtrg.h"
+struct DogEntityStub_3510 {
+    unsigned char m_unk00[0x94];
+    virtual void X__vfunc_01();
+    virtual void X__vfunc_02();
+    virtual void X__vfunc_03();
+    virtual void X__vfunc_04();
+    virtual void X__vfunc_05();
+    virtual void X__vfunc_06();
+    virtual void X__vfunc_07();
+    virtual void X__vfunc_08();
+    virtual void X__vfunc_09();
+    virtual void X__vfunc_10();
+    virtual void X__vfunc_11();
+    virtual void X__vfunc_12();
+    virtual void X__vfunc_13();
+    virtual void X__vfunc_14();
+    virtual void X__vfunc_15();
+    virtual void X__vfunc_16();
+    virtual void X__vfunc_17();
+    virtual void X__vfunc_18(void *theOut, int theNode);
+};
+struct DogActorStub_3510 : public DogEntityStub_3510 {
+    unsigned char m_unk98[0x11C - 0x98];
+    void *m_i3r_root;
+    unsigned char m_unk120[0x4D0 - 0x120];
+};
+STATIC_ASSERT(sizeof(DogActorStub_3510) == 0x4D0, DogActorStub_3510_size);
+extern DogActorStub_3510 X_D_006FE6A0_3510[] asm("D_006FE6A0");
+extern "C" int func_0022B3D8(void *theRoot, const char *theName);
+extern const char D_002E57C8[];
+extern const char D_002E57D8[];
+extern const char D_002E57E8[];
+extern const char D_002E57F8[];
+extern const char D_002E5800[];
+extern "C" float func_001638FC(void *theEmy, int theId);
+extern "C" float func_00163958(void *theEmy, int theId);
+static inline int getNodeIndexByName_3510(DogActorStub_3510 *self, const char *p)
+{
+    if (!self->m_i3r_root) ror_assert(D_002E57D8, 0x131, D_002E57E8);
+    if (!p) ror_assert(D_002E57D8, 0x131, D_002E57F8);
+    return func_0022B3D8(self->m_i3r_root, p);
+}
 extern const char D_002E5808[];
 extern const char D_002E5830[];
 struct UtlEnemyInfo {
@@ -421,7 +463,24 @@ extern "C" short func_001034E4(int theA)
     return func_001CBE38((int)&D_007812C0, theA);
 }
 
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103510);
+extern "C" float func_00103510(void *theOut, int theId, int theFlag)
+{
+    int id = (short)func_001CBE38((int)&D_007812C0, theId);
+    float r = 0.0f;
+    if ((unsigned int)id < 0x80U) {
+        DogActorStub_3510 *actor = &X_D_006FE6A0_3510[id];
+        int n = getNodeIndexByName_3510(actor, D_002E57C8);
+#line 931
+        ASSERT_S(n >= 0, D_002E5800);
+        actor->X__vfunc_18(theOut, n);
+        if (theFlag) {
+            r = func_001638FC(&D_007B2140, theId);
+        } else {
+            r = func_00163958(&D_007B2140, theId);
+        }
+    }
+    return r;
+}
 
 extern "C" int func_00103654(UtlEnemyInfoBuf &theInfo, float theR)
 {
