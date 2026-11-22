@@ -385,22 +385,18 @@ extern "C" void func_0012C9C0(int arg0, int arg1, int arg2)
     }
 }
 
-// NON_MATCHING: 3 of 31 instructions
-#ifdef NON_MATCHING
 extern "C" int func_0012CA28(int arg0)
 {
-    int ret = M2C_FIELD(arg0, int *, 0x1F0);
-    if (ret != 0) {
+    int node = M2C_FIELD(arg0, int *, 0x1F0);
+    if (node != 0) {
         DogVector vec;
-        X_func_0011CE5C(arg0, &vec, ret, 0);
+        X_func_0011CE5C(arg0, &vec, node, 0);
         return X_func_0012CAA4(arg0, &vec, M2C_FIELD(arg0, int *, 0x1F0));
     }
-    ret = M2C_FIELD(arg0, int *, 0x1B0);
-    return (ret < 0) ? 0 : ret;
+    register int ret PS2_REG("$3") = M2C_FIELD(arg0, int *, 0x1B0);
+    if (ret < 0) ret = 0;
+    return ret;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012CA28);
-#endif
 
 extern "C" int func_0012CAA4(int arg0, int arg1, int arg2)
 {
