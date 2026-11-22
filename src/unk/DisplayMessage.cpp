@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_001E79C0(int, int) asm("func_001E79C0");
+extern "C" int Xiii_func_001E7D7C(int, int) asm("func_001E7D7C");
+extern "C" int Xiiu_func_001D2B8C(int, unsigned int) asm("func_001D2B8C");
+extern int D_007A3D80;
 extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
 extern int _vt$7ObjStat;
@@ -43,7 +47,18 @@ INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F5E48);
 
 INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F603C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F616C);
+extern "C" void func_001F616C(unsigned int arg0, float fparg0)
+{
+    if (((arg0 >> 0x1C) & 3) == 1) {
+        char *obj = (char *)Xiiu_func_001D2B8C((int)&D_007812C0, arg0);
+        if (obj != 0) {
+            int *p = (int *)(obj + 0x3DC);
+            if (Xiii_func_001E7D7C((int)&D_007A3D80, *p) != 0) {
+                M2C_FIELD(Xiii_func_001E79C0((int)&D_007A3D80, *p), float *, 0x6C) = fparg0;
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F61EC);
 
