@@ -451,6 +451,92 @@ def flag_sweep():
     return out
 
 
+def qwen():
+    """tools/qwen_variants.py (log build/workers/qwen.log): the local model
+    proposing variants of NON_MATCHING attempts. The last run: a bar for
+    its functions, one row per function (base -> best edits, round)."""
+    path = os.path.join(ST, "qwen.log")
+    try:
+        lines = open(path, encoding="utf-8", errors="replace").read().splitlines()
+        age = time.time() - os.path.getmtime(path)
+    except OSError:
+        return []
+    starts = [i for i, ln in enumerate(lines) if " qwen run: " in ln]
+    if not starts:
+        return []
+    run_ = lines[starts[-1]:]
+    done = any(" qwen run done" in ln for ln in run_)
+    m = re.search(r"qwen run: (\d+) functions, (\d+) rounds", run_[0])
+    total, rounds = (int(m.group(1)), int(m.group(2))) if m else (0, 0)
+    fns = {}
+    for ln in run_:
+        p = re.match(r"^\S+ \[(\d+)/\d+\] (\S+) (\S+): (.*)$", ln)
+        if not p:
+            continue
+        k, file, fn, rest = int(p.group(1)), p.group(2), p.group(3), p.group(4)
+        st = fns.setdefault(k, {"name": f"{file.split('/')[-1]} {fn}", "base": None, "best": None,
+                                "round": 0, "end": False, "note": ""})
+        if (b := re.match(r"start, base (\d+)", rest)):
+            st["base"] = st["best"] = int(b.group(1))
+        if (r := re.search(r"round (\d+)/\d+ done, .*best (\d+)", rest)):
+            st["round"], st["best"] = int(r.group(1)), int(r.group(2))
+        if (e := re.match(r"(MATCH|end), base (\d+) -> best (\d+)", rest)):
+            st["end"], st["best"] = True, int(e.group(3))
+        if "skipped" in rest:
+            st["end"], st["note"] = True, rest
+    finished = sum(s["end"] for s in fns.values())
+    state = (col("terminado", "dim") if done else col("trabajando", "green") if age < 300
+             else col("parado", "yellow"))
+    out = [f"{col('qwen (local)', 'bold')} {state}  (qwen2.5-coder 7B en tu GPU, sin cuota; log {os.path.relpath(path, MAIN)})"]
+    f = round(WIDTH * finished / total) if total else 0
+    out.append(f"  funciones  {chr(0x2588) * f}{chr(0x2591) * (WIDTH - f)} {finished}/{total}, "
+               f"{rounds} rondas cada una")
+    for k in sorted(fns):
+        s = fns[k]
+        if s["note"]:
+            out.append(f"    {col('·', 'dim')} {s['name']:<36} {col(s['note'][:60], 'dim')}")
+            continue
+        gain = (s["base"] or 0) - (s["best"] or 0)
+        mark = (col("✓", "green") if s["best"] == 0 else col("~", "yellow") if gain > 0
+                else col("·", "dim"))
+        now = "" if s["end"] or done else col("  ◀ ahora", "bold")
+        out.append(f"    {mark} {s['name']:<36} {s['base']} → {s['best']} cambios"
+                   f"  (ronda {s['round']}/{rounds}){now}")
+    return out
+
+
+def qwen_names():
+    """tools/qwen_names.py (log build/workers/qwen-names.log): the local
+    model guessing method names; the last run's bar and its result."""
+    path = os.path.join(ST, "qwen-names.log")
+    try:
+        lines = open(path, encoding="utf-8", errors="replace").read().splitlines()
+        age = time.time() - os.path.getmtime(path)
+    except OSError:
+        return []
+    starts = [i for i, ln in enumerate(lines) if " qwen names " in ln and "methods, model" in ln]
+    if not starts:
+        return []
+    run_ = lines[starts[-1]:]
+    m = re.search(r"qwen names (\w+): (\d+) methods", run_[0])
+    kind, total = (m.group(1), int(m.group(2))) if m else ("?", 0)
+    prog = [p for p in (re.match(r"^\S+ \[(\d+)/\d+\] (.*)$", ln) for ln in run_) if p]
+    end = next((ln.split(" ", 1)[1] for ln in run_ if " done:" in ln), None)
+    state = (col("terminado", "dim") if end else col("trabajando", "green") if age < 300 else col("parado", "yellow"))
+    what = "prueba a ciegas con nombres reales" if kind == "test" else "propuestas para vfunc_NN (a revisar)"
+    out = [f"{col('qwen nombres', 'bold')} {state}  ({what}; log {os.path.relpath(path, MAIN)})"]
+    k = int(prog[-1].group(1)) if prog else 0
+    exact = sum("(exact)" in p.group(2) for p in prog)
+    f = round(WIDTH * k / total) if total else 0
+    out.append(f"  métodos  {chr(0x2588) * f}{chr(0x2591) * (WIDTH - f)} {k}/{total}"
+               + (f", {col(f'{exact} acertados', 'green')}" if kind == "test" else ""))
+    for p in prog[-3:]:
+        out.append(f"    {col('·', 'dim')} {p.group(2)[:110]}")
+    if end:
+        out.append(f"  {end[:150]}")
+    return out
+
+
 def twin_sweeps():
     """tools/orca/twin_sweep.sh (log build/workers/twin-sweep.log): twins
     filled with no model after each merge."""
@@ -522,6 +608,17 @@ def perm_official():
     return out
 
 
+STALE_HOURS = 6
+
+
+def recent(name, hours):
+    """Whether build/workers/<name> changed in the last hours."""
+    try:
+        return time.time() - os.path.getmtime(os.path.join(ST, name)) < hours * 3600
+    except OSError:
+        return False
+
+
 def render(reset=False):
     idle = terminals()
     out = []
@@ -531,13 +628,22 @@ def render(reset=False):
             out.append("")
     # The coordinator's own list (build/workers/coord-tasks.tsv, same format
     # as a worker's task list), e.g. tool fixes.
+    # Shown while it has something left, or for an hour after the last change.
     coord = task_rows("coord")
-    if coord:
+    if coord and (any("·" in ln or "▶" in ln for ln in coord[1:]) or recent("coord-tasks.tsv", 1)):
         out.append(col("coordinador", "bold") + " (Claude, en la carpeta principal)")
         out.extend(coord)
         out.append("")
+    # Background tools: only those that ran in the last hours (a running one
+    # writes its log all the time); the others are history, not news.
     pq = []
-    for part in (perm_official(), permuter(), auto_m2c(), twin_sweeps(), flag_sweep()):
+    for log_name, fn in (("qwen.log", qwen), ("qwen-names.log", qwen_names),
+                         ("perm-official.log", perm_official), ("perm-loop.log", permuter),
+                         ("auto-run.log", auto_m2c), ("twin-sweep.log", twin_sweeps),
+                         ("flag-sweep.log", flag_sweep)):
+        if not recent(log_name, STALE_HOURS):
+            continue
+        part = fn()
         if part:
             pq += ([""] if pq else []) + part
     if pq:
@@ -563,7 +669,10 @@ def render(reset=False):
         else:
             out.append("  fusionadas: ninguna todavía")
     by = {}
+    week = time.strftime("%Y-%m-%d %H:%M", time.localtime(time.time() - 7 * 86400))
     for r in rows:
+        if r.get("time", "") < week:
+            continue
         m = r.get("model", "").removeprefix("auto · ").strip() or "?"
         by.setdefault(m, [0, 0, 0])
         by[m][0] += r["exact"]
@@ -571,7 +680,7 @@ def render(reset=False):
         by[m][2] += int(r.get("bytes", 0) or 0)
     rank = sorted(((by_ / (mi / 60), e, mi, by_, m) for m, (e, mi, by_) in by.items() if mi >= 30), reverse=True)
     if rank:
-        out.append("  rendimiento (todo el historial, ordenado por bytes por hora):")
+        out.append("  rendimiento (últimos 7 días, ordenado por bytes por hora):")
         for rate, e, mi, by_, m in rank[:6]:
             out.append(f"    {m:<30} {rate:6,.0f} B/h  {e / (mi / 60):5.1f} funciones/h  ({e} en {mi / 60:.1f} h)")
     out.append("")
