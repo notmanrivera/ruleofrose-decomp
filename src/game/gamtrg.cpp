@@ -405,7 +405,7 @@ extern "C" void func_001D8EA8(ObjStat *arg0)
     }
 }
 
-// NON_MATCHING: 16/58 differ, 2 relocs differ, 8 edits
+// NON_MATCHING: 16/58 differ, 2 relocs differ, 6 edits
 #ifdef NON_MATCHING
 extern "C" void func_001D8F04(ObjStat *arg0, u_long128 *arg1)
 {
@@ -414,7 +414,8 @@ extern "C" void func_001D8F04(ObjStat *arg0, u_long128 *arg1)
     pos[0] = actor->pos[0];
     pos[1] = actor->pos[1];
     pos[2] = actor->pos[2];
-    *arg1 = *(u_long128 *)pos;
+    register u_long128 tmp PS2_REG("$6") = *(u_long128 *)pos;
+    *arg1 = tmp;
     GamTrgSecta *secta = (GamTrgSecta *)arg0->m_secta;
     GamMan *mgr = &D_007812C0;
     float x;
