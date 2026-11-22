@@ -27,7 +27,13 @@ extern "C" void func_00125A20(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", func_00125A3C);
+extern "C" void func_00125A3C(int arg0, int arg1)
+{
+    if ((M2C_FIELD(arg0, float *, 0x90) != M2C_FIELD(arg1, float *, 0)) || (M2C_FIELD(arg0, float *, 0x94) != M2C_FIELD(arg1, float *, 4)) || (M2C_FIELD(arg0, float *, 0x98) != M2C_FIELD(arg1, float *, 8))) {
+        M2C_FIELD(arg0, u_long128 *, 0x90) = M2C_FIELD(arg1, u_long128 *, 0);
+        M2C_FIELD(arg0, int *, 0xCD8) = 1;
+    }
+}
 
 extern "C" void func_00125A90(int arg0)
 {
