@@ -108,7 +108,15 @@ extern "C" int term__17MagLifeBwnModeSitR10MagLifeBwni(int arg0, int arg1, int a
     return var_v0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", init__18MagLifeBwnModeFuseR10MagLifeBwn);
+extern "C" void init__18MagLifeBwnModeFuseR10MagLifeBwn(int arg0, int arg1)
+{
+    if ((unsigned int) (M2C_FIELD(arg1, int *, 0x70) - 2) < 2U) {
+        return Xiiiii_func_001233F4((int) arg1, 2, 0, 0);
+    }
+    Xiii_func_00125A20((int) arg1, 0);
+    Xii_func_00124E18((int) arg1);
+    Xiiis_func_0011A320((int) arg1, (M2C_FIELD(arg1, int *, 0x30) == 3) ? 0x10 : 0xC, -1);
+}
 
 extern "C" int term__18MagLifeBwnModeFuseR10MagLifeBwni(int arg0, int arg1, int arg2)
 {
