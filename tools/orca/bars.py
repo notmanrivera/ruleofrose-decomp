@@ -32,7 +32,25 @@ QUOTA = re.compile(r"quota (reached|exceeded)|[Rr]ate.?limit|resets in [0-9]+h|(
                    r"used today.s free messages|[Tt]hey reset at [0-9]|hit your usage limit")
 FILTER = re.compile(r"[Cc]ontent (filter|policy)|blocked by (safety|the filter)|SAFETY|[Rr]esponse was blocked|"
                     r"blocked by Gemini.s filters")
-C = {"red": "\x1b[31m", "green": "\x1b[32m", "yellow": "\x1b[33m", "dim": "\x1b[2m", "bold": "\x1b[1m", "off": "\x1b[0m"}
+C = {"red": "\x1b[31m", "green": "\x1b[32m", "yellow": "\x1b[33m", "dim": "\x1b[2m", "bold": "\x1b[1m",
+     "cyan": "\x1b[36m", "magenta": "\x1b[35m", "off": "\x1b[0m"}
+LINE = 72                       # width of the section rules
+# Who each worker is, for the owner (the .env name is the worktree's).
+SHOWN = {"fable": "Neon", "gemini": "Hydrogen", "opencode": "OpenCode", "codex": "Codex"}
+# state -> (icon, colour, text)
+STATES = {"busy": ("●", "green", "trabajando"), "wait": ("◐", "yellow", "esperando"),
+          "idle": ("○", "dim", "libre"), "paused": ("○", "dim", "en pausa"),
+          "quota": ("◌", "red", "sin cuota"), "filter": ("✕", "red", "bloqueado por el filtro")}
+
+
+def section(title):
+    """A section header: the title and a thin rule to the right."""
+    return col(f" {title} ", "bold") + col("─" * max(4, LINE - len(title) - 2), "dim")
+
+
+def bar(pct, width=WIDTH, colour="green"):
+    f = max(0, min(width, round(width * pct / 100)))
+    return col("█" * f, colour) + col("░" * (width - f), "dim")
 
 
 def col(text, c):
@@ -205,23 +223,28 @@ def task_rows(name):
     if not rows:
         return []
     done = sum(r[1] == "done" for r in rows)
-    f = round(WIDTH * done / len(rows))
-    out = [f"  tareas  {chr(0x2588) * f}{chr(0x2591) * (WIDTH - f)} {done}/{len(rows)} hechas"]
+    out = [f"   {bar(100 * done / len(rows), 24)} {done}/{len(rows)} tareas hechas"]
     wt = os.path.join(os.path.dirname(MAIN), f"ror-wt-{name}")
     changed = [ln[3:] for ln in run(["git", "-C", wt, "status", "--porcelain"]).splitlines() if ln.strip()]
     # commits whose change is not in pr-merge yet (cherry-picked ones drop out)
     ahead = str(sum(ln.startswith("+") for ln in run(["git", "-C", wt, "cherry", "pr-merge", "HEAD"]).splitlines()))
     for tid, state, title, note in rows:
-        mark = {"done": col("✓", "green"), "now": col("▶", "bold")}.get(state, col("·", "dim"))
-        line = f"    {mark} {tid}  {title}" + (f"  {col(note, 'dim')}" if note else "")
+        mark = {"done": col("✓", "green"), "now": col("▶", "cyan")}.get(state, col("·", "dim"))
+        short = title if len(title) <= 52 else title[:51] + "…"
+        text = col(short, "bold") if state == "now" else (col(short, "dim") if state != "done" else short)
+        line = f"   {mark} {col(tid, 'dim')} {text}"
+        if note:
+            line += "\n" + col(f"         {note}", "dim") if state == "now" else col(f"  · {note[:40]}", "dim")
         if state == "now":
             extra = []
             if changed:
-                extra.append(f"{len(changed)} archivos a medias ({', '.join(os.path.basename(c) for c in changed[:3])}"
-                             + (", ..." if len(changed) > 3 else "") + ")")
+                extra.append(f"{len(changed)} archivo{'s' if len(changed) != 1 else ''} a medias ("
+                             + ", ".join(os.path.basename(c) for c in changed[:3])
+                             + (", …" if len(changed) > 3 else "") + ")")
             if ahead and ahead != "0":
-                extra.append(f"{ahead} commits sin fusionar")
-            line += col("  ◀ ahora", "bold") + ("\n        " + "; ".join(extra) if extra else "")
+                extra.append(f"{ahead} commit{'s' if ahead != '1' else ''} sin fusionar")
+            if extra:
+                line += "\n" + col("         " + " · ".join(extra), "yellow")
         out.append(line)
     return out
 
@@ -234,25 +257,31 @@ def worker(name, env, idle):
     tail = screen(env["HANDLE"]) if env.get("HANDLE") else []
     text = "\n".join(tail[-40:])
     quiet = idle.get(env.get("HANDLE", ""))
-    if status not in ("busy",):
-        state = col(status, "yellow" if status in ("idle", "paused") else "red")
+    if status != "busy":
+        key = status if status in STATES else "idle"
     elif QUOTA.search("\n".join(tail[-12:])):
-        state = col("sin cuota", "red")
+        key = "quota"
     elif FILTER.search("\n".join(tail[-12:])):
-        state = col("bloqueado por el filtro", "red")
+        key = "filter"
     elif env.get("BUSY") and re.search(env["BUSY"], text):
-        state = col("trabajando", "green")
+        key = "busy"
     else:
-        state = col("esperando", "yellow")
-    if quiet is not None:
-        q = f"sin cambios en pantalla {quiet / 60:.0f} min"
-        state += "  " + (col(q, "red") if quiet > STALE_MIN * 60 else col(q, "dim"))
-    out.append(f"{col(f'{name:<9}', 'bold')} {model:<28} {state}")
+        key = "wait"
+    icon, colour, what = STATES[key]
+    note = ""
+    if key in ("busy", "wait") and quiet is not None and quiet > STALE_MIN * 60:
+        note = col(f"  pantalla quieta {quiet / 60:.0f} min", "red")
+    on = env.get("FILE", "") if key in ("busy", "wait") else ""
+    model = model.removeprefix("auto · ")
+    out.append(f" {col(icon, colour)} {col(f'{SHOWN.get(name, name):<10}', 'bold')}"
+               f"{col(f'{model:<26}', 'dim')} {col(f'{what:<11}', colour)}"
+               + (f" {col(on, 'cyan')}" if on else "") + note)
+    if key not in ("busy", "wait"):
+        return out           # resting: one line is enough
     if not names and os.path.exists(os.path.join(ST, f"{name}-tasks.tsv")):
         out.extend(task_rows(name))
         return out
     if not names:
-        out.append(col("  (sin lote)", "dim"))
         return out
     # A batch is one file's functions (FILE, BATCH "f1, f2"), or functions
     # of several files ("file:func, file:func", FILE empty).
@@ -319,10 +348,9 @@ def worker(name, env, idle):
     mins = ""
     if env.get("SENT", "").isdigit():
         mins = f"  {(time.time() - int(env['SENT'])) / 60:.0f} min"
-    big = "\u2588" * fw + "\u2591" * (WIDTH - fw)
     where = f"{len(files)} archivos" if multi else files[0]
-    out.append(f"  {where}  {big} {avg:3.0f}%  "
-               f"{done}/{len(items)} escritas" + (f", {near} casi" if near else "") + mins)
+    out.append(f"   {bar(avg, 24)} {avg:3.0f}%  {done}/{len(items)} escritas"
+               + (f", {near} casi" if near else "") + col(f"  \u00b7  {where}{mins}", "dim"))
     out.extend(rows)
     return out
 
@@ -644,17 +672,42 @@ def recent(name, hours):
 
 def render(reset=False):
     idle = terminals()
+    s = session(reset)
+    b, p = progress()
     out = []
-    for fn in sorted(os.listdir(ST)):
-        if fn.endswith(".env"):
-            out.extend(worker(fn[:-4], read_env(os.path.join(ST, fn)), idle))
+    # Header: the game's progress, big.
+    out.append(col(" RULE OF ROSE", "bold") + col("  ·  decompilación matching", "dim")
+               + " " * 34 + col(time.strftime("%H:%M"), "dim"))
+    out.append(col("─" * LINE, "dim"))
+    if b is not None:
+        out.append(f" {col('Juego', 'bold')}  {bar(p, 40, 'cyan')}  {col(f'{p:.2f} %', 'bold')}")
+        today = ""
+        if s:
+            today = col(f"hoy +{p - s[2]:.2f} %  (+{b - s[1]:,} bytes)", "green")
+        out.append(col(f"         {b:,} de {round(b * 100 / p):,} bytes del código del juego", "dim") + "   " + today)
+    out.append("")
+    # Workers: the busy ones first.
+    envs = [(fn[:-4], read_env(os.path.join(ST, fn))) for fn in sorted(os.listdir(ST)) if fn.endswith(".env")]
+    envs.sort(key=lambda e: e[1].get("STATUS") != "busy")
+    out.append(section("WORKERS"))
+    for name, env in envs:
+        lines = worker(name, env, idle)
+        out.extend(lines)
+        if len(lines) > 1:
             out.append("")
+    if out[-1]:
+        out.append("")
     # The coordinator's own list (build/workers/coord-tasks.tsv, same format
     # as a worker's task list), e.g. tool fixes.
     # Shown while it has something left, or for an hour after the last change.
     coord = task_rows("coord")
-    if coord and (any("·" in ln or "▶" in ln for ln in coord[1:]) or recent("coord-tasks.tsv", 1)):
-        out.append(col("coordinador", "bold") + " (Claude, en la carpeta principal)")
+    try:
+        open_tasks = any(ln.split("\t")[1:2] != ["done"] for ln in
+                         open(os.path.join(ST, "coord-tasks.tsv"), encoding="utf-8").read().splitlines() if ln.strip())
+    except OSError:
+        open_tasks = False
+    if coord and (open_tasks or recent("coord-tasks.tsv", 1)):
+        out.append(section("COORDINADOR (Claude)"))
         out.extend(coord)
         out.append("")
     # Background tools: only those that ran in the last hours (a running one
@@ -675,15 +728,14 @@ def render(reset=False):
         if part:
             pq += ([""] if pq else []) + part
     if pq:
-        out.extend(pq)
+        out.append(section("EN SEGUNDO PLANO"))
+        out.extend((" " + ln) if ln else ln for ln in pq)
         out.append("")
     # Session.
-    s = session(reset)
-    b, p = progress()
     rows = stats()
-    out.append(col("Sesión", "bold") + (f" (desde {s[0]})" if s else ""))
+    out.append(section("SESIÓN" + (f" (desde {s[0][5:]})" if s else "")))
     if s and b is not None:
-        out.append(f"  avance del juego: {s[2]:.2f} % → {col(f'{p:.2f} %', 'green')}  (+{b - s[1]:,} bytes)")
+        out.append(f"   juego {s[2]:.2f} % → {col(f'{p:.2f} %', 'green')}")
     if s:
         since = [r for r in rows if r.get("time", "") >= s[0]]
         per = {}
@@ -692,10 +744,12 @@ def render(reset=False):
             per[r["worker"]][0] += r["exact"]
             per[r["worker"]][1] += int(r.get("non_matching", 0) or 0)
         if per:
-            out.append("  fusionadas: " + ",  ".join(f"{w} {e} exactas" + (f" + {nm} casi" if nm else "")
-                                                     for w, (e, nm) in sorted(per.items())))
+            out.append("   fusionadas  " + col("  ·  ", "dim").join(
+                f"{SHOWN.get(w, w)} {col(str(e), 'green')}" + (col(f" (+{nm} casi)", "dim") if nm else "")
+                for w, (e, nm) in sorted(per.items(), key=lambda kv: -kv[1][0])))
+            out.append(col("   (sin contar las fusiones a mano de Neon: van en su lista de tareas)", "dim"))
         else:
-            out.append("  fusionadas: ninguna todavía")
+            out.append("   fusionadas: ninguna todavía")
     by = {}
     week = time.strftime("%Y-%m-%d %H:%M", time.localtime(time.time() - 7 * 86400))
     for r in rows:
@@ -708,11 +762,14 @@ def render(reset=False):
         by[m][2] += int(r.get("bytes", 0) or 0)
     rank = sorted(((by_ / (mi / 60), e, mi, by_, m) for m, (e, mi, by_) in by.items() if mi >= 30), reverse=True)
     if rank:
-        out.append("  rendimiento (últimos 7 días, ordenado por bytes por hora):")
-        for rate, e, mi, by_, m in rank[:6]:
-            out.append(f"    {m:<30} {rate:6,.0f} B/h  {e / (mi / 60):5.1f} funciones/h  ({e} en {mi / 60:.1f} h)")
+        out.append("")
+        out.append(section("RENDIMIENTO (7 días)"))
+        top = rank[0][0]
+        for rate, e, mi, by_, m in rank[:5]:
+            out.append(f"   {m:<28} {bar(100 * rate / top, 16, 'magenta')} {rate:6,.0f} B/h"
+                       + col(f"   {e} funciones en {mi / 60:.0f} h", "dim"))
     out.append("")
-    out.append(col("% = lo cerca que está su mejor prueba; ✓ escrita = falta verificarla al fusionar", "dim"))
+    out.append(col(" ✓ escrita · ~ casi · % = lo cerca que está su mejor prueba", "dim"))
     return "\n".join(out)
 
 
@@ -728,7 +785,7 @@ def main():
         while True:
             text = render(first)
             first = False
-            sys.stdout.write("\x1b[2J\x1b[H" + time.strftime("%H:%M:%S") + "\n\n" + text + "\n")
+            sys.stdout.write("\x1b[2J\x1b[H\n" + text + "\n")
             sys.stdout.flush()
             time.sleep(every)
     print(render("--reset" in args))
