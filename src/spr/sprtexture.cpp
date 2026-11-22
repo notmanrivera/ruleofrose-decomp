@@ -1,4 +1,10 @@
 #include "include_asm.h"
+extern "C" void Xvi___builtin_delete(int) asm("__builtin_delete");
+extern "C" int Xii_func_00191098(int) asm("func_00191098");
+extern "C" int Xii_func_00191158(int) asm("func_00191158");
+extern "C" int Xiii_func_0018BC18(int, int) asm("func_0018BC18");
+extern int _vt$5S2dBg;
+extern int _vt$8MagLife0;
 extern "C" void Xvi_func_00191248(int) asm("func_00191248");
 extern "C" int Xii_func_00191258(int) asm("func_00191258");
 extern "C" int Xii_func_00191278(int) asm("func_00191278");
@@ -299,7 +305,19 @@ extern "C" int func_00190F6C(int arg0)
     return func_00191054(arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", S2dBg__vfunc_01);
+extern "C" void S2dBg__vfunc_01(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x14) = (int)&_vt$5S2dBg;
+    Xii_func_00191158(arg0);
+    if (M2C_FIELD(arg0, int *, 0x34) == 1) {
+        Xii_func_00191098(arg0);
+    }
+    Xiii_func_0018BC18(arg0 + 0x48, 2);
+    M2C_FIELD(arg0, int *, 0x14) = (int)&_vt$8MagLife0;
+    if (arg1 & 1) {
+        return Xvi___builtin_delete(arg0);
+    }
+}
 
 extern "C" int func_00191054(int arg0)
 {
