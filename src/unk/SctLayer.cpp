@@ -1,5 +1,7 @@
 #include "include_asm.h"
 #include "unk/WrdSrv.h"
+extern "C" void X_func_0017C754_17C2C0(SctLayer *) throw() asm("func_0017C754");
+extern "C" void X_free__9BedMemoryPv_17C2C0(void *, void *) asm("free__9BedMemoryPv");
 extern "C" int X_func_0017C7B0_17C3F0(void *) asm("func_0017C7B0");
 extern "C" void X_func_0017C58C_17C0F0(SctLayer *) throw() asm("func_0017C58C");
 extern "C" void X_func_0017E464_17C45C(SctLayer *, int, int) asm("func_0017E464");
@@ -68,7 +70,17 @@ extern "C" int func_0017C1F4(SctMap *self, SctMapHeader *hdr, int copy)
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C2C0);
+extern "C" void func_0017C2C0(SctMap *self)
+{
+    for (int i = 0; i < 4; i++) {
+        X_func_0017C754_17C2C0(&self->m_layers[i]);
+    }
+    if ((self->m_flags & 2) && self->m_data != 0) {
+        X_free__9BedMemoryPv_17C2C0(&D_006E9800, self->m_data);
+    }
+    self->m_data = 0;
+    self->m_flags = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C340);
 
