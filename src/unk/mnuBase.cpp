@@ -1,4 +1,10 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_0021B5A0(int, int) asm("func_0021B5A0");
+extern "C" int Xiiii_func_0021E5A0(int, int, int) asm("func_0021E5A0");
+extern "C" int Xif_func_00223298(int, float) asm("func_00223298");
+extern "C" void Xvppp_func_002377D0(void *, void *, void *) asm("func_002377D0");
+struct m2c_v10C_38_ii { char pad[268]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual int call(int); };
+struct m2c_v94_10_i { char pad[148]; virtual void v1(); virtual int call(); };
 extern "C" int Xii_func_00194688(int) asm("func_00194688");
 extern "C" int Xiii_func_00193F98(int, int) asm("func_00193F98");
 extern "C" int Xiii_func_00194280(int, int) asm("func_00194280");
@@ -840,7 +846,55 @@ extern "C" void func_00192F3C(int arg0)
     Xii_func_001C621C((int)&D_007812C0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192F68);
+extern "C" void func_00192F68(int arg0, int arg1)
+{
+    struct Mat64 { long long q[8]; };
+    union {
+        float m[4][4];
+        struct {
+            float m3[3][4];
+            union {
+                long long p[2];
+                float f[4];
+            } r3;
+        } s;
+    } mat;
+    float temp_f2;
+    int temp_v0_3;
+    int temp_v0_4;
+    int temp_v0_5;
+    int temp_a0;
+    int temp_s0;
+    int temp_s0_2;
+    int temp_s2;
+    int temp_s2_2;
+
+    temp_s0 = M2C_FIELD(arg0, int *, 8);
+    temp_s0_2 = temp_s0 + 0x2AB70;
+    ((m2c_v94_10_i *)(temp_s0_2))->call();
+    *(Mat64 *)(arg0 + 0xC0) = *(Mat64 *)temp_s0_2;
+    temp_s2_2 = M2C_FIELD(arg0, int *, 8) + 0x2AA10;
+    temp_f2 = M2C_FIELD(temp_s2_2, float *, 4) / M2C_FIELD(temp_s2_2, float *, 0);
+    M2C_FIELD(arg0, float *, 0x100) = (M2C_FIELD(temp_s2_2, float *, 0xC) - M2C_FIELD(temp_s2_2, float *, 8)) * temp_f2;
+    M2C_FIELD(arg0, float *, 0x104) = (M2C_FIELD(temp_s2_2, float *, 0x14) - M2C_FIELD(temp_s2_2, float *, 0x10)) * temp_f2;
+    Xvp_func_00237340(&mat);
+    long long a = M2C_FIELD(arg0, long long *, 0xF0);
+    long long b = M2C_FIELD(arg0, long long *, 0xF8);
+    mat.s.r3.p[0] = a;
+    mat.s.r3.p[1] = b;
+    float y = M2C_FIELD(temp_s2_2, float *, 4);
+    mat.s.r3.f[2] += y;
+    temp_a0 = arg0 + 0xC0;
+    Xvppp_func_002377D0((void *)temp_a0, &mat, (void *)temp_a0);
+    ((m2c_v10C_38_ii *)(arg0))->call(arg1);
+    temp_v0_3 = Xif_func_00223298(arg1, 0.0f);
+    M2C_FIELD(arg0, int *, 0xB0) = temp_v0_3;
+    temp_v0_4 = Xiii_func_0021B5A0(temp_v0_3, arg1);
+    M2C_FIELD(arg0, int *, 0xB0) = temp_v0_4;
+    temp_v0_5 = Xiii_func_0021B550(temp_v0_4, 0x47, 0x5000D);
+    M2C_FIELD(arg0, int *, 0xB0) = temp_v0_5;
+    M2C_FIELD(arg0, int *, 0xB0) = Xiiii_func_0021E5A0(temp_v0_5, arg1, 1);
+}
 
 extern "C" void func_001930F8(int arg0, int arg1)
 {
