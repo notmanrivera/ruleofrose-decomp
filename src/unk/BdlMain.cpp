@@ -1,290 +1,265 @@
 #include "include_asm.h"
 #include "emy/emy.h"
-extern "C" int Xii_func_0014B8C0(int) asm("func_0014B8C0");
-extern "C" int Xii_func_0014B8D4(int) asm("func_0014B8D4");
-extern "C" int Xii_func_0014B8E8(int) asm("func_0014B8E8");
-extern "C" int Xii_func_0014B910(int) asm("func_0014B910");
-extern "C" int Xiii_func_0016968C(int, int) asm("func_0016968C");
-extern "C" int Xii_func_0014BE48(int) asm("func_0014BE48");
-extern "C" int Xiii_func_0014BE48(int, int) asm("func_0014BE48");
-extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
-extern "C" int Xiii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
-extern int _vt$7BdlMain;
+
+struct BdlVtblEntry {
+    short m_delta;
+    short m_pad;
+    int m_fn;
+};
+
+struct BdlStateTable {
+    unsigned char m_unk00;
+    unsigned char m_count;
+    unsigned char m_pad02[0xA];
+    signed char *m_table;
+};
+
+struct BdlActorPtr {
+    unsigned char m_pad00[0x100];
+    void *m_objStat100;
+};
+
+struct BdlDogSlot {
+    unsigned char m_pad00[0x4D0];
+};
+STATIC_ASSERT(sizeof(BdlDogSlot) == 0x4D0, BdlDogSlot_size);
+
+struct BdlMagSystem {
+    unsigned char m_pad00[0x14E60];
+    BdlDogSlot m_actors[1];
+};
+
+struct BdlMain : EmyMain {
+    unsigned char m_unk204;             // +0x204
+    unsigned char m_unk205;             // +0x205
+    unsigned char m_pad206[2];          // +0x206..+0x207
+    int m_unk208;                       // +0x208
+    int m_unk20C;                       // +0x20C
+    int m_unk210;                       // +0x210
+    int m_unk214;                       // +0x214
+    int m_unk218;                       // +0x218
+    int m_unk21C;                       // +0x21C
+};
+STATIC_ASSERT(sizeof(BdlMain) == 0x220, BdlMain_size);
+
+struct BdlOutWalk : EmyOut {
+    int m_unk38;                        // +0x38
+};
+STATIC_ASSERT(sizeof(BdlOutWalk) == 0x3C, BdlOutWalk_size);
+
+struct BdlOutStared : EmyOut {
+    unsigned short m_unk38;             // +0x38
+    unsigned short m_pad3A;             // +0x3A
+};
+STATIC_ASSERT(sizeof(BdlOutStared) == 0x3C, BdlOutStared_size);
+
+struct BdlOutSearch : EmyOut {
+};
+
+extern int vtbl_BdlMain asm("_vt$7BdlMain");
+extern BdlMagSystem *g_magSystem asm("_9MagSystem$m_current_system");
+
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
-extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
-extern int _vt$7HfmMain;
-extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
-extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
-extern "C" int Xiiii_ffi_func_001F603C(int, int, int, int, float, float, int) asm("func_001F603C");
-struct m2c_v200_10_i { char pad[512]; virtual void v1(); virtual int call(); };
-struct m2c_v34_20_i { char pad[52]; virtual void v1(); virtual void v2(); virtual void v3(); virtual int call(); };
-struct m2c_v34_18_i { char pad[52]; virtual void v1(); virtual void v2(); virtual int call(); };
-extern "C" int Xii_func_00202F10(int) asm("func_00202F10");
-extern "C" int Xiii_func_001694CC(int, int) asm("func_001694CC");
-extern "C" int Xiiii_func_001680A0(int, int, int) asm("func_001680A0");
-extern "C" int Xiiii_func_00180EEC(int, int, int) asm("func_00180EEC");
-extern "C" int Xiiiiff_func_001679B4(int, int, int, float, float) asm("func_001679B4");
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" int Xiii_func_00166DA4(int, int) asm("func_00166DA4");
-extern "C" int Xiiif_func_00166F50(int, int, float) asm("func_00166F50");
-// Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_func_0010423C(...) asm("func_0010423C");
-extern "C" int X_func_00118FEC__9MagSystem(...) asm("func_00118FEC__9MagSystem");
-extern "C" int X_func_0014B8C0(...) asm("func_0014B8C0");
-extern "C" int X_func_0014B8D4(...) asm("func_0014B8D4");
-extern "C" int X_func_0014B8E8(...) asm("func_0014B8E8");
-extern "C" int X_func_0014B910(...) asm("func_0014B910");
-extern "C" int X_func_0014BE48(...) asm("func_0014BE48");
-extern "C" int X_func_0014BED0(...) asm("func_0014BED0");
+extern "C" int X_EmyMain__vfunc_01(EmyMain *, int) asm("EmyMain__vfunc_01");
+extern "C" int X_func_0010423C(int, int) asm("func_0010423C");
+extern "C" float X_func_0010A650(void *) asm("func_0010A650__8DogActor");
+extern "C" int X_func_00118FEC(void *) asm("func_00118FEC__9MagSystem");
+extern "C" int X_func_00144244(void) asm("func_00144244");
+extern "C" int X_func_0014B8C0(BdlMain *) asm("func_0014B8C0");
+extern "C" int X_func_0014B8D4(BdlMain *) asm("func_0014B8D4");
+extern "C" int X_func_0014B8E8(BdlMain *) asm("func_0014B8E8");
+extern "C" int X_func_0014B910(BdlMain *) asm("func_0014B910");
+extern "C" void func_0014BE48(BdlOutWalk *, int);
+extern "C" void func_0014BED0(BdlOutWalk *, int);
+extern "C" int func_0014C0A4(BdlOutStared *, float *, float);
 extern "C" int X_func_00165734(...) asm("func_00165734");
 extern "C" int X_func_00165794(...) asm("func_00165794");
 extern "C" int X_func_00166AD0(...) asm("func_00166AD0");
-extern "C" int X_func_00166DA4(...) asm("func_00166DA4");
-extern "C" int X_func_00166F50(...) asm("func_00166F50");
-extern "C" int X_func_001679B4(...) asm("func_001679B4");
-extern "C" int X_func_001680A0(...) asm("func_001680A0");
-extern "C" int X_func_001694CC(...) asm("func_001694CC");
-extern "C" int X_func_0016968C(...) asm("func_0016968C");
-extern "C" int X_func_00180EEC(...) asm("func_00180EEC");
-extern "C" int X_func_00202F10(...) asm("func_00202F10");
+extern "C" int X_func_00166B74(EmyOut *, void *) asm("func_00166B74");
+extern "C" int X_func_00166DA4(EmyOut *, int) asm("func_00166DA4");
+extern "C" int X_func_00166F50(EmyOut *, int, float) asm("func_00166F50");
+extern "C" int X_func_001679B4(EmyOut *, int, int, float, float) asm("func_001679B4");
+extern "C" int X_func_001680A0(EmyOut *, int, int) asm("func_001680A0");
+extern "C" int X_func_001693EC(EmyOut *, int, int, int) asm("func_001693EC");
+extern "C" int X_func_0016947C(EmyOut *) asm("func_0016947C");
+extern "C" int X_func_0016968C(void *, int) asm("func_0016968C");
+extern "C" int X_func_00169BAC(float, float, int, void *, void *) asm("func_00169BAC");
+extern "C" int X_func_0016A7AC(void *) asm("func_0016A7AC");
+extern "C" int X_func_001DA228(void *, int, void *) asm("func_001DA228");
+extern "C" int X_func_001F13A8(int, int, int, int, float, float, float) asm("func_001F13A8");
+extern "C" int X_func_001F603C(int, int, int, int, float, float, int) asm("func_001F603C");
+extern "C" int X_func_00202F10(void *) asm("func_00202F10");
+extern "C" float X_func_0026CB00(float, float) asm("func_0026CB00");
+
 extern int D_006E9840;
-extern int D_007B2580;
+extern BdlActorPtr *D_007A3350;
 
 INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", func_0014B3BC);
 
-extern "C" void BdlMain__vfunc_01(int arg0, int arg1)
+extern "C" void BdlMain__vfunc_01(BdlMain *self, int flags)
 {
-    M2C_FIELD(arg0, int *, 0x200) = (int)&_vt$7BdlMain;
-    Xii_EmyMain__vfunc_01(arg0, 0);
-    if (arg1 & 1) {
-        return Xv___builtin_delete((void *)arg0);
+    self->m_vtbl = &vtbl_BdlMain;
+    X_EmyMain__vfunc_01(self, 0);
+    if (flags & 1) {
+        return Xv___builtin_delete(self);
     }
 }
 
-extern "C" void BdlMain__vfunc_04(int self)
+extern "C" void BdlMain__vfunc_04(BdlMain *self)
 {
-    if (M2C_FIELD(self, int *, 0x28) && M2C_FIELD(self, int *, 0x2C) && M2C_FIELD(self, int *, 0x24) == -1) {
-        if (M2C_FIELD(self, int *, 0x208)) {
-            if (!Xii_func_0014B8C0(self)) {
-                if (M2C_FIELD(self, unsigned char *, 0x205)) {
-                    M2C_FIELD(self, int *, 0x24) = 0;
-                    M2C_FIELD(self, unsigned char *, 0x205) = 0;
+    if (self->m_unk28 && self->m_unk2C && self->m_nextState == -1) {
+        if (self->m_unk208) {
+            if (!X_func_0014B8C0(self)) {
+                if (self->m_unk205) {
+                    self->m_nextState = 0;
+                    self->m_unk205 = 0;
                 }
                 return;
             }
-            M2C_FIELD(self, unsigned char *, 0x205) = 1;
+            self->m_unk205 = 1;
         }
-        if (M2C_FIELD(self, int *, 0x20C) && Xii_func_0014B8D4(self)) {
-            M2C_FIELD(self, int *, 0x24) = 1;
-        } else if (M2C_FIELD(self, int *, 0x210) && (M2C_FIELD(self, int *, 0x30) & 1)) {
-            M2C_FIELD(self, int *, 0x24) = 2;
+        if (self->m_unk20C && X_func_0014B8D4(self)) {
+            self->m_nextState = 1;
+        } else if (self->m_unk210 && (self->m_flags30 & 1)) {
+            self->m_nextState = 2;
         } else {
-            int result = Xii_func_0014B910(self);
-            if (M2C_FIELD(self, unsigned char *, 0x204)) {
+            int result = X_func_0014B910(self);
+            if (self->m_unk204) {
                 if (!result) {
-                    M2C_FIELD(self, unsigned char *, 0x204) = 0;
-                    if (M2C_FIELD(self, int *, 0x218)) {
-                        M2C_FIELD(self, int *, 0x24) = 4;
+                    self->m_unk204 = 0;
+                    if (self->m_unk218) {
+                        self->m_nextState = 4;
                         return;
                     }
                 }
             } else if (result) {
-                M2C_FIELD(self, unsigned char *, 0x204) = 1;
-                if (M2C_FIELD(self, int *, 0x214)) {
-                    M2C_FIELD(self, int *, 0x24) = 3;
+                self->m_unk204 = 1;
+                if (self->m_unk214) {
+                    self->m_nextState = 3;
                     return;
                 }
                 goto fallback;
             }
 fallback:
-            if (M2C_FIELD(self, int *, 0x21C) && Xii_func_0014B8E8(self)) {
-                M2C_FIELD(self, int *, 0x24) = 5;
-            } else return;
+            if (self->m_unk21C && X_func_0014B8E8(self)) {
+                self->m_nextState = 5;
+            } else {
+                return;
+            }
         }
-
     }
 }
 
-extern "C" void BdlMain__vfunc_05(int self)
+extern "C" void BdlMain__vfunc_05(BdlMain *self)
 {
-    M2C_FIELD(self, int *, 0x40) = 0;
-    int flags = M2C_FIELD(self, int *, 0x30);
+    self->m_stateChanged = 0;
+    int flags = self->m_flags30;
     if (flags & 2) {
         int next = 6;
-        int object = M2C_FIELD(self, int *, 0x1C);
-        M2C_FIELD(self, int *, 0x3C) = next;
-        M2C_FIELD(object, int *, 0xA4) = next;
-        M2C_FIELD(self, int *, 0x40) = 1;
-    } else if (M2C_FIELD(self, int *, 0x24) != -1) {
-        int next = Xiii_func_0016968C(M2C_FIELD(self, int *, 0x1C), M2C_FIELD(self, int *, 0x24));
-        M2C_FIELD(self, signed char *, 0x205) = 0;
-        M2C_FIELD(self, signed char *, 0x204) = 0;
+        EmyBrainView *brain = (EmyBrainView *)self->m_brain;
+        self->m_curState = next;
+        brain->m_state = next;
+        self->m_stateChanged = 1;
+    } else if (self->m_nextState != -1) {
+        int next = X_func_0016968C(self->m_brain, self->m_nextState);
+        self->m_unk205 = 0;
+        self->m_unk204 = 0;
         if (next != 0) {
-            M2C_FIELD(self, int *, 0x3C) = next;
-            M2C_FIELD(self, int *, 0x40) = 1;
+            self->m_curState = next;
+            self->m_stateChanged = 1;
         } else {
-            M2C_FIELD(M2C_FIELD(self, int *, 0x1C), int *, 0xA4) = M2C_FIELD(self, int *, 0x3C);
+            ((EmyBrainView *)self->m_brain)->m_state = self->m_curState;
         }
     } else if (flags & 1) {
-        M2C_FIELD(M2C_FIELD(self, int *, 0x1C), int *, 0xA4) = M2C_FIELD(self, int *, 0x3C);
-        M2C_FIELD(self, int *, 0x40) = 1;
+        ((EmyBrainView *)self->m_brain)->m_state = self->m_curState;
+        self->m_stateChanged = 1;
     }
-    M2C_FIELD(self, int *, 0x30) = 0;
+    self->m_flags30 = 0;
 }
 
-extern "C" void BdlMain__vfunc_06(int arg0)
+extern "C" void BdlMain__vfunc_06(BdlMain *self)
 {
-    int temp_v0;
-    int temp_v0_2;
-    int temp_v0_3;
+    EmyOut *curOut;
+    BdlVtblEntry *vt;
 
-    if (M2C_FIELD(arg0, int *, 0x40) != 0) {
-        ((m2c_v34_20_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
-        ((m2c_v200_10_i *)(arg0))->call();
+    if (self->m_stateChanged != 0) {
+        curOut = self->m_curOut;
+        vt = (BdlVtblEntry *)((char *)curOut->m_vtbl + 0x20);
+        ((void (*)(void *))vt->m_fn)((char *)curOut + vt->m_delta);
+        vt = (BdlVtblEntry *)((char *)self->m_vtbl + 0x10);
+        ((void (*)(void *))vt->m_fn)((char *)self + vt->m_delta);
     }
-    M2C_FIELD(arg0, int *, 0x24) = ((m2c_v34_18_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
+    curOut = self->m_curOut;
+    vt = (BdlVtblEntry *)((char *)curOut->m_vtbl + 0x18);
+    self->m_nextState = ((int (*)(void *))vt->m_fn)((char *)curOut + vt->m_delta);
 }
 
-struct m2c_v34_10_i { char pad[52]; virtual void v1(); virtual int call(); };
 static inline bool BdlStateBelowLimit(int state) { return state < 7; }
-static inline void BdlWriteFlag(int slot, int value) { *(int *)((char *)slot + 0x200) = value; }
-static inline void BdlWriteStateFlag(int self, int index, int value) { int slot = index * 4 + self; BdlWriteFlag(slot, value); }
-extern "C" int BdlMain__vfunc_02(int arg0)
-{
-    int temp_v1;
-    int temp_v1_3;
-    int var_a5;
-    register int temp_a3 PS2_REG("$7");
-    int var_v0;
-    unsigned char temp_a2;
-    int temp_a0;
-    int temp_a0_2;
-    int temp_v0;
-    int temp_v1_2;
+static inline void BdlWriteFlag(char *slot, int value) { *(int *)(slot + 0x200) = value; }
+static inline void BdlWriteStateFlag(int self, int index, int value) { char *slot = (char *)((index * 4) + self); BdlWriteFlag(slot, value); }
 
-    temp_v1 = M2C_FIELD(arg0, int *, 0x3C);
-    if (BdlStateBelowLimit(temp_v1) && (temp_v1 > 0)) {
-        temp_a0 = M2C_FIELD(((temp_v1 * 4) + arg0), int *, 0x48);
-        M2C_FIELD(arg0, int *, 0x44) = temp_a0;
-        ((m2c_v34_10_i *)(temp_a0))->call();
+extern "C" int BdlMain__vfunc_02(BdlMain *self)
+{
+    int cur;
+    EmyOut *obj;
+    BdlVtblEntry *vt;
+    BdlStateTable *tbl;
+    unsigned char count;
+    register signed char *base PS2_REG("$7");
+
+    cur = self->m_curState;
+    if (BdlStateBelowLimit(cur) && (cur > 0)) {
+        obj = ((EmyOut **)self->m_unk48)[cur];
+        self->m_curOut = obj;
+        vt = (BdlVtblEntry *)((char *)obj->m_vtbl + 0x10);
+        ((void (*)(void *))vt->m_fn)((char *)obj + vt->m_delta);
     }
-    temp_v1_2 = M2C_FIELD(arg0, int *, 0xE8);
-    var_a5 = 0;
-    temp_a2 = M2C_FIELD(temp_v1_2, unsigned char *, 1);
-    temp_a3 = M2C_FIELD(temp_v1_2, int *, 0xC);
-    temp_a3 += M2C_FIELD(arg0, int *, 0x3C) * temp_a2;
-    for (int i = 0; i < temp_a2; ++i) {
-        if (((signed char *)temp_a3)[i] != 0) {
-            BdlWriteStateFlag(arg0 + 8, i, 1);
+    tbl = (BdlStateTable *)self->m_unkE8;
+    count = tbl->m_count;
+    base = tbl->m_table;
+    base += self->m_curState * count;
+    for (int i = 0; i < count; ++i) {
+        if (base[i] != 0) {
+            BdlWriteStateFlag((int)((char *)self + 8), i, 1);
         } else {
-            BdlWriteStateFlag(arg0 + 8, i, 0);
+            BdlWriteStateFlag((int)((char *)self + 8), i, 0);
         }
     }
     return 0;
 }
 
-extern "C" int func_0014B8C0()
+extern "C" int func_0014B8C0(void)
 {
     return X_func_00165734();
 }
 
-
-extern "C" int func_0014B8D4()
+extern "C" int func_0014B8D4(void)
 {
     return X_func_00165794();
 }
 
-
-extern "C" int func_0014B8E8()
+extern "C" int func_0014B8E8(void)
 {
-    return X_func_00118FEC__9MagSystem((int)&D_006E9840) == 4;
+    return X_func_00118FEC(&D_006E9840) == 4;
 }
 
-
-INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", func_0014B910);
-
-extern "C" void BdlOutWalk__vfunc_02(int arg0)
+extern "C" int func_0014B910(BdlMain *self)
 {
-    Xiii_func_0014BE48(arg0, 0x1);
-    M2C_FIELD(arg0, int *, 4) = 0;
+    float dist = 0.0f;
+    void *obj;
+
+    X_func_001DA228(self->m_objStat, 0x5F, &dist);
+    obj = (D_007A3350 != 0) ? D_007A3350->m_objStat100 : 0;
+    return X_func_00169BAC(dist, 3.1415926218032837f, 1, obj, self->m_objStat);
+}
+
+extern "C" void BdlOutWalk__vfunc_02(BdlOutWalk *self)
+{
+    func_0014BE48(self, 1);
+    self->m_unk04 = 0;
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", BdlOutWalk__vfunc_03);
-
-INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", func_0014BAF8);
-
-INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", func_0014BDBC);
-
-extern "C" void func_0014BE48(int arg0, int arg1)
-{
-    float v;
-
-    v = M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), float *, 0x1C4);
-    if (v != 0.0f) {
-        v = v * 0.016666666f;
-    } else {
-        v = 0.016666666f;
-    }
-    Xiiii_ffi_func_001F603C(M2C_FIELD(arg0, int *, 0), arg1, -1, 0x100, v, 32769.0f, 1);
-}
-
-extern "C" void BdlOutWalk__vfunc_04()
-{
-    X_func_00166AD0();
-}
-
-
-extern "C" void func_0014BED0(int arg0, int arg1)
-{
-    if ((*(int *)(int *)((char *)(arg0) + 0x4)) != arg1) {
-        (*(int *)(int *)((char *)(arg0) + 0x4)) = arg1;
-        (*(int *)(int *)((char *)(arg0) + 0x38)) = 0;
-    }
-}
-
-
-extern "C" void BdlOutStared__vfunc_02(int arg0)
-{
-    int temp_v0;
-
-    M2C_FIELD(arg0, int *, 4) = 0;
-    ((m2c_v34_18_i *)(arg0))->call();
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", BdlOutStared__vfunc_03);
-
-extern "C" void BdlOutStared__vfunc_04()
-{
-    X_func_00166AD0();
-}
-
-
-INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", func_0014C0A4);
-
-extern "C" void BdlOutSearch__vfunc_02(int arg0)
-{
-    Xiii_func_00166DA4(arg0, 0x64);
-    Xiiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), 10.0f);
-}
-
-extern "C" int BdlOutSearch__vfunc_03(int self)
-{
-    int next;
-    int result = Xiiiiff_func_001679B4(self, M2C_FIELD(self, int *, 0x14), 0, 300.0f, 3.141592562198639f);
-    switch (result) {
-    case 0: next = -1; break;
-    case 1: next = 6; Xii_func_00202F10(M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x1F0)); break;
-    case 2: next = 4; Xii_func_00202F10(M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x1F0)); break;
-    default: next = 7; Xii_func_00202F10(M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x1F0)); break;
-    }
-    return next;
-}
-
-extern "C" void BdlOutSearch__vfunc_04()
-{
-    X_func_00166AD0();
-}
-
 
 INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF618);
 
@@ -292,18 +267,170 @@ INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF628);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF640);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF650);
+INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", func_0014BAF8);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF658);
+extern "C" void func_0014BDBC(BdlOutWalk *self, int arg1)
+{
+    if (arg1 < 0x56) {
+        int r = X_func_0010423C(1, 0x64);
+        func_0014BE48(self, (r < 0x1F) ? 1 : ((r < 0x3D) ? 0x1C : 0x1D));
+        return func_0014BED0(self, 2);
+    }
+    X_func_001680A0(self, 0x14, 0);
+    func_0014BED0(self, 3);
+}
 
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF660);
+extern "C" void func_0014BE48(BdlOutWalk *self, int anim)
+{
+    float v;
 
-INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF668);
+    v = self->m_owner->m_unk1C4;
+    if (v != 0.0f) {
+        v = v * 0.016666666f;
+    } else {
+        v = 0.016666666f;
+    }
+    X_func_001F603C(self->m_unk00, anim, -1, 0x100, v, 32769.0f, 1);
+}
+
+extern "C" void BdlOutWalk__vfunc_04(void)
+{
+    X_func_00166AD0();
+}
+
+extern "C" void func_0014BED0(BdlOutWalk *self, int state)
+{
+    if (self->m_unk04 != state) {
+        self->m_unk04 = state;
+        self->m_unk38 = 0;
+    }
+}
+
+extern "C" void BdlOutStared__vfunc_02(BdlOutStared *self)
+{
+    BdlVtblEntry *vt;
+
+    self->m_unk04 = 0;
+    vt = (BdlVtblEntry *)((char *)self->m_vtbl + 0x18);
+    ((int (*)(void *))vt->m_fn)((char *)self + vt->m_delta);
+}
+
+extern "C" int BdlOutStared__vfunc_03(BdlOutStared *self)
+{
+    float ang;
+
+    switch (self->m_unk04) {
+        case 0:
+            if (func_0014C0A4(self, &ang, 0.52359876f) == 0) {
+                X_func_001F13A8(self->m_unk00, (ang >= 0.0f) ? 9 : 8, 0, 1, ang, 1.5f, 32769.0f);
+                self->m_unk04 = 1;
+            } else {
+                X_func_001680A0(self, 0x17, 0x100);
+                self->m_unk04 = 2;
+            }
+            break;
+        case 1:
+            if (X_func_00144244() == 0) {
+                return 6;
+            }
+            if (self->m_unk24 != 0) {
+                X_func_001680A0(self, 0x17, 0x100);
+                self->m_unk04 = 2;
+            }
+            break;
+        case 2:
+            if (X_func_00144244() != 0) {
+                return -1;
+            }
+            self->m_unk38 = 0;
+            self->m_unk04 = 3;
+            break;
+        case 3:
+            X_func_001693EC(self, 8, 0x18, 9);
+            if (X_func_00144244() != 0) {
+                self->m_unk04 = 0;
+                break;
+            }
+            if (++self->m_unk38 >= 0x3C) {
+                X_func_0016947C(self);
+                return 6;
+            }
+            break;
+    }
+    return -1;
+}
+
+extern "C" void BdlOutStared__vfunc_04(void)
+{
+    X_func_00166AD0();
+}
+
+extern "C" int func_0014C0A4(BdlOutStared *self, float *outAngle, float limit)
+{
+    float posA[4];
+    float posB[4];
+    float yaw;
+    float ang;
+    float half;
+
+    X_func_00166B74(self, posA);
+    X_func_0016A7AC(posB);
+    yaw = X_func_0010A650(&g_magSystem->m_actors[((EmyObjStatView *)self->m_unk08)->m_actorId]);
+    ang = X_func_0026CB00(posB[0] - posA[0], posB[2] - posA[2]) - yaw;
+    if (ang < -3.14159265358979323846) {
+        ang += 6.28318530717958647692;
+    }
+    if (ang > 3.14159265358979323846) {
+        ang -= 6.28318530717958647692;
+    }
+    if (outAngle != 0) {
+        *outAngle = ang;
+    }
+    half = limit * 0.5f;
+    {
+        int ret = 0;
+        if (-half <= ang && ang <= half) {
+            ret = 1;
+        }
+        return ret;
+    }
+}
+
+extern "C" void BdlOutSearch__vfunc_02(BdlOutSearch *self)
+{
+    X_func_00166DA4(self, 0x64);
+    X_func_00166F50(self, self->m_unk14, 10.0f);
+}
+
+extern "C" int BdlOutSearch__vfunc_03(BdlOutSearch *self)
+{
+    int next;
+    int result = X_func_001679B4(self, self->m_unk14, 0, 300.0f, 3.141592562198639f);
+    switch (result) {
+        case 0:
+            next = -1;
+            break;
+        case 1:
+            next = 6;
+            X_func_00202F10(self->m_owner->m_unk1F0);
+            break;
+        case 2:
+            next = 4;
+            X_func_00202F10(self->m_owner->m_unk1F0);
+            break;
+        default:
+            next = 7;
+            X_func_00202F10(self->m_owner->m_unk1F0);
+            break;
+    }
+    return next;
+}
+
+extern "C" void BdlOutSearch__vfunc_04(void)
+{
+    X_func_00166AD0();
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF670);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF680);
-
-
-
-
