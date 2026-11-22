@@ -383,8 +383,6 @@ extern "C" void func_001BE548(int *theOut, int theA, int theB)
     return X_func_001BE564(theOut, theB);
 }
 
-// NON_MATCHING: 3/116 differ, 3 edits
-#ifdef NON_MATCHING
 struct FileReadReq1BE564 { int fd; int state; int unk8; int path; int seekOffset; int seekWhence; int buf; int size; int closeFlag; };
 struct FileReader1BE564 { FileReadReq1BE564 *req; int fd; };
 extern "C" int X_func_002051CC(int) asm("func_002051CC");
@@ -399,7 +397,7 @@ extern "C" int func_001BE564(FileReader1BE564 *self, int arg1)
             case 0:
                 if (req->path != 0) {
                     func_001BE338((int)self, req->path);
-                    FileReadReq1BE564 *r = self->req;
+                    register FileReadReq1BE564 *r PS2_REG("$3") = self->req;
                     r->fd = self->fd;
                     self->req->path = 0;
                     goto inc_state;
@@ -458,9 +456,6 @@ extern "C" int func_001BE564(FileReader1BE564 *self, int arg1)
         self->req->state++;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BE564);
-#endif
 
 extern "C" void __11FileReadReq(int arg0)
 {
