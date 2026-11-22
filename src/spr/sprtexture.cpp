@@ -151,7 +151,57 @@ extern "C" void func_0018F808(int arg0, int arg1, int arg2, int arg3)
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018F824);
 
+// NON_MATCHING: 25/58 differ, 23 edits
+#ifdef NON_MATCHING
+extern "C" void Xvi_heapFree__FPv(int) asm("heapFree__FPv");
+extern "C" int func_0018F9CC(int arg0, int arg1)
+{
+    int temp_a0;
+    int temp_a0_2;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v1_2;
+    int var_s1;
+    int var_v1;
+    int temp_v1;
+
+    temp_a0 = (*(int *)(arg0));
+    temp_v0 = (*(int *)(temp_a0));
+    var_s1 = 0;
+    if (temp_v0 < 0) {
+        goto fail;
+    }
+    if (arg1 != temp_v0) {
+        var_v1 = 0x18;
+        do {
+            temp_v0_2 = *(int *)(var_v1 + temp_a0);
+            var_s1 += 1;
+            if (temp_v0_2 < 0) {
+                goto fail;
+            }
+            var_v1 += 0x18;
+        } while (arg1 != temp_v0_2);
+    }
+    temp_v1 = (var_s1 * 0x18) + (*(int *)(arg0));
+    if (M2C_FIELD(temp_v1, int *, 0) < 0) {
+fail:
+        return 0;
+    }
+    temp_a0_2 = M2C_FIELD(temp_v1, int *, 0x14);
+    if (temp_a0_2 != 0) {
+        temp_v1_2 = M2C_FIELD(temp_v1, int *, 0x10);
+        if (temp_v1_2 & 8) {
+            Xvi_heapFree__FPv(temp_a0_2);
+        } else if (!(temp_v1_2 & 4)) {
+            Xvi_heapFree__FPv(temp_a0_2);
+        }
+        M2C_FIELD(((var_s1 * 0x18) + (*(int *)(arg0))), int *, 0x14) = 0;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018F9CC);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018FAB4);
 
