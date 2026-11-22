@@ -126,4 +126,31 @@ extern "C" void init__18MagLifeBwnModeMoveR10MagLifeBwn(int arg0, int arg1)
     M2C_FIELD(arg0, int *, 8) = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", live__18MagLifeBwnModeMoveR10MagLifeBwn);
+extern "C" int live__18MagLifeBwnModeMoveR10MagLifeBwn(int arg0, int arg1)
+{
+    int temp_v0;
+    int temp_v0_2;
+    int var_a1;
+
+    temp_v0 = Xiif_func_00119B60(arg1, 0, 75.0f);
+    M2C_FIELD(arg1, int *, 0x70) = temp_v0;
+    temp_v0_2 = M2C_FIELD(arg0, int *, 8);
+    if (temp_v0_2 < 0x2000) {
+        if (temp_v0_2 >= 0x1000) {
+            if (temp_v0 == 0) {
+                Xiiis_func_0011A320((int) arg1, M2C_FIELD(arg0, int *, 4), -1);
+                M2C_FIELD(arg0, int *, 8) = 0;
+            }
+        } else {
+            if (temp_v0 == 3) {
+                Xiiis_func_0011A320((int) arg1, 0x6B, -1);
+                M2C_FIELD(arg0, int *, 8) = 0x1000;
+            } else if (temp_v0 == 2) {
+                Xiiis_func_0011A320((int) arg1, 0x69, -1);
+                M2C_FIELD(arg0, int *, 8) = 0x1000;
+            }
+        }
+    }
+    Xii_func_00123BB8((int) arg1);
+    return 1;
+}
