@@ -12,6 +12,8 @@ extern const char D_002E57A8[];
 extern const char D_002E5728[];
 #include "game/gamman.h"
 #include "game/gamtrg.h"
+extern const char D_002E57B8[];
+extern "C" void X_func_001DC48C_s(void *theObj, int theId, int theA, short *theOut) asm("func_001DC48C");
 extern "C" int X_func_001033F0(int theA) asm("func_001033F0");
 extern "C" unsigned long long X_func_0010315C(float *theOut, int theA) asm("func_0010315C");
 extern "C" int func_001D1A48(int arg0);
@@ -315,7 +317,27 @@ extern "C" unsigned long long X_func_0010315C(float *theOut, int theA)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103240);
+extern "C" int func_00103240(int *theOut, int theMax, int theA)
+{
+    short v;
+    int id = theA & 0xFFFF;
+#line 797
+    ASSERT_S(theMax >= 4, D_002E57B8);
+
+    X_func_001DC48C_s(gamSub22220(), id, 0x10, &v);
+    theOut[0] = v;
+    X_func_001DC48C_s(gamSub22220(), id, 0x11, &v);
+    theOut[1] = v;
+    X_func_001DC48C_s(gamSub22220(), id, 0x12, &v);
+    theOut[2] = v;
+
+    if ((theA >> 9) != 6) {
+        theOut[3] = theA;
+        return 4;
+    }
+    theOut[3] = -1;
+    return 3;
+}
 
 extern "C" void func_0010332C(int theA)
 {
