@@ -12,6 +12,19 @@ extern const char D_002E57A8[];
 extern const char D_002E5728[];
 #include "game/gamman.h"
 #include "game/gamtrg.h"
+extern const char D_002E5808[];
+extern const char D_002E5830[];
+struct UtlEnemyInfo {
+    unsigned char m_unk00[0x30];
+    float m_dist;
+    float m_ang;
+    unsigned char m_unk38[0x8];
+};
+struct UtlEnemyInfoBuf {
+    enum { MAX_INFO = 0x20 };
+    UtlEnemyInfo m_info[MAX_INFO];
+    int m_count;
+};
 extern const char D_002E57B8[];
 extern "C" void X_func_001DC48C_s(void *theObj, int theId, int theA, short *theOut) asm("func_001DC48C");
 extern "C" int X_func_001033F0(int theA) asm("func_001033F0");
@@ -410,7 +423,42 @@ extern "C" short func_001034E4(int theA)
 
 INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103510);
 
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103654);
+extern "C" int func_00103654(UtlEnemyInfoBuf &theInfo, float theR)
+{
+#line 967
+    ASSERT_S(-3.141593039035797f <= theR && theR < 3.141593039035797f, D_002E5808);
+#line 968
+    ASSERT_S(0 <= theInfo.m_count && theInfo.m_count <= UtlEnemyInfoBuf::MAX_INFO, D_002E5830);
+
+    int n = theInfo.m_count;
+    if (n <= 0) {
+        return -1;
+    }
+    if (n == 1) {
+        return 0;
+    }
+
+    float minDist = 1e10f;
+    int best = -1;
+    int i = 0;
+    if (n > 0) {
+        UtlEnemyInfo *p = theInfo.m_info;
+        do {
+            float ang = p->m_ang;
+            if (ang < -theR || theR < ang) {
+            } else {
+                float dist = p->m_dist;
+                if (dist < minDist) {
+                    minDist = dist;
+                    best = i;
+                }
+            }
+            i++;
+            p++;
+        } while (i < n);
+    }
+    return best;
+}
 
 INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_0010376C);
 
