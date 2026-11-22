@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" void Xvii_func_00223228(int, int) asm("func_00223228");
+extern "C" int Xii_func_00223558(int, void *) asm("func_00223558");
+extern "C" int Xiii_func_001943D8(int, int) asm("func_001943D8");
 extern "C" void Xviiiiii_func_0019368C(int, int, void *, int, int, int) asm("func_0019368C");
 extern "C" void Xvp_func_00237340(void *) asm("func_00237340");
 extern "C" void Xvppi_func_002378B0(void *, void *, int) asm("func_002378B0");
@@ -695,7 +698,46 @@ extern "C" void func_001930F8(int arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", mnuBase__vfunc_07);
+extern "C" void mnuBase__vfunc_07(int arg0, int arg1)
+{
+    int arr[64];
+    struct {
+        int unk00;
+        int *unk04;
+        int unk08;
+        int unk0C;
+        int unk10;
+        int unk14;
+    } q;
+    struct SubA4 {
+        int unk00;
+        int unk04;
+        int unk08;
+        int unk0C;
+    };
+    int count = 0;
+    int i = 0;
+    if (M2C_FIELD(arg0, int *, 0xA8) > 0) {
+        int *dst = arr;
+        do {
+            if (Xiii_func_001943D8(arg0, i) != 0) {
+                SubA4 *p = (SubA4 *)(i * 0x10 + M2C_FIELD(arg0, int *, 0xA4));
+                *dst++ = p->unk08;
+                p->unk0C = count++;
+            }
+            i++;
+        } while (i < M2C_FIELD(arg0, int *, 0xA8));
+    }
+    q.unk08 = count;
+    q.unk00 = 0;
+    q.unk04 = arr;
+    q.unk0C = 0;
+    q.unk10 = 0;
+    q.unk14 = 0;
+    int v = Xii_func_00223558(arg1, &q);
+    M2C_FIELD(arg0, int *, 0xAC) = v;
+    Xvii_func_00223228(arg1, v);
+}
 
 extern "C" void func_00193210(int arg0, int arg1)
 {
