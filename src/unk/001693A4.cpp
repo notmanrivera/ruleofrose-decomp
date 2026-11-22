@@ -182,7 +182,29 @@ extern "C" void func_00169A68(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_00169A98);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_00169B0C);
+extern "C" int func_00169B0C(const float *arg0, const float *arg1, float fparg0)
+{
+    int ret = 0;
+    float dx = arg0[0] - arg1[0];
+    if (dx < 0.0f) {
+        dx = -dx;
+    }
+    float dy = arg0[1] - arg1[1];
+    if (dy < 0.0f) {
+        dy = -dy;
+    }
+    float dz = arg0[2] - arg1[2];
+    if (dz < 0.0f) {
+        dz = -dz;
+    }
+    if (dx < fparg0 && dz < fparg0) {
+        fparg0 *= fparg0;
+        if ((dx * dx + dz * dz) < fparg0 && dy < 100.0f) {
+            ret = 1;
+        }
+    }
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_00169BAC);
 
