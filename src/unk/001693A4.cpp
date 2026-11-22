@@ -177,7 +177,69 @@ INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016A424);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016A594);
 
+// NON_MATCHING: 2/62 differ, 2 edits
+#ifdef NON_MATCHING
+extern "C" void X_ror_assert_1693A4(const char *, int, const char *) asm("ror_assert");
+extern "C" int X_func_001CBE38(void *, int) throw() asm("func_001CBE38");
+extern "C" int X_func_0022B3D8(void *, const char *) throw() asm("func_0022B3D8");
+extern char D_002F1E10[];
+extern char D_002F1E20[];
+extern char D_002F1E30[];
+extern char D_002F1E38[];
+struct PcStub_16A6B4 { char pad00[0x100]; int m_oid; };
+struct GamManStub_16A6B4 { char pad00[0x22090]; PcStub_16A6B4 *m_pc; };
+extern GamManStub_16A6B4 D_007812C0_stub asm("D_007812C0");
+struct DogEntityStub_16A6B4 {
+    char pad00[0x94];
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+    virtual void v08();
+    virtual void v09();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual void vfunc17(float (*theOut)[4], int theNode);
+}; // DogEntityStub_16A6B4
+struct DogActorStub_16A6B4 : public DogEntityStub_16A6B4 {
+    char pad98[0x11C - 0x98];
+    void *m_i3r_root;
+    char pad120[0x4D0 - 0x120];
+    int getNodeIndexByName(const char *p) {
+        if (!m_i3r_root) X_ror_assert_1693A4(D_002F1E10, 0x131, D_002F1E20);
+        if (!p) X_ror_assert_1693A4(D_002F1E10, 0x131, D_002F1E30);
+        return X_func_0022B3D8(m_i3r_root, p);
+    } // getNodeIndexByName
+}; // DogActorStub_16A6B4
+extern DogActorStub_16A6B4 D_006FE6A0_stub[] asm("D_006FE6A0");
+extern "C" void func_0016A6B4(float *arg0)
+{
+    GamManStub_16A6B4 *g = &D_007812C0_stub;
+    int oid = 0;
+    if (g->m_pc != 0) {
+        oid = g->m_pc->m_oid;
+    }
+    const char *bone = D_002F1E38;
+    int idx = X_func_001CBE38(g, oid);
+    DogActorStub_16A6B4 *actor = &D_006FE6A0_stub[idx];
+    int node = actor->getNodeIndexByName(bone);
+    float mat[4][4];
+    actor->vfunc17(mat, node);
+    arg0[1] = 0.0f;
+    arg0[0] = mat[3][0];
+    arg0[2] = mat[3][2];
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016A6B4);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016A7AC);
 
