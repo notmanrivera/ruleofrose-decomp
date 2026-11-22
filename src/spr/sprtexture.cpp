@@ -1,4 +1,23 @@
 #include "include_asm.h"
+extern "C" void Xiii_releaseTex__10DogTexInfoi(int, int) asm("releaseTex__10DogTexInfoi");
+struct TexEntry18FAB4 {
+    int id;
+    int pad[5];
+};
+struct Sub18FAB4 {
+    char pad0[0x120];
+    int arr120[60];
+    int arr210[60];
+    int arr300[60];
+};
+struct Obj18FAB4 {
+    TexEntry18FAB4 *entries;
+    int pad4;
+    int pad8;
+    Sub18FAB4 sub;
+    char pad3FC[0x18];
+    int texInfo;
+};
 extern "C" int Xii_func_001915F8(int) asm("func_001915F8");
 extern "C" int Xii_func_001916F8(int) asm("func_001916F8");
 extern int _vt$6S2dMes;
@@ -210,7 +229,28 @@ fail:
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018F9CC);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018FAB4);
+extern "C" int func_0018FAB4(Obj18FAB4 *arg0, int arg1)
+{
+    int i = 0;
+
+    if (arg0->sub.arr210[arg1] < 0) {
+        return 0;
+    }
+    if (arg0->sub.arr120[arg0->sub.arr210[arg1]] <= 0) {
+        return 0;
+    }
+
+    while (arg0->entries[i].id >= 0 && arg1 != arg0->entries[i].id) {
+        i++;
+    }
+    if (arg0->entries[i].id < 0) {
+        return 0;
+    }
+    Xiii_releaseTex__10DogTexInfoi(arg0->texInfo, arg0->sub.arr120[arg0->sub.arr210[arg1]]);
+    arg0->sub.arr120[arg0->sub.arr210[arg1]] = 0;
+    arg0->sub.arr300[arg1] = 0;
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018FBB0);
 
