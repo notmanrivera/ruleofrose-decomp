@@ -1,4 +1,6 @@
 #include "include_asm.h"
+#include "unk/MnuDiary.h"
+#include <sdk/string.h>
 struct DiaryRGB { signed char r,g,b; };
 extern "C" int diaryAttach(int,int,int,int) asm("func_001874F4");
 extern "C" int Xiii_func_001874F4(int, int) asm("func_001874F4");
@@ -14,48 +16,6 @@ extern "C" int Xiiuii_func_00134AB8(int, unsigned int, int, int) asm("func_00134
 extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func_00134A00");
 extern "C" int Xiiuiiii_func_00134CD0(int, unsigned int, int, int, int, int) asm("func_00134CD0");
 extern "C" int Xiu_func_001832E8(unsigned int) asm("func_001832E8");
-struct Sub110_v2 {
-    int unk00;
-    int unk04;
-    int unk08;
-};
-struct Obj_v2 {
-    unsigned char unk00[0x04];
-    int m_04;
-    unsigned char unk08[0x0C];
-    int m_14;
-    unsigned char unk18[0x0C];
-    char m_24[0x40];
-    unsigned char unk64[0xA8];
-    void *m_10C;
-    Sub110_v2 *m_110;
-    int m_114;
-    int m_118;
-    int m_11C;
-    int m_120;
-    int m_124;
-    int m_128;
-    int m_12C;
-    int m_130;
-    int m_134;
-    void *m_138;
-    unsigned char unk13C[0x778];
-    int m_8B4;
-    void *m_8B8;
-};
-struct VBase_v2 {
-    unsigned char pad[0x10C];
-    virtual void v1();
-    virtual void v2();
-    virtual void v3();
-    virtual void v4();
-    virtual void v5();
-    virtual void v6();
-    virtual void v7();
-    virtual void v8();
-    virtual void v9();
-    virtual void v10();
-};
 struct SysWork_v2 {
     unsigned char unk[0xDC1C];
     int *m_dc1c;
@@ -68,54 +28,14 @@ extern "C" int X_func_001D83D0_v2(void *, int, int, int) asm("func_001D83D0");
 extern "C" void *X_func_00194588_v2(int) asm("func_00194588");
 extern "C" void *X_memset_v2(void *, int, int) asm("memset");
 extern "C" void X_func_0019397C_v2(void *, const char *, int, int) asm("func_0019397C");
-struct Item_BEB0 {
-    int m_unq;
-    int m_oid;
-    unsigned short m_uid;
-    unsigned short m_num;
-    int m_unk0C;
-};
-struct Obj_BEB0 {
-    unsigned char unk00[0x04];
-    int m_04;
-    unsigned char unk08[0x04];
-    int m_0C;
-    unsigned char unk10[0x1100];
-    Item_BEB0 *m_1110[0x100];
-    Item_BEB0 *m_1510[0x100];
-};
 extern int D_007812C0_BEB0 asm("D_007812C0");
-extern "C" int X_func_001C9198_BEB0(void *, Item_BEB0) asm("func_001C9198");
+extern "C" int X_func_001C9198_BEB0(void *, GamItem) asm("func_001C9198");
 extern "C" void X_func_001C8214_BEB0(void *, int) asm("func_001C8214");
 extern "C" void X_func_001C94D8_BEB0(void *, int, int) asm("func_001C94D8");
-extern "C" void X_func_001C812C_BEB0(void *, int, Item_BEB0 *) asm("func_001C812C");
+extern "C" void X_func_001C812C_BEB0(void *, int, GamItem *) asm("func_001C812C");
 extern "C" void X_func_0019B020_BEB0(void *, int) asm("func_0019B020");
 extern "C" void X_func_0019B384_BEB0(void *, int) asm("func_0019B384");
 extern "C" void X_func_0019BD6C_BEB0(void *) asm("func_0019BD6C");
-struct Sub110_85B0 {
-    int unk00;
-    int unk04;
-};
-struct Entry_85B0 {
-    int unk00;
-    int unk04;
-    int unk08;
-    int unk0C;
-    int unk10;
-    int unk14;
-    int unk18;
-    int unk1C;
-};
-struct Obj_85B0 {
-    unsigned char pad00[0x110];
-    Sub110_85B0 *m_110;
-    unsigned char pad114[0x18];
-    Entry_85B0 *m_12C;
-    unsigned char pad130[0x08];
-    int m_138;
-    char *m_13C;
-    unsigned char m_140[4];
-};
 extern "C" {
 void *X_memset_85B0(void *, int, int) asm("memset");
 int X_strlen_85B0(const char *) asm("strlen");
@@ -123,18 +43,6 @@ void *X_memcpy_85B0(void *, const void *, int) asm("memcpy");
 char *X_func_001832E8_85B0(int) asm("func_001832E8");
 void X_func_001874F4_85B0(void *, int, char *, int) asm("func_001874F4");
 }
-struct Sub110_A3C0 {
-    int unk00;
-    int unk04;
-};
-struct Obj_A3C0 {
-    unsigned char pad00[0x110];
-    Sub110_A3C0 *m_110;
-    unsigned char pad114[0x134 - 0x114];
-    int m_134;
-    char *m_138;
-    unsigned char m_13C[4];
-};
 extern "C" void *X_memset_A3C0(void *, int, unsigned int) asm("memset");
 extern "C" void *X_memcpy_A3C0(void *, const void *, unsigned int) asm("memcpy");
 extern "C" unsigned int X_strlen_A3C0(const char *) asm("strlen");
@@ -142,20 +50,6 @@ extern "C" int X_strcmp_A3C0(const char *, const char *) asm("strcmp");
 extern "C" char *X_func_001832E8_A3C0(int) asm("func_001832E8");
 extern "C" void X_func_001874F4_A3C0(void *, int, char *, int) asm("func_001874F4");
 extern "C" char D_002F8228[];
-struct Entry_844C {
-    int unk00;
-    int unk04;
-    int unk08;
-    int unk0C;
-    int unk10;
-    int unk14;
-    int unk18;
-    int unk1C;
-};
-struct Obj_844C {
-    unsigned char pad00[0x12C];
-    Entry_844C *m_12C;
-};
 extern "C" int X_func_00279C98_844C(char *, const char *, int) asm("func_00279C98");
 extern "C" int X_func_00194404_844C(void *, int, int) asm("func_00194404");
 extern "C" void X_func_0019397C_844C(void *, char *, int, int) asm("func_0019397C");
@@ -163,40 +57,11 @@ extern "C" int X_func_00279C98_A290(char *, const char *, int) asm("func_00279C9
 extern "C" int X_func_0019A24C_A290(void *, int) asm("func_0019A24C");
 extern "C" int X_func_00194404_A290(void *, int, int) asm("func_00194404");
 extern "C" int X_func_0019397C_A290(void *, char *, int, int) asm("func_0019397C");
-struct SprElem_DBC8 {
-    unsigned char unk00[0x144];
-    int unk144;
-    int unk148;
-    char *unk14C;
-    void *unk150;
-};
-struct Spr_DBC8 {
-    unsigned char unk00[0x4AC];
-    SprElem_DBC8 *m_4AC;
-    inline void set(int idx, char *str) {
-        m_4AC[idx].unk144 = 0x20;
-        m_4AC[idx].unk148 = 0;
-        m_4AC[idx].unk14C = str;
-    }
-};
-struct Item_DBC8 {
-    char *unk00;
-    int unk04;
-    unsigned short unk08;
-};
-struct Obj_DBC8 {
-    unsigned char unk000[0x7D0];
-    Spr_DBC8 m_spr;
-    unsigned char unkC80[0x1110 - 0xC80];
-    Item_DBC8 *m_1110[1];
-    unsigned char unk1114[0x1544 - 0x1114];
-    int m_1544;
-};
 extern int D_002A42C0;
 extern int D_007812C0_DBC8 asm("D_007812C0");
 extern "C" void X_func_001DC48C_DBC8(void *, int, int, void *) asm("func_001DC48C");
 static inline void *gamSub22220_DBC8() { void *p = &D_007812C0_DBC8; return (char *)p + 0x22220; }
-extern "C" void X_func_00194688_v3(int) asm("func_00194688");
+extern "C" void X_func_00194688_v3(void *) asm("func_00194688");
 extern "C" void X_func_00193868_v3(void *) asm("func_00193868");
 extern "C" void X_func_001348B0_v3(int, int) asm("func_001348B0");
 extern "C" void X_func_00187464_v3(void *) asm("func_00187464");
@@ -206,34 +71,7 @@ extern "C" void X___builtin_delete_v1(void *) asm("__builtin_delete");
 extern "C" void X_func_00183B24_v1(void *, int) asm("func_00183B24");
 extern "C" void X_mnuBase__vfunc_01_v1(void *, int) asm("mnuBase__vfunc_01");
 extern int vtbl_MnuDiary_v1 asm("_vt$8MnuDiary");
-struct Sub_FADC {
-    int m_00;
-    inline void func0() {
-        int v = m_00;
-        if (v >= 0 && v <= 3) {
-            m_00 = 0;
-        } else if (v >= 4 && v <= 7) {
-            m_00 = 4;
-        } else if (v >= 8 && v <= 11) {
-            m_00 = 8;
-        }
-    }
-    inline void func1() {
-        int v = m_00;
-        if (v >= 0 && v <= 3) {
-            m_00 = 3;
-        } else if (v >= 4 && v <= 7) {
-            m_00 = 7;
-        } else if (v >= 8 && v <= 11) {
-            m_00 = 11;
-        }
-    }
-};
 extern "C" int X_func_0019A20C_9A08(void *, int) asm("func_0019A20C");
-struct Elem20_9A08 {
-    char *unk00;
-    int pad[7];
-};
 extern "C" int X_func_001DD00C_DEDC(void *, int, int) asm("func_001DD00C");
 extern "C" void X_func_001DC48C_DEDC(void *, int, int, void *) asm("func_001DC48C");
 extern int D_007812C0_DEDC asm("D_007812C0");
@@ -248,44 +86,10 @@ struct MagGameFlags_CEAC {
     int m_flags;
 };
 extern MagGameFlags_CEAC *D_007B2060_CEAC asm("D_007B2060");
-struct Base_8720 {
-    int m_00;
-    unsigned char m_pad04[0x108];
-    virtual void vfunc0();
-    Base_8720() asm("func_00192AC0");
-};
-struct Msg_8720 {
-    unsigned char m_unk[0x3BC];
-    Msg_8720() asm("func_0018330C");
-};
 inline void *operator new(unsigned int, void *p) { return p; }
-struct MnuDiary : public Base_8720 {
-    int m_110;
-    int m_114;
-    int m_118;
-    int m_11C;
-    int m_120;
-    int m_124;
-    int m_128;
-    int m_12C;
-    int m_130;
-    int m_134;
-    int m_138;
-    unsigned char m_msgs[2*0x3BC];
-    int m_8B4;
-    int m_8B8;
-    void vfunc0();
-    MnuDiary() asm("func_00198720");
-};
 extern "C" void X_func_0019B384_C0E4(void *, int) asm("func_0019B384");
-extern "C" int func_0019C048(void *, unsigned short);
+extern "C" int func_0019C048(MnuStock *, int);
 extern "C" void func_0019B020(void *, int);
-struct Elem10_9AB4 {
-    int unk00;
-    int unk04;
-    int unk08;
-    int unk0C;
-};
 struct UnkHdr_9AB4 {
     int unk00;
     int unk04;
@@ -298,12 +102,6 @@ struct UnkItem_9AB4 {
 extern "C" int X_func_0019A24C_9AB4(void *, int) asm("func_0019A24C");
 extern "C" UnkHdr_9AB4 **X_func_0022AED8_9AB4(void *, int) asm("func_0022AED8");
 extern "C" UnkItem_9AB4 **func_0022AAD0(UnkHdr_9AB4 **, int);
-struct SubA4_v7 {
-    int unk00;
-    int unk04;
-    int unk08;
-    int unk0C;
-};
 struct Arg223558_v7 {
     int unk00;
     void *unk04;
@@ -392,35 +190,33 @@ extern "C" int X_func_0019DCBC(...) asm("func_0019DCBC");
 extern "C" int X_func_001DD00C(...) asm("func_001DD00C");
 extern "C" int X_func_0022AED8(...) asm("func_0022AED8");
 extern "C" int X_mnuBase__vfunc_03(...) asm("mnuBase__vfunc_03");
-extern int D_0029C368;
+extern MnuDiaryInfo D_0029C368[];
 extern int D_002A26B0;
 extern int D_002A2D80;
 extern int D_006E9840;
-extern int D_007812C0;
 extern int D_007B2060;
 
 // NON_MATCHING: 57/62 differ, 2 relocs differ (size 0xF8, game 0x108), 41 edits
 #ifdef NON_MATCHING
 extern "C" int X_func_00198420_8318(void *, int) asm("func_00198420");
-extern "C" int func_00198318(MnuDiary *arg0, int arg1)
+extern "C" int func_00198318(MnuPBook *arg0, int arg1)
 {
-    int m128 = arg0->m_128;
     int idx;
     if (arg1 != 0) {
-        int page = (m128 >= 0) ? (m128 / 2) : -1;
+        int page = (arg0->m_curPage >= 0) ? (arg0->m_curPage / 2) : -1;
         idx = page + 1;
-        if (idx >= arg0->m_130) {
+        if (idx >= arg0->m_pageNum) {
             return 0;
         }
         if (X_func_00198420_8318(arg0, idx) != 0) {
             return 0;
         }
         idx = page + 2;
-        if (idx >= arg0->m_130) {
+        if (idx >= arg0->m_pageNum) {
             return 1;
         }
     } else {
-        int page = (m128 >= 0) ? (m128 / 2) : -1;
+        int page = (arg0->m_curPage >= 0) ? (arg0->m_curPage / 2) : -1;
         if (page < 0) {
             return 0;
         }
@@ -432,7 +228,7 @@ extern "C" int func_00198318(MnuDiary *arg0, int arg1)
             return 1;
         }
     }
-    int flags = *(int *)(arg0->m_12C + idx * 0x20);
+    int flags = arg0->m_pages[idx].m_flags;
     if ((flags & 5) != 1 && (flags & 0xA) != 2) {
         return 1;
     }
@@ -442,77 +238,75 @@ extern "C" int func_00198318(MnuDiary *arg0, int arg1)
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00198318);
 #endif
 
-extern "C" int func_00198420(int arg0, int arg1)
+extern "C" int func_00198420(MnuPBook *arg0, int arg1)
 {
-    int temp_v1;
-
-    temp_v1 = (*(int *)(int *)((char *)(arg0) + 0x12C)) + (arg1 << 5);
-    return (*(int *)(int *)((char *)(temp_v1) + 0x10)) < (*(int *)(int *)((char *)((((*(int *)(int *)((char *)(temp_v1) + 0xC)) * 0x10) + (*(int *)(int *)((char *)(arg0) + 0x9C)))) + 0x4));
+    MnuBookPage *p = &arg0->m_pages[arg1];
+    return p->m_frame < arg0->m_animSlots[p->m_animIdx].m_len;
 }
 
 
-extern "C" void func_0019844C(Obj_844C *arg0, int arg1, int arg2, int arg3)
+extern "C" void func_0019844C(MnuPBook *arg0, int arg1, int arg2, int arg3)
 {
     char buf[32];
-    Entry_844C *e = &arg0->m_12C[arg1];
+    MnuBookPage *e = &arg0->m_pages[arg1];
     int page = (arg1 >= 0) ? (arg1 * 2) : -1;
     int var_a1 = 2;
-    if (arg2 != 0 && e->unk04 == -1 && !(e->unk00 & 4)) {
-        e->unk04 = X_func_00194404_844C(arg0, 2, 0x21);
-        if (e->unk00 & 0x10) {
+    if (arg2 != 0 && e->m_leftTex == -1 && !(e->m_flags & 4)) {
+        e->m_leftTex = X_func_00194404_844C(arg0, 2, 0x21);
+        if (e->m_flags & 0x10) {
             X_func_00279C98_844C(buf, "pb_pagebrk%02d_tcc", page);
         } else {
             X_func_00279C98_844C(buf, "pb_page%02d_tcc", page);
         }
-        X_func_0019397C_844C(arg0, buf, 4, e->unk04);
-        var_a1 = e->unk04 + 1;
+        X_func_0019397C_844C(arg0, buf, 4, e->m_leftTex);
+        var_a1 = e->m_leftTex + 1;
     }
-    if (arg3 != 0 && e->unk08 == -1 && !(e->unk00 & 8)) {
-        e->unk08 = X_func_00194404_844C(arg0, var_a1, 0x21);
-        if (e->unk00 & 0x20) {
+    if (arg3 != 0 && e->m_rightTex == -1 && !(e->m_flags & 8)) {
+        e->m_rightTex = X_func_00194404_844C(arg0, var_a1, 0x21);
+        if (e->m_flags & 0x20) {
             X_func_00279C98_844C(buf, "pb_pagebrk%02d_tcc", page + 1);
         } else {
             X_func_00279C98_844C(buf, "pb_page%02d_tcc", page + 1);
         }
-        X_func_0019397C_844C(arg0, buf, 4, e->unk08);
+        X_func_0019397C_844C(arg0, buf, 4, e->m_rightTex);
     }
 }
 
-extern "C" void func_001985B0(Obj_85B0 *arg0, int arg1) {
+extern "C" void func_001985B0(MnuPBook *arg0, int arg1) {
     int idx = (arg1 >= 0) ? (arg1 / 2) : -1;
-    Entry_85B0 *e = &arg0->m_12C[idx];
-    X_memset_85B0(arg0->m_13C, 0, 0x200);
-    __builtin_memcpy(arg0->m_13C, "#r#L#T#f00#w001#F20", 20);
-    if (arg1 >= 0 && !(e->unk00 & 0x28)) {
-        char *s1 = X_func_001832E8_85B0(arg0->m_110->unk04 + arg1);
-        char *dst = arg0->m_13C + X_strlen_85B0(arg0->m_13C);
+    MnuBookPage *e = &arg0->m_pages[idx];
+    X_memset_85B0(arg0->m_textBuf, 0, 0x200);
+    __builtin_memcpy(arg0->m_textBuf, "#r#L#T#f00#w001#F20", 20);
+    if (arg1 >= 0 && !(e->m_flags & 0x28)) {
+        char *s1 = X_func_001832E8_85B0(arg0->m_info->m_msgBase + arg1);
+        char *dst = arg0->m_textBuf + X_strlen_85B0(arg0->m_textBuf);
         X_memcpy_85B0(dst, s1, X_strlen_85B0(s1));
     }
     arg1++;
     e++;
-    if (arg1 >= 0 && !(e->unk00 & 0x14)) {
-        char *s2 = X_func_001832E8_85B0(arg0->m_110->unk04 + arg1);
-        char *dst = arg0->m_13C + X_strlen_85B0(arg0->m_13C);
+    if (arg1 >= 0 && !(e->m_flags & 0x14)) {
+        char *s2 = X_func_001832E8_85B0(arg0->m_info->m_msgBase + arg1);
+        char *dst = arg0->m_textBuf + X_strlen_85B0(arg0->m_textBuf);
         X_memcpy_85B0(dst, s2, X_strlen_85B0(s2));
     }
-    X_func_001874F4_85B0(arg0->m_140, arg0->m_138, arg0->m_13C, 0);
+    X_func_001874F4_85B0(arg0->m_msgWin, arg0->m_msgId, arg0->m_textBuf, 0);
 }
 
 MnuDiary::MnuDiary()
 {
     int i = 1;
-    Msg_8720 *p = (Msg_8720 *)m_msgs;
-    do { new (p) Msg_8720; p++; } while (--i != -1);
-    m_130 = -1;
-    m_134 = -1;
-    m_114 = -1;
-    m_118 = -1;
-    m_11C = -1;
-    m_00 = 7;
-    m_128 = 0;
-    m_138 = 0;
-    m_110 = 0;
-    m_8B8 = 0;
+    MnuMsgWinCtor *p = (MnuMsgWinCtor *)m_msgs;
+    do { new (p) MnuMsgWinCtor; p++; } while (--i != -1);
+    m_unk130 = -1;
+    m_msgId = -1;
+    m_diaryId = -1;
+    m_unk118 = -1;
+    m_unk11C = -1;
+    m_type = 7;
+    m_slots = 0;
+    m_textBuf = 0;
+    m_info = 0;
+    m_texPageMap = 0;
 }
 
 extern "C" void MnuDiary__vfunc_01(char *arg0, int arg1)
@@ -537,95 +331,101 @@ extern "C" void MnuDiary__vfunc_01(char *arg0, int arg1)
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuDiary", D_002F8190);
 
-extern "C" void MnuDiary__vfunc_02(Obj_v2 *arg0, int arg1) {
+extern "C" void MnuDiary__vfunc_02(MnuDiary *arg0, int arg1) {
     X_func_00192BA4_v2(arg0, arg1, 0x10, 6, 2, 0x13);
-    arg0->m_118 = X_func_001D83D0_v2(&D_007812C0_v2, 1, arg0->m_114, 0);
-    int v = sysWork_v2()[X_func_001D83D0_v2(&D_007812C0_v2, 1, arg0->m_114, 4)];
-    arg0->m_04 |= 0x40000;
-    arg0->m_11C = v;
-    arg0->m_124 = sysWork_v2()[X_func_001D83D0_v2(&D_007812C0_v2, 1, arg0->m_114, 7)] & ~1;
-    arg0->m_8B8 = X_func_00194588_v2(0x4C);
-    X_memset_v2(arg0->m_8B8, -1, 0x4C);
-    int pages = (arg0->m_110->unk08 / 2) + 1;
-    arg0->m_8B4 = 0;
-    arg0->m_04 |= 2;
-    arg0->m_120 = 0;
-    arg0->m_14 = 0;
-    arg0->m_12C = pages;
-    arg0->m_138 = X_func_00194588_v2(0x4C8);
-    __builtin_memcpy(arg0->m_24, "data/mnurpk/mnupbook/mnupbook.rpk", 34);
-    ((VBase_v2 *)arg0)->v10();
+    arg0->m_unk118 = X_func_001D83D0_v2(&D_007812C0_v2, 1, arg0->m_diaryId, 0);
+    int v = sysWork_v2()[X_func_001D83D0_v2(&D_007812C0_v2, 1, arg0->m_diaryId, 4)];
+    arg0->m_flags |= 0x40000;
+    arg0->m_unk11C = v;
+    arg0->m_curPage = sysWork_v2()[X_func_001D83D0_v2(&D_007812C0_v2, 1, arg0->m_diaryId, 7)] & ~1;
+    arg0->m_texPageMap = (int *)X_func_00194588_v2(0x4C);
+    X_memset_v2(arg0->m_texPageMap, -1, 0x4C);
+    int pages = (arg0->m_info->m_pageCount / 2) + 1;
+    arg0->m_unk8B4 = 0;
+    arg0->m_flags |= 2;
+    arg0->m_unk120 = 0;
+    arg0->m_state = 0;
+    arg0->m_paperNum = pages;
+    arg0->m_textBuf = (char *)X_func_00194588_v2(0x4C8);
+    __builtin_memcpy(arg0->m_rpkPath, "data/mnurpk/mnupbook/mnupbook.rpk", 34);
+    arg0->vfunc10();
     X_func_0019397C_v2(arg0, "ehonbg", 4, 1);
     X_func_0019397C_v2(arg0, "ehontex01_tcc", 4, 0);
 }
 
 extern "C" void MnuDiary__vfunc_03(MnuDiary *arg0)
 {
-    if (arg0->m_138 != 0) {
-        X_func_00194688_v3(arg0->m_138);
-        arg0->m_138 = 0;
+    if (arg0->m_textBuf != 0) {
+        X_func_00194688_v3(arg0->m_textBuf);
+        arg0->m_textBuf = 0;
     }
-    if (arg0->m_128 != 0) {
-        X_func_00194688_v3(arg0->m_128);
-        arg0->m_128 = 0;
+    if (arg0->m_slots != 0) {
+        X_func_00194688_v3(arg0->m_slots);
+        arg0->m_slots = 0;
     }
-    arg0->m_12C = 0;
-    if (arg0->m_8B8 != 0) {
-        X_func_00194688_v3(arg0->m_8B8);
-        arg0->m_8B8 = 0;
+    arg0->m_paperNum = 0;
+    if (arg0->m_texPageMap != 0) {
+        X_func_00194688_v3(arg0->m_texPageMap);
+        arg0->m_texPageMap = 0;
     }
     X_func_00193868_v3(arg0);
-    if (arg0->m_130 != -1) {
-        X_func_001348B0_v3(*(int *)((char *)arg0 + 8), arg0->m_130);
-        arg0->m_130 = -1;
+    if (arg0->m_unk130 != -1) {
+        X_func_001348B0_v3(arg0->m_scene, arg0->m_unk130);
+        arg0->m_unk130 = -1;
     }
-    if (arg0->m_134 != -1) {
-        X_func_001348B0_v3(*(int *)((char *)arg0 + 8), arg0->m_134);
-        arg0->m_134 = -1;
+    if (arg0->m_msgId != -1) {
+        X_func_001348B0_v3(arg0->m_scene, arg0->m_msgId);
+        arg0->m_msgId = -1;
     }
     X_func_00187464_v3(arg0->m_msgs);
-    arg0->m_110 = 0;
-    arg0->m_114 = -1;
-    arg0->m_118 = -1;
-    arg0->m_11C = -1;
+    arg0->m_info = 0;
+    arg0->m_diaryId = -1;
+    arg0->m_unk118 = -1;
+    arg0->m_unk11C = -1;
     X_mnuBase__vfunc_03_v3(arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00198B04);
-
-extern "C" void func_00198B54(int arg0)
+extern "C" int func_00198B04(MnuDiary *arg0, int arg1)
 {
-    struct { char pad0[32]; } stack;
-    int temp_v0;
-    int var_v1;
-    int temp_s0;
-    int var_a0;
+    for (arg0->m_info = D_0029C368; arg0->m_info->m_id != -1; arg0->m_info++) {
+        if (arg0->m_info->m_id == arg1) {
+            break;
+        }
+    }
+    if (arg0->m_info->m_id == -1) {
+        return 0;
+    }
+    arg0->m_diaryId = arg1;
+    return 1;
+}
 
-    temp_v0 = Xii_func_00194588(0xA0);
-    M2C_FIELD(arg0, int *, 0x128) = temp_v0;
-    var_v1 = temp_v0;
-    var_a0 = 4;
+extern "C" void func_00198B54(MnuDiary *arg0)
+{
+    char buf[32];
+    arg0->m_slots = (MnuBookPage *)X_func_00194588_v2(0xA0);
+    MnuBookPage *p = arg0->m_slots;
+    int i = 4;
     do {
-        var_a0 -= 1;
-        M2C_FIELD(var_v1, int *, 0) = 0;
-        M2C_FIELD(var_v1, int *, 8) = -1;
-        M2C_FIELD(var_v1, int *, 4) = -1;
-        M2C_FIELD(var_v1, int *, 0xC) = -1;
-        M2C_FIELD(var_v1, int *, 0x10) = 0;
-        var_v1 += 0x20;
-    } while (var_a0 >= 0);
-    Xiiiii_func_0019397C(arg0, (int) (int) "a_diary", 4, 2);
-    X_func_00279C98((int)&stack, (int) "%s_base.i3s", M2C_FIELD(arg0, int *, 0x110) + 0xC);
-    Xiiiii_func_0019397C(arg0, (int) (int)&stack, 1, 5);
-    temp_s0 = (int) (M2C_FIELD(arg0, int *, 0x124) + 1) / 2;
-    Xiii_func_0019A290(arg0, temp_s0 - 1);
-    Xiii_func_0019A290(arg0, temp_s0);
-    X_func_00279C98((int)&stack, (int) "%s01_base.i3s", M2C_FIELD(arg0, int *, 0x110) + 0xC);
-    Xiiiii_func_0019397C(arg0, (int) (int)&stack, 1, 0);
-    X_func_00279C98((int)&stack, (int) "%s01_turn_r.i3s", M2C_FIELD(arg0, int *, 0x110) + 0xC);
-    Xiiiii_func_0019397C(arg0, (int) (int)&stack, 2, 0);
-    X_func_00279C98((int)&stack, (int) "%s01_turn_l.i3s", M2C_FIELD(arg0, int *, 0x110) + 0xC);
-    Xiiiii_func_0019397C(arg0, (int) (int)&stack, 2, 1);
+        i -= 1;
+        p->m_flags = 0;
+        p->m_rightTex = -1;
+        p->m_leftTex = -1;
+        p->m_animIdx = -1;
+        p->m_frame = 0;
+        p++;
+    } while (i >= 0);
+    X_func_0019397C_v2(arg0, "a_diary", 4, 2);
+    X_func_00279C98(buf, "%s_base.i3s", arg0->m_info->m_prefix);
+    X_func_0019397C_v2(arg0, buf, 1, 5);
+    int paper = (arg0->m_curPage + 1) / 2;
+    Xiii_func_0019A290((int)arg0, paper - 1);
+    Xiii_func_0019A290((int)arg0, paper);
+    X_func_00279C98(buf, "%s01_base.i3s", arg0->m_info->m_prefix);
+    X_func_0019397C_v2(arg0, buf, 1, 0);
+    X_func_00279C98(buf, "%s01_turn_r.i3s", arg0->m_info->m_prefix);
+    X_func_0019397C_v2(arg0, buf, 2, 0);
+    X_func_00279C98(buf, "%s01_turn_l.i3s", arg0->m_info->m_prefix);
+    X_func_0019397C_v2(arg0, buf, 2, 1);
 }
 
 // NON_MATCHING: 80/132 differ, 11 relocs differ (size 0x210, game 0x20C), 14 edits
@@ -1083,20 +883,20 @@ loop_28:
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00199714);
 #endif
 
-extern "C" void func_00199A08(void *arg0, int arg1, int arg2, int arg3)
+extern "C" void func_00199A08(MnuDiary *arg0, int arg1, int arg2, int arg3)
 {
     int idx1 = X_func_0019A20C_9A08(arg0, arg1);
-    int idx2 = X_func_0019A24C_9AB4(arg0, arg2);
-    UnkHdr_9AB4 **p = X_func_0022AED8_9AB4((*(Elem20_9A08 **)((char *)arg0 + 0x94))[idx1].unk00 + 0x10, arg3 != 0);
-    (*func_0022AAD0(p, 0))->unk1C = (*(Elem10_9AB4 **)((char *)arg0 + 0xA4))[idx2].unk08;
+    int idx2 = X_func_0019A24C_A290(arg0, arg2);
+    UnkHdr_9AB4 **p = X_func_0022AED8_9AB4(arg0->m_models[idx1].m_data + 0x10, arg3 != 0);
+    (*func_0022AAD0(p, 0))->unk1C = arg0->m_texSlots[idx2].m_texId;
     (*p)->unk08++;
 }
 
-extern "C" void func_00199AB4(void *arg0, int arg1, int arg2)
+extern "C" void func_00199AB4(MnuDiary *arg0, int arg1, int arg2)
 {
-    int idx = X_func_0019A24C_9AB4(arg0, arg1);
-    UnkHdr_9AB4 **p = X_func_0022AED8_9AB4(*(char **)(*(char **)((char *)arg0 + 0x94) + 0xA0) + 0x10, arg2 != 0);
-    (*func_0022AAD0(p, 0))->unk1C = (*(Elem10_9AB4 **)((char *)arg0 + 0xA4))[idx].unk08;
+    int idx = X_func_0019A24C_A290(arg0, arg1);
+    UnkHdr_9AB4 **p = X_func_0022AED8_9AB4(arg0->m_models[5].m_data + 0x10, arg2 != 0);
+    (*func_0022AAD0(p, 0))->unk1C = arg0->m_texSlots[idx].m_texId;
     (*p)->unk08++;
 }
 
@@ -1253,22 +1053,22 @@ extern "C" void MnuDiary__vfunc_06(int arg0, int arg1)
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", MnuDiary__vfunc_06);
 #endif
 
-extern "C" void MnuDiary__vfunc_07(void *arg0, int arg1)
+extern "C" void MnuDiary__vfunc_07(MnuDiary *arg0, int arg1)
 {
     int arr[16];
     Arg223558_v7 q;
-    SubA4_v7 *p1;
-    SubA4_v7 *p2;
+    MnuTexSlot *p1;
+    MnuTexSlot *p2;
     int v;
 
-    p1 = *(SubA4_v7 **)((char *)arg0 + 0xA4);
-    arr[0] = p1[0].unk08;
-    p1[0].unk0C = 0;
-    p2 = *(SubA4_v7 **)((char *)arg0 + 0xA4);
-    arr[1] = p2[1].unk08;
+    p1 = arg0->m_texSlots;
+    arr[0] = p1[0].m_texId;
+    p1[0].m_unk0C = 0;
+    p2 = arg0->m_texSlots;
+    arr[1] = p2[1].m_texId;
     {
         register int one PS2_REG("$6") = 1;
-        p2[1].unk0C = one;
+        p2[1].m_unk0C = one;
     }
     {
         register int two PS2_REG("$6") = 2;
@@ -1280,7 +1080,7 @@ extern "C" void MnuDiary__vfunc_07(void *arg0, int arg1)
     q.unk10 = 0;
     q.unk14 = 0;
     v = X_func_00223558_v7(arg1, &q);
-    *(int *)((char *)arg0 + 0xAC) = v;
+    arg0->m_unkAC = v;
     X_func_00223228_v7(arg1, v);
 }
 
@@ -1310,20 +1110,20 @@ extern "C" int func_0019A054(MnuDiary *arg0, int arg1)
         return 0;
     }
     if (arg1 != 0) {
-        idx = (arg0->m_124 + 1) / 2;
-        if (idx >= arg0->m_12C) {
+        idx = (arg0->m_curPage + 1) / 2;
+        if (idx >= arg0->m_paperNum) {
             return 0;
         }
         if (X_func_0019A174_A054(arg0, idx) != 0) {
             return 0;
         }
         idx++;
-        if (idx >= arg0->m_12C) {
+        if (idx >= arg0->m_paperNum) {
             return 1;
         }
         return tail_A054(arg0, idx * 2 + 1);
     } else {
-        page = (arg0->m_124 + 1) / 2;
+        page = (arg0->m_curPage + 1) / 2;
         idx = page - 1;
         if (idx < 0) {
             return 0;
@@ -1342,46 +1142,54 @@ extern "C" int func_0019A054(MnuDiary *arg0, int arg1)
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A054);
 #endif
 
-extern "C" int func_0019A174(int arg0)
+extern "C" int func_0019A174(MnuDiary *arg0)
 {
-    int temp_v0;
-    int temp_v1;
-
-    temp_v0 = X_func_0019A20C();
-    if (temp_v0 != -1) {
-        temp_v1 = (*(int *)(int *)((char *)(arg0) + 0x128)) + (temp_v0 << 5);
-        return (*(int *)(int *)((char *)(temp_v1) + 0x10)) < (*(int *)(int *)((char *)((((*(int *)(int *)((char *)(temp_v1) + 0xC)) * 0x10) + (*(int *)(int *)((char *)(arg0) + 0x9C)))) + 0x4));
+    int idx = X_func_0019A20C();
+    if (idx != -1) {
+        MnuBookPage *p = &arg0->m_slots[idx];
+        return p->m_frame < arg0->m_animSlots[p->m_animIdx].m_len;
     }
     return 0;
 }
 
-
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A1D0);
-
-extern "C" int func_0019A20C(int arg0, int arg1)
+extern "C" int func_0019A1D0(MnuDiary *self)
 {
-    int *p = (int *)M2C_FIELD(arg0, int *, 0x128);
+    MnuBookPage *p = self->m_slots;
+    int i;
+
+    for (i = 0; i < 5; i++) {
+        if ((p->m_flags ^ 1) & 1) {
+            return i;
+        }
+        p++;
+    }
+    return -1;
+}
+
+extern "C" int func_0019A20C(MnuDiary *arg0, int arg1)
+{
+    MnuBookPage *p = arg0->m_slots;
     int i = 0;
 
     for (;;) {
-        if (M2C_FIELD(p, int *, 0) & 1) {
-            if (M2C_FIELD(p, int *, 0x14) == arg1) {
+        if (p->m_flags & 1) {
+            if (p->m_page == arg1) {
                 return i;
             }
         }
         i += 1;
         if (i < 5) {
-            p += 8;
+            p++;
             continue;
         }
         return -1;
     }
 }
 
-extern "C" int func_0019A24C(int arg0, int arg1)
+extern "C" int func_0019A24C(MnuDiary *arg0, int arg1)
 {
-    for (int i = 0; i < M2C_FIELD(arg0, int *, 0xA8); i++) {
-        if (M2C_FIELD(M2C_FIELD(arg0, int *, 0x8B8) + i * 4, int *, 0) == arg1) {
+    for (int i = 0; i < arg0->m_texSlotNum; i++) {
+        if (arg0->m_texPageMap[i] == arg1) {
             return i;
         }
     }
@@ -1396,41 +1204,41 @@ extern "C" void func_0019A290(MnuDiary *arg0, int arg1)
     int page;
     int idx;
 
-    page = arg1 * 2 + 1;
-    if (page >= 0 && page < (*(int **)((char *)arg0 + 0x110))[2] && X_func_0019A24C_A290(arg0, page) == -1) {
-        idx = X_func_00194404_A290(arg0, 3, 0x12);
-        ((int *)arg0->m_8B8)[idx] = page;
-        X_func_00279C98_A290(buf, "dy_page%02d_tcc", page);
-        X_func_0019397C_A290(arg0, buf, 4, idx);
+    page = arg0->getPageByPaper(arg1);
+    if (page >= 0 && page < arg0->m_info->m_pageCount && X_func_0019A24C_A290(arg0, page) == -1) {
+        idx = X_func_00194404_844C(arg0, 3, 0x12);
+        arg0->m_texPageMap[idx] = page;
+        X_func_00279C98_844C(buf, "dy_page%02d_tcc", page);
+        X_func_0019397C_v2(arg0, buf, 4, idx);
     }
     page++;
-    if (page >= 0 && page < (*(int **)((char *)arg0 + 0x110))[2] && X_func_0019A24C_A290(arg0, page) == -1) {
-        idx = X_func_00194404_A290(arg0, 3, 0x12);
-        ((int *)arg0->m_8B8)[idx] = page;
-        X_func_00279C98_A290(buf, "dy_page%02d_tcc", page);
-        X_func_0019397C_A290(arg0, buf, 4, idx);
+    if (page >= 0 && page < arg0->m_info->m_pageCount && X_func_0019A24C_A290(arg0, page) == -1) {
+        idx = X_func_00194404_844C(arg0, 3, 0x12);
+        arg0->m_texPageMap[idx] = page;
+        X_func_00279C98_844C(buf, "dy_page%02d_tcc", page);
+        X_func_0019397C_v2(arg0, buf, 4, idx);
     }
 }
 
-extern "C" void func_0019A3C0(Obj_A3C0 *arg0, int arg1)
+extern "C" void func_0019A3C0(MnuDiary *arg0, int arg1)
 {
-    X_memset_A3C0(arg0->m_138, 0, 0x4C8);
-    __builtin_memcpy(arg0->m_138, "#r#L#T#[50#]50#f00#w001#F20", 28);
+    memset(arg0->m_textBuf, 0, 0x4C8);
+    __builtin_memcpy(arg0->m_textBuf, "#r#L#T#[50#]50#f00#w001#F20", 28);
     if (arg1 >= -1) {
-        char *s1 = X_func_001832E8_A3C0(arg0->m_110->unk04 + arg1 - 1);
-        if (s1 != 0 && X_strcmp_A3C0(s1, D_002F8228) != 0) {
-            X_strlen_A3C0(s1);
-            char *dst = arg0->m_138 + X_strlen_A3C0(arg0->m_138);
-            X_memcpy_A3C0(dst, s1, X_strlen_A3C0(s1));
+        char *s1 = X_func_001832E8_85B0(arg0->m_info->m_msgBase + arg1 - 1);
+        if (s1 != 0 && strcmp(s1, D_002F8228) != 0) {
+            strlen(s1);
+            char *dst = arg0->m_textBuf + strlen(arg0->m_textBuf);
+            memcpy(dst, s1, strlen(s1));
         }
-        char *s2 = X_func_001832E8_A3C0(arg0->m_110->unk04 + arg1);
+        char *s2 = X_func_001832E8_85B0(arg0->m_info->m_msgBase + arg1);
         if (s2 != 0) {
-            X_strlen_A3C0(s2);
-            char *dst = arg0->m_138 + X_strlen_A3C0(arg0->m_138);
-            X_memcpy_A3C0(dst, s2, X_strlen_A3C0(s2));
+            strlen(s2);
+            char *dst = arg0->m_textBuf + strlen(arg0->m_textBuf);
+            memcpy(dst, s2, strlen(s2));
         }
     }
-    X_func_001874F4_A3C0(arg0->m_13C, arg0->m_134, arg0->m_138, 0);
+    X_func_001874F4_85B0(arg0->m_msgs, arg0->m_msgId, arg0->m_textBuf, 0);
 }
 
 extern "C" void func_0019A52C(int arg0)
@@ -1596,7 +1404,21 @@ INCLUDE_RODATA("asm/nonmatchings/unk/MnuDiary", D_002F83E0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019A824);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019AE20);
+extern "C" int func_0019AE20(MnuStock *self)
+{
+    int i;
+    for (i = 0; i < 7; i++) {
+        self->m_cursor[i] = 0;
+    }
+    self->m_max[0] = 7;
+    self->m_max[1] = 8;
+    self->m_max[2] = 2;
+    self->m_flg1B = 1;
+    self->m_flg1A = 1;
+    self->m_flg2B = 1;
+    self->m_flg2A = 1;
+    return 0;
+}
 
 struct MagGameFlags_AE78 {
     int m_unk00;
@@ -1645,7 +1467,7 @@ extern "C" int func_0019AF08(int arg0, int arg1)
 }
 
 
-extern "C" int func_0019AF34(int arg0, int arg1)
+extern "C" int func_0019AF34(MnuStock *arg0, int arg1)
 {
     struct { unsigned short sp0; } stack;
     int temp_v0;
@@ -1655,7 +1477,7 @@ extern "C" int func_0019AF34(int arg0, int arg1)
         return 0;
     }
     char *base = (char *)&D_007812C0;
-    X_func_001DC48C(base + 0x22220, arg1 & 0xFFFF, 0xD, &stack);
+    X_func_001DC48C_DBC8(base + 0x22220, arg1 & 0xFFFF, 0xD, &stack);
     if (stack.sp0 != 0) {
         stack.sp0 += 0xFFFF;
     }
@@ -1663,7 +1485,31 @@ extern "C" int func_0019AF34(int arg0, int arg1)
     return (temp_v0 >= 0x24F) ? 0x6D : temp_v0;
 }
 
+// NON_MATCHING: 11/28 differ (size 0x70, game 0x70), 13 edits
+#ifdef NON_MATCHING
+extern "C" int func_0019AFB0(MnuStock *self, int dir)
+{
+    if (self->m_stockCount >= 8) {
+        switch (dir) {
+        case 0:
+            if (self->m_cursor[1] != self->m_cursor[3]) {
+                return 1;
+            }
+            break;
+        case 1: {
+            int n = 7 - self->m_cursor[1];
+            if (self->m_cursor[3] + n < self->m_stockCount - 1) {
+                return 1;
+            }
+            break;
+        }
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019AFB0);
+#endif
 
 // NON_MATCHING: 188/194 differ, 17 relocs differ (size 0x308, game 0x364), 156 edits
 #ifdef NON_MATCHING
@@ -1835,48 +1681,77 @@ extern "C" void func_0019BD6C(Obj_BD6C *arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019BD6C);
 #endif
 
-extern "C" int func_0019BEB0(Obj_BEB0 *arg0, int arg1, int arg2) {
+extern "C" int func_0019BEB0(MnuStock *arg0, int arg1, int arg2) {
     int ret = 0;
-    Item_BEB0 *p1110 = arg0->m_1110[arg2];
+    GamItem *p1110 = arg0->m_stockItems[arg2];
     if (p1110->m_uid == 0xA00) {
-        Item_BEB0 *p1510 = arg0->m_1510[arg1];
+        GamItem *p1510 = arg0->m_haveItems[arg1];
         if (p1510->m_uid != 0xA00) {
-            X_func_001C9198_BEB0(&D_007812C0_BEB0, *p1510);
+            X_func_001C9198_BEB0(&D_007812C0, *p1510);
             ret = 1;
-            X_func_001C8214_BEB0(&D_007812C0_BEB0, arg1);
+            X_func_001C8214_BEB0(&D_007812C0, arg1);
         }
     } else {
-        Item_BEB0 item = *p1110;
-        Item_BEB0 *p1510 = arg0->m_1510[arg1];
+        GamItem item = *p1110;
+        GamItem *p1510 = arg0->m_haveItems[arg1];
         if (p1510->m_uid != 0xA00) {
             if (p1110->m_uid != p1510->m_uid) {
-                X_func_001C9198_BEB0(&D_007812C0_BEB0, *p1510);
-                X_func_001C8214_BEB0(&D_007812C0_BEB0, arg1);
+                X_func_001C9198_BEB0(&D_007812C0, *p1510);
+                X_func_001C8214_BEB0(&D_007812C0, arg1);
             }
         }
         ret = 1;
-        X_func_001C94D8_BEB0(&D_007812C0_BEB0, arg0->m_1110[arg2]->m_uid, 0);
-        X_func_001C812C_BEB0(&D_007812C0_BEB0, arg1, &item);
+        X_func_001C94D8_BEB0(&D_007812C0, arg0->m_stockItems[arg2]->m_uid, 0);
+        X_func_001C812C_BEB0(&D_007812C0, arg1, &item);
     }
-    X_func_0019B020_BEB0(arg0, arg0->m_04);
-    X_func_0019B384_BEB0(arg0, arg0->m_0C);
+    X_func_0019B020_BEB0(arg0, arg0->m_cursor[0]);
+    X_func_0019B384_BEB0(arg0, arg0->m_cursor[2]);
     X_func_0019BD6C_BEB0(arg0);
     return ret;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019C048);
+extern "C" int func_0019C048(MnuStock *self, int uid)
+{
+    if (uid == 0xA00) {
+        return -1;
+    }
+    for (int i = 0; i < 12; i++) {
+        if (uid == self->m_haveItems[i]->m_uid) {
+            return i;
+        }
+    }
+    return -1;
+}
 
+// NON_MATCHING: 2/18 differ (size 0x48, game 0x48), 2 edits (m_begin/m_end load order)
+#ifdef NON_MATCHING
+extern "C" int func_0019C09C()
+{
+    register char *base PS2_REG("$2") = (char *)&D_007812C0;
+    GamItemHave *have = (GamItemHave *)(base + 0x1A6C0);
+    GamItem *it = have->m_begin;
+    register int count PS2_REG("$6") = 0;
+    while (it != have->m_end) {
+        if (it->m_uid != 0xA00) {
+            count++;
+        }
+        it++;
+    }
+    return count;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019C09C);
+#endif
 
-extern "C" void func_0019C0E4(void *arg0, int arg1)
+extern "C" void func_0019C0E4(MnuStock *arg0, int arg1)
 {
     if (arg1 != 0) {
         return;
     }
     char *base = (char *)&D_007812C0;
-    X_func_0019B384_C0E4(arg0, -1);
-    *(int *)((char *)arg0 + 0x154C) = func_0019C048(arg0, *(unsigned short *)(base + 0x2220C));
-    *(int *)((char *)arg0 + 0x1550) = func_0019C048(arg0, *(unsigned short *)(base + 0x2220E));
+    X_func_0019B384_BEB0(arg0, -1);
+    arg0->m_equipIdx = func_0019C048(arg0, *(unsigned short *)(base + 0x2220C));
+    arg0->m_findIdx = func_0019C048(arg0, *(unsigned short *)(base + 0x2220E));
     return func_0019B020(arg0, 0);
 }
 
@@ -1904,18 +1779,18 @@ extern "C" int func_0019CEAC(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019CF48);
 
-extern "C" void func_0019DBC8(Obj_DBC8 *arg0, int arg1, int arg2)
+extern "C" void func_0019DBC8(MnuStock *arg0, int arg1, int arg2)
 {
     char *str = 0;
-    Spr_DBC8 *spr = &arg0->m_spr;
-    spr->m_4AC[arg1].unk150 = &D_002A42C0;
-    if (arg2 < arg0->m_1544) {
+    MnuStockRpk *spr = &arg0->m_rpk;
+    spr->m_sprTbl[arg1].m_color = &D_002A42C0;
+    if (arg2 < arg0->m_listCount) {
         if (arg2 == 0) {
-            str = arg0->m_1110[0]->unk00;
+            str = (char *)arg0->m_stockItems[0]->m_unq;
         } else {
-            X_func_001DC48C_DBC8(gamSub22220_DBC8(), arg0->m_1110[arg2]->unk08, 0xC, &str);
+            X_func_001DC48C_DBC8(gamSub22220_DBC8(), arg0->m_stockItems[arg2]->m_uid, 0xC, &str);
         }
-        spr->set(arg1, str);
+        spr->setText(arg1, str);
     }
 }
 
@@ -1999,13 +1874,13 @@ extern "C" void func_0019DCBC(int arg0, int arg1, int arg2, int arg3) {
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019DCBC);
 #endif
 
-extern "C" char *func_0019DEDC(int arg0, unsigned short arg1)
+extern "C" char *func_0019DEDC(MnuStock *arg0, unsigned short arg1)
 {
     char *p = 0;
-    void *base = gamSub22220_DEDC();
+    void *base = gamSub22220_DBC8();
     (void)arg0;
     if (X_func_001DD00C_DEDC(base, arg1, 4) != 0) {
-        X_func_001DC48C_DEDC(base, arg1, 0xC, &p);
+        X_func_001DC48C_DBC8(base, arg1, 0xC, &p);
     } else {
         p = D_002A42E0;
     }
@@ -2084,7 +1959,7 @@ extern "C" void func_0019E010(char *arg0, char *arg1) {
             diaryE_func_001DC48C(diaryEUnq((char *)&D_007812C0), (int) diaryEId(arg1), 0x10, &sp0);
             if (M2C_FIELD(arg0, int *, 0x156C) == one) {
                 if (sp0 != 0xA00) {
-                    temp_v0_2 = func_0019DEDC((int)arg0, (unsigned short)sp0);
+                    temp_v0_2 = func_0019DEDC((MnuStock *)arg0, (unsigned short)sp0);
                     sp4 = temp_v0_2;
                     diaryE_func_0018EBA4((int)temp_s4, temp_v0_2, temp_s5, 0);
                 } else {
@@ -2092,7 +1967,7 @@ extern "C" void func_0019E010(char *arg0, char *arg1) {
                 }
                 diaryE_func_001DC48C(diaryEUnq((char *)&D_007812C0), (int) diaryEId(arg1), 17, &sp0);
                 if (sp0 != 0xA00) {
-                    temp_v0_3 = func_0019DEDC((int)arg0, (unsigned short)sp0);
+                    temp_v0_3 = func_0019DEDC((MnuStock *)arg0, (unsigned short)sp0);
                     sp4 = temp_v0_3;
                     diaryE_func_0018EBA4((int)temp_s4, temp_v0_3, temp_s6, 0);
                 } else {
@@ -2101,7 +1976,7 @@ extern "C" void func_0019E010(char *arg0, char *arg1) {
                 diaryE_func_001DC48C(diaryEUnq((char *)&D_007812C0), (int) diaryEId(arg1), 18, &sp0);
                 temp_s0 = diaryESub(arg0);
                 if (sp0 != 0xA00) {
-                    temp_v0_4 = func_0019DEDC((int)arg0, (unsigned short)sp0);
+                    temp_v0_4 = func_0019DEDC((MnuStock *)arg0, (unsigned short)sp0);
                     sp4 = temp_v0_4;
                     diaryE_func_0018EBA4((int)temp_s0, temp_v0_4, temp_s7, 0);
                 } else {
@@ -2165,19 +2040,27 @@ extern "C" int func_0019E43C(int arg0, int arg1, int arg2)
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019E474);
 
-extern "C" void func_0019FADC(char *arg0, int arg1)
+extern "C" void func_0019FADC(MnuStock *arg0, int arg1)
 {
     switch (arg1) {
     case 0:
-        ((Sub_FADC *)(arg0 + 0xC))->func0();
+        ((MnuStockCursor *)&arg0->m_cursor[2])->snapRowStart();
         break;
     case 1:
-        ((Sub_FADC *)(arg0 + 0xC))->func1();
+        ((MnuStockCursor *)&arg0->m_cursor[2])->snapRowEnd();
         break;
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019FB88);
+extern "C" int func_0019FB88(MnuStock *self, int uid, int arg2)
+{
+    register int ret PS2_REG("$2") = 0;
+    (void)self;
+    if (uid != 0xA00) {
+        ret = X_func_001DD00C_DEDC(gamSub22220_DBC8(), (unsigned short)uid, arg2);
+    }
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019FBC8);
 
