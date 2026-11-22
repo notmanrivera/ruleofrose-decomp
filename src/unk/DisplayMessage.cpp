@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" void X_func_001E71FC(int, int, int, int, int, int, int, int *, int) asm("func_001E71FC");
+extern "C" int Xii___builtin_new(int) asm("__builtin_new");
+extern "C" void Xiiiiiiuf_func_001E8FC4(int, int, int, int, int, unsigned int, float) asm("func_001E8FC4");
 extern "C" void X_func_001DC48C(void *, int, int, void *) asm("func_001DC48C");
 extern "C" void X_func_001CA604(int, int) asm("func_001CA604");
 extern "C" int X_func_001CA72C(int, int, int, int, int, int, int, int) asm("func_001CA72C");
@@ -58,7 +61,27 @@ extern "C" int func_001F5D90(int arg0, int arg1, int arg2, int arg3, float fparg
 
 INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F5E48);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F603C);
+extern "C" int func_001F603C(int arg0, int arg1, int arg2, int arg3, float fparg0)
+{
+    int temp_fp = (arg0 >> 0x1C) & 3;
+    if (temp_fp == 1) {
+        char *obj = (char *)Xiiu_func_001D2B8C((int)&D_007812C0, (unsigned int)arg0);
+        if (obj != 0) {
+            int *p = (int *)(obj + 0x3DC);
+            *(int *)(obj + 0x13C) = arg1;
+            int tmp = *(int *)(obj + 0x108);
+            if (Xiii_func_001E7D7C((int)&D_007A3D80, *p) != 0) {
+                X_func_001E7724((int)&D_007A3D80, *p);
+            }
+            int ret = Xii___builtin_new(0x100);
+            Xiiiiiiuf_func_001E8FC4(ret, tmp, arg1, arg2, arg3, (unsigned int)arg0, fparg0);
+            X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, ret, 0, p, temp_fp);
+            return ret;
+        }
+        return (int)obj;
+    }
+    return 0;
+}
 
 extern "C" void func_001F616C(unsigned int arg0, float fparg0)
 {
