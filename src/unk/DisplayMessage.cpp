@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int X_func_001D046C(int, unsigned int) asm("func_001D046C");
+extern "C" void X_func_001E7724(int, int) asm("func_001E7724");
 extern "C" void X_func_001F6308(int, int, int, int, unsigned int, float, int) asm("func_001F6308");
 extern "C" int Xiii_func_001E79C0(int, int) asm("func_001E79C0");
 extern "C" int Xiii_func_001E7D7C(int, int) asm("func_001E7D7C");
@@ -61,7 +63,17 @@ extern "C" void func_001F616C(unsigned int arg0, float fparg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F61EC);
+extern "C" void func_001F61EC(unsigned int arg0)
+{
+    if (X_func_001D046C((int)&D_007812C0, arg0) != 0 && ((arg0 >> 0x1C) & 3) == 1) {
+        char *obj = (char *)Xiiu_func_001D2B8C((int)&D_007812C0, arg0);
+        int *p = (int *)(obj + 0x3DC);
+        if (Xiii_func_001E7D7C((int)&D_007A3D80, *p) != 0) {
+            X_func_001E7724((int)&D_007A3D80, *p);
+            *p = -1;
+        }
+    }
+}
 
 extern "C" void func_001F627C(unsigned int arg0, int arg1, int arg2, int arg3, float fparg0, int arg4)
 {
