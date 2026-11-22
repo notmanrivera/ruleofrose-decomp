@@ -1,6 +1,7 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+extern int D_002B8DA8[];
 extern "C" void X_func_001C6A40(GamMan *, int) asm("func_001C6A40");
 extern "C" int X_func_001F184C(...) asm("func_001F184C");
 extern "C" void func_001D5DA0(GamMan *, int);
@@ -445,7 +446,50 @@ extern "C" int func_001BE8A8()
     return X_func_00247F10();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BE8BC);
+extern "C" int func_001BE8BC(const unsigned char *arg0, int *arg1, int *arg2, int *arg3)
+{
+    int yearDays = 0;
+    int leap = 0;
+    int days = 0;
+    int i;
+
+    *arg1 = 0;
+    *arg2 = 0;
+    if ((unsigned char)(arg0[6] - 1) >= 12) {
+        return 0;
+    }
+
+    unsigned char year = arg0[7];
+    if ((year & 3) == 0) {
+        leap = 1;
+        if ((year % 100U) == 0) {
+            leap = ((int)year % 400 == 0);
+        }
+    }
+
+    for (i = 0; i < 12; i++) {
+        yearDays += D_002B8DA8[i];
+        if (i == 1) {
+            yearDays += leap;
+        }
+    }
+
+    int yearSec = yearDays * 0x15180;
+    *arg3 = yearSec;
+
+    for (i = 0; i < arg0[6] - 1; i++) {
+        days += D_002B8DA8[i];
+        if (i == 1) {
+            days += leap;
+        }
+    }
+
+    days += arg0[5];
+    int sec = (((days * 24 + arg0[3]) * 60 + arg0[2]) * 60) + arg0[1];
+    *arg1 = sec;
+    *arg2 = yearSec - sec;
+    return 1;
+}
 
 // NON_MATCHING: 51/83 differ (size 0x14C, game 0x158), 13 edits
 #ifdef NON_MATCHING
