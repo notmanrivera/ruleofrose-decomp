@@ -1,3 +1,4 @@
+#include "ror.h"
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
@@ -2718,12 +2719,10 @@ extern "C" void func_001CC970(GamMan *self, int theOID)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CCC30);
 
-// NON_MATCHING: 2/120 differ, 2 edits
-#ifdef NON_MATCHING
 extern char D_007A4440_CD044[] asm("D_007A4440");
 extern int D_007A3D80_CD044 asm("D_007A3D80");
 static inline int *sysWork_CD044() { char *p = D_007A4440_CD044; return *(int **)(p + 0xDC1C); }
-extern "C" void X_func_001C65E8_CD044(GamMan *, int) asm("func_001C65E8");
+extern "C" void X_func_001C65E8_CD044(GamMan *, int) ASM_NOTHROW asm("func_001C65E8");
 extern "C" void X_func_001E7544_CD044(void *, int) asm("func_001E7544");
 extern "C" void func_001CD044(GamMan *arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
     arg0->m_unk1A684 = arg5;
@@ -2743,7 +2742,7 @@ extern "C" void func_001CD044(GamMan *arg0, int arg1, int arg2, int arg3, int ar
             arg0->m_unk2221C = 3;
         block_9:
             *(int *)arg0->m_pad21F44 = arg0->m_curStat;
-            arg0->setSysFlg2(2);
+            (*(int *)&arg0->m_sysFlg2) |= 2;
             arg0->m_unk21F84 = arg0->m_unk21F7C;
             arg0->m_unk21F88 = arg0->m_unk21F80;
             arg0->m_curStat = arg1;
@@ -2763,9 +2762,6 @@ extern "C" void func_001CD044(GamMan *arg0, int arg1, int arg2, int arg3, int ar
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CD044);
-#endif
 
 extern "C" void func_001CD224(int arg0)
 {
