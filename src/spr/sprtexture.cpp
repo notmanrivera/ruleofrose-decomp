@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" void Xii___builtin_delete(int) asm("__builtin_delete");
+extern "C" int Xii_func_00190BBC(int) asm("func_00190BBC");
+extern "C" int Xii_func_00190C68(int) asm("func_00190C68");
+extern int _vt$10S2dCineSco;
 extern "C" int Xiiiiiii_func_0018D7EC(int, int, int, int, int, int) asm("func_0018D7EC");
 extern int D_00299B70;
 extern int D_00299B80;
@@ -288,7 +292,19 @@ extern "C" int func_00190A78(int arg0)
     return func_00190B60(arg0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", S2dCineSco__vfunc_01);
+extern "C" void S2dCineSco__vfunc_01(int arg0, int arg1)
+{
+    M2C_FIELD(arg0, int *, 0x14) = (int)&_vt$10S2dCineSco;
+    Xii_func_00190C68(arg0);
+    if (M2C_FIELD(arg0, int *, 0x34) == 1) {
+        Xii_func_00190BBC(arg0);
+    }
+    Xiii_func_0018BC18(arg0 + 0x3C, 2);
+    M2C_FIELD(arg0, int *, 0x14) = (int)&_vt$8MagLife0;
+    if (arg1 & 1) {
+        return Xii___builtin_delete(arg0);
+    }
+}
 
 extern "C" int func_00190B60(int arg0)
 {
