@@ -1,335 +1,375 @@
 #include "include_asm.h"
-extern "C" int Xii_func_0018741C(int) asm("func_0018741C");
-extern "C" int Xii_func_001A4FF0(int) asm("func_001A4FF0");
-extern int _9MagSystem$m_current_system;
-extern "C" int Xiiiiiii_alloc__9BedMemoryiPCciii(int, int, int, int, int, int) asm("alloc__9BedMemoryiPCciii");
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" int Xiii_func_001A1684(int, int) asm("func_001A1684");
-extern "C" int Xiii_strcpy(int, int) asm("strcpy");
-extern "C" int Xiiiii_func_001A4DB8(int, int, int, int) asm("func_001A4DB8");
-// Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_alloc__9BedMemoryiPCciii(...) asm("alloc__9BedMemoryiPCciii");
-extern "C" int X_func_00118980__9MagSystemiiiiii(...) asm("func_00118980__9MagSystemiiiiii");
-extern "C" int X_func_001189BC__9MagSystemiiiii(...) asm("func_001189BC__9MagSystemiiiii");
-extern "C" int X_func_00134730(...) asm("func_00134730");
-extern "C" int X_func_001348B0(...) asm("func_001348B0");
-extern "C" int X_func_001351B0(...) asm("func_001351B0");
-extern "C" int X_func_00135594(...) asm("func_00135594");
-extern "C" int X_func_0017F8FC(...) asm("func_0017F8FC");
-extern "C" int X_func_001832E8(...) asm("func_001832E8");
-extern "C" int X_func_0018330C(...) asm("func_0018330C");
-extern "C" int X_func_0018741C(...) asm("func_0018741C");
-extern "C" int X_func_00187464(...) asm("func_00187464");
-extern "C" int X_func_001874AC(...) asm("func_001874AC");
-extern "C" int X_func_001874F4(...) asm("func_001874F4");
-extern "C" int X_func_001875C0(...) asm("func_001875C0");
-extern "C" int X_func_00187724(...) asm("func_00187724");
-extern "C" int X_func_00187788(...) asm("func_00187788");
-extern "C" int X_func_001879C4(...) asm("func_001879C4");
-extern "C" int X_func_00187B10(...) asm("func_00187B10");
-extern "C" int X_func_00187C30(...) asm("func_00187C30");
-extern "C" int X_func_00187C4C(...) asm("func_00187C4C");
-extern "C" int X_func_00187E00(...) asm("func_00187E00");
-extern "C" int X_func_00187E08(...) asm("func_00187E08");
-extern "C" int X_func_0018B874(...) asm("func_0018B874");
-extern "C" int X_func_0018B9B8(...) asm("func_0018B9B8");
-extern "C" int X_func_0018BB28(...) asm("func_0018BB28");
-extern "C" int X_func_001A1468(...) asm("func_001A1468");
-extern "C" int X_func_001A1574(...) asm("func_001A1574");
-extern "C" int X_func_001A1684(...) asm("func_001A1684");
-extern "C" int X_func_001A16B4(...) asm("func_001A16B4");
-extern "C" int X_func_001A1714(...) asm("func_001A1714");
-extern "C" int X_func_001A171C(...) asm("func_001A171C");
-extern "C" int X_func_001A177C(...) asm("func_001A177C");
-extern "C" int X_func_001A17B0(...) asm("func_001A17B0");
-extern "C" int X_func_001A17DC(...) asm("func_001A17DC");
-extern "C" int X_func_001A17FC(...) asm("func_001A17FC");
-extern "C" int X_func_001A1B2C(...) asm("func_001A1B2C");
-extern "C" int X_func_001A1B54(...) asm("func_001A1B54");
-extern "C" int X_func_001A1CE4(...) asm("func_001A1CE4");
-extern "C" int X_func_001A239C(...) asm("func_001A239C");
-extern "C" int X_func_001A2B14(...) asm("func_001A2B14");
-extern "C" int X_func_001A30CC(...) asm("func_001A30CC");
-extern "C" int X_func_001A3568(...) asm("func_001A3568");
-extern "C" int X_func_001A36C4(...) asm("func_001A36C4");
-extern "C" int X_func_001A3B80(...) asm("func_001A3B80");
-extern "C" int X_func_001A3C4C(...) asm("func_001A3C4C");
-extern "C" int X_func_001A44FC(...) asm("func_001A44FC");
-extern "C" int X_func_001A47F0(...) asm("func_001A47F0");
-extern "C" int X_func_001A4DB8(...) asm("func_001A4DB8");
-extern "C" int X_func_001A4E88(...) asm("func_001A4E88");
-extern "C" int X_func_001A4F60(...) asm("func_001A4F60");
-extern "C" int X_func_001A5034(...) asm("func_001A5034");
-extern "C" int X_func_001A557C(...) asm("func_001A557C");
-extern "C" int X_func_001A5584(...) asm("func_001A5584");
-extern "C" int X_heapFree__FPv(...) asm("heapFree__FPv");
-extern "C" int X_strcpy(...) asm("strcpy");
-extern "C" int X_strncmp(...) asm("strncmp");
-extern int D_006E9800;
-extern int D_007B2580;
+#include "mnu/mnudlg.h"
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A0950);
+extern "C" void *X_alloc__9BedMemoryiPCciii(void *, int, const char *, int, int, int) asm("alloc__9BedMemoryiPCciii");
+extern "C" void X_func_001348B0(void *, int) asm("func_001348B0");
+extern "C" void X_func_001351B0(void *, int, int) asm("func_001351B0");
+extern "C" void X_func_0018741C(void *) asm("func_0018741C");
+extern "C" void X_func_00187464(void *) asm("func_00187464");
+extern "C" void X_func_001879C4(void *) asm("func_001879C4");
+extern "C" void X_func_00187C30(void *) asm("func_00187C30");
+extern "C" void X_func_00187C4C(void *) asm("func_00187C4C");
+extern "C" int X_func_001A17FC(...) asm("func_001A17FC");
+extern "C" int X_func_001A1CE4(...) asm("func_001A1CE4");
+extern "C" int X_func_001A47F0(void *) asm("func_001A47F0");
+extern "C" int X_func_001A4E88(...) asm("func_001A4E88");
+extern "C" int X_func_001A4F60(void *) asm("func_001A4F60");
+extern "C" void X_func_001A4FF0(void *) asm("func_001A4FF0");
+extern "C" void X_func_001A5034(void *) asm("func_001A5034");
+extern "C" void X_heapFree__FPv(void *) asm("heapFree__FPv");
+extern "C" char *X_strcpy(char *, const char *) asm("strcpy");
+extern int _9MagSystem$m_current_system;
+extern int D_006E9800;
+
+extern "C" int func_001A1430(MnuMcd *);
+extern "C" int func_001A1468(MnuMcd *);
+extern "C" int func_001A1684(MnuMcd *, int);
+extern "C" int func_001A16B4(MnuMcd *, int, int);
+extern "C" void func_001A1714(MnuMcd *, int);
+extern "C" int func_001A171C(MnuMcd *, int, int);
+extern "C" int func_001A17DC(MnuMcd *);
+extern "C" int func_001A1B2C(MnuMcd *);
+extern "C" int func_001A4D38(MnuDlgObj *);
+
+static inline bool checkPortValid(const int &port)
+{
+    return port < 2;
+}
+
+extern "C" void func_001A0950(MnuSub104 *arg0)
+{
+    if (arg0->m_lines[0] != 0) {
+        for (int i = 0; i < 32; i++) {
+            X_heapFree__FPv(arg0->m_lines[i]);
+            arg0->m_lines[i] = 0;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A09B8);
 
-extern "C" int func_001A0BA0(int arg0)
+extern "C" int func_001A0BA0(MnuSub104 *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0) == 0) {
+    if (arg0->m_open == 0) {
         return -2;
     }
-    return M2C_FIELD(arg0, int *, 0x64);
+    return arg0->m_result;
 }
 
-extern "C" void func_001A0BB8(int arg0)
+extern "C" void func_001A0BB8(MnuSub104 *arg0)
 {
-    if (((*(int *)(int *)((char *)(arg0) + 0x0)) != 0) && ((*(int *)(int *)((char *)(arg0) + 0x70)) == 1)) {
-        (*(int *)(int *)((char *)(arg0) + 0x44)) = 4;
+    if (arg0->m_open != 0 && arg0->m_active == 1) {
+        arg0->m_subStep = 4;
     }
 }
-
 
 extern "C" int func_001A0BDC()
 {
     return 0;
 }
 
-
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A0BE4);
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1244);
-
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A12A8);
-
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A134C);
-
-extern "C" void func_001A13F0()
+MnuMcd::MnuMcd()
 {
-    X_func_001A1468();
+    m_open = 0;
+    func_001A1B2C(this);
 }
 
-
-extern "C" int func_001A140C(int arg0)
+MnuMcd::~MnuMcd()
 {
-    return (*(int *)(int *)((char *)(arg0) + 0x4));
+    func_001A1468(this);
 }
 
+extern "C" void func_001A134C(MnuMcd *arg0)
+{
+    arg0->m_winId0 = -1;
+    arg0->m_winId1 = -1;
+    arg0->m_unk88 = 0;
+    func_001A1430(arg0);
+    arg0->m_active = 1;
+    arg0->m_unk70 = 0;
+    arg0->m_unk6C = 0;
+    for (int i = 0; i < 2; i++) {
+        arg0->m_portState[i] = 0;
+    }
+    arg0->m_unk8C = 0;
+    arg0->m_reqOp = 0;
+    arg0->m_sys = _9MagSystem$m_current_system;
+    func_001A1714(arg0, 0);
+    arg0->m_statusFlags = 2;
+    arg0->m_subState = 10;
+    arg0->m_slotState = 0;
+    arg0->m_unk13B8 = 0;
+    arg0->m_busy = 0;
+}
+
+extern "C" void func_001A13F0(MnuMcd *arg0)
+{
+    func_001A1468(arg0);
+}
+
+extern "C" int func_001A140C(MnuMcd *arg0)
+{
+    return arg0->m_active;
+}
 
 extern "C" int func_001A1414()
 {
     return X_func_001A17FC();
 }
 
-
-extern "C" void func_001A1428(void) {
+extern "C" void func_001A1428(void)
+{
 }
 
-extern "C" int func_001A1430(int arg0)
+extern "C" int func_001A1430(MnuMcd *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0) == 1) {
+    if (arg0->m_open == 1) {
         return -1;
     }
-    M2C_FIELD(arg0, int *, 0) = 1;
-    M2C_FIELD(arg0, int *, 0x24) = 0;
-    M2C_FIELD(arg0, int *, 0x28) = 4;
-    M2C_FIELD(arg0, int *, 0x2C) = 0;
-    M2C_FIELD(arg0, int *, 0x30) = 0;
-    M2C_FIELD(arg0, int *, 0x34) = 0;
+    arg0->m_open = 1;
+    arg0->m_step = 0;
+    arg0->m_mode = 4;
+    arg0->m_unk2C = 0;
+    arg0->m_reqCmd = 0;
+    arg0->m_subStep = 0;
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1468);
-
-extern "C" void func_001A1514(int arg0, int arg1)
+extern "C" int func_001A1468(MnuMcd *arg0)
 {
-    int var_a4;
-    int var_a5;
-    int temp_a0;
-    int temp_a6;
-    int var_a2;
-    int var_a3;
-    int temp_v1;
+    if (arg0->m_open == 0) {
+        return -1;
+    }
+    if (arg0->m_winId0 >= 0) {
+        X_func_001348B0((char *)arg0->m_sys + 0x12540, arg0->m_winId0);
+        arg0->m_winId0 = -1;
+    }
+    if (arg0->m_winId1 >= 0) {
+        X_func_001348B0((char *)arg0->m_sys + 0x12540, arg0->m_winId1);
+        arg0->m_winId1 = -1;
+    }
+    X_func_00187C30(&arg0->m_card);
+    X_func_001879C4(&arg0->m_card);
+    X_func_00187464(arg0->m_msgWin);
+    arg0->m_open = 0;
+    arg0->m_active = 0;
+    return 0;
+}
 
-    var_a2 = arg1;
-    var_a5 = 0;
-    temp_a6 = var_a2 + 0x2D10;
-    var_a3 = var_a2 + 0x2D20;
-    do {
-        var_a4 = 0;
-loop_2:
-        temp_a0 = (int) (&((unsigned char *)(temp_a6))[var_a4]);
-        var_a4 += 1;
-        (*(unsigned char *)(var_a3)) += (*(unsigned char *)(var_a2));
-        temp_v1 = (*(unsigned char *)(var_a2));
-        var_a2 += 1;
-        (*(unsigned char *)(temp_a0)) += temp_v1;
-        if (var_a4 < 0x10) {
-            goto loop_2;
+extern "C" void func_001A1514(MnuMcd *arg0, unsigned char *buf)
+{
+    (void)arg0;
+    unsigned char *colSum = buf + 0x2D10;
+    unsigned char *rowSum = buf + 0x2D20;
+    for (int r = 0; r < 0x2D1; r++) {
+        for (int c = 0; c < 0x10; c++) {
+            *rowSum += *buf;
+            colSum[c] += *buf;
+            buf++;
         }
-        var_a5 += 1;
-        var_a3 += 1;
-    } while (var_a5 < 0x2D1);
+        rowSum++;
+    }
 }
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1574);
-
-extern "C" void func_001A1650(int arg0, int arg1)
+// NON_MATCHING: 43/53 differ (size 0xD4, game 0xDC), 18 edits
+#ifdef NON_MATCHING
+extern "C" int func_001A1574(MnuMcd *arg0, unsigned char *buf)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x13B8)) = arg1;
-}
+    (void)arg0;
+    int nonZero = 0;
+    unsigned char *colSum = buf + 0x2D10;
+    unsigned char *rowSum = buf + 0x2D20;
+    unsigned char col[16];
+    int i;
+    for (i = 15; i >= 0; i--) {
+        col[i] = 0;
+    }
 
-
-extern "C" int func_001A1658(int arg0, int arg1)
-{
-    if ((M2C_FIELD(arg0, int *, 0x24) ^ 4) != 0) {
+    for (int r = 0; r < 0x2D1; r++) {
+        unsigned char sum = 0;
+        for (i = 0; i < 0x10; i++) {
+            sum += *buf;
+            if (*buf != 0) {
+                nonZero = 1;
+            }
+            col[i] += *buf;
+            buf++;
+        }
+        if (sum != *rowSum) {
+            return 0;
+        }
+        rowSum++;
+    }
+    if (nonZero == 0) {
         return 0;
     }
-    M2C_FIELD(arg0, int *, 0x30) = arg1;
-    M2C_FIELD(arg0, int *, 0x1390) = 0;
-    M2C_FIELD(arg0, int *, 0x28) = 2;
+    for (i = 0; i < 0x10; i++) {
+        if (col[i] != colSum[i]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+#else
+INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1574);
+#endif
+
+extern "C" void func_001A1650(MnuMcd *arg0, int arg1)
+{
+    arg0->m_unk13B8 = arg1;
+}
+
+extern "C" int func_001A1658(MnuMcd *arg0, int arg1)
+{
+    if ((arg0->m_step ^ 4) != 0) {
+        return 0;
+    }
+    arg0->m_reqCmd = arg1;
+    arg0->m_result = 0;
+    arg0->m_mode = 2;
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1684);
-
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A16B4);
-
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A16E8);
-
-extern "C" void func_001A1714(int arg0, int arg1)
+extern "C" int func_001A1684(MnuMcd *arg0, int port)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x74)) = arg1;
+    if ((checkPortValid(port) ^ 1) & 1) {
+        return 8;
+    }
+    return arg0->m_portState[port];
 }
 
-
-extern "C" int func_001A171C(int arg0, int arg1, int arg2)
+extern "C" int func_001A16B4(MnuMcd *arg0, int port, int val)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x70)) = 0;
-    if ((*(int *)(int *)((char *)(arg0) + 0x90)) == 0) {
-        X_func_001A1714();
-        X_func_001A16B4(arg0, (*(int *)(int *)((char *)(arg0) + 0x74)), 0);
-        (*(int *)(int *)((char *)(arg0) + 0x90)) = arg2;
+    if ((checkPortValid(port) ^ 1) & 1) {
+        return 0;
+    }
+    arg0->m_portState[port] = val;
+    return 1;
+}
+
+extern "C" void func_001A16E8(MnuMcd *arg0, int val)
+{
+    for (int i = 0; i < 2; i++) {
+        arg0->m_portState[i] = val;
+    }
+}
+
+extern "C" void func_001A1714(MnuMcd *arg0, int arg1)
+{
+    arg0->m_port = arg1;
+}
+
+extern "C" int func_001A171C(MnuMcd *arg0, int port, int op)
+{
+    arg0->m_unk70 = 0;
+    if (arg0->m_reqOp == 0) {
+        func_001A1714(arg0, port);
+        func_001A16B4(arg0, arg0->m_port, 0);
+        arg0->m_reqOp = op;
         return 1;
     }
     return 0;
 }
 
-
-extern "C" void func_001A177C(int arg0, int arg1)
+extern "C" void func_001A177C(MnuMcd *arg0, int arg1)
 {
-    int temp_v1;
-
-    temp_v1 = M2C_FIELD(arg0, int *, 0x13AC);
-    if (arg1 == M2C_FIELD(arg0, int *, 0x13B0)) {
-        M2C_FIELD(arg0, int *, 0x13AC) = (int) (temp_v1 & ~0x10);
+    int flags = arg0->m_statusFlags;
+    if (arg1 == arg0->m_slotState) {
+        arg0->m_statusFlags = flags & ~0x10;
         return;
     }
-    M2C_FIELD(arg0, int *, 0x13B0) = arg1;
-    M2C_FIELD(arg0, int *, 0x13B4) = 0xA;
-    M2C_FIELD(arg0, int *, 0x13AC) = (int) (temp_v1 | 0x14);
+    arg0->m_slotState = arg1;
+    arg0->m_subState = 0xA;
+    arg0->m_statusFlags = flags | 0x14;
 }
 
-extern "C" void func_001A17B0(int arg0, int arg1)
+extern "C" void func_001A17B0(MnuMcd *arg0, int arg1)
 {
-    int temp_v1;
-
-    temp_v1 = (*(int *)(int *)((char *)(arg0) + 0x13AC));
-    if (arg1 == (*(int *)(int *)((char *)(arg0) + 0x13B4))) {
-        (*(int *)(int *)((char *)(arg0) + 0x13AC)) = (int) (temp_v1 & ~0x20);
+    int flags = arg0->m_statusFlags;
+    if (arg1 == arg0->m_subState) {
+        arg0->m_statusFlags = flags & ~0x20;
         return;
     }
-    (*(int *)(int *)((char *)(arg0) + 0x13B4)) = arg1;
-    (*(int *)(int *)((char *)(arg0) + 0x13AC)) = (int) (temp_v1 | 0x20);
+    arg0->m_subState = arg1;
+    arg0->m_statusFlags = flags | 0x20;
 }
 
-
-extern "C" int func_001A17DC(int arg0)
+extern "C" int func_001A17DC(MnuMcd *arg0)
 {
-    return Xiii_func_001A1684(arg0, M2C_FIELD(arg0, int *, 0x74)) != 0;
+    return func_001A1684(arg0, arg0->m_port) != 0;
 }
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A17FC);
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1B2C);
-
-extern "C" int func_001A1B54(int arg0)
+extern "C" int func_001A1B2C(MnuMcd *arg0)
 {
-    X_func_001A1CE4();
-    X_func_00187C4C(arg0 + 0xC0);
+    for (int i = 0; i < 7; i++) {
+        arg0->m_cursor[i] = 0;
+    }
+    return 0;
+}
+
+extern "C" int func_001A1B54(MnuMcd *arg0)
+{
+    X_func_001A1CE4(arg0);
+    X_func_00187C4C(&arg0->m_card);
     X_func_001A47F0(arg0);
     return 0;
 }
 
-
-extern "C" void func_001A1B8C(int arg0, int arg1, int arg2, int arg3, int arg4)
+extern "C" void func_001A1B8C(MnuMcd *arg0, const char *dir, const char *file, int size, int buf)
 {
-    if (arg1 == 0) {
-        M2C_FIELD(arg0, signed char *, 0x1310) = 0;
+    if (dir == 0) {
+        arg0->m_dirName[0] = 0;
     } else {
-        Xiii_strcpy(arg0 + 0x1310, (int) arg1);
+        X_strcpy(arg0->m_dirName, dir);
     }
-    if (arg2 == 0) {
-        M2C_FIELD(arg0, signed char *, 0x1350) = 0;
+    if (file == 0) {
+        arg0->m_fileName[0] = 0;
     } else {
-        Xiii_strcpy(arg0 + 0x1350, arg2);
+        X_strcpy(arg0->m_fileName, file);
     }
-    M2C_FIELD(arg0, int *, 0x1308) = arg3;
-    M2C_FIELD(arg0, int *, 0x130C) = arg4;
+    arg0->m_saveSize = size;
+    arg0->m_saveBuf = buf;
 }
 
-extern "C" void func_001A1C08(int arg0, int arg1, int arg2, int arg3)
+extern "C" void func_001A1C08(MnuMcd *arg0, const char *dir, int size, int buf)
 {
-    if (arg1 == 0) {
-        M2C_FIELD(arg0, signed char *, 0x1310) = 0;
+    if (dir == 0) {
+        arg0->m_dirName[0] = 0;
     } else {
-        Xiii_strcpy(arg0 + 0x1310, (int) arg1);
+        X_strcpy(arg0->m_dirName, dir);
     }
-    M2C_FIELD(arg0, int *, 0x130C) = arg3;
-    M2C_FIELD(arg0, int *, 0x1308) = arg2;
-    M2C_FIELD(arg0, signed char *, 0x1350) = 0;
+    arg0->m_saveBuf = buf;
+    arg0->m_saveSize = size;
+    arg0->m_fileName[0] = 0;
 }
 
-extern "C" void func_001A1C64(int arg0, int arg1)
+extern "C" void func_001A1C64(MnuMcd *arg0, const char *file)
 {
-    if (arg1 == 0) {
-        M2C_FIELD(arg0, signed char *, 0x1350) = 0;
+    if (file == 0) {
+        arg0->m_fileName[0] = 0;
         return;
     }
-    Xiii_strcpy(arg0 + 0x1350, (int) arg1);
+    X_strcpy(arg0->m_fileName, file);
 }
 
-extern "C" int func_001A1C8C(int arg0)
+extern "C" int func_001A1C8C(MnuMcd *arg0)
 {
-    return (*(int *)(int *)((char *)(arg0) + 0x150));
+    return arg0->m_card.m_dirCount;
 }
 
-
-extern "C" int func_001A1C94(int arg0, int arg1)
+extern "C" char *func_001A1C94(MnuMcd *arg0, int idx)
 {
-    int temp_a0;
-    int var_v0;
-
-    temp_a0 = arg0 + 0xC0;
-    var_v0 = 0;
-    if (arg1 < (*(int *)(int *)((char *)(temp_a0) + 0x90))) {
-        var_v0 = temp_a0 + (arg1 << 6) + 0x1E0;
-    }
-    return var_v0;
+    return arg0->m_card.getName(idx);
 }
 
-
-extern "C" int func_001A1CBC(int arg0, int arg1)
+extern "C" int func_001A1CBC(MnuMcd *arg0, int idx)
 {
-    int var_a0;
-    int temp_a0;
-
-    temp_a0 = arg0 + 0xC0;
-    var_a0 = 0;
-    if (arg1 < (*(int *)(int *)((char *)(temp_a0) + 0x90))) {
-        var_a0 = (*(int *)(int *)((char *)(((arg1 << 6) + temp_a0)) + 0x1D0));
-    }
-    return var_a0;
+    return arg0->m_card.getSize(idx);
 }
-
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A1CE4);
 
@@ -367,7 +407,32 @@ INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A3568);
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A36C4);
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A3B80);
+extern "C" int func_001A3B80(MnuMcd *arg0)
+{
+    int ret = 0;
+
+    switch (arg0->m_subStep) {
+    case 0:
+        if (func_001A171C(arg0, 0, 1) == 1) {
+            arg0->m_subStep = 1;
+        }
+        break;
+    case 1: {
+        int r = func_001A17DC(arg0);
+        if (r == 1) {
+            func_001A1684(arg0, arg0->m_port);
+            arg0->m_result = r;
+            arg0->m_subStep = 0x32;
+        }
+        break;
+    }
+    case 50:
+        arg0->m_subStep = 0;
+        ret = 1;
+        break;
+    }
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A3C4C);
 
@@ -375,71 +440,82 @@ INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A44FC);
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A47F0);
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A4BD8);
+MnuDlgObj::MnuDlgObj()
+{
+    m_open = 0;
+    X_func_001A4F60(this);
+}
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A4C34);
+MnuDlgObj::~MnuDlgObj()
+{
+    func_001A4D38(this);
+}
 
 extern "C" int func_001A4CC8()
 {
     return X_func_001A4E88();
 }
 
-
-extern "C" int func_001A4CDC(int arg0)
+extern "C" int func_001A4CDC(MnuDlgObj *arg0)
 {
-    int cur;
-
-    if (M2C_FIELD(arg0, int *, 0) == 1) {
+    if (arg0->m_open == 1) {
         return -1;
     }
-    cur = (int)(*(int *)&_9MagSystem$m_current_system);
-    M2C_FIELD(arg0, int *, 0) = 1;
-    M2C_FIELD(arg0, int *, 0x7CC) = cur;
-    M2C_FIELD(arg0, int *, 0x3C) = 0;
-    M2C_FIELD(arg0, int *, 0x40) = 0;
-    M2C_FIELD(arg0, int *, 0x44) = 0;
-    Xii_func_001A4FF0((int) arg0);
-    Xii_func_0018741C(arg0 + 0x54);
+    int cur = _9MagSystem$m_current_system;
+    arg0->m_open = 1;
+    arg0->m_sys = cur;
+    arg0->m_step = 0;
+    arg0->m_mode = 0;
+    arg0->m_subStep = 0;
+    X_func_001A4FF0(arg0);
+    X_func_0018741C(arg0->m_msgWin);
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnudlg", func_001A4D38);
-
-extern "C" void func_001A4DB8(int arg0, int arg1, int arg2, int arg3)
+extern "C" int func_001A4D38(MnuDlgObj *arg0)
 {
-    int var_s0;
-    int var_s1;
+    if (arg0->m_open == 0) {
+        return -1;
+    }
+    X_func_001A5034(arg0);
+    X_func_00187464(arg0->m_msgWin);
+    if (arg0->m_winId >= 0) {
+        X_func_001351B0((char *)arg0->m_sys + 0x12540, arg0->m_winId, 1);
+        X_func_001348B0((char *)arg0->m_sys + 0x12540, arg0->m_winId);
+    }
+    arg0->m_open = 0;
+    return 0;
+}
 
-    if (arg2 > 0) {
-        var_s0 = arg1;
-        var_s1 = arg2;
+extern "C" void func_001A4DB8(MnuDlgObj *arg0, char **lines, int count, int size)
+{
+    (void)arg0;
+    if (count > 0) {
+        char **p = lines;
+        int n = count;
         do {
-            if ((*(int *)(var_s0)) == 0) {
-                (*(int *)(var_s0)) = Xiiiiiii_alloc__9BedMemoryiPCciii((int) (int)&D_006E9800, arg3, (int) (int) "mnu/mnudlg.cpp", 0x78, 0, 2);
+            if (*p == 0) {
+                *p = (char *)X_alloc__9BedMemoryiPCciii(&D_006E9800, size, "mnu/mnudlg.cpp", 0x78, 0, 2);
             }
-            var_s1 -= 1;
-            var_s0 += 4;
-        } while (var_s1 != 0);
+            n--;
+            p++;
+        } while (n != 0);
     }
 }
 
-extern "C" void func_001A4E34(int arg0, int arg1, int arg2)
+extern "C" void func_001A4E34(MnuDlgObj *arg0, char **lines, int count)
 {
-    int var_s0;
-    int temp_v0;
-    int var_s1;
-
-    if (arg2 > 0) {
-        var_s0 = arg1;
-        var_s1 = arg2;
+    (void)arg0;
+    if (count > 0) {
+        char **p = lines;
+        int n = count;
         do {
-            temp_v0 = (*(int *)(var_s0));
-            if (temp_v0 != 0) {
-                X_heapFree__FPv(temp_v0);
+            if (*p != 0) {
+                X_heapFree__FPv(*p);
             }
-            var_s1 -= 1;
-            (*(int *)(var_s0)) = 0;
-            var_s0 += 4;
-        } while (var_s1 != 0);
+            n--;
+            *p = 0;
+            p++;
+        } while (n != 0);
     }
 }
