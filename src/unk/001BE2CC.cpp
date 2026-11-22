@@ -449,7 +449,30 @@ INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BE8BC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BEA18);
 
+// NON_MATCHING: 2/21 differ, 2 edits
+#ifdef NON_MATCHING
+extern "C" void func_001BEB70(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0x34) = 2;
+    M2C_FIELD(arg0, int *, 0x18) = 4;
+    M2C_FIELD(arg0, int *, 0x64) = 0x80;
+    M2C_FIELD(arg0, int *, 0x68) = 1;
+    M2C_FIELD(arg0, int *, 4) = 0;
+    M2C_FIELD(arg0, int *, 0xC) = 0;
+    M2C_FIELD(arg0, int *, 0x10) = 0;
+    M2C_FIELD(arg0, int *, 0x14) = 0;
+    M2C_FIELD(arg0, int *, 0x1C) = 0;
+    M2C_FIELD(arg0, int *, 0x2C) = 0;
+    M2C_FIELD(arg0, int *, 0x38) = 0;
+    M2C_FIELD(arg0, int *, 0x3C) = 0;
+    M2C_FIELD(arg0, int *, 0x44) = 0;
+    M2C_FIELD(arg0, int *, 0x54) = 0;
+    M2C_FIELD(arg0, int *, 0x30) = 0;
+    M2C_FIELD(arg0, int *, 0) = 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BEB70);
+#endif
 
 extern "C" void func_001BEBC4(void *self, int theFlags)
 {
