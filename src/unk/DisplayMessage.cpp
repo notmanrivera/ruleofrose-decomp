@@ -79,7 +79,14 @@ extern "C" void func_001F6B28(int arg0, float fparg0, float fparg1)
     M2C_FIELD(arg0, float *, 8) = (float) (M2C_FIELD(arg0, float *, 8) + (Xff_cosf(fparg0) * fparg1));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6B8C);
+extern "C" int func_001F6B8C(float fparg0, float fparg1)
+{
+    int n = (int)(fparg0 / (fparg1 * 0.05232999846339226f));
+    if (n < 0.0f) {
+        n = -n;
+    }
+    return n;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6BD0);
 
