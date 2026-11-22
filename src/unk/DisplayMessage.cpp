@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" void X_func_001F6308(int, int, int, int, unsigned int, float, int) asm("func_001F6308");
 extern "C" int Xiii_func_001E79C0(int, int) asm("func_001E79C0");
 extern "C" int Xiii_func_001E7D7C(int, int) asm("func_001E7D7C");
 extern "C" int Xiiu_func_001D2B8C(int, unsigned int) asm("func_001D2B8C");
@@ -62,7 +63,10 @@ extern "C" void func_001F616C(unsigned int arg0, float fparg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F61EC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F627C);
+extern "C" void func_001F627C(unsigned int arg0, int arg1, int arg2, int arg3, float fparg0, int arg4)
+{
+    X_func_001F6308(Xiiu_func_001CBE38((int)&D_007812C0, arg0), arg1, arg2, arg3, arg0, fparg0, arg4);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6308);
 
