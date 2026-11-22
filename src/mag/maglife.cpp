@@ -356,17 +356,17 @@ extern "C" void func_0011A144(MagLifeControlChara *self, MagLifeMotionState *the
 {
     self->m_tbl_motion_state = theTable;
 }
-// NON_MATCHING: two `lui`s come out swapped in the delay slot of the first
-// branch (delay-slot filling sees $a0 as live at the branch target); see
-// func_0011A320 below, whose only difference has the same cause.
+// The compiled C entry point for func_0011A054 exposes its nothrow status
+// to delay-slot scheduling, preserving the game's assert argument setup
+// in the first branch's delay slot.
 
-#ifdef NON_MATCHING
+// Preserve assertion line numbers.
 void MagLifeControlChara::func_0011A14C()
 {
 
         ASSERT_S(m_actor, D_002E95E8);
 
-    if (func_0011A054() == 0 && func_0011A048() != 0) {
+    if (::func_0011A054(this) == 0 && func_0011A048() != 0) {
         int theState = func_0011A028();
 
         if (m_tbl_motion_state[theState].m_count > 0) {
@@ -389,9 +389,9 @@ void MagLifeControlChara::func_0011A14C()
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglife", func_0011A14C);
-#endif
+
+
+// Preserve subsequent assertion line numbers.
 
 
 
