@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int Xii_func_0018C068(int) asm("func_0018C068");
+extern "C" int Xii_func_0018C130(int) asm("func_0018C130");
+extern "C" int Xiiiii_func_0018F808(int, int, int, int) asm("func_0018F808");
+extern int D_00299D20;
+extern int D_00299FE0;
 extern "C" void Xiii_releaseTex__10DogTexInfoi(int, int) asm("releaseTex__10DogTexInfoi");
 struct TexEntry18FAB4 {
     int id;
@@ -702,7 +707,58 @@ extern "C" int func_00191278(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_001912A0);
+extern "C" int func_001912A0(int arg0)
+{
+    int i;
+    unsigned int temp_v1;
+    int temp_s1;
+
+    temp_v1 = M2C_FIELD(arg0, unsigned int *, 0x93C);
+    switch (temp_v1) {
+    case 0:
+        break;
+    case 1:
+        for (i = 0; i < 7; i++) {
+            *(int *)((int)&D_00299C60 + i * 0x18) = -1;
+        }
+        M2C_FIELD(arg0, unsigned int *, 0x93C) = 2U;
+        break;
+    case 2:
+        break;
+    case 3:
+    {
+        Xiii_func_0018BCC0(arg0 + 0x48, 7);
+        int val = M2C_FIELD(arg0, int *, 0x938);
+        int sub = arg0 + 0x50;
+        M2C_FIELD(sub, int *, 0x414) = val;
+        Xiiiii_func_0018F808(sub, (int)&D_00299C60, (int)"data/mnurpk/s2dgen.rpk", 1);
+        M2C_FIELD(arg0, unsigned int *, 0x93C) = 4U;
+        break;
+    }
+    case 4:
+        temp_s1 = arg0 + 0x48;
+        if (Xii_func_0018FEBC(arg0 + 0x50) != 0) {
+            M2C_FIELD(temp_s1, int *, 0x4B0) = (int)&D_00299D20;
+            Xiii_func_0018C190(temp_s1, (int)&D_00299FE0);
+            M2C_FIELD(temp_s1, int *, 4) = 1;
+            M2C_FIELD(arg0, unsigned int *, 0x93C) = 5U;
+        }
+        break;
+    case 5:
+    case 6:
+        break;
+    case 7:
+        M2C_FIELD(arg0, unsigned int *, 0x93C) = 8U;
+    case 8:
+        Xii_func_0018C130(arg0 + 0x48);
+        M2C_FIELD(arg0, unsigned int *, 0x93C) = 0U;
+        break;
+    default:
+        break;
+    }
+    Xii_func_0018C068(arg0 + 0x48);
+    return 0;
+}
 
 extern "C" int func_001913C4(int arg0, int arg1, int arg2)
 {
