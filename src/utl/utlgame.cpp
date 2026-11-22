@@ -12,6 +12,8 @@ extern const char D_002E57A8[];
 extern const char D_002E5728[];
 #include "game/gamman.h"
 #include "game/gamtrg.h"
+extern "C" int X_func_001033F0(int theA) asm("func_001033F0");
+extern "C" unsigned long long X_func_0010315C(float *theOut, int theA) asm("func_0010315C");
 extern "C" int func_001D1A48(int arg0);
 extern "C" void func_001C6A40(void *theGamMan, int theA);
 extern "C" void func_001D1C80(GamMan *theGamMan, int theA, int theB, int *theOut);
@@ -298,7 +300,20 @@ INCLUDE_RODATA("asm/nonmatchings/utl/utlgame", D_002E5888);
 
 INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00102DC0);
 
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_0010315C);
+extern "C" unsigned long long X_func_0010315C(float *theOut, int theA)
+{
+    GamList<FCHRstat *> *list = D_007812C0.getFchrListPtr();
+
+    for (GamList<FCHRstat *>::iterator it = list->begin(); it != list->end(); it++) {
+        if (theA == (*it)->getUID()) {
+            if (X_func_001033F0(theA) == 0) {
+                func_001DB71C(*it, theOut);
+                return (unsigned int)(*it)->getOID() | ((unsigned long long)theA << 32);
+            }
+        }
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103240);
 
