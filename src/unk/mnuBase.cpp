@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xii___10FileReader(int) asm("__10FileReader");
 extern "C" int Xii___11FileReadReq(int) asm("__11FileReadReq");
 extern "C" int Xii_func_00194588(int) asm("func_00194588");
 extern "C" int Xiiii_func_001BE524__10FileReaderP11FileReadReqi(int, int, int) asm("func_001BE524__10FileReaderP11FileReadReqi");
@@ -580,7 +581,28 @@ extern "C" int func_00192A70(int arg0, int arg1, int arg2)
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192AC0);
+extern "C" void func_00192AC0(int arg0)
+{
+    M2C_FIELD(arg0, int *, 0x10C) = (int)&_vt$7mnuBase;
+    Xii___10FileReader(arg0 + 0x68);
+    M2C_FIELD(arg0, int *, 0) = 0;
+    M2C_FIELD(arg0, int *, 0x14) = -1;
+    M2C_FIELD(arg0, int *, 0x10) = -1;
+    M2C_FIELD(arg0, int *, 4) = 0;
+    M2C_FIELD(arg0, int *, 8) = 0;
+    M2C_FIELD(arg0, int *, 0xC) = 0;
+    M2C_FIELD(arg0, int *, 0x18) = 0;
+    M2C_FIELD(arg0, int *, 0x1C) = 0;
+    M2C_FIELD(arg0, int *, 0x20) = 0;
+    M2C_FIELD(arg0, int *, 0x64) = 0;
+    M2C_FIELD(arg0, signed char *, 0x24) = 0;
+    M2C_FIELD(arg0, int *, 0x94) = 0;
+    M2C_FIELD(arg0, int *, 0x98) = 0;
+    M2C_FIELD(arg0, int *, 0x9C) = 0;
+    M2C_FIELD(arg0, int *, 0xA0) = 0;
+    M2C_FIELD(arg0, int *, 0xA4) = 0;
+    M2C_FIELD(arg0, int *, 0xA8) = 0;
+}
 
 extern "C" void mnuBase__vfunc_01(int arg0, int arg1)
 {
