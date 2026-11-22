@@ -493,7 +493,49 @@ extern "C" int func_001BEDB8()
     return 1;
 }
 
+// NON_MATCHING: 2/51 differ, 2 edits
+#ifdef NON_MATCHING
+extern "C" int Xii_func_001BEE8C(int) asm("func_001BEE8C");
+extern "C" int func_001BEDC0(int arg0, int arg1, int arg2, int arg3, int arg4)
+{
+    Xii_func_001BEE8C(arg0);
+    M2C_FIELD(arg0, int *, 0x10) = arg2 & 0xFF80;
+    if (arg4 == 4) {
+        M2C_FIELD(arg0, int *, 0x14) = arg3 & 0xFF80;
+    } else {
+        if (arg4 != 8) {
+            return 0;
+        }
+        M2C_FIELD(arg0, int *, 0x14) = arg3 & 0xFFC0;
+    }
+
+    int w = M2C_FIELD(arg0, int *, 0x10);
+    if (w == 0) {
+        return 0;
+    }
+    int h = M2C_FIELD(arg0, int *, 0x14);
+    if (h == 0) {
+        return 0;
+    }
+
+    int size = w * h;
+    M2C_FIELD(arg0, int *, 0x18) = arg4;
+    switch (arg4) {
+    case 4:
+        size >>= 1;
+    case 8:
+        break;
+    default:
+        return 0;
+    }
+    M2C_FIELD(arg0, int *, 0xC) = arg1;
+    M2C_FIELD(arg0, int *, 0x1C) = size;
+    M2C_FIELD(arg0, int *, 4) = 0;
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BEDC0);
+#endif
 
 extern "C" int func_001BEE8C(int arg0)
 {
