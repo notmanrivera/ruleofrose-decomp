@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xiiiiiii_func_0018D7EC(int, int, int, int, int, int) asm("func_0018D7EC");
+extern int D_00299B70;
+extern int D_00299B80;
 extern "C" int Xiii_func_001905A0(int, int) asm("func_001905A0");
 extern "C" void Xvi_func_00190D20(int) asm("func_00190D20");
 extern "C" int Xii_func_00190D70(int) asm("func_00190D70");
@@ -356,7 +359,27 @@ extern "C" int func_00190D70(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190D90);
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190E98);
+extern "C" int func_00190E98(int arg0, int arg1)
+{
+    int temp_s2;
+
+    temp_s2 = arg0 + 0x3C;
+    if (arg1 == 0) {
+        M2C_FIELD(M2C_FIELD(temp_s2, int *, 0x4AC), int *, 0x160) = 0;
+        M2C_FIELD(M2C_FIELD(temp_s2, int *, 0x4AC), int *, 0x2B4) = 0;
+        M2C_FIELD(M2C_FIELD(temp_s2, int *, 0x4AC), int *, 0x164) = 0;
+        M2C_FIELD(M2C_FIELD(temp_s2, int *, 0x4AC), int *, 0x2B8) = 0;
+    } else {
+        Xiiiiiii_func_0018D7EC(temp_s2, 1, 2, arg1, (int)&D_00299B70, (int)&D_00299B80);
+        Xiiiiiii_func_0018D7EC(temp_s2, 2, 2, arg1, (int)&D_00299B70, (int)&D_00299B80);
+        int v = 4;
+        M2C_FIELD(M2C_FIELD(temp_s2, int *, 0x4AC), int *, 0x164) = v;
+        M2C_FIELD(M2C_FIELD(temp_s2, int *, 0x4AC), int *, 0x254) = arg1;
+        M2C_FIELD(M2C_FIELD(temp_s2, int *, 0x4AC), int *, 0x2B8) = v;
+        M2C_FIELD(M2C_FIELD(temp_s2, int *, 0x4AC), int *, 0x3A8) = arg1;
+    }
+    return 0;
+}
 
 extern "C" int func_00190F6C(int arg0)
 {
