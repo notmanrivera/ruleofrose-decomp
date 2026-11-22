@@ -110,7 +110,24 @@ extern "C" int term__17MagLifeBwnModeSitR10MagLifeBwni(int arg0, int arg1, int a
 
 INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", init__18MagLifeBwnModeFuseR10MagLifeBwn);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", term__18MagLifeBwnModeFuseR10MagLifeBwni);
+extern "C" int term__18MagLifeBwnModeFuseR10MagLifeBwni(int arg0, int arg1, int arg2)
+{
+    int var_v0;
+
+    if (arg2 == 0) {
+        if (M2C_FIELD(arg1, int *, 0x80) == 3) {
+            return 1;
+        }
+        if (Xii_func_0011A028((int) arg1) == 0xD) {
+            Xiiis_func_0011A320((int) arg1, 0xE, -1);
+            return 0;
+        }
+        return 1;
+    }
+    Xii_func_00123BB8((int) arg1);
+    var_v0 = Xii_func_0011A054((int) arg1) != 0;
+    return var_v0;
+}
 
 extern "C" void init__18MagLifeBwnModeMoveR10MagLifeBwn(int arg0, int arg1)
 {
