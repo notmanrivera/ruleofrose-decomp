@@ -1,5 +1,9 @@
 #include "include_asm.h"
 #include "unk/WrdSrv.h"
+extern "C" void X_func_00237340_17BA54(float (*)[4]) asm("func_00237340");
+extern "C" void X_func_00237A40_17BA54(float (*)[4], float (*)[4], float *) asm("func_00237A40");
+extern "C" int X_func_002268B0_17BA54(int, float (*)[4]) asm("func_002268B0");
+struct Vec4_17BA54 { float v[4]; } ALIGNED(8);
 extern "C" SctCell *X_func_0017C994_17C340(SctLayer *, void *, SctCell *, float, float) asm("func_0017C994");
 extern "C" void X_func_0017E4D0_17C4F4(SctLayer *, int, int) asm("func_0017E4D0");
 extern "C" void X_func_0017C2C0_17C14C(void *) throw() asm("func_0017C2C0");
@@ -38,7 +42,20 @@ INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017B7CC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017B918);
 
-INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017BA54);
+extern "C" int func_0017BA54(const SctCell *arg0, const float *arg1, int arg2)
+{
+    Vec4_17BA54 scale = { { 1.0f, 1.0f, 1.0f, 1.0f } };
+    float mat[4][4];
+    X_func_00237340_17BA54(mat);
+    scale.v[0] = (arg1[2] - arg1[0]) * 0.5f;
+    scale.v[1] = (arg0->m_yX - arg0->m_y0) * 0.5f;
+    scale.v[2] = (arg1[3] - arg1[1]) * 0.5f;
+    X_func_00237A40_17BA54(mat, mat, scale.v);
+    mat[3][0] = arg1[0] + scale.v[0];
+    mat[3][1] = arg0->m_y0 + scale.v[1];
+    mat[3][2] = arg1[1] + scale.v[2];
+    return (unsigned int)(X_func_002268B0_17BA54(arg2, mat) - 1) < 2;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017BB50);
 
@@ -169,7 +186,5 @@ extern "C" void SctLayer_dtor(SctLayer *self, int flags)
         return X___builtin_delete(self);
     }
 }
-
-INCLUDE_RODATA("asm/nonmatchings/unk/SctLayer", D_002F3060);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/SctLayer", D_002F3070);
