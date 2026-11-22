@@ -429,12 +429,12 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglife", D_002E95E8);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglife", D_002E95F0);
 
-// NON_MATCHING: the game has `bnez` where this has `bnel` (same cause).
-#ifdef NON_MATCHING
+// Use the already compiled C state getter so its nothrow status is known.
+
 void MagLifeControlChara::func_0011A320(int theState, int theArg)
 {
     ASSERT_S(theState >= 0, D_002E95F0);
-    if (func_0011A054() == 0 && func_0011A028() == theState)
+    if (func_0011A054() == 0 && ::func_0011A028(this) == theState)
         return;
 
     func_0011A010(theState);
@@ -479,9 +479,9 @@ void MagLifeControlChara::func_0011A320(int theState, int theArg)
         func_0011A704(m_tbl_motion_state[theState].m_sound);
     func_0011A030();
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglife", func_0011A320);
-#endif
+
+
+// Preserve subsequent assertion line numbers.
 
 int MagLifeControlChara::func_0011A4EC(const char *theMotion, int theFlag,
                                         float theSpeed, int theInterp,
