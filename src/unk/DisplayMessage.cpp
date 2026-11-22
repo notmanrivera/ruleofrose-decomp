@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" void X_func_001DC48C(void *, int, int, void *) asm("func_001DC48C");
+extern "C" void X_func_001CA604(int, int) asm("func_001CA604");
+extern "C" int X_func_001CA72C(int, int, int, int, int, int, int, int) asm("func_001CA72C");
 extern "C" int X_loadModel__9MagSystemii(int, int, int) asm("loadModel__9MagSystemii");
 extern int D_006E9840;
 extern "C" int X_func_001C6FE0(int, int, int, int) asm("func_001C6FE0");
@@ -92,7 +95,30 @@ INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6308);
 extern "C" void func_001F6570(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6578);
+extern "C" int func_001F6578(unsigned short arg0, int arg1, int arg2)
+{
+    unsigned short sp0;
+    int sp4;
+    int ret;
+    void *p = (void *)&D_007812C0;
+
+    X_func_001DC48C((char *)p + 0x22220, arg0, 0xF, &sp0);
+    X_func_001DC48C((char *)p + 0x22220, arg0, 0xB, &sp4);
+    X_func_001CA604((int)&D_007812C0, sp0 >> 0xA);
+    if (sp0 != 0xFFFF) {
+        ret = X_func_001CA72C((int)&D_007812C0, sp0, sp4, 5, 0, 0xFFFF, 0, -1);
+    } else {
+        ret = 0;
+        X_func_001CC250((int)&D_007812C0, -1, 0, arg0, 0, 0);
+    }
+    if (arg1 != 0) {
+        X_func_001CFBE4((int)&D_007812C0, ret, arg1);
+    }
+    if (arg2 != 0) {
+        X_func_001CFE78((int)&D_007812C0, ret, arg2);
+    }
+    return ret;
+}
 
 extern "C" int func_001F6694(unsigned short arg0, int arg1, int arg2, int arg3)
 {
