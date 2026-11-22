@@ -378,7 +378,30 @@ extern "C" void func_0016A6B4(float *arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016A6B4);
 #endif
 
+// NON_MATCHING: 2/62 differ, 2 edits
+#ifdef NON_MATCHING
+struct PcStub_16A7AC { char pad00[0x100]; int m_oid; };
+struct GamManStub_16A7AC { char pad00[0x22094]; PcStub_16A7AC *m_dog; };
+extern GamManStub_16A7AC D_007812C0_16A7AC asm("D_007812C0");
+extern "C" void func_0016A7AC(float *arg0)
+{
+    int oid = 0;
+    if (D_007812C0_16A7AC.m_dog != 0) {
+        oid = D_007812C0_16A7AC.m_dog->m_oid;
+    }
+    const char *bone = D_002F1E38;
+    int idx = X_func_001CBE38_16A594(&D_007812C0_16A7AC, oid);
+    DogActorStub_16A594 *actor = &D_006FE6A0_16A594[idx];
+    int node = actor->getNodeIndexByName(bone);
+    float mat[4][4];
+    actor->vfunc17(mat, node);
+    arg0[1] = 0.0f;
+    arg0[0] = mat[3][0];
+    arg0[2] = mat[3][2];
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016A7AC);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/unk/001693A4", D_002F1E10);
 
