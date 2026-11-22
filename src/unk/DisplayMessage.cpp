@@ -137,7 +137,14 @@ extern "C" int func_001F6B8C(float fparg0, float fparg1)
     return n;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6BD0);
+extern "C" int func_001F6BD0(float fparg0, float fparg1)
+{
+    int n = (int)(fparg0 / (fparg1 * 0.02778f));
+    if (n < 0.0f) {
+        n = -n;
+    }
+    return n;
+}
 
 extern "C" float func_001F6C14(int arg0, float fparg0)
 {
