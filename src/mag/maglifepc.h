@@ -291,6 +291,12 @@ struct MagLifePC : public MagLifeControlChara {
     virtual int message(int theMsg, int theArg, void *theData);
     // Slot 16, MagLifePC's own.
     virtual void vfunc16(void *thePad) asm("MagLifePC__vfunc_16");
+
+    int func_0011E080();
+    void func_0011B964(int theID, float theValue) asm("func_0011B964");
+    void func_0012CDB0();           // mag/maglifepceff.cpp: ASSERT(0) stubs
+    void func_0012CDDC();
+    void func_0012CE08();
 };
 
 
@@ -306,50 +312,6 @@ struct MagPCItemData {
     // Exact field name from assert string D_002E9F48: "itemdata[0].m_obj_id != 0"
     int m_obj_id;                   // +0x10 (size 0x04) - 0x0011B0E0: lw $v0, 0x10($sp); 0x0011B104: lw $a2, 0x10($sp)
     int m_unk14[3];                 // +0x14 (size 0x0C, DOUBTFUL: unreferenced in caller; filled by func_0011C64C)
-};
-
-// Partial layout of BedPad fields accessed directly in maglifepc.s (when not already defined in bed/bedpad.h):
-// - No vptr evidenced here; methods called: getStick__C6BedPadPfT1 (0x0011AC50), getChange__C6BedPad (0x0011AC5C).
-// - Total size: unknown from this file alone (passed by pointer).
-struct BedPad_PartialLayout {
-    unsigned char m_pad00[0x78];    // +0x00..+0x77
-    // Proposed name: m_buttons_held (bit 11 tested in func_0011ACF4 via PadBits::b11)
-    unsigned short m_unk78;         // +0x78 (size 0x02) - 0x0011AD40: lhu $v0, 0x78($a1) (srl 11, andi 1)
-    // Proposed name: m_buttons_trig (bits 10, 12, 13, 14, 15 tested in MagLifePC__vfunc_16)
-    unsigned short m_unk7A;         // +0x7A (size 0x02) - 0x0011B408: lhu $v0, 0x7A($s2) (bit 14); 0x0011B494: lhu $v0, 0x7A($s2) (bit 10); 0x0011B514: lhu $a0, 0x7A($s2) (bits 12,13,15)
-};
-
-// Partial layout of DogEntity / DogActor fields accessed directly in maglifepc.s:
-// - Total size of DogActor: 0x4D0 bytes (1232 bytes).
-//   Deduced from reset4MapJump__9MagLifePC at 0x0011BEAC..0x0011BECC:
-//   `addiu $v1, $zero, 0x4D0; mult $a0, $v0, $v1; addu $s0, $s0, $a0; addiu $s0, $s0, 0x2920`
-struct DogActor_PartialLayout {
-    unsigned char m_unk00[0x40];    // +0x00..+0x3F
-    // Proposed name: m_pos (entity position vector, read and updated in message__9MagLifePCiiPv case 21)
-    DogVector m_unk40;              // +0x40 (size 0x10) - 0x0011B778: lq $v0, 0x40($t1); 0x0011B810: sq $v0, 0x40($v1)
-    int m_unk50;                    // +0x50 (size 0x04, DOUBTFUL: unreferenced in this file)
-    // Proposed name: m_rot (yaw rotation in radians, normalized via normalizeRot__9DogEntity right after write)
-    float m_unk54;                  // +0x54 (size 0x04) - 0x0011B898: swc1 $f0, 0x54($s0)
-    unsigned char m_unk58[0x38];    // +0x58..+0x8F
-    int m_unk90;                    // +0x90 (size 0x04) - 0x0011B808: sw $a1, 0x90($v1) (1); 0x0011B8A0: sw $v0, 0x90($s0) (1)
-    unsigned char m_unk94[0x43C];   // +0x94..+0x4CF (total size 0x4D0)
-};
-
-// Partial layout of MagScene (pointed to by MagLifeControlChara::m_scene at +0x20):
-// - Total size: > 0x2BD90 bytes (unknown exact end from this file alone).
-struct MagScene_PartialLayout {
-    unsigned char m_unk00000[0x22B0];
-    float m_unk22B0;                // +0x22B0 (size 0x04) - 0x0011AE1C: swc1 $f0, 0x22B0($a0); 0x0011AE20: lwc1 $f1, 0x22B0($a0)
-    unsigned char m_unk22B4[0x66C];
-    // Proposed name: m_actors (array of 128 DogActors of size 0x4D0 each = 0x26800 bytes, indexed with < 0x80 bound check)
-    unsigned char m_actors[0x80][0x4D0]; // +0x2920..+0x2911F (size 0x26800) - 0x0011BEAC..0x0011BECC: mult 0x4D0, addiu 0x2920
-    unsigned char m_unk29120[0x1A50];
-    // Embedded DogCamera instance at +0x2AB70 (passed as `this` to getYaw__9DogCamera)
-    unsigned char m_camera[0x04];   // +0x2AB70 - 0x0011B17C..0x0011B188: addu $a0, $at, $a0 (0x2AB70); jal getYaw__9DogCamera
-    unsigned char m_unk2AB74[0x11AC];
-    // Embedded companion dog controller object at +0x2BD20 (passed as `this` to func_0012B65C / func_0012B4A0 / func_0012B5F8)
-    unsigned char m_dog_ctrl[0x6C]; // +0x2BD20 - 0x0011AFAC..0x0011AFBC: addu $a0, $at, $a0 (0x2BD20); j func_0012B65C
-    int m_unk2BD8C;                 // +0x2BD8C (size 0x04) - 0x0011B500..0x0011B508: lui $at, 3; addu $at, $at, $v0; lw $v0, -0x4274($at)
 };
 
 #endif // MAG_MAGLIFEPC_H

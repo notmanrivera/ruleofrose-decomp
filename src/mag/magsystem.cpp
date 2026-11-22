@@ -1604,7 +1604,7 @@ void MagSystem::func_00118F64(const float *thePos, const float *theDir)
 // 0x00118FDC
 int MagSystem::func_00118FDC()
 {
-    return m_scene.m_unk2AEA4;
+    return m_scene.m_pc.m_unkE4;
 }
 
 // 0x00118FEC: the player's state, as the pause menu sees it.

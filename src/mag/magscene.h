@@ -11,6 +11,7 @@
 #include "sdk/libgraph.h"
 #include "bed/bedsubmode.h"
 #include "mag/maglifeman.h"
+#include "mag/maglifepc.h"
 
 class BedPad;
 class MagLifeWindow;
@@ -35,22 +36,6 @@ struct I3dDraw;
 
 // The scene's actors (the characters, the dog...).
 #define MAG_MAX_ACTOR 128
-
-// MagLifePC (mag/maglifepc*.cpp), the player: only what MagSystem reads.
-class MagLifePC {
-public:
-    int m_unk00;                    // +0x00: the player's state
-    int m_unk04;                    // +0x04
-    int m_unk08;                    // +0x08
-    int m_unk0C;                    // +0x0C
-    unsigned char m_unk10[0xD0];    // +0x10
-
-    int func_0011E080();
-    void func_0011B964(int theID, float theValue) asm("func_0011B964");
-    void func_0012CDB0();           // mag/maglifepceff.cpp: ASSERT(0) stubs
-    void func_0012CDDC();
-    void func_0012CE08();
-};
 
 class MagScene {
 public:
@@ -88,10 +73,8 @@ public:
     int m_unk2AD9C;                 // +0x2AD9C
     DogVector m_unk2ADA0;           // +0x2ADA0
     DogVector m_unk2ADB0;           // +0x2ADB0
-    MagLifePC m_pc;                 // +0x2ADC0
-    int m_unk2AEA0;                 // +0x2AEA0
-    int m_unk2AEA4;                 // +0x2AEA4
-    unsigned char m_unk2AEA8[0xE78];
+    MagLifePC m_pc;                 // +0x2ADC0..+0x2AFDF (size 0x220)
+    unsigned char m_unk2AFE0[0xD40];
     int m_unk2BD20;                 // +0x2BD20
     unsigned char m_unk2BD24[0x179F4];
     int m_unk43718;                 // +0x43718

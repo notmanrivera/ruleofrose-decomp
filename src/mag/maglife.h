@@ -118,7 +118,11 @@ public:
     virtual DogActor *getActor() { return m_actor; }
     virtual void reset4MapJump()
     {
+#ifdef TARGET_PS2
         *(u_long128 *)&m_last0 = 0;
+#else
+        m_last0 = m_last1 = m_last2 = m_last3 = 0;
+#endif
         func_00119B34();
     }
     virtual void termWorld() {}

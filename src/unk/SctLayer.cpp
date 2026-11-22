@@ -1,31 +1,26 @@
 #include "include_asm.h"
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
-extern "C" int Xii_func_0017C754(int) asm("func_0017C754");
-extern int _vt$8SctLayer;
-extern int _vt$10EmyManager;
-extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
-extern "C" void EmyManager_vfunc06(int arg0, int arg1) asm("SctLayer__vfunc_01");
-extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
-extern "C" void EmyManager_vfunc06(int arg0, int arg1) asm("SctLayer__vfunc_01");
-extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
-extern "C" void EmyManager_vfunc06(int arg0, int arg1) asm("SctLayer__vfunc_01");
-extern int _vt$8SctLayer;
-extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
-extern "C" void func_0017C754(int);
-extern "C" void EmyManager_vfunc06(int arg0, int arg1) asm("SctLayer__vfunc_01");
-// Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_alloc__9BedMemoryii(...) asm("alloc__9BedMemoryii");
-extern "C" int X_free__9BedMemoryPv(...) asm("free__9BedMemoryPv");
-extern "C" int X_func_0017C3F0(...) asm("func_0017C3F0");
-extern "C" int X_func_0017C58C(...) asm("func_0017C58C");
-extern "C" int X_func_0017C60C(...) asm("func_0017C60C");
-extern "C" int X_func_0017C754(...) asm("func_0017C754");
-extern "C" int X_func_0017C7B0(...) asm("func_0017C7B0");
-extern "C" int X_func_0017E464(...) asm("func_0017E464");
-extern "C" int X_func_0017E4D0(...) asm("func_0017E4D0");
-extern "C" int X_memcpy(...) asm("memcpy");
+#include "unk/WrdSrv.h"
+
+struct SctMapHeader {
+    int m_unk00;                // +0x00
+    int m_layerOff[4];          // +0x04
+};
+
+struct SctMap {
+    int m_flags;                // +0x00 (bit 1: owns m_data allocation)
+    SctMapHeader *m_data;       // +0x04
+    SctLayer m_layers[4];       // +0x08 (stride 0x18)
+};
+
+extern int vtbl_SctLayer asm("_vt$8SctLayer");
 extern int D_006E9800;
+
+extern "C" void *X_alloc__9BedMemoryii(void *, int, int) asm("alloc__9BedMemoryii");
+extern "C" void *X_memcpy(void *, const void *, int) asm("memcpy");
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" int X_func_0017C3F0(SctMapHeader *) asm("func_0017C3F0");
+extern "C" void X_func_0017C60C(SctLayer *, void *, int) asm("func_0017C60C");
+extern "C" void X_func_0017C754(SctLayer *) asm("func_0017C754");
 
 INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017B7CC);
 
@@ -39,40 +34,26 @@ INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C0F0);
 
 INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C14C);
 
-extern "C" int func_0017C1F4(int arg0, int arg1, int arg2)
+extern "C" int func_0017C1F4(SctMap *self, SctMapHeader *hdr, int copy)
 {
-    int temp_a1;
-    int temp_v0;
-    int temp_v0_2;
-    int temp_v0_3;
-    int temp_v0_4;
-    int var_s1;
-    int var_s0;
-
-    if (arg2 != 0) {
-        temp_v0 = X_func_0017C3F0(arg1);
-        temp_v0_2 = X_alloc__9BedMemoryii((int)&D_006E9800, temp_v0, -1);
-        X_memcpy(temp_v0_2, arg1, temp_v0);
-        (*(int *)(int *)((char *)(arg0) + 0x4)) = temp_v0_2;
-        (*(int *)(int *)((char *)(arg0) + 0x0)) = (int) ((*(int *)(int *)((char *)(arg0) + 0x0)) | 2);
+    if (copy != 0) {
+        int size = X_func_0017C3F0(hdr);
+        SctMapHeader *buf = (SctMapHeader *)X_alloc__9BedMemoryii(&D_006E9800, size, -1);
+        X_memcpy(buf, hdr, size);
+        self->m_data = buf;
+        self->m_flags |= 2;
     } else {
-        (*(int *)(int *)((char *)(arg0) + 0x4)) = arg1;
+        self->m_data = hdr;
     }
-    var_s1 = 0;
-    var_s0 = arg0 + 8;
-    do {
-        temp_a1 = (*(int *)(int *)((char *)(arg0) + 0x4));
-        temp_v0_3 = var_s1 * 4;
-        var_s1 += 1;
-        temp_v0_4 = (*(int *)(int *)((char *)((temp_a1 + temp_v0_3)) + 0x4));
-        if (temp_v0_4 != 0) {
-            X_func_0017C60C(var_s0, temp_a1 + temp_v0_4, 0);
+    for (int i = 0; i < 4; i++) {
+        SctMapHeader *data = self->m_data;
+        int off = data->m_layerOff[i];
+        if (off != 0) {
+            X_func_0017C60C(&self->m_layers[i], (char *)data + off, 0);
         }
-        var_s0 += 0x18;
-    } while (var_s1 < 4);
+    }
     return 1;
 }
-
 
 INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C2C0);
 
@@ -86,12 +67,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C4F4);
 
 INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C58C);
 
-extern "C" void EmyManager_vfunc06(int arg0, int arg1)
+extern "C" void SctLayer_dtor(SctLayer *self, int flags) asm("SctLayer__vfunc_01");
+extern "C" void SctLayer_dtor(SctLayer *self, int flags)
 {
-    M2C_FIELD(arg0, int *, 20) = (int)&_vt$8SctLayer;
-    func_0017C754(arg0);
-    if (arg1 & 1) {
-        return X___builtin_delete((void *)arg0);
+    self->m_vtbl = &vtbl_SctLayer;
+    X_func_0017C754(self);
+    if (flags & 1) {
+        return X___builtin_delete(self);
     }
 }
 
