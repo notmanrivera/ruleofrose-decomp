@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" void Xviiiiii_func_0019368C(int, int, void *, int, int, int) asm("func_0019368C");
+extern "C" void Xvp_func_00237340(void *) asm("func_00237340");
+extern "C" void Xvppi_func_002378B0(void *, void *, int) asm("func_002378B0");
+extern "C" void Xvppi_func_00237A40(void *, void *, int) asm("func_00237A40");
 extern "C" int Xiii_func_0021B550(int, int, unsigned long long) asm("func_0021B550");
 extern "C" void Xvii_func_00223240(int, int) asm("func_00223240");
 extern "C" void Xvii_func_00223260(int, int) asm("func_00223260");
@@ -701,7 +705,21 @@ extern "C" void func_00193210(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00193258);
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001935C4);
+extern "C" void func_001935C4(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7)
+{
+    struct Mat {
+        float m[3][4];
+        long long p[2];
+    } mat;
+    Xvp_func_00237340(&mat);
+    Xvppi_func_002378B0(&mat, &mat, arg3);
+    Xvppi_func_00237A40(&mat, &mat, arg4);
+    long long a = ((long long *)arg2)[0];
+    long long b = ((long long *)arg2)[1];
+    mat.p[0] = a;
+    mat.p[1] = b;
+    Xviiiiii_func_0019368C(arg0, arg1, &mat, arg5, arg6, arg7);
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_0019368C);
 
