@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "unk/WrdSrv.h"
+extern "C" void X_func_0017E4D0_17C4F4(SctLayer *, int, int) asm("func_0017E4D0");
 extern "C" void X_func_0017C2C0_17C14C(void *) throw() asm("func_0017C2C0");
 struct SctLayerDtorStub_17C14C {
     char pad[20];
@@ -126,7 +127,16 @@ extern "C" void func_0017C45C(SctMap *self, int arg1, int arg2, int arg3)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C4F4);
+extern "C" void func_0017C4F4(SctMap *self, int arg1, int arg2, int arg3)
+{
+    if (arg3 < 0) {
+        for (int i = 0; i < 4; i++) {
+            X_func_0017E4D0_17C4F4(&self->m_layers[i], arg1, arg2);
+        }
+    } else {
+        X_func_0017E4D0_17C4F4(&self->m_layers[arg3], arg1, arg2);
+    }
+}
 
 extern "C" void func_0017C58C(SctLayer *self)
 {
