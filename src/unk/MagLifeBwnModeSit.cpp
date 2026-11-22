@@ -1,4 +1,6 @@
 #include "include_asm.h"
+extern "C" int Xiif_func_00119B60(int, int, float) asm("func_00119B60");
+extern "C" int Xii_func_00124D7C(int) asm("func_00124D7C");
 extern "C" int Xii_func_00124E18(int) asm("func_00124E18");
 extern "C" int Xiii_func_00125A20(int, int) asm("func_00125A20");
 extern "C" void Xiiiii_func_001233F4(int, int, int, int) asm("func_001233F4");
@@ -57,7 +59,25 @@ extern "C" int live__14MagLifeBwnModeR10MagLifeBwn(int arg0, int arg1)
 extern "C" void init__18MagLifeBwnModeNullR10MagLifeBwn(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", init__18MagLifeBwnModeWaitR10MagLifeBwn);
+extern "C" void init__18MagLifeBwnModeWaitR10MagLifeBwn(int arg0, int arg1)
+{
+    int temp_v0;
+    int var_a1;
+
+    temp_v0 = Xiif_func_00119B60(arg1, 0, 0.0f);
+    M2C_FIELD(arg1, int *, 0x70) = temp_v0;
+    var_a1 = 0x25;
+    if (M2C_FIELD(arg1, int *, 0x30) != 9) {
+        var_a1 = 0x6A;
+        if (temp_v0 != 2) {
+            var_a1 = (temp_v0 == 3) ? 0x6C : 2;
+        }
+    }
+    Xiiis_func_0011A320((int) arg1, var_a1, -1);
+    M2C_FIELD(arg0, int *, 4) = 0;
+    M2C_FIELD(arg0, int *, 8) = 0;
+    Xii_func_00124D7C((int) arg1);
+}
 
 extern "C" void init__17MagLifeBwnModeSitR10MagLifeBwn(int arg0, int arg1)
 {
