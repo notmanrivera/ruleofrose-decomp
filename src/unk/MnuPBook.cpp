@@ -311,8 +311,6 @@ block_19:
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00193A1C);
 #endif
 
-// NON_MATCHING: 1/56 differ, 1 edits
-#ifdef NON_MATCHING
 extern "C" int Xiii_func_00193E20(int, int) asm("func_00193E20");
 extern "C" int Xiiii_memmove(int, int, int) asm("memmove");
 extern "C" void func_00193D1C(int arg0, int arg1, int arg2)
@@ -334,8 +332,8 @@ extern "C" void func_00193D1C(int arg0, int arg1, int arg2)
             return;
         }
     }
-    while (i < count) {
-        p += 0x30;
+    goto test;
+    do {
         if ((M2C_FIELD(p, int *, 8) & 0xF) == arg1) {
             if (M2C_FIELD(p, int *, 0xC) == arg2) {
                 Xiii_func_00193E20(arg0, i);
@@ -346,11 +344,12 @@ extern "C" void func_00193D1C(int arg0, int arg1, int arg2)
             }
         }
         i++;
-    }
+    test:
+        bool more = i < count;
+        p += 0x30;
+        if (!more) break;
+    } while (true);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00193D1C);
-#endif
 
 extern "C" void func_00193DFC(int arg0)
 {
