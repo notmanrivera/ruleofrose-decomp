@@ -1,4 +1,5 @@
 #include "include_asm.h"
+extern "C" int Xii_getViewMatrix__9DogCamera(int) asm("getViewMatrix__9DogCamera");
 extern "C" int Xii___10FileReader(int) asm("__10FileReader");
 extern "C" int Xii___11FileReadReq(int) asm("__11FileReadReq");
 extern "C" int Xii_func_00194588(int) asm("func_00194588");
@@ -415,7 +416,17 @@ extern "C" void func_001924D8(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001924E0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001925F0);
+extern "C" int func_001925F0(int arg0, int arg1)
+{
+    int temp_s0;
+    int temp_s2;
+
+    temp_s2 = X_func_0021F7E0(arg1);
+    temp_s0 = M2C_FIELD(arg0, int *, 0x908);
+    int p = temp_s0 + 0x2AA10;
+    X_func_00223260(temp_s2, X_func_00226C58(arg1, p, Xii_getViewMatrix__9DogCamera(temp_s0 + 0x2AB70)));
+    return temp_s2;
+}
 
 extern "C" int func_00192670(int arg0)
 {
