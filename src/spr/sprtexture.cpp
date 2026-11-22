@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_001908D0(int, int) asm("func_001908D0");
+extern "C" void *Xiiii_memcpy(void *, const void *, int) asm("memcpy");
+extern "C" void *Xiiiiiii_alloc__9BedMemoryiPCciii(int, int, int, int, int, int) asm("alloc__9BedMemoryiPCciii");
 extern "C" int Xii_func_0018C068(int) asm("func_0018C068");
 extern "C" int Xii_func_0018C130(int) asm("func_0018C130");
 extern "C" int Xiiiii_func_0018F808(int, int, int, int) asm("func_0018F808");
@@ -325,7 +328,59 @@ extern "C" int func_001908D0(int arg0, int arg1)
     return var_v0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190904);
+extern "C" void *func_00190904(int arg0, int arg1)
+{
+    unsigned char *src = (unsigned char *)arg1 + 0x20;
+    unsigned int pos = 0;
+    short unitSize;
+    unsigned int dataSize;
+    unsigned char *buf;
+    unsigned char *dst;
+
+    if (Xiii_func_001908D0(arg0, arg1) == 0) {
+        return 0;
+    }
+
+    unitSize = M2C_FIELD(arg1, short *, 0x10);
+    dataSize = M2C_FIELD(arg1, int *, 0xC) - 0x20;
+    buf = (unsigned char *)Xiiiiiii_alloc__9BedMemoryiPCciii((int)&D_006E9800, M2C_FIELD(arg1, int *, 8) + unitSize, (int)D_002F7A18, 0x42B, 0, 2);
+    if (buf == 0) {
+        return 0;
+    }
+
+    dst = buf;
+    while (pos < dataSize) {
+        unsigned char cmd = *src++;
+        unsigned int count = *src++ << 16;
+        unsigned int j;
+
+        count |= *src++ << 8;
+        count |= *src++;
+        pos += 4;
+
+        switch (cmd) {
+        case 0:
+            for (j = 0; j < count; j++) {
+                Xiiii_memcpy(dst, src, unitSize);
+                dst += unitSize;
+            }
+            src += unitSize;
+            pos += unitSize;
+            break;
+        case 1:
+            for (j = 0; j < count; j++) {
+                Xiiii_memcpy(dst, src, unitSize);
+                dst += unitSize;
+                src += unitSize;
+                pos += unitSize;
+            }
+            break;
+        default:
+            return 0;
+        }
+    }
+    return buf;
+}
 
 extern "C" int func_00190A78(int arg0)
 {
