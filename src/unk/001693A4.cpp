@@ -1,5 +1,7 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+extern "C" float X_func_001D4A3C_16A424(void *, unsigned int, int) asm("func_001D4A3C");
+extern "C" int X_func_00169A98_16A424(const float *, const float *, float) asm("func_00169A98");
 extern "C" void X_ror_assert_16A594(const char *, int, const char *) asm("ror_assert");
 extern "C" void X_func_001D05F4_16A594(void *, unsigned int, float *) asm("func_001D05F4");
 extern "C" int X_func_001CBE38_16A594(void *, unsigned int) throw() asm("func_001CBE38");
@@ -268,7 +270,29 @@ INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_00169F94);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016A1DC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016A424);
+extern "C" int func_0016A424(float (*arg0)[3], int arg1, unsigned int arg2, float fparg0)
+{
+    if (arg1 >= 9) {
+        return 0;
+    }
+    const char *bone = D_002F1E38;
+    int idx = X_func_001CBE38_16A594(&D_007812C0, arg2);
+    DogActorStub_16A594 *actor = &D_006FE6A0_16A594[idx];
+    int node = actor->getNodeIndexByName(bone);
+    float pos[4];
+    float mat[4][4];
+    actor->vfunc17(mat, node);
+    pos[0] = mat[3][0];
+    pos[1] = mat[3][1];
+    pos[2] = mat[3][2];
+    fparg0 += X_func_001D4A3C_16A424(&D_007812C0, arg2, 0);
+    for (int i = 0; i < arg1; i++) {
+        if (X_func_00169A98_16A424(arg0[i], pos, fparg0) != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 extern "C" void func_0016A594(unsigned int arg0, float *arg1)
 {
