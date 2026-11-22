@@ -101,7 +101,12 @@ extern "C" float func_001F6C14(int arg0, float fparg0)
     return var_f0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F6C54);
+extern "C" float func_001F6C54()
+{
+    char buf[0x50];
+    (void)&buf;
+    return 0.0f;
+}
 
 extern "C" void func_001F6C64(int arg0)
 {
