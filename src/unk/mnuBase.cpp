@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" float Xfp_func_0022E958(int) asm("func_0022E958");
+extern "C" void Xviii_func_0021A760(int, int, int) asm("func_0021A760");
+extern "C" void Xviiif_func_0022E960(int, int, int, float) asm("func_0022E960");
+extern "C" void Xviii_func_0022F7A0(int, int, int) asm("func_0022F7A0");
+extern "C" int Xiiiiii_i3dCallLocked__FPvN40(int, int, int, int, int) asm("i3dCallLocked__FPvN40");
 extern "C" void Xvii_func_00191844(int) asm("func_00191844");
 extern "C" int Xii_func_001918A8(int) asm("func_001918A8");
 extern "C" int Xii_func_001918C8(int) asm("func_001918C8");
@@ -868,7 +873,26 @@ extern "C" void func_001935C4(int arg0, int arg1, int arg2, int arg3, int arg4, 
     Xviiiiii_func_0019368C(arg0, arg1, &mat, arg5, arg6, arg7);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_0019368C);
+extern "C" void func_0019368C(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
+{
+    int temp_s1;
+    int temp_s2;
+    int temp_s0;
+    int temp_s3;
+
+    temp_s3 = M2C_FIELD(arg0, int *, 0x94) + (arg3 << 5);
+    if (arg4 == -1) {
+        Xiiiiii_i3dCallLocked__FPvN40(arg1, M2C_FIELD(temp_s3, int *, 0), 0, (int) arg2, 0);
+        return;
+    }
+    temp_s2 = M2C_FIELD(temp_s3, int *, 4);
+    temp_s0 = M2C_FIELD(arg0, int *, 0x9C) + (arg4 * 0x10);
+    temp_s1 = M2C_FIELD(temp_s0, int *, 0);
+    Xviiif_func_0022E960(temp_s1, temp_s2, 0x111, (Xfp_func_0022E958(temp_s1) * (float) arg5) / (float) M2C_FIELD(temp_s0, int *, 4));
+    Xviii_func_0022F7A0(M2C_FIELD(temp_s3, int *, 4), M2C_FIELD(temp_s3, int *, 8), M2C_FIELD(temp_s3, int *, 0x10));
+    Xviii_func_0021A760(M2C_FIELD(temp_s3, int *, 0), M2C_FIELD(temp_s3, int *, 0xC), M2C_FIELD(temp_s3, int *, 8));
+    Xiiiiii_i3dCallLocked__FPvN40(arg1, M2C_FIELD(temp_s3, int *, 0), M2C_FIELD(temp_s3, int *, 0xC), (int) arg2, 0);
+}
 
 extern "C" void func_001937C0(int arg0, int arg1, int arg2)
 {
