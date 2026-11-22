@@ -466,7 +466,30 @@ extern "C" int func_00190D70(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_00190D90);
+extern "C" int func_00190D90(int arg0, int arg1)
+{
+    if (arg1 == 0) {
+        int sub = arg0 + 0x3C;
+        M2C_FIELD(M2C_FIELD(sub, int *, 0x4AC), int *, 0x16C) = 0;
+        M2C_FIELD(M2C_FIELD(sub, int *, 0x4AC), int *, 0x170) = 0;
+        M2C_FIELD(M2C_FIELD(sub, int *, 0x4AC), int *, 0x174) = 0;
+        M2C_FIELD(M2C_FIELD(sub, int *, 0x4AC), int *, 0x178) = 0x80;
+        M2C_FIELD(M2C_FIELD(sub, int *, 0x4AC), int *, 0x2C0) = 0;
+        M2C_FIELD(M2C_FIELD(sub, int *, 0x4AC), int *, 0x2C4) = 0;
+        M2C_FIELD(M2C_FIELD(sub, int *, 0x4AC), int *, 0x2C8) = 0;
+        M2C_FIELD(M2C_FIELD(sub, int *, 0x4AC), int *, 0x2CC) = 0x80;
+    } else {
+        int sub = arg0 + 0x3C;
+        Xiiiiiii_func_0018D7EC(sub, 1, 1, arg1, (int)&D_00299B70, (int)&D_00299B80);
+        Xiiiiiii_func_0018D7EC(sub, 2, 1, arg1, (int)&D_00299B70, (int)&D_00299B80);
+    }
+    int sub2 = arg0 + 0x3C;
+    M2C_FIELD(M2C_FIELD(sub2, int *, 0x4AC), int *, 0x160) = 1;
+    M2C_FIELD(M2C_FIELD(sub2, int *, 0x4AC), int *, 0x2B4) = 1;
+    M2C_FIELD(M2C_FIELD(sub2, int *, 0x4AC), int *, 0x164) = 1;
+    M2C_FIELD(M2C_FIELD(sub2, int *, 0x4AC), int *, 0x2B8) = 1;
+    return 0;
+}
 
 extern "C" int func_00190E98(int arg0, int arg1)
 {
