@@ -1,390 +1,381 @@
 #include "include_asm.h"
 #include "emy/emy.h"
-extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
-extern "C" int Xiii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
-extern int _vt$7GotMain;
+
+struct GotVtblEntry {
+    short m_delta;
+    short m_pad;
+    int m_fn;
+};
+
+struct GotStateTable {
+    unsigned char m_unk00;
+    unsigned char m_count;
+    unsigned char m_pad02[0xA];
+    signed char *m_table;
+};
+
+struct GotObjStatView {
+    unsigned char m_pad00[0x3EC];
+    int m_partsFlags;                   // +0x3EC
+};
+
+struct GotMain : EmyMain {
+    unsigned char m_pad204[0x60];       // +0x204..+0x263
+    signed char m_unk264;               // +0x264
+    signed char m_unk265;               // +0x265
+    unsigned char m_pad266[2];          // +0x266..+0x267
+    int m_unk268;                       // +0x268
+    int m_unk26C;                       // +0x26C
+};
+STATIC_ASSERT(sizeof(GotMain) == 0x270, GotMain_size);
+
+struct GotOutParts : EmyOut {
+};
+
+struct GotOutTest : EmyOut {
+};
+
+extern int vtbl_GotMain asm("_vt$7GotMain");
+
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
-extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
-extern int _vt$7HfmMain;
-extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
-extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
-struct m2c_v34_10_i { char pad[52]; virtual void v1(); virtual int call(); };
-struct m2c_v200_10_i { char pad[512]; virtual void v1(); virtual int call(); };
-struct m2c_v34_18_i { char pad[52]; virtual void v1(); virtual void v2(); virtual int call(); };
-struct m2c_v34_20_i { char pad[52]; virtual void v1(); virtual void v2(); virtual void v3(); virtual int call(); };
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" int Xiii_func_0016968C(int, int) asm("func_0016968C");
-extern "C" int X_func_00165794(...) asm("func_00165794");
-extern "C" int X_func_00165A68(...) asm("func_00165A68");
-extern "C" int X_func_00165AA8(...) asm("func_00165AA8");
-extern "C" int X_func_00165D38(...) asm("func_00165D38");
-extern "C" int X_func_00165D7C(...) asm("func_00165D7C");
-extern "C" int X_func_00166048(...) asm("func_00166048");
-extern "C" int X_func_00166108(...) asm("func_00166108");
-extern "C" int X_func_00166128(...) asm("func_00166128");
-extern "C" int X_func_00166178(...) asm("func_00166178");
-extern "C" int X_func_00166198(...) asm("func_00166198");
-extern "C" int X_func_001696FC(...) asm("func_001696FC");
-// Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_func_00158EB4(...) asm("func_00158EB4");
-extern "C" int X_func_00158F2C(...) asm("func_00158F2C");
-extern "C" int X_func_0015908C(...) asm("func_0015908C");
-extern "C" int X_func_00159104(...) asm("func_00159104");
-extern "C" int X_func_0015917C(...) asm("func_0015917C");
-extern "C" int X_func_001591F4(...) asm("func_001591F4");
-extern "C" int X_func_0015926C(...) asm("func_0015926C");
-extern "C" int X_func_001592F0(...) asm("func_001592F0");
-extern "C" int X_func_00159368(...) asm("func_00159368");
-extern "C" int X_func_001593E0(...) asm("func_001593E0");
-extern "C" int X_func_00159458(...) asm("func_00159458");
-extern "C" int X_func_001594D0(...) asm("func_001594D0");
-extern "C" int X_func_00159560(...) asm("func_00159560");
-extern "C" int X_func_001595F0(...) asm("func_001595F0");
-extern "C" int X_func_00159668(...) asm("func_00159668");
-extern "C" int X_func_001596F8(...) asm("func_001596F8");
-extern "C" int X_func_00159788(...) asm("func_00159788");
-extern "C" int X_func_00159800(...) asm("func_00159800");
-extern "C" int X_func_00159AF8(...) asm("func_00159AF8");
+extern "C" int X_EmyMain__vfunc_01(EmyMain *, int) asm("EmyMain__vfunc_01");
 extern "C" int X_func_00165734(...) asm("func_00165734");
-extern "C" int X_func_00165794(...) asm("func_00165794");
-extern "C" int X_func_00165A68(...) asm("func_00165A68");
-extern "C" int X_func_00165AA8(...) asm("func_00165AA8");
-extern "C" int X_func_00165D38(...) asm("func_00165D38");
-extern "C" int X_func_00165D7C(...) asm("func_00165D7C");
-extern "C" int X_func_00166004(...) asm("func_00166004");
-extern "C" int X_func_00166048(...) asm("func_00166048");
-extern "C" int X_func_00166108(...) asm("func_00166108");
-extern "C" int X_func_00166128(...) asm("func_00166128");
-extern "C" int X_func_00166178(...) asm("func_00166178");
-extern "C" int X_func_00166198(...) asm("func_00166198");
+extern "C" int X_func_00165794(GotMain *) asm("func_00165794");
+extern "C" int X_func_00165A68(GotMain *) asm("func_00165A68");
+extern "C" int X_func_00165AA8(GotMain *) asm("func_00165AA8");
+extern "C" int X_func_00165D38(GotMain *) asm("func_00165D38");
+extern "C" int X_func_00165D7C(GotMain *) asm("func_00165D7C");
+extern "C" int X_func_00166004(GotMain *) asm("func_00166004");
+extern "C" int X_func_00166048(GotMain *) asm("func_00166048");
+extern "C" int X_func_00166108(GotMain *) asm("func_00166108");
+extern "C" int X_func_00166128(GotMain *) asm("func_00166128");
+extern "C" int X_func_00166178(GotMain *) asm("func_00166178");
+extern "C" int X_func_00166198(GotMain *) asm("func_00166198");
 extern "C" int X_func_00166AD0(...) asm("func_00166AD0");
-extern "C" int X_func_001685C0(...) asm("func_001685C0");
-extern "C" int X_func_0016968C(...) asm("func_0016968C");
-extern "C" int X_func_001696FC(...) asm("func_001696FC");
-extern "C" int X_func_001D19A8(...) asm("func_001D19A8");
+extern "C" int X_func_001685C0(EmyOut *, int, int) asm("func_001685C0");
+extern "C" int X_func_0016968C(void *, int) asm("func_0016968C");
+extern "C" int X_func_001696FC(void *, int) asm("func_001696FC");
+extern "C" int X_func_001CBEDC(void *, int) asm("func_001CBEDC");
+extern "C" int X_func_001DA228(void *, int, void *) asm("func_001DA228");
+
 extern int D_007812C0;
-extern int D_007A3208;
+
+static inline int GotCheckBlocked(GotMain *self, int idx)
+{
+    int next = X_func_001696FC(self->m_brain, idx);
+    if (next == 0xB && self->m_unk268 == 0) {
+        return 1;
+    }
+    if (next == 0xC && self->m_unk26C == 0) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_001583D4);
 
-extern "C" void GotMain__vfunc_01(int arg0, int arg1)
+extern "C" void GotMain__vfunc_01(GotMain *self, int flags)
 {
-    M2C_FIELD(arg0, int *, 0x200) = (int)&_vt$7GotMain;
-    Xii_EmyMain__vfunc_01(arg0, 0);
-    if (arg1 & 1) {
-        return Xv___builtin_delete((void *)arg0);
+    self->m_vtbl = &vtbl_GotMain;
+    X_EmyMain__vfunc_01(self, 0);
+    if (flags & 1) {
+        return Xv___builtin_delete(self);
     }
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", GotMain__vfunc_04);
 
-extern "C" void GotMain__vfunc_05(int arg0)
+extern "C" void GotMain__vfunc_05(GotMain *self)
 {
-    int temp_a0;
-    int temp_v0;
-    int temp_v0_2;
+    int flags;
+    int next;
+    int res;
 
-    M2C_FIELD(arg0, int *, 0x40) = 0;
-    temp_a0 = M2C_FIELD(arg0, int *, 0x30);
-    if (temp_a0 & 2) {
-        M2C_FIELD(arg0, int *, 0x3C) = 4;
-        M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = 4;
-        M2C_FIELD(arg0, int *, 0x40) = 1;
-        M2C_FIELD(arg0, int *, 0x30) = 0;
+    self->m_stateChanged = 0;
+    flags = self->m_flags30;
+    if (flags & 2) {
+        self->m_curState = 4;
+        ((EmyBrainView *)self->m_brain)->m_state = 4;
+        self->m_stateChanged = 1;
+        self->m_flags30 = 0;
     } else {
-        temp_v0 = M2C_FIELD(arg0, int *, 0x24);
-        if (temp_v0 != -1) {
-            M2C_FIELD(arg0, int *, 0x30) = 0;
-            temp_v0_2 = Xiii_func_0016968C(M2C_FIELD(arg0, int *, 0x1C), temp_v0);
-            M2C_FIELD(arg0, signed char *, 0x264) = 0;
-            M2C_FIELD(arg0, signed char *, 0x265) = 0;
-            if (temp_v0_2 != 0) {
-                M2C_FIELD(arg0, int *, 0x3C) = temp_v0_2;
-                M2C_FIELD(arg0, int *, 0x40) = 1;
+        next = self->m_nextState;
+        if (next != -1) {
+            self->m_flags30 = 0;
+            res = X_func_0016968C(self->m_brain, next);
+            self->m_unk264 = 0;
+            self->m_unk265 = 0;
+            if (res != 0) {
+                self->m_curState = res;
+                self->m_stateChanged = 1;
             } else {
-                M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = (int) M2C_FIELD(arg0, int *, 0x3C);
+                ((EmyBrainView *)self->m_brain)->m_state = self->m_curState;
             }
-        } else if (temp_a0 & 1) {
-            M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = (int) M2C_FIELD(arg0, int *, 0x3C);
-            M2C_FIELD(arg0, int *, 0x40) = 1;
+        } else if (flags & 1) {
+            ((EmyBrainView *)self->m_brain)->m_state = self->m_curState;
+            self->m_stateChanged = 1;
         }
     }
-    M2C_FIELD(arg0, int *, 0x30) = 0;
+    self->m_flags30 = 0;
 }
 
-extern "C" void GotMain__vfunc_06(int arg0)
+extern "C" void GotMain__vfunc_06(GotMain *self)
 {
-    int temp_v0;
-    int temp_v0_2;
-    int temp_v0_3;
+    EmyOut *curOut;
+    GotVtblEntry *vt;
 
-    if (M2C_FIELD(arg0, int *, 0x40) != 0) {
-        ((m2c_v34_20_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
-        ((m2c_v200_10_i *)(arg0))->call();
+    if (self->m_stateChanged != 0) {
+        curOut = self->m_curOut;
+        vt = (GotVtblEntry *)((char *)curOut->m_vtbl + 0x20);
+        ((void (*)(void *))vt->m_fn)((char *)curOut + vt->m_delta);
+        vt = (GotVtblEntry *)((char *)self->m_vtbl + 0x10);
+        ((void (*)(void *))vt->m_fn)((char *)self + vt->m_delta);
     }
-    M2C_FIELD(arg0, int *, 0x24) = ((m2c_v34_18_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
+    curOut = self->m_curOut;
+    vt = (GotVtblEntry *)((char *)curOut->m_vtbl + 0x18);
+    self->m_nextState = ((int (*)(void *))vt->m_fn)((char *)curOut + vt->m_delta);
 }
 
-extern "C" int GotMain__vfunc_02(int arg0)
+extern "C" int GotMain__vfunc_02(GotMain *self)
 {
     int v;
-    int obj;
-    int vt;
-    register int e8 PS2_REG("$3");
+    EmyOut *obj;
+    GotVtblEntry *vt;
+    register GotStateTable *tbl PS2_REG("$3");
     int count;
-    register int base PS2_REG("$7");
+    register signed char *base PS2_REG("$7");
     register int v2 PS2_REG("$2");
     int i;
     int *dst;
 
-    v = M2C_FIELD(arg0, int *, 0x3C);
+    v = self->m_curState;
     if (v != 0) {
         if (v >= 0) {
             if (v < 0x10) {
-                obj = M2C_FIELD(arg0 + v * 4, int *, 0x48);
-                M2C_FIELD(arg0, int *, 0x44) = obj;
-                vt = M2C_FIELD(obj, int *, 0x34) + 0x10;
-                ((void (*)(int)) M2C_FIELD(vt, int *, 4))(obj + M2C_FIELD(vt, short *, 0));
+                obj = ((EmyOut **)self->m_unk48)[v];
+                self->m_curOut = obj;
+                vt = (GotVtblEntry *)((char *)obj->m_vtbl + 0x10);
+                ((void (*)(void *))vt->m_fn)((char *)obj + vt->m_delta);
             }
         }
     }
     i = 0;
-    e8 = M2C_FIELD(arg0, int *, 0xE8);
-    count = M2C_FIELD(e8, unsigned char *, 1);
-    v2 = M2C_FIELD(arg0, int *, 0x3C);
-    base = M2C_FIELD(e8, int *, 0xC) + (v2 * count);
+    tbl = (GotStateTable *)self->m_unkE8;
+    count = tbl->m_count;
+    v2 = self->m_curState;
+    base = tbl->m_table + (v2 * count);
     for (; i < count; i++) {
-        dst = (int *) (arg0 + 4);
-        if (M2C_FIELD(base, signed char *, i) != 0) {
-            M2C_FIELD(dst + i, int *, 0x200) = 1;
+        dst = (int *)((char *)self + 4);
+        if (base[i] != 0) {
+            *(int *)((char *)(dst + i) + 0x200) = 1;
         } else {
-            M2C_FIELD(dst + i, int *, 0x200) = 0;
+            *(int *)((char *)(dst + i) + 0x200) = 0;
         }
     }
     return 0;
 }
 
-extern "C" int func_00158EA0()
+extern "C" int func_00158EA0(void)
 {
     return X_func_00165734();
 }
 
-
-extern "C" int func_00158EB4(int arg0)
+extern "C" int func_00158EB4(GotMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 1);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00165794(arg0);
+    if (GotCheckBlocked(self, 1) == 0) {
+        return X_func_00165794(self);
     }
     return 0;
 }
 
-
-// D_002F0D08: the end of unk/FshMain's .rodata now (config/splits_manual.tsv)
-
-// D_002F0D18: the end of unk/FshMain's .rodata now (config/splits_manual.tsv)
+// D_002F0D08..D_002F0D18: the end of unk/FshMain's .rodata now (config/splits_manual.tsv)
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00158F2C);
 
-extern "C" int func_0015908C(int arg0)
+extern "C" int func_0015908C(GotMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 7);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00165A68(arg0);
+    if (GotCheckBlocked(self, 7) == 0) {
+        return X_func_00165A68(self);
     }
     return 0;
 }
 
-
-extern "C" int func_00159104(int arg0)
+extern "C" int func_00159104(GotMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 8);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00165AA8(arg0);
+    if (GotCheckBlocked(self, 8) == 0) {
+        return X_func_00165AA8(self);
     }
     return 0;
 }
 
-
-extern "C" int func_0015917C(int arg0)
+extern "C" int func_0015917C(GotMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 9);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00165D38(arg0);
+    if (GotCheckBlocked(self, 9) == 0) {
+        return X_func_00165D38(self);
     }
     return 0;
 }
 
-
-extern "C" int func_001591F4(int arg0)
+extern "C" int func_001591F4(GotMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xA);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00165D7C(arg0);
+    if (GotCheckBlocked(self, 0xA) == 0) {
+        return X_func_00165D7C(self);
     }
     return 0;
 }
 
-
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_0015926C);
-
-extern "C" int func_001592F0(int arg0)
+extern "C" int func_0015926C(GotMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xC);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00166048(arg0);
+    if (GotCheckBlocked(self, 0xB) == 0) {
+        return X_func_00166004(self);
     }
     return 0;
 }
 
-
-extern "C" int func_00159368(int arg0)
+extern "C" int func_001592F0(GotMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xD);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00166128(arg0);
+    if (GotCheckBlocked(self, 0xC) == 0) {
+        return X_func_00166048(self);
     }
     return 0;
 }
 
-
-extern "C" int func_001593E0(int arg0)
+extern "C" int func_00159368(GotMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xE);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00166108(arg0);
+    if (GotCheckBlocked(self, 0xD) == 0) {
+        return X_func_00166128(self);
     }
     return 0;
 }
 
-
-extern "C" int func_00159458(int arg0)
+extern "C" int func_001593E0(GotMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xF);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00166178(arg0);
+    if (GotCheckBlocked(self, 0xE) == 0) {
+        return X_func_00166108(self);
     }
     return 0;
 }
 
-
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_001594D0);
-
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00159560);
-
-extern "C" int func_001595F0(int arg0)
+extern "C" int func_00159458(GotMain *self)
 {
-    int var_a0;
-    int temp_v0;
-    int var_v0;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0x12);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a0 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a0 = 1;
-    else var_a0 = 0;
-    if (var_a0 != 0) return 0;
-    {
-        return (*(int *)(int *)((char *)((*(int *)(int *)((char *)(arg0) + 0x20))) + 0x3EC)) & 1;
-    }
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00159668);
-
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_001596F8);
-
-extern "C" int func_00159788(int arg0)
-{
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0x15);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00166198(arg0);
+    if (GotCheckBlocked(self, 0xF) == 0) {
+        return X_func_00166178(self);
     }
     return 0;
 }
 
+extern "C" int func_001594D0(GotMain *self)
+{
+    if (GotCheckBlocked(self, 0x10) != 0) {
+        return 0;
+    }
+    int f = ((GotObjStatView *)self->m_objStat)->m_partsFlags;
+    if (f & 8) {
+        if (f & 0x10) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+extern "C" int func_00159560(GotMain *self)
+{
+    if (GotCheckBlocked(self, 0x11) != 0) {
+        return 0;
+    }
+    int f = ((GotObjStatView *)self->m_objStat)->m_partsFlags;
+    if (f & 2) {
+        if (f & 4) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+extern "C" int func_001595F0(GotMain *self)
+{
+    if (GotCheckBlocked(self, 0x12) != 0) {
+        return 0;
+    }
+    return ((GotObjStatView *)self->m_objStat)->m_partsFlags & 1;
+}
+
+extern "C" int func_00159668(GotMain *self)
+{
+    if (GotCheckBlocked(self, 0x13) != 0) {
+        return 0;
+    }
+    int f = ((GotObjStatView *)self->m_objStat)->m_partsFlags;
+    if (!(f & 2)) {
+        if (!(f & 4)) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+extern "C" int func_001596F8(GotMain *self)
+{
+    if (GotCheckBlocked(self, 0x14) != 0) {
+        return 0;
+    }
+    int f = ((GotObjStatView *)self->m_objStat)->m_partsFlags;
+    if (!(f & 8)) {
+        if (!(f & 0x10)) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+extern "C" int func_00159788(GotMain *self)
+{
+    if (GotCheckBlocked(self, 0x15) == 0) {
+        return X_func_00166198(self);
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00159800);
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", func_00159AF8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/GotMain", GotOutParts__vfunc_02);
+#ifdef NON_MATCHING
+extern "C" void GotOutParts__vfunc_02(GotOutParts *self)
+{
+    GotObjStatView *stat = (GotObjStatView *)self->m_unk08;
+    int anim;
 
-extern "C" int GotOutParts__vfunc_03()
+    if ((stat->m_partsFlags & 8) != 0 && (stat->m_partsFlags & 0x10) != 0) {
+        anim = 0xA;
+    } else if ((stat->m_partsFlags & 8) != 0 || (stat->m_partsFlags & 0x10) != 0) {
+        anim = 1;
+    } else {
+        int val;
+        X_func_001DA228(stat, 0x67, &val);
+        anim = (X_func_001CBEDC(&D_007812C0, val) == 0xA2E) ? 0x4F : 0x14;
+    }
+    X_func_001685C0(self, anim, 0);
+    self->m_unk04 = 0;
+}
+#else
+INCLUDE_ASM("asm/nonmatchings/unk/GotMain", GotOutParts__vfunc_02);
+#endif
+
+extern "C" int GotOutParts__vfunc_03(void)
 {
     return -1;
 }
 
-
-extern "C" void GotOutParts__vfunc_04()
+extern "C" void GotOutParts__vfunc_04(void)
 {
     X_func_00166AD0();
 }
 
-
-extern "C" void GotOutTest__vfunc_02(int arg0)
+extern "C" void GotOutTest__vfunc_02(GotOutTest *self)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x4)) = 0;
+    self->m_unk04 = 0;
 }
-
 
 INCLUDE_ASM("asm/nonmatchings/unk/GotMain", GotOutTest__vfunc_03);
 
