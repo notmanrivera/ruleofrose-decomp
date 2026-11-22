@@ -1,4 +1,11 @@
 #include "include_asm.h"
+extern "C" int Xiii_func_0021B550(int, int, unsigned long long) asm("func_0021B550");
+extern "C" void Xvii_func_00223240(int, int) asm("func_00223240");
+extern "C" void Xvii_func_00223260(int, int) asm("func_00223260");
+extern "C" int Xii_func_00223378(int) asm("func_00223378");
+extern "C" void Xvii_func_00223398(int, int) asm("func_00223398");
+extern "C" void Xvii_func_001812A8(int, int) asm("func_001812A8");
+extern "C" int Xiiif_func_001925F0(int, int, float) asm("func_001925F0");
 extern "C" int Xii_getViewMatrix__9DogCamera(int) asm("getViewMatrix__9DogCamera");
 extern "C" int Xii___10FileReader(int) asm("__10FileReader");
 extern "C" int Xii___11FileReadReq(int) asm("__11FileReadReq");
@@ -409,7 +416,21 @@ extern "C" int func_00192408()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_0019241C);
+extern "C" void func_0019241C(int arg0, int arg1, int arg2, int arg3)
+{
+    int temp_v0;
+    int *p = &D_007B40C0;
+
+    if (p[1] == 1) {
+        temp_v0 = Xiiif_func_001925F0(arg0, arg1, 890.0f);
+        if (temp_v0 != 0) {
+            Xvii_func_00223240(temp_v0, arg2);
+            Xvii_func_00223260(temp_v0, arg3);
+            Xvii_func_00223398(temp_v0, Xiii_func_0021B550(Xii_func_00223378(temp_v0), 0x47, 0x5000D));
+            Xvii_func_001812A8((int)p, temp_v0);
+        }
+    }
+}
 
 extern "C" void func_001924D8(void) {
 }
