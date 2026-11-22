@@ -725,7 +725,30 @@ extern "C" void func_001C0078(int arg0, int arg1, int *arg2, int *arg3, int *arg
     *arg4 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001C0148);
+extern "C" int func_001C0148(int arg0, int arg1)
+{
+    register int one PS2_REG("$18") = 1;
+    register int var_v0 PS2_REG("$2");
+    int flag = 0;
+
+    if (M2C_FIELD(arg0, int *, 0x24) == one) {
+        flag = M2C_FIELD(arg0, int *, 0x28) == one;
+    }
+    if (flag == one) {
+        var_v0 = 6;
+        if (arg1 != 0x20 && arg1 != 0x8140) {
+            return func_001C0254(arg0, func_001BFFCC(arg0, arg1));
+        }
+    } else if (func_001C0298(arg0, arg1) == one) {
+        var_v0 = M2C_FIELD(arg0, int *, 0x38) / 2;
+    } else {
+        var_v0 = 0;
+        if (arg1 >= 0x21) {
+            var_v0 = M2C_FIELD(arg0, int *, 0x38);
+        }
+    }
+    return var_v0;
+}
 
 extern "C" int func_001C020C(int arg0, int arg1)
 {
