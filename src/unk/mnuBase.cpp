@@ -1,4 +1,9 @@
 #include "include_asm.h"
+extern "C" int Xii_func_00194688(int) asm("func_00194688");
+extern "C" int Xiii_func_00193F98(int, int) asm("func_00193F98");
+extern "C" int Xiii_func_00194280(int, int) asm("func_00194280");
+extern "C" int Xiii_func_00194370(int, int) asm("func_00194370");
+struct m2c_v10C_58_i { char pad[268]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual int call(); };
 extern "C" float Xfp_func_0022E958(int) asm("func_0022E958");
 extern "C" void Xviii_func_0021A760(int, int, int) asm("func_0021A760");
 extern "C" void Xviiif_func_0022E960(int, int, int, float) asm("func_0022E960");
@@ -765,7 +770,44 @@ extern "C" void mnuBase__vfunc_01(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192BA4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", mnuBase__vfunc_03);
+extern "C" void mnuBase__vfunc_03(int arg0, int arg1)
+{
+    int temp_a0;
+
+    if (M2C_FIELD(arg0, int *, 0x94) != 0) {
+        for (int i = 0; i < M2C_FIELD(arg0, int *, 0x98); i++) {
+            Xiii_func_00193F98(arg0, i);
+        }
+        M2C_FIELD(arg0, int *, 0x94) = 0;
+        M2C_FIELD(arg0, int *, 0x98) = 0;
+    }
+    if (M2C_FIELD(arg0, int *, 0x9C) != 0) {
+        for (int i = 0; i < M2C_FIELD(arg0, int *, 0xA0); i++) {
+            Xiii_func_00194280(arg0, i);
+        }
+        M2C_FIELD(arg0, int *, 0x9C) = 0;
+        M2C_FIELD(arg0, int *, 0xA0) = 0;
+    }
+    if (M2C_FIELD(arg0, int *, 0xA4) != 0) {
+        for (int i = 0; i < M2C_FIELD(arg0, int *, 0xA8); i++) {
+            Xiii_func_00194370(arg0, i);
+        }
+        M2C_FIELD(arg0, int *, 0xA4) = 0;
+        M2C_FIELD(arg0, int *, 0xA8) = 0;
+    }
+    temp_a0 = M2C_FIELD(arg0, int *, 0x18);
+    if (temp_a0 != 0) {
+        Xii_func_00194688(temp_a0);
+        M2C_FIELD(arg0, int *, 0x18) = 0;
+    }
+    M2C_FIELD(arg0, int *, 0x1C) = 0;
+    M2C_FIELD(arg0, int *, 0x20) = 0;
+    ((m2c_v10C_58_i *)(arg0))->call();
+    M2C_FIELD(arg0, int *, 0xC) = 0;
+    M2C_FIELD(arg0, int *, 4) = 0;
+    M2C_FIELD(arg0, int *, 0x14) = -1;
+    M2C_FIELD(arg0, int *, 0x10) = -1;
+}
 
 // NON_MATCHING: 4/42 differ, 10 edits
 #ifdef NON_MATCHING
