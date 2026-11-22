@@ -1,14 +1,5 @@
 #include "include_asm.h"
-#include "emy/emy.h"
-
-struct NorMain : public EmyMain {
-    unsigned char m_pad204[0x28];       // +0x204..+0x22B
-    unsigned char m_unk22C;             // +0x22C
-    unsigned char m_pad22D[0x13];       // +0x22D..+0x23F
-    int m_unk240;                       // +0x240
-    int m_unk244;                       // +0x244
-    int m_unk248;                       // +0x248
-};
+#include "unk/NorMain.h"
 
 struct NorMainVtbl2 {
     unsigned char m_pad[0x200];
