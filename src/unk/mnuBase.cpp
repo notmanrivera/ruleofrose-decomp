@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" void Xvii_func_00191844(int) asm("func_00191844");
+extern "C" int Xii_func_001918A8(int) asm("func_001918A8");
+extern "C" int Xii_func_001918C8(int) asm("func_001918C8");
+extern "C" int Xii_func_00191938(int) asm("func_00191938");
 extern "C" int Xii_func_0018BD94(int) asm("func_0018BD94");
 extern int D_0029BBA8;
 extern int D_0029BBE0;
@@ -138,7 +142,64 @@ extern "C" int func_001916F8(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00191718);
+extern "C" int func_00191718(int arg0)
+{
+    int temp_s1;
+    int temp_v0;
+    int temp_v0_2;
+    int var_s2 = 0;
+    unsigned int temp_v1;
+
+    if (M2C_FIELD(arg0, int *, 0x30) == 0) {
+        return -1;
+    }
+    temp_v1 = M2C_FIELD(arg0, unsigned int *, 0x38);
+    switch (temp_v1) {
+    case 0:
+        M2C_FIELD(arg0, unsigned int *, 0x38) = 3U;
+    case 3:
+        M2C_FIELD(arg0, unsigned int *, 0x38) = 4U;
+        Xvii_func_00191844(arg0);
+        break;
+    case 4:
+        temp_s1 = M2C_FIELD(arg0, int *, 0x3C);
+        switch (temp_s1) {
+        case 0:
+            temp_v0 = Xii_func_001918C8(arg0);
+            switch (temp_v0) {
+            case 0:
+                break;
+            case 0x1:
+                M2C_FIELD(arg0, int *, 0x3C) = temp_v0;
+                break;
+            case 0x3E7:
+                M2C_FIELD(arg0, unsigned int *, 0x38) = 6U;
+                break;
+            }
+            break;
+        case 1:
+            temp_v0_2 = Xii_func_00191938(arg0);
+            if ((temp_v0_2 != 0) && (temp_v0_2 == temp_s1)) {
+                M2C_FIELD(arg0, int *, 0x3C) = 0;
+            }
+            break;
+        }
+        Xii_func_001918A8(arg0);
+        break;
+    case 6:
+        M2C_FIELD(arg0, unsigned int *, 0x38) = 7U;
+    case 1:
+    case 2:
+    case 5:
+    case 7:
+    default:
+        M2C_FIELD(arg0, unsigned int *, 0x38) = 0U;
+        var_s2 = 1;
+        M2C_FIELD(arg0, int *, 0x40) = 0;
+        break;
+    }
+    return var_s2;
+}
 
 extern "C" int func_0019183C()
 {
