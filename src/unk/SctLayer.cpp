@@ -65,7 +65,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C45C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C4F4);
 
-INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C58C);
+extern "C" void func_0017C58C(SctLayer *self)
+{
+    self->m_vtbl = &vtbl_SctLayer;
+    self->m_flags = 0;
+    self->m_layer = 0;
+    self->m_groups = 0;
+    self->m_cells = 0;
+    self->m_areas = 0;
+}
 
 extern "C" void SctLayer_dtor(SctLayer *self, int flags) asm("SctLayer__vfunc_01");
 extern "C" void SctLayer_dtor(SctLayer *self, int flags)
