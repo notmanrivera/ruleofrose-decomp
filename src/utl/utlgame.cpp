@@ -316,7 +316,41 @@ INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00102B6C);
 #endif
 
 
+// NON_MATCHING: 78/91 differ, 3 relocs differ (size 0x16C, game 0x164), 38 edits
+#ifdef NON_MATCHING
+struct Vec4_2BF0 {
+    float x, y, z, w;
+    Vec4_2BF0() { x = y = z = 0.0f; w = 1.0f; }
+} __attribute__((aligned(16)));
+extern "C" unsigned long long X_func_00102BF0(float *theOut, long long theA) asm("func_00102BF0");
+extern "C" unsigned long long X_func_00102BF0(float *theOut, long long theA)
+{
+    int found = 0;
+    unsigned long long ret = 0;
+    Vec4_2BF0 pos;
+    GamList<ObjStat *> *list = D_007812C0.getAVFchrListPtr();
+
+    for (GamList<ObjStat *>::iterator it = list->begin(); it != list->end(); it++) {
+        if (theA == (*it)->getUID()) {
+            if (X_func_001033F0(theA) != 0) {
+                func_001DB71C(*it, &pos.x);
+                found = 1;
+                ret = (unsigned int)(*it)->getOID() | ((unsigned long long)theA << 32);
+            } else {
+                func_001DB71C(*it, theOut);
+                return (unsigned int)(*it)->getOID() | ((unsigned long long)theA << 32);
+            }
+        }
+    }
+    if (found) {
+        *(u_long128 *)theOut = *(u_long128 *)&pos;
+        return ret;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00102BF0);
+#endif
 
 extern "C" ObjStat *func_00102D54(int theUid)
 {
