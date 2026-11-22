@@ -1938,7 +1938,7 @@ extern "C" void func_001E3804(char *arg0)
     ((SndQue *)(arg0 + 0x40))->clear();
 }
 
-// NON_MATCHING: 4/238 differ, 3 edits
+// NON_MATCHING: 12/238 differ, 2 edits
 #ifdef NON_MATCHING
 struct Entry386C { int unused, left, right; char rest[0x1C]; }; // entry386C // decl386C
 struct Obj386C { // decl386C
@@ -1973,7 +1973,7 @@ extern "C" void func_001E386C(Obj386C *self, Item2DB4 *item)
         oldLeft = entry->left;
         oldRight = entry->right;
     }
-    int flags = item->flags;
+    register int flags PS2_REG("$9") = item->flags;
     if (flags & 1) {
         if (data) {
             calc386C(mode, item, data, &left, &right, flags, distance);
