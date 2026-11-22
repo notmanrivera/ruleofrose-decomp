@@ -44,7 +44,39 @@ extern "C" void func_001F59AC(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F59B4);
 
+// NON_MATCHING: 6/109 differ, 6 edits
+#ifdef NON_MATCHING
+extern "C" int Xiii_func_0010AA9C__8DogActorPCc(int, int) throw() asm("func_0010AA9C__8DogActorPCc");
+extern "C" int F5BDC_new(int) throw() asm("__builtin_new");
+extern "C" void F5BDC_ctor(int, int, int, int, int, unsigned int, float) throw() asm("func_001E8FC4");
+extern "C" void F5BDC_71FC(int, int, int, int, int, int, int, int *, int) throw() asm("func_001E71FC");
+extern "C" int func_001F5BDC(int arg0, int arg1, int arg2, int arg3, int arg4, float fparg0)
+{
+    if (((arg0 >> 0x1C) & 3) == 1) {
+        char *obj = (char *)Xiiu_func_001D2B8C((int)&D_007812C0, (unsigned int)arg0);
+        int *p = (int *)(obj + 0x3DC);
+        int idx = *(int *)(obj + 0x108);
+        if (arg4 != 0) {
+            arg1 = Xiii_func_0010AA9C__8DogActorPCc((int)&D_006FE6A0 + idx * 0x4D0, arg4);
+        }
+        if (Xiii_func_001E7D7C((int)&D_007A3D80, *p) != 0) {
+            X_func_001E7724((int)&D_007A3D80, *p);
+            *p = -1;
+        }
+        *(int *)(obj + 0x13C) = arg1;
+        int ret = F5BDC_new(0x100);
+        F5BDC_ctor(ret, idx, arg1, arg2, arg3, (unsigned int)arg0, fparg0);
+        F5BDC_71FC((int)&D_007A3D80, 1, -1, 1, 0, ret, 0, p, 0x11);
+        return ret;
+    }
+    int ret = F5BDC_new(0x100);
+    F5BDC_ctor(ret, -1, arg1, arg2, arg3, (unsigned int)arg0, fparg0);
+    F5BDC_71FC((int)&D_007A3D80, 1, -1, 1, 0, ret, 0, 0, 1);
+    return ret;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F5BDC);
+#endif
 
 extern "C" int func_001F5D90(int arg0, int arg1, int arg2, int arg3, float fparg0, float fparg1)
 {
