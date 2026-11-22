@@ -847,7 +847,47 @@ extern "C" int func_001C02F0()
     return 0;
 }
 
+// NON_MATCHING: 37/53 differ, 1 reloc differs (size 0xD4, game 0xD8), 21 edits
+#ifdef NON_MATCHING
+extern "C" int func_001C02F8(int arg0, const unsigned char *arg1)
+{
+    const unsigned char *p = arg1;
+    int total = 0;
+    int c;
+
+    while ((c = *p++) != 0) {
+        int width;
+        if (func_001C0298(arg0, c) != 1) {
+            c <<= 8;
+            c |= *p;
+            if (func_001C02B8(arg0, c) == 1) {
+                p++;
+                width = 0x12;
+                if (c != 0x8164) {
+                    width = 0xA;
+                    if (c != 0x8149) {
+                        goto call_148;
+                    }
+                }
+                goto add_total;
+            }
+        } else {
+        call_148:
+            width = func_001C0148(arg0, c);
+        add_total:
+            total += width;
+            if (*(int *)((char *)arg0 + 0x24) != 0) {
+                total += *(int *)((char *)arg0 + 0x34);
+            } else {
+                total += *(int *)((char *)arg0 + 0x30);
+            }
+        }
+    }
+    return total;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001C02F8);
+#endif
 
 extern "C" int func_001C03D0(int arg0, const unsigned char *arg1)
 {
