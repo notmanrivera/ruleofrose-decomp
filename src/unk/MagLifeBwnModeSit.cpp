@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" int Xii_func_00124E18(int) asm("func_00124E18");
+extern "C" int Xiii_func_00125A20(int, int) asm("func_00125A20");
+extern "C" void Xiiiii_func_001233F4(int, int, int, int) asm("func_001233F4");
 extern "C" int Xii_func_0011A028(int) asm("func_0011A028");
 extern "C" int Xii_func_0011A054(int) asm("func_0011A054");
 extern "C" int Xii_func_00123BB8(int) asm("func_00123BB8");
@@ -50,7 +53,15 @@ extern "C" void init__18MagLifeBwnModeNullR10MagLifeBwn(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", init__18MagLifeBwnModeWaitR10MagLifeBwn);
 
-INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", init__17MagLifeBwnModeSitR10MagLifeBwn);
+extern "C" void init__17MagLifeBwnModeSitR10MagLifeBwn(int arg0, int arg1)
+{
+    if ((unsigned int) (M2C_FIELD(arg1, int *, 0x70) - 2) < 2U) {
+        return Xiiiii_func_001233F4((int) arg1, 2, 0, 0);
+    }
+    Xiii_func_00125A20((int) arg1, 0);
+    Xii_func_00124E18((int) arg1);
+    Xiiis_func_0011A320((int) arg1, (M2C_FIELD(arg1, int *, 0x30) == 4) ? 0xF : 7, -1);
+}
 
 extern "C" int term__17MagLifeBwnModeSitR10MagLifeBwni(int arg0, int arg1, int arg2)
 {
