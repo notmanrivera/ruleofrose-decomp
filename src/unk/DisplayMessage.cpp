@@ -44,7 +44,7 @@ extern "C" void func_001F59AC(void) {
 
 INCLUDE_ASM("asm/nonmatchings/unk/DisplayMessage", func_001F59B4);
 
-// NON_MATCHING: 6/109 differ, 6 edits
+// NON_MATCHING: 4/109 differ, 4 edits
 #ifdef NON_MATCHING
 extern "C" int Xiii_func_0010AA9C__8DogActorPCc(int, int) throw() asm("func_0010AA9C__8DogActorPCc");
 extern "C" int F5BDC_new(int) throw() asm("__builtin_new");
@@ -66,7 +66,8 @@ extern "C" int func_001F5BDC(int arg0, int arg1, int arg2, int arg3, int arg4, f
         *(int *)(obj + 0x13C) = arg1;
         int ret = F5BDC_new(0x100);
         F5BDC_ctor(ret, idx, arg1, arg2, arg3, (unsigned int)arg0, fparg0);
-        F5BDC_71FC((int)&D_007A3D80, 1, -1, 1, 0, ret, 0, p, 0x11);
+        register int messages PS2_REG("$4") = (int)&D_007A3D80;
+        F5BDC_71FC(messages, 1, -1, 1, 0, ret, 0, p, 0x11);
         return ret;
     }
     int ret = F5BDC_new(0x100);
