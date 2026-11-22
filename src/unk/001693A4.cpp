@@ -1,5 +1,44 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+extern "C" void X_ror_assert_16A594(const char *, int, const char *) asm("ror_assert");
+extern "C" void X_func_001D05F4_16A594(void *, unsigned int, float *) asm("func_001D05F4");
+extern "C" int X_func_001CBE38_16A594(void *, unsigned int) throw() asm("func_001CBE38");
+extern "C" int X_func_0022B3D8_16A594(void *, const char *) throw() asm("func_0022B3D8");
+extern char D_002F1E10[];
+extern char D_002F1E20[];
+extern char D_002F1E30[];
+extern char D_002F1E38[];
+struct DogEntityStub_16A594 {
+    char pad00[0x94];
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+    virtual void v08();
+    virtual void v09();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual void vfunc17(float (*theOut)[4], int theNode);
+}; // DogEntityStub_16A594
+struct DogActorStub_16A594 : public DogEntityStub_16A594 {
+    char pad98[0x11C - 0x98];
+    void *m_i3r_root;
+    char pad120[0x4D0 - 0x120];
+    int getNodeIndexByName(const char *p) {
+        if (!m_i3r_root) X_ror_assert_16A594(D_002F1E10, 0x131, D_002F1E20);
+        if (!p) X_ror_assert_16A594(D_002F1E10, 0x131, D_002F1E30);
+        return X_func_0022B3D8_16A594(m_i3r_root, p);
+    } // getNodeIndexByName
+}; // DogActorStub_16A594
+extern DogActorStub_16A594 D_006FE6A0_16A594[] asm("D_006FE6A0");
 extern "C" int *X_func_001D7F48_16976C(void *, int, int) asm("func_001D7F48");
 extern "C" int X_func_001D81C4_16976C(void *, int, int, int, int, int, int) asm("func_001D81C4");
 extern "C" void X_builtin_delete(void *) asm("__builtin_delete");
@@ -231,7 +270,25 @@ INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016A1DC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016A424);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016A594);
+extern "C" void func_0016A594(unsigned int arg0, float *arg1)
+{
+    int type = (arg0 >> 28) & 3;
+    X_func_001D05F4_16A594(&D_007812C0, arg0, arg1);
+    if (type == 1) {
+        const char *bone = D_002F1E38;
+        int idx = X_func_001CBE38_16A594(&D_007812C0, arg0);
+        DogActorStub_16A594 *actor = &D_006FE6A0_16A594[idx];
+        int node = actor->getNodeIndexByName(bone);
+        float pos[4];
+        float mat[4][4];
+        actor->vfunc17(mat, node);
+        pos[0] = mat[3][0];
+        pos[1] = mat[3][1];
+        pos[2] = mat[3][2];
+        arg1[0] = pos[0];
+        arg1[2] = pos[2];
+    }
+}
 
 // NON_MATCHING: 2/62 differ, 2 edits
 #ifdef NON_MATCHING
