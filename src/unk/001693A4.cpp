@@ -1,5 +1,7 @@
 #include "include_asm.h"
 #include "sdk/math.h"
+extern "C" int *X_func_001D7F48_16976C(void *, int, int) asm("func_001D7F48");
+extern "C" int X_func_001D81C4_16976C(void *, int, int, int, int, int, int) asm("func_001D81C4");
 extern "C" void X_builtin_delete(void *) asm("__builtin_delete");
 extern "C" void Xvi_func_001D859C(void *, int) asm("func_001D859C");
 struct S_16957C {
@@ -161,7 +163,22 @@ extern "C" int func_001696FC(int arg0, int arg1)
     return X_func_001D8778(v, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001693A4", func_0016976C);
+extern "C" int func_0016976C(int arg0, int arg1)
+{
+    int *p0 = X_func_001D7F48_16976C(&D_007812C0, arg0, 0);
+    int *p1 = X_func_001D7F48_16976C(&D_007812C0, arg1, 0);
+    if (p1 != 0 && p0 != 0) {
+        int a = *p0;
+        int b = *p1;
+        if (a == b) {
+            return 1;
+        }
+        if (X_func_001D81C4_16976C(&D_007812C0, a, b, 0, 0, 0, 0) != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/001693A4", D_002F1DF0);
 
