@@ -577,7 +577,64 @@ extern "C" void func_001BEBC4(void *self, int theFlags)
     }
 }
 
+// NON_MATCHING: 18/113 differ, 18 edits
+#ifdef NON_MATCHING
+extern "C" void X_func_001C0078(int, int, int *, int *, int *) asm("func_001C0078");
+extern "C" void func_001BEBEC(int arg0, char *arg1)
+{
+    if (arg1 == 0) {
+        return;
+    }
+
+    M2C_FIELD(arg0, char **, 0x54) = arg1;
+    M2C_FIELD(arg0, int *, 0x38) = M2C_FIELD(arg1, unsigned char *, 0xE);
+    M2C_FIELD(arg0, int *, 0x3C) = M2C_FIELD(arg1, unsigned char *, 0xF);
+    M2C_FIELD(arg0, int *, 0x40) = M2C_FIELD(arg1, unsigned char *, 0x10);
+    int count = M2C_FIELD(arg1, unsigned short *, 0xC);
+    M2C_FIELD(arg0, int *, 0x44) = count;
+    if (M2C_FIELD(arg1, unsigned char *, 0xB) & 2) {
+        M2C_FIELD(arg0, int *, 0x44) = count - 0x1130;
+    }
+    char *p = M2C_FIELD(arg0, char **, 0x54);
+    if (M2C_FIELD(p, unsigned char *, 0xB) & 4) {
+        M2C_FIELD(arg0, int *, 0x44) = M2C_FIELD(arg0, int *, 0x44) - 0xDE0;
+    }
+    M2C_FIELD(arg0, int *, 0x58) = 0;
+    M2C_FIELD(arg0, int *, 0x5C) = 0;
+    M2C_FIELD(arg0, int *, 0x60) = 0;
+    M2C_FIELD(arg0, int *, 0x28) = 0;
+    M2C_FIELD(arg0, int *, 0x24) = 0;
+
+    if (M2C_FIELD(p, int *, 0x14) != 0) {
+        M2C_FIELD(arg0, int *, 0x58) = (int)((long)M2C_FIELD(p, int *, 0x14) + M2C_FIELD(arg0, int *, 0x54) + 4);
+    }
+    if (M2C_FIELD(p, int *, 0x1C) != 0) {
+        M2C_FIELD(arg0, int *, 0x5C) = (int)((long)M2C_FIELD(p, int *, 0x1C) + M2C_FIELD(arg0, int *, 0x54) + 4);
+        M2C_FIELD(arg0, int *, 0x24) = 1;
+        M2C_FIELD(arg0, int *, 0x28) = 1;
+    }
+    if (M2C_FIELD(p, int *, 0x20) != 0) {
+        M2C_FIELD(arg0, int *, 0x60) = (int)((long)M2C_FIELD(p, int *, 0x20) + M2C_FIELD(arg0, int *, 0x54) + 4);
+    }
+
+    int a = 0;
+    int b = 0;
+    int c = 0;
+    X_func_001C0078(arg0, 'A', &a, &b, &c);
+    X_func_001C0078(arg0, 'Z', &a, &b, &c);
+    X_func_001C0078(arg0, 'a', &a, &b, &c);
+    X_func_001C0078(arg0, 'z', &a, &b, &c);
+
+    int bits = M2C_FIELD(arg0, int *, 0x38) * M2C_FIELD(arg0, int *, 0x40);
+    int stride = (bits >> 3) + ((bits & 7) != 0);
+    int glyphSize = stride * M2C_FIELD(arg0, int *, 0x3C);
+    M2C_FIELD(arg0, int *, 0x4C) = stride;
+    M2C_FIELD(arg0, int *, 0x50) = glyphSize;
+    M2C_FIELD(arg0, int *, 0x48) = glyphSize * count;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BEBEC);
+#endif
 
 extern "C" int func_001BEDB0()
 {
