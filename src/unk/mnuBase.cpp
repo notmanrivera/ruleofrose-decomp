@@ -446,7 +446,56 @@ extern "C" int func_00191FF0(int arg0, int arg1)
     return 1;
 }
 
+// NON_MATCHING: 83/103 differ, 10 relocs differ (size 0x19C, game 0x1A8), 83 edits
+#ifdef NON_MATCHING
+extern "C" int Xiiii_func_00191DC8(int, int, int) asm("func_00191DC8");
+extern "C" int Xiii_func_00191ED0(int, int) asm("func_00191ED0");
+extern "C" int Xiiii_func_00191D20(int, int, int) asm("func_00191D20");
+extern "C" int Xiiii_func_00191D74(int, int, int) asm("func_00191D74");
+extern "C" int func_001920C4(int arg0, int arg1)
+{
+    int temp_a2;
+    int temp_t0;
+    int var_v0;
+    int temp_a5;
+    int temp_a7;
+    int temp_v0;
+    int temp_v1;
+
+    var_v0 = 0;
+    temp_a5 = arg0 + 0x48;
+    if (arg1 < 0xE) {
+        temp_t0 = ((const int *)&D_0029BBA8)[arg1];
+        temp_a2 = ((const int *)&D_0029BB70)[arg1] * 0x154;
+        temp_a7 = arg0 + 0x48;
+        if (temp_t0 == 2) {
+            temp_v1 = temp_a2 + M2C_FIELD(temp_a7, int *, 0x4AC);
+            M2C_FIELD(temp_v1, int *, 4) = (int) (M2C_FIELD(temp_v1, int *, 4) | temp_t0);
+        } else {
+            temp_v0 = temp_a2 + M2C_FIELD(temp_a7, int *, 0x4AC);
+            M2C_FIELD(temp_v0, int *, 4) = (int) (M2C_FIELD(temp_v0, int *, 4) & ~2);
+        }
+        M2C_FIELD((temp_a2 + M2C_FIELD(temp_a5, int *, 0x4AC)), int *, 0x58) = (int) ((const int *)&D_0029BBE0)[arg1];
+        M2C_FIELD((temp_a2 + M2C_FIELD(temp_a5, int *, 0x4AC)), int *, 0x58) = (int) ((const int *)&D_0029BC18)[arg1];
+        M2C_FIELD((temp_a2 + M2C_FIELD(temp_a5, int *, 0x4AC)), int *, 0x64) = (int) ((const int *)&D_0029BC50)[arg1];
+        M2C_FIELD((temp_a2 + M2C_FIELD(temp_a5, int *, 0x4AC)), int *, 0x68) = (int) ((const int *)&D_0029BC88)[arg1];
+        M2C_FIELD((temp_a2 + M2C_FIELD(temp_a5, int *, 0x4AC)), int *, 0x10) = (int) ((const int *)&D_0029BCC0)[arg1];
+        if (((const int *)&D_0029BCC0)[arg1] == 0) {
+            Xiiii_func_00191D20(arg0, arg1, 0);
+            Xiiii_func_00191D74(arg0, arg1, 0);
+        } else {
+            Xiii_func_00191ED0(arg0, arg1);
+            Xiiii_func_00191D20(arg0, arg1, 1);
+            Xiiii_func_00191D74(arg0, arg1, 1);
+            Xiiii_func_00191DC8(arg0, arg1, 0);
+        }
+        var_v0 = 1;
+    }
+    return var_v0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001920C4);
+#endif
 
 extern "C" void func_0019226C(int arg0)
 {
