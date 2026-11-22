@@ -1,457 +1,278 @@
 #include "include_asm.h"
-extern "C" float Xfif_modff(int, float) asm("modff");
-extern "C" int X_173688_CheckId(int) asm("I3rRoot__CheckIdString");
-extern "C" void X_173688_173840(int, void *, void *) asm("func_00173840");
-extern "C" void X_173688_assert(const char *, int, const char *) asm("ror_assert");
-extern const char X_173688_2F2700[] asm("D_002F2700");
-extern const char X_173688_2F2710[] asm("D_002F2710");
-extern const char X_173688_2F2720[] asm("D_002F2720");
-extern const char X_173688_2F2730[] asm("D_002F2730");
-struct Foot2Sub_173688 {
-    int f0;
-    int f4;
+#include "unk/EffLight2.h"
+
+struct EffRetSub {
+    unsigned char m_pad0[8];
+    unsigned short m_count;
 };
-extern Foot2Sub_173688 D_00828618;
-extern Foot2Sub_173688 D_00828648;
-struct PC_173688 {
-    char pad[20];
+
+struct DogLightAmbient {
+    float m_color[4];
+} __attribute__((aligned(8)));
+
+struct DogLightPool {
+    void *m_light[6];
+    int m_num[6];
+    DogLightAmbient *getAmbient(int n);
+};
+
+extern "C" const char D_002F2700[];
+extern "C" const char D_002F2710[];
+extern "C" const char D_002F2720[];
+extern "C" const char D_002F2730[];
+extern "C" const char D_002F28D0[];
+extern "C" const char D_002F28E8[];
+extern "C" const char D_002F2910[];
+extern "C" void ror_assert(const char *file, int line, const char *expr);
+
+inline DogLightAmbient *DogLightPool::getAmbient(int n)
+{
+    if (!(n >= 0 && n < m_num[0])) ror_assert(D_002F28D0, 0x81, D_002F28E8);
+    if (!m_light[0]) ror_assert(D_002F28D0, 0x81, D_002F2910);
+    return &((DogLightAmbient *)m_light[0])[n];
+}
+
+extern "C" int X_Eff0__vfunc_02(void *, void *) asm("Eff0__vfunc_02");
+extern "C" void X_func_0016A914(void *) asm("func_0016A914");
+extern "C" void X__$_4Eff0(void *, int) asm("_$_4Eff0");
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void X_free__9BedMemoryPv(void *, void *) asm("free__9BedMemoryPv");
+extern "C" void X_freeID__12DogLightPoolii(void *, int, int) asm("freeID__12DogLightPoolii");
+extern "C" int X_I3rRoot__CheckIdString(int) asm("I3rRoot__CheckIdString");
+extern "C" int X_func_0013FE64__8MagSceneii(int, int, int) asm("func_0013FE64__8MagSceneii");
+extern "C" float X_func_0010DA4C__8DogActor(void *) asm("func_0010DA4C__8DogActor");
+extern "C" int X_func_0010BCC8__8DogActoriff(void *, int, float, float) asm("func_0010BCC8__8DogActoriff");
+extern "C" float X_func_0016FC20(EffVec4A8 *) asm("func_0016FC20");
+extern "C" float X_func_0016FF18(int, void *) asm("func_0016FF18");
+extern "C" EffRetSub **X_func_001700B0(char *, float *, int *) asm("func_001700B0");
+extern "C" int X_func_001702E4(EffFoot1CheckArg *) asm("func_001702E4");
+extern "C" void X_func_001703C0(EffFoot1CheckArg *) asm("func_001703C0");
+extern "C" void X_func_001730D4(EffFoot1 *, void *) asm("func_001730D4");
+extern "C" int X_func_00173380(EffFoot1Prim *) asm("func_00173380");
+extern "C" int X_func_001733CC(EffFoot1Prim *, int, int, int) asm("func_001733CC");
+extern "C" int X_func_00173610() asm("func_00173610");
+extern "C" int X_func_00173618(EffFoot1Prim *, int, int, int) asm("func_00173618");
+extern "C" int X_func_00173620() asm("func_00173620");
+extern "C" int X_func_00173628(EffFoot1Prim *, int, int, int) asm("func_00173628");
+extern "C" void X_func_00173840(void *, void *, EffFoot2State *) asm("func_00173840");
+extern "C" void X_func_00173948(void *, void *, const char *, EffFoot2State *) asm("func_00173948");
+extern "C" void X_func_00174C4C(EffGeneric1 *, float *, float, float) asm("func_00174C4C");
+extern "C" float X_func_00174D14(EffGeneric1 *, EffGenericTrack *) asm("func_00174D14");
+extern "C" void X_func_0017653C(EffLight3 *) asm("func_0017653C");
+extern "C" void X_func_001765E8(EffLight3 *, float) asm("func_001765E8");
+extern "C" void X_func_00176CC8(int, EffFoot1SpawnParam *) asm("func_00176CC8");
+extern "C" int X_func_0022AAB8(EffRetSub **) asm("func_0022AAB8");
+extern "C" int X_func_0022AAD0(EffRetSub **, int) asm("func_0022AAD0");
+extern "C" void X_func_0021AB30(int, EffVec4 *) asm("func_0021AB30");
+extern "C" void X_func_00237408(EffVec4A8 *, EffVec4A8 *, float *) asm("func_00237408");
+extern "C" float X_modff(float, float *) asm("modff");
+extern "C" void X_render__4Eff0PQ24Eff011RENDERPARAM(...) asm("render__4Eff0PQ24Eff011RENDERPARAM");
+
+extern int D_00298E08;
+extern int D_006E9800;
+extern EffFoot2State D_00828618;
+extern EffFoot2State D_00828648;
+extern int vtbl_EffGeneric1 asm("_vt$11EffGeneric1");
+extern int vtbl_EffLight3 asm("_vt$9EffLight3");
+
+struct EffEntityView {
+    char m_pad0[0x94];
     virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
     virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8();
-    virtual void v9(); virtual void v10();
-    virtual struct Actor_173688 *call();
+    virtual int isInactive();
 };
-struct Entity_173688 {
-    char pad0[0x94];
-    virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
-    virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8();
-    virtual int call();
-};
-struct Actor_173688 : public Entity_173688 {
-    char pad98[0x84];
+
+struct EffActorView : public EffEntityView {
+    char m_pad98[0x84];
     int m_i3r_root;
     int hasRoot() {
-        if (m_i3r_root != 0 && X_173688_CheckId(m_i3r_root) != 0) {
-            X_173688_assert(X_173688_2F2720, 0xF8, X_173688_2F2730);
+        if (m_i3r_root != 0 && X_I3rRoot__CheckIdString(m_i3r_root) != 0) {
+            ror_assert(D_002F2720, 0xF8, D_002F2730);
         }
         return m_i3r_root != 0;
     }
 };
-struct Scene_173688 {
-    char pad0[0x2920];
-    char actors[128][0x4D0];
-    char pad29120[0x5C294];
+
+struct EffPcHolder {
+    char m_pad[20];
+    virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
+    virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8();
+    virtual void v9(); virtual void v10();
+    virtual EffActorView *getActor();
+};
+
+struct EffSceneView {
+    char m_pad0[0x2920];
+    char m_actors[128][0x4D0];
+    char m_pad29120[0x5C294];
     int m_curdog;
-    Actor_173688 *getCurDog() {
+    EffActorView *getCurDog() {
         if (m_curdog < 0) {
-            X_173688_assert(X_173688_2F2700, 0x2C4, X_173688_2F2710);
+            ror_assert(D_002F2700, 0x2C4, D_002F2710);
         }
-        return (Actor_173688 *)actors[m_curdog];
+        return (EffActorView *)m_actors[m_curdog];
     }
 };
-extern "C" int X_172F4C_CheckId(int) asm("I3rRoot__CheckIdString");
-extern "C" void X_172F4C_1730D4(int, int) asm("func_001730D4");
-extern "C" void X_172F4C_assert(const char *, int, const char *) asm("ror_assert");
-extern const char D_002F2700[];
-extern const char D_002F2710[];
-extern const char X_172F4C_2F2720[] asm("D_002F2720");
-extern const char D_002F2730[];
-struct m2c_v14_58_i { char pad[20]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual int call(); };
-struct m2c_v94_48_i { char pad[148]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual int call(); };
-struct Scene_172F4C {
-    char pad0[0x2920];
-    char actors[128][0x4D0];
-    char pad29120[0x1CA0];
-    m2c_v14_58_i m_pc;
-    char pad2ADD8[0x5A5DC];
-    int m_curdog;
-    int getCurDog() {
-        if (m_curdog < 0) {
-            X_172F4C_assert(D_002F2700, 0x2C4, D_002F2710);
-        }
-        return (int)actors[m_curdog];
-    }
-};
-struct CheckArg_1730D4 {
-    unsigned int flags;         // 0x00
-    void *actor;                // 0x04
-    float cx;                   // 0x08
-    float cy;                   // 0x0C
-    float cz;                   // 0x10
-    float r1;                   // 0x14
-    float hy;                   // 0x18
-    float unk1C;                // 0x1C
-    float r2;                   // 0x20
-    float pts[4][3];            // 0x24
-    char pad54[0xC];            // 0x54
-};
-struct EffParam_1730D4 {
-    int kind;                   // 0x00
-    int unk04;                  // 0x04
-    int unk08;                  // 0x08
-    int unk0C;                  // 0x0C
-    float pos[3];               // 0x10
-    int unk1C;                  // 0x1C
-    int unk20;                  // 0x20
-    float f24;                  // 0x24
-    float f28;                  // 0x28
-    char pad2C[0x54];           // 0x2C
-};
-struct EffFoot1_1730D4 {
-    char pad0[0x24];
-    float cx, cy, cz;           // 0x24..0x2C
-    float r1, hy, unk38;        // 0x30..0x38
-    int f3C;                    // 0x3C
-    int f40;                    // 0x40
-    float f44;                  // 0x44
-    float f48;                  // 0x48
-};
-extern "C" int Xii_func_001702E4(CheckArg_1730D4 *) asm("func_001702E4");
-extern "C" void Xii_func_001703C0(CheckArg_1730D4 *) asm("func_001703C0");
-extern "C" void Xiii_func_00176CC8(int, EffParam_1730D4 *) asm("func_00176CC8");
-struct Mat4_render9 {
-    float m[4][4];
-} __attribute__((aligned(8)));
-struct Vec4_render9 {
-    float x, y, z, w;
-} __attribute__((aligned(8)));
-class Cam_render9 {
+
+class EffCamView {
 public:
-    Mat4_render9 m_mat;
-    char pad40[0x54];
+    EffMat4 m_mat;
+    char m_pad40[0x54];
     virtual void vfunc0();
     virtual void transform();
 };
-struct RenderParam_render9 {
-    int f00;
-    int f04;
-    int f08;
-};
-class Eff0_render9 {
+
+class Eff0Render {
 public:
-    unsigned short flags;       // 0x00
-    char pad2[0x1A];
-    int f1C;                    // 0x1C
+    unsigned short m_flags;             // +0x00
+    char m_pad02[0x1A];
+    int m_unk1C;                        // +0x1C
     virtual void v0();
     virtual void v1();
     virtual void v2();
     virtual void v3();
     virtual void v4();
     virtual void v5();
-    virtual void v6(RenderParam_render9 *);
+    virtual void v6(EffRenderParam *);
 };
-class EffLight2_render9 : public Eff0_render9 {
-public:
-    char pad24[0xC];
-    Vec4_render9 f30;           // 0x30
-    char pad40[0x28];
-    float f68;                  // 0x68
-    float f6C;                  // 0x6C
-};
-extern "C" void X_render9_237408(Vec4_render9 *, Vec4_render9 *, float *) asm("func_00237408");
-extern "C" float X_render9_16FC20(Vec4_render9 *) asm("func_0016FC20");
-struct Eff0_172E4C {
-    char pad[0x20];
-    void *vptr;
-};
-struct EffFoot1_172E4C : public Eff0_172E4C {
-    float min[3];               // 0x24
-    float ext[3];               // 0x30
-    int f3C;                    // 0x3C
-    int f40;                    // 0x40
-    float f44;                  // 0x44
-    float f48;                  // 0x48
-};
-struct EffFoot1Arg_172E4C {
-    char pad[0x10];
-    float p1[3];                // 0x10
-    float p2[3];                // 0x1C
-    int f28;                    // 0x28
-    int f2C;                    // 0x2C
-    float f30;                  // 0x30
-    float f34;                  // 0x34
-};
-extern "C" int X_EffFoot1_Eff0_vfunc02(EffFoot1_172E4C *, EffFoot1Arg_172E4C *) asm("Eff0__vfunc_02");
-struct EffVec3_175170 { float x, y, z; };
-struct EffVec4_175170 { float x, y, z, w; };
-struct EffLight2_175170 {
-    unsigned short flags;       // 0x00
-    char pad2[0xE];
-    float f10;                  // 0x10
-    char pad14[0x1C];
-    EffVec3_175170 f30;         // 0x30
-    float f3C;                  // 0x3C
-    float f40;                  // 0x40
-    float f44;                  // 0x44
-    float f48;                  // 0x48
-    float f4C;                  // 0x4C
-    EffVec4_175170 f50;         // 0x50
-    float f60;                  // 0x60
-    float f64;                  // 0x64
-    float f68;                  // 0x68
-    int f6C;                    // 0x6C
-    int f70;                    // 0x70
-    int f74;                    // 0x74
-    int f78;                    // 0x78
-};
-struct EffLight2Arg_175170 {
-    char pad0[0x10];
-    EffVec3_175170 f10;         // 0x10
-    float f1C;                  // 0x1C
-    float f20;                  // 0x20
-    EffVec4_175170 f24;         // 0x24
-    int f34;                    // 0x34
-    float f38;                  // 0x38
-    float f3C;                  // 0x3C
-    int f40;                    // 0x40
-};
-extern "C" int X_EffLight2_Eff0_vfunc02(EffLight2_175170 *, EffLight2Arg_175170 *) asm("Eff0__vfunc_02");
-struct EffItem3C_174C4C {
-    float x, y, z, w;
-};
-struct EffObj_174C4C {
-    char pad0[0x24];
-    char *f24;
-    char pad28[0x14];
-    EffItem3C_174C4C *f3C;
-};
-struct EffRetSub_174C4C {
-    char pad0[8];
-    unsigned short f8;
-};
-extern "C" EffRetSub_174C4C **X_174C4C_1700B0(char *, float *, int *) asm("func_001700B0");
-extern "C" int X_174C4C_22AAB8(EffRetSub_174C4C **) asm("func_0022AAB8");
-extern "C" int X_174C4C_22AAD0(EffRetSub_174C4C **, int) asm("func_0022AAD0");
-extern "C" void X_174C4C_21AB30(int, EffItem3C_174C4C *) asm("func_0021AB30");
-extern "C" const char D_002F28D0[];
-extern "C" const char D_002F28E8[];
-extern "C" const char D_002F2910[];
-extern "C" void ror_assert(const char *file, int line, const char *expr);
-struct DogLightAmbient_1765E8 {
-    float m_color[4];
-} __attribute__((aligned(8)));
-struct DogLightPool_1765E8 {
-    void *m_light[6];
-    int m_num[6];
-    DogLightAmbient_1765E8 *getAmbient(int n) {
-        if (!(n >= 0 && n < m_num[0])) ror_assert(D_002F28D0, 0x81, D_002F28E8);
-        if (!m_light[0]) ror_assert(D_002F28D0, 0x81, D_002F2910);
-        return &((DogLightAmbient_1765E8 *)m_light[0])[n];
-    }
-};
-struct EffFindItem1_1765E8 {
-    char pad[0x330];
-    float m_color[3];
-};
-struct EffVec3_v2 {
-    float x, y, z;
-};
-struct EffFoot2Prim_v2 {
-    unsigned short flags;
-    char pad2[0x22];
-    int f24;
-    char pad28[0x8];
-    EffVec3_v2 pos;
-    float w;
-    float f40;
-    float f44;
-    int f48;
-};
-struct EffFoot2Arg_v2 {
-    char pad0[0x10];
-    int f10;
-    EffVec3_v2 pos;
-    float f20;
-    float f24;
-};
-extern "C" int X_12EffFoot2Prim_Eff0_vfunc02(EffFoot2Prim_v2 *, EffFoot2Arg_v2 *) asm("Eff0__vfunc_02");
-struct EffFoot1Prim_v2 {
-    char pad0[0x30];
-    float x, y, z, w;
-    int f40;
-    int f44;
-    int f48;
-    float f4C;
-    float f50;
-};
-struct EffFoot1Arg_v2 {
-    char pad0[0x10];
-    float x, y, z;
-    int f1C;
-    int f20;
-    float f24;
-    float f28;
-};
-extern "C" int X_12EffFoot1Prim_Eff0_vfunc02(EffFoot1Prim_v2 *, EffFoot1Arg_v2 *) asm("Eff0__vfunc_02");
-extern "C" float X_12EffFindItem1_16FF18(int, int) asm("func_0016FF18");
-extern "C" int Xiiiff_func_00174C4Cb(int, int, float, float) asm("func_00174C4C");
-extern "C" int Xiiii_func_00173618(int, int, int, int) asm("func_00173618");
-extern "C" int Xiiii_func_00173628(int, int, int, int) asm("func_00173628");
-extern "C" int Xiiii_func_001733CC(int, int, int, int) asm("func_001733CC");
-extern "C" int Xi_func_00173610() asm("func_00173610");
-extern "C" int Xi_func_00173620() asm("func_00173620");
-extern "C" int Xii_func_00173380(int) asm("func_00173380");
-extern "C" int Xiiiff_func_00174C4C(int, float *, float, float) asm("func_00174C4C");
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" float Xfi_func_0010DA4C__8DogActor(int) asm("func_0010DA4C__8DogActor");
-extern "C" float Xfii_func_00174D14(int, int) asm("func_00174D14");
-extern "C" int Xiiiff_func_0010BCC8__8DogActoriff(int, int, float, float) asm("func_0010BCC8__8DogActoriff");
-extern "C" int Xiiiii_func_00173948(int, int, int, int) asm("func_00173948");
-// Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_func_0013FE64__8MagSceneii(...) asm("func_0013FE64__8MagSceneii");
-extern "C" int X_func_0016FF18(...) asm("func_0016FF18");
-extern "C" int X_func_00173380(...) asm("func_00173380");
-extern "C" int X_func_001733CC(...) asm("func_001733CC");
-extern "C" int X_func_00173610(...) asm("func_00173610");
-extern "C" int X_func_00173618(...) asm("func_00173618");
-extern "C" int X_func_00173620(...) asm("func_00173620");
-extern "C" int X_func_00173628(...) asm("func_00173628");
-extern "C" int X_func_00174C4C(...) asm("func_00174C4C");
-extern "C" float Xii_func_0016FF18(int, int) asm("func_0016FF18");
-extern int D_00298E08;
 
-extern "C" int EffFoot1__vfunc_02(EffFoot1_172E4C *self, EffFoot1Arg_172E4C *arg1)
+class EffLight2Render : public Eff0Render {
+public:
+    char m_pad24[0x0C];
+    EffVec4A8 m_pos;                    // +0x30
+    char m_pad40[0x28];
+    float m_unk68;                      // +0x68
+    float m_dist;                       // +0x6C
+};
+
+extern "C" int EffFoot1__vfunc_02(EffFoot1 *self, EffFoot1Arg *arg1)
 {
-    if (X_EffFoot1_Eff0_vfunc02(self, arg1) == 0) {
+    if (X_Eff0__vfunc_02(self, arg1) == 0) {
         return 0;
     }
     for (int i = 0; i < 3; i++) {
-        if (arg1->p1[i] <= arg1->p2[i]) {
-            self->min[i] = arg1->p1[i];
-            self->ext[i] = arg1->p2[i];
+        if (arg1->m_p0[i] <= arg1->m_p1[i]) {
+            self->m_center[i] = arg1->m_p0[i];
+            self->m_size[i] = arg1->m_p1[i];
         } else {
-            self->min[i] = arg1->p2[i];
-            self->ext[i] = arg1->p1[i];
+            self->m_center[i] = arg1->m_p1[i];
+            self->m_size[i] = arg1->m_p0[i];
         }
-        self->ext[i] -= self->min[i];
-        self->min[i] += self->ext[i] * 0.5f;
+        self->m_size[i] -= self->m_center[i];
+        self->m_center[i] += self->m_size[i] * 0.5f;
     }
-    self->f3C = arg1->f28;
-    self->f40 = arg1->f2C;
-    self->f44 = arg1->f30;
-    self->f48 = arg1->f34;
+    self->m_unk3C = arg1->m_unk28;
+    self->m_unk40 = arg1->m_unk2C;
+    self->m_unk44 = arg1->m_unk30;
+    self->m_unk48 = arg1->m_unk34;
     return 1;
 }
 
-extern "C" int EffFoot1__vfunc_05(int arg0)
+extern "C" int EffFoot1__vfunc_05(EffFoot1 *self)
 {
-    m2c_v14_58_i *pc = (m2c_v14_58_i *)(D_00298E08 + 0x2ADC0);
-    int temp_s1 = pc->call();
-    int temp_s0_2 = ((Scene_172F4C *)D_00298E08)->getCurDog();
-    if (temp_s1 != 0) {
-        int temp_a0_2 = M2C_FIELD(temp_s1, int *, 0x11C);
-        if ((temp_a0_2 != 0) && (X_172F4C_CheckId(temp_a0_2) != 0)) {
-            X_172F4C_assert(X_172F4C_2F2720, 0xF8, D_002F2730);
-        }
-        if (M2C_FIELD(temp_s1, int *, 0x11C) != 0) {
-            if (((m2c_v94_48_i *)(temp_s1))->call() == 0) {
-                X_172F4C_1730D4(arg0, temp_s1);
-            }
+    EffPcHolder *pc = (EffPcHolder *)(D_00298E08 + 0x2ADC0);
+    EffActorView *pcActor = pc->getActor();
+    EffActorView *dog = ((EffSceneView *)D_00298E08)->getCurDog();
+    if (pcActor != 0) {
+        if (pcActor->hasRoot() && pcActor->isInactive() == 0) {
+            X_func_001730D4(self, pcActor);
         }
     }
-    int temp_a0_3 = M2C_FIELD(temp_s0_2, int *, 0x11C);
-    if ((temp_a0_3 != 0) && (X_172F4C_CheckId(temp_a0_3) != 0)) {
-        X_172F4C_assert(X_172F4C_2F2720, 0xF8, D_002F2730);
-    }
-    if (M2C_FIELD(temp_s0_2, int *, 0x11C) != 0) {
-        if (((m2c_v94_48_i *)(temp_s0_2))->call() == 0) {
-            X_172F4C_1730D4(arg0, temp_s0_2);
-        }
+    if (dog->hasRoot() && dog->isInactive() == 0) {
+        X_func_001730D4(self, dog);
     }
     return 1;
 }
 
-extern "C" void func_001730D4(EffFoot1_1730D4 *arg0, void *arg1)
+extern "C" void func_001730D4(EffFoot1 *self, void *actor)
 {
-    CheckArg_1730D4 chk;
-    chk.actor = arg1;
-    chk.cx = arg0->cx;
-    chk.cy = arg0->cy;
-    chk.cz = arg0->cz;
-    chk.r1 = arg0->r1;
-    chk.hy = arg0->hy;
-    chk.unk1C = arg0->unk38;
-    chk.r2 = 100.0f;
-    chk.flags = 0;
-    if (Xii_func_001702E4(&chk) != 0) {
-        EffParam_1730D4 param;
-        param.kind = 0x1E;
-        param.unk1C = arg0->f3C;
-        param.unk20 = arg0->f40;
-        param.f24 = arg0->f44;
-        param.f28 = arg0->f48;
-        param.unk08 = 0;
-        Xii_func_001703C0(&chk);
+    EffFoot1CheckArg chk;
+    chk.m_actor = actor;
+    chk.m_cx = self->m_center[0];
+    chk.m_cy = self->m_center[1];
+    chk.m_cz = self->m_center[2];
+    chk.m_r1 = self->m_size[0];
+    chk.m_hy = self->m_size[1];
+    chk.m_unk1C = self->m_size[2];
+    chk.m_r2 = 100.0f;
+    chk.m_flags = 0;
+    if (X_func_001702E4(&chk) != 0) {
+        EffFoot1SpawnParam param;
+        param.m_kind = 0x1E;
+        param.m_unk1C = self->m_unk3C;
+        param.m_unk20 = self->m_unk40;
+        param.m_unk24 = self->m_unk44;
+        param.m_unk28 = self->m_unk48;
+        param.m_unk08 = 0;
+        X_func_001703C0(&chk);
         for (int i = 0; i < 4; i++) {
-            if (chk.flags & (1 << i)) {
-                param.pos[0] = chk.pts[i][0];
-                param.pos[1] = chk.pts[i][1];
-                param.pos[2] = chk.pts[i][2];
-                Xiii_func_00176CC8(D_00298E08 + 0x837E0, &param);
+            if (chk.m_flags & (1 << i)) {
+                param.m_pos[0] = chk.m_pts[i][0];
+                param.m_pos[1] = chk.m_pts[i][1];
+                param.m_pos[2] = chk.m_pts[i][2];
+                X_func_00176CC8(D_00298E08 + 0x837E0, &param);
             }
         }
     }
 }
 
-extern "C" int EffFoot1Prim__vfunc_02(EffFoot1Prim_v2 *self, EffFoot1Arg_v2 *arg1)
+extern "C" int EffFoot1Prim__vfunc_02(EffFoot1Prim *self, EffFoot1PrimArg *arg1)
 {
-    if (X_12EffFoot1Prim_Eff0_vfunc02(self, arg1) == 0) {
+    if (X_Eff0__vfunc_02(self, arg1) == 0) {
         return 0;
     }
-    self->x = arg1->x;
-    self->y = arg1->y;
-    self->z = arg1->z;
-    self->w = 1.0f;
-    self->f40 = arg1->f1C;
-    self->f44 = arg1->f20;
-    self->f4C = arg1->f24;
-    self->f50 = arg1->f28;
-    self->f48 = 0;
+    self->m_pos.x = arg1->m_x;
+    self->m_pos.y = arg1->m_y;
+    self->m_pos.z = arg1->m_z;
+    self->m_pos.w = 1.0f;
+    self->m_unk40 = arg1->m_unk1C;
+    self->m_mode = arg1->m_unk20;
+    self->m_unk4C = arg1->m_unk24;
+    self->m_unk50 = arg1->m_unk28;
+    self->m_frame = 0;
     return 1;
 }
 
-extern "C" int EffFoot1Prim__vfunc_05(int arg0)
+extern "C" int EffFoot1Prim__vfunc_05(EffFoot1Prim *self)
 {
-    switch (M2C_FIELD(arg0, int *, 0x44)) {
+    switch (self->m_mode) {
     case 0:
-        return Xii_func_00173380(arg0);
+        return X_func_00173380(self);
     case 1:
-        return Xi_func_00173610();
+        return X_func_00173610();
     case 2:
-        return Xi_func_00173620();
+        return X_func_00173620();
     }
     return 0;
 }
 
-extern "C" int EffFoot1Prim__vfunc_08(int arg0, int arg1, int arg2, int arg3)
+extern "C" int EffFoot1Prim__vfunc_08(EffFoot1Prim *self, int arg1, int arg2, int arg3)
 {
-    switch (M2C_FIELD(arg0, int *, 0x44)) {
+    switch (self->m_mode) {
     case 0:
-        return Xiiii_func_001733CC(arg0, arg1, arg2, arg3);
+        return X_func_001733CC(self, arg1, arg2, arg3);
     case 1:
-        return Xiiii_func_00173618(arg0, arg1, arg2, arg3);
+        return X_func_00173618(self, arg1, arg2, arg3);
     case 2:
-        return Xiiii_func_00173628(arg0, arg1, arg2, arg3);
+        return X_func_00173628(self, arg1, arg2, arg3);
     }
     return arg3;
 }
 
-extern "C" void updateZDepth__12EffFoot1Prim(int arg0)
+extern "C" void updateZDepth__12EffFoot1Prim(EffFoot1Prim *self)
 {
-    M2C_FIELD(arg0, float *, 0x10) = Xii_func_0016FF18(D_00298E08 + 0x2AB70, arg0 + 0x30);
+    self->m_zDepth = X_func_0016FF18(D_00298E08 + 0x2AB70, &self->m_pos);
 }
 
-extern "C" int func_00173380(int arg0)
+extern "C" int func_00173380(EffFoot1Prim *self)
 {
-    int temp_v0;
-    int var_v1;
-
-    var_v1 = 1;
-    temp_v0 = M2C_FIELD(arg0, int *, 0x48) + 1;
-    M2C_FIELD(arg0, int *, 0x48) = temp_v0;
-    if (!((((float) temp_v0 * -0.049999997951090336f) + 1.0f) > 0.0f)) {
-        var_v1 = 0;
+    int ret = 1;
+    int frame = self->m_frame + 1;
+    self->m_frame = frame;
+    if (!((((float)frame * -0.049999997951090336f) + 1.0f) > 0.0f)) {
+        ret = 0;
     }
-    return var_v1;
+    return ret;
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_001733CC);
@@ -461,58 +282,62 @@ extern "C" int func_00173610()
     return 0;
 }
 
-
 extern "C" int func_00173618(int arg0, int arg1, int arg2, int arg3)
 {
+    (void)arg0;
+    (void)arg1;
+    (void)arg2;
     return arg3;
 }
-
 
 extern "C" int func_00173620()
 {
     return 0;
 }
 
-
 extern "C" int func_00173628(int arg0, int arg1, int arg2, int arg3)
 {
+    (void)arg0;
+    (void)arg1;
+    (void)arg2;
     return arg3;
 }
 
-
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot2__vfunc_02);
-
-extern "C" int EffFoot2__vfunc_05(int arg0)
+extern "C" int EffFoot2__vfunc_02(void *self, void *arg1)
 {
-    if (D_00828648.f4 > 0) {
-        PC_173688 *pc = (PC_173688 *)(D_00298E08 + 0x2ADC0);
-        Actor_173688 *a = pc->call();
+    if (X_Eff0__vfunc_02(self, arg1) == 0) {
+        return 0;
+    }
+    D_00828648.m_unk00 = 0;
+    D_00828648.m_unk04 = 0;
+    D_00828648.m_unk08 = 10.0f;
+    D_00828618.m_unk00 = 0x10;
+    D_00828618.m_unk04 = 0;
+    D_00828618.m_unk08 = 10.0f;
+    return 1;
+}
+
+extern "C" int EffFoot2__vfunc_05(void *self)
+{
+    if (D_00828648.m_unk04 > 0) {
+        EffPcHolder *pc = (EffPcHolder *)(D_00298E08 + 0x2ADC0);
+        EffActorView *a = pc->getActor();
         if (a != 0) {
-            if (a->hasRoot() && a->call() == 0) {
-                X_173688_173840(arg0, a, &D_00828648);
+            if (a->hasRoot() && a->isInactive() == 0) {
+                X_func_00173840(self, a, &D_00828648);
             }
         }
     }
-    if (D_00828618.f4 > 0) {
-        Actor_173688 *dog = ((Scene_173688 *)D_00298E08)->getCurDog();
-        if (dog->hasRoot() && dog->call() == 0) {
-            X_173688_173840(arg0, dog, &D_00828618);
+    if (D_00828618.m_unk04 > 0) {
+        EffActorView *dog = ((EffSceneView *)D_00298E08)->getCurDog();
+        if (dog->hasRoot() && dog->isInactive() == 0) {
+            X_func_00173840(self, dog, &D_00828618);
         }
     }
     return 1;
 }
 
-// D_002F2698: the end of unk/EffFire1's .rodata now (config/splits_manual.tsv)
-
-// D_002F26A8: the end of unk/EffFire1's .rodata now (config/splits_manual.tsv)
-
-// D_002F26B8: the end of unk/EffFire1's .rodata now (config/splits_manual.tsv)
-
-// D_002F26C8: the end of unk/EffFire1's .rodata now (config/splits_manual.tsv)
-
-// D_002F26D8: the end of unk/EffFire1's .rodata now (config/splits_manual.tsv)
-
-// D_002F26E8: the end of unk/EffFire1's .rodata now (config/splits_manual.tsv)
+// D_002F2698..D_002F26E8: the end of unk/EffFire1's .rodata now (config/splits_manual.tsv)
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F2700);
 
@@ -526,88 +351,76 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F2760);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F2770);
 
-extern "C" void func_00173840(int arg0, int arg1, int arg2)
+extern "C" void func_00173840(void *self, void *actor, EffFoot2State *state)
 {
-    float temp_f0;
-    int temp_v0;
-
-    temp_f0 = Xfi_func_0010DA4C__8DogActor((int) arg1);
-    if (temp_f0 >= 0.0f) {
-        temp_v0 = Xiiiff_func_0010BCC8__8DogActoriff((int) arg1, -1, temp_f0, temp_f0 + 1.0f);
-        if (temp_v0 & 0x10000000) {
-            Xiiiii_func_00173948((int) arg0, arg1, (int) "Bip01 L Toe0", arg2);
+    float f = X_func_0010DA4C__8DogActor(actor);
+    if (f >= 0.0f) {
+        int bits = X_func_0010BCC8__8DogActoriff(actor, -1, f, f + 1.0f);
+        if (bits & 0x10000000) {
+            X_func_00173948(self, actor, "Bip01 L Toe0", state);
         }
-        if (temp_v0 & 0x20000000) {
-            Xiiiii_func_00173948((int) arg0, arg1, (int) "Bip01 R Toe0", arg2);
+        if (bits & 0x20000000) {
+            X_func_00173948(self, actor, "Bip01 R Toe0", state);
         }
-        if (temp_v0 & 0x04000000) {
-            Xiiiii_func_00173948((int) arg0, arg1, (int) "Bip01 L Finger0", arg2);
+        if (bits & 0x04000000) {
+            X_func_00173948(self, actor, "Bip01 L Finger0", state);
         }
-        if (temp_v0 & 0x08000000) {
-            Xiiiii_func_00173948((int) arg0, arg1, (int) "Bip01 R Finger0", arg2);
+        if (bits & 0x08000000) {
+            X_func_00173948(self, actor, "Bip01 R Finger0", state);
         }
     }
 }
 
 // NON_MATCHING: 2/82 differ, 2 edits
 #ifdef NON_MATCHING
-extern "C" void X_173948_assert(const char *, int, const char *) asm("ror_assert");
-extern "C" const char D_002F2720[];
 extern "C" int X_173948_22B3D8(void *, const char *) asm("func_0022B3D8");
 extern "C" void X_173948_176CC8(int, void *) asm("func_00176CC8");
-struct Vec3_173948 {
-    float x, y, z; // Vec3_173948
-}; // Vec3_173948
 struct Vec4_173948 {
-    float x, y, z, w; // Vec4_173948
+    float x, y, z, w;
     Vec4_173948() {
         z = y = x = 0.0f;
         w = 1.0f;
-    } // Vec4_173948 ctor
+    }
 } __attribute__((aligned(16)));
 struct EffParam_173948 {
-    int kind; // EffParam_173948
-    int unk04; // EffParam_173948
-    int unk08; // EffParam_173948
-    int unk0C; // EffParam_173948
-    int unk10; // EffParam_173948
-    float pos[3]; // EffParam_173948
-    float f20; // EffParam_173948
-    float f24; // EffParam_173948
-    char pad28[0x58]; // EffParam_173948
-}; // EffParam_173948
-struct Arg3_173948 {
-    int f00; // Arg3_173948
-    int f04; // Arg3_173948
-    float f08; // Arg3_173948
-}; // Arg3_173948
+    int kind;
+    int unk04;
+    int unk08;
+    int unk0C;
+    int unk10;
+    float pos[3];
+    float f20;
+    float f24;
+    char pad28[0x58];
+};
 class DogEntity_173948 {
-public: // DogEntity_173948
-    char pad0[0x40]; // DogEntity_173948
+public:
+    char pad0[0x40];
     float x, y, z;              // 0x40..0x48
-    char pad4C[0x8]; // DogEntity_173948
+    char pad4C[0x8];
     float f54;                  // 0x54
-    char pad58[0x3C]; // DogEntity_173948
+    char pad58[0x3C];
     virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
     virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8();
     virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12();
     virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16();
     virtual void v17();
     virtual void v18(Vec4_173948 *, int);
-}; // DogEntity_173948
+};
 class DogModel_173948 : public DogEntity_173948 {
-public: // DogModel_173948
-    char pad98[0x84]; // DogModel_173948
+public:
+    char pad98[0x84];
     void *m_i3r_root;           // 0x11C
     int getNodeIndexByName(const char *p) {
-        if (!m_i3r_root) X_173948_assert(D_002F2720, 0x131, "m_i3r_root");
-        if (!p) X_173948_assert(D_002F2720, 0x131, "p");
+        if (!m_i3r_root) ror_assert(D_002F2720, 0x131, "m_i3r_root");
+        if (!p) ror_assert(D_002F2720, 0x131, "p");
         return X_173948_22B3D8(m_i3r_root, p);
-    } // getNodeIndexByName
-}; // DogModel_173948
-extern "C" void func_00173948(int arg0, DogModel_173948 *arg1, const char *arg2, Arg3_173948 *arg3)
+    }
+};
+extern "C" void func_00173948(void *arg0, DogModel_173948 *arg1, const char *arg2, EffFoot2State *arg3)
 {
-    Vec3_173948 pos;
+    (void)arg0;
+    EffVec3 pos;
     pos.x = arg1->x;
     pos.y = arg1->y;
     pos.z = arg1->z;
@@ -615,98 +428,95 @@ extern "C" void func_00173948(int arg0, DogModel_173948 *arg1, const char *arg2,
     arg1->v18(&vec, arg1->getNodeIndexByName(arg2));
     EffParam_173948 param;
     param.kind = 0x20;
-    param.unk10 = arg3->f00;
+    param.unk10 = arg3->m_unk00;
     param.pos[0] = vec.x;
     param.pos[1] = pos.y;
     param.pos[2] = vec.z;
     param.f20 = arg1->f54;
-    param.f24 = arg3->f08;
+    param.f24 = arg3->m_unk08;
     param.unk08 = 0;
     X_173948_176CC8(D_00298E08 + 0x837E0, &param);
-    arg3->f04--;
+    arg3->m_unk04--;
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00173948);
 #endif
 
-extern "C" int EffFoot2Prim__vfunc_02(EffFoot2Prim_v2 *self, EffFoot2Arg_v2 *arg1)
+extern "C" int EffFoot2Prim__vfunc_02(EffFoot2Prim *self, EffFoot2PrimArg *arg1)
 {
-    if (X_12EffFoot2Prim_Eff0_vfunc02(self, arg1) == 0) {
+    if (X_Eff0__vfunc_02(self, arg1) == 0) {
         return 0;
     }
-    self->flags |= 0x10;
-    self->f24 = arg1->f10;
-    self->pos = arg1->pos;
-    self->w = 1.0f;
-    self->pos.y += -2.0f;
-    self->f40 = arg1->f20;
-    self->f44 = arg1->f24;
-    self->f48 = 0;
+    self->m_flags |= 0x10;
+    self->m_unk24 = arg1->m_unk10;
+    self->m_pos = arg1->m_pos;
+    self->m_w = 1.0f;
+    self->m_pos.y += -2.0f;
+    self->m_unk40 = arg1->m_unk20;
+    self->m_unk44 = arg1->m_unk24;
+    self->m_frame = 0;
     return 1;
 }
 
-extern "C" int EffFoot2Prim__vfunc_05(int arg0)
+extern "C" int EffFoot2Prim__vfunc_05(EffFoot2Prim *self)
 {
-    int temp_v1;
-
-    if ((M2C_FIELD(arg0, unsigned short *, 0) & 2) && (M2C_FIELD(arg0, int *, 0x48) < 0xA5)) {
-        M2C_FIELD(arg0, int *, 0x48) = 0xA5;
+    if ((self->m_flags & 2) && (self->m_frame < 0xA5)) {
+        self->m_frame = 0xA5;
     }
-    temp_v1 = M2C_FIELD(arg0, int *, 0x48) + 1;
-    M2C_FIELD(arg0, int *, 0x48) = temp_v1;
-    return temp_v1 < 0xB4;
+    int frame = self->m_frame + 1;
+    self->m_frame = frame;
+    return frame < 0xB4;
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot2Prim__vfunc_08);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00173DF8);
-
-extern int _vt$11EffGeneric1;
-extern int D_006E9800;
-extern "C" void X_dtor11_free(void *, void *) asm("free__9BedMemoryPv");
-extern "C" void X_dtor11_Eff0(void *, int) asm("_$_4Eff0");
-extern "C" void X_dtor11_delete(void *) asm("__builtin_delete");
-struct EffGeneric1_dtor {
-    char pad0[0x20];
-    void *vtable;
-    void *f24;
-    int f28;
-    void *f2C;
-    int f30;
-    int f34;
-    void *f38;
-    void *f3C;
-    void *f40;
-};
-extern "C" void dtor_11EffGeneric1(EffGeneric1_dtor *self, int arg1) asm("_$_11EffGeneric1");
-extern "C" void dtor_11EffGeneric1(EffGeneric1_dtor *self, int arg1)
+#ifdef NON_MATCHING
+extern "C" void func_00173DF8(EffGeneric1 *self)
 {
-    self->vtable = &_vt$11EffGeneric1;
-    if (self->f24 != 0) {
-        X_dtor11_free(&D_006E9800, self->f24);
-        self->f24 = 0;
+    X_func_0016A914(self);
+    self->m_vtbl = &vtbl_EffGeneric1;
+    self->m_zDepth = 0.0f;
+    self->m_buf24 = 0;
+    self->m_unk28 = 0;
+    self->m_buf2C = 0;
+    self->m_unk30 = 0;
+    self->m_unk34 = 0;
+    self->m_buf38 = 0;
+    self->m_data = 0;
+}
+#else
+INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00173DF8);
+#endif
+
+extern "C" void EffGeneric1_dtor(EffGeneric1 *self, int flags) asm("_$_11EffGeneric1");
+extern "C" void EffGeneric1_dtor(EffGeneric1 *self, int flags)
+{
+    self->m_vtbl = &vtbl_EffGeneric1;
+    if (self->m_buf24 != 0) {
+        X_free__9BedMemoryPv(&D_006E9800, self->m_buf24);
+        self->m_buf24 = 0;
     }
-    if (self->f2C != 0) {
-        X_dtor11_free(&D_006E9800, self->f2C);
-        self->f2C = 0;
-        self->f30 = 0;
-        self->f34 = 0;
+    if (self->m_buf2C != 0) {
+        X_free__9BedMemoryPv(&D_006E9800, self->m_buf2C);
+        self->m_buf2C = 0;
+        self->m_unk30 = 0;
+        self->m_unk34 = 0;
     }
-    if (self->f38 != 0) {
-        X_dtor11_free(&D_006E9800, self->f38);
-        self->f38 = 0;
+    if (self->m_buf38 != 0) {
+        X_free__9BedMemoryPv(&D_006E9800, self->m_buf38);
+        self->m_buf38 = 0;
     }
-    if (self->f3C != 0) {
-        X_dtor11_free(&D_006E9800, self->f3C);
-        self->f3C = 0;
+    if (self->m_uvList != 0) {
+        X_free__9BedMemoryPv(&D_006E9800, self->m_uvList);
+        self->m_uvList = 0;
     }
-    if (self->f40 != 0) {
-        X_dtor11_free(&D_006E9800, self->f40);
-        self->f40 = 0;
+    if (self->m_data != 0) {
+        X_free__9BedMemoryPv(&D_006E9800, self->m_data);
+        self->m_data = 0;
     }
-    X_dtor11_Eff0(self, 0);
-    if (arg1 & 1) {
-        return X_dtor11_delete(self);
+    X__$_4Eff0(self, 0);
+    if (flags & 1) {
+        return X___builtin_delete(self);
     }
 }
 
@@ -722,33 +532,23 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F2820);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffGeneric1__vfunc_02);
 
-extern "C" int EffGeneric1__vfunc_05(int arg0)
+extern "C" int EffGeneric1__vfunc_05(EffGeneric1 *self)
 {
-    struct { char pad0[16]; } stack;
-    float temp_f12;
-    int var_s2;
-    int temp_v0;
-    int var_s0;
-
-    M2C_FIELD(arg0, unsigned short *, 0x44)++;
-    if (M2C_FIELD(arg0, unsigned short *, 0x44) > M2C_FIELD(arg0, unsigned short *, 0x46)) {
-        M2C_FIELD(arg0, unsigned short *, 0x44) -= M2C_FIELD(arg0, unsigned short *, 0x46) + 1;
+    float ipart;
+    self->m_curFrame++;
+    if (self->m_curFrame > self->m_maxFrame) {
+        self->m_curFrame = self->m_curFrame - self->m_maxFrame - 1;
     }
-    temp_v0 = M2C_FIELD(arg0, int *, 0x40);
-    var_s2 = 0;
-    var_s0 = temp_v0 + 0x10;
-    if (M2C_FIELD(temp_v0, unsigned short *, 2) != 0) {
-        do {
-            if (M2C_FIELD(var_s0, unsigned short *, 0) == 4) {
-                temp_f12 = M2C_FIELD(var_s0, float *, 0x2C) + (M2C_FIELD(var_s0, float *, 0x24) / 60.0f);
-                M2C_FIELD(var_s0, float *, 0x2C) = temp_f12;
-                M2C_FIELD(var_s0, float *, 0x30) = (float) (M2C_FIELD(var_s0, float *, 0x30) + (M2C_FIELD(var_s0, float *, 0x28) / 60.0f));
-                M2C_FIELD(var_s0, float *, 0x2C) = Xfif_modff((int)&stack, temp_f12);
-                M2C_FIELD(var_s0, float *, 0x30) = Xfif_modff((int)&stack, M2C_FIELD(var_s0, float *, 0x30));
-            }
-            var_s2 += 1;
-            var_s0 += M2C_FIELD(var_s0, unsigned short *, 2);
-        } while (var_s2 < (int) M2C_FIELD(M2C_FIELD(arg0, int *, 0x40), unsigned short *, 2));
+    char *p = (char *)self->m_data + 0x10;
+    for (int i = 0; i < self->m_data->m_chunkCount; i++) {
+        EffGenericChunk *c = (EffGenericChunk *)p;
+        if (c->m_type == 4) {
+            c->m_u += c->m_du / 60.0f;
+            c->m_v += c->m_dv / 60.0f;
+            c->m_u = X_modff(c->m_u, &ipart);
+            c->m_v = X_modff(c->m_v, &ipart);
+        }
+        p += c->m_size;
     }
     return 1;
 }
@@ -759,165 +559,133 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F2880);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", renderPreMain__11EffGeneric1PQ24Eff011RENDERPARAM);
 
-extern "C" void func_001749FC(int arg0, int arg1, int arg2)
+extern "C" void func_001749FC(EffGeneric1 *self, EffGenericTrack *track, float *out)
 {
-    float temp_f0;
-
-    temp_f0 = Xfii_func_00174D14((int) arg0, arg1);
-    if (M2C_FIELD(arg1, unsigned short *, 6) & 1 & 0xFFFF) {
-        M2C_FIELD(arg2, float *, 0) = temp_f0;
+    float v = X_func_00174D14(self, track);
+    if (track->m_mask & 1) {
+        out[0] = v;
     }
-    if (M2C_FIELD(arg1, unsigned short *, 6) & 2) {
-        M2C_FIELD(arg2, float *, 4) = temp_f0;
+    if (track->m_mask & 2) {
+        out[1] = v;
     }
-    if (M2C_FIELD(arg1, unsigned short *, 6) & 4) {
-        M2C_FIELD(arg2, float *, 8) = temp_f0;
+    if (track->m_mask & 4) {
+        out[2] = v;
     }
 }
 
-extern "C" void func_00174A60(int arg0, int arg1, int arg2)
+extern "C" void func_00174A60(EffGeneric1 *self, EffGenericTrack *track, float *out)
 {
-    float temp_f0;
-
-    if (!((*(unsigned short *)M2C_FIELD(arg0, int *, 0x40)) & 4)) {
-        temp_f0 = Xfii_func_00174D14(arg0, arg1);
-        if (M2C_FIELD(arg1, unsigned short *, 6) & 1 & 0xFFFF) {
-            M2C_FIELD(arg2, float *, 0) = temp_f0;
+    if (!(self->m_data->m_flags & 4)) {
+        float v = X_func_00174D14(self, track);
+        if (track->m_mask & 1) {
+            out[0] = v;
         }
-        if (M2C_FIELD(arg1, unsigned short *, 6) & 2) {
-            M2C_FIELD(arg2, float *, 4) = temp_f0;
+        if (track->m_mask & 2) {
+            out[1] = v;
         }
-        if (M2C_FIELD(arg1, unsigned short *, 6) & 4) {
-            M2C_FIELD(arg2, float *, 8) = temp_f0;
+        if (track->m_mask & 4) {
+            out[2] = v;
         }
     }
 }
 
-extern "C" void func_00174AD8(int arg0, int arg1, int arg2)
+extern "C" void func_00174AD8(EffGeneric1 *self, EffGenericTrack *track, float *out)
 {
-    float temp_f0;
-
-    temp_f0 = Xfii_func_00174D14((int) arg0, arg1);
-    if (M2C_FIELD(arg1, unsigned short *, 6) & 1 & 0xFFFF) {
-        M2C_FIELD(arg2, float *, 0) = temp_f0;
+    float v = X_func_00174D14(self, track);
+    if (track->m_mask & 1) {
+        out[0] = v;
     }
-    if (M2C_FIELD(arg1, unsigned short *, 6) & 2) {
-        M2C_FIELD(arg2, float *, 4) = temp_f0;
+    if (track->m_mask & 2) {
+        out[1] = v;
     }
-    if (M2C_FIELD(arg1, unsigned short *, 6) & 4) {
-        M2C_FIELD(arg2, float *, 8) = temp_f0;
+    if (track->m_mask & 4) {
+        out[2] = v;
     }
 }
 
-extern "C" void func_00174B3C(int arg0, int arg1, int arg2)
+extern "C" void func_00174B3C(EffGeneric1 *self, EffGenericTrack *track, float *out)
 {
-    float temp_f0;
-
-    temp_f0 = Xfii_func_00174D14((int) arg0, arg1);
-    if (M2C_FIELD(arg1, unsigned short *, 6) & 1 & 0xFFFF) {
-        M2C_FIELD(arg2, float *, 0) = temp_f0;
+    float v = X_func_00174D14(self, track);
+    if (track->m_mask & 1) {
+        out[0] = v;
     }
-    if (M2C_FIELD(arg1, unsigned short *, 6) & 2) {
-        M2C_FIELD(arg2, float *, 4) = temp_f0;
+    if (track->m_mask & 2) {
+        out[1] = v;
     }
-    if (M2C_FIELD(arg1, unsigned short *, 6) & 4) {
-        M2C_FIELD(arg2, float *, 8) = temp_f0;
+    if (track->m_mask & 4) {
+        out[2] = v;
     }
-    if (M2C_FIELD(arg1, unsigned short *, 6) & 8) {
-        M2C_FIELD(arg2, float *, 0xC) = temp_f0;
+    if (track->m_mask & 8) {
+        out[3] = v;
     }
 }
 
-extern "C" void func_00174BB0(int arg0, int arg1)
+extern "C" void func_00174BB0(EffGeneric1 *self, EffGenericChunk *chunk)
 {
-    Xiiiff_func_00174C4C(arg0, (float *)(arg1 + 4), M2C_FIELD(arg1, float *, 0x2C), M2C_FIELD(arg1, float *, 0x30));
+    X_func_00174C4C(self, chunk->m_tag, chunk->m_u, chunk->m_v);
 }
 
-extern "C" void func_00174BD8(int arg0, int arg1)
+extern "C" void func_00174BD8(EffGeneric1 *self, EffUvTrack *track)
 {
-    int var_v1;
-    unsigned short temp_v1;
-    int var_a2;
-
-    temp_v1 = M2C_FIELD(arg1, unsigned short *, 0x24);
-    var_v1 = temp_v1 - 1;
-    var_a2 = arg1 + (temp_v1 * 0x10) + 0x18;
-    if (var_v1 >= 0) {
+    unsigned short num = track->m_numKeys;
+    int i = num - 1;
+    EffUvKey *k = (EffUvKey *)((char *)track + (num * 0x10) + 0x18);
+    if (i >= 0) {
         for (;;) {
-            if ((unsigned short) M2C_FIELD(arg0, unsigned short *, 0x44) >= (unsigned short) M2C_FIELD(var_a2, unsigned short *, 0)) {
+            if (self->m_curFrame >= k->m_frame) {
                 break;
             }
-            var_v1 -= 1;
-            if (var_v1 < 0) {
+            i--;
+            if (i < 0) {
                 return;
             }
-            var_a2 -= 0x10;
+            k--;
         }
-        if (var_v1 >= 0) {
-            Xiiiff_func_00174C4Cb(arg0, arg1 + 4, M2C_FIELD(var_a2, float *, 4), M2C_FIELD(var_a2, float *, 8));
+        if (i >= 0) {
+            X_func_00174C4C(self, track->m_tag, k->m_u, k->m_v);
         }
     }
 }
 
-extern "C" void func_00174C44(void) {
+extern "C" void func_00174C44(void)
+{
 }
 
-extern "C" void func_00174C4C(EffObj_174C4C *arg0, float *arg1, float fp0, float fp1)
+extern "C" void func_00174C4C(EffGeneric1 *self, float *tag, float u, float v)
 {
     int idx;
-    EffRetSub_174C4C **p = X_174C4C_1700B0(arg0->f24 + 0x10, arg1, &idx);
+    EffRetSub **p = X_func_001700B0(self->m_buf24 + 0x10, tag, &idx);
     if (p != 0) {
-        EffItem3C_174C4C *item = &arg0->f3C[idx];
-        item->x = fp0;
-        item->y = fp1;
-        int n = X_174C4C_22AAB8(p);
+        EffVec4 *item = &self->m_uvList[idx];
+        item->x = u;
+        item->y = v;
+        int n = X_func_0022AAB8(p);
         for (idx = 0; idx < n; idx++) {
-            X_174C4C_21AB30(X_174C4C_22AAD0(p, idx), item);
+            X_func_0021AB30(X_func_0022AAD0(p, idx), item);
         }
-        (*p)->f8++;
+        (*p)->m_count++;
     }
 }
 
-// NON_MATCHING: 30/47 differ (size 0xBC, game 0xC4), 19 edits
 #ifdef NON_MATCHING
-struct EffKey_174D14 {
-    unsigned short frame;
-    unsigned short flags;
-    float value;
-};
-struct EffTrack_174D14 {
-    char pad0[4];
-    unsigned short numKeys;
-    unsigned short flags;
-    EffKey_174D14 keys[1];
-};
-struct EffObj_174D14 {
-    char pad0[0x44];
-    unsigned short curFrame;
-};
-extern "C" float func_00174D14(EffObj_174D14 *obj, EffTrack_174D14 *track)
+extern "C" float func_00174D14(EffGeneric1 *self, EffGenericTrack *track)
 {
     int i;
-    EffKey_174D14 *p = track->keys;
-    for (i = 0; i < track->numKeys; i++, p++) {
-        if (obj->curFrame < p->frame) {
+    EffGenericKey *p = track->m_keys;
+    for (i = 0; i < track->m_numKeys; i++, p++) {
+        if (self->m_curFrame < p->m_frame) {
             break;
         }
     }
     if (i > 0) {
-        if (i != track->numKeys) {
-            goto check_flags;
+        if (i == track->m_numKeys) {
+            return (p - 1)->m_value;
         }
-    ret_prev:
-        return (p - 1)->value;
-    check_flags:
-        if (!(p->flags & 1)) {
-            goto ret_prev;
+        if (((unsigned short)(p->m_flags & 1)) != 0) {
+            EffGenericKey *prev = p - 1;
+            return prev->m_value + ((p->m_value - prev->m_value) * (float)(self->m_curFrame - prev->m_frame)) / (float)(p->m_frame - prev->m_frame);
         }
-        EffKey_174D14 *prev = p - 1;
-        unsigned short f0 = prev->frame;
-        float v0 = prev->value;
-        return v0 + (p->value - v0) * (float)(obj->curFrame - f0) / (float)(p->frame - f0);
+        return (p - 1)->m_value;
     }
     return 0.0f;
 }
@@ -925,137 +693,99 @@ extern "C" float func_00174D14(EffObj_174D14 *obj, EffTrack_174D14 *track)
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00174D14);
 #endif
 
-// NON_MATCHING: 13/50 differ (size 0xC8, game 0xC4), 7 edits (xori $v1, $v1, 0x0 before movn)
-#ifdef NON_MATCHING
-struct EffVec2_174DD8 { float x, y; };
-struct EffVec3_174DD8 { float x, y, z; };
-struct EffVec4_174DD8 { float x, y, z, w; };
-struct EffLight1_v2 {
-    unsigned short flags;       // 0x00
-    char pad2[0xE];
-    float f10;                  // 0x10
-    char pad14[0x1C];
-    EffVec3_174DD8 f30;         // 0x30
-    float f3C;                  // 0x3C
-    EffVec2_174DD8 f40;         // 0x40
-    char pad48[0x8];
-    EffVec4_174DD8 f50;         // 0x50
-    float f60;                  // 0x60
-    int f64;                    // 0x64
-    int f68;                    // 0x68
-};
-struct EffLight1Arg_v2 {
-    char pad0[0x10];
-    EffVec3_174DD8 f10;         // 0x10
-    EffVec2_174DD8 f1C;         // 0x1C
-    EffVec4_174DD8 f24;         // 0x24
-    float f34;                  // 0x34
-    int f38;                    // 0x38
-};
-extern "C" int X_EffLight1_Eff0_vfunc02(EffLight1_v2 *, EffLight1Arg_v2 *) asm("Eff0__vfunc_02");
-extern "C" int EffLight1__vfunc_02(EffLight1_v2 *self, EffLight1Arg_v2 *arg1)
+extern "C" int EffLight1__vfunc_02(EffLight1 *self, EffLight1Arg *arg1)
 {
-    if (X_EffLight1_Eff0_vfunc02(self, arg1) == 0) {
+    if (X_Eff0__vfunc_02(self, arg1) == 0) {
         return 0;
     }
-    self->f30 = arg1->f10;
-    self->f3C = 1.0f;
-    self->f40 = arg1->f1C;
-    self->f50 = arg1->f24;
-    self->f60 = arg1->f34;
-    self->f64 = 0;
-    unsigned short flags = self->flags;
-    if (arg1->f38) {
+    self->m_pos = arg1->m_pos;
+    self->m_w = 1.0f;
+    self->m_size = arg1->m_size;
+    self->m_color = arg1->m_color;
+    self->m_unk60 = arg1->m_unk34;
+    self->m_frame = 0;
+    int flags = self->m_flags;
+    if (arg1->m_flag) {
         flags |= 0x8000;
     }
-    self->f68 = 0;
-    self->f10 = 1.1754945259845955e-38f;
-    self->flags = flags;
+    self->m_fade = 0;
+    self->m_zDepth = 1.1754945259845955e-38f;
+    self->m_flags = flags;
     return 1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffLight1__vfunc_02);
-#endif
 
-extern "C" int EffLight1__vfunc_05(int arg0)
+extern "C" int EffLight1__vfunc_05(EffLight1 *self)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x64)) = (int) ((*(int *)(int *)((char *)(arg0) + 0x64)) + 1);
+    self->m_frame++;
     return 1;
 }
-
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffLight1__vfunc_08);
 
-extern "C" void liveActivateExec__9EffLight1(int arg0)
+extern "C" void liveActivateExec__9EffLight1(EffLight1 *self)
 {
-    int temp_a2;
-    int temp_v0;
-    int temp_v0_2;
-    unsigned short temp_a1;
-
-    temp_v0 = M2C_FIELD(arg0, int *, 0x68);
-    temp_a1 = M2C_FIELD(arg0, unsigned short *, 0);
-    temp_v0_2 = temp_v0 - 1;
-    temp_a2 = temp_v0 + 1;
-    if (temp_a1 & 4) {
-        M2C_FIELD(arg0, int *, 0x68) = temp_a2;
-        if (temp_a2 >= 5) {
-            M2C_FIELD(arg0, unsigned short *, 0) = (unsigned short) (temp_a1 & 0xFFF7);
+    int fade = self->m_fade;
+    unsigned short flags = self->m_flags;
+    int dec = fade - 1;
+    int inc = fade + 1;
+    if (flags & 4) {
+        self->m_fade = inc;
+        if (inc >= 5) {
+            self->m_flags = flags & 0xFFF7;
         }
     } else {
-        M2C_FIELD(arg0, int *, 0x68) = temp_v0_2;
-        if (temp_v0_2 <= 0) {
-            M2C_FIELD(arg0, unsigned short *, 0) = (unsigned short) (temp_a1 & 0xFFF7);
+        self->m_fade = dec;
+        if (dec <= 0) {
+            self->m_flags = flags & 0xFFF7;
         }
     }
 }
 
-extern "C" int EffLight2__vfunc_02(EffLight2_175170 *self, EffLight2Arg_175170 *arg1)
+extern "C" int EffLight2__vfunc_02(EffLight2 *self, EffLight2Arg *arg1)
 {
-    if (X_EffLight2_Eff0_vfunc02(self, arg1) == 0) {
+    if (X_Eff0__vfunc_02(self, arg1) == 0) {
         return 0;
     }
-    self->f30 = arg1->f10;
-    self->f3C = 1.0f;
-    self->f40 = arg1->f1C;
-    self->f44 = arg1->f20;
-    self->f4C = 1.0f;
-    self->f48 = 1.0f;
-    self->f50 = arg1->f24;
-    int flags = self->flags;
-    self->f60 = self->f50.w;
-    self->f64 = arg1->f38;
-    self->f68 = arg1->f3C;
-    self->f70 = arg1->f34;
-    if (arg1->f40) {
+    self->m_pos = arg1->m_pos;
+    self->m_w = 1.0f;
+    self->m_unk40 = arg1->m_unk1C;
+    self->m_unk44 = arg1->m_unk20;
+    self->m_unk4C = 1.0f;
+    self->m_unk48 = 1.0f;
+    self->m_color = arg1->m_color;
+    self->m_alpha = self->m_color.w;
+    unsigned int flags = self->m_flags;
+    self->m_unk64 = arg1->m_unk38;
+    self->m_unk68 = arg1->m_unk3C;
+    self->m_unk70 = arg1->m_unk34;
+    if (arg1->m_flag) {
         flags |= 0x8000;
     }
-    self->f10 = 1.1754945259845955e-38f;
-    self->f74 = 0;
-    self->flags = flags;
-    self->f78 = 0;
+    self->m_zDepth = 1.1754945259845955e-38f;
+    self->m_frame = 0;
+    self->m_flags = flags;
+    self->m_fade = 0;
     return 1;
 }
 
-extern "C" int EffLight2__vfunc_05(int arg0)
+extern "C" int EffLight2__vfunc_05(EffLight2 *self)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x74)) = (int) ((*(int *)(int *)((char *)(arg0) + 0x74)) + 1);
+    self->m_frame++;
     return 1;
 }
 
-
-extern "C" void render__9EffLight2PQ24Eff011RENDERPARAM(EffLight2_render9 *self, RenderParam_render9 *arg1)
+extern "C" void render__9EffLight2PQ24Eff011RENDERPARAM(EffLight2Render *self, EffRenderParam *arg1)
 {
-    if ((self->f1C < 0) && ((self->flags & 0xC) != 4)) {
-        Cam_render9 *cam = (Cam_render9 *)(D_00298E08 + 0x2AB70);
+    if ((self->m_unk1C < 0) && ((self->m_flags & 0xC) != 4)) {
+        EffCamView *cam = (EffCamView *)(D_00298E08 + 0x2AB70);
         cam->transform();
-        Mat4_render9 mat = cam->m_mat;
-        Vec4_render9 vec;
-        X_render9_237408(&vec, &self->f30, mat.m[3]);
-        float dist = X_render9_16FC20(&vec);
-        self->f6C = dist;
-        if (!(self->f68 <= dist)) {
-            arg1->f08 = arg1->f04;
+        EffMat4 mat = cam->m_mat;
+        EffVec4A8 vec;
+        X_func_00237408(&vec, &self->m_pos, mat.m[3]);
+        float dist = X_func_0016FC20(&vec);
+        self->m_dist = dist;
+        if (!(self->m_unk68 <= dist)) {
+            arg1->m_unk08 = arg1->m_unk04;
             self->v6(arg1);
         }
     }
@@ -1063,74 +793,56 @@ extern "C" void render__9EffLight2PQ24Eff011RENDERPARAM(EffLight2_render9 *self,
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffLight2__vfunc_08);
 
-extern "C" void liveActivateExec__9EffLight2(int arg0)
+extern "C" void liveActivateExec__9EffLight2(EffLight2 *self)
 {
-    int temp_a2;
-    int temp_v0;
-    int temp_v0_2;
-    unsigned short temp_a1;
-
-    temp_v0 = M2C_FIELD(arg0, int *, 0x78);
-    temp_a1 = M2C_FIELD(arg0, unsigned short *, 0);
-    temp_v0_2 = temp_v0 - 1;
-    temp_a2 = temp_v0 + 1;
-    if (temp_a1 & 4) {
-        M2C_FIELD(arg0, int *, 0x78) = temp_a2;
-        if (temp_a2 >= 5) {
-            M2C_FIELD(arg0, unsigned short *, 0) = (unsigned short) (temp_a1 & 0xFFF7);
+    int fade = self->m_fade;
+    unsigned short flags = self->m_flags;
+    int dec = fade - 1;
+    int inc = fade + 1;
+    if (flags & 4) {
+        self->m_fade = inc;
+        if (inc >= 5) {
+            self->m_flags = flags & 0xFFF7;
         }
     } else {
-        M2C_FIELD(arg0, int *, 0x78) = temp_v0_2;
-        if (temp_v0_2 <= 0) {
-            M2C_FIELD(arg0, unsigned short *, 0) = (unsigned short) (temp_a1 & 0xFFF7);
+        self->m_fade = dec;
+        if (dec <= 0) {
+            self->m_flags = flags & 0xFFF7;
         }
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_0017562C);
-
-extern int _vt$9EffLight3;
-extern "C" void X_dtor9_17653C(void *) asm("func_0017653C");
-extern "C" void X_dtor9_1765E8(void *, float) asm("func_001765E8");
-extern "C" void X_dtor9_freeID(void *, int, int) asm("freeID__12DogLightPoolii");
-extern "C" void X_dtor9_Eff0(void *, int) asm("_$_4Eff0");
-extern "C" void X_dtor9_delete(void *) asm("__builtin_delete");
-struct Eff0_dtor9 {
-    int unk0;
-    char pad4[0x1C];
-    void *vtable;
-};
-struct EffLight3_dtor9 : public Eff0_dtor9 {
-    int entries[6][16][2];      // 0x24..0x324
-    char pad324[0x1C];
-    float f340[4];              // 0x340..0x34C
-    float f350[4];              // 0x350..0x35C
-    float f360;                 // 0x360
-    unsigned char f364;         // 0x364
-    unsigned char f365;         // 0x365
-    char pad366[0x2A];
-    int f390;                   // 0x390
-};
-extern "C" void dtor_9EffLight3(EffLight3_dtor9 *self, int arg1) asm("_$_9EffLight3");
-extern "C" void dtor_9EffLight3(EffLight3_dtor9 *self, int arg1)
+#ifdef NON_MATCHING
+extern "C" void func_0017562C(EffLight3 *self)
 {
-    self->vtable = &_vt$9EffLight3;
-    if (self->f390 != -1) {
-        self->f365 = self->f364 = 1;
-        self->f360 = self->f340[0] = self->f340[1] = self->f340[2] = self->f340[3] = 0.0f;
-        self->f350[0] = self->f350[1] = self->f350[2] = self->f350[3] = 1.0f;
-        X_dtor9_17653C(self);
-        X_dtor9_1765E8(self, 1.0f);
+    X_func_0016A914(self);
+    self->m_vtbl = &vtbl_EffLight3;
+    self->m_unk390 = -1;
+}
+#else
+INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_0017562C);
+#endif
+
+extern "C" void EffLight3_dtor(EffLight3 *self, int flags) asm("_$_9EffLight3");
+extern "C" void EffLight3_dtor(EffLight3 *self, int flags)
+{
+    self->m_vtbl = &vtbl_EffLight3;
+    if (self->m_unk390 != -1) {
+        self->m_f365 = self->m_f364 = 1;
+        self->m_f360 = self->m_f340[0] = self->m_f340[1] = self->m_f340[2] = self->m_f340[3] = 0.0f;
+        self->m_f350[0] = self->m_f350[1] = self->m_f350[2] = self->m_f350[3] = 1.0f;
+        X_func_0017653C(self);
+        X_func_001765E8(self, 1.0f);
         void *pool = (void *)(D_00298E08 + 0x2050);
         for (int i = 0; i < 6; i++) {
-            for (int j = 0; self->entries[i][j][1] != -1; j++) {
-                X_dtor9_freeID(pool, i, self->entries[i][j][1]);
+            for (int j = 0; self->m_entries[i][j][1] != -1; j++) {
+                X_freeID__12DogLightPoolii(pool, i, self->m_entries[i][j][1]);
             }
         }
     }
-    X_dtor9_Eff0(self, 0);
-    if (arg1 & 1) {
-        return X_dtor9_delete(self);
+    X__$_4Eff0(self, 0);
+    if (flags & 1) {
+        return X___builtin_delete(self);
     }
 }
 
@@ -1138,30 +850,16 @@ INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffLight3__vfunc_02);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffLight3__vfunc_05);
 
-// NON_MATCHING: 47/49 differ, 2 relocs differ (size 0xC4, game 0xCC), 35 edits
 #ifdef NON_MATCHING
-struct Entry_176430 {
-    int a;
-    int b;
-}; // Entry_176430
-struct Obj_176430 {
-    char pad[0x24];
-    Entry_176430 entries[6][16];
-}; // Obj_176430
-struct Scene_176430 {
-    char pad[0x20B0];
-    unsigned int bits[4];
-}; // Scene_176430
-extern "C" int Xiiii_func_0013FE64__8MagSceneii(int, int, int) asm("func_0013FE64__8MagSceneii");
-extern "C" void func_00176430(Obj_176430 *arg0, int arg1)
+extern "C" void func_00176430(EffLight3 *self, int group)
 {
-    int count = 0;
-    unsigned int bits = ((Scene_176430 *)D_00298E08)->bits[arg1];
+    unsigned int mask = *(unsigned int *)((char *)D_00298E08 + 0x20B0 + group * 4);
+    int cnt = 0;
     for (int i = 0; i < 16; i++) {
-        if (bits & (1 << i)) {
-            arg0->entries[arg1][count].a = i;
-            arg0->entries[arg1][count].b = Xiiii_func_0013FE64__8MagSceneii(D_00298E08, arg1, 2);
-            count++;
+        if (mask & (1u << i)) {
+            int idx = cnt++;
+            self->m_entries[group][idx][0] = i;
+            self->m_entries[group][idx][1] = X_func_0013FE64__8MagSceneii(D_00298E08, group, 2);
         }
     }
 }
@@ -1193,6 +891,7 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F29E0);
 
 extern "C" int func_001764FC(int arg0, int arg1)
 {
+    (void)arg0;
     int tbl[4] = { 0x0D, 3, 11, 7 };
     return tbl[arg1];
 }
@@ -1230,88 +929,48 @@ extern "C" void func_0017653C(char *arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_0017653C);
 #endif
 
-extern "C" void func_001765E8(EffFindItem1_1765E8 *self, float scale)
+extern "C" void func_001765E8(EffLight3 *self, float scale)
 {
-    DogLightAmbient_1765E8 *amb = ((DogLightPool_1765E8 *)(D_00298E08 + 0x2050))->getAmbient(0);
-    amb->m_color[0] = self->m_color[0] * scale;
-    amb->m_color[1] = self->m_color[1] * scale;
-    amb->m_color[2] = self->m_color[2] * scale;
+    DogLightAmbient *amb = ((DogLightPool *)(D_00298E08 + 0x2050))->getAmbient(0);
+    amb->m_color[0] = self->m_ambColor[0] * scale;
+    amb->m_color[1] = self->m_ambColor[1] * scale;
+    amb->m_color[2] = self->m_ambColor[2] * scale;
 }
 
-extern "C" int Xiii_Eff0__vfunc_02(int, int) asm("Eff0__vfunc_02");
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-// Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X___10FileReader(...) asm("__10FileReader");
-extern "C" int X___11FileReadReq(...) asm("__11FileReadReq");
-extern "C" int X_alloc__9BedMemoryii(...) asm("alloc__9BedMemoryii");
-extern "C" int X_apply__C12DogLightPoolPvifi(...) asm("apply__C12DogLightPoolPvifi");
-extern "C" int X_free__9BedMemoryPv(...) asm("free__9BedMemoryPv");
-extern "C" int X_func_0016AC84(...) asm("func_0016AC84");
-extern "C" int X_func_0017762C(...) asm("func_0017762C");
-extern "C" int X_func_001776C4(...) asm("func_001776C4");
-extern "C" int X_func_00177A8C(...) asm("func_00177A8C");
-extern "C" int X_func_00177C00(...) asm("func_00177C00");
-extern "C" int X_func_00177E9C(...) asm("func_00177E9C");
-extern "C" int X_func_00177EF8(...) asm("func_00177EF8");
-extern "C" int X_func_001780C0(...) asm("func_001780C0");
-extern "C" int X_func_0017820C(...) asm("func_0017820C");
-extern "C" int X_func_00178894(...) asm("func_00178894");
-extern "C" int X_func_001BE524__10FileReaderP11FileReadReqi(...) asm("func_001BE524__10FileReaderP11FileReadReqi");
-extern "C" int X_func_0021A158(...) asm("func_0021A158");
-extern "C" int X_func_0021F7E0(...) asm("func_0021F7E0");
-extern "C" int X_func_00223240(...) asm("func_00223240");
-extern "C" int X_func_00223250(...) asm("func_00223250");
-extern "C" int X_func_00223260(...) asm("func_00223260");
-extern "C" int X_func_00226C58(...) asm("func_00226C58");
-extern "C" int X_getViewMatrix__9DogCamera(...) asm("getViewMatrix__9DogCamera");
-extern "C" int X_memcmp(...) asm("memcmp");
-extern "C" int X_memmove(...) asm("memmove");
-extern "C" int X_memset(...) asm("memset");
-extern "C" int X_render__4Eff0PQ24Eff011RENDERPARAM(...) asm("render__4Eff0PQ24Eff011RENDERPARAM");
-extern "C" int X_strlen(...) asm("strlen");
-extern int D_00298E08;
-extern int D_00298E0C;
-extern int D_006E9800;
-
-extern "C" int EffFindItem1__vfunc_02(int arg0, int arg1)
+extern "C" int EffFindItem1__vfunc_02(EffFindItem1 *self, EffFindItem1Arg *arg1)
 {
-    int var_v0;
-
-    var_v0 = Xiii_Eff0__vfunc_02(arg0, arg1);
-    if (var_v0 != 0) {
-        var_v0 = 1;
-        M2C_FIELD(arg0, float *, 0x30) = (float) M2C_FIELD(arg1, float *, 0x10);
-        M2C_FIELD(arg0, float *, 0x34) = (float) M2C_FIELD(arg1, float *, 0x14);
-        M2C_FIELD(arg0, float *, 0x38) = (float) M2C_FIELD(arg1, float *, 0x18);
-        M2C_FIELD(arg0, float *, 0x3C) = 1.0f;
-        M2C_FIELD(arg0, float *, 0x40) = (float) M2C_FIELD(arg1, float *, 0x1C);
-        M2C_FIELD(arg0, signed char *, 0x44) = 0;
+    int ret = X_Eff0__vfunc_02(self, arg1);
+    if (ret != 0) {
+        ret = 1;
+        self->m_pos.x = arg1->m_x;
+        self->m_pos.y = arg1->m_y;
+        self->m_pos.z = arg1->m_z;
+        self->m_pos.w = 1.0f;
+        self->m_zBias = arg1->m_zBias;
+        self->m_phase = 0;
     }
-    return var_v0;
+    return ret;
 }
 
-extern "C" int EffFindItem1__vfunc_05(int arg0)
+extern "C" int EffFindItem1__vfunc_05(EffFindItem1 *self)
 {
-    M2C_FIELD(arg0, unsigned char *, 0x44) = (unsigned char) ((int) (M2C_FIELD(arg0, unsigned char *, 0x44) + 1) % 45);
+    self->m_phase = (unsigned char)((int)(self->m_phase + 1) % 45);
     return 1;
 }
 
-extern "C" void render__12EffFindItem1PQ24Eff011RENDERPARAM(int arg0)
+extern "C" void render__12EffFindItem1PQ24Eff011RENDERPARAM(EffFindItem1 *self)
 {
-    if ((unsigned char) (*(int *)(unsigned char *)((char *)(arg0) + 0x44)) < 0xFU) {
+    if (self->m_phase < 0xFU) {
         X_render__4Eff0PQ24Eff011RENDERPARAM();
     }
 }
 
-
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFindItem1__vfunc_08);
 
-extern "C" void updateZDepth__12EffFindItem1(int arg0)
+extern "C" void updateZDepth__12EffFindItem1(EffFindItem1 *self)
 {
-    M2C_FIELD(arg0, float *, 0x10) = X_12EffFindItem1_16FF18(D_00298E08 + 0x2AB70, arg0 + 0x30) - M2C_FIELD(arg0, float *, 0x40);
+    self->m_zDepth = X_func_0016FF18(D_00298E08 + 0x2AB70, &self->m_pos) - self->m_zBias;
 }
-
-
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F2A18);
 
