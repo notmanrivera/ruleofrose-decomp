@@ -1,60 +1,326 @@
 #include "include_asm.h"
-extern "C" int Xii_func_0017E9D0(int) asm("func_0017E9D0");
-extern "C" int Xiiii_alloc__9BedMemoryii(int, int, int) asm("alloc__9BedMemoryii");
-extern "C" int Xiiii_memcpy(int, int, int) asm("memcpy");
-extern "C" int Xiiii_memset(int, int, int) asm("memset");
-extern "C" int Xiii_free__9BedMemoryPv(int, int) asm("free__9BedMemoryPv");
-extern int D_006E9800;
+#include "unk/WrdSrv.h"
+#include "bed/bedmemory.h"
+#include "bed/bedpfh.h"
+#include "utl/filereader.h"
+#include "sdk/string.h"
+
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" int Xiii_func_0017EA44(int, int) asm("func_0017EA44");
-// Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_WrdSrv__vfunc_01(...) asm("WrdSrv__vfunc_01");
-extern "C" int X_func_0017E3D8(...) asm("func_0017E3D8");
-extern "C" int X_func_0017E540(...) asm("func_0017E540");
-extern "C" int X_func_0017F038(...) asm("func_0017F038");
-extern "C" int X_memcmp(...) asm("memcmp");
-extern "C" int X_strcmp(...) asm("strcmp");
-extern "C" int X_strlen(...) asm("strlen");
-extern int D_00298EE0;
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017C60C);
+extern BedMemory D_006E9800;
+extern WrdSrv D_00298EE0;
+extern void *_vt_WrdSrv[] asm("_vt$6WrdSrv");
+extern "C" int memcmp(const void *, const void *, unsigned int);
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" int X_sprintf(char *, const char *, ...) asm("func_00279C98");
+extern "C" void X_initFileReadReq(FileReadReq *) asm("__11FileReadReq");
 
-extern "C" void func_0017C754(int arg0)
+extern "C" void func_0017C754(SctLayer *self);
+extern "C" int func_0017C7B0(SctLayerHeader *hdr);
+extern "C" void func_0017C814(SctGroup *grp);
+extern "C" void func_0017C844(SctArea *area, SctCell *cells, int cellNum);
+extern "C" SctCell *func_0017C8B8(SctLayer *self, const float *pos, SctCell *hint, float tolY);
+extern "C" SctCell *func_0017CAA8(SctLayer *self, int groupId, const float *pos, float tolY);
+extern "C" SctCell *func_0017CB50(SctLayer *self, int groupId, const float *pos, float tolY, float margin);
+extern "C" int func_0017CC68(SctLayer *self, SctCell *cell, const float *pos, float tolY, float margin);
+extern "C" int func_0017CCE8(SctLayer *self, int cellId, const float *pos, float margin);
+extern "C" int func_0017CE74(SctLayer *self, const float *pos, int startGroup, float margin);
+extern "C" int X_func_0017CF0C(SctLayer *self, int startGroup, int endGroup, SctGroupPath *outPath) asm("func_0017CF0C");
+extern "C" void X_func_0017D35C(SctLayer *self, SctCellSearchArg *arg) asm("func_0017D35C");
+extern "C" float func_0017DD5C(SctLayer *self, int cellId, const float *pos, float margin);
+extern "C" SctArea *func_0017E3D8(SctLayer *self, const char *name);
+extern "C" void func_0017E540(WrdSrv *self);
+extern "C" void WrdSrv__vfunc_01(WrdSrv *self, int flags);
+extern "C" int func_0017E798(WrdSrv *self, WrdHeader *hdr, int copy);
+extern "C" void func_0017E9D0(WrdSrv *self);
+extern "C" WrdRoom *func_0017EA44(WrdSrv *self, int id);
+extern "C" void func_0017F038(int init, int prio);
+
+extern "C" int func_0017C60C(SctLayer *self, SctLayerHeader *hdr, int copy)
 {
-    int temp_v0;
+    int i;
 
-    if (M2C_FIELD(arg0, int *, 0) & 2) {
-        temp_v0 = M2C_FIELD(arg0, int *, 4);
-        if (temp_v0 != 0) {
-            Xiii_free__9BedMemoryPv((int) (int)&D_006E9800, temp_v0);
-        }
+    func_0017C754(self);
+    if (copy != 0) {
+        int size = func_0017C7B0(hdr);
+        void *buf = D_006E9800.alloc(size, -1);
+        memcpy(buf, hdr, size);
+        self->m_layer = (SctLayerHeader *)buf;
+        self->m_flags |= 2;
+    } else {
+        self->m_layer = hdr;
     }
-    M2C_FIELD(arg0, int *, 4) = 0;
-    M2C_FIELD(arg0, int *, 8) = 0;
-    M2C_FIELD(arg0, int *, 0xC) = 0;
-    M2C_FIELD(arg0, int *, 0x10) = 0;
-    M2C_FIELD(arg0, int *, 0) = 0;
+
+    self->m_groups = (SctGroup *)((char *)self->m_layer + 0x10);
+    for (i = 0; i < self->m_layer->m_groupNum; i++) {
+        func_0017C814(&self->m_groups[i]);
+    }
+
+    self->m_cells = self->m_groups[0].m_cells;
+    self->m_areas = (self->m_layer->m_areaNum > 0)
+        ? (SctArea *)&self->m_cells[self->m_layer->m_cellNum]
+        : 0;
+
+    for (i = 0; i < self->m_layer->m_areaNum; i++) {
+        func_0017C844(&self->m_areas[i], self->m_cells, self->m_layer->m_cellNum);
+    }
+    return 1;
 }
 
+extern "C" void func_0017C754(SctLayer *self)
+{
+    if (self->m_flags & 2) {
+        if (self->m_layer != 0) {
+            D_006E9800.free(self->m_layer);
+        }
+    }
+    self->m_layer = 0;
+    self->m_groups = 0;
+    self->m_cells = 0;
+    self->m_areas = 0;
+    self->m_flags = 0;
+}
+
+// NON_MATCHING: 6/25 differ, 8 edits (prologue add/load schedule)
+#ifdef NON_MATCHING
+extern "C" int func_0017C7B0(SctLayerHeader *hdr)
+{
+    int size = sizeof(SctLayerHeader);
+    size += hdr->m_groupNum * sizeof(SctGroup);
+    size += hdr->m_areaNum * sizeof(SctArea);
+    size += hdr->m_cellNum * sizeof(SctCell);
+    SctArea *area = (SctArea *)((char *)hdr + sizeof(SctLayerHeader) + hdr->m_groupNum * sizeof(SctGroup) + hdr->m_cellNum * sizeof(SctCell));
+    int i;
+
+    for (i = 0; i < hdr->m_areaNum; i++) {
+        size += area->m_cellNum * 4;
+        area++;
+    }
+    return size;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017C7B0);
+#endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017C814);
+extern "C" void func_0017C814(SctGroup *grp)
+{
+    if ((grp->m_flags ^ 1) & 1) {
+        return;
+    }
+    grp->m_flags |= 1;
+    grp->m_cells = (SctCell *)((char *)grp + (int)grp->m_cells);
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017C844);
+extern "C" void func_0017C844(SctArea *area, SctCell *cells, int cellNum)
+{
+    if ((area->m_flags ^ 1) & 1) {
+        return;
+    }
+    int i;
+    int *src;
+    area->m_cells = (SctCell **)((char *)area + (int)area->m_cells);
+    src = (int *)area->m_cells;
+    for (i = 0; i < area->m_cellNum; i++) {
+        area->m_cells[i] = &cells[*src++];
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017C8B8);
+extern "C" SctCell *func_0017C8B8(SctLayer *self, const float *pos, SctCell *hint, float tolY)
+{
+    int groupId;
+    SctCell *cell;
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017C994);
+    if (self->m_layer == 0) {
+        return 0;
+    }
+    if (hint != 0) {
+        if (func_0017CC68(self, hint, pos, tolY, 0.0f) != 0) {
+            return hint;
+        }
+        cell = func_0017CAA8(self, hint->m_groupId, pos, tolY);
+        if (cell != 0) {
+            return cell;
+        }
+    }
+    groupId = 0;
+    for (;;) {
+        groupId = func_0017CE74(self, pos, groupId, 0.0f);
+        if (groupId == -1) {
+            break;
+        }
+        cell = func_0017CAA8(self, groupId, pos, tolY);
+        if (cell != 0) {
+            return cell;
+        }
+        groupId++;
+    }
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017CAA8);
+extern "C" SctCell *func_0017C994(SctLayer *self, const float *pos, SctCell *hint, float tolY, float margin)
+{
+    SctCell *cell;
+    int groupId;
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017CB50);
+    if (self->m_layer == 0) {
+        return 0;
+    }
+    cell = func_0017C8B8(self, pos, hint, tolY);
+    if (cell != 0) {
+        return cell;
+    }
+    if (margin <= 0.0f) {
+        return 0;
+    }
+    if (hint != 0) {
+        if (func_0017CC68(self, hint, pos, tolY, margin) != 0) {
+            return hint;
+        }
+        cell = func_0017CB50(self, hint->m_groupId, pos, tolY, margin);
+        if (cell != 0) {
+            return cell;
+        }
+    }
+    groupId = 0;
+    for (;;) {
+        groupId = func_0017CE74(self, pos, groupId, margin);
+        if (groupId == -1) {
+            break;
+        }
+        cell = func_0017CB50(self, groupId, pos, tolY, margin);
+        if (cell != 0) {
+            return cell;
+        }
+        groupId++;
+    }
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017CC68);
+extern "C" SctCell *func_0017CAA8(SctLayer *self, int groupId, const float *pos, float tolY)
+{
+    SctGroup *grp = &self->m_groups[groupId];
+    SctCell *cell = grp->m_cells;
+    int i;
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017CCE8);
+    for (i = 0; i < grp->m_cellNum; i++) {
+        if (func_0017CC68(self, cell, pos, tolY, 0.0f) != 0) {
+            return cell;
+        }
+        cell++;
+    }
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017CE74);
+extern "C" SctCell *func_0017CB50(SctLayer *self, int groupId, const float *pos, float tolY, float margin)
+{
+    SctGroup *grp = &self->m_groups[groupId];
+    SctCell *cell = grp->m_cells;
+    SctCell *best = 0;
+    float bestDist = 0.0f;
+    int i;
+
+    for (i = 0; i < grp->m_cellNum; i++) {
+        if (func_0017CC68(self, cell, pos, tolY, margin) != 0) {
+            float dx = pos[0] - cell->m_center[0];
+            float dy = pos[1] - cell->m_center[1];
+            float dz = pos[2] - cell->m_center[2];
+            float dist = dx * dx + dy * dy + dz * dz;
+            if (best == 0 || dist < bestDist) {
+                bestDist = dist;
+                best = cell;
+            }
+        }
+        cell++;
+    }
+    return best;
+}
+
+extern "C" int func_0017CC68(SctLayer *self, SctCell *cell, const float *pos, float tolY, float margin)
+{
+    float h = func_0017DD5C(self, cell->m_id, pos, margin);
+    if (h == 100000.0f) {
+        return 0;
+    }
+    h -= pos[1];
+    return (-tolY <= h && h <= tolY);
+}
+
+struct SctRect {
+    float minX;
+    float minZ;
+    float maxX;
+    float maxZ;
+};
+
+static inline SctRect expandCellRect(const SctCell *cell, float margin)
+{
+    SctRect r;
+    r.minX = cell->m_rect[0] - margin;
+    r.minZ = cell->m_rect[1] - margin;
+    r.maxX = cell->m_rect[2] + margin;
+    r.maxZ = cell->m_rect[3] + margin;
+    return r;
+}
+
+extern "C" int func_0017CCE8(SctLayer *self, int cellId, const float *pos, float margin)
+{
+    SctCell *cell = &self->m_cells[cellId];
+    SctRect r = expandCellRect(cell, margin);
+
+    if (!(r.minX <= pos[0] && pos[0] <= r.maxX && r.minZ <= pos[2] && pos[2] <= r.maxZ)) {
+        return 0;
+    }
+    float x0 = 0.0f;
+    float x1 = 0.0f;
+    float z0 = 0.0f;
+    float z1 = 0.0f;
+    unsigned int cut = cell->m_flags & 0xF0;
+
+    switch (cut) {
+    case 0x00:
+        return 1;
+    case 0x10:
+        x0 = r.minX;
+        x1 = r.maxX;
+        z0 = r.minZ;
+        z1 = r.maxZ;
+        break;
+    case 0x20:
+        x0 = r.maxX;
+        x1 = r.minX;
+        z0 = r.minZ;
+        z1 = r.maxZ;
+        break;
+    case 0x40:
+        x0 = r.minX;
+        x1 = r.maxX;
+        z0 = r.maxZ;
+        z1 = r.minZ;
+        break;
+    case 0x80:
+        x0 = r.maxX;
+        x1 = r.minX;
+        z0 = r.maxZ;
+        z1 = r.minZ;
+        break;
+    }
+    return (1.0f - (pos[0] - x0) / (x1 - x0)) <= (pos[2] - z0) / (z1 - z0);
+}
+
+extern "C" int func_0017CE74(SctLayer *self, const float *pos, int startGroup, float margin)
+{
+    SctGroup *grp = &self->m_groups[startGroup];
+    int i;
+
+    for (i = startGroup; i < self->m_layer->m_groupNum; i++) {
+        if (grp->m_minX - margin <= pos[0] && pos[0] <= grp->m_maxX + margin &&
+            grp->m_minZ - margin <= pos[2] && pos[2] <= grp->m_maxZ + margin) {
+            return i;
+        }
+        grp++;
+    }
+    return -1;
+}
 
 // NON_MATCHING: 203/226 differ, 2 relocs differ (size 0x388, game 0x38C), 165 edits
 #ifdef NON_MATCHING
@@ -156,7 +422,31 @@ extern "C" int func_0017CF0C(int arg0, int arg1, int arg2, int arg3)
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017CF0C);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017D298);
+extern "C" int func_0017D298(SctLayer *self, SctPathReq *req)
+{
+    SctCellSearchArg arg;
+    SctGroupPath groupPath;
+    SctCell *startCell;
+    SctCell *endCell;
+
+    if (self->m_layer == 0) {
+        return 0;
+    }
+    startCell = req->m_startCells[req->m_index];
+    endCell = req->m_endCells[req->m_index];
+    if (startCell == 0 || endCell == 0) {
+        return 0;
+    }
+    if (X_func_0017CF0C(self, startCell->m_groupId, endCell->m_groupId, &groupPath) == 0) {
+        return 0;
+    }
+    arg.m_startCellId = startCell->m_id;
+    arg.m_endCellId = endCell->m_id;
+    arg.m_groupPath = &groupPath;
+    arg.m_outPath = req->m_outPath;
+    X_func_0017D35C(self, &arg);
+    return 1;
+}
 
 // NON_MATCHING: 124/174 differ, 1 reloc differs (size 0x2B8, game 0x2D0), 67 edits
 #ifdef NON_MATCHING
@@ -430,28 +720,92 @@ extern "C" int func_0017D9AC(int arg0, int arg1)
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017D9AC);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017DD5C);
-
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017DED0);
-
-extern "C" void func_0017DFA8(int arg0)
+// NON_MATCHING: 71/89 differ (size 0x164, game 0x174), 20 edits (duplicate 100000.0f load)
+#ifdef NON_MATCHING
+static inline float sctCellHeight(const SctCell *cell, const float *pos)
 {
-    int var_a2;
-    int var_a1;
+    float y = 100000.0f;
+    unsigned int slope = cell->m_flags & 0xA;
 
-    var_a2 = 0;
-    var_a1 = (*(int *)(int *)((char *)(arg0) + 0x8));
-    if ((*(int *)(int *)((char *)((*(int *)(int *)((char *)(arg0) + 0x4))) + 0x4)) > 0) {
-        do {
-            var_a2 += 1;
-            (*(int *)(int *)((char *)(var_a1) + 0x5C)) = (int) ((*(int *)(int *)((char *)(var_a1) + 0x5C)) & 0x7FFFFFFF);
-            var_a1 += 0x80;
-        } while (var_a2 < (*(int *)(int *)((char *)((*(int *)(int *)((char *)(arg0) + 0x4))) + 0x4)));
+    switch (slope) {
+    case 0:
+        y = cell->m_y0;
+        break;
+    case 2:
+        y = cell->m_yZ + (cell->m_y0 - cell->m_yZ) * (pos[2] - cell->m_rect[1]) / (cell->m_rect[3] - cell->m_rect[1]);
+        break;
+    case 8:
+        y = cell->m_yX + (cell->m_y0 - cell->m_yX) * (pos[0] - cell->m_rect[0]) / (cell->m_rect[2] - cell->m_rect[0]);
+        break;
+    case 10:
+        y = cell->m_yZ + (cell->m_y0 - cell->m_yZ) * (pos[2] - cell->m_rect[1]) / (cell->m_rect[3] - cell->m_rect[1]) +
+            (cell->m_y0 - cell->m_yX) * (pos[0] - cell->m_rect[0]) / (cell->m_rect[2] - cell->m_rect[0]);
+        break;
+    }
+    return y;
+}
+
+extern "C" float func_0017DD5C(SctLayer *self, int cellId, const float *pos, float margin)
+{
+    if (func_0017CCE8(self, cellId, pos, margin) == 0) {
+        return 100000.0f;
+    }
+    return sctCellHeight(&self->m_cells[cellId], pos);
+}
+#else
+INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017DD5C);
+#endif
+
+extern "C" int func_0017DED0(SctLayer *self, int cellId, const float *pos, float tolY)
+{
+    SctCell *cell = &self->m_cells[cellId];
+    int i;
+
+    for (i = 0; i < 8; i++) {
+        int nb = cell->m_neighbor[i];
+        if (nb != -1) {
+            if (func_0017CC68(self, &self->m_cells[nb], pos, tolY, 0.0f) != 0) {
+                return cell->m_neighbor[i];
+            }
+        }
+    }
+    return -1;
+}
+
+extern "C" void func_0017DFA8(SctLayer *self)
+{
+    int i;
+    SctGroup *grp = self->m_groups;
+
+    for (i = 0; i < self->m_layer->m_groupNum; i++) {
+        grp->m_flags &= 0x7FFFFFFF;
+        grp++;
     }
 }
 
+extern "C" void func_0017DFF0(SctLayer *self, SctGroupPath *path)
+{
+    int i;
+    int j;
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017DFF0);
+    if (path == 0) {
+        register SctCell *cell PS2_REG("$6") = self->m_cells;
+        for (i = 0; i < self->m_layer->m_cellNum; i++) {
+            cell->m_searchFlg &= 0x7FFFFFFF;
+            cell++;
+        }
+    } else {
+        register SctGroup **gp PS2_REG("$4") = path->m_groups;
+        for (i = 0; i < path->m_count; i++) {
+            register SctCell *cell PS2_REG("$6") = (*gp)->m_cells;
+            for (j = 0; j < (*gp)->m_cellNum; j++) {
+                cell->m_searchFlg &= 0x7FFFFFFF;
+                cell++;
+            }
+            gp++;
+        }
+    }
+}
 
 // NON_MATCHING: 115/201 differ, 1 reloc differs (size 0x324, game 0x330), 64 edits
 #ifdef NON_MATCHING
@@ -524,55 +878,61 @@ loop_node:
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017E0A8);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017E3D8);
-
-extern "C" void func_0017E464(int arg0, int arg1, int arg2)
+extern "C" SctArea *func_0017E3D8(SctLayer *self, const char *name)
 {
-    int temp_v0_2;
-    int var_a1;
-    int temp_v0;
-    int temp_v1;
+    int i;
 
-    temp_v0 = X_func_0017E3D8();
-    if (temp_v0 != 0) {
-        var_a1 = 0;
-        if ((*(int *)(int *)((char *)(temp_v0) + 0x18)) > 0) {
-            do {
-                temp_v0_2 = var_a1 * 4;
-                var_a1 += 1;
-                temp_v1 = *(int *)(temp_v0_2 + (*(int *)(int *)((char *)(temp_v0) + 0x14)));
-                (*(int *)(int *)((char *)(temp_v1) + 0x8)) = (int) ((*(int *)(int *)((char *)(temp_v1) + 0x8)) | arg2);
-            } while (var_a1 < (*(int *)(int *)((char *)(temp_v0) + 0x18)));
+    for (i = 0; i < self->m_layer->m_areaNum; i++) {
+        if (strcmp(self->m_areas[i].m_name, name) == 0) {
+            return &self->m_areas[i];
+        }
+    }
+    return 0;
+}
+
+extern "C" void func_0017E464(SctLayer *self, const char *name, int mask)
+{
+    SctArea *area = func_0017E3D8(self, name);
+    int i;
+
+    if (area != 0) {
+        for (i = 0; i < area->m_cellNum; i++) {
+            area->m_cells[i]->m_flags |= mask;
         }
     }
 }
 
-
-extern "C" void func_0017E4D0(int arg0, int arg1, int arg2)
+extern "C" void func_0017E4D0(SctLayer *self, const char *name, int mask)
 {
-    int temp_v0_2;
-    int var_a2;
-    int temp_v0;
-    int temp_v1;
+    SctArea *area = func_0017E3D8(self, name);
+    int i;
 
-    temp_v0 = X_func_0017E3D8();
-    if (temp_v0 != 0) {
-        var_a2 = 0;
-        if ((*(int *)(int *)((char *)(temp_v0) + 0x18)) > 0) {
-            do {
-                temp_v0_2 = var_a2 * 4;
-                var_a2 += 1;
-                temp_v1 = *(int *)(temp_v0_2 + (*(int *)(int *)((char *)(temp_v0) + 0x14)));
-                (*(int *)(int *)((char *)(temp_v1) + 0x8)) = (int) ((*(int *)(int *)((char *)(temp_v1) + 0x8)) & ~arg2);
-            } while (var_a2 < (*(int *)(int *)((char *)(temp_v0) + 0x18)));
+    if (area != 0) {
+        for (i = 0; i < area->m_cellNum; i++) {
+            area->m_cells[i]->m_flags &= ~mask;
         }
     }
 }
 
+extern "C" void func_0017E540(WrdSrv *self)
+{
+    self->m_vtbl = _vt_WrdSrv;
+    self->m_flags = 0;
+    self->m_data = 0;
+    self->m_idTable = 0;
+    self->m_rooms = 0;
+    self->m_states = 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017E540);
-
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", WrdSrv__vfunc_01);
+extern "C" void WrdSrv__vfunc_01(WrdSrv *self, int flags)
+{
+    self->m_vtbl = _vt_WrdSrv;
+    func_0017E9D0(self);
+    if (flags & 1) {
+        X___builtin_delete(self);
+        return;
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/WrdSrv", D_002F3080);
 
@@ -584,166 +944,183 @@ INCLUDE_RODATA("asm/nonmatchings/unk/WrdSrv", D_002F30C8);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/WrdSrv", D_002F3118);
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017E5C0);
-
-extern "C" int func_0017E798(int arg0, int arg1, int arg2)
+extern "C" int func_0017E5C0(WrdSrv *self, int idx)
 {
-    int temp_a1_2;
-    int temp_v0_3;
-    int temp_v0_4;
-    int temp_v0_5;
-    int temp_v0_6;
-    int temp_v1;
-    int temp_v1_8;
-    register int var_a3 PS2_REG("$7");
+    char buf[0x800];
 
-
-    unsigned short temp_v1_2;
-    int temp_a1;
-    int temp_a2;
-    int baseFirst;
-    int baseSecond;
-    int temp_v0;
-    int temp_v0_2;
-    int temp_v1_3;
-    int temp_v1_4;
-    int temp_v1_5;
-    int temp_v1_6;
-    int temp_v1_7;
-    int var_a0;
-
-
-    Xii_func_0017E9D0(arg0);
-    temp_v0 = Xiiii_alloc__9BedMemoryii((int) (int)&D_006E9800, M2C_FIELD(arg1, int *, 0xC) * 0x10, -1);
-    M2C_FIELD(arg0, int *, 0x10) = temp_v0;
-    Xiiii_memset(temp_v0, 0, M2C_FIELD(arg1, int *, 0xC) * 0x10);
-    if (arg2 != 0) {
-        temp_v0_2 = Xiiii_alloc__9BedMemoryii((int) (int)&D_006E9800, M2C_FIELD(arg1, int *, 4), -1);
-        Xiiii_memcpy(temp_v0_2, arg1, M2C_FIELD(arg1, int *, 4));
-        M2C_FIELD(arg0, int *, 4) = temp_v0_2;
-        M2C_FIELD(arg0, int *, 0) = (int) (M2C_FIELD(arg0, int *, 0) | 2);
-    } else {
-        M2C_FIELD(arg0, int *, 4) = arg1;
+    if (idx == 99) {
+        return 1;
     }
-    temp_a2 = M2C_FIELD(arg0, int *, 4);
-    temp_a1 = temp_a2 + 0x10;
-    M2C_FIELD(arg0, int *, 8) = temp_a1;
-    temp_v1 = M2C_FIELD(temp_a2, int *, 8);
-    temp_v0_3 = temp_v1 + 3;
-    M2C_FIELD(arg0, int *, 0xC) = (int) (temp_a1 + ((temp_v1 + 3) / 4 * 0x10));
-    temp_v1_2 = M2C_FIELD(temp_a2, unsigned short *, 2);
-    if (temp_v1_2 & 1 & 0xFFFF) {
-        M2C_FIELD(temp_a2, unsigned short *, 2) = (unsigned short) (temp_v1_2 & 0xFFFE);
-        var_a3 = 0;
-        if (M2C_FIELD((baseFirst = M2C_FIELD(arg0, int *, 4)), int *, 8) > 0) {
-            do {
-                temp_v0_4 = var_a3 * 4;
-                var_a3 += 1;
-                temp_a1_2 = temp_v0_4 + M2C_FIELD(arg0, int *, 8);
-                temp_v0_5 = (*(int *)(temp_a1_2));
-                if (temp_v0_5 != 0) {
-                    (*(int *)(temp_a1_2)) = temp_v0_5 + baseFirst;
-                }
-            } while (var_a3 < M2C_FIELD((baseFirst = M2C_FIELD(arg0, int *, 4)), int *, 8));
-        }
-        var_a3 = 0;
-        var_a0 = M2C_FIELD(arg0, int *, 0xC);
-        if (M2C_FIELD((baseSecond = M2C_FIELD(arg0, int *, 4)), int *, 0xC) > 0) {
-            do {
-                temp_v0_6 = M2C_FIELD(var_a0, int *, 4);
-                if (temp_v0_6 != 0) {
-                    M2C_FIELD(var_a0, int *, 4) = (int) (temp_v0_6 + baseSecond);
-                }
-                temp_v1_3 = M2C_FIELD(var_a0, int *, 8);
-                if (temp_v1_3 != 0) {
-                    M2C_FIELD(var_a0, int *, 8) = (int) (temp_v1_3 + M2C_FIELD(arg0, int *, 4));
-                }
-                temp_v1_4 = M2C_FIELD(var_a0, int *, 0xC);
-                if (temp_v1_4 != 0) {
-                    M2C_FIELD(var_a0, int *, 0xC) = (int) (temp_v1_4 + M2C_FIELD(arg0, int *, 4));
-                }
-                temp_v1_5 = M2C_FIELD(var_a0, int *, 0x10);
-                if (temp_v1_5 != 0) {
-                    M2C_FIELD(var_a0, int *, 0x10) = (int) (temp_v1_5 + M2C_FIELD(arg0, int *, 4));
-                }
-                temp_v1_6 = M2C_FIELD(var_a0, int *, 0x14);
-                if (temp_v1_6 != 0) {
-                    M2C_FIELD(var_a0, int *, 0x14) = (int) (temp_v1_6 + M2C_FIELD(arg0, int *, 4));
-                }
-                temp_v1_7 = M2C_FIELD(var_a0, int *, 0x30);
-                if (temp_v1_7 != 0) {
-                    M2C_FIELD(var_a0, int *, 0x30) = (int) (temp_v1_7 + M2C_FIELD(arg0, int *, 4));
-                }
-                var_a3 += 1;
-                var_a0 += 0x40;
-            } while (var_a3 < M2C_FIELD((baseSecond = M2C_FIELD(arg0, int *, 4)), int *, 0xC));
-        }
-    }
-    var_a3 = 0;
-    var_a0 = M2C_FIELD(arg0, int *, 0xC);
-    if (M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0xC) > 0) {
-        do {
-            temp_v1_8 = var_a3 * 0x10;
-            var_a3 += 1;
-            M2C_FIELD(var_a0, int *, 0x34) = (int) (M2C_FIELD(arg0, int *, 0x10) + temp_v1_8);
-            var_a0 += 0x40;
-        } while (var_a3 < M2C_FIELD(M2C_FIELD(arg0, int *, 4), int *, 0xC));
+
+    FileReader reader;
+    FileReadReq req;
+    req.m_name = "data/wrd/WRD.BIN";
+    req.m_unk08 = 1;
+    req.m_unk20 = 1;
+    req.m_size = sizeof(buf);
+    req.m_unk14 = 0;
+    req.m_offset = 0;
+    req.m_buf = buf;
+    req.m_unk04 = 0;
+    reader.func_001BE524(&req, 0);
+
+    BedPfh pfh;
+    char name[16];
+    X_sprintf(name, "%03d", idx);
+    pfh.setTop(buf);
+    int fileIdx = pfh.getIndex(name);
+    int fileSize = pfh.getFileSize(fileIdx);
+    void *data = D_006E9800.alloc(fileSize, -1);
+
+    X_initFileReadReq(&req);
+    req.m_name = "data/wrd/WRD.BIN";
+    req.m_unk08 = 1;
+    req.m_unk14 = 0;
+    req.m_offset = pfh.getFileOffset(fileIdx);
+    req.m_size = fileSize;
+    req.m_unk20 = 1;
+    req.m_buf = data;
+    req.m_unk04 = 0;
+    reader.func_001BE524(&req, 0);
+
+    if (func_0017E798(self, (WrdHeader *)data, 1) == 0) {
+        D_006E9800.free(data);
+        return 0;
     }
     return 1;
 }
 
-extern "C" void func_0017E9D0(int arg0)
+extern "C" int func_0017E798(WrdSrv *self, WrdHeader *hdr, int copy)
 {
-    int temp_a1;
-    int temp_v0;
+    register int i PS2_REG("$7");
+    WrdRoom *room;
 
-    temp_v0 = M2C_FIELD(arg0, int *, 0x10);
-    if (temp_v0 != 0) {
-        Xiii_free__9BedMemoryPv((int) (int)&D_006E9800, temp_v0);
-        M2C_FIELD(arg0, int *, 0x10) = 0;
+    func_0017E9D0(self);
+    self->m_states = (WrdRoomState *)D_006E9800.alloc(hdr->m_roomNum * sizeof(WrdRoomState), -1);
+    memset(self->m_states, 0, hdr->m_roomNum * sizeof(WrdRoomState));
+    if (copy != 0) {
+        void *buf = D_006E9800.alloc(hdr->m_size, -1);
+        memcpy(buf, hdr, hdr->m_size);
+        self->m_data = (WrdHeader *)buf;
+        self->m_flags |= 2;
+    } else {
+        self->m_data = hdr;
     }
-    if (M2C_FIELD(arg0, int *, 0) & 2) {
-        temp_a1 = M2C_FIELD(arg0, int *, 4);
-        if (temp_a1 != 0) {
-            Xiii_free__9BedMemoryPv((int) (int)&D_006E9800, temp_a1);
+
+    WrdHeader *data = self->m_data;
+    WrdRoom **idTable = (WrdRoom **)((char *)data + 0x10);
+    self->m_idTable = idTable;
+    self->m_rooms = (WrdRoom *)((char *)idTable + ((data->m_idTableNum + 3) / 4) * 0x10);
+
+    if (data->m_flags & 1) {
+        data->m_flags &= 0xFFFE;
+        for (i = 0; i < self->m_data->m_idTableNum; i++) {
+            int off = (int)self->m_idTable[i];
+            if (off != 0) {
+                self->m_idTable[i] = (WrdRoom *)(off + (int)self->m_data);
+            }
+        }
+        room = self->m_rooms;
+        for (i = 0; i < self->m_data->m_roomNum; i++) {
+            if (room->m_name != 0) {
+                room->m_name = (const char *)((int)room->m_name + (int)self->m_data);
+            }
+            if (room->m_unk08 != 0) {
+                room->m_unk08 = (void *)((int)room->m_unk08 + (int)self->m_data);
+            }
+            if (room->m_unk0C != 0) {
+                room->m_unk0C = (void *)((int)room->m_unk0C + (int)self->m_data);
+            }
+            if (room->m_unk10 != 0) {
+                room->m_unk10 = (void *)((int)room->m_unk10 + (int)self->m_data);
+            }
+            if (room->m_unk14 != 0) {
+                room->m_unk14 = (void *)((int)room->m_unk14 + (int)self->m_data);
+            }
+            if (room->m_neighbors != 0) {
+                room->m_neighbors = (int *)((int)room->m_neighbors + (int)self->m_data);
+            }
+            room++;
         }
     }
-    M2C_FIELD(arg0, int *, 4) = 0;
-    M2C_FIELD(arg0, int *, 0xC) = 0;
-    M2C_FIELD(arg0, int *, 8) = 0;
-    M2C_FIELD(arg0, int *, 0) = 0;
+
+    room = self->m_rooms;
+    for (i = 0; i < self->m_data->m_roomNum; i++) {
+        room->m_state = &self->m_states[i];
+        room++;
+    }
+    return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017EA44);
-
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017EA84);
-
-extern "C" void func_0017EB3C(int arg0, int arg1, int arg2, int arg3)
+extern "C" void func_0017E9D0(WrdSrv *self)
 {
-    int temp_v0;
+    if (self->m_states != 0) {
+        D_006E9800.free(self->m_states);
+        self->m_states = 0;
+    }
+    if (self->m_flags & 2) {
+        if (self->m_data != 0) {
+            D_006E9800.free(self->m_data);
+        }
+    }
+    self->m_data = 0;
+    self->m_rooms = 0;
+    self->m_idTable = 0;
+    self->m_flags = 0;
+}
 
-    if (M2C_FIELD(arg0, int *, 4) != 0) {
-        temp_v0 = Xiii_func_0017EA44(arg0, (int) arg2);
-        M2C_FIELD(arg1, float *, 0) = (float) (M2C_FIELD(temp_v0, float *, 0x20) + M2C_FIELD(arg3, float *, 0));
-        M2C_FIELD(arg1, float *, 4) = (float) (M2C_FIELD(temp_v0, float *, 0x24) + M2C_FIELD(arg3, float *, 4));
-        M2C_FIELD(arg1, float *, 8) = (float) (M2C_FIELD(temp_v0, float *, 0x28) + M2C_FIELD(arg3, float *, 8));
+extern "C" WrdRoom *func_0017EA44(WrdSrv *self, int id)
+{
+    if (self->m_data == 0) {
+        return 0;
+    }
+    if (id < 0 || id >= self->m_data->m_idTableNum) {
+        return 0;
+    }
+    return self->m_idTable[id];
+}
+
+extern "C" WrdRoom *func_0017EA84(WrdSrv *self, const char *name)
+{
+    if (self->m_data == 0) {
+        return 0;
+    }
+    WrdRoom *room = self->m_rooms;
+    int len = strlen(name);
+    int i;
+
+    for (i = 0; i < self->m_data->m_roomNum; i++) {
+        if (memcmp(room->m_name, name, len) == 0 && (int)strlen(room->m_name) == len) {
+            return room;
+        }
+        room++;
+    }
+    return 0;
+}
+
+extern "C" void func_0017EB3C(WrdSrv *self, float *out, int roomId, const float *in)
+{
+    if (self->m_data != 0) {
+        WrdRoom *room = func_0017EA44(self, roomId);
+        out[0] = room->m_origin[0] + in[0];
+        out[1] = room->m_origin[1] + in[1];
+        out[2] = room->m_origin[2] + in[2];
     }
 }
 
-extern "C" void func_0017EBAC(int arg0, int arg1, int arg2, int arg3)
+extern "C" void func_0017EBAC(WrdSrv *self, float *out, const float *in, int roomId)
 {
-    int temp_v0;
-
-    if (M2C_FIELD(arg0, int *, 4) != 0) {
-        temp_v0 = Xiii_func_0017EA44(arg0, (int) arg3);
-        M2C_FIELD(arg1, float *, 0) = (float) (M2C_FIELD(arg2, float *, 0) - M2C_FIELD(temp_v0, float *, 0x20));
-        M2C_FIELD(arg1, float *, 4) = (float) (M2C_FIELD(arg2, float *, 4) - M2C_FIELD(temp_v0, float *, 0x24));
-        M2C_FIELD(arg1, float *, 8) = (float) (M2C_FIELD(arg2, float *, 8) - M2C_FIELD(temp_v0, float *, 0x28));
+    if (self->m_data != 0) {
+        WrdRoom *room = func_0017EA44(self, roomId);
+        out[0] = in[0] - room->m_origin[0];
+        out[1] = in[1] - room->m_origin[1];
+        out[2] = in[2] - room->m_origin[2];
     }
 }
 
 // NON_MATCHING: 245/248 differ, 8 relocs differ (size 0x3E0, game 0x3D8), 117 edits
 #ifdef NON_MATCHING
+extern "C" int Xiii_func_0017EA44(int, int) asm("func_0017EA44");
 extern "C" void EC1C_clear(int) asm("func_0017EFF4");
 extern "C" void *EC1C_zero(void *, int, unsigned int) asm("memset");
 extern "C" int func_0017EC1C(int in0, int in1, int in2, int in3)
@@ -848,34 +1225,37 @@ extern "C" int func_0017EC1C(int in0, int in1, int in2, int in3)
 INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017EC1C);
 #endif
 
-extern "C" void func_0017EFF4(int arg0)
+extern "C" void func_0017EFF4(WrdSrv *self)
 {
-    int var_a1;
-    int var_a2;
+    WrdRoomState *st = self->m_states;
+    int i;
 
-    var_a2 = 0;
-    var_a1 = (*(int *)(int *)((char *)(arg0) + 0x10));
-    if ((*(int *)(int *)((char *)((*(int *)(int *)((char *)(arg0) + 0x4))) + 0xC)) > 0) {
-        do {
-            var_a2 += 1;
-            (*(int *)(var_a1)) &= ~1;
-            var_a1 += 0x10;
-        } while (var_a2 < (*(int *)(int *)((char *)((*(int *)(int *)((char *)(arg0) + 0x4))) + 0xC)));
+    for (i = 0; i < self->m_data->m_roomNum; i++) {
+        st->m_flags &= ~1;
+        st++;
     }
 }
 
-
-INCLUDE_ASM("asm/nonmatchings/unk/WrdSrv", func_0017F038);
+extern "C" void func_0017F038(int init, int prio)
+{
+    if (prio == 0xFFFF) {
+        if (init == 1) {
+            func_0017E540(&D_00298EE0);
+        }
+        if (init == 0) {
+            WrdSrv__vfunc_01(&D_00298EE0, 2);
+        }
+    }
+}
 
 extern "C" void func_0017F090()
 {
-    X_func_0017F038(1, 0xFFFF);
+    func_0017F038(1, 0xFFFF);
 }
-
 
 extern "C" void func_0017F0B0()
 {
-    X_func_0017F038(0, 0xFFFF);
+    func_0017F038(0, 0xFFFF);
 }
 
 INCLUDE_RODATA("asm/nonmatchings/unk/WrdSrv", D_002F3148);
