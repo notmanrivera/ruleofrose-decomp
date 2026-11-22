@@ -1,5 +1,10 @@
 #include "include_asm.h"
 #include "unk/WrdSrv.h"
+extern "C" void X_func_0017C2C0_17C14C(void *) throw() asm("func_0017C2C0");
+struct SctLayerDtorStub_17C14C {
+    char pad[20];
+    virtual void dtor(int) throw();
+}; // SctLayerDtorStub_17C14C
 extern "C" void X_func_0017C754_17C2C0(SctLayer *) throw() asm("func_0017C754");
 extern "C" void X_free__9BedMemoryPv_17C2C0(void *, void *) asm("free__9BedMemoryPv");
 extern "C" int X_func_0017C7B0_17C3F0(void *) asm("func_0017C7B0");
@@ -47,7 +52,21 @@ extern "C" void func_0017C0F0(SctMap *self)
     self->m_data = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C14C);
+extern "C" void func_0017C14C(SctMap *self, int arg1)
+{
+    X_func_0017C2C0_17C14C(self);
+    if (self->m_layers != 0) {
+        SctLayerDtorStub_17C14C *p = (SctLayerDtorStub_17C14C *)self->m_layers + 4;
+        SctLayerDtorStub_17C14C *begin = (SctLayerDtorStub_17C14C *)self->m_layers;
+        while (begin != p) {
+            p--;
+            p->dtor(2);
+        }
+    }
+    if (arg1 & 1) {
+        return X___builtin_delete(self);
+    }
+}
 
 extern "C" int func_0017C1F4(SctMap *self, SctMapHeader *hdr, int copy)
 {
