@@ -447,7 +447,59 @@ extern "C" int func_001BE8A8()
 
 INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BE8BC);
 
+// NON_MATCHING: 51/83 differ (size 0x14C, game 0x158), 13 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_001BE8BC(const unsigned char *, int *, int *, int *) asm("func_001BE8BC");
+extern "C" int func_001BEA18(const unsigned char *arg0, const unsigned char *arg1, int *arg2, int *arg3)
+{
+    int a0 = 0;
+    int a1 = 0;
+    int a2 = 0;
+    int b0 = 0;
+    int b1 = 0;
+    int b2 = 0;
+
+    *arg2 = 0;
+    *arg3 = 0;
+
+    int ok = X_func_001BE8BC(arg0, &a0, &a1, &a2);
+    if (ok != 1) {
+        return 0;
+    }
+    if (X_func_001BE8BC(arg1, &b0, &b1, &b2) != ok) {
+        return 0;
+    }
+
+    int y1 = arg1[7];
+    int prev;
+    if (y1 == 0) {
+        prev = 99;
+    } else {
+        prev = y1 - 1;
+    }
+    int diff;
+    if (arg0[7] == y1) {
+        diff = b0 - a0;
+    } else if (arg0[7] == prev) {
+        diff = a1 + b0;
+    } else {
+        diff = 0x57E04;
+    }
+
+    int h = diff / 3600;
+    *arg2 = h;
+    if (h >= 100) {
+        *arg2 = 99;
+        *arg3 = 59;
+        return 1;
+    }
+    *arg3 = diff % 3600;
+    *arg3 /= 60;
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BEA18);
+#endif
 
 // NON_MATCHING: 2/21 differ, 2 edits
 #ifdef NON_MATCHING
