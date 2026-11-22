@@ -537,6 +537,29 @@ def qwen_names():
     return out
 
 
+def research():
+    """Research subagents (build/workers/research-R<n>.log, one "[k/N] step"
+    line per step they finish, "DONE ..." at the end): the newest one."""
+    logs = sorted((p for p in os.listdir(ST) if re.match(r"research-R\d+\.log$", p)),
+                  key=lambda p: os.path.getmtime(os.path.join(ST, p)))
+    if not logs:
+        return []
+    path = os.path.join(ST, logs[-1])
+    lines = open(path, encoding="utf-8", errors="replace").read().splitlines()
+    age = time.time() - os.path.getmtime(path)
+    done = next((ln for ln in lines if ln.startswith("DONE")), None)
+    prog = [p for p in (re.match(r"^\[(\d+)/(\d+)\] (.*)$", ln) for ln in lines) if p]
+    state = col("terminada", "dim") if done else col("trabajando", "green") if age < 1800 else col("parada", "yellow")
+    out = [f"{col('investigación ' + logs[-1][9:-4], 'bold')} {state}  (Sonnet, solo lectura; log {os.path.relpath(path, MAIN)})"]
+    if prog:
+        k, n = int(prog[-1].group(1)), int(prog[-1].group(2))
+        f = round(WIDTH * k / n)
+        out.append(f"  pasos  {chr(0x2588) * f}{chr(0x2591) * (WIDTH - f)} {k}/{n}  {prog[-1].group(3)[:70]}")
+    if done:
+        out.append(f"  {done[:140]}")
+    return out
+
+
 def twin_sweeps():
     """tools/orca/twin_sweep.sh (log build/workers/twin-sweep.log): twins
     filled with no model after each merge."""
@@ -637,6 +660,11 @@ def render(reset=False):
     # Background tools: only those that ran in the last hours (a running one
     # writes its log all the time); the others are history, not news.
     pq = []
+    res = research()
+    newest = max((p for p in os.listdir(ST) if re.match(r"research-R\d+\.log$", p)),
+                 key=lambda p: os.path.getmtime(os.path.join(ST, p)), default=None)
+    if res and newest and recent(newest, STALE_HOURS):
+        pq += res
     for log_name, fn in (("qwen.log", qwen), ("qwen-names.log", qwen_names),
                          ("perm-official.log", perm_official), ("perm-loop.log", permuter),
                          ("auto-run.log", auto_m2c), ("twin-sweep.log", twin_sweeps),

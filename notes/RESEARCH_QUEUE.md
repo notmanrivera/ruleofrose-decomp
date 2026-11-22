@@ -17,6 +17,23 @@ judgement and go to Sonnet.
 
 ## Open
 
+- [ ] R22 Plan shared class headers for the class families (2026-11-22).
+  Lesson of the day: a class header (real fields and types instead of
+  M2C_FIELD offsets) gave +76 functions in one session (worker Neon, task E),
+  far more than function-by-function work; but families spread over several
+  files (unk/EffLight2 vs other Eff* files) collide when each file gets its
+  own header. Find, from vtables/RTTI (symbols/ghidra_symbols.tsv,
+  notes/class_hierarchy.txt), field accesses (tools/layouts.py) and the
+  existing headers (src/**/*.h): the class families whose classes live in
+  several src/ files (enemies: unk/*Main, *Out* such as HfmMain, ClrMain,
+  NorOutAttack, FshMain, DwfMain, GrgMain, BdlMain, GotMain; effects:
+  unk/Eff*; tasks: Tsk*; menus: Mnu*; mag/maglife*), their common bases and
+  shared fields, which existing header already defines part of each, and a
+  plan: one header per family or base, what it declares, which files
+  include it, an order by expected yield (pending functions + NON_MATCHING
+  attempts + M2C_FIELD uses each unlocks). Output:
+  notes/research/R22-class-families.md.
+
 - [x] R16 Split unk/TskCamera (game/gamman done in c6d41ad; TskCamera
   range done in wt/fable):
   - task/tsk_scene absorbs unk/001F836C (0x1F836C-0x1F8FB7, including
