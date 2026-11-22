@@ -720,17 +720,19 @@ extern "C" int func_001BEDB8()
     return 1;
 }
 
-// NON_MATCHING: 2/51 differ, 2 edits
+// NON_MATCHING: 1/51 differ, 1 edits
 #ifdef NON_MATCHING
 extern "C" int Xii_func_001BEE8C(int) asm("func_001BEE8C");
 extern "C" int func_001BEDC0(int arg0, int arg1, int arg2, int arg3, int arg4)
 {
     Xii_func_001BEE8C(arg0);
     M2C_FIELD(arg0, int *, 0x10) = arg2 & 0xFF80;
-    if (arg4 == 4) {
+    register int depth PS2_REG("$2") = 4;
+    if (arg4 == depth) {
         M2C_FIELD(arg0, int *, 0x14) = arg3 & 0xFF80;
     } else {
-        if (arg4 != 8) {
+        depth = 8;
+        if (arg4 != depth) {
             return 0;
         }
         M2C_FIELD(arg0, int *, 0x14) = arg3 & 0xFFC0;
