@@ -1,385 +1,345 @@
 #include "include_asm.h"
 #include "emy/emy.h"
-extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
-extern "C" int Xiii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
-extern int _vt$7PigMain;
+
+struct PigVtblEntry {
+    short m_delta;
+    short m_pad;
+    int m_fn;
+};
+
+struct PigStateTable {
+    unsigned char m_unk00;
+    unsigned char m_count;
+    unsigned char m_pad02[0xA];
+    signed char *m_table;
+};
+
+struct PigObjStatView {
+    unsigned char m_pad00[0x3EC];
+    int m_partsFlags;                   // +0x3EC
+};
+
+struct PigMain : EmyMain {
+    unsigned char m_pad204[0x60];       // +0x204..+0x263
+    signed char m_unk264;               // +0x264
+    signed char m_unk265;               // +0x265
+    signed char m_unk266;               // +0x266
+    unsigned char m_pad267;             // +0x267
+    int m_unk268;                       // +0x268
+    int m_unk26C;                       // +0x26C
+};
+STATIC_ASSERT(sizeof(PigMain) == 0x270, PigMain_size);
+
+struct PigOutParts : EmyOut {
+};
+
+struct PigOutTackle : EmyOut {
+    int m_unk38;                        // +0x38
+    int m_unk3C;                        // +0x3C
+};
+STATIC_ASSERT(sizeof(PigOutTackle) == 0x40, PigOutTackle_size);
+
+struct PigOutTest : EmyOut {
+};
+
+extern int vtbl_PigMain asm("_vt$7PigMain");
+
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
-extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
-extern int _vt$7HfmMain;
-extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
-extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
-struct m2c_v34_10_i { char pad[52]; virtual void v1(); virtual int call(); };
-struct m2c_v200_10_i { char pad[512]; virtual void v1(); virtual int call(); };
-struct m2c_v34_18_i { char pad[52]; virtual void v1(); virtual void v2(); virtual int call(); };
-struct m2c_v34_20_i { char pad[52]; virtual void v1(); virtual void v2(); virtual void v3(); virtual int call(); };
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" int Xiii_func_00166EB4(int, int) asm("func_00166EB4");
-extern "C" int Xiii_func_0016968C(int, int) asm("func_0016968C");
-extern "C" int Xiiif_func_00166F50(int, int, float) asm("func_00166F50");
-extern "C" int X_func_00165794(...) asm("func_00165794");
-extern "C" int X_func_00165A68(...) asm("func_00165A68");
-extern "C" int X_func_00165AA8(...) asm("func_00165AA8");
-extern "C" int X_func_00165D38(...) asm("func_00165D38");
-extern "C" int X_func_00165D7C(...) asm("func_00165D7C");
-extern "C" int X_func_00166048(...) asm("func_00166048");
-extern "C" int X_func_00166108(...) asm("func_00166108");
-extern "C" int X_func_00166128(...) asm("func_00166128");
-extern "C" int X_func_00166178(...) asm("func_00166178");
-extern "C" int X_func_00166198(...) asm("func_00166198");
-extern "C" int X_func_001696FC(...) asm("func_001696FC");
-// Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_func_0010423C(...) asm("func_0010423C");
-extern "C" int X_func_00118FEC__9MagSystem(...) asm("func_00118FEC__9MagSystem");
-extern "C" int X_func_00119090__9MagSystem(...) asm("func_00119090__9MagSystem");
-extern "C" int X_func_0015ACA0(...) asm("func_0015ACA0");
-extern "C" int X_func_0015AD18(...) asm("func_0015AD18");
-extern "C" int X_func_0015AE78(...) asm("func_0015AE78");
-extern "C" int X_func_0015AEF0(...) asm("func_0015AEF0");
-extern "C" int X_func_0015AF68(...) asm("func_0015AF68");
-extern "C" int X_func_0015AFE0(...) asm("func_0015AFE0");
-extern "C" int X_func_0015B058(...) asm("func_0015B058");
-extern "C" int X_func_0015B0DC(...) asm("func_0015B0DC");
-extern "C" int X_func_0015B154(...) asm("func_0015B154");
-extern "C" int X_func_0015B1CC(...) asm("func_0015B1CC");
-extern "C" int X_func_0015B244(...) asm("func_0015B244");
-extern "C" int X_func_0015B2BC(...) asm("func_0015B2BC");
-extern "C" int X_func_0015B34C(...) asm("func_0015B34C");
-extern "C" int X_func_0015B3DC(...) asm("func_0015B3DC");
-extern "C" int X_func_0015B454(...) asm("func_0015B454");
-extern "C" int X_func_0015B4E4(...) asm("func_0015B4E4");
-extern "C" int X_func_0015B574(...) asm("func_0015B574");
-extern "C" int X_func_0015B5EC(...) asm("func_0015B5EC");
-extern "C" int X_func_0015B8B8(...) asm("func_0015B8B8");
+extern "C" int X_EmyMain__vfunc_01(EmyMain *, int) asm("EmyMain__vfunc_01");
 extern "C" int X_func_00165734(...) asm("func_00165734");
-extern "C" int X_func_00165794(...) asm("func_00165794");
-extern "C" int X_func_00165A68(...) asm("func_00165A68");
-extern "C" int X_func_00165AA8(...) asm("func_00165AA8");
-extern "C" int X_func_00165D38(...) asm("func_00165D38");
-extern "C" int X_func_00165D7C(...) asm("func_00165D7C");
-extern "C" int X_func_00166004(...) asm("func_00166004");
-extern "C" int X_func_00166048(...) asm("func_00166048");
-extern "C" int X_func_00166108(...) asm("func_00166108");
-extern "C" int X_func_00166128(...) asm("func_00166128");
-extern "C" int X_func_00166178(...) asm("func_00166178");
-extern "C" int X_func_00166198(...) asm("func_00166198");
+extern "C" int X_func_00165794(PigMain *) asm("func_00165794");
+extern "C" int X_func_00165A68(PigMain *) asm("func_00165A68");
+extern "C" int X_func_00165AA8(PigMain *) asm("func_00165AA8");
+extern "C" int X_func_00165D38(PigMain *) asm("func_00165D38");
+extern "C" int X_func_00165D7C(PigMain *) asm("func_00165D7C");
+extern "C" int X_func_00166004(PigMain *) asm("func_00166004");
+extern "C" int X_func_00166048(PigMain *) asm("func_00166048");
+extern "C" int X_func_00166108(PigMain *) asm("func_00166108");
+extern "C" int X_func_00166128(PigMain *) asm("func_00166128");
+extern "C" int X_func_00166178(PigMain *) asm("func_00166178");
+extern "C" int X_func_00166198(PigMain *) asm("func_00166198");
 extern "C" int X_func_00166AD0(...) asm("func_00166AD0");
-extern "C" int X_func_00166EB4(...) asm("func_00166EB4");
-extern "C" int X_func_00166F50(...) asm("func_00166F50");
-extern "C" int X_func_001680A0(...) asm("func_001680A0");
-extern "C" int X_func_001694CC(...) asm("func_001694CC");
-extern "C" int X_func_0016968C(...) asm("func_0016968C");
-extern "C" int X_func_001696FC(...) asm("func_001696FC");
-extern "C" int X_func_00169F94(...) asm("func_00169F94");
-extern "C" int X_func_001D10D0(...) asm("func_001D10D0");
-extern "C" int X_func_001D1410(...) asm("func_001D1410");
-extern "C" int X_func_001D19A8(...) asm("func_001D19A8");
-extern "C" int X_func_001FAC60(...) asm("func_001FAC60");
-extern "C" int X_func_00202F10(...) asm("func_00202F10");
-extern int D_006E9840;
-extern int D_007812C0;
-extern int D_007A3208;
-extern int D_007A3350;
-extern int D_007A3354;
+extern "C" int X_func_00166EB4(EmyOut *, int) asm("func_00166EB4");
+extern "C" int X_func_00166F50(EmyOut *, int, float) asm("func_00166F50");
+extern "C" int X_func_0016968C(void *, int) asm("func_0016968C");
+extern "C" int X_func_001696FC(void *, int) asm("func_001696FC");
+
+static inline int PigCheckBlocked(PigMain *self, int idx)
+{
+    int next = X_func_001696FC(self->m_brain, idx);
+    if (next == 0xB && self->m_unk268 == 0) {
+        return 1;
+    }
+    if (next == 0xC && self->m_unk26C == 0) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015A17C);
 
-extern "C" void PigMain__vfunc_01(int arg0, int arg1)
+extern "C" void PigMain__vfunc_01(PigMain *self, int flags)
 {
-    M2C_FIELD(arg0, int *, 0x200) = (int)&_vt$7PigMain;
-    Xii_EmyMain__vfunc_01(arg0, 0);
-    if (arg1 & 1) {
-        return Xv___builtin_delete((void *)arg0);
+    self->m_vtbl = &vtbl_PigMain;
+    X_EmyMain__vfunc_01(self, 0);
+    if (flags & 1) {
+        return Xv___builtin_delete(self);
     }
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/PigMain", PigMain__vfunc_04);
 
-extern "C" void PigMain__vfunc_05(int arg0)
+extern "C" void PigMain__vfunc_05(PigMain *self)
 {
-    int temp_a0;
-    int temp_v0;
-    int temp_v0_2;
+    int flags;
+    int next;
+    int res;
 
-    M2C_FIELD(arg0, int *, 0x40) = 0;
-    temp_a0 = M2C_FIELD(arg0, int *, 0x30);
-    if (temp_a0 & 2) {
-        M2C_FIELD(arg0, int *, 0x3C) = 4;
-        M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = 4;
-        M2C_FIELD(arg0, int *, 0x40) = 1;
-        M2C_FIELD(arg0, int *, 0x30) = 0;
+    self->m_stateChanged = 0;
+    flags = self->m_flags30;
+    if (flags & 2) {
+        self->m_curState = 4;
+        ((EmyBrainView *)self->m_brain)->m_state = 4;
+        self->m_stateChanged = 1;
+        self->m_flags30 = 0;
     } else {
-        temp_v0 = M2C_FIELD(arg0, int *, 0x24);
-        if (temp_v0 != -1) {
-            M2C_FIELD(arg0, int *, 0x30) = 0;
-            temp_v0_2 = Xiii_func_0016968C(M2C_FIELD(arg0, int *, 0x1C), temp_v0);
-            M2C_FIELD(arg0, signed char *, 0x265) = 0;
-            M2C_FIELD(arg0, signed char *, 0x264) = 0;
-            M2C_FIELD(arg0, signed char *, 0x266) = 0;
-            if (temp_v0_2 != 0) {
-                M2C_FIELD(arg0, int *, 0x3C) = temp_v0_2;
-                M2C_FIELD(arg0, int *, 0x40) = 1;
+        next = self->m_nextState;
+        if (next != -1) {
+            self->m_flags30 = 0;
+            res = X_func_0016968C(self->m_brain, next);
+            self->m_unk265 = 0;
+            self->m_unk264 = 0;
+            self->m_unk266 = 0;
+            if (res != 0) {
+                self->m_curState = res;
+                self->m_stateChanged = 1;
             } else {
-                M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = (int) M2C_FIELD(arg0, int *, 0x3C);
+                ((EmyBrainView *)self->m_brain)->m_state = self->m_curState;
             }
-        } else if (temp_a0 & 1) {
-            M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = (int) M2C_FIELD(arg0, int *, 0x3C);
-            M2C_FIELD(arg0, int *, 0x40) = 1;
+        } else if (flags & 1) {
+            ((EmyBrainView *)self->m_brain)->m_state = self->m_curState;
+            self->m_stateChanged = 1;
         }
     }
-    M2C_FIELD(arg0, int *, 0x30) = 0;
+    self->m_flags30 = 0;
 }
 
-extern "C" void PigMain__vfunc_06(int arg0)
+extern "C" void PigMain__vfunc_06(PigMain *self)
 {
-    int temp_v0;
-    int temp_v0_2;
-    int temp_v0_3;
+    EmyOut *curOut;
+    PigVtblEntry *vt;
 
-    if (M2C_FIELD(arg0, int *, 0x40) != 0) {
-        ((m2c_v34_20_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
-        ((m2c_v200_10_i *)(arg0))->call();
+    if (self->m_stateChanged != 0) {
+        curOut = self->m_curOut;
+        vt = (PigVtblEntry *)((char *)curOut->m_vtbl + 0x20);
+        ((void (*)(void *))vt->m_fn)((char *)curOut + vt->m_delta);
+        vt = (PigVtblEntry *)((char *)self->m_vtbl + 0x10);
+        ((void (*)(void *))vt->m_fn)((char *)self + vt->m_delta);
     }
-    M2C_FIELD(arg0, int *, 0x24) = ((m2c_v34_18_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
+    curOut = self->m_curOut;
+    vt = (PigVtblEntry *)((char *)curOut->m_vtbl + 0x18);
+    self->m_nextState = ((int (*)(void *))vt->m_fn)((char *)curOut + vt->m_delta);
 }
 
-extern "C" int PigMain__vfunc_02(int arg0)
+extern "C" int PigMain__vfunc_02(PigMain *self)
 {
     int v;
-    int obj;
-    int vt;
-    register int e8 PS2_REG("$3");
+    EmyOut *obj;
+    PigVtblEntry *vt;
+    register PigStateTable *tbl PS2_REG("$3");
     int count;
-    register int base PS2_REG("$7");
+    register signed char *base PS2_REG("$7");
     register int v2 PS2_REG("$2");
     int i;
     int *dst;
 
-    v = M2C_FIELD(arg0, int *, 0x3C);
+    v = self->m_curState;
     if (v != 0) {
         if (v >= 0) {
             if (v < 0x11) {
-                obj = M2C_FIELD(arg0 + v * 4, int *, 0x48);
-                M2C_FIELD(arg0, int *, 0x44) = obj;
-                vt = M2C_FIELD(obj, int *, 0x34) + 0x10;
-                ((void (*)(int)) M2C_FIELD(vt, int *, 4))(obj + M2C_FIELD(vt, short *, 0));
+                obj = ((EmyOut **)self->m_unk48)[v];
+                self->m_curOut = obj;
+                vt = (PigVtblEntry *)((char *)obj->m_vtbl + 0x10);
+                ((void (*)(void *))vt->m_fn)((char *)obj + vt->m_delta);
             }
         }
     }
     i = 0;
-    e8 = M2C_FIELD(arg0, int *, 0xE8);
-    count = M2C_FIELD(e8, unsigned char *, 1);
-    v2 = M2C_FIELD(arg0, int *, 0x3C);
-    base = M2C_FIELD(e8, int *, 0xC) + (v2 * count);
+    tbl = (PigStateTable *)self->m_unkE8;
+    count = tbl->m_count;
+    v2 = self->m_curState;
+    base = tbl->m_table + (v2 * count);
     for (; i < count; i++) {
-        dst = (int *) (arg0 + 4);
-        if (M2C_FIELD(base, signed char *, i) != 0) {
-            M2C_FIELD(dst + i, int *, 0x200) = 1;
+        dst = (int *)((char *)self + 4);
+        if (base[i] != 0) {
+            *(int *)((char *)(dst + i) + 0x200) = 1;
         } else {
-            M2C_FIELD(dst + i, int *, 0x200) = 0;
+            *(int *)((char *)(dst + i) + 0x200) = 0;
         }
     }
     return 0;
 }
 
-extern "C" int func_0015AC8C()
+extern "C" int func_0015AC8C(void)
 {
     return X_func_00165734();
 }
 
-
-extern "C" int func_0015ACA0(int arg0)
+extern "C" int func_0015ACA0(PigMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 1);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00165794(arg0);
+    if (PigCheckBlocked(self, 1) == 0) {
+        return X_func_00165794(self);
     }
     return 0;
 }
 
-
-// D_002F0D68: the end of unk/GotMain's .rodata now (config/splits_manual.tsv)
-
-// D_002F0D78: the end of unk/GotMain's .rodata now (config/splits_manual.tsv)
-
-// D_002F0D88: the end of unk/GotMain's .rodata now (config/splits_manual.tsv)
+// D_002F0D68..D_002F0D88: the end of unk/GotMain's .rodata now (config/splits_manual.tsv)
 
 INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015AD18);
 
-extern "C" int func_0015AE78(int arg0)
+extern "C" int func_0015AE78(PigMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 7);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00165A68(arg0);
+    if (PigCheckBlocked(self, 7) == 0) {
+        return X_func_00165A68(self);
     }
     return 0;
 }
 
-
-extern "C" int func_0015AEF0(int arg0)
+extern "C" int func_0015AEF0(PigMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 8);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00165AA8(arg0);
+    if (PigCheckBlocked(self, 8) == 0) {
+        return X_func_00165AA8(self);
     }
     return 0;
 }
 
-
-extern "C" int func_0015AF68(int arg0)
+extern "C" int func_0015AF68(PigMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 9);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00165D38(arg0);
+    if (PigCheckBlocked(self, 9) == 0) {
+        return X_func_00165D38(self);
     }
     return 0;
 }
 
-
-extern "C" int func_0015AFE0(int arg0)
+extern "C" int func_0015AFE0(PigMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xA);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00165D7C(arg0);
+    if (PigCheckBlocked(self, 0xA) == 0) {
+        return X_func_00165D7C(self);
     }
     return 0;
 }
 
-
-INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B058);
-
-extern "C" int func_0015B0DC(int arg0)
+extern "C" int func_0015B058(PigMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xC);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00166048(arg0);
+    if (PigCheckBlocked(self, 0xB) == 0) {
+        return X_func_00166004(self);
     }
     return 0;
 }
 
-
-extern "C" int func_0015B154(int arg0)
+extern "C" int func_0015B0DC(PigMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xD);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00166128(arg0);
+    if (PigCheckBlocked(self, 0xC) == 0) {
+        return X_func_00166048(self);
     }
     return 0;
 }
 
-
-extern "C" int func_0015B1CC(int arg0)
+extern "C" int func_0015B154(PigMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xE);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00166108(arg0);
+    if (PigCheckBlocked(self, 0xD) == 0) {
+        return X_func_00166128(self);
     }
     return 0;
 }
 
-
-extern "C" int func_0015B244(int arg0)
+extern "C" int func_0015B1CC(PigMain *self)
 {
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0xF);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00166178(arg0);
+    if (PigCheckBlocked(self, 0xE) == 0) {
+        return X_func_00166108(self);
     }
     return 0;
 }
 
-
-INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B2BC);
-
-INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B34C);
-
-extern "C" int func_0015B3DC(int arg0)
+extern "C" int func_0015B244(PigMain *self)
 {
-    int var_a0;
-    int temp_v0;
-    int var_v0;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0x12);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a0 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a0 = 1;
-    else var_a0 = 0;
-    if (var_a0 != 0) return 0;
-    {
-        return (*(int *)(int *)((char *)((*(int *)(int *)((char *)(arg0) + 0x20))) + 0x3EC)) & 1;
-    }
-}
-
-INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B454);
-
-INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B4E4);
-
-extern "C" int func_0015B574(int arg0)
-{
-    int temp_v0;
-    int var_a1;
-
-    temp_v0 = X_func_001696FC((*(int *)(int *)((char *)(arg0) + 0x1C)), 0x15);
-    if (temp_v0 == 0xB && (*(int *)(int *)((char *)(arg0) + 0x268)) == 0) var_a1 = 1;
-    else if (temp_v0 == 0xC && (*(int *)(int *)((char *)(arg0) + 0x26C)) == 0) var_a1 = 1;
-    else var_a1 = 0;
-    if (var_a1 == 0) {
-        return X_func_00166198(arg0);
+    if (PigCheckBlocked(self, 0xF) == 0) {
+        return X_func_00166178(self);
     }
     return 0;
 }
 
+extern "C" int func_0015B2BC(PigMain *self)
+{
+    if (PigCheckBlocked(self, 0x10) != 0) {
+        return 0;
+    }
+    int f = ((PigObjStatView *)self->m_objStat)->m_partsFlags;
+    if (f & 8) {
+        if (f & 0x10) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+extern "C" int func_0015B34C(PigMain *self)
+{
+    if (PigCheckBlocked(self, 0x11) != 0) {
+        return 0;
+    }
+    int f = ((PigObjStatView *)self->m_objStat)->m_partsFlags;
+    if (f & 2) {
+        if (f & 4) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+extern "C" int func_0015B3DC(PigMain *self)
+{
+    if (PigCheckBlocked(self, 0x12) != 0) {
+        return 0;
+    }
+    return ((PigObjStatView *)self->m_objStat)->m_partsFlags & 1;
+}
+
+extern "C" int func_0015B454(PigMain *self)
+{
+    if (PigCheckBlocked(self, 0x13) != 0) {
+        return 0;
+    }
+    int f = ((PigObjStatView *)self->m_objStat)->m_partsFlags;
+    if (!(f & 2)) {
+        if (!(f & 4)) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+extern "C" int func_0015B4E4(PigMain *self)
+{
+    if (PigCheckBlocked(self, 0x14) != 0) {
+        return 0;
+    }
+    int f = ((PigObjStatView *)self->m_objStat)->m_partsFlags;
+    if (!(f & 8)) {
+        if (!(f & 0x10)) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+extern "C" int func_0015B574(PigMain *self)
+{
+    if (PigCheckBlocked(self, 0x15) == 0) {
+        return X_func_00166198(self);
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B5EC);
 
@@ -387,40 +347,36 @@ INCLUDE_ASM("asm/nonmatchings/unk/PigMain", func_0015B8B8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/PigMain", PigOutParts__vfunc_02);
 
-extern "C" int PigOutParts__vfunc_03()
+extern "C" int PigOutParts__vfunc_03(void)
 {
     return -1;
 }
 
-
-extern "C" void PigOutParts__vfunc_04()
+extern "C" void PigOutParts__vfunc_04(void)
 {
     X_func_00166AD0();
 }
 
-
-extern "C" void PigOutTackle__vfunc_02(int arg0)
+extern "C" void PigOutTackle__vfunc_02(PigOutTackle *self)
 {
-    Xiii_func_00166EB4(arg0, 0x64);
-    M2C_FIELD(arg0, int *, 0x38) = 0;
-    M2C_FIELD(arg0, int *, 0x3C) = 0;
-    Xiiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), 300.0f);
-    M2C_FIELD(arg0, int *, 4) = 0;
+    X_func_00166EB4(self, 0x64);
+    self->m_unk38 = 0;
+    self->m_unk3C = 0;
+    X_func_00166F50(self, self->m_unk14, 300.0f);
+    self->m_unk04 = 0;
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/PigMain", PigOutTackle__vfunc_03);
 
-extern "C" void PigOutTackle__vfunc_04()
+extern "C" void PigOutTackle__vfunc_04(void)
 {
     X_func_00166AD0();
 }
 
-
-extern "C" void PigOutTest__vfunc_02(int arg0)
+extern "C" void PigOutTest__vfunc_02(PigOutTest *self)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x4)) = 0;
+    self->m_unk04 = 0;
 }
-
 
 INCLUDE_ASM("asm/nonmatchings/unk/PigMain", PigOutTest__vfunc_03);
 
