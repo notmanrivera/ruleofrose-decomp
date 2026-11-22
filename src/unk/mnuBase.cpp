@@ -1,4 +1,7 @@
 #include "include_asm.h"
+extern "C" void Xvi_func_0019279C(int) asm("func_0019279C");
+extern "C" int Xii_func_001927EC(int) asm("func_001927EC");
+extern "C" int Xii_func_0019280C(int) asm("func_0019280C");
 extern "C" int Xiii_func_0021B5A0(int, int) asm("func_0021B5A0");
 extern "C" int Xiiii_func_0021E5A0(int, int, int) asm("func_0021E5A0");
 extern "C" int Xif_func_00223298(int, float) asm("func_00223298");
@@ -648,7 +651,50 @@ extern "C" int func_001926A4(int arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_001926C0);
+extern "C" int func_001926C0(int arg0)
+{
+    int temp_v0;
+    int var_s1 = 0;
+    unsigned int temp_v1;
+
+    if (M2C_FIELD(arg0, int *, 0) == 0) {
+        return -1;
+    }
+    temp_v1 = M2C_FIELD(arg0, unsigned int *, 8);
+    switch (temp_v1) {
+    case 0:
+        M2C_FIELD(arg0, unsigned int *, 8) = 3U;
+    case 3:
+        M2C_FIELD(arg0, unsigned int *, 8) = 4U;
+        Xvi_func_0019279C(arg0);
+        break;
+    case 4:
+        if (M2C_FIELD(arg0, int *, 0xC) == 0) {
+            temp_v0 = Xii_func_0019280C(arg0);
+            switch (temp_v0) {
+            case 0:
+                break;
+            case 1:
+                M2C_FIELD(arg0, unsigned int *, 8) = 6U;
+                break;
+            }
+        }
+        Xii_func_001927EC(arg0);
+        break;
+    case 6:
+        M2C_FIELD(arg0, unsigned int *, 8) = 7U;
+    case 1:
+    case 2:
+    case 5:
+    case 7:
+    default:
+        M2C_FIELD(arg0, unsigned int *, 8) = 0U;
+        var_s1 = 1;
+        M2C_FIELD(arg0, int *, 0x10) = 0;
+        break;
+    }
+    return var_s1;
+}
 
 extern "C" int func_00192794()
 {
