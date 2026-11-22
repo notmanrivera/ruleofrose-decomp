@@ -512,7 +512,8 @@ def compare(name, source=None, extra="", diff=False, sync=True):
         # Compare the Nth function with the game's Nth (at its real address),
         # so one function of the wrong size does not shift all the others.
         orig = original_functions(name)
-        if orig is None or len(orig) != len(fns):
+        known = orig is not None and len(orig) == len(fns)
+        if not known:
             orig = [(start + off, None) for off, _, _, _ in fns]
         spans = [(off, size, addr, fname) for (off, size, fname, _), (addr, _) in zip(fns, orig)]
 
@@ -574,6 +575,22 @@ def compare(name, source=None, extra="", diff=False, sync=True):
                     note = f"  # {r.label}" + (f" ({r.note})" if r.note else "") if r else ""
                     emit(f"    {mark} {disasm(game(o), pc):38} | "
                           f"{disasm(mine, pc) if mine is not None else ''}{note}")
+        # What no function covers (alignment padding between functions, a
+        # function's tail after its symbol's size) must be the game's bytes
+        # too, and every function must sit at its game offset: a whole-object
+        # match is the linked image of this file. (When the game's function
+        # list is unknown, spans use our own offsets: nothing to check.)
+        covered = set()
+        for off, size, _, _ in fns:
+            covered.update(range(off, off + size))
+        if known and any(addr - start != off for off, _, addr, _ in spans):
+            ok = False
+            emit("  .text: functions not at the game's offsets (a function's size or padding differs)")
+        gaps = [o for o in range(len(data)) if o not in covered
+                and start + o - BASE < len(rom) and data[o] != rom[start + o - BASE]]
+        if gaps:
+            ok = False
+            emit(f"  .text: {len(gaps)} bytes outside functions differ (first at 0x{start + gaps[0]:08X})")
         end = rng[".text"][1]
         if end is not None and len(data) != end - start:
             ok = False
@@ -592,12 +609,18 @@ def compare(name, source=None, extra="", diff=False, sync=True):
             mine, want, size_ok = chunks[sec_name]
             lo = rng[sec_name][0]
             relocs = link(elf, sec_name, mine, place, syms, text_name, moved)
-            offsets = range(0, min(len(mine), len(want)) & ~3, 4)
+            n = min(len(mine), len(want))
+            offsets = range(0, n & ~3, 4)
             bad, rbad = check(mine, relocs, offsets, lambda o: word(want, o))
             lines = reloc_lines(relocs, offsets, mine, lambda o: word(want, o), lambda o: lo + o,
                                 rbad, name_of, 0)
-            ok &= not bad and not rbad and size_ok
+            # A last piece of 1-3 bytes (a short string's end) is no whole
+            # word: compare it byte by byte (it holds no relocation).
+            tail = [o for o in range(n & ~3, n) if mine[o] != want[o]]
+            ok &= not bad and not rbad and not tail and size_ok
             status = [f"{len(bad)} words differ"] if bad else []
+            if tail:
+                status.append(f"{len(tail)} tail bytes differ")
             if lines:
                 status.append(f"{len(lines)} relocs differ" if len(lines) > 1 else "1 reloc differs")
             status = ", ".join(status) or ("MATCH" if size_ok else "0 words differ")

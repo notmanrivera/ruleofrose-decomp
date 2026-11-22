@@ -7,8 +7,9 @@ Give the original __LINE__ of every ASSERT/ASSERT_S in the file, in order
 (tools/asserts.py <file>.cpp lists them). Blank lines are added right
 before each assert that is too early; for one that is too late, blank
 lines between it and the previous assert are removed (the last ones
-first). If there are not enough, it is reported, and the code before it
-has to get shorter. Blank lines between a function's opening brace and
+first). If there are not enough, it is reported, the file is left as it
+was (exit 1), and the code before it has to get shorter; --partial writes
+the lines it could place anyway. Blank lines between a function's opening brace and
 its first assert then move above the function's comment; only the assert
 lines matter.
 """
@@ -17,9 +18,11 @@ import sys
 
 
 def main():
-    if len(sys.argv) != 3:
+    args = [a for a in sys.argv[1:] if a != "--partial"]
+    partial = len(args) != len(sys.argv) - 1
+    if len(args) != 2:
         sys.exit(__doc__)
-    path, targets = sys.argv[1], [int(x) for x in sys.argv[2].split(",")]
+    path, targets = args[0], [int(x) for x in args[1].split(",")]
     lines = open(path).read().split("\n")
 
     def asserts():
@@ -44,6 +47,9 @@ def main():
             print(f"assert {k + 1} ({lines[i].strip()}) is on line {i + 1}, wanted {want}")
         elif i + 1 < want:
             lines[i:i] = [""] * (want - i - 1)
+    if late and not partial:
+        sys.exit(f"{late} asserts can't reach their lines: {path} left unchanged "
+                 "(shorten the code before them, or --partial to write the rest)")
     tidy(lines)
     open(path, "w", newline="\n").write("\n".join(lines))
     sys.exit(1 if late else 0)

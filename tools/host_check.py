@@ -40,23 +40,41 @@ def all_files():
 
 
 def check(files, jobs=8):
-    """{file: {compiler: [error lines]}} from one container."""
+    """{file: {compiler: [error lines]}} from one container. Each compile
+    writes its output and exit code to a file of its own (parallel jobs
+    never interleave). A compiler that fails without an "error:" line, or a
+    result that is missing, is a failure of the check itself, never a pass."""
     names = " ".join(f"{f}.cpp" for f in files)
-    runs = "; ".join(f'out=$({cmd} {COMMON} "$1" 2>&1); printf "@@@ %s {tag}\\n%s\\n" "$1" "$out"'
+    runs = "; ".join(f'out=$({cmd} {COMMON} "$1" 2>&1); rc=$?; '
+                     f'printf "@@@ %s {tag} %s\\n%s\\n" "$1" "$rc" "$out" > "$T/$(echo "$1" | tr / _).{tag}"'
                      for tag, cmd in COMPILERS.items())
-    script = f"cd /work/src && printf '%s\\n' {names} | xargs -P {jobs} -I{{}} sh -c '{runs}' _ {{}}"
+    script = (f"set -e; T=$(mktemp -d); export T; cd /work/src && printf '%s\\n' {names} "
+              f"| xargs -P {jobs} -I{{}} sh -c '{runs}' _ {{}}; cat $T/*")
     r = subprocess.run([match.docker(), "run", "--rm", "--platform", "linux/amd64", "-v", f"{ROOT}:/work",
                         IMAGE, "sh", "-c", script], capture_output=True, text=True)
-    if "@@@" not in r.stdout:
-        sys.exit(f"host check could not run (is the {IMAGE} image built?):\n{r.stderr[-2000:]}")
+    if r.returncode or "@@@" not in r.stdout:
+        sys.exit(f"host check could not run (is the {IMAGE} image built?), exit {r.returncode}:\n"
+                 f"{r.stderr[-2000:]}")
     out = {f: {tag: [] for tag in COMPILERS} for f in files}
+    rcs = {}
     cur = None
     for line in r.stdout.splitlines():
-        m = re.match(r"^@@@ (\S+)\.cpp (\w+)$", line)
+        m = re.match(r"^@@@ (\S+)\.cpp (\w+) (\d+)$", line)
         if m:
             cur = (m.group(1), m.group(2))
+            rcs[cur] = int(m.group(3))
         elif cur and cur[0] in out and re.search(r"\berror:", line):
             out[cur[0]][cur[1]].append(line)
+    infra = []
+    for f in files:
+        for tag in COMPILERS:
+            if (f, tag) not in rcs:
+                infra.append(f"{f} [{tag}]: no result")
+            elif rcs[(f, tag)] and not out[f][tag]:
+                infra.append(f"{f} [{tag}]: exit {rcs[(f, tag)]} with no error line")
+    if infra:
+        sys.exit("host check failed to run some compiles (not counted as passing):\n  "
+                 + "\n  ".join(infra[:20]))
     return out
 
 

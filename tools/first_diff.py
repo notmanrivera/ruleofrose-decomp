@@ -55,11 +55,16 @@ def main():
             regions.append((i, j))
             i = j
         i += 1
-    total = sum(j - i for i, j in regions)
-    print(f"{len(regions)} differing regions, {total} bytes")
+    # A region joins differences one equal byte apart, so its span counts
+    # some equal bytes too: report the differing bytes themselves.
+    def ndiff(s, e):
+        return sum(want[k] != got[k] for k in range(s, e))
+    span = sum(e - s for s, e in regions)
+    print(f"{len(regions)} differing regions, {sum(ndiff(s, e) for s, e in regions)} bytes differ "
+          f"(spanning {span} bytes)")
     for s, e in regions[:a.n]:
         v = BASE + s
-        print(f"  0x{v:08X}  {e - s:6} bytes  {where(syms, addrs, v)}")
+        print(f"  0x{v:08X}  {ndiff(s, e):6} of {e - s} bytes differ  {where(syms, addrs, v)}")
         print(f"      want {want[s:s + 16].hex(' ')}")
         print(f"      got  {got[s:s + 16].hex(' ')}")
 

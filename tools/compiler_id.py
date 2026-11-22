@@ -146,14 +146,21 @@ def main():
 
     failed = sorted({p.stem for p in OUT.glob("*.err") if p.stat().st_size and
                      not (OUT / f"{p.stem}.o").exists()})
-    results.sort(key=lambda r: (r[0], r[1]))
     names = sorted({n for r in results for n in r[3]})
+    # A candidate that does not produce a benchmark function (another one
+    # did) scores as if every instruction of it differed: missing functions
+    # never make a candidate look better.
+    tlen = {n: next(r[3][n][1] for r in results if n in r[3]) for n in names}
+    results = [(total + sum(tlen[n] for n in names if n not in per), cid, flags, per)
+               for total, cid, flags, per in results]
+    results.sort(key=lambda r: (r[0], r[1]))
     short = [n.split("__")[0] for n in names]
-    print(f"{'diff':>4}  {'compiler':<32} {'flags':<10} " + "  ".join(f"{s:>18}" for s in short))
+    print(f"{'diff':>4}  {'compiler':<32} {'flags':<10} {'cover':>7} "
+          + "  ".join(f"{s:>18}" for s in short))
     for total, cid, flags, per in results:
         cells = "  ".join(f"{per[n][0]:>9}/{per[n][1]:<8}" if n in per else f"{'missing':>18}"
                           for n in names)
-        print(f"{total:>4}  {cid:<32} {flags:<10} {cells}")
+        print(f"{total:>4}  {cid:<32} {flags:<10} {f'{len(per)}/{len(names)}':>7} {cells}")
     for f in failed:
         print(f"compile failed: {f} (see build/compiler_id/{f}.err)")
 

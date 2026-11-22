@@ -333,7 +333,9 @@ def alive(word, log, minutes=15):
     runs in PowerShell, without ps)."""
     ps = run(["ps", "-ef"])
     if ps:
-        return word in ps
+        # not the coordinator's own shell commands, whose text may only
+        # mention the name (a grep, a heredoc)
+        return any(word in ln and "shell-snapshots" not in ln for ln in ps.splitlines())
     try:
         return time.time() - os.path.getmtime(log) < minutes * 60
     except OSError:
@@ -527,6 +529,13 @@ def render(reset=False):
         if fn.endswith(".env"):
             out.extend(worker(fn[:-4], read_env(os.path.join(ST, fn)), idle))
             out.append("")
+    # The coordinator's own list (build/workers/coord-tasks.tsv, same format
+    # as a worker's task list), e.g. tool fixes.
+    coord = task_rows("coord")
+    if coord:
+        out.append(col("coordinador", "bold") + " (Claude, en la carpeta principal)")
+        out.extend(coord)
+        out.append("")
     pq = []
     for part in (perm_official(), permuter(), auto_m2c(), twin_sweeps(), flag_sweep()):
         if part:
