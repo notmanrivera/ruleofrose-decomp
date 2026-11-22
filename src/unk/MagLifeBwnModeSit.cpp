@@ -1,4 +1,22 @@
 #include "include_asm.h"
+#include "target.h"
+extern "C" void X_func_0011A888(int) asm("func_0011A888");
+extern "C" void X_func_0011A144(int, void *) asm("func_0011A144");
+extern "C" char vtbl_MagLifeBwn[] asm("_vt$10MagLifeBwn");
+extern "C" char vtbl_MagLifeBwnModeNull[] asm("_vt$18MagLifeBwnModeNull");
+extern "C" char vtbl_MagLifeBwnModeOne[] asm("_vt$17MagLifeBwnModeOne");
+extern "C" char vtbl_MagLifeBwnModeWait[] asm("_vt$18MagLifeBwnModeWait");
+extern "C" char vtbl_MagLifeBwnModeSit[] asm("_vt$17MagLifeBwnModeSit");
+extern "C" char vtbl_MagLifeBwnModeFuse[] asm("_vt$18MagLifeBwnModeFuse");
+extern "C" char vtbl_MagLifeBwnModeMove[] asm("_vt$18MagLifeBwnModeMove");
+extern "C" char vtbl_MagLifeBwnModePath[] asm("_vt$18MagLifeBwnModePath");
+extern "C" char vtbl_MagLifeBwnModeTurn[] asm("_vt$18MagLifeBwnModeTurn");
+extern "C" char vtbl_MagLifeBwnModeWall[] asm("_vt$18MagLifeBwnModeWall");
+extern "C" char vtbl_MagLifeBwnModeRotate[] asm("_vt$20MagLifeBwnModeRotate");
+extern char D_00297418[];
+struct BwnVec4 {
+    float x, y, z, w;
+};
 extern "C" int Xiif_func_00119B60(int, int, float) asm("func_00119B60");
 extern "C" int Xii_func_00124D7C(int) asm("func_00124D7C");
 extern "C" int Xii_func_00124E18(int) asm("func_00124E18");
@@ -44,7 +62,47 @@ extern "C" void func_00125A90(int arg0)
     M2C_FIELD(arg0, int *, 0) = -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/MagLifeBwnModeSit", func_00125AA4);
+extern "C" void func_00125AA4(int arg0)
+{
+    X_func_0011A888(arg0);
+    M2C_FIELD(arg0, void **, 0x14) = vtbl_MagLifeBwn;
+#ifdef TARGET_PS2
+    *(u_long128 *)((char *)arg0 + 0x80) = 0;
+#else
+    static const u_long128 zero128 = {{0, 0, 0, 0}};
+    *(u_long128 *)((char *)arg0 + 0x80) = zero128;
+#endif
+    BwnVec4 *v0 = (BwnVec4 *)((char *)arg0 + 0x90);
+    v0->x = v0->y = v0->z = 0.0f;
+    v0->w = 1.0f;
+    BwnVec4 *arr = (BwnVec4 *)((char *)arg0 + 0xA0);
+    int i = 0x7E;
+    do {
+        i--;
+        arr->x = arr->y = arr->z = 0.0f;
+        arr->w = 1.0f;
+        arr++;
+    } while (i != -1);
+    M2C_FIELD(arg0, int *, 0xCDC) = -1;
+    M2C_FIELD(arg0, float *, 0xCE0) = 0.0f;
+    M2C_FIELD(arg0, void **, 0xCF0) = vtbl_MagLifeBwnModeNull;
+    M2C_FIELD(arg0, void **, 0xCF4) = vtbl_MagLifeBwnModeOne;
+    M2C_FIELD(arg0, void **, 0xCF8) = vtbl_MagLifeBwnModeWait;
+    M2C_FIELD(arg0, void **, 0xD04) = vtbl_MagLifeBwnModeSit;
+    M2C_FIELD(arg0, void **, 0xD08) = vtbl_MagLifeBwnModeFuse;
+    M2C_FIELD(arg0, void **, 0xD0C) = vtbl_MagLifeBwnModeMove;
+    M2C_FIELD(arg0, void **, 0xD18) = vtbl_MagLifeBwnModePath;
+    M2C_FIELD(arg0, void **, 0xD28) = vtbl_MagLifeBwnModeTurn;
+    M2C_FIELD(arg0, void **, 0xD2C) = vtbl_MagLifeBwnModeWall;
+    M2C_FIELD(arg0, void **, 0xD30) = vtbl_MagLifeBwnModeRotate;
+    M2C_FIELD(arg0, int *, 0xCB8) = 0;
+    M2C_FIELD(arg0, int *, 0xCBC) = 0;
+    M2C_FIELD(arg0, int *, 0xCD0) = 0;
+    M2C_FIELD(arg0, int *, 0xCD8) = 0;
+    M2C_FIELD(arg0, int *, 0xCE4) = 0;
+    M2C_FIELD(arg0, int *, 0xCEC) = 0;
+    return X_func_0011A144(arg0, D_00297418);
+}
 
 extern "C" int live__14MagLifeBwnModeR10MagLifeBwn(int arg0, int arg1)
 {
