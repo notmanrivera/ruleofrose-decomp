@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "unk/WrdSrv.h"
+extern "C" SctCell *X_func_0017C994_17C340(SctLayer *, void *, SctCell *, float, float) asm("func_0017C994");
 extern "C" void X_func_0017E4D0_17C4F4(SctLayer *, int, int) asm("func_0017E4D0");
 extern "C" void X_func_0017C2C0_17C14C(void *) throw() asm("func_0017C2C0");
 struct SctLayerDtorStub_17C14C {
@@ -102,7 +103,18 @@ extern "C" void func_0017C2C0(SctMap *self)
     self->m_flags = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017C340);
+extern "C" void func_0017C340(SctMap *self, void *arg1, SctCell **arg2, int arg3, float fparg0, float fparg1)
+{
+    int i;
+    if (arg3 == 0) {
+        for (i = 3; i >= 0; i--) {
+            arg2[i] = 0;
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        arg2[i] = X_func_0017C994_17C340(&self->m_layers[i], arg1, arg2[i], fparg0, fparg1);
+    }
+}
 
 extern "C" int func_0017C3F0(SctMapHeader *hdr)
 {
