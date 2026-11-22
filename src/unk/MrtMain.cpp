@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "emy/emy.h"
 struct m2c_v34_10_i { char pad[52]; virtual void v1(); virtual int call(); };
 extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
 extern "C" int Xiii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");

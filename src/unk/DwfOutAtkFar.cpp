@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "emy/emy.h"
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfff_func_001044B8(float, float) asm("func_001044B8");
 extern "C" int Xii_func_00166AD0(int) asm("func_00166AD0");

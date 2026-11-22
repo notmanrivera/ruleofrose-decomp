@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "emy/emy.h"
 #define F20_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int F20_Xii_func_00118FEC__9MagSystem(int) asm("func_00118FEC__9MagSystem");
 extern "C" int F20_Xii_func_00119090__9MagSystem(int) asm("func_00119090__9MagSystem");

@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "emy/emy.h"
 extern "C" int Xiii_func_0016968C(int, int) asm("func_0016968C");
 extern "C" int Xiii_func_0016968C(int, int) asm("func_0016968C");
 extern "C" int Xi_func_0014A230() asm("func_0014A230");

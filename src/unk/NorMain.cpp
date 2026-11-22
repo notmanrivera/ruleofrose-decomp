@@ -1,82 +1,103 @@
 #include "include_asm.h"
-extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
-extern "C" int Xiii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
-extern int _vt$7NorMain;
-extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
-extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
-extern int _vt$7HfmMain;
-extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
-extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
-struct m2c_v200_10_i { char pad[512]; virtual void v1(); virtual int call(); };
-struct m2c_v34_18_i { char pad[52]; virtual void v1(); virtual void v2(); virtual int call(); };
-struct m2c_v34_20_i { char pad[52]; virtual void v1(); virtual void v2(); virtual void v3(); virtual int call(); };
-struct m2c_v94_88_iii { char pad[148]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16(); virtual int call(int, int); };
-extern "C" int X_func_0022B3D8(...) asm("func_0022B3D8");
-extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
+#include "emy/emy.h"
+
+struct NorMain : public EmyMain {
+    unsigned char m_pad204[0x28];       // +0x204..+0x22B
+    unsigned char m_unk22C;             // +0x22C
+    unsigned char m_pad22D[0x13];       // +0x22D..+0x23F
+    int m_unk240;                       // +0x240
+    int m_unk244;                       // +0x244
+    int m_unk248;                       // +0x248
+};
+
+struct NorMainVtbl2 {
+    unsigned char m_pad[0x200];
+    virtual void v1();
+    virtual int v2();
+};
+
+struct NorOutVtbl3 {
+    unsigned char m_pad[0x34];
+    virtual void v1();
+    virtual void v2();
+    virtual int v3();
+};
+
+struct NorOutVtbl4 {
+    unsigned char m_pad[0x34];
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual int v4();
+};
+
+struct NorActorVtbl17 {
+    unsigned char m_pad[0x94];
+    virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
+    virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8();
+    virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12();
+    virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16();
+    virtual int getNodePos(void *, int);
+};
+
+extern int vtbl_NorMain asm("_vt$7NorMain");
 extern int D_006FE6A0;
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" int Xiii_func_0016968C(int, int) asm("func_0016968C");
-// Translated mechanically from m2c drafts: only what matches byte for byte.
+
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void X_EmyMain__vfunc_01(EmyMain *, int) asm("EmyMain__vfunc_01");
 extern "C" int X_func_00166108(...) asm("func_00166108");
 extern "C" int X_func_00166198(...) asm("func_00166198");
-extern "C" int X_func_0016968C(...) asm("func_0016968C");
+extern "C" int X_func_0016968C(void *, int) asm("func_0016968C");
+extern "C" int X_func_0022B3D8(void *, const char *) asm("func_0022B3D8");
 
 INCLUDE_ASM("asm/nonmatchings/unk/NorMain", func_00150B24);
 
-extern "C" void NorMain__vfunc_01(int arg0, int arg1)
+extern "C" void NorMain__vfunc_01(NorMain *self, int flags)
 {
-    M2C_FIELD(arg0, int *, 0x200) = (int)&_vt$7NorMain;
-    Xii_EmyMain__vfunc_01(arg0, 0);
-    if (arg1 & 1) {
-        return Xv___builtin_delete((void *)arg0);
+    self->m_vtbl = &vtbl_NorMain;
+    X_EmyMain__vfunc_01(self, 0);
+    if (flags & 1) {
+        return X___builtin_delete(self);
     }
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/NorMain", NorMain__vfunc_04);
 
-extern "C" void NorMain__vfunc_05(int arg0)
+extern "C" void NorMain__vfunc_05(NorMain *self)
 {
-    int temp_a0;
-    int temp_v0;
-    int temp_v0_2;
-
-    M2C_FIELD(arg0, int *, 0x40) = 0;
-    temp_a0 = M2C_FIELD(arg0, int *, 0x30);
-    if (temp_a0 & 2) {
-        M2C_FIELD(arg0, int *, 0x3C) = 4;
-        M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = 4;
-        M2C_FIELD(arg0, int *, 0x40) = 1;
-        M2C_FIELD(arg0, int *, 0x30) = 0;
+    self->m_stateChanged = 0;
+    int flags = self->m_flags30;
+    if (flags & 2) {
+        self->m_curState = 4;
+        ((EmyBrainView *)self->m_brain)->m_state = 4;
+        self->m_stateChanged = 1;
+        self->m_flags30 = 0;
     } else {
-        temp_v0 = M2C_FIELD(arg0, int *, 0x24);
-        if (temp_v0 != -1) {
-            temp_v0_2 = Xiii_func_0016968C(M2C_FIELD(arg0, int *, 0x1C), temp_v0);
-            M2C_FIELD(arg0, signed char *, 0x22C) = 0;
-            if (temp_v0_2 != 0) {
-                M2C_FIELD(arg0, int *, 0x3C) = temp_v0_2;
-                M2C_FIELD(arg0, int *, 0x40) = 1;
+        int next = self->m_nextState;
+        if (next != -1) {
+            int st = X_func_0016968C(self->m_brain, next);
+            self->m_unk22C = 0;
+            if (st != 0) {
+                self->m_curState = st;
+                self->m_stateChanged = 1;
             } else {
-                M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = (int) M2C_FIELD(arg0, int *, 0x3C);
+                ((EmyBrainView *)self->m_brain)->m_state = self->m_curState;
             }
-        } else if (temp_a0 & 1) {
-            M2C_FIELD(M2C_FIELD(arg0, int *, 0x1C), int *, 0xA4) = (int) M2C_FIELD(arg0, int *, 0x3C);
-            M2C_FIELD(arg0, int *, 0x40) = 1;
+        } else if (flags & 1) {
+            ((EmyBrainView *)self->m_brain)->m_state = self->m_curState;
+            self->m_stateChanged = 1;
         }
     }
-    M2C_FIELD(arg0, int *, 0x30) = 0;
+    self->m_flags30 = 0;
 }
 
-extern "C" void NorMain__vfunc_06(int arg0)
+extern "C" void NorMain__vfunc_06(NorMain *self)
 {
-    int temp_v0;
-    int temp_v0_2;
-    int temp_v0_3;
-
-    if (M2C_FIELD(arg0, int *, 0x40) != 0) {
-        ((m2c_v34_20_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
-        ((m2c_v200_10_i *)(arg0))->call();
+    if (self->m_stateChanged != 0) {
+        ((NorOutVtbl4 *)self->m_curOut)->v4();
+        ((NorMainVtbl2 *)self)->v2();
     }
-    M2C_FIELD(arg0, int *, 0x24) = ((m2c_v34_18_i *)(M2C_FIELD(arg0, int *, 0x44)))->call();
+    self->m_nextState = ((NorOutVtbl3 *)self->m_curOut)->v3();
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/NorMain", NorMain__vfunc_02);
@@ -86,7 +107,6 @@ extern "C" int func_00151218()
     return X_func_00166108();
 }
 
-
 INCLUDE_ASM("asm/nonmatchings/unk/NorMain", func_0015122C);
 
 extern "C" int func_0015130C()
@@ -94,43 +114,34 @@ extern "C" int func_0015130C()
     return 0;
 }
 
-
 extern "C" int func_00151314()
 {
     return X_func_00166198();
 }
 
-
 INCLUDE_ASM("asm/nonmatchings/unk/NorMain", func_00151328);
 
 INCLUDE_ASM("asm/nonmatchings/unk/NorMain", func_001513EC);
 
-extern "C" int func_00151424(int arg0)
+extern "C" int func_00151424(NorMain *self)
 {
-    int temp_v1;
-
-    temp_v1 = (*(int *)(int *)((char *)(arg0) + 0x244)) + 1;
-    (*(int *)(int *)((char *)(arg0) + 0x244)) = temp_v1;
-    return (*(int *)(int *)((char *)(arg0) + 0x240)) < temp_v1;
+    int v = self->m_unk244 + 1;
+    self->m_unk244 = v;
+    return self->m_unk240 < v;
 }
 
-
-extern "C" void func_0015143C(int arg0, int arg1)
+extern "C" void func_0015143C(NorMain *self, int val)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x240)) = arg1;
-    (*(int *)(int *)((char *)(arg0) + 0x244)) = 0;
+    self->m_unk240 = val;
+    self->m_unk244 = 0;
 }
 
-
-extern "C" int func_00151448(int arg0)
+extern "C" int func_00151448(NorMain *self)
 {
-    int temp_v1;
-
-    temp_v1 = (*(int *)(int *)((char *)(arg0) + 0x248)) - 1;
-    (*(int *)(int *)((char *)(arg0) + 0x248)) = temp_v1;
-    return (unsigned int) ~temp_v1 >> 0x1F;
+    int v = self->m_unk248 - 1;
+    self->m_unk248 = v;
+    return (unsigned int)~v >> 0x1F;
 }
-
 
 INCLUDE_ASM("asm/nonmatchings/unk/NorMain", NorMain__vfunc_07);
 
@@ -142,28 +153,22 @@ INCLUDE_RODATA("asm/nonmatchings/unk/NorMain", D_002EFA00);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/NorMain", D_002EFA08);
 
-extern "C" void func_00151508(int arg0)
+extern "C" void func_00151508(NorMain *self)
 {
     struct { char pad0[64]; } stack;
-    int temp_v1;
-    int temp_a0;
-    int temp_v0;
-    int temp_s0;
-    int temp_v0_2;
-
-    temp_a0 = M2C_FIELD(M2C_FIELD(arg0, int *, 0x20), int *, 0x108);
-    if (temp_a0 >= 0) {
-        temp_v1 = (int) "p_hit";
-        temp_s0 = (int)&D_006FE6A0 + (temp_a0 * 0x4D0);
-        if (M2C_FIELD(temp_s0, int *, 0x11C) == 0) {
-            Xiiii_ror_assert((int) "dog/dogmodel.h", 0x131, (int) "m_i3r_root");
+    int actorId = ((EmyObjStatView *)self->m_objStat)->m_actorId;
+    if (actorId >= 0) {
+        const char *name = "p_hit";
+        char *actor = (char *)&D_006FE6A0 + (actorId * 0x4D0);
+        if (*(void **)(actor + 0x11C) == 0) {
+            ror_assert("dog/dogmodel.h", 0x131, "m_i3r_root");
         }
-        if (temp_v1 == 0) {
-            Xiiii_ror_assert((int) "dog/dogmodel.h", 0x131, (int) "p");
+        if (name == 0) {
+            ror_assert("dog/dogmodel.h", 0x131, "p");
         }
-        temp_v0 = X_func_0022B3D8(M2C_FIELD(temp_s0, int *, 0x11C), temp_v1);
-        if (temp_v0 >= 0) {
-            ((m2c_v94_88_iii *)(temp_s0))->call((int)&stack, temp_v0);
+        int idx = X_func_0022B3D8(*(void **)(actor + 0x11C), name);
+        if (idx >= 0) {
+            ((NorActorVtbl17 *)actor)->getNodePos(&stack, idx);
         }
     }
 }

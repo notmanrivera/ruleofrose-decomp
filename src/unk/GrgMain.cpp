@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "emy/emy.h"
 extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
 extern "C" int Xiii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
 extern int _vt$7GrgMain;

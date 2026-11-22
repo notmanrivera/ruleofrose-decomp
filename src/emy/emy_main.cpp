@@ -1,94 +1,93 @@
 #include "include_asm.h"
-struct m2c_block8 { int w[2]; };
-struct m2c_ulong { long v; } __attribute__((packed));
-#define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
-extern "C" int Xiiii_func_001DA740(int, int, int) asm("func_001DA740");
-extern int D_002F14B0;
-extern int _vt$7EmyMain;
-extern "C" int Xiii_func_001636A4(int, int) asm("func_001636A4");
-extern "C" int Xiii_func_001665B8(int, int) asm("func_001665B8");
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" int Xiiii_memset(int, int, int) asm("memset");
-// Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_func_0014582C(...) asm("func_0014582C");
-extern "C" int X_func_00154734(...) asm("func_00154734");
-extern "C" int X_func_00154748(...) asm("func_00154748");
-extern "C" int X_func_0016278C(...) asm("func_0016278C");
-extern "C" int X_func_001629C0(...) asm("func_001629C0");
-extern "C" int X_func_00162C88(...) asm("func_00162C88");
-extern "C" int X_func_001636A4(...) asm("func_001636A4");
-extern "C" int X_func_001656B4(...) asm("func_001656B4");
-extern "C" int X_func_00165710(...) asm("func_00165710");
-extern "C" int X_func_001661DC(...) asm("func_001661DC");
-extern "C" int X_func_00166378(...) asm("func_00166378");
-extern "C" int X_func_001664A4(...) asm("func_001664A4");
-extern "C" int X_func_00166518(...) asm("func_00166518");
-extern "C" int X_func_001665B8(...) asm("func_001665B8");
-extern "C" int X_func_00166A0C(...) asm("func_00166A0C");
-extern "C" int X_func_0016968C(...) asm("func_0016968C");
-extern "C" int X_func_00202F10(...) asm("func_00202F10");
-extern "C" int X_memset(...) asm("memset");
+#include "emy/emy.h"
 
-extern "C" void func_00162698(int);
-extern int _vt$10EmyManager;
-extern "C" void Y_memset(int, int, int) asm("memset");
+struct EmyVtblEntry {
+    short m_delta;
+    short m_index;
+    void *m_fn;
+};
 
-extern "C" void func_0016265C(int arg0)
-{
-    M2C_FIELD(arg0, int *, 0) = (int)&_vt$10EmyManager;
-    func_00162698(arg0);
-    return Y_memset(arg0 + 0x104, 0x64, 0x30);
-}
+extern EmyMemFn D_002F14B0;
+extern int vtbl_EmyMain asm("_vt$7EmyMain");
+extern int vtbl_EmyManager asm("_vt$10EmyManager");
 
-extern "C" void func_00162698(int arg0)
-{
-    Xiiii_memset(arg0 + 4, 0, 0x100);
-    Xiiii_memset(arg0 + 0x330, 0, 0x100);
-    M2C_FIELD(arg0, signed char *, 0x134) = 0;
-    M2C_FIELD(arg0, signed char *, 0x135) = 0;
-    M2C_FIELD(arg0, int *, 0x138) = 0;
-    M2C_FIELD(arg0, int *, 0x13C) = 0;
-    Xiiii_memset(arg0 + 0x148, 0, 0x1E0);
-    M2C_FIELD(arg0, int *, 0x144) = 0;
-    M2C_FIELD(arg0, int *, 0x140) = 0;
-}
-
+extern "C" void *X_memset(void *, int, int) asm("memset");
+extern "C" void X_memset_v(void *, int, int) asm("memset");
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
-extern "C" void func_00163570(int);
-extern "C" void EmyManager_vfunc06(int arg0, int arg1) asm("EmyManager__vfunc_06");
+extern "C" void X_func_0014582C(EmyMain *, int) asm("func_0014582C");
+extern "C" int X_func_00154734(EmyMain *) asm("func_00154734");
+extern "C" void X_func_00154748(EmyMain *) asm("func_00154748");
+extern "C" void X_func_0016278C(...) asm("func_0016278C");
+extern "C" void X_func_001629C0(EmyManager *) asm("func_001629C0");
+extern "C" void X_func_00162C88(int, int, unsigned short, int, int, int, int, int, int, int, int) asm("func_00162C88");
+extern "C" EmyMain *X_func_001636A4(...) asm("func_001636A4");
+extern "C" EmyMain *X_func_001636A4_ii(EmyManager *, int) asm("func_001636A4");
+extern "C" int X_func_001656B4(EmyMain *) asm("func_001656B4");
+extern "C" int X_func_00165710(EmyMain *) asm("func_00165710");
+extern "C" void X_func_001661DC(EmyMain *, int) asm("func_001661DC");
+extern "C" void X_func_00166378(EmyMain *, int) asm("func_00166378");
+extern "C" void X_func_001664A4(EmyMain *, int) asm("func_001664A4");
+extern "C" void X_func_00166518(EmyMain *) asm("func_00166518");
+extern "C" int X_func_001665B8(EmyMain *, int) asm("func_001665B8");
+extern "C" int X_func_00166A0C(EmyMain *) asm("func_00166A0C");
+extern "C" int X_func_0016968C(void *, int) asm("func_0016968C");
+extern "C" void X_func_001DA740(void *, int, int) asm("func_001DA740");
+extern "C" void X_func_00202F10(void *) asm("func_00202F10");
 
-extern "C" void EmyManager_vfunc06(int arg0, int arg1)
+extern "C" void func_00162698(EmyManager *self);
+extern "C" void func_00163570(EmyManager *self);
+
+extern "C" void func_0016265C(EmyManager *self)
 {
-    M2C_FIELD(arg0, int *, 0) = (int)&_vt$10EmyManager;
-    func_00163570(arg0);
-    if (arg1 & 1) {
-        return X___builtin_delete((void *)arg0);
+    self->m_vtbl = &vtbl_EmyManager;
+    func_00162698(self);
+    return X_memset_v(self->m_unk104, 0x64, sizeof(self->m_unk104));
+}
+
+extern "C" void func_00162698(EmyManager *self)
+{
+    X_memset(self->m_emy, 0, sizeof(self->m_emy));
+    X_memset(self->m_slotVal, 0, sizeof(self->m_slotVal));
+    self->m_flag134 = 0;
+    self->m_flag135 = 0;
+    self->m_unk138 = 0;
+    self->m_unk13C = 0;
+    X_memset(self->m_groups, 0, sizeof(self->m_groups));
+    self->m_unk144 = 0;
+    self->m_unk140 = 0;
+}
+
+extern "C" void EmyManager_vfunc06(EmyManager *self, int flags) asm("EmyManager__vfunc_06");
+extern "C" void EmyManager_vfunc06(EmyManager *self, int flags)
+{
+    self->m_vtbl = &vtbl_EmyManager;
+    func_00163570(self);
+    if (flags & 1) {
+        return X___builtin_delete(self);
     }
 }
 
-extern "C" int EmyManager__vfunc_04(int arg0)
+extern "C" int EmyManager__vfunc_04(EmyManager *self)
 {
     X_func_0016278C();
-    X_func_001629C0(arg0);
+    X_func_001629C0(self);
     return 0;
 }
-
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_0016278C);
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001629C0);
 
-extern "C" void func_00162AFC(int arg0, int arg1, int arg2)
+extern "C" void func_00162AFC(EmyManager *self, int idx, int val)
 {
-    (*(int *)(int *)((char *)(((arg1 * 0x3C) + arg0)) + 0x16C)) = arg2;
+    self->m_groups[idx].m_unk24 = val;
 }
 
-
-extern "C" int func_00162B14(int arg0, int arg1)
+extern "C" int func_00162B14(EmyManager *self, int idx)
 {
-    int *p = (int *)(arg0 + 0x10);
-    int *q = (int *)(arg0 + 8);
-    int off = arg1 * 0x3C + 0x170;
+    int *p = (int *)((char *)self + 0x10);
+    int *q = (int *)((char *)self + 0x8);
+    int off = idx * 0x3C + 0x170;
     p = (int *)((char *)p + off);
     q = (int *)((char *)q + off);
     int old = *p;
@@ -97,11 +96,10 @@ extern "C" int func_00162B14(int arg0, int arg1)
     return old;
 }
 
-extern "C" void func_00162B50(int arg0, int arg1)
+extern "C" void func_00162B50(EmyManager *self, int idx)
 {
-    (*(int *)(int *)((char *)(((arg1 * 0x3C) + arg0)) + 0x170)) = 0;
+    self->m_groups[idx].m_unk28 = 0;
 }
-
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00162B68);
 
@@ -119,110 +117,97 @@ INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00162C88);
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001634D4);
 
-struct EmyX { int m_id; char pad[0x33C]; };
-struct MgrX { int m_unk0; EmyX *m_emy[0x40]; };
-
-extern "C" void func_00163570(int arg0)
+extern "C" void func_00163570(EmyManager *self)
 {
-    MgrX *m = (MgrX *)arg0;
-    int i;
-    for (i = 0; i < 0x40; i++) {
-        EmyX *e = m->m_emy[i];
+    for (int i = 0; i < 0x40; i++) {
+        EmyMain *e = self->m_emy[i];
         if (e != 0) {
-            int *vt = M2C_FIELD(e, int **, 0x200);
-            char *entry = (char *)vt + 8;
-            short adj = M2C_FIELD(entry, short *, 0);
-            int fn = M2C_FIELD(entry, int *, 4);
-            ((void (*)(int, int))fn)((int)e + adj, 3);
+            EmyVtblEntry *entry = (EmyVtblEntry *)e->m_vtbl + 1;
+            ((void (*)(char *, int))entry->m_fn)((char *)e + entry->m_delta, 3);
         }
     }
-    func_00162698(arg0);
+    func_00162698(self);
 }
 
-extern "C" void func_001635E0(int arg0)
+extern "C" void func_001635E0(EmyManager *self)
 {
-    M2C_FIELD(arg0, signed char *, 0x134) = 0;
-    M2C_FIELD(arg0, signed char *, 0x135) = 0;
-    M2C_FIELD(arg0, int *, 0x138) = 0;
-    M2C_FIELD(arg0, int *, 0x13C) = 0;
-    Xiiii_memset(arg0 + 0x148, 0, 0x1E0);
-    M2C_FIELD(arg0, int *, 0x144) = 0;
+    self->m_flag134 = 0;
+    self->m_flag135 = 0;
+    self->m_unk138 = 0;
+    self->m_unk13C = 0;
+    X_memset(self->m_groups, 0, sizeof(self->m_groups));
+    self->m_unk144 = 0;
 }
 
-extern "C" void func_00163624(int arg0, int arg1, int arg2)
+extern "C" void func_00163624(EmyManager *self, int id, int arg2)
 {
-    int temp_v0;
-
-    temp_v0 = X_func_001636A4();
-    if (temp_v0 != 0) {
-        X_func_001661DC(temp_v0, arg2);
+    (void)self;
+    (void)id;
+    EmyMain *e = X_func_001636A4();
+    if (e != 0) {
+        X_func_001661DC(e, arg2);
     }
 }
 
-
-extern "C" void func_0016365C(int arg0, int arg1, int arg2)
+extern "C" void func_0016365C(EmyManager *self, int idx, int val)
 {
-    (*(int *)(int *)((char *)(((arg1 * 4) + arg0)) + 0x104)) = arg2;
+    self->m_unk104[idx] = val;
 }
 
-
-extern "C" void func_0016366C(int arg0, int arg1, int arg2)
+extern "C" void func_0016366C(EmyManager *self, int id, int arg2)
 {
-    int temp_v0;
-
-    temp_v0 = X_func_001636A4();
-    if (temp_v0 != 0) {
-        X_func_00166378(temp_v0, arg2);
+    (void)self;
+    (void)id;
+    EmyMain *e = X_func_001636A4();
+    if (e != 0) {
+        X_func_00166378(e, arg2);
     }
 }
 
-
-extern "C" int func_001636A4(int arg0, int arg1)
+extern "C" EmyMain *func_001636A4(EmyManager *self, int id)
 {
-    MgrX *m = (MgrX *)arg0;
-    int i;
-    for (i = 0; i < 0x40; i++) {
-        EmyX *e = m->m_emy[i];
-        if (e != 0 && e->m_id == arg1) {
-            return (int)e;
+    for (int i = 0; i < 0x40; i++) {
+        EmyMain *e = self->m_emy[i];
+        if (e != 0 && e->m_id == id) {
+            return e;
         }
     }
     return 0;
 }
 
-extern "C" int func_001636E4(int arg0, int arg1)
+extern "C" int func_001636E4(EmyManager *self, int idx)
 {
-    if (arg1 == 0) {
-        return M2C_FIELD(arg0, unsigned char *, 0x134) != 0;
+    if (idx == 0) {
+        return self->m_flag134 != 0;
     }
-    return M2C_FIELD(arg0, unsigned char *, 0x135) != 0;
+    return self->m_flag135 != 0;
 }
 
-extern "C" void func_00163700(int arg0, int arg1, int arg2)
+extern "C" void func_00163700(EmyManager *self, int idx, int val)
 {
-    if (arg1 == 0) {
-        M2C_FIELD(arg0, int *, 0x138) = arg2;
-        M2C_FIELD(arg0, signed char *, 0x134) = 1;
+    if (idx == 0) {
+        self->m_unk138 = val;
+        self->m_flag134 = 1;
         return;
     }
-    M2C_FIELD(arg0, int *, 0x13C) = arg2;
-    M2C_FIELD(arg0, signed char *, 0x135) = 1;
+    self->m_unk13C = val;
+    self->m_flag135 = 1;
 }
 
-extern "C" void func_00163720(int arg0, int arg1)
+extern "C" void func_00163720(EmyManager *self, int idx)
 {
-    if (arg1 == 0) {
-        M2C_FIELD(arg0, signed char *, 0x134) = 0;
-        M2C_FIELD(arg0, int *, 0x138) = 0;
+    if (idx == 0) {
+        self->m_flag134 = 0;
+        self->m_unk138 = 0;
     } else {
-        M2C_FIELD(arg0, signed char *, 0x135) = 0;
-        M2C_FIELD(arg0, int *, 0x13C) = 0;
+        self->m_flag135 = 0;
+        self->m_unk13C = 0;
     }
 }
 
 extern "C" int func_0016373C()
 {
-    int p = X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p == 0) {
         return 0;
     }
@@ -231,7 +216,7 @@ extern "C" int func_0016373C()
 
 extern "C" int func_00163770()
 {
-    int p = X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p == 0) {
         return 0;
     }
@@ -240,9 +225,9 @@ extern "C" int func_00163770()
 
 extern "C" int func_001637A4()
 {
-    int *p = (int *)X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p != 0) {
-        return M2C_FIELD(p, int *, 0xC);
+        return p->m_unk0C;
     }
     return 0;
 }
@@ -253,17 +238,14 @@ extern float D_002F1360[];
 
 extern "C" float func_001638FC()
 {
-    int p = X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p == 0) {
         goto fail;
     }
     {
-        int *vt = M2C_FIELD(p, int **, 0x200);
-        char *entry = (char *)vt + 0x18;
-        short adj = M2C_FIELD(entry, short *, 0);
-        int fn = M2C_FIELD(entry, int *, 4);
+        EmyVtblEntry *entry = (EmyVtblEntry *)p->m_vtbl + 3;
         float *tbl = D_002F1360;
-        int r = ((int (*)(int))fn)(p + adj);
+        int r = ((int (*)(char *))entry->m_fn)((char *)p + entry->m_delta);
         return tbl[r];
     }
 fail:
@@ -274,17 +256,14 @@ extern float D_002F1390[];
 
 extern "C" float func_00163958()
 {
-    int p = X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p == 0) {
         goto fail;
     }
     {
-        int *vt = M2C_FIELD(p, int **, 0x200);
-        char *entry = (char *)vt + 0x18;
-        short adj = M2C_FIELD(entry, short *, 0);
-        int fn = M2C_FIELD(entry, int *, 4);
+        EmyVtblEntry *entry = (EmyVtblEntry *)p->m_vtbl + 3;
         float *tbl = D_002F1390;
-        int r = ((int (*)(int))fn)(p + adj);
+        int r = ((int (*)(char *))entry->m_fn)((char *)p + entry->m_delta);
         return tbl[r];
     }
 fail:
@@ -295,17 +274,14 @@ extern float D_002F13C0[];
 
 extern "C" float func_001639B4()
 {
-    int p = X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p == 0) {
         goto fail;
     }
     {
-        int *vt = M2C_FIELD(p, int **, 0x200);
-        char *entry = (char *)vt + 0x18;
-        short adj = M2C_FIELD(entry, short *, 0);
-        int fn = M2C_FIELD(entry, int *, 4);
+        EmyVtblEntry *entry = (EmyVtblEntry *)p->m_vtbl + 3;
         float *tbl = D_002F13C0;
-        int r = ((int (*)(int))fn)(p + adj);
+        int r = ((int (*)(char *))entry->m_fn)((char *)p + entry->m_delta);
         return tbl[r];
     }
 fail:
@@ -314,81 +290,78 @@ fail:
 
 extern "C" int func_00163A10()
 {
-    int p = X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p == 0) {
         return 0;
     }
-    int v = M2C_FIELD(M2C_FIELD(p, int *, 0x20), int *, 0x120) & 0x200;
+    int v = ((EmyObjStatView *)p->m_objStat)->m_flags & 0x200;
     return v != 0;
 }
 
 extern "C" void func_00163A44()
 {
-    int temp_v0;
-    int temp_v0_2;
-
-    temp_v0 = X_func_001636A4();
-    if (temp_v0 != 0) {
-        temp_v0_2 = (*(int *)(int *)((char *)(temp_v0) + 0x20));
-        (*(int *)(int *)((char *)(temp_v0_2) + 0x120)) = (int) ((*(int *)(int *)((char *)(temp_v0_2) + 0x120)) & ~0x400);
+    EmyMain *p = X_func_001636A4();
+    if (p != 0) {
+        EmyObjStatView *st = (EmyObjStatView *)p->m_objStat;
+        st->m_flags &= ~0x400;
     }
 }
 
-
-extern "C" int func_00163A78(int arg0)
+extern "C" int func_00163A78(EmyManager *self)
 {
-    return (M2C_FIELD(arg0, unsigned char *, 0x134) | M2C_FIELD(arg0, unsigned char *, 0x135)) != 0;
+    return (self->m_flag134 | self->m_flag135) != 0;
 }
 
 extern "C" int func_00163A8C()
 {
-    int p = X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p == 0) {
         return 0;
     }
-    return M2C_FIELD(p, int *, 0x150) != 0;
+    return p->m_unk150 != 0;
 }
 
-extern "C" void func_00163AB8(int arg0, int *arg1, int *arg2)
+extern "C" void func_00163AB8(EmyManager *self, int *arg1, int *arg2)
 {
-    *arg1 = M2C_FIELD(arg0, int *, 0x138);
-    *arg2 = M2C_FIELD(arg0, int *, 0x13C);
+    *arg1 = self->m_unk138;
+    *arg2 = self->m_unk13C;
 }
 
-extern "C" void func_00163ACC(int arg0, int arg1, int arg2)
+extern "C" void func_00163ACC(EmyManager *self, int id, int val)
 {
-    int temp_v0;
-
-    temp_v0 = X_func_001636A4();
-    if (temp_v0 != 0) {
-        (*(int *)(int *)((char *)(temp_v0) + 0x10)) = arg2;
+    (void)self;
+    (void)id;
+    EmyMain *p = X_func_001636A4();
+    if (p != 0) {
+        p->m_unk10 = val;
     }
 }
 
-
 extern "C" int func_00163AF8()
 {
-    int *p = (int *)X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p != 0) {
-        return M2C_FIELD(p, int *, 0x14);
+        return p->m_unk14;
     }
     return 0;
 }
 
 extern "C" int func_00163B20()
 {
-    int *p = (int *)X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p != 0) {
-        return M2C_FIELD(p, int *, 0x3C);
+        return p->m_curState;
     }
     return 0;
 }
 
-extern "C" int func_00163B48(int arg0, int arg1, int arg2)
+extern "C" int func_00163B48(EmyManager *self, int id, int val)
 {
-    int p = X_func_001636A4();
+    (void)self;
+    (void)id;
+    EmyMain *p = X_func_001636A4();
     if (p != 0) {
-        M2C_FIELD(p, int *, 0x238) = arg2;
+        *(int *)((char *)p + 0x238) = val;
         return 1;
     }
     return 0;
@@ -396,69 +369,54 @@ extern "C" int func_00163B48(int arg0, int arg1, int arg2)
 
 extern "C" int func_00163B80()
 {
-    int temp_v0;
-
-    temp_v0 = X_func_001636A4();
-    if (temp_v0 != 0) {
-        return X_func_00154734(temp_v0);
+    EmyMain *p = X_func_001636A4();
+    if (p != 0) {
+        return X_func_00154734(p);
     }
     return 1;
 }
 
-
 extern "C" void func_00163BB8()
 {
-    int temp_v0;
-
-    temp_v0 = X_func_001636A4();
-    if (temp_v0 != 0) {
-        X_func_00154748(temp_v0);
+    EmyMain *p = X_func_001636A4();
+    if (p != 0) {
+        X_func_00154748(p);
     }
 }
 
-
 extern "C" void func_00163BE4()
 {
-    int p = X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p == 0) {
         return;
     }
-    int *vt = M2C_FIELD(p, int **, 0x200);
-    char *entry = (char *)vt + 0x18;
-    short adj = M2C_FIELD(entry, short *, 0);
-    int fn = M2C_FIELD(entry, int *, 4);
-    ((void (*)(int))fn)(p + adj);
+    EmyVtblEntry *entry = (EmyVtblEntry *)p->m_vtbl + 3;
+    ((void (*)(char *))entry->m_fn)((char *)p + entry->m_delta);
 }
 
 extern "C" void func_00163C24()
 {
-    int temp_v0;
-
-    temp_v0 = X_func_001636A4();
-    if (temp_v0 != 0) {
-        (*(int *)(int *)((char *)(temp_v0) + 0x18)) = 1;
+    EmyMain *p = X_func_001636A4();
+    if (p != 0) {
+        p->m_unk18 = 1;
     }
 }
-
 
 extern "C" void func_00163C50()
 {
-    int temp_v0;
-
-    temp_v0 = X_func_001636A4();
-    if (temp_v0 != 0) {
-        (*(int *)(int *)((char *)(temp_v0) + 0x18)) = 0;
+    EmyMain *p = X_func_001636A4();
+    if (p != 0) {
+        p->m_unk18 = 0;
     }
 }
-
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163C74);
 
 extern "C" int func_00163D90()
 {
-    int *p = (int *)X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p != 0) {
-        return M2C_FIELD(p, int *, 0x1D8);
+        return p->m_unk1D8;
     }
     return 0;
 }
@@ -467,217 +425,185 @@ extern int D_002F1470[];
 
 extern "C" int func_00163DB8()
 {
-    int p = X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p == 0) {
         return 0;
     }
     int *tbl = D_002F1470;
-    int *vt = M2C_FIELD(p, int **, 0x200);
-    char *entry = (char *)vt + 0x18;
-    short adj = M2C_FIELD(entry, short *, 0);
-    int fn = M2C_FIELD(entry, int *, 4);
-    int r = ((int (*)(int))fn)(p + adj);
+    EmyVtblEntry *entry = (EmyVtblEntry *)p->m_vtbl + 3;
+    int r = ((int (*)(char *))entry->m_fn)((char *)p + entry->m_delta);
     return tbl[r];
 }
 
-extern "C" void func_00163E10(int arg0, int arg1, int arg2)
+extern "C" void func_00163E10(EmyManager *self, int id, int arg2)
 {
-    int temp_v0;
-
-    temp_v0 = X_func_001636A4();
-    if (temp_v0 != 0) {
-        X_func_001664A4(temp_v0, arg2);
+    (void)self;
+    (void)id;
+    EmyMain *p = X_func_001636A4();
+    if (p != 0) {
+        X_func_001664A4(p, arg2);
     }
 }
-
 
 extern "C" void func_00163E48()
 {
-    int temp_v0;
-
-    temp_v0 = X_func_001636A4();
-    if (temp_v0 != 0) {
-        X_func_00202F10((*(int *)(int *)((char *)(temp_v0) + 0x1F0)));
+    EmyMain *p = X_func_001636A4();
+    if (p != 0) {
+        X_func_00202F10(p->m_unk1F0);
     }
 }
-
 
 extern "C" void func_00163E74()
 {
-    int temp_v0;
-
-    temp_v0 = X_func_001636A4();
-    if (temp_v0 != 0) {
-        (*(int *)(int *)((char *)(temp_v0) + 0x1E4)) = 6;
+    EmyMain *p = X_func_001636A4();
+    if (p != 0) {
+        p->m_unk1E4 = 6;
     }
 }
 
-
-extern "C" int func_00163EA0(int arg0, int arg1, int arg2)
+extern "C" int func_00163EA0(EmyManager *self, int id, int arg2)
 {
-    int temp_v0;
-
-    temp_v0 = Xiii_func_001636A4(arg0, arg1);
-    if (temp_v0 != 0) {
-        return Xiii_func_001665B8(temp_v0, arg2);
+    EmyMain *p = X_func_001636A4_ii(self, id);
+    if (p != 0) {
+        return X_func_001665B8(p, arg2);
     }
-    return (int) temp_v0;
+    return 0;
 }
 
-extern "C" void func_00163EE4(int arg0, int arg1, int arg2)
+extern "C" void func_00163EE4(EmyManager *self, int id, int arg2)
 {
-    int temp_v0;
-
-    temp_v0 = X_func_001636A4();
-    if (temp_v0 != 0) {
-        X_func_0014582C(temp_v0, arg2);
+    (void)self;
+    (void)id;
+    EmyMain *p = X_func_001636A4();
+    if (p != 0) {
+        X_func_0014582C(p, arg2);
     }
 }
-
 
 extern "C" int func_00163F1C()
 {
-    int *p = (int *)X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p != 0) {
-        return M2C_FIELD(p, int *, 0x238);
+        return *(int *)((char *)p + 0x238);
     }
     return 0;
 }
 
 extern "C" int func_00163F44()
 {
-    int p = X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p == 0) {
         return 0;
     }
-    int *vt = M2C_FIELD(p, int **, 0x200);
-    char *entry = (char *)vt + 0x18;
-    short adj = M2C_FIELD(entry, short *, 0);
-    int fn = M2C_FIELD(entry, int *, 4);
-    int r = ((int (*)(int))fn)(p + adj);
+    EmyVtblEntry *entry = (EmyVtblEntry *)p->m_vtbl + 3;
+    int r = ((int (*)(char *))entry->m_fn)((char *)p + entry->m_delta);
     if (r != 0xA) {
         return 0;
     }
-    return M2C_FIELD(p, int *, 0x24C);
+    return *(int *)((char *)p + 0x24C);
 }
 
 extern "C" int func_00163F9C()
 {
-    int p = X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p == 0) {
         return 0;
     }
-    int *vt = M2C_FIELD(p, int **, 0x200);
-    char *entry = (char *)vt + 0x18;
-    short adj = M2C_FIELD(entry, short *, 0);
-    int fn = M2C_FIELD(entry, int *, 4);
-    int r = ((int (*)(int))fn)(p + adj);
+    EmyVtblEntry *entry = (EmyVtblEntry *)p->m_vtbl + 3;
+    int r = ((int (*)(char *))entry->m_fn)((char *)p + entry->m_delta);
     if (r != 6) {
         return 0;
     }
-    return M2C_FIELD(p, int *, 0x23C);
+    return *(int *)((char *)p + 0x23C);
 }
 
 extern "C" int func_00163FF4()
 {
-    int p = X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p == 0) {
         return 0;
     }
-    int *vt = M2C_FIELD(p, int **, 0x200);
-    char *entry = (char *)vt + 0x18;
-    short adj = M2C_FIELD(entry, short *, 0);
-    int fn = M2C_FIELD(entry, int *, 4);
-    int r = ((int (*)(int))fn)(p + adj);
+    EmyVtblEntry *entry = (EmyVtblEntry *)p->m_vtbl + 3;
+    int r = ((int (*)(char *))entry->m_fn)((char *)p + entry->m_delta);
     if (r != 8) {
         return 0;
     }
-    return M2C_FIELD(p, int *, 0x248);
+    return *(int *)((char *)p + 0x248);
 }
 
 extern "C" void func_0016404C()
 {
-    int temp_v0;
-
-    temp_v0 = X_func_001636A4();
-    if (temp_v0 != 0) {
-        X_func_00166518(temp_v0);
+    EmyMain *p = X_func_001636A4();
+    if (p != 0) {
+        X_func_00166518(p);
     }
 }
 
-
 extern "C" int func_00164078()
 {
-    int p = X_func_001636A4();
+    EmyMain *p = X_func_001636A4();
     if (p == 0) {
         return 0;
     }
     return X_func_00166A0C(p);
 }
 
-extern "C" void func_001640AC(int arg0, int arg1, int arg2)
+extern "C" void func_001640AC(EmyManager *self, int id, int val)
 {
-    MgrX *m = (MgrX *)arg0;
-    int i;
-    for (i = 0; i < 0x40; i++) {
-        EmyX *e = m->m_emy[i];
-        if (e != 0 && e->m_id == arg1) {
-            int *slot = (int *)((i * 4) + (int)m);
-            slot[0xCC] = arg2;
+    for (int i = 0; i < 0x40; i++) {
+        EmyMain *e = self->m_emy[i];
+        if (e != 0 && e->m_id == id) {
+            int *slot = (int *)((i * 4) + (int)self);
+            slot[0xCC] = val;
         }
     }
 }
 
-extern "C" int func_001640E8(int arg0)
+extern "C" int func_001640E8(EmyManager *self)
 {
-    int var_a1;
-    int var_a2;
-    int var_a3;
-    int temp_v0;
-
-    var_a2 = 0;
-    var_a3 = 0x300;
-    var_a1 = 0x3F;
-    do {
-        temp_v0 = arg0 + var_a3;
-        var_a3 += 4;
-        var_a1 -= 1;
-        if (M2C_FIELD(temp_v0, int *, 0x30) != 0) {
-            var_a2++;
+    int count = 0;
+    int off = 0x300;
+    for (int rem = 0x3F; rem >= 0; rem--) {
+        char *p = (char *)self + off;
+        off += 4;
+        if (*(int *)(p + 0x30) != 0) {
+            count++;
         }
-    } while (var_a1 >= 0);
-    return var_a2;
+    }
+    return count;
 }
 
-extern "C" int func_00164118(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6)
+extern "C" void *func_00164118(EmyMain *self, int id, int arg2, void *objStat, int arg4, int arg5, int arg6)
 {
-    M2C_FIELD(arg0, int *, 0) = arg1;
-    M2C_FIELD(arg0, int *, 0x200) = (int)&_vt$7EmyMain;
-    M2C_FIELD(arg0, int *, 0x24) = -1;
-    M2C_FIELD(arg0, int *, 0xE8) = arg5;
-    M2C_FIELD(arg0, int *, 8) = 1;
-    M2C_FIELD(arg0, int *, 0xC) = 1;
-    M2C_FIELD(arg0, int *, 0x10) = 0;
-    M2C_FIELD(arg0, int *, 0x14) = 0;
-    M2C_FIELD(arg0, int *, 0x1C) = 0;
-    M2C_FIELD(arg0, int *, 0x20) = 0;
-    M2C_FIELD(arg0, int *, 0x44) = 0;
-    M2C_FIELD(arg0, int *, 0x28) = 1;
-    M2C_FIELD(arg0, int *, 0x2C) = 1;
-    M2C_FIELD(arg0, int *, 0x30) = 0;
-    M2C_FIELD(arg0, int *, 0x150) = 0;
-    *(m2c_block8 *)((char *)(arg0) + 476) = *(m2c_block8 *)((char *)(&D_002F14B0) + 0);
-    M2C_FIELD(arg0, float *, 0x1C4) = 1.0f;
-    M2C_FIELD(arg0, signed char *, 6) = 0;
-    M2C_FIELD(arg0, int *, 0x1EC) = 0;
-    M2C_FIELD(arg0, int *, 0x1F0) = 0;
-    M2C_FIELD(arg0, int *, 0x1F8) = 0;
-    Xiiii_memset(arg0 + 0x154, 0, 0x70);
-    M2C_FIELD(arg0, int *, 0x20) = arg3;
+    (void)arg2;
+    (void)arg4;
+    self->m_id = id;
+    self->m_vtbl = &vtbl_EmyMain;
+    self->m_nextState = -1;
+    self->m_unkE8 = arg5;
+    self->m_unk08 = 1;
+    self->m_unk0C = 1;
+    self->m_unk10 = 0;
+    self->m_unk14 = 0;
+    self->m_brain = 0;
+    self->m_objStat = 0;
+    self->m_curOut = 0;
+    self->m_unk28 = 1;
+    self->m_unk2C = 1;
+    self->m_flags30 = 0;
+    self->m_unk150 = 0;
+    self->m_callback = D_002F14B0;
+    self->m_unk1C4 = 1.0f;
+    self->m_unk06 = 0;
+    self->m_unk1EC = 0;
+    self->m_unk1F0 = 0;
+    self->m_unk1F8 = 0;
+    X_memset(&self->m_unk154, 0, 0x70);
+    self->m_objStat = objStat;
     if (arg6 != 0) {
-        Xiiii_func_001DA740((int) arg3, 0x59, arg6);
+        X_func_001DA740(objStat, 0x59, arg6);
     }
-    return Xiiii_memset(arg0 + 0x48, 0, 0xA0);
+    return X_memset(self->m_unk48, 0, sizeof(self->m_unk48));
 }
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", EmyMain__vfunc_01);
@@ -686,22 +612,18 @@ INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00164364);
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00164508);
 
-extern "C" void EmyMain__vfunc_05(int arg0)
+extern "C" void EmyMain__vfunc_05(EmyMain *self)
 {
-    int temp_v0;
-    int temp_v0_2;
-
-    (*(int *)(int *)((char *)(arg0) + 0x40)) = 0;
-    temp_v0 = (*(int *)(int *)((char *)(arg0) + 0x24));
-    if (temp_v0 != -1) {
-        temp_v0_2 = X_func_0016968C((*(int *)(int *)((char *)(arg0) + 0x1C)), temp_v0);
-        if (temp_v0_2 != 0) {
-            (*(int *)(int *)((char *)(arg0) + 0x3C)) = temp_v0_2;
-            (*(int *)(int *)((char *)(arg0) + 0x40)) = 1;
+    self->m_stateChanged = 0;
+    int next = self->m_nextState;
+    if (next != -1) {
+        int st = X_func_0016968C(self->m_brain, next);
+        if (st != 0) {
+            self->m_curState = st;
+            self->m_stateChanged = 1;
         }
     }
 }
-
 
 INCLUDE_RODATA("asm/nonmatchings/emy/emy_main", D_002F1290);
 

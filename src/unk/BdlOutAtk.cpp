@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "emy/emy.h"
 struct m2c_v200_10_i { char pad[512]; virtual void v1(); virtual int call(); };
 struct m2c_v34_20_i { char pad[52]; virtual void v1(); virtual void v2(); virtual void v3(); virtual int call(); };
 struct m2c_v34_18_i { char pad[52]; virtual void v1(); virtual void v2(); virtual int call(); };
