@@ -197,19 +197,16 @@ INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_001026B0);
 #endif
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" void func_00102758(int theN)
 {
     int oid = func_001025C0(theN);
-    void *snd = getSnd(&D_007812C0);
-    if (oid && func_001E5E58(snd, oid, 0x16, 0) == 0) {
-        func_001E4EBC(snd, oid, 1, 0, 0);
+
+    if (oid == 0) return;
+    if (func_001E5E58(getSnd(&D_007812C0), oid, 0x16, 0) != 0) return;
+    {
+        func_001E4EBC(getSnd(&D_007812C0), oid, 1, 0, 0);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00102758);
-#endif
 
 
 extern "C" int func_001027D4(int theN)
