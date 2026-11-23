@@ -812,16 +812,17 @@ extern "C" void liveActivateExec__9EffLight2(EffLight2 *self)
     }
 }
 
-#ifdef NON_MATCHING
-extern "C" void func_0017562C(EffLight3 *self)
+extern "C" void func_0017562C(EffLight3 *);
+struct EffLight3Ctor_17562C : EffLight3 {
+    EffLight3Ctor_17562C() asm("func_0017562C");
+};
+
+EffLight3Ctor_17562C::EffLight3Ctor_17562C()
 {
-    X_func_0016A914(self);
-    self->m_vtbl = &vtbl_EffLight3;
-    self->m_unk390 = -1;
+    X_func_0016A914(this);
+    m_vtbl = &vtbl_EffLight3;
+    m_unk390 = -1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_0017562C);
-#endif
 
 extern "C" void EffLight3_dtor(EffLight3 *self, int flags) asm("_$_9EffLight3");
 extern "C" void EffLight3_dtor(EffLight3 *self, int flags)
