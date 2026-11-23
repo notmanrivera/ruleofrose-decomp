@@ -174,11 +174,13 @@ extern "C" void MagLifePCModeAttacking__vfunc_01(MagLifePCModeAttacking *arg0, M
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", MagLifePCModeAttacking__vfunc_02);
 
-#ifdef NON_MATCHING
-// NON_MATCHING: 1 edit (extra andi 0xFFFF after m_trigger bit test)
+static inline int attackingCross_121C64(unsigned int buttons)
+{
+    return (buttons >> BEDPAD_BIT_CROSS) & 1;
+}
 extern "C" int MagLifePCModeAttacking__vfunc_03(MagLifePCModeAttacking *arg0, MagLifePC *arg1, const BedPad *arg2)
 {
-    if (((unsigned int)arg2->m_trigger >> BEDPAD_BIT_CROSS) & 1) {
+    if (attackingCross_121C64(arg2->m_trigger)) {
         if ((unsigned short)((arg2->m_press >> BEDPAD_BIT_R1) & 1)) {
             if (X_func_0010DA18__8DogActor(arg1->m_actor) >= 0.7f) {
                 arg0->m_unk08 = 1;
@@ -187,9 +189,6 @@ extern "C" int MagLifePCModeAttacking__vfunc_03(MagLifePCModeAttacking *arg0, Ma
     }
     return 1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", MagLifePCModeAttacking__vfunc_03);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", init__19MagLifePCModeDamageR9MagLifePC);
 
