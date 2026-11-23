@@ -709,7 +709,7 @@ def cpp_perm():
     running = alive("cpp_perm_queue", path, 25)
     merged_all = sum(1 for ln in lines if "MATCH merged" in ln)
     q = [i for i, ln in enumerate(lines) if re.search(r"== cpp_permuter queue: \d+ functions", ln)]
-    out = [f"{col('Permutador C++', 'bold') + col(' (cpp_permuter)', 'dim')} " + (col("trabajando", "green") if running else col("parado", "yellow"))
+    out = [f"{col('Smoke', 'bold') + col(' (permutador C++, cpp_permuter)', 'dim')} " + (col("trabajando", "green") if running else col("parado", "yellow"))
            + f"  (sin IA; log {os.path.relpath(path, MAIN)})"]
     if not q:
         return out
