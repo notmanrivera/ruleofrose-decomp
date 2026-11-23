@@ -100,6 +100,13 @@ struct MagLifeBwnCtrlModeFollow : public MagLifeBwnCtrlMode {
     int m_unk04;                        // +0x04
 }; // size 0x08
 
+struct MagLifeBwnCtrlModeBark : public MagLifeBwnCtrlMode {
+    unsigned char m_pad04[0x20];        // +0x04..+0x23
+    int m_unk24;                        // +0x24
+    int m_unk28;                        // +0x28
+    unsigned char m_pad2C[0x8];         // +0x2C..+0x33
+}; // size 0x34
+
 class MagLifeBwnCtrl : public MagLife {
 public:
     MagBwnVec4 m_targetPos;             // +0x030..+0x03F
@@ -114,7 +121,7 @@ public:
     int m_unk7C;                        // +0x07C
     int m_unk80;                        // +0x080
     unsigned char m_pad84[0x6C];        // +0x084..+0x0EF
-    unsigned char m_modeBark[0x34];     // +0x0F0..+0x123
+    MagLifeBwnCtrlModeBark m_modeBark;  // +0x0F0..+0x123
     int m_unk124;                       // +0x124
 
     virtual void vfunc09() asm("MagLifeBwnCtrl__vfunc_09");

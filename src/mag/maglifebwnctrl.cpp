@@ -1,53 +1,32 @@
 #include "include_asm.h"
-extern "C" int Xii_getMainMotionNo__C14DogMotionBlend(int) asm("getMainMotionNo__C14DogMotionBlend");
-extern "C" int Xiii_func_0010AA5C__8DogActorPCc(int, int) asm("func_0010AA5C__8DogActorPCc");
-extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
-extern const char D_002EBE40[];
-struct m2c_v14_58_i { char pad[20]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual int call(); };
-struct m2c_v14_70_iiii { char pad[20]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual int call(int, int, int); };
-// u_long128: include/target.h
-extern "C" float Xfi_func_0010A650__8DogActor(int) asm("func_0010A650__8DogActor");
-extern "C" int Xiii_func_0012349C(int, int) asm("func_0012349C");
+#include "mag/maglifebwn.h"
+
+extern "C" int Xii_getMainMotionNo__C14DogMotionBlend(const DogMotionBlend *) asm("getMainMotionNo__C14DogMotionBlend");
+extern "C" int Xiii_func_0010AA5C__8DogActorPCc(DogActor *, const char *) asm("func_0010AA5C__8DogActorPCc");
+extern "C" void Xiiii_ror_assert(const char *, int, const char *) asm("ror_assert");
+extern "C" float Xfi_func_0010A650__8DogActor(DogActor *) asm("func_0010A650__8DogActor");
+extern "C" int Xiii_func_0012349C(MagLifeBwn *, MagBwnVec4 *) asm("func_0012349C");
 extern "C" int Xii_func_00103428(int) asm("func_00103428");
 extern "C" int Xii_func_0010344C(int) asm("func_0010344C");
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" int Xiiiii_func_0012A56C(int, int, int, int) asm("func_0012A56C");
-// Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_func_00103428(...) asm("func_00103428");
-extern "C" int X_func_0010344C(...) asm("func_0010344C");
-extern "C" int X_func_00104150(...) asm("func_00104150");
-extern "C" int X_func_00119CEC(...) asm("func_00119CEC");
-extern "C" int X_func_0011A704(...) asm("func_0011A704");
-extern "C" int X_func_001258A4(...) asm("func_001258A4");
-extern "C" int X_func_00125980(...) asm("func_00125980");
-extern "C" int X_func_001268B4(...) asm("func_001268B4");
-extern "C" int X_func_00126928(...) asm("func_00126928");
-extern "C" int X_func_00129F50(...) asm("func_00129F50");
-extern "C" int X_func_00129F78(...) asm("func_00129F78");
-extern "C" int X_func_0012A394(...) asm("func_0012A394");
-extern "C" int X_func_0012A56C(...) asm("func_0012A56C");
-extern "C" int X_func_0012AB20(...) asm("func_0012AB20");
-extern "C" int X_func_0012ADEC(...) asm("func_0012ADEC");
-extern "C" int X_func_0012AF70(...) asm("func_0012AF70");
-extern "C" int X_func_0012B0D0(...) asm("func_0012B0D0");
-extern "C" int X_ror_assert(...) asm("ror_assert");
-extern "C" int X_utlFindIsSet__FP7UtlFind(...) asm("utlFindIsSet__FP7UtlFind");
+extern "C" void X_func_00104150(int) asm("func_00104150");
+extern "C" int Xiiiii_func_0012A56C(MagLifeBwnCtrl *, int, int, int) asm("func_0012A56C");
+extern "C" void X_func_00126928(...) asm("func_00126928");
+extern "C" int func_00129F50(MagLifeBwnCtrlModeBark *, MagLifeBwnCtrl *, int);
+extern "C" void func_00129F78(MagLifeBwnCtrlMode *, MagLifeBwnCtrl *, int);
 extern "C" int X_utlFindIsTarget__FP7UtlFindi(...) asm("utlFindIsTarget__FP7UtlFindi");
 extern "C" int X_utlFindNearest__FP7UtlFindPfi(...) asm("utlFindNearest__FP7UtlFindPfi");
-extern "C" int X_utlFindSet__FP7UtlFindii(...) asm("utlFindSet__FP7UtlFindii");
 extern const char D_002EBE28[];
+extern const char D_002EBE40[];
 
 extern "C" int func_001267C0(int arg0, int arg1, int arg2)
 {
     return X_utlFindIsTarget__FP7UtlFindi(arg2);
 }
 
-
 extern "C" int func_001267D8(int arg0, int arg1, int arg2, int arg3)
 {
     return X_utlFindNearest__FP7UtlFindPfi(arg1, arg3);
 }
-
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_001267F4);
 
@@ -63,16 +42,14 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeWait__vfunc
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeWait__vfunc_02);
 
-extern "C" void MagLifeBwnCtrlModeFollow__vfunc_01(int arg0, int arg1)
+extern "C" void MagLifeBwnCtrlModeFollow__vfunc_01(MagLifeBwnCtrlModeFollow *arg0, MagLifeBwnCtrl *arg1)
 {
-    int temp_v0;
-
-    temp_v0 = M2C_FIELD(arg1, int *, 0x70);
-    if (temp_v0 != 0) {
-        M2C_FIELD(temp_v0, int *, 0xCC4) = 0;
-        M2C_FIELD(arg1, int *, 0x60) = 0;
-        M2C_FIELD(arg1, int *, 8) = 0;
-        M2C_FIELD(arg0, int *, 4) = 0;
+    MagLifeBwn *bwn = arg1->m_bwn;
+    if (bwn != 0) {
+        bwn->m_unkCC4 = 0;
+        arg1->m_unk60 = 0;
+        arg1->m_unk08 = 0;
+        arg0->m_unk04 = 0;
     }
 }
 
@@ -80,14 +57,13 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeFollow__vfu
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_00127558);
 
-extern "C" void MagLifeBwnCtrlModeStay__vfunc_01(int arg0, int arg1)
+extern "C" void MagLifeBwnCtrlModeStay__vfunc_01(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
 {
-    (*(int *)(int *)((char *)(arg1) + 0x8)) = 0;
-    if ((*(int *)(int *)((char *)(arg1) + 0x70)) != 0) {
-        (*(int *)(int *)((char *)(arg1) + 0x78)) = 2;
+    arg1->m_unk08 = 0;
+    if (arg1->m_bwn != 0) {
+        arg1->m_unk78 = 2;
     }
 }
-
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeStay__vfunc_02);
 
@@ -147,63 +123,55 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_00128724);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_00128854);
 
-extern "C" void MagLifeBwnCtrlModeFindEnd__vfunc_01(int arg0, int arg1)
+extern "C" void MagLifeBwnCtrlModeFindEnd__vfunc_01(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
 {
-    M2C_FIELD(arg1, int *, 0x78) = 0;
-    if (Xii_func_0010344C(M2C_FIELD(arg1, int *, 0x64)) != 0) {
-        M2C_FIELD(arg1, int *, 0x7C) = 1;
-        Xii_func_00103428(M2C_FIELD(arg1, int *, 0x64));
-        M2C_FIELD(arg1, int *, 8) = 0;
+    arg1->m_unk78 = 0;
+    if (Xii_func_0010344C(arg1->m_unk64) != 0) {
+        arg1->m_unk7C = 1;
+        Xii_func_00103428(arg1->m_unk64);
+        arg1->m_unk08 = 0;
         return;
     }
-    M2C_FIELD(arg1, int *, 0x7C) = -1;
+    arg1->m_unk7C = -1;
     Xiiiii_func_0012A56C(arg1, 1, 0, 0);
 }
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeFindEnd__vfunc_02);
 
-extern "C" void MagLifeBwnCtrlModeMove__vfunc_01(int arg0, int arg1)
+extern "C" void MagLifeBwnCtrlModeMove__vfunc_01(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
 {
-    int temp_v0;
-    int temp_v1;
-
-    M2C_FIELD(arg1, int *, 0x80) = 0;
-    if (Xiii_func_0012349C(M2C_FIELD(arg1, int *, 0x70), arg1 + 0x30) >= 0) {
-        temp_v1 = M2C_FIELD(arg1, int *, 0x70);
-        ((m2c_v14_70_iiii *)(temp_v1))->call(6, 0, 0);
-        M2C_FIELD(arg1, int *, 8) = 0;
-        M2C_FIELD(arg1, int *, 0xC) = 0;
+    arg1->m_unk80 = 0;
+    if (Xiii_func_0012349C(arg1->m_bwn, &arg1->m_targetPos) >= 0) {
+        arg1->m_bwn->message(6, 0, 0);
+        arg1->m_unk08 = 0;
+        arg1->m_unk0C = 0;
     }
 }
 
-extern "C" int MagLifeBwnCtrlModeMove__vfunc_02(int arg0, int arg1)
+extern "C" int MagLifeBwnCtrlModeMove__vfunc_02(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
 {
-    int temp_a2;
-
-    temp_a2 = (*(int *)(int *)((char *)(arg1) + 0x70));
-    if ((*(int *)(int *)((char *)(temp_a2) + 0xCC0)) != 0) {
-        return X_func_0012A56C(arg1, 7, 0, 0);
+    MagLifeBwn *bwn = arg1->m_bwn;
+    if (bwn->m_unkCC0 != 0) {
+        return Xiiiii_func_0012A56C(arg1, 7, 0, 0);
     }
-    if ((*(int *)(int *)((char *)(temp_a2) + 0xCAC)) != 0) {
-        X_func_0012A56C(arg1, 7, 0, 0);
+    if (bwn->m_unkCAC != 0) {
+        Xiiiii_func_0012A56C(arg1, 7, 0, 0);
     }
 }
 
-
-extern "C" void MagLifeBwnCtrlModeMoveEnd__vfunc_01(int arg0, int arg1)
+extern "C" void MagLifeBwnCtrlModeMoveEnd__vfunc_01(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
 {
-    (*(int *)(int *)((char *)(arg1) + 0x80)) = 1;
-    X_func_0012A56C(arg1, 0, 0, 0);
+    arg1->m_unk80 = 1;
+    Xiiiii_func_0012A56C(arg1, 0, 0, 0);
 }
-
 
 extern "C" void MagLifeBwnCtrlModeMoveEnd__vfunc_02(void) {
 }
 
-extern "C" void MagLifeBwnCtrlModeRot__vfunc_01(int arg0, int arg1)
+extern "C" void MagLifeBwnCtrlModeRot__vfunc_01(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
 {
-    M2C_FIELD(arg1, int *, 0x80) = 0;
-    M2C_FIELD(arg1, int *, 8) = 0;
+    arg1->m_unk80 = 0;
+    arg1->m_unk08 = 0;
 }
 
 extern "C" void MagLifeBwnCtrlModeRot__vfunc_02()
@@ -211,28 +179,19 @@ extern "C" void MagLifeBwnCtrlModeRot__vfunc_02()
     X_func_00126928();
 }
 
-
-extern "C" void MagLifeBwnCtrlModeRotEnd__vfunc_01(int arg0, int arg1)
+extern "C" void MagLifeBwnCtrlModeRotEnd__vfunc_01(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
 {
-    (*(int *)(int *)((char *)(arg1) + 0x80)) = 1;
-    X_func_0012A56C(arg1, 0, 0, 0);
+    arg1->m_unk80 = 1;
+    Xiiiii_func_0012A56C(arg1, 0, 0, 0);
 }
-
 
 extern "C" void MagLifeBwnCtrlModeRotEnd__vfunc_02(void) {
 }
 
-extern "C" void MagLifeBwnCtrlModeDamage__vfunc_01(int arg0, int arg1)
+extern "C" void MagLifeBwnCtrlModeDamage__vfunc_01(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
 {
-    int var_s1;
-    unsigned int temp_v1;
-    int temp_v0;
-    int temp_v1_2;
-    int temp_v1_3;
-
-    temp_v1 = M2C_FIELD(arg1, unsigned int *, 8);
-    var_s1 = 0;
-    switch (temp_v1) {
+    int var_s1 = 0;
+    switch ((unsigned int)arg1->m_unk08) {
     case 3:
     case 4:
         break;
@@ -243,22 +202,32 @@ extern "C" void MagLifeBwnCtrlModeDamage__vfunc_01(int arg0, int arg1)
         var_s1 = 0x6E;
         break;
     case 2:
-        Xiiii_ror_assert((int) D_002EBE28, 0x7F6, (int) D_002EBE40);
+        Xiiii_ror_assert(D_002EBE28, 0x7F6, D_002EBE40);
         break;
     default:
-        Xiiii_ror_assert((int) D_002EBE28, 0x800, (int) D_002EBE40);
+        Xiiii_ror_assert(D_002EBE28, 0x800, D_002EBE40);
         break;
     }
-    temp_v1_2 = M2C_FIELD(arg1, int *, 0x70);
-    M2C_FIELD(temp_v1_2, int *, 4) = -1;
-    M2C_FIELD(temp_v1_2, int *, 0) = -1;
-    temp_v1_3 = M2C_FIELD(arg1, int *, 0x70);
-    ((m2c_v14_70_iiii *)(temp_v1_3))->call(1, var_s1, 1);
+    MagLifeBwn *bwn = arg1->m_bwn;
+    bwn->m_unk04 = -1;
+    bwn->m_unk00 = -1;
+    arg1->m_bwn->message(1, var_s1, (void *)1);
 }
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeDamage__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeBark__vfunc_01);
+extern "C" void MagLifeBwnCtrlModeBark__vfunc_01(MagLifeBwnCtrlModeBark *arg0, MagLifeBwnCtrl *arg1)
+{
+    int &step = arg1->m_unk08;
+    arg0->m_unk24 = 0;
+    arg0->m_unk28 = 0;
+    X_func_00104150(1);
+    if (step == 0) {
+        step = 0;
+    } else {
+        step = 0xE;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_00128E6C);
 
@@ -302,14 +271,19 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnctrl", D_002EC230);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeBark__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_00129F50);
-
-extern "C" void func_00129F78(int arg0, int arg1, int arg2)
+extern "C" int func_00129F50(MagLifeBwnCtrlModeBark *arg0, MagLifeBwnCtrl *arg1, int arg2)
 {
-    (*(int *)(int *)((char *)(arg1) + 0xC)) = arg2;
-    (*(int *)(int *)((char *)(arg1) + 0x8)) = 0xC;
+    if (arg1->m_unk08 == 0xB && arg0->m_unk24 == arg2) {
+        return 1;
+    }
+    return -1;
 }
 
+extern "C" void func_00129F78(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1, int arg2)
+{
+    arg1->m_unk0C = arg2;
+    arg1->m_unk08 = 0xC;
+}
 
 extern "C" void MagLifeBwnCtrlModeSitOut__vfunc_01(void) {
 }
@@ -321,30 +295,20 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeHug__vfunc_
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeHug__vfunc_02);
 
-extern "C" void MagLifeBwnCtrlModeWound__vfunc_01(int arg0, int arg1)
+extern "C" void MagLifeBwnCtrlModeWound__vfunc_01(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
 {
-    int temp_s0;
-    int temp_v0_2;
-    int temp_v0;
-    int temp_v0_3;
-    int temp_v0_4;
-    int temp_v1;
-    int temp_v1_2;
-
-    temp_v1 = M2C_FIELD(arg1, int *, 0x70);
-    temp_v0_2 = ((m2c_v14_58_i *)(temp_v1))->call();
-    if (temp_v0_2 == 0) {
-        Xiiii_ror_assert((int) D_002EBE28, 0xB73, (int) "actor");
+    DogActor *actor = arg1->m_bwn->getActor();
+    if (actor == 0) {
+        Xiiii_ror_assert(D_002EBE28, 0xB73, "actor");
     }
-    temp_s0 = Xiii_func_0010AA5C__8DogActorPCc(temp_v0_2, (int) (int) "dmgl_wait");
-    if (temp_s0 != Xii_getMainMotionNo__C14DogMotionBlend(temp_v0_2 + 0x1E4)) {
-        temp_v0_3 = M2C_FIELD(arg1, int *, 0x70);
-        M2C_FIELD(temp_v0_3, int *, 4) = -1;
-        M2C_FIELD(temp_v0_3, int *, 0) = -1;
-        temp_v1_2 = M2C_FIELD(arg1, int *, 0x70);
-        ((m2c_v14_70_iiii *)(temp_v1_2))->call(1, 0x82, 0);
+    int motion = Xiii_func_0010AA5C__8DogActorPCc(actor, "dmgl_wait");
+    if (motion != Xii_getMainMotionNo__C14DogMotionBlend(&actor->m_motion_now)) {
+        MagLifeBwn *bwn = arg1->m_bwn;
+        bwn->m_unk04 = -1;
+        bwn->m_unk00 = -1;
+        arg1->m_bwn->message(1, 0x82, 0);
     }
-    M2C_FIELD(arg1, int *, 8) = 0;
+    arg1->m_unk08 = 0;
 }
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeWound__vfunc_02);
@@ -388,30 +352,37 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrl__vfunc_02);
 extern "C" void MagLifeBwnCtrl__vfunc_09(void) {
 }
 
-extern "C" void func_0012A6A8(int arg0, int arg1)
+extern "C" void func_0012A6A8(MagLifeBwnCtrl *arg0, int arg1)
 {
-    Xiiiii_func_0012A56C((int) arg0, 0xA, arg1, 0);
+    Xiiiii_func_0012A56C(arg0, 0xA, arg1, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A6CC);
-
-extern "C" int func_0012A6DC(int arg0, int arg1)
+extern "C" int func_0012A6CC(MagLifeBwnCtrl *arg0)
 {
-    if ((*(int *)(arg0)) == 0xB) {
-        return X_func_00129F50(arg0 + 0xF0, arg0, arg1, 0xB);
+    return arg0->m_unk00 == 0xA;
+}
+
+extern "C" int func_0012A6DC(MagLifeBwnCtrl *arg0, int arg1)
+{
+    if (arg0->m_unk00 == 0xB) {
+        return func_00129F50(&arg0->m_modeBark, arg0, arg1);
     }
     return -1;
 }
 
-
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A71C);
+extern "C" void func_0012A71C(MagLifeBwnCtrl *arg0, int arg1)
+{
+    if (arg0->m_unk00 == 0xB) {
+        return func_00129F78(&arg0->m_modeBark, arg0, arg1);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A758);
 
-extern "C" void func_0012A7CC(int arg0)
+extern "C" void func_0012A7CC(MagLifeBwnCtrl *arg0)
 {
-    if ((unsigned int) (M2C_FIELD(arg0, int *, 0) - 4) < 2U) {
-        M2C_FIELD(arg0, int *, 0x78) = 0;
+    if ((unsigned int) (arg0->m_unk00 - 4) < 2U) {
+        arg0->m_unk78 = 0;
         Xiiiii_func_0012A56C(arg0, 1, 0, 1);
     }
 }
@@ -422,44 +393,39 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A89C);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A974);
 
-extern "C" void func_0012A9EC(int arg0, int arg1)
+extern "C" void func_0012A9EC(MagLifeBwnCtrl *arg0, MagBwnVec4 *arg1)
 {
-    int temp_v0;
-    int temp_v0_2;
-    int temp_v0_3;
-    int temp_v1;
-    int temp_v1_2;
-
-    temp_v1 = M2C_FIELD(arg0, int *, 0x70);
-    if (temp_v1 != 0) {
-        if (((m2c_v14_58_i *)(temp_v1))->call() != 0) {
-            temp_v1_2 = M2C_FIELD(arg0, int *, 0x70);
-            temp_v0_3 = ((m2c_v14_58_i *)(temp_v1_2))->call();
-            M2C_FIELD(arg1, u_long128 *, 0) = (u_long128) M2C_FIELD(temp_v0_3, u_long128 *, 0x50);
-            M2C_FIELD(arg1, float *, 4) = Xfi_func_0010A650__8DogActor((int) temp_v0_3);
+    if (arg0->m_bwn != 0) {
+        if (arg0->m_bwn->getActor() != 0) {
+            DogActor *actor = arg0->m_bwn->getActor();
+            *(u_long128 *)arg1 = *(u_long128 *)&actor->m_unk50;
+            arg1->y = Xfi_func_0010A650__8DogActor(actor);
         }
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012AA70);
-
-extern "C" void func_0012AAC0(int arg0, float fparg0)
+extern "C" void func_0012AA70(MagLifeBwnCtrl *arg0, const float *arg1)
 {
-    M2C_FIELD(arg0, float *, 0x40) = fparg0;
+    ((DogVector *)&arg0->m_targetPos)->set(arg1[0], arg1[1], arg1[2]);
+    Xiiiii_func_0012A56C(arg0, 6, 0, 0);
+}
+
+extern "C" void func_0012AAC0(MagLifeBwnCtrl *arg0, float fparg0)
+{
+    arg0->m_targetRot = fparg0;
     Xiiiii_func_0012A56C(arg0, 0, 0, 0);
 }
 
-extern "C" void func_0012AAE8(int arg0, float fparg0)
+extern "C" void func_0012AAE8(MagLifeBwnCtrl *arg0, float fparg0)
 {
-    M2C_FIELD(arg0, float *, 0x40) = fparg0;
+    arg0->m_targetRot = fparg0;
     Xiiiii_func_0012A56C(arg0, 8, 0, 0);
 }
 
-extern "C" int func_0012AB10(int arg0)
+extern "C" int func_0012AB10(MagLifeBwnCtrl *arg0)
 {
-    return (*(int *)(int *)((char *)(arg0) + 0x80));
+    return arg0->m_unk80;
 }
-
 
 extern "C" void func_0012AB18(void) {
 }
@@ -484,11 +450,11 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012B5F8);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012B65C);
 
-extern "C" void func_0012B788(int arg0, int arg1)
+extern "C" void func_0012B788(MagLifeBwnCtrl *arg0, int arg1)
 {
     Xiiiii_func_0012A56C(arg0, 0xC, arg1, 1);
     if (arg1 >= 0) {
-        M2C_FIELD(arg0, int *, 0x124) = arg1;
+        arg0->m_unk124 = arg1;
     }
 }
 
