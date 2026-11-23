@@ -553,8 +553,6 @@ INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_0010376C);
 
 INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103A90);
 
-// NON_MATCHING: 22/70 differ, 1 reloc differs, 9 edits
-#ifdef NON_MATCHING
 struct UtlEnemySub { int m_oid; int m_uid; };
 struct UtlEnemyInfo2 { float m_pos[4]; unsigned char m_unk10[0x10]; UtlEnemySub m_sub; unsigned char m_unk28[0x18]; };
 extern "C" int func_00103CCC(UtlEnemyInfo2 *theOut, int theFlg)
@@ -562,26 +560,27 @@ extern "C" int func_00103CCC(UtlEnemyInfo2 *theOut, int theFlg)
     int count = 0;
     GamList<ObjStat *> *list = D_007812C0.getAVFchrListPtr();
     GamList<ObjStat *>::iterator end = list->end();
-    UtlEnemyInfo2 *p = theOut;
-
-    for (GamList<ObjStat *>::iterator it = list->begin(); it != end; it++) {
-        if (theFlg && (*it)->checkFlg(0x20)) {
-            continue;
-        }
-        theOut[count].m_sub.m_uid = (*it)->getUID();
-        theOut[count].m_sub.m_oid = (*it)->getOID();
-        func_001DB71C(*it, p->m_pos);
-        count++;
-        p++;
-        if (count >= 0x20) {
-            break;
+    GamList<ObjStat *>::iterator it = list->begin();
+    if (it != end) {
+        UtlEnemySub *sub = &theOut->m_sub;
+        UtlEnemyInfo2 *p = theOut;
+        for (; it != end; it++) {
+            if (theFlg && (*it)->checkFlg(0x20)) {
+                continue;
+            }
+            sub->m_uid = (*it)->getUID();
+            sub->m_oid = (*it)->getOID();
+            func_001DB71C(*it, p->m_pos);
+            count++;
+            p++;
+            sub = (UtlEnemySub *)((char *)sub + sizeof(UtlEnemyInfo2));
+            if (count >= 0x20) {
+                break;
+            }
         }
     }
     return count;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00103CCC);
-#endif
 
 extern "C" int func_00103DE4()
 {
