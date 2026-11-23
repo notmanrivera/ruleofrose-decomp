@@ -112,3 +112,33 @@ demo (SCED_524.91; not the SCED-53122 that Retro Reversing lists with a
   The Arc the Lad demo's other 70 rx strings (rxHdd*, rxGsSyncPath) are
   modules Rule of Rose does not link.
 - No .MAP among these, so the sdk/ names still come from signatures.
+
+## Donor binaries with symbols (lead, 2026-11-23)
+
+A Reddit reply to our demo-disc request (r/decomps) and an external
+follow-up research note point at two possible name donors:
+
+- **PoPoLoCrois: Tsuki no Okite no Bouken (SCPS-15063, build 2004-02-19)**:
+  listed with DWARF by debugging.games and among Retro Reversing's
+  unstripped retail PS2 games; the commenter says it links the rx library.
+  DWARF would give function names, source file names and struct layouts
+  for mw/sound (the rx library, ~78 KB). Not the 2002/2005 *Hajimari no
+  Bouken* discs: a different game.
+- **Suikoden Tactics (SLUS-21245, build 2005-08-08)**: suggested for 2004-05
+  SDK and libgcc names; symbols not confirmed anywhere. Low priority (we
+  already have 650 SDK names from signatures, and the ports replace the SDK).
+- Rechecked every ELF in disc/ (2026-11-23): RX_SCE_LIBRARY_VERSION:4 is in
+  ours (US/PAL/JP/trade demo), both Arc the Lad ELFs and the Wild Arms 5
+  trial; all stripped (the WA5 trial has an empty .symtab). So no rx names
+  yet; PoPoLoCrois would be the first donor with them.
+- Caveats: a 2004-02 rx may be older than ours (Arc USA, SDK 2.4, shares only
+  6/375 mw/sound chunks vs 264 for the newer Arc JP demo), so exact byte
+  signatures may find few functions; then match by structure (Ghidra
+  Version Tracking/BSim), or name the WA5 trial first (370/375 identical to
+  ours) and use it as the bridge. DWARF file names and types help anyway.
+- Procedure when an owner's disc is available: build/donor_research/
+  (ignored), sha256 + section list + counts of STT_FUNC/DW_TAG_subprogram;
+  exact normalized matches first (as sce_symbols.py), unique only; a new
+  provenance kind per donor (e.g. donor-popolo-dwarf-exact); never
+  overwrite linkonce or manual names; naming functions does not change
+  the matched percentage.
