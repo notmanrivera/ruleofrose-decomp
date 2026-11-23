@@ -622,17 +622,18 @@ extern "C" void func_00135740(MagScene *self, int winNo)
 }
 
 
-// NON_MATCHING: close, not identical yet.
+// NON_MATCHING: 4/23 differ, 4 edits
 #ifdef NON_MATCHING
+extern "C" void X_func_0013F07C_57B0(MagScene *) asm("func_0013F07C");
 extern "C" void func_001357B0(MagScene *self, int theA, int theB)
 {
     BedSubMode *sub = &self->m_sub_mode;
     ((int *)sub)[0] = 3;
     ((int *)sub)[1] = -1;
     *(int *)((char *)self + 0x2BE54) = theB;
-    ((int *)sub)[2] = theA;
-    ((int *)sub)[3] = *(int *)((char *)self + 0x853B8) | (*(int *)((char *)self + 0x22AC) << 16);
-    self->func_0013F07C();
+    *(int *)((char *)self + 0x22D8) = theA;
+    *(int *)((char *)self + 0x22DC) = *(unsigned short *)((char *)self + 0x853B8) | (*(unsigned short *)((char *)self + 0x22AC) << 16);
+    X_func_0013F07C_57B0(self);
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001357B0);
