@@ -292,28 +292,27 @@ extern "C" void func_00102B24(int theOID)
 }
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" int func_00102B6C(void *theOut, int *theList, int theNum)
 {
     int i;
-    int *p = theList;
-    for (i = 0; i < theNum; i++) {
-        int r = func_0010315C(theOut, *p);
-        if (r) {
-            return r;
-        }
-        r = func_00102BF0(theOut, *p);
-        p++;
-        if (r) {
-            return r;
-        }
+    i = 0;
+    if (theNum > 0) {
+        int *p = theList;
+        do {
+            int r = func_0010315C(theOut, *p);
+            if (r) {
+                return r;
+            }
+            r = func_00102BF0(theOut, *p);
+            p++;
+            if (r) {
+                return r;
+            }
+            i++;
+        } while (i < theNum);
     }
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/utl/utlgame", func_00102B6C);
-#endif
 
 
 // NON_MATCHING: 78/91 differ, 3 relocs differ (size 0x16C, game 0x164), 38 edits
