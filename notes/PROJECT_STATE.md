@@ -227,3 +227,32 @@ eso destapó 15 límites de `.rodata`/archivo mal puestos (corregidos; quedan
 5). Sin símbolos externos: la demo/prototipo SLUS-28064 y Chulip no aportan
 nombres (Chulip no comparte motor; `i3d` parece propio de Punchline).
 
+
+## Estado (2026-11-22): 38.93 %
+
+446,696 de 1,147,560 bytes del código del juego (127 de 134 archivos); 100
+archivos compilan también con g++ y clang modernos. Middleware y SDK siguen
+al 0 % (en ensamblador; para el port irán por una capa propia, no matching).
+El 22 de noviembre se pasó de 34.93 % a 38.93 % (+45,868 bytes), el mejor día
+del proyecto. Lo que más rindió:
+
+- Cabeceras de clase por familia (plan de la investigación R22,
+  `notes/research/R22-class-families.md`): enemigos (`src/emy/emy.h`, +66
+  funciones), tareas (`task/cmnitask.h`), menús (`unk/mnuBase.h`,
+  `mnu/mnucommon.h`), efectos (`unk/Eff0.h`); en total unas +160 funciones.
+- Listas de intentos NON_MATCHING ordenados por cercanía
+  (`tools/regalloc_triage.py`): 28 resueltos, sobre todo saltos likely
+  (`ASM_NOTHROW` en las funciones llamadas, `bool` intermedio, salida
+  temprana), registros (`PS2_REG`) y tipos de 64 bits.
+- Herramientas: arreglos de la auditoría externa (match.py compara colas de
+  datos y relleno de `.text`; try_variants no toca `src/`; host_check falla
+  si el compilador no arranca); permutadores mejorados (investigación R23,
+  `notes/research/R23-permuters.md`): Cyrax (`tools/permute.py`) prueba
+  `throw()`, cambios de flujo y fijación de registros; Sektor
+  (`tools/perm_official.py`) prepara C++ (clases de cabeceras como structs C,
+  plantillas, llamadas a métodos no virtuales) y pasó de 15 a 27 de 79
+  intentos preparables.
+
+Pendiente: la lista G de cabeceras (TskMsgMan, efectos, MagLifeBwn,
+MagLifePC, archivos sin clase), las llamadas virtuales para Sektor, y los
+254 intentos NON_MATCHING (138 KB) que quedan.
