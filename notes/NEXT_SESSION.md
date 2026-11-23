@@ -1,252 +1,65 @@
 # Próxima sesión del coordinador
 
-Escrito el 2026-11-12; la sección "Pausa (2026-11-12, noche)" es la más
-reciente y manda sobre "Estado al cerrar". Léelo después de
-CLAUDE.md, `notes/PROJECT_STATE.md` y `docs/DECOMPILING.md` §6.
+Reescrito el 2026-11-23 (tarde), a 40.33 %. Las versiones anteriores
+(12 al 15 de noviembre) están en el historial de git; lo que seguía vigente
+de ellas está aquí. Léelo después de `CLAUDE.md`, `notes/PROJECT_STATE.md`
+(sobre todo el último «Estado») y `docs/DECOMPILING.md`.
 
-## Estado al cerrar
+## Al abrir
 
-- Rama `pr-merge`, siempre con `build/ok` tras cada integración. Nada subido
-  a GitHub. Avance: 18.02 % del código del juego (206,840 / 1,147,560 B);
-  el día empezó en 16.80 %.
-- Workers en Orca (worktrees al lado del repo):
-  - `ror-wt-opencode` (OpenCode, DeepSeek V4.1 Flash, región Global):
-    lotes de funciones chicas. Lo último que se le dio: `unk/0020ED9C`.
-  - `ror-wt-gemini` (Antigravity): Gemini 4 Argon sin cuota hasta ~18-nov;
-    Claude Opus/Sonnet dentro de Antigravity vuelven unas horas después del
-    cierre; Gemini 3.8 Flash tiene cuota propia y quedó con `snd/rxmpeg`.
-- Al abrir: `git -C ../ror-wt-<n> log pr-merge..` para ver si dejaron
-  commits, y `sh tools/merge_worker.sh <n>` para integrarlos.
-- Pendientes de funciones: `notes/TECH_DEBT.md`.
+- Docker, `tools/match.py --server start`, la pestaña «Progreso workers» de
+  Orca (`tools/orca/bars.py --watch 20`).
+- Smoke: `tools/cpp_perm_queue.py --minutes 10 --max-off 40 --skip
+  build/workers/codex-owns.txt --avoid unk/001B64C4,unk/00166AD0` (salta lo
+  ya probado; solo toma intentos de tamaño exacto y referencias correctas;
+  no integra un MATCH que empeore `tools/rules_check.py`: queda en su log
+  para pasarlo a tipos).
+- Workers: Codex (5 h por ventana, briefs `codex-brief-close*`), OpenCode
+  (brief `opencode-brief-order5.txt`), Hydrogen en pausa (lo dosifica el
+  dueño). Neon/Argon (Antigravity) vuelven el 29–30 nov: **G8–G14** son
+  suyas (`build/workers/fable-tasks.tsv`); no tomarlas antes.
+- Todo cambio que integre o haga el coordinador debe pasar
+  `tools/rules_check.py` (no subir la deuda de desplazamientos ni de alias).
 
-## Tarea 1: la jerarquía real de `mag/maglife.h`
+## Trabajo para el coordinador, de más a menos útil
 
-Objetivo: declarar las clases `MagLife*` como el original, para que el
-constructor, `message` y los archivos hermanos se escriban como métodos
-con nombres reales en vez de funciones sueltas con `asm("símbolo")`.
+1. **`mw/sound` con los nombres de PoPoLoCrois.** Dividirla en sus
+   archivos reales por prefijo (`rxSndSys`, `rxSndVoice`, `rxSndSe`,
+   `rxSndPcm`, `rxSndAdpcm`, `rxSndBgm`, `rxSys`, `rxFile`, `rxTh`, `rxGs`...)
+   en `config/splits_manual.tsv`, con la prueba en cada fila; luego empezar
+   a decompilarla (hoy 0 %). Para el port, su API es la frontera: se puede
+   reimplementar en nativo sin decompilar el driver IOP.
+2. **Tipos de PoPoLoCrois.** Leer su DWARF 1 (`zipzip11/ps2-dwarf1` o un
+   lector propio) para `rxmpeg.c` (nuestro `snd/rxmpeg`) y las cabeceras rx
+   que use su código. Solo derivar nombres/tipos; nada de su código.
+3. **Más donantes con símbolos.** Juegos con «RX Lib. Team» en sus créditos
+   (Boku to Maou, Phase Paradox, Wa ga Ryuu o Miyo...) podrían nombrar las
+   270 funciones de `mw/sound` que faltan; `tools/donor_symbols.py` acepta
+   más entradas en `DONORS`. Para el código propio del juego, la mejor pista
+   sigue siendo el **prototipo de localización del 19-jul-2006** (Hidden
+   Palace): Sly 1 sacó sus nombres de uno así. Solo desde discos propios.
+4. **Pagar deuda de legibilidad** donde más rinde: los archivos con más
+   desplazamientos en código exacto (`tools/rules_check.py --list`), sin
+   tocar los reservados para Neon/Argon. Tras bajar un archivo,
+   `tools/rules_check.py --update <archivo>`.
+5. **Intentos cercanos de `unk/MnuDiary`**: `vfunc_05` (Smoke llegó a
+   puntuación 4, `build/cpp_perm/MnuDiary__vfunc_05/`), `func_0019AFB0`,
+   `func_0019BD6C`, `func_0019B384` (tamaño exacto, registros). Quedan 18
+   funciones en asm, varias grandes (`func_0019E474`, 5.7 KB).
 
-Pruebas que ya hay:
+## Pendientes antiguos que siguen vigentes
 
-- `notes/class_hierarchy.txt` (de los `__tf<Clase>` del binario) da el árbol:
-  `MagLife0` → `MagLife` → `MagLifeControlChara` → {`MagLifeBillboard`,
-  `MagLifeBwn`, `MagLifePC`, `MagLifeTest`}; además `MagLifeBwnCtrl`,
-  `MagLifeFader`, `MagLifeNoise`, `MagLifeFadeKeyHole`, `MagLifeMenuBase`
-  (16 menús), `MagLifePos` → `MagLifeWindow` → `MagLifeWindowDebug`,
-  `S2dBg`, `S2dCineSco`, `S2dMes`, con el número de slots de cada vtable.
-- **Error conocido:** `src/mag/maglifepc.h` dice que `MagLifePC` hereda de
-  `MagLifeBillboard`; el RTTI dice que hereda de `MagLifeControlChara`
-  (son hermanas). Hoy compila igual porque los offsets coinciden.
-- Dependen de estas clases: `src/mag/maglife.cpp`, `maglife.h`,
-  `maglifebwn.cpp`, `maglifeman.h`, `maglifepc.h` (y por él todos los
-  `maglifepc*.cpp`), `maglifewindow.h`, `magsceneoption.cpp`.
-
-Cómo comprobar cada paso: `tools/match.py` en cada archivo de esa lista
-(todos deben seguir en "OK: object matches") y la compilación completa
-(`build/ok`). Ningún worker debe estar trabajando en `mag/` mientras tanto
-(hoy no lo está ninguno).
-
-## Tarea 2: seguir mejorando los scripts
-
-Ya hechos hoy: `tools/new_worktree.sh`, `tools/merge_worker.sh`,
-`tools/backlog.py`, `docs/WORKER_BRIEF.md`, `tools/orca/watch_agent.sh`,
-`tools/orca/send_brief.sh`, el aviso de relleno de `.rodata` en `match.py`.
-
-Ideas pendientes, de más a menos útil:
-
-1. Un solo comando `tools/orca/next_batch.sh <worker>` que encadene
-   `merge_worker.sh` → `backlog.py --file ... --names N` → `send_brief.sh`
-   con la plantilla de `WORKER_BRIEF.md` → `watch_agent.sh`. El ciclo
-   completo costaría una llamada.
-2. Recordar qué archivo tiene cada worker (un archivo en `build/`, no en
-   git) para que `backlog.py --exclude` se llene solo.
-3. Detectar en `watch_agent.sh` los mensajes de cuota agotada ("quota
-   reached") y de filtro de contenido, y decirlo en vez de solo "idle".
-4. `progress.py`: contar los intentos NON_MATCHING ("N casi listas").
-5. Probar `new_worktree.sh` de punta a punta (hoy solo se probaron sus
-   comprobaciones) y que copie también el nombre del servidor de match.
-6. `merge_worker.sh`: avisar cuando un worker haya saltado muchas
-   funciones (señal de que su sesión ya está muy larga).
-
-## Hecho en la sesión siguiente (2026-11-12, tarde)
-
-- Tarea 1 hecha (commit `bab916f`): `MagLife0`/`MagLife` viven ahora en
-  `mag/maglife.h` con sus cuerpos inline (las copias de `asm/inline/`) y los
-  campos de `MagLife` (+0x18..+0x2F: `m_scene`, `m_hide`). `MagLifePC` hereda
-  de `MagLifeControlChara`. Además: el slot 16 no es de `MagLifeControlChara`
-  (tiene 15) sino de `MagLifeBwn`/`MagLifePC`/`MagLifeTest`, cada una el
-  suyo. `vfunc09` y `MagLifeBillboard::live` vuelven a ser métodos: son los
-  "key methods", así que `mag/maglife` emite sus nombres RTTI y el `.rodata`
-  de `mag/maglifepc` empieza en 0x2E96B0 (`config/splits_manual.tsv`).
-- Fallo de GNU as 2.10-ee encontrado por el camino: si `.rodata` aparece por
-  primera vez a mitad del archivo, puede ensamblar la carga de una tabla de
-  saltos como lw+addu+lw en vez de lui+addu+lw. `include/include_asm.h` crea
-  `.rodata` al principio de cada archivo parcial; `build/ok` sigue verde.
-- Tarea 2: `tools/orca/next_batch.sh <worker> --watch` (ideas 1, 2 y 6),
-  `watch_agent.sh` dice `STATUS: idle/quota/filter` (idea 3), `progress.py`
-  cuenta los NON_MATCHING (idea 4). Falta la 5.
-
-Pendiente que salió:
-
-- `magscene.h` tiene su propio `MagLifePC` de mentira (0xE0 bytes, sin
-  vtable) para `MagScene::m_pc` (+0x2ADC0); el real mide 0x220, así que
-  `m_unk2AEA0`/`m_unk2AEA4` son campos del PC (+0xE0/+0xE4). Unificarlo con
+- `magscene.h` tiene su propio `MagLifePC` falso (0xE0 bytes, sin vtable)
+  para `MagScene::m_pc` (+0x2ADC0); el real mide 0x220: unificarlo con
   `maglifepc.h` y rehacer el relleno de `MagScene` hasta +0x2BD20.
-- El `.rodata` de `mag/maglifetest` (0x2ED3C8) empieza con "10MagLifePos",
-  "13MagLifeWindow", "8MagLife0", "7MagLife": son los nombres RTTI que cierra
-  `mag/maglifewindow` (su key method está ahí); el límite está mal puesto,
-  como el de `maglifepc`. Igual con "12MagLifeNoise" (0x2ED408), que
-  `maglifetest.cpp` contiene (`MagLifeNoise__vfunc_06`).
+- El `.rodata` de `mag/maglifetest` (0x2ED3C8) empieza con los nombres RTTI
+  que cierra `mag/maglifewindow` («10MagLifePos», «13MagLifeWindow»...): el
+  límite está mal puesto, como estaba el de `maglifepc`.
 - El constructor `func_0011A888` puede escribirse como constructor real de
-  `MagLifeControlChara` (y el de `MagLifeBillboard`, inline, lo llama).
-- La causa del fallo de as 2.10-ee, según OpenCode (unk/0020ED9C): tras
-  secuencias de macros `li` / `dsll $r,$r,32` / `la $r,K($r)` el ensamblador
-  deja mal su estado de `$at`, y un `lw/sw/s.s $r,sym($reg)` posterior pierde
-  su `lui $at` (sale `lw $r,0($r)` con un R_MIPS_HI16). Los `.set noat` /
-  `.set at` que rodean cada INCLUDE_ASM lo reinician; por eso aparecía y
-  desaparecía al convertir funciones. El arreglo de `include_asm.h` (crear
-  `.rodata` al principio) quizá solo lo esquiva en maglifepc: si vuelve a
-  salir, mejor un `RESET_AT_STATE` (ver `src/unk/0020ED9C.cpp`) en
-  `include_asm.h` y comprobarlo con la compilación completa.
-- Resuelto: `tools/fix_hi16.py` repara en cada objeto (build y match.py)
-  todo R_MIPS_HI16 que no caiga sobre un `lui`, con el registro base de su
-  R_MIPS_LO16. Se quitó el parche de `include_asm.h`; `build/ok` verde, y
-  reparó 2 instrucciones (maglifepc, 0020ED9C). Los `RESET_AT_STATE` de
-  `unk/0020ED9C.cpp` ya no hacen falta.
-
-## Revisión de scripts (Fable 5.2): pendiente
-
-Aplicado en "Worker loop fixes from a review": --dry-run sin merge, candado
-de merge, skipped solo si el worker la intentó, STATUS unknown, texto real
-del brief (<STATE>), work.py. Falta, de más a menos útil:
-
-- Coste: hoy el worker espera los ~200 s de la compilación completa en cada
-  ciclo. Reordenar merge_worker: verificar, cherry-pick, resetear al worker y
-  mandarle el lote, y compilar después (con el candado); ante un fallo,
-  parar el bucle en vez de deshacer. Probar ninja con `docker exec` en el
-  contenedor ror-match (ahorraría la copia del mirror, ~54 s).
-- Hecho: `next_batch.sh --loop` (a196d8c) y `tools/twins.py` (fe66394:
-  46 pendientes con gemela; work.py pone su C++ en el borrador y backlog.py
-  las da primero). Falta el resumen corto en vez de 30 líneas de pantalla.
-- skipped.txt ya guarda quién la saltó: añadir `--retry-from-others` para
-  que el otro modelo la intente una vez antes de darla por perdida.
-- work.py: la línea de los errores de compilación es la del .trial.cpp, no
-  la de src/. match.py: avisar si el objeto tiene otro número de funciones
-  que el juego, en vez de mostrarlo todo como "differ".
-- merge_worker: integrar los commits verificados aunque uno falle;
-  send_brief.sh: no depender del espaciado del JSON.
-
-## Pausa (2026-11-12, noche)
-
-- Avance: 22.06 % (253,144 / 1,147,560 B), todo con `build/ok`. Subido a
-  GitHub (rama `claude/project-thread-2lnh6n`, la que sigue `pr-merge`) a
-  petición del dueño, y `main` avanzado al mismo commit (ca48918).
-- Tres workers, todos parados y con su trabajo integrado:
-  - `opencode` (`ror-wt-opencode`, OpenCode, DeepSeek V4.1 Flash): lotes
-    normales. Dejó trabajo a medias sin commit en `src/game/gamsnd.cpp`.
-  - `gemini` (`ror-wt-gemini`, Antigravity, Gemini 4 Hydrogen · high): lotes
-    normales, `--max 60 --names 10`. Se paró por un falso positivo del filtro
-    de contenido de Google en `unk/HfmMain`.
-  - `oc2` (`ror-wt-oc2`, OpenCode, Kimi K3.1 Pro): `--retry --max 80
-    --names 10`, segundos intentos. Su primer lote con Kimi no llegó a
-    correr. Antes, DeepSeek V4 Pro sacó 2 de 10 en 1 h 26 min.
-  - Los dos OpenCode comparten el límite de 5 horas de OpenCode Go.
-- Para reanudar: Docker, `tools/match.py --server start`, los `HANDLE` de
-  `build/workers/*.env` desde `orca terminal list --json`, y cada bucle con
-  `--new` (sin `--handle/--busy`, que ya están guardados).
-- No editar `tools/orca/*.sh` mientras corre un bucle: `sh` lee el archivo
-  a trozos y el bucle se rompe.
-- Arreglados hoy: `watch_agent.sh` reintenta lecturas fallidas (Orca se
-  actualiza solo), reconoce el límite de OpenCode Go y el filtro de Gemini;
-  `work.py` anota cada función intentada en `build/work/.tried` (Gemini borra
-  sus borradores); `--loop` ya no pasa `--busy` con espacios.
-
-
-## Mejoras del modelo de trabajo (2026-11-12, noche)
-
-Hechas tras revisar el día (lo que queda pendiente está al final):
-
-- Lo fácil se acaba: de lo pendiente en archivos empezados, las funciones de
-  hasta 30 instrucciones son el 3 % de los bytes y las de más de 120, el
-  67 %. Al reanudar, los workers van con `--max 60` (opencode), `--max 120`
-  (gemini y oc2); las opciones están en `LOOPARGS` de cada `.env`.
-- `work.py` guarda siempre el mejor intento (`build/work/.best/`) y
-  `--keep` lo deja en `src/` bajo `#ifdef NON_MATCHING`: los "casi" ya no se
-  pierden al saltar una función, sirven para el port y el siguiente intento
-  parte de ahí. Los briefs piden `--keep` al saltar.
-- `merge_worker.sh --defer`: el worker recibe su lote sin esperar la
-  compilación completa (~4 min por lote); un fallo deja
-  `build/workers/BUILD_FAILED` y para todos los bucles.
-- `build/workers/stats.tsv`: una línea por lote (modelo, enviadas,
-  integradas, NON_MATCHING, bytes, minutos) para elegir modelos con datos.
-- Cuota: el bucle espera solo hasta el reinicio si la pantalla dice la hora
-  (`tools/orca/screen.py wait`), y sigue con sesión nueva.
-- Sesión nueva automática cuando el contexto del agente pasa del 60 %.
-- Los bucles ejecutan copias de sus scripts (`build/workers/run/`): editar
-  `tools/orca/*.sh` ya no rompe un bucle en marcha.
-- `tools/orca/resume.sh [--start]`: Docker, merge a medias, servidor, handles
-  nuevos y bucles, de una vez.
-- `tools/permute.py`: búsqueda automática de variantes (orden de sentencias y
-  declaraciones, operandos conmutativos, comparaciones, if/else invertidos)
-  para los "casi", con el servidor de compilación (~4-5 pruebas/s).
-
-Pendiente: que el coordinador dedique su tiempo a cabeceras (structs y
-clases reales), que hacen falta para las funciones medianas y grandes.
-
-## Revisión de Fable (2026-11-12, noche) y lo aplicado
-
-Informe completo: 10 fallos y 5 mejoras. Aplicado (commit a203b9d y
-siguientes):
-
-- `permute.py`: solo un MATCH se guarda como mejor versión (las mutaciones
-  pueden cambiar el significado; un "casi" del permutador va a
-  `.perm.cpp`), respeta la precedencia y solo intercambia sentencias
-  independientes; prueba primero cada mutación sola, sin repetir, y sin
-  sincronizar el servidor en cada prueba (~8 pruebas/s). Mutaciones nuevas:
-  orden de `&&`/`||`, signo de locales, `for`/`while`, temporales.
-- `match.py`: cada función distinta dice también sus "edits" alineados (una
-  instrucción de más ya no hace que todo lo de después cuente como distinto);
-  `work.py` puntúa por ellos.
-- `merge_worker.sh`: espera si el checkout principal tiene cambios; verifica
-  cada archivo tal como está en el commit (no el disco del worker) con el
-  servidor del checkout principal; rechaza ensamblador en línea; el candado
-  dice quién lo tiene y caduca.
-- `next_batch.sh`: reintenta lecturas y envíos a Orca; una función cuenta
-  como saltada tras dos checks que compilan (y no si la cuota cortó el lote);
-  un bucle `--retry` para tras dos lotes vacíos; sesión nueva cada 4 lotes
-  si no se ve el contexto; `--budget` (instrucciones por lote) y archivos por
-  rendimiento esperado (`backlog.py --by-yield`).
-- `watch_agent.sh`: `STATUS: stuck` tras 150 min ocupado.
-- `work.py --keep`: declaraciones dentro del `#ifdef` y comprobación con
-  `-DNON_MATCHING` (los NON_MATCHING viejos se pudren: ya hay alguno que no
-  compila con las cabeceras de hoy).
-- `tools/permute_queue.py` en `../ror-wt-perm`: el permutador como un worker
-  sin agente sobre los "casi" (`--merge` integra cada MATCH).
-
-Pendiente de la revisión, para el coordinador:
-- Cabeceras primero (la palanca más grande): antes de dar funciones de más
-  de 60 instrucciones de un archivo, escribir su clase (campos desde los
-  offsets del asm, vtable desde los símbolos), empezando por `game/gamman`,
-  `unk/TskMsgMan` y `game/gamtrg`; y un `context.c` con structs planos
-  para que m2c escriba `this->m_x`.
-- Etapas por modelo: Flash primera pasada con `--keep` → permutador →
-  Claude para lo que quede (8/10 en segundos intentos frente a 2/10 de
-  DeepSeek V4 Pro e Hydrogen). Medir Kimi con un lote antes de darle más.
-- Integrar por archivo (que un archivo malo no frene los demás).
-
-## Estado (2026-11-15, mañana)
-
-- Avance: 23.68 % (271,796 / 1,147,560 B), subido a GitHub (rama de
-  seguimiento y `main`). Fable ya no está disponible.
-- Workers: `gemini` (Gemini 4 Hydrogen · high) es el que más rinde: lotes
-  de hasta 120 instrucciones salen casi enteros (stats.tsv). `opencode`
-  (Flash) y `oc2` (Kimi K3.1 Pro, segundos intentos) quedaron parados por el
-  límite semanal de OpenCode Go (reinicio 15-nov 17:59); dos OpenCode a la
-  vez agotan el plan Go antes de la semana.
-- Gemini tiende a escribir copias de 128 bits con `asm volatile("lq ...")`:
-  la integración lo rechaza y el brief ya dice cómo hacerlo en C++.
-- De sm64: `include/target.h` (TARGET_PS2/TARGET_PC, PS2_REG,
-  STATIC_ASSERT), `tools/host_check.py` (g++ moderno -m32, línea base en
-  `config/host_check.tsv`, la integración no deja empeorar un archivo) y la
-  sección "Portability" de DECOMPILING. Pendiente de sm64: una compilación
-  NON_MATCHING enlazada que arranque en un emulador (hace falta que el
-  enlazado acepte funciones de otro tamaño).
+  `MagLifeControlChara`.
+- Un `context.c` con structs planos para que m2c escriba `this->m_x` en sus
+  borradores (encaja con la regla de tipos).
+- `merge_worker.sh`: integrar por archivo, para que uno malo no frene los
+  demás.
+- De sm64: una compilación NON_MATCHING enlazada que arranque en un
+  emulador (el enlazado debe aceptar funciones de otro tamaño).

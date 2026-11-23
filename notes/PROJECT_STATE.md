@@ -33,7 +33,7 @@ extrae sus archivos de su propio disco.
 
 Sin `.symtab` ni información de depuración (no hay DWARF ni STABS), pero sí:
 
-- 1,449 funciones con nombre original (`.gnu.linkonce.t.*`, métodos inline).
+- 1,449 funciones con nombre original (`.gnu.linkonce.t.*`, métodos inline); con los demás nombres exactos del ELF, 1,733 de procedencia `linkonce` (2026-11-23). Además 648 del SDK por firma y 287 de otro juego, PoPoLoCrois (ver «Estado (2026-11-23, tarde)»).
 - 284 vtables (`.gnu.linkonce.d._vt$*`), formato GCC2 sin thunks: entradas de 8 bytes `{short delta; short index; void *pfn}`, la 0 apunta a `__tf`.
 - 289 clases; jerarquía reconstruida desde las funciones `__tf` → `notes/class_hierarchy.txt`.
 - 111 nombres más inferidos por overrides de vtable (con su nombre mangled derivado), y 651 métodos virtuales ligados solo a su clase. Una función compartida por 5 clases abstractas en 6 posiciones distintas es `__pure_virtual` (`0x272a30`); se excluye de la propagación (antes contaminaba 320 nombres).
@@ -52,7 +52,7 @@ Orden en `.text` (según `notes/object_layout.txt`): `bed/` → `utl/` → `dog/
 - `task/`: todas las tareas heredan de `CmnITask`.
 - `mnu/`, `snd/`, `spr/`, `mcd/`, `msg/`, `sequence/`, `system/`, `debug/`.
 
-Audio por el driver IOP `RXSNDDRV.IRX` con su librería cliente en el EE (`mw/sound`); no es exclusivo del juego: Arc the Lad: Twilight of the Spirits (SCUS-97231) y Wild Arms 5 (SLUS-21615), también de Sony, lo cargan (registros de PCSX2; investigación externa del 2026-11-16, ver `notes/BUILDS.md`). Fabricante y licencia sin identificar.
+Audio por el driver IOP `RXSNDDRV.IRX` con su librería cliente en el EE (`mw/sound`); no es exclusivo del juego: Arc the Lad: Twilight of the Spirits (SCUS-97231) y Wild Arms 5 (SLUS-21615), también de Sony, lo cargan (registros de PCSX2; investigación externa del 2026-11-16, ver `notes/BUILDS.md`). Es la **RX Library de SCE Japón** (`RX_SCE_LIBRARY_VERSION:4`; créditos «RX Lib. Team» en juegos de Sony desde 2001): PoPoLoCrois (SCPS-15063) la enlaza con símbolos y nombra 313 de las 583 funciones de `mw/sound` (2026-11-23).
 
 ## Assets
 
@@ -103,7 +103,7 @@ Audio por el driver IOP `RXSNDDRV.IRX` con su librería cliente en el EE (`mw/so
 ## Pendientes de la división y pistas nuevas (2026-09-28)
 
 - **`.ctors`/`.dtors`** marcan 4 archivos con constructores globales; GCC los emite al final del archivo, así que dan finales exactos: `0x17F0D0` (dentro de `snd/sndman`), `0x2043DC` (dentro de `system/sysnowloading`), `0x2155F4` y `0x215A30` (dentro de `debug/mimu_debug`; el handler de assert `0x215A30` abre su propio archivo). Hay archivos escondidos en esos rangos.
-- ✅ **Middleware identificado** (`0x218500`–`0x24B490`, ~200 KB, dos librerías en C que no son del SDK): `mw/i3d` (`0x218500`–`0x237D00`, gráficos: IDs de formato `I3D_BIN`/`I3D_I3M`/`I3D_I3C`, la llaman `dog/`, `mag/`, efectos y menús) y `mw/sound` (`0x237D00`–`0x24B490`, la llaman `snd/` y `game/`). Todas sus funciones están alineadas a 8 (otras opciones de compilación), así que el relleno NO marca archivos. Dividirlas en sus `.c` queda **pendiente por falta de evidencia**: no tienen asserts ni rutas; la afinidad por llamadas (método de CodeCut) propone ~50 cortes por librería, pero en `mw/sound` solo 4 de 46 respetan sus 125 variables locales, así que no es fiable. Para el port, la API de `mw/i3d` es la frontera natural: se puede reimplementar sobre OpenGL/vitaGL sin decompilarla byte a byte.
+- ✅ **Middleware identificado** (`0x218500`–`0x24B490`, ~200 KB, dos librerías en C que no son del SDK): `mw/i3d` (`0x218500`–`0x237D00`, gráficos: IDs de formato `I3D_BIN`/`I3D_I3M`/`I3D_I3C`, la llaman `dog/`, `mag/`, efectos y menús) y `mw/sound` (`0x237D00`–`0x24B490`, la llaman `snd/` y `game/`). Todas sus funciones están alineadas a 8 (otras opciones de compilación), así que el relleno NO marca archivos. Dividirlas en sus `.c` quedó pendiente por falta de evidencia (para `mw/sound` ya la hay desde el 2026-11-23: los prefijos de sus nombres reales, `rxSndSys`, `rxSndVoice`, `rxFile`, `rxTh`, `rxSys`, `rxGs`...): no tienen asserts ni rutas; la afinidad por llamadas (método de CodeCut) propone ~50 cortes por librería, pero en `mw/sound` solo 4 de 46 respetan sus 125 variables locales, así que no es fiable. Para el port, la API de `mw/i3d` es la frontera natural: se puede reimplementar sobre OpenGL/vitaGL sin decompilarla byte a byte.
 - ✅ **Falsos positivos del SDK corregidos**: funciones globales que coincidían en varias direcciones (`sceVu0ClampVector` ×4, `sceVu0TransposeMatrix` ×3, `__get_eh_context` ×5) eran imitaciones cortas dentro del middleware; se conserva solo la copia rodeada de su librería (648 nombres). Los tramos falsos `sdk/libvu0`/`sdk/libgcc` en `0x236AC8`/`0x238740` desaparecieron.
 - ✅ **`.data` y `.bss` divididos por archivo** (antes bloqueaban el C++). Dueño de cada variable = el único archivo cuyo código la usa, o (en `.data`) cuyas funciones/`.rodata` apunta una tabla; luego la secuencia más larga que respeta el orden de enlace. `.data`: 450 variables con dueño único, 443 (98%) consistentes, 46 archivos con bloque. `.bss`: 318, 291 (92%), 31 archivos; el primero es el buffer `_args` de crt0 (0x144 bytes). `.sbss` (188 bytes, usada por las funciones RTTI y libc) queda en un solo bloque. El tamaño de `.bss` se calcula del ELF (splat omitía 0x48 bytes de alineación): el ELF reconstruido termina en `0x828E94` como el original.
 - **Prototipo**: existe un prototipo de localización del 19-jul-2006 catalogado en Hidden Palace, y una demo USA. Se desconoce si conservan símbolos (Sly 1 obtuvo nombres y archivos de un prototipo así).
@@ -134,8 +134,8 @@ Audio por el driver IOP `RXSNDDRV.IRX` con su librería cliente en el EE (`mw/so
 |---|---|
 | `chaoticgd/ghidra-emotionengine-reloaded` | **En uso.** v2.1.37 compilada contra Ghidra 12.1.4 |
 | `bigianb/ghidra-ps2ee` | Abandonado (2019); su propio README remite a la línea beardypig → chaoticgd |
-| `zipzip11/ps2-dwarf1` | No aplica: el ELF no tiene secciones DWARF |
-| `Raikaru/mwccps2-debugger` | No aplica: el juego se compiló con GCC, no con Metrowerks CodeWarrior |
+| `zipzip11/ps2-dwarf1` | No aplica a nuestro ELF (sin DWARF), **sí a PoPoLoCrois** (SCPS-15063, DWARF 1): tipos de `rxmpeg.c` y de las cabeceras rx (2026-11-23) |
+| `Raikaru/mwccps2-debugger` | No aplica a Rule of Rose (GCC); PoPoLoCrois sí es Metrowerks (`.mwcats`), por si hace falta leer su depuración |
 | `Cwf1997/ruleofrose` | "Decomp" vacío (solo README); sin código |
 | `blueroses107-ai/Rule-of-rose-korean-translation` | Solo README |
 | Cheats widescreen de OPL para SLUS_214.48 | Pueden dar direcciones de cámara/FOV |
@@ -225,7 +225,7 @@ lectura con Sonnet (criterio) y Flash (rastreo), en notes/RESEARCH_QUEUE.md.
 Hallazgo del día: el compilador alinea a 16 todas las tablas de saltos, y
 eso destapó 15 límites de `.rodata`/archivo mal puestos (corregidos; quedan
 5). Sin símbolos externos: la demo/prototipo SLUS-28064 y Chulip no aportan
-nombres (Chulip no comparte motor; `i3d` parece propio de Punchline).
+nombres (Chulip no comparte motor). Corrección posterior: `i3d` no es de Punchline sino el «i3d package» de SCE Japón (Ape Escape 3 lo enlaza; `notes/RESEARCH_QUEUE.md`, `notes/I3D.md`).
 
 
 ## Estado (2026-11-22): 38.93 %
@@ -289,3 +289,38 @@ sesión entera (desde el 22 a la 01:20) fue de 34.93 % a 40.25 %.
 Pendiente: G7 MnuDiary; seguir la cola de Smoke; pasar a Smoke los trucos
 propios de Cyrax (throw(), PS2_REG, inlines, retipos); unos 250 intentos
 NON_MATCHING.
+
+## Estado (2026-11-23, tarde): 40.33 %
+
+462,772 de 1,147,560 bytes del código del juego (127 de 134 archivos).
+
+- **G7 terminada** (`unk/MnuDiary` con los tipos de `mnuBase.h`/`MnuDiary.h`):
+  9 funciones exactas pasadas a campos con nombre, 7 intentos con tipos
+  (los accesos a mano bajaron de 229 a 33, el resto son de otras clases) y
+  3 funciones nuevas exactas (`func_00198CA8`, `func_00199B3C` con
+  Smoke; `func_00199714` quedó del tamaño exacto, de 136 a 63 cambios).
+  G8–G14 (mcdman, TskEnemyMove, MnuRpk/0018BD94, gamsnd, TskMsgMan 2.ª
+  pasada, sprtexture, msgman) quedan **reservadas para Neon/Argon**
+  (Antigravity) cuando vuelva su cuota (29–30 nov), en
+  `build/workers/fable-tasks.tsv`.
+- **Reglas de legibilidad** (tras una carta abierta en Reddit y el skill de
+  lemiur): tipos con nombre en vez de desplazamientos y una sola declaración
+  por símbolo (`CLAUDE.md`, `docs/DECOMPILING.md`, con tabla de «fake
+  matches» y el orden de diagnóstico). `tools/rules_check.py` cuenta la
+  deuda en el código exacto (2,395 desplazamientos, 3,501 alias en
+  `config/rules_check.tsv`) y la integración, `verify_change.py` y Smoke
+  rechazan cualquier archivo que la aumente. `progress.py` la muestra.
+- **Smoke** solo permuta intentos con tamaño exacto y referencias
+  correctas (97 → 20 candidatos); lo demás necesita trabajo de fuente.
+- **Licencia MIT** para nuestro trabajo (no cubre nada del juego).
+- **PoPoLoCrois - Tsuki no Okite no Bouken** (SCPS-15063, disco del dueño):
+  su ejecutable conserva `.symtab` (12,123 funciones), relocaciones y DWARF
+  1; su código propio es Metrowerks, pero la RX Library es idéntica a la
+  nuestra. `tools/donor_symbols.py` dio 586 nombres únicos (287 nuevos,
+  procedencia `donor-popolo`): 313 de las 583 funciones de `mw/sound`.
+  La Fan Gentei Disc y el «3 Title Special Disc» (Saru! Get You! 2, Boku no
+  Natsuyasumi 2; PoPoLoCrois solo en vídeo) no tienen símbolos. Detalle en
+  `notes/BUILDS.md`.
+- Guardada para la etapa Vita: `notes/research/vita-porting-guide-reddit-2026-11-23.md`.
+
+Pendiente: ver `notes/NEXT_SESSION.md`.
