@@ -142,3 +142,25 @@ follow-up research note point at two possible name donors:
   provenance kind per donor (e.g. donor-popolo-dwarf-exact); never
   overwrite linkonce or manual names; naming functions does not change
   the matched percentage.
+
+### Result (2026-11-23): PoPoLoCrois SCPS-15063 has symbols
+
+The owner's disc (retail, Japan) has a 12 MB SCPS_150.63 with .symtab
+(35,122 symbols, 12,123 functions), .relmain relocations, DWARF 1 .debug and
+.line; .mwcats: its own code is Metrowerks-built, but its RX library
+(RX_SCE_LIBRARY_VERSION:4, 2,531 rx* functions: rxGeom, rxSnd, rxRend,
+rxFile, rxTh, rxSys, rxGs, rxMc, rxPad...) is byte-identical to ours where
+both link it. The Fan Gentei Disc (PAPX_905.03) and the 3 Title Special
+Disc demo (Saru! Get You! 2 SCPS_150.25, Boku no Natsuyasumi 2, menu; the
+PoPoLoCrois part is only a video) are stripped; the IOP modules
+(RXSNDDRV.IRX...) have no symbols either.
+
+tools/donor_symbols.py masks the donor's own relocations and finds 586
+unique names (649 addresses matched); 287 are new after the SDK
+signatures: mw/sound gets 313 of its 583 functions named (rxSndSys*,
+rxSndVoice*, rxSndSe*, rxSndPcm*, rxFile*, rxTh*, rxSys*, rxGs*). Its DWARF
+covers the game's own files plus rxmpeg.c (our snd/rxmpeg) and some rx
+headers (rxgeom.h, rxstate.h...). Leads: split mw/sound by prefix into its
+real files (splits_manual.tsv); other RX titles with symbols (RX Lib.
+credits: Boku to Maou, Phase Paradox, Wa ga Ryuu o Miyo) could name the
+remaining 270 functions.

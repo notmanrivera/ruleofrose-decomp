@@ -38,8 +38,8 @@ extern int D_007B2580[];
 extern "C" void func_00181204(void *theMovie, int theField);
 extern "C" void func_00182118(int theCount);
 extern "C" void func_0017F200(void *theSound);
-extern "C" void func_0024AFA0(int);
-extern "C" void func_0024B3F8(int);
+extern "C" void rxThVSync(int);
+extern "C" void rxGsVSync(int);
 extern "C" void func_0020E3D8(int theNo, int theA);
 extern "C" void func_00215B5C(float x, float y, float z);
 
@@ -1190,11 +1190,11 @@ void MagSystem::setPmodeEn2(int theOn)
 void MagSystem::waitVSync()
 {
     if (D_007B40C0[0]) {
-        func_0024AFA0(0);
+        rxThVSync(0);
     }
     m_info.m_draw_time = *T0_COUNT;
     if (m_v_count >= m_v_rate) {
-        func_0024B3F8(0);
+        rxGsVSync(0);
     }
     if (m_v_sema >= 0) {
         WaitSema(m_v_sema);
@@ -1204,7 +1204,7 @@ void MagSystem::waitVSync()
         sceGsSyncPath(0, 0);
     }
     while (sceDmaSync(m_dma, 1, 0)) {
-        func_0024B3F8(0);
+        rxGsVSync(0);
     }
     m_info.m_vsync_time = *T0_COUNT;
     FlushCache(0);

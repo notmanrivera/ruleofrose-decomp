@@ -396,6 +396,22 @@ def main():
             syms[a] = dict(mangled=nm, cls=None, name=nm, sig="", params=None, kind="function",
                            size=int(size, 16), source="sce-sdb")
 
+    # --- names from other games' symbol tables (tools/donor_symbols.py): never
+    # replace a name, never reuse one already given to another address
+    donor = ROOT / "symbols/donor_symbols.tsv"
+    if donor.exists():
+        used = {s["name"] for s in syms.values()} | {s.get("mangled") for s in syms.values()}
+        for line in donor.read_text(encoding="utf8").splitlines():
+            if line.startswith(("#", "addr")):
+                continue
+            a, did, nm, size = line.split("\t")
+            a = int(a, 16)
+            if a in syms or nm in used:
+                continue
+            used.add(nm)
+            syms[a] = dict(mangled=nm, cls=None, name=nm, sig="", params=None, kind="function",
+                           size=int(size, 16), source=f"donor-{did}")
+
     # --- source-path strings left by asserts
     # Strings in .rodata are word-aligned; the byte before one can be the
     # tail of a float (0x3F = '?'), so align rather than look behind.

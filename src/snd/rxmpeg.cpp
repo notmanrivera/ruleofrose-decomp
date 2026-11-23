@@ -1,7 +1,7 @@
 #include "include_asm.h"
 extern "C" void V_func_00183194(int) asm("func_00183194");
 extern "C" int I_sceMpegReset(void *) asm("sceMpegReset");
-extern "C" int X_func_0023A5A8(...) asm("func_0023A5A8");
+extern "C" int X_func_0023A5A8(...) asm("rxSndXVabClose");
 static inline int rxBad(const int &n) { return n >= 0x41; }
 static inline int &rxAt(int s, const int &n) { return *(int *)(n * 4 + s + 0x20); }
 extern "C" void V_func_0018185C(int) asm("func_0018185C");
@@ -18,13 +18,13 @@ extern "C" int X_func_00131184(...) asm("func_00131184");
 extern "C" int X_func_00182B7C(...) asm("func_00182B7C");
 extern int D_007B2060;
 extern int _9MagSystem$m_current_system;
-extern "C" int func_0023BE68(int, int, int, int, int, int);
-extern "C" void func_0023C0F8(int, int);
-extern "C" int func_0023C228(int);
-extern "C" void func_0023C260(int, int, int);
-extern "C" void func_0023C328(int, int);
-extern "C" void func_0023C3C0(int, int, int);
-extern "C" void func_0023C510(int, float);
+extern "C" int rxSndSePlay(int, int, int, int, int, int);
+extern "C" void rxSndSeStop(int, int);
+extern "C" int rxSndSeGetStatus(int);
+extern "C" void rxSndSePause(int, int, int);
+extern "C" void rxSndSeSetReverb(int, int);
+extern "C" void rxSndSeSetVolume(int, int, int);
+extern "C" void rxSndSeSetPitch(int, float);
 struct Struct_00180F44 {
     int unk0;
     int unk4;
@@ -67,7 +67,7 @@ extern FuncPtr D_00298F70[];
 extern "C" void *memset_alias(void *, int, unsigned int) asm("memset");
 extern "C" void func_00182154();
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
-extern "C" int func_0023CCA8_alias(int, int, int) asm("func_0023CCA8");
+extern "C" int func_0023CCA8_alias(int, int, int) asm("rxSndPcmOpen");
 extern "C" int Xi_func_001830F0() asm("func_001830F0");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiii_func_001814CC(int, int) asm("func_001814CC");
@@ -128,24 +128,24 @@ extern "C" int X_func_001832B8(...) asm("func_001832B8");
 extern "C" int X_func_001C6CCC(...) asm("func_001C6CCC");
 extern "C" int X_func_001C9C1C(...) asm("func_001C9C1C");
 extern "C" int X_func_002155F4(...) asm("func_002155F4");
-extern "C" int X_func_0023BE68(...) asm("func_0023BE68");
-extern "C" int X_func_0023C0F8(...) asm("func_0023C0F8");
-extern "C" int X_func_0023C228(...) asm("func_0023C228");
-extern "C" int X_func_0023C260(...) asm("func_0023C260");
-extern "C" int X_func_0023C328(...) asm("func_0023C328");
-extern "C" int X_func_0023C3C0(...) asm("func_0023C3C0");
-extern "C" int X_func_0023C510(...) asm("func_0023C510");
-extern "C" int X_func_0023CCA8(...) asm("func_0023CCA8");
+extern "C" int X_func_0023BE68(...) asm("rxSndSePlay");
+extern "C" int X_func_0023C0F8(...) asm("rxSndSeStop");
+extern "C" int X_func_0023C228(...) asm("rxSndSeGetStatus");
+extern "C" int X_func_0023C260(...) asm("rxSndSePause");
+extern "C" int X_func_0023C328(...) asm("rxSndSeSetReverb");
+extern "C" int X_func_0023C3C0(...) asm("rxSndSeSetVolume");
+extern "C" int X_func_0023C510(...) asm("rxSndSeSetPitch");
+extern "C" int X_func_0023CCA8(...) asm("rxSndPcmOpen");
 extern "C" int X_func_0023DCC8(...) asm("func_0023DCC8");
-extern "C" int X_func_002437F8(...) asm("func_002437F8");
-extern "C" int X_func_00243E60(...) asm("func_00243E60");
-extern "C" int X_func_00243ED8(...) asm("func_00243ED8");
-extern "C" int X_func_00243F28(...) asm("func_00243F28");
-extern "C" int X_func_00243F70(...) asm("func_00243F70");
-extern "C" int X_func_00243FB8(...) asm("func_00243FB8");
+extern "C" int X_func_002437F8(...) asm("rxFileClose");
+extern "C" int X_func_00243E60(...) asm("rxFilePauseStr");
+extern "C" int X_func_00243ED8(...) asm("rxFileGetStrPtr");
+extern "C" int X_func_00243F28(...) asm("rxFileGetStrPtrOffset");
+extern "C" int X_func_00243F70(...) asm("rxFileGetStrBufferSize");
+extern "C" int X_func_00243FB8(...) asm("rxFileGetStrLeft");
 extern "C" int X_func_00244028(...) asm("func_00244028");
 extern "C" int X_func_00249DE0(...) asm("func_00249DE0");
-extern "C" int X_func_00249E08(...) asm("func_00249E08");
+extern "C" int X_func_00249E08(...) asm("rxThAddBgFunc");
 extern "C" int X_func_0024A508(...) asm("func_0024A508");
 extern "C" int X_func_0024A8C8(...) asm("func_0024A8C8");
 extern "C" int X_func_0024A958(...) asm("func_0024A958");
@@ -395,9 +395,9 @@ extern "C" int func_00180F44(int arg0, Struct_00180F44 *arg1)
     int ret = 0;
     if (arg1->handle < 0) {
         if (arg1->state == 0) {
-            arg1->handle = func_0023BE68(*(int *)(arg0 + arg1->unk18 * 4 + 0x2C), arg1->unk1C, arg1->unk20, arg1->unk24, arg1->unk28, 1);
-            func_0023C510(arg1->handle, arg1->unk30);
-            func_0023C328(arg1->handle, arg1->unk2C);
+            arg1->handle = rxSndSePlay(*(int *)(arg0 + arg1->unk18 * 4 + 0x2C), arg1->unk1C, arg1->unk20, arg1->unk24, arg1->unk28, 1);
+            rxSndSeSetPitch(arg1->handle, arg1->unk30);
+            rxSndSeSetReverb(arg1->handle, arg1->unk2C);
             arg1->state = 2;
         }
         if (arg1->handle < 0) {
@@ -414,26 +414,26 @@ extern "C" int func_00180F44(int arg0, Struct_00180F44 *arg1)
     case 9:
         break;
     case 3:
-        func_0023C3C0(arg1->handle, arg1->unk24, arg1->unk28);
-        func_0023C510(arg1->handle, arg1->unk30);
-        func_0023C328(arg1->handle, arg1->unk2C);
+        rxSndSeSetVolume(arg1->handle, arg1->unk24, arg1->unk28);
+        rxSndSeSetPitch(arg1->handle, arg1->unk30);
+        rxSndSeSetReverb(arg1->handle, arg1->unk2C);
         arg1->state = 2;
         break;
     case 4:
         arg1->state = 5;
-        if (func_0023C228(arg1->handle) != 8) {
-            func_0023C260(arg1->handle, 1, 0);
+        if (rxSndSeGetStatus(arg1->handle) != 8) {
+            rxSndSePause(arg1->handle, 1, 0);
         }
         break;
     case 6:
         arg1->state = 2;
-        if (func_0023C228(arg1->handle) == 8) {
-            func_0023C260(arg1->handle, 0, 0);
+        if (rxSndSeGetStatus(arg1->handle) == 8) {
+            rxSndSePause(arg1->handle, 0, 0);
         }
         break;
     case 7:
         if (arg1->handle >= 0) {
-            func_0023C0F8(arg1->handle, 1);
+            rxSndSeStop(arg1->handle, 1);
         }
         arg1->handle = -1;
         ret = -1;
@@ -441,8 +441,8 @@ extern "C" int func_00180F44(int arg0, Struct_00180F44 *arg1)
     }
 
     if (arg1->handle >= 0) {
-        if (func_0023C228(arg1->handle) & 4) {
-            func_0023C0F8(arg1->handle, 1);
+        if (rxSndSeGetStatus(arg1->handle) & 4) {
+            rxSndSeStop(arg1->handle, 1);
             arg1->handle = -1;
             switch (arg1->unkC) {
             case 1:

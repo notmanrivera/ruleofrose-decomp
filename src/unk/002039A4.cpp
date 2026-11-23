@@ -5,7 +5,7 @@ extern "C" int Xii_func_00180EA8(int) asm("func_00180EA8");
 extern "C" void X_2F60_180EA8(void *, int) asm("func_00180EA8");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int X_LoadExecPS2(...) asm("LoadExecPS2");
-extern "C" int X_func_0024B3F8(...) asm("func_0024B3F8");
+extern "C" int X_func_0024B3F8(...) asm("rxGsVSync");
 extern "C" int X_func_00279C98(...) asm("func_00279C98");
 extern "C" int X_sceClose(...) asm("sceClose");
 extern "C" int X_sceOpen(...) asm("sceOpen");

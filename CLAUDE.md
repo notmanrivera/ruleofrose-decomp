@@ -56,6 +56,9 @@ roadmap: `notes/PROJECT_STATE.md` (Spanish). Setup: `README.md` (English).
   names (`vfunc_NN`) are placeholders, `shared-stub` is `__pure_virtual`,
   `sce-sdb` names come from SDK signatures, `rtti-node` (`__ti<Class>`) is
   the type_info object its `__tf<Class>` returns.
+  `donor-<game>` names come from another game's symbol table, by masked
+  byte-identical code (`tools/donor_symbols.py`; today PoPoLoCrois SCPS-15063:
+  the RX library in mw/sound and SDK functions): exact for the shared code.
 - Never commit PS2Recomp's symbol database (GPL); only derived names.
 - Keep original identifiers where the binary reveals them (mangled names,
   assert expressions such as `n>=0 && n<=4`, source paths). Assert calls

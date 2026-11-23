@@ -270,7 +270,7 @@ inline Item1A6C0::Item1A6C0(void *sub, unsigned short id)
     unk8 = id;
 }
 extern "C" int X_func_0017F200(...) asm("func_0017F200");
-extern "C" int X_func_0024B3F8(...) asm("func_0024B3F8");
+extern "C" int X_func_0024B3F8(...) asm("rxGsVSync");
 extern "C" int X_func_00191D20(...) asm("func_00191D20");
 extern "C" int X_func_00191D74(...) asm("func_00191D74");
 extern "C" int X_func_00191DC8(...) asm("func_00191DC8");
@@ -395,7 +395,7 @@ extern "C" void func_001CB01C(GamMan *, int);
 extern "C" void func_001CDF5C(GamMan *, int, int);
 extern "C" void func_0018BD94(char *);
 extern "C" int X4_func_0013F280(int, int, int, int) asm("func_0013F280");
-extern "C" int X_func_00243C40(int, int, int) asm("func_00243C40");
+extern "C" int X_func_00243C40(int, int, int) asm("rxFileSeek");
 extern "C" int X_func_001CBE38(int, int) asm("func_001CBE38");
 extern int D_006FE6A0;
 extern "C" void X_func_00144500(...) asm("func_00144500");
@@ -483,9 +483,9 @@ extern "C" int X_func_001DCD38(...) asm("func_001DCD38");
 extern "C" int X_func_001E7724(...) asm("func_001E7724");
 extern "C" int X_func_001E7D7C(...) asm("func_001E7D7C");
 extern "C" int X_func_00243788(...) asm("func_00243788");
-extern "C" int X_func_002437F8(...) asm("func_002437F8");
+extern "C" int X_func_002437F8(...) asm("rxFileClose");
 extern "C" int X_func_00243938(...) asm("func_00243938");
-extern "C" int X_func_00243CD8(...) asm("func_00243CD8");
+extern "C" int X_func_00243CD8(...) asm("rxFileSync");
 extern "C" int X_func_00247EB8(...) asm("func_00247EB8");
 extern "C" int X_func_00247F00(...) asm("func_00247F00");
 extern "C" int X_func_00247F10(...) asm("func_00247F10");
@@ -1823,7 +1823,7 @@ INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C9920);
 // NON_MATCHING: 3/129 differ, 3 edits
 #ifdef NON_MATCHING
 extern "C" void GamSetSound(int, int, int, int, int, int) asm("func_001E6734");
-extern "C" void GamUseSound(int) asm("func_00237F90");
+extern "C" void GamUseSound(int) asm("rxSndSetOutputMode");
 extern "C" void GamRefreshSound(int, int) asm("func_001D3A38");
 extern int D_006E9848;
 extern int D_00780D04;
