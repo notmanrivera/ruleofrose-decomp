@@ -3296,10 +3296,8 @@ extern "C" int func_001F27E0(TskFrameFunc *arg0)
     return 0;
 }
 
-// NON_MATCHING: 4/89 differ, 2 edits
-#ifdef NON_MATCHING
-extern "C" int X_func_001311F4_2920(int, int *) asm("func_001311F4");
-extern "C" int X_func_00131184_2920(int, int, int, int) asm("func_00131184");
+extern "C" void X_func_001311F4_2920(int, int *) asm("func_001311F4");
+extern "C" void X_func_00131184_2920(int, int, int, int) asm("func_00131184");
 extern "C" int func_001F2920(TskFrameFunc *arg0)
 {
     int arr[8];
@@ -3337,9 +3335,6 @@ extern "C" int func_001F2920(TskFrameFunc *arg0)
     }
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/TskMsgMan", func_001F2920);
-#endif
 
 extern "C" int func_001F2A84(TskFrameFunc *arg0)
 {
