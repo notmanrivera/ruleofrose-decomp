@@ -508,41 +508,41 @@ extern "C" void func_00198CA8(int arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00198CA8);
 #endif
 
-extern "C" void func_00198EB4(int arg0)
+extern "C" void func_00198EB4(MnuDiary *arg0)
 {
     int temp_v0_2;
     int temp_v0_3;
     int temp_s2;
     int temp_v0;
 
-    temp_s2 = arg0 + 0x13C;
-    temp_v0 = M2C_FIELD(arg0, int *, 0x138);
+    temp_s2 = (int)arg0->m_msgs;
+    temp_v0 = (int)arg0->m_textBuf;
     *(DiaryRGB *)temp_v0 = *(DiaryRGB *)&D_002F8228;
     Xii_func_0018741C(temp_s2);
-    temp_v0_2 = Xiiiiii_func_00134730(M2C_FIELD(arg0, int *, 8), 0x200, 0x100, 0, -1);
-    M2C_FIELD(arg0, int *, 0x134) = temp_v0_2;
-    Xiiuiii_func_00134A00((int) M2C_FIELD(arg0, int *, 8), (unsigned int) temp_v0_2, 0, 0x20, 0x7FFF);
-    Xiiuiiii_func_00134CD0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 0, 0, 0x200, 0x100);
-    Xiiuii_func_00134AB8((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 0x200, 0x100);
-    Xiiui_func_00135494((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 1);
-    Xiiui_func_00135418((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 0);
-    Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 0);
-    Xiiu_func_00135594(M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134));
-    Xiii_func_0019A3C0(arg0, M2C_FIELD(arg0, int *, 0x124));
+    temp_v0_2 = Xiiiiii_func_00134730(arg0->m_scene, 0x200, 0x100, 0, -1);
+    arg0->m_msgId = temp_v0_2;
+    Xiiuiii_func_00134A00(arg0->m_scene, (unsigned int) temp_v0_2, 0, 0x20, 0x7FFF);
+    Xiiuiiii_func_00134CD0(arg0->m_scene, (unsigned int) arg0->m_msgId, 0, 0, 0x200, 0x100);
+    Xiiuii_func_00134AB8(arg0->m_scene, (unsigned int) arg0->m_msgId, 0x200, 0x100);
+    Xiiui_func_00135494(arg0->m_scene, (unsigned int) arg0->m_msgId, 1);
+    Xiiui_func_00135418(arg0->m_scene, (unsigned int) arg0->m_msgId, 0);
+    Xiiui_func_001351B0(arg0->m_scene, (unsigned int) arg0->m_msgId, 0);
+    Xiiu_func_00135594(arg0->m_scene, (unsigned int) arg0->m_msgId);
+    Xiii_func_0019A3C0((int)arg0, arg0->m_curPage);
     Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 4, 0xDC, 0x198);
     Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 4, 0);
     Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 0, 0);
     Xii_func_0018741C(temp_s2);
-    temp_v0_3 = Xiiiiii_func_00134730(M2C_FIELD(arg0, int *, 8), 0x40, 0x20, 0, -1);
-    M2C_FIELD(arg0, int *, 0x130) = temp_v0_3;
-    Xiiuiii_func_00134A00((int) M2C_FIELD(arg0, int *, 8), (unsigned int) temp_v0_3, 0xF6, 0x19A, 0x7FFF);
-    Xiiuiiii_func_00134CD0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x130), 0, 0, 0x40, 0x20);
-    Xiiui_func_00135494((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x130), 1);
-    Xiiui_func_00135418((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x130), 0);
-    Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x130), 1);
-    Xiiu_func_00135594(M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x130));
+    temp_v0_3 = Xiiiiii_func_00134730(arg0->m_scene, 0x40, 0x20, 0, -1);
+    arg0->m_unk130 = temp_v0_3;
+    Xiiuiii_func_00134A00(arg0->m_scene, (unsigned int) temp_v0_3, 0xF6, 0x19A, 0x7FFF);
+    Xiiuiiii_func_00134CD0(arg0->m_scene, (unsigned int) arg0->m_unk130, 0, 0, 0x40, 0x20);
+    Xiiui_func_00135494(arg0->m_scene, (unsigned int) arg0->m_unk130, 1);
+    Xiiui_func_00135418(arg0->m_scene, (unsigned int) arg0->m_unk130, 0);
+    Xiiui_func_001351B0(arg0->m_scene, (unsigned int) arg0->m_unk130, 1);
+    Xiiu_func_00135594(arg0->m_scene, (unsigned int) arg0->m_unk130);
     int texture = Xiu_func_001832E8(0x1AU);
-    diaryAttach(temp_s2, M2C_FIELD(arg0, int *, 0x130), texture, 0);
+    diaryAttach(temp_s2, arg0->m_unk130, texture, 0);
 }
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuDiary", D_002F8228);
@@ -685,61 +685,61 @@ extern "C" int Xiii_func_0017F8FC(int, int) asm("func_0017F8FC");
 extern "C" int Xiii_func_0019A054(int, int) asm("func_0019A054");
 extern "C" int Xiiii_func_00199B3C(int, int, int) asm("func_00199B3C");
 extern int D_007B2580;
-extern "C" int func_0019946C(int arg0, int arg1)
+extern "C" int func_0019946C(MnuDiary *arg0, int arg1)
 {
     int temp_v0;
     int temp_v0_3;
     int temp_v1;
     unsigned int temp_a1;
 
-    if (M2C_FIELD(arg0, int *, 4) & 0x40000) {
+    if (arg0->m_flags & 0x40000) {
         Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 1, 0);
-        Xiiui_func_001351B0(M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x130), 0);
+        Xiiui_func_001351B0(arg0->m_scene, (unsigned int)arg0->m_unk130, 0);
     }
-    temp_v0 = M2C_FIELD(arg0, int *, 0x120);
+    temp_v0 = arg0->m_unk120;
 
     if (temp_v0 > 0) {
         temp_v0 -= 1;
-        M2C_FIELD(arg0, int *, 0x120) = temp_v0;
+        arg0->m_unk120 = temp_v0;
         if (temp_v0 == 0) {
-            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & 0xFFE7FFFD);
-            Xiii_func_0019A3C0(arg0, M2C_FIELD(arg0, int *, 0x124));
-            if ((M2C_FIELD(arg0, int *, 0x124) + 1) >= M2C_FIELD(arg0, int *, 0x11C)) {
-                M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x40000);
+            arg0->m_flags = (int) (arg0->m_flags & 0xFFE7FFFD);
+            Xiii_func_0019A3C0((int)arg0, arg0->m_curPage);
+            if ((arg0->m_curPage + 1) >= arg0->m_unk11C) {
+                arg0->m_flags = (int) (arg0->m_flags | 0x40000);
             }
         }
     }
-    Xii_func_001874AC(arg0 + 0x13C);
-    temp_v1 = M2C_FIELD(arg0, int *, 4);
+    Xii_func_001874AC((int)arg0->m_msgs);
+    temp_v1 = arg0->m_flags;
     if (temp_v1 & 2) goto tick;
     {
         if (diaryPressed(M2C_FIELD(arg1, unsigned short *, 0x7A)) && (temp_v1 & 0x40000)) {
-            Xiiui_func_001351B0(M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x134), 1);
-            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 2);
+            Xiiui_func_001351B0(arg0->m_scene, (unsigned int)arg0->m_msgId, 1);
+            arg0->m_flags = (int) (arg0->m_flags | 2);
             return 0;
         }
-        if (M2C_FIELD(arg0, int *, 0x120) == 0) {
-            if (((((unsigned short) M2C_FIELD(arg1, unsigned short *, 0x78) >> 5) & 1 & 0xFFFF) || (Xfi_getLeftX__C6BedPad((int) arg1) >= 0.75f)) && (Xiii_func_0019A054(arg0, 1) != 0)) {
-                temp_v0_3 = M2C_FIELD(arg0, int *, 0x124);
+        if (arg0->m_unk120 == 0) {
+            if (((((unsigned short) M2C_FIELD(arg1, unsigned short *, 0x78) >> 5) & 1 & 0xFFFF) || (Xfi_getLeftX__C6BedPad((int) arg1) >= 0.75f)) && (Xiii_func_0019A054((int)arg0, 1) != 0)) {
+                temp_v0_3 = arg0->m_curPage;
                 temp_a1 = temp_v0_3 + 3;
-                M2C_FIELD(arg0, int *, 0x124) = (int) (temp_v0_3 + 2);
-                Xiiii_func_00199B3C(arg0, ((int) (temp_a1 + (temp_a1 >> 0x1F)) >> 1) - 1, 1);
-                M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x100002);
+                arg0->m_curPage = (int) (temp_v0_3 + 2);
+                Xiiii_func_00199B3C((int)arg0, ((int) (temp_a1 + (temp_a1 >> 0x1F)) >> 1) - 1, 1);
+                arg0->m_flags = (int) (arg0->m_flags | 0x100002);
                 Xiii_func_0017F8FC((int) (int)&D_007B2580, 8);
-                Xiii_func_0019A3C0(arg0, -1);
-            } else if (((((unsigned short) M2C_FIELD(arg1, unsigned short *, 0x78) >> 7) & 1 & 0xFFFF) || (Xfi_getLeftX__C6BedPad((int) arg1) <= -0.75f)) && (Xiii_func_0019A054(arg0, 0) != 0)) {
-                Xiiii_func_00199B3C(arg0, ((int) (M2C_FIELD(arg0, int *, 0x124) + 1) / 2) - 1, 0);
-                M2C_FIELD(arg0, int *, 0x124) = (int) (M2C_FIELD(arg0, int *, 0x124) - 2);
-                M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x80002);
+                Xiii_func_0019A3C0((int)arg0, -1);
+            } else if (((((unsigned short) M2C_FIELD(arg1, unsigned short *, 0x78) >> 7) & 1 & 0xFFFF) || (Xfi_getLeftX__C6BedPad((int) arg1) <= -0.75f)) && (Xiii_func_0019A054((int)arg0, 0) != 0)) {
+                Xiiii_func_00199B3C((int)arg0, ((int) (arg0->m_curPage + 1) / 2) - 1, 0);
+                arg0->m_curPage = (int) (arg0->m_curPage - 2);
+                arg0->m_flags = (int) (arg0->m_flags | 0x80002);
                 Xiii_func_0017F8FC((int) (int)&D_007B2580, 8);
-                Xiii_func_0019A3C0(arg0, -1);
+                Xiii_func_0019A3C0((int)arg0, -1);
             }
         }
 
     }
-    if (M2C_FIELD(arg0, int *, 4) & 2) {
+    if (arg0->m_flags & 2) {
 tick:
-        M2C_FIELD(arg0, unsigned int *, 0x8B4) = (M2C_FIELD(arg0, unsigned int *, 0x8B4) + 1) % 300U;
+        (*(unsigned int *)&arg0->m_unk8B4) = ((*(unsigned int *)&arg0->m_unk8B4) + 1) % 300U;
     }
     return 1;
 }
@@ -1266,40 +1266,40 @@ Obj_9A598::~Obj_9A598() {
     }
 }
 
-extern "C" void func_0019A650(int arg0, int arg1)
+extern "C" void func_0019A650(MnuStock *arg0, int arg1)
 {
     int var_s2 = 1;
 
-    if (M2C_FIELD(arg0, int *, 0x1540) == 0) {
-        M2C_FIELD(arg0, int *, 8) = 0;
-        M2C_FIELD(arg0, int *, 0x10) = 0;
-        Xiii_func_0018BCC0(arg0 + 0x7D0, 0x8A);
-        M2C_FIELD(arg0, int *, 0xBEC) = arg1;
-        Xii_func_0019A780(arg0);
-        M2C_FIELD(arg0, int *, 0x1540) = var_s2;
-        M2C_FIELD(arg0, int *, 0x156C) = var_s2;
+    if (arg0->m_active == 0) {
+        arg0->m_cursor[1] = 0;
+        arg0->m_cursor[3] = 0;
+        Xiii_func_0018BCC0((int)&arg0->m_rpk, 0x8A);
+        arg0->m_rpk.m_param = arg1;
+        Xii_func_0019A780((int)arg0);
+        arg0->m_active = var_s2;
+        arg0->m_flg2B = var_s2;
     }
 }
 
-extern "C" void func_0019A6B8(int arg0)
+extern "C" void func_0019A6B8(MnuStock *arg0)
 {
     int temp_s0;
 
-    if (M2C_FIELD(arg0, int *, 0x1540) != 0) {
-        Xii_func_0018C130(arg0 + 0x7D0);
+    if (arg0->m_active != 0) {
+        Xii_func_0018C130((int)&arg0->m_rpk);
         temp_s0 = (int)&D_006E9840;
         temp_s0 += 0x12540;
-        Xiiu_func_00135594(temp_s0, M2C_FIELD(arg0, unsigned int *, 0x1580));
-        Xiiu_func_001348B0(temp_s0, M2C_FIELD(arg0, unsigned int *, 0x1580));
-        Xii_func_00187464(arg0 + 0x58);
-        Xii_func_0019A7D8(arg0);
-        M2C_FIELD(arg0, int *, 0x1540) = 0;
+        Xiiu_func_00135594(temp_s0, (unsigned int)arg0->m_unk1580);
+        Xiiu_func_001348B0(temp_s0, (unsigned int)arg0->m_unk1580);
+        Xii_func_00187464((int)arg0->m_msgs);
+        Xii_func_0019A7D8((int)arg0);
+        arg0->m_active = 0;
     }
 }
 
-extern "C" int func_0019A730(int arg0)
+extern "C" int func_0019A730(MnuStock *arg0)
 {
-    return (*(int *)(int *)((char *)(arg0) + 0x1540));
+    return arg0->m_active;
 }
 
 
@@ -1312,42 +1312,40 @@ extern "C" int func_0019A740()
 }
 
 
-extern "C" void func_0019A754(int arg0, int arg1)
+extern "C" void func_0019A754(MnuStock *arg0, int arg1)
 {
-    int temp_v0;
-
-    temp_v0 = arg0 + 0x7D0;
-    (*(int *)(int *)((char *)(arg0) + 0x10C0)) = arg1;
+    MnuRpk *rpk = &arg0->m_rpk;
+    arg0->m_renderCtx = arg1;
     if (arg1 != 0) {
-        (*(int *)(int *)((char *)(temp_v0) + 0x4D0)) = arg1;
-        X_func_0018BD94(temp_v0);
+        rpk->setRenderCtx(arg1);
+        X_func_0018BD94(rpk);
     }
 }
 
 
-extern "C" int func_0019A780(int arg0)
+extern "C" int func_0019A780(MnuStock *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0) == 1) {
+    if (arg0->m_open == 1) {
         return -1;
     }
-    M2C_FIELD(arg0, int *, 0) = 1;
-    M2C_FIELD(arg0, int *, 0x3C) = 0;
-    M2C_FIELD(arg0, int *, 0x54) = 3;
-    M2C_FIELD(arg0, int *, 0x40) = 0;
-    M2C_FIELD(arg0, int *, 0x44) = 0;
-    M2C_FIELD(arg0, int *, 0x154C) = -1;
-    M2C_FIELD(arg0, int *, 0x1550) = -1;
-    Xii_func_0018741C(arg0 + 0x58);
+    arg0->m_open = 1;
+    arg0->m_unk3C = 0;
+    arg0->m_unk54 = 3;
+    arg0->m_unk40 = 0;
+    arg0->m_unk44 = 0;
+    arg0->m_equipIdx = -1;
+    arg0->m_findIdx = -1;
+    Xii_func_0018741C((int)arg0->m_msgs);
     return 0;
 }
 
-extern "C" int func_0019A7D8(int arg0)
+extern "C" int func_0019A7D8(MnuStock *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0) == 0) {
+    if (arg0->m_open == 0) {
         return -1;
     }
-    Xiii_func_0019C0E4(arg0, 1);
-    M2C_FIELD(arg0, int *, 0) = 0;
+    Xiii_func_0019C0E4((int)arg0, 1);
+    arg0->m_open = 0;
     return 0;
 }
 
@@ -1853,19 +1851,19 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019C16C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019C630);
 
-extern "C" int func_0019CEAC(int arg0)
+extern "C" int func_0019CEAC(MnuStock *arg0)
 {
-    Xii_func_0018C068(arg0 + 0x7D0);
-    Xii_func_001874AC(arg0 + 0x58);
-    bool ok = Xii_func_00131550(M2C_FIELD(arg0, int *, 0x10BC) + 0x12540) >= 5;
+    Xii_func_0018C068((int)&arg0->m_rpk);
+    Xii_func_001874AC((int)arg0->m_msgs);
+    bool ok = Xii_func_00131550((int)(arg0->m_magSys + 0x12540)) >= 5;
     if (ok == 1) {
         int *p = &D_007B2060_CEAC->m_flags;
         *p |= 0x40000000;
     }
-    if (M2C_FIELD(arg0, int *, 0x157C) < 0x7FFF) {
-        M2C_FIELD(arg0, int *, 0x157C)++;
-        if (M2C_FIELD(arg0, int *, 0x157C) == 0xA) {
-            M2C_FIELD(arg0, int *, 0x1574) = 5;
+    if (arg0->m_timer < 0x7FFF) {
+        arg0->m_timer++;
+        if (arg0->m_timer == 0xA) {
+            arg0->m_unk1574 = 5;
         }
     }
     return 0;
