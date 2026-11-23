@@ -378,18 +378,18 @@ extern "C" void updateZDepth__15EffMuzzleFlash1(EffMuzzleFlash1 *arg0)
     arg0->m_zDepth = Xii_func_0016FF18(D_00298E08 + 0x2AB70, &arg0->m_pos);
 }
 
-// NON_MATCHING: 2/14 differ, 2 edits (sw 0x38 vs 0x2C order)
-#ifdef NON_MATCHING
-extern "C" void func_001790E4(EffReload1 *arg0)
+extern "C" void func_001790E4(EffReload1 *);
+struct EffReload1Ctor_1790E4 : EffReload1 {
+    EffReload1Ctor_1790E4() asm("func_001790E4");
+};
+
+EffReload1Ctor_1790E4::EffReload1Ctor_1790E4()
 {
-    Xii_func_0016A914(arg0);
-    arg0->m_vtbl = vtbl_10EffReload1;
-    arg0->m_buf = 0;
-    arg0->m_nodeMap = 0;
+    Xii_func_0016A914(this);
+    m_vtbl = vtbl_10EffReload1;
+    m_buf = 0;
+    m_nodeMap = 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_001790E4);
-#endif
 
 extern "C" void dtor_10EffReload1(EffReload1 *arg0, int arg1)
 {
