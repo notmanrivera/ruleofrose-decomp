@@ -1204,12 +1204,13 @@ extern "C" int func_00188BFC(int arg0)
     return (M2C_FIELD(arg0, int *, 0x64) == 1) ? var_s2 : 1;
 }
 
-// NON_MATCHING: 42/121 differ (size 0x1E4, game 0x1EC), 14 edits
+// NON_MATCHING: 1/123 differ, 1 edits
 #ifdef NON_MATCHING
 extern "C" int F8CD_sync(int, int *, int *) asm("sceMcSync");
 extern "C" int func_00188CD4(int arg0)
 {
     int done = 0;
+    int status;
     switch (M2C_FIELD(arg0, int *, 0x60)) {
     case 0:
         M2C_FIELD(arg0, int *, 0x60) = 3;
@@ -1254,11 +1255,13 @@ extern "C" int func_00188CD4(int arg0)
             if (*out == -2) {
                 register int error PS2_REG("$4") = 7;
                 M2C_FIELD(arg0, int *, 0x58) = error;
-                if (M2C_FIELD(arg0, int *, 0xBC) >= 8) break;
-                {
+                if (M2C_FIELD(arg0, int *, 0xBC) < 8) {
                     M2C_FIELD(arg0, int *, 0x60) = 3;
                     M2C_FIELD(arg0, int *, 0x64) = 1;
                     M2C_FIELD(arg0, int *, 0x58) = 1;
+                } else {
+                    status = M2C_FIELD(arg0, int *, 0x64);
+                    goto finish;
                 }
                 break;
             }
@@ -1286,7 +1289,9 @@ extern "C" int func_00188CD4(int arg0)
         done = 1;
         break;
     }
-    return M2C_FIELD(arg0, int *, 0x64) == 1 ? done : 1;
+    status = M2C_FIELD(arg0, int *, 0x64);
+finish:
+    return status == 1 ? done : 1;
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00188CD4);
