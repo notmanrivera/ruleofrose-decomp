@@ -678,9 +678,108 @@ def retypes(lines):
     return out
 
 
+# ---- Rewrites decomp-permuter's closer variants keep making (tools/perm_report.py).
+
+def assign_temps(lines):
+    """'X = E;' -> 'T t; ... X = (t = E);' (an operand through a temporary,
+    as decomp-permuter's new_var): it changes which register E lives in."""
+    out = []
+    for i in body(lines):
+        m = re.match(r"^(\s*)([^=;]*[^=!<>+\-*/%&|^\s])\s*=\s*([^=;][^;]*);\s*$", lines[i])
+        if not m or CONTROL.match(lines[i]) or DECL.match(lines[i]) or "perm_a" in lines[i]:
+            continue
+        if re.match(r"^\s*[A-Za-z_][\w\s\*]*\s[A-Za-z_]\w*$", m.group(2)) and not re.search(r"->|\.|\[", m.group(2)):
+            continue                          # a declaration with an initialiser
+        e = m.group(3).strip()
+        new = list(lines)
+        new[i] = f"{m.group(1)}{m.group(2)} = (perm_a{i} = {e});"
+        new.insert(i, f"{m.group(1)}__typeof__({e}) perm_a{i};")
+        out.append(new)
+    return out
+
+
+def split_adds(lines):
+    """'p = a + b;' -> 'p = a; p = p + b;' (a pointer built in two steps)."""
+    out = []
+    for i in body(lines):
+        m = re.match(r"^(\s*)([A-Za-z_]\w*)\s*=\s*([^;]+?)\s*\+\s*([^;+]+);\s*$", lines[i])
+        if not m or CONTROL.match(lines[i]) or re.search(r"\b" + re.escape(m.group(2)) + r"\b", m.group(4)):
+            continue
+        if top_split(m.group(3)) and any(op in "-<>?:" for _, _, op in top_split(m.group(3))):
+            continue
+        new = list(lines)
+        new[i:i + 1] = [f"{m.group(1)}{m.group(2)} = {m.group(3)};", f"{m.group(1)}{m.group(2)} = {m.group(2)} + {m.group(4)};"]
+        out.append(new)
+    return out
+
+
+def expects(lines):
+    """'if (c)' -> 'if (__builtin_expect(c, 0))' and '(c, 1)': the branch
+    probability decides which arm g++ lays out first and the likely branches."""
+    out = []
+    for i in body(lines):
+        m = re.match(r"^(\s*(?:\}\s*else\s+)?if \()(.*)(\)\s*(?:\{|[^;{}]*;)\s*)$", lines[i])
+        if not m or "__builtin_expect" in lines[i]:
+            continue
+        cond = m.group(2)
+        depth = 0
+        ok = True
+        for c in cond:                         # the whole condition, balanced
+            depth += {"(": 1, ")": -1}.get(c, 0)
+            if depth < 0:
+                ok = False
+                break
+        if not ok or depth:
+            continue
+        for v in ("0", "1"):
+            new = list(lines)
+            new[i] = f"{m.group(1)}__builtin_expect({cond}, {v}){m.group(3)}"
+            out.append(new)
+    return out
+
+
 MUTATIONS = [swaps, commutes, compares, ands, signedness, invert_ifs, loops, temps, inlines,
              decl_swaps, wide_commutes, term_swaps, extracts,
-             nothrows, early_returns, shared_returns, do_whiles, pins, inline_calls, retypes]
+             nothrows, early_returns, shared_returns, do_whiles, pins, inline_calls, retypes,
+             assign_temps, split_adds, expects]
+
+
+def stats_path():
+    """build/workers/cyrax-stats.tsv of the main checkout (shared by every
+    worktree Cyrax runs in)."""
+    import subprocess
+    try:
+        common = subprocess.run(["git", "rev-parse", "--path-format=absolute", "--git-common-dir"],
+                                cwd=match.ROOT, capture_output=True, text=True, check=True).stdout.strip()
+        return Path(common).parent / "build" / "workers" / "cyrax-stats.tsv"
+    except (OSError, subprocess.CalledProcessError):
+        return match.ROOT / "build" / "workers" / "cyrax-stats.tsv"
+
+
+def load_stats():
+    """{rewrite: [tried, improved, matched]} over all runs."""
+    out = {}
+    try:
+        for ln in stats_path().read_text().splitlines()[1:]:
+            w = ln.split("\t")
+            if len(w) >= 4:
+                out[w[0]] = [int(w[1]), int(w[2]), int(w[3])]
+    except OSError:
+        pass
+    return out
+
+
+def save_stats(run_stats):
+    total = load_stats()
+    for n, (t, i, m) in run_stats.items():
+        cur = total.setdefault(n, [0, 0, 0])
+        cur[0] += t
+        cur[1] += i
+        cur[2] += m
+    p = stats_path()
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text("rewrite\ttried\timproved\tmatched\n" + "".join(
+        f"{n}\t{t}\t{i}\t{m}\n" for n, (t, i, m) in sorted(total.items(), key=lambda kv: -kv[1][1])))
 
 
 def split(work_text):
@@ -753,22 +852,35 @@ def main():
     tries = since = 0
     t0 = time.time()
     end = t0 + a.minutes * 60
-    # Every single rewrite of the start first, then random chains.
-    queue = [c for mut in MUTATIONS for c in mut(base) if fresh(c)]
+    # What each rewrite has done over all runs (build/workers/cyrax-stats.tsv
+    # in the main checkout): the ones that improve near misses more often are
+    # tried first and picked more often in the random chains.
+    stats = load_stats()
+    weight = {m.__name__: (stats.get(m.__name__, [0, 0, 0])[1] + 1) / (stats.get(m.__name__, [0, 0, 0])[0] + 20)
+              for m in MUTATIONS}
+    # Every single rewrite of the start first (most useful kinds first, shuffled
+    # within a kind), then random chains.
+    queue = [(c, (mut.__name__,)) for mut in MUTATIONS for c in mut(base) if fresh(c)]
     rng.shuffle(queue)
+    queue.sort(key=lambda q: weight[q[1][0]])         # pop() takes from the end: the heaviest
     print(f"{len(queue)} single rewrites")
+    run_stats = {m.__name__: [0, 0, 0] for m in MUTATIONS}   # tried, improved, matched
 
     def next_variant():
         if queue:
             return queue.pop()
+        muts = [m for m in MUTATIONS]
+        ws = [weight[m.__name__] for m in muts]
         for _ in range(50):
-            lines = list(cur)
+            lines, names = list(cur), []
             for _ in range(rng.choice((1, 1, 2, 3))):
-                cands = rng.choice(MUTATIONS)(lines)
+                mut = rng.choices(muts, weights=ws)[0]
+                cands = mut(lines)
                 if cands:
                     lines = rng.choice(cands)
-            if fresh(lines):
-                return lines
+                    names.append(mut.__name__)
+            if names and fresh(lines):
+                return lines, tuple(names)
         return None
 
     with ThreadPoolExecutor(a.jobs) as pool:
@@ -776,10 +888,12 @@ def main():
             batch = [v for v in (next_variant() for _ in range(a.jobs)) if v is not None]
             if not batch:
                 break
-            results = list(pool.map(lambda p: (p[1], run(p[0], p[1])), enumerate(batch)))
+            results = list(pool.map(lambda p: (p[1], run(p[0], p[1][0])), enumerate(batch)))
             tries += len(batch)
             since += len(batch)
-            for lines, st in results:
+            for (lines, names), st in results:
+                for n in set(names):
+                    run_stats[n][0] += 1
                 if st is None:
                     continue
                 s = work.score(st)
@@ -787,12 +901,16 @@ def main():
                     cur, cur_score = lines, s
                 if s < best_score:
                     best, best_score, since = lines, s, 0
-                    print(f"{tries:6} tries  {st}")
+                    for n in set(names):
+                        run_stats[n][1] += 1
+                        run_stats[n][2] += s == 0
+                    print(f"{tries:6} tries  {st}  via {'+'.join(names)}")
                     near_file.parent.mkdir(parents=True, exist_ok=True)
                     near_file.write_text(f"// best: {st}\n" + head + "\n".join(best) + "\n",
                                          encoding="utf8", newline="\n")
             if since >= 300:                      # stuck: back to the best
                 cur, cur_score, since = best, best_score, 0
+    save_stats(run_stats)
     for p in slots:
         for q in (p, p.with_name(p.stem + ".trial.cpp")):
             q.unlink(missing_ok=True)

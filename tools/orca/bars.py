@@ -452,6 +452,15 @@ def permuter():
         out.append(f"    \u25c0 ahora {name}: mejor {best}" + (f", {tries} variantes" if tries else "") + gain)
     for mt in matches[-5:]:
         out.append(f"    {col(chr(0x2713), 'green')} {mt}")
+    # the rewrites that help most over all runs (build/workers/cyrax-stats.tsv)
+    try:
+        st = [ln.split("\t") for ln in open(os.path.join(ST, "cyrax-stats.tsv"), encoding="utf-8").read().splitlines()[1:]]
+        top = sorted((w for w in st if len(w) >= 4 and int(w[2])), key=lambda w: -int(w[2]))[:4]
+        if top:
+            out.append(col("    lo que más acierta: ", "dim") + col(", ".join(f"{w[0]} {w[2]}" + (f" ({w[3]} exactas)" if int(w[3]) else "")
+                                                                         for w in top), "dim"))
+    except OSError:
+        pass
     return out
 
 
