@@ -1835,7 +1835,7 @@ extern "C" int func_0018993C(int arg0)
     return (M2C_FIELD(arg0, int *, 0x64) == 1) ? var_s3 : 1;
 }
 
-// NON_MATCHING: 8/134 differ, 6 edits
+// NON_MATCHING: 1/134 differ, 1 edits
 #ifdef NON_MATCHING
 extern "C" int func_00189B7C(int arg0)
 {
@@ -1845,6 +1845,7 @@ extern "C" int func_00189B7C(int arg0)
     int temp_v1_2;
     int var_s3;
     int var_v0;
+    int status;
 
     temp_v1 = M2C_FIELD(arg0, int *, 0x60);
     var_s3 = 0;
@@ -1895,14 +1896,15 @@ extern "C" int func_00189B7C(int arg0)
                 M2C_FIELD(arg0, int *, 0xA4) = (int) M2C_FIELD(arg0, int *, 0xD0);
             } else {
                 if (temp_v1_2 == -2) {
-                    do {
                     M2C_FIELD(arg0, int *, 0x58) = 7;
-                    if (!__builtin_expect(M2C_FIELD(arg0, int *, 0xBC) >= 8, 1)) {
+                    if (M2C_FIELD(arg0, int *, 0xBC) < 8) {
                         M2C_FIELD(arg0, int *, 0x60) = 3;
                         M2C_FIELD(arg0, int *, 0x64) = 1;
                         M2C_FIELD(arg0, int *, 0x58) = 1;
+                    } else {
+                        status = M2C_FIELD(arg0, int *, 0x64);
+                        goto finish;
                     }
-                    } while (0);
                 } else if (temp_v1_2 == -4) {
                     M2C_FIELD(arg0, int *, 0x58) = 13;
                 } else if (temp_v1_2 == -5) {
@@ -1920,7 +1922,9 @@ extern "C" int func_00189B7C(int arg0)
         }
         break;
     }
-    return (M2C_FIELD(arg0, int *, 0x64) == 1) ? var_s3 : 1;
+    status = M2C_FIELD(arg0, int *, 0x64);
+finish:
+    return status == 1 ? var_s3 : 1;
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_00189B7C);
