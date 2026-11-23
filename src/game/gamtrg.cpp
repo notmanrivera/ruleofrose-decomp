@@ -1344,6 +1344,38 @@ INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001DDAA8);
 
 // NON_MATCHING: 11/75 differ, 12 edits
 #ifdef NON_MATCHING
+#include "ror.h"
+struct ChainDDC80 : GamList<GamTrgElem>::Chain {
+    typedef GamList<GamTrgElem>::Node Node;
+    void unlink(Node *n) {
+        if (n == m_head.m_next) {
+            Node *p = n->m_next;
+            m_head.m_next = p;
+            p->m_prev = &m_head;
+        } else {
+            Node *p = n->m_prev;
+            if (n == m_head.m_prev) {
+                m_head.m_prev = p;
+                p->m_next = &m_head;
+            } else {
+                p->m_next = n->m_next;
+                register Node *next PS2_REG("$2") = n->m_next;
+                next->m_prev = n->m_prev;
+            }
+        }
+        --m_num;
+    }
+};
+struct GamListDDC80 : GamList<GamTrgElem> {
+    iterator erase(iterator pos) {
+        iterator next = pos;
+        ++next;
+        Node *n = pos.m_node;
+        ((ChainDDC80 *)&m_used)->unlink(n);
+        m_free.push_back(n);
+        return next;
+    }
+};
 extern "C" void func_001DDC80(GamTrgMan *arg0)
 {
     GamList<GamTrgElem>::iterator it;
@@ -1352,7 +1384,7 @@ extern "C" void func_001DDC80(GamTrgMan *arg0)
         it = arg0->m_list1.begin();
         last = arg0->m_list1.end();
         while (it != last) {
-            it = arg0->m_list1.erase(it);
+            it = ((GamListDDC80 *)&arg0->m_list1)->erase(it);
         }
     }
     func_001DDDAC(arg0);
