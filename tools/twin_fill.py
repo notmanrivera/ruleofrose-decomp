@@ -26,6 +26,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import ctext  # noqa: E402
 import twins  # noqa: E402
 import work  # noqa: E402
 
@@ -114,7 +115,8 @@ def apply(body, subst):
     for a, b in syms.items():
         # also inside an alias of it: Xiii_func_00166DA4 (declared with
         # asm("func_00166DA4") in this project's style) -> Xiii_func_0014BE48
-        body = re.sub(rf"(?<![\w$])((?:X\w*?_)?){re.escape(a)}(?![\w$])", lambda m: m.group(1) + b, body)
+        # on the code only: a string or a comment keeps its text (tools/ctext.py)
+        body = ctext.code_sub(rf"(?<![\w$])((?:X\w*?_)?){re.escape(a)}(?![\w$])", lambda m: m.group(1) + b, body)
 
     def num(m):
         v = int(m.group(0), 0)
@@ -122,7 +124,7 @@ def apply(body, subst):
             n = nums[v]
             return hex(n) if m.group(0).lower().startswith("0x") else str(n)
         return m.group(0)
-    return re.sub(r"(?<![\w.])(?:0x[0-9A-Fa-f]+|\d+)(?![\w.])", num, body)
+    return ctext.code_sub(r"(?<![\w.])(?:0x[0-9A-Fa-f]+|\d+)(?![\w.])", num, body)
 
 
 IDENT = re.compile(r"[A-Za-z_][\w$]*")

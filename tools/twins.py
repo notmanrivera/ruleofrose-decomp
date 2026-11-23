@@ -18,6 +18,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import backlog  # noqa: E402
+import ctext  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 CACHE = ROOT / "build/twins.json"
@@ -107,13 +108,9 @@ def source_of(name, fn):
             break
     if not m:
         return None
-    depth, i = 0, m.end() - 1
-    while i < len(text):
-        depth += {"{": 1, "}": -1}.get(text[i], 0)
-        if depth == 0:
-            return text[m.start():i + 1]
-        i += 1
-    return None
+    # braces in strings and comments do not count (tools/ctext.py)
+    end = ctext.block_end(text, m.end() - 1)
+    return text[m.start():end + 1] if end is not None else None
 
 
 def main():

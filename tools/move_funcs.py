@@ -14,21 +14,26 @@ Run it after the splits change and before configure.py: asm/<old>.s must
 still be the old file's. Then build and match.py both files."""
 import argparse
 import re
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import ctext  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 
 
 def chunks(text):
     out, cur, depth, ifd = [], [], 0, 0
-    for line in text.split("\n"):
+    # braces counted on the code only: not in strings or comments (tools/ctext.py)
+    for line, code in zip(text.split("\n"), ctext.mask(text).split("\n")):
         s = line.strip()
         if s.startswith("#if"):
             ifd += 1
         if s.startswith("#endif"):
             ifd -= 1
         cur.append(line)
-        depth += line.count("{") - line.count("}")
+        depth += code.count("{") - code.count("}")
         if depth == 0 and ifd == 0 and s == "":
             out.append(cur)
             cur = []
