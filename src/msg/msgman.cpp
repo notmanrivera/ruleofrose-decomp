@@ -93,6 +93,10 @@ extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func
 extern "C" int X_func_001856FC(...) asm("func_001856FC");
 extern "C" int X_func_00185760(...) asm("func_00185760");
 #include "sdk/string.h"
+extern "C" int Xii_atoi(int) asm("atoi");
+extern "C" int Xiii_func_0018454C(int, int) asm("func_0018454C");
+extern "C" int Xiiii_memcpy(int, int, int) asm("memcpy");
+extern "C" int Xiiii_memset(int, int, int) asm("memset");
 extern "C" void X_func_00135088(void *, int, int, int, int) asm("func_00135088");
 extern "C" void X_func_00191E04(void *, int, int) asm("func_00191E04");
 extern "C" void func_00191F98(void *, int);
@@ -1091,22 +1095,18 @@ loop:
 }
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" int func_00184578(MsgWin *self, const char *theStr, int *theOut)
 {
     char buf[16];
     memset(buf, 0, sizeof(buf));
     int n = func_0018454C(self, theStr);
-    if (n) {
+    if (n == 0) return 0;
+    {
         memcpy(buf, theStr, n < 16 ? n : 15);
         *theOut = atoi(buf);
     }
     return n;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184578);
-#endif
 
 
 // NON_MATCHING: close, not identical yet.
