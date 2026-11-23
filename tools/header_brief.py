@@ -111,6 +111,15 @@ def main():
         r = subprocess.run([sys.executable, str(ROOT / "tools/layouts.py"), *top], cwd=ROOT, capture_output=True, text=True)
         out += ["", "## Layouts from the asm (tools/layouts.py; offsets the methods use on this)", "", "```cpp",
                 r.stdout.strip()[:6000], "```"]
+    # local hints: RoR-Port's descriptive names mapped by tools/map_pal_names.py
+    # (build/ror_port_names.tsv, not committed: GPL project, guesses)
+    hints = ROOT / "build" / "ror_port_names.tsv"
+    if lo and hints.exists():
+        rows = [l.split("\t") for l in hints.read_text(encoding="utf8").splitlines()[1:]]
+        here = [r for r in rows if lo <= int(r[0], 16) < (hi or 1 << 32)]
+        if here:
+            out += ["", "## Hints from RoR-Port (local only; their guesses: verify, do not copy names into src/)", ""]
+            out += [f"- {r[0]} {r[4]}: \"{r[2]}\" — {r[7][:160]}" for r in here[:40]]
     # attempts
     near = sorted(((d or 999, fn, k) for (f, fn), (k, d) in tri.items() if f == name), key=lambda t: t[0])
     out += ["", "## NON_MATCHING attempts, closest first (build/regalloc_triage.tsv)", ""]
