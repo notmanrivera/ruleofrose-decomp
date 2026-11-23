@@ -1,22 +1,12 @@
 #include "ror.h"
 #include "include_asm.h"
-struct m2c_v14_80_iiii { char pad[20]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual int call(int, int, int); };
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" int Xiii_func_00125704(int, int) asm("func_00125704");
+#include "mag/maglifebwn.h"
+extern "C" int Xiii_func_00125704(MagLifeBwn *, int) asm("func_00125704");
 extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
 extern const char D_002EB870[];
 extern "C" int Xi_func_00103F08() asm("func_00103F08");
 extern "C" int Xi_func_00103F38() asm("func_00103F38");
-#include "mag/maglife.h"
-#include "dog/dogactor.h"
-// MagLifeBwn: the dog (RTTI: derives from MagLifeControlChara). Slot 16 is
-// its own; func_001233F4 calls it with the new mode and two arguments.
-class MagLifeBwn : public MagLifeControlChara {
-public:
-    virtual void vfunc16(int theMode, int theA, int theB) asm("MagLifeBwn__vfunc_16");
-};
 typedef MagLifeBwn MagBwn;
-#define I(p, off) (*(int *)((char *)(p) + (off)))
 extern "C" void func_00125704(MagBwn *self, int theA);
 extern "C" void func_00125A90(MagBwn *self);
 extern "C" void func_0011A14C(MagBwn *self);
@@ -314,16 +304,15 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EB860);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EB870);
 
-extern "C" int func_001233F4(int arg0, int arg1, int arg2, int arg3)
+extern "C" int func_001233F4(MagLifeBwn *arg0, int arg1, int arg2, int arg3)
 {
     int var_v0;
-    int temp_v0;
 
     if (arg1 < 0) {
         Xiiii_ror_assert((int) D_002EB870, 0x10E, (int) "theMode >= 0");
     }
-    if ((M2C_FIELD(arg0, int *, 0) != arg1) || (var_v0 = 0, (arg1 == 0))) {
-        ((m2c_v14_80_iiii *)(arg0))->call(arg1, arg2, arg3);
+    if ((arg0->m_unk00 != arg1) || (var_v0 = 0, (arg1 == 0))) {
+        arg0->vfunc16(arg1, arg2, arg3);
         Xiii_func_00125704(arg0, 0);
         var_v0 = 1;
     }
@@ -371,7 +360,7 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_0012481C);
 
 extern "C" void func_0012498C(MagBwn *self)
 {
-    (*(DogActor **)((char *)self + 0x58))->func_0010B328(0, -1, 0);
+    self->m_actor->func_0010B328(0, -1, 0);
 }
 
 
@@ -393,7 +382,7 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00124D7C);
 
 extern "C" void func_00124E18(MagBwn *self)
 {
-    (*(DogActor **)((char *)self + 0x58))->func_0010B328(1, -1, 0);
+    self->m_actor->func_0010B328(1, -1, 0);
 }
 
 
@@ -433,9 +422,9 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00125368);
 
 extern "C" void setActor__10MagLifeBwnP8DogActorii(MagBwn *self, DogActor *theActor, int theA, int theB)
 {
-    I(self, 0x54) = theB;
-    I(self, 0x50) = theA;
-    *(DogActor **)((char *)self + 0x58) = theActor;
+    self->m_unk54 = theB;
+    self->m_unk50 = theA;
+    self->m_actor = theActor;
     if (!theActor) {
         func_0012498C(self);
     }
@@ -472,20 +461,20 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_001258A4);
 
 extern "C" void func_00125980(MagBwn *self)
 {
-    I(self, 0xCE4) = 0;
-    DogActor *actor = *(DogActor **)((char *)self + 0x58);
+    self->m_unkCE4 = 0;
+    DogActor *actor = self->m_actor;
     if (actor) {
-        if (actor->m_motion_now.getMainMotionNo() != I(self, 0xCE8)) {
+        if (actor->m_motion_now.getMainMotionNo() != self->m_unkCE8) {
             return func_00125A90(self);
         }
-        (*(DogActor **)((char *)self + 0x58))->m_motion_now.setMainSpeed(0.016666694f);
+        self->m_actor->m_motion_now.setMainSpeed(0.016666694f);
     }
 }
 
 
 extern "C" void renderPostProcess__10MagLifeBwn(MagBwn *self)
 {
-    if (I(self, 0x58) && I(self, 0xCE4) == 0) {
+    if (self->m_actor && self->m_unkCE4 == 0) {
         func_0011A14C(self);
     }
 }
