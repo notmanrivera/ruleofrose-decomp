@@ -173,19 +173,11 @@ extern "C" int func_0011AF04(MagPC *self)
 }
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" int func_0011AF10(MagPC *self)
 {
-    int r = -1;
-    if (I(self, 0) == 0x17) {
-        r = I(self, 4);
-    }
-    return r;
+    if (self->m_unk00 == 0x17) return self->m_unk04;
+    return -1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011AF10);
-#endif
 
 
 extern "C" void func_0011AF30(MagPC *self, int theType, int theFlag)
