@@ -868,29 +868,27 @@ extern "C" void mnuBase__vfunc_01(MnuBase *arg0, int arg1)
     }
 }
 
-// NON_MATCHING: 2/111 differ, 2 edits
-#ifdef NON_MATCHING
 extern "C" int Xi_func_001946E4() asm("func_001946E4");
 extern "C" int Xiiii_memset(int, int, int) asm("memset");
 extern "C" void func_00192BA4(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
 {
-    int temp_v0;
-    int temp_s0;
-    int temp_s3;
-    int temp_s6;
-    int temp_v1;
-    int var_a0;
-    int var_a1;
-    int var_a1_2;
     int temp_s0_2;
+    int temp_s3;
+    int temp_v1;
+    int var_a1_2;
+    int temp_s0;
     int temp_v0_2;
-
-    temp_s0 = arg2 * 0x30;
+    int var_a0;
+    int temp_s6;
+    int temp_v0;
     temp_s6 = arg4 * 0x10;
+
+    int var_a1;
     M2C_FIELD(arg0, int *, 0xC) = arg1;
     temp_s3 = arg3 << 5;
     Xi_func_001946E4();
     register int sz2 PS2_REG("$2") = (arg4 + arg5) * 0x10;
+    temp_s0 = arg2 * 0x30;
     temp_v0 = (int)Xii_func_00194588(sz2 + (temp_s0 + temp_s3));
     M2C_FIELD(arg0, int *, 0x1C) = arg2;
     temp_s0_2 = temp_v0 + temp_s0;
@@ -938,9 +936,6 @@ extern "C" void func_00192BA4(int arg0, int arg1, int arg2, int arg3, int arg4, 
         M2C_FIELD(arg0, int *, 0xA4) = 0;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192BA4);
-#endif
 
 extern "C" void mnuBase__vfunc_03(MnuBase *arg0, int arg1)
 {
