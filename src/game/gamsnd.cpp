@@ -1400,8 +1400,6 @@ extern "C" void func_001E239C(Obj239C *self, unsigned int id, Vec239C *position,
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E239C);
 #endif
 
-// NON_MATCHING: 9/231 differ, 10 edits
-#ifdef NON_MATCHING
 extern "C" void position2704(void *, int, void *, int) asm("func_001DBA3C");
 extern "C" int lookup2704(void *, unsigned int, void **, unsigned int) asm("func_001E4908");
 extern "C" int check2704(void *, unsigned int, int, void *) asm("func_001E5E58");
@@ -1434,7 +1432,7 @@ extern "C" void func_001E2704(Obj2DB4 *self, unsigned int id, int key, int flags
         ++it;
     }
     {
-    register Que2DB4 *queue PS2_REG("$4") = &self->queue;
+    Que2DB4 *queue = &self->queue;
     it = queue->begin();
     last = queue->end();
     while (it != last) {
@@ -1447,9 +1445,6 @@ extern "C" void func_001E2704(Obj2DB4 *self, unsigned int id, int key, int flags
     queue->push(item);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2704);
-#endif
 
 struct ALIGNED(16) Ent2AA0 { // 2AA0
     char pad00[0x20]; // 2AA0
