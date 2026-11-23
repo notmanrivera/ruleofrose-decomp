@@ -1,5 +1,9 @@
 #include "ror.h"
 #include "include_asm.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xii_func_0013CA10(int) asm("func_0013CA10");
+extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
+extern "C" int Xiiu_func_00139010(int, unsigned int) asm("func_00139010");
 #undef ASSERT_FILE
 #define ASSERT_FILE D_002ED070
 extern const char D_002ED070[];
@@ -89,15 +93,14 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifemenusp", MagLifeMenuSpecial__vfunc_01);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifemenusp", MagLifeMenuSpecial2__vfunc_09);
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" void MagLifeMenuSpecial2__vfunc_10(MagMenuSp *self)
 {
     if (self->m_chara[0] >= 0) {
 #line 430
         ASSERT_S(self->m_scene, D_002ED088);
-        int *p = &self->m_chara[3];
-        for (int i = 0; i < 4; i++) {
+        int *p;
+        int i;
+        for (i = 3, p = &self->m_chara[3]; i >= 0; i--) {
             func_00139010(self->m_scene, *p);
             *p = -1;
             p--;
@@ -105,9 +108,6 @@ extern "C" void MagLifeMenuSpecial2__vfunc_10(MagMenuSp *self)
         func_0013CA10(self->m_scene);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglifemenusp", MagLifeMenuSpecial2__vfunc_10);
-#endif
 
 
 extern "C" int MagLifeMenuSpecial2__vfunc_11(MagMenuSp *self)
