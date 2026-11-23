@@ -89,7 +89,7 @@ extern MagGameFlags_CEAC *D_007B2060_CEAC asm("D_007B2060");
 inline void *operator new(unsigned int, void *p) { return p; }
 extern "C" void X_func_0019B384_C0E4(void *, int) asm("func_0019B384");
 extern "C" int func_0019C048(MnuStock *, int);
-extern "C" void func_0019B020(void *, int);
+extern "C" void func_0019B020(MnuStock *, int);
 struct UnkHdr_9AB4 {
     int unk00;
     int unk04;
@@ -1448,6 +1448,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019AFB0);
 
 // NON_MATCHING: 188/194 differ, 17 relocs differ (size 0x308, game 0x364), 156 edits
 #ifdef NON_MATCHING
+
 extern char D_002A4300[] __attribute__((aligned(8)));
 extern char D_002A42F0[];
 extern char D_002F8470[];
@@ -1465,7 +1466,7 @@ extern "C" int diaryB020_func_0018F41C(int,int,int) asm("func_0018F41C");
 extern "C" int diaryB020_func_0018F1F4(int,int,int,int,int,int,int,int) asm("func_0018F1F4");
 inline void diaryBCopyTitle(char *dst,const char *src) { *(int *)(dst+0x28)=*(const int *)(src+8); *(long long *)(dst+0x20)=*(const long long *)src; }
 inline void diaryBCopySeparator(char *dst,const char *src) { *(long long *)dst=*(const long long *)src; *(long long *)(dst+8)=*(const long long *)(src+8); dst[16]=src[16]; }
-extern "C" void func_0019B020(void *self,int arg1) {
+extern "C" void func_0019B020(MnuStock *self,int arg1) {
     int arg0=(int)self;
     DiaryB020Iter it, end;
     it = DiaryB020Iter(diaryBFirst((char *)&D_007812C0));
@@ -1479,8 +1480,8 @@ extern "C" void func_0019B020(void *self,int arg1) {
     M2C_FIELD(D_002A42F0, short *,8)=0xA00;
     M2C_FIELD(D_002A42F0,char **,0)=D_002A4300;
     M2C_FIELD(D_002A42F0,int *,4)=0;
-    M2C_FIELD(arg0,char **,0x1110)=D_002A42F0;
-    DiaryB020Item **out=(DiaryB020Item **)(arg0+0x1114);
+    self->m_stockItems[0]=(GamItem *)D_002A42F0;
+    DiaryB020Item **out=(DiaryB020Item **)&self->m_stockItems[1];
     while (it.p != end.p) {
         *out=0;
         if (arg1 != 0) {
@@ -1492,40 +1493,40 @@ extern "C" void func_0019B020(void *self,int arg1) {
     }
     int temp_v1,temp_a2_2,temp_a0,temp_a1,temp_v1_2,var_v0;
     char *temp_s0;
-    M2C_FIELD(arg0, int *, 0x1544) = var_t2;
-    M2C_FIELD(arg0, int *, 0x2C) = var_t2;
-    if (M2C_FIELD(arg0, int *, 8) >= M2C_FIELD(arg0, int *, 0x24)) {
-        M2C_FIELD(arg0, int *, 8) = 0;
+    self->m_listCount = var_t2;
+    self->m_stockCount = var_t2;
+    if (self->m_cursor[1] >= self->m_max[1]) {
+        self->m_cursor[1] = 0;
     }
-    temp_v1 = M2C_FIELD(arg0, int *, 8);
-    if ((M2C_FIELD(arg0, int *, 0x10) - temp_v1) < 0) {
-        M2C_FIELD(arg0, int *, 0x10) = temp_v1;
+    temp_v1 = self->m_cursor[1];
+    if ((self->m_cursor[3] - temp_v1) < 0) {
+        self->m_cursor[3] = temp_v1;
     }
-    temp_a2_2 = M2C_FIELD(arg0, int *, 8);
-    temp_a0 = M2C_FIELD(arg0, int *, 0x24);
-    temp_a1 = M2C_FIELD(arg0, int *, 0x2C);
+    temp_a2_2 = self->m_cursor[1];
+    temp_a0 = self->m_max[1];
+    temp_a1 = self->m_stockCount;
     if (temp_a0 >= temp_a1) {
-        M2C_FIELD(arg0, int *, 0x10) = temp_a2_2;
-        temp_v1_2 = M2C_FIELD(arg0, int *, 0x2C);
-        if (M2C_FIELD(arg0, int *, 8) >= temp_v1_2) {
-            M2C_FIELD(arg0, int *, 8) = (int) (temp_v1_2 - 1);
-            var_v0 = M2C_FIELD(arg0, int *, 0x2C) - 1;
+        self->m_cursor[3] = temp_a2_2;
+        temp_v1_2 = self->m_stockCount;
+        if (self->m_cursor[1] >= temp_v1_2) {
+            self->m_cursor[1] = (int) (temp_v1_2 - 1);
+            var_v0 = self->m_stockCount - 1;
             goto block_19;
         }
-    } else if ((((M2C_FIELD(arg0, int *, 0x10) - temp_a2_2) + temp_a0) - 1) >= temp_a1) {
+    } else if ((((self->m_cursor[3] - temp_a2_2) + temp_a0) - 1) >= temp_a1) {
         var_v0 = temp_a1 + (temp_a2_2 - temp_a0);
 block_19:
-        M2C_FIELD(arg0, int *, 0x10) = var_v0;
+        self->m_cursor[3] = var_v0;
     }
-    temp_s0 = (char *)arg0 + 0x7D0;
-    M2C_FIELD(M2C_FIELD((int)temp_s0, char **, 0x4AC), int *, 0x4974) = (int) (diaryB020_func_0019E43C((int) arg0, M2C_FIELD((arg0 + 4), int *, 0xC), M2C_FIELD(arg0, int *, 0x2C)) * 0x10);
+    temp_s0 = (char *)&self->m_rpk;
+    M2C_FIELD(M2C_FIELD((int)temp_s0, char **, 0x4AC), int *, 0x4974) = (int) (diaryB020_func_0019E43C((int) arg0, self->m_cursor[3], self->m_stockCount) * 0x10);
     
     if (diaryB020_func_0019AFB0(arg0, 0) == 0) {
         if (M2C_FIELD(M2C_FIELD((int)temp_s0, char **, 0x4AC), int *, 0x4674) != 0) {
             diaryB020_func_0018F41C((int)temp_s0, 0x35, 0xA);
         }
     } else if ((M2C_FIELD(M2C_FIELD((int)temp_s0, char **, 0x4AC), int *, 0x4674) ^ 1) != 0) {
-        diaryB020_func_0018F1F4((int)temp_s0, 0x35, M2C_FIELD(arg0, int *, 0x1574), 0xA, 0, -1, (int)&D_002999B0, (int)&D_002999A0);
+        diaryB020_func_0018F1F4((int)temp_s0, 0x35, self->m_unk1574, 0xA, 0, -1, (int)&D_002999B0, (int)&D_002999A0);
     }
 
     if (diaryB020_func_0019AFB0(arg0, 1) == 0) {
@@ -1533,7 +1534,7 @@ block_19:
             diaryB020_func_0018F41C((int)temp_s0, 0x36, 0xA);
         }
     } else if ((M2C_FIELD(M2C_FIELD((int)temp_s0, char **, 0x4AC), int *, 0x47C8) ^ 1) != 0) {
-        diaryB020_func_0018F1F4((int)temp_s0, 0x36, M2C_FIELD(arg0, int *, 0x1574), 0xA, 0, -1, (int)&D_002999B0, (int)&D_002999A0);
+        diaryB020_func_0018F1F4((int)temp_s0, 0x36, self->m_unk1574, 0xA, 0, -1, (int)&D_002999B0, (int)&D_002999A0);
     }
 }
 #else
@@ -1826,80 +1827,70 @@ extern "C" void func_0019DBC8(MnuStock *arg0, int arg1, int arg2)
     }
 }
 
-// NON_MATCHING: 119/124 differ, 4 relocs differ (size 0x1F0, game 0x220), 99 edits
+// NON_MATCHING: 122/127 differ, 4 relocs differ (size 0x1FC, game 0x220), 99 edits
 #ifdef NON_MATCHING
 inline int diaryDiv(int n,int d) { return n/d; }
 inline int diaryMod(int n,int d) { return n%d; }
-extern int D_006E9408[];
-extern "C" int diaryCount(int,int,int) asm("func_001DD00C");
-extern "C" void func_0019DCBC(int arg0, int arg1, int arg2, int arg3) {
-    int *temp_a1;
-    int *temp_a3;
-    int *temp_a5;
+extern char D_006E9408[][4];
+extern "C" int diaryCount(void *,int,int) asm("func_001DD00C");
+extern "C" void func_0019DCBC(MnuStock *self, int spr, int buf, int idx) {
     int temp_hi;
     int temp_hi_2;
     int temp_lo;
     int hundred = 100;
     int ten = 10;
     int temp_lo_2;
-    int temp_v1;
-    int temp_v1_2;
-    unsigned short temp_s0;
-    unsigned short temp_s0_2;
-    unsigned short temp_s0_3;
-    int temp_a0;
-    int temp_a2;
-    void *temp_v0;
+    unsigned short num;
+    char *s;
+    MnuRpk *rpk;
 
-    if (arg3 >= M2C_FIELD(arg0, int *, 0x1544)) {
-        temp_a3 = &D_006E9408[arg2];
-        M2C_FIELD(temp_a3, signed char *, 2) = 0x20;
-        temp_a0 = arg0 + 0x7D0;
-        M2C_FIELD(temp_a3, signed char *, 1) = 0x20;
-        temp_v1 = arg1 * 0x154;
-        M2C_FIELD(temp_a3, signed char *, 0) = 0x20;
-        M2C_FIELD(temp_a3, signed char *, 3) = 0;
-        M2C_FIELD((temp_v1 + M2C_FIELD(temp_a0, int *, 0x4AC)), int *, 0x144) = 0;
-        M2C_FIELD((temp_v1 + M2C_FIELD(temp_a0, int *, 0x4AC)), int *, 0x148) = 0;
-        M2C_FIELD((temp_v1 + M2C_FIELD(temp_a0, int *, 0x4AC)), int **, 0x14C) = temp_a3;
+    if (idx >= self->m_listCount) {
+        s = D_006E9408[buf];
+        s[2] = ' ';
+        rpk = &self->m_rpk;
+        s[1] = ' ';
+        s[0] = ' ';
+        s[3] = 0;
+        rpk->m_sprTbl[spr].m_unk144 = 0;
+        rpk->m_sprTbl[spr].m_unk148 = 0;
+        rpk->m_sprTbl[spr].m_text = s;
         return;
     }
-    if (arg3 != 0) {
-        temp_v0 = M2C_FIELD(((arg3 * 4) + arg0), void **, 0x1110);
-        temp_s0 = M2C_FIELD(temp_v0, unsigned short *, 0xA);
-        temp_s0_2 = (diaryCount((int)((char *)&D_007812C0) + 0x22220, (int) M2C_FIELD(temp_v0, unsigned short *, 8), 0x20000) == 0) ? 0 : temp_s0;
-        temp_s0_3 = ((int) temp_s0_2 >= 0x64) ? 0x63 : temp_s0_2;
-        temp_hi = diaryMod(temp_s0_3, hundred);
-        temp_lo = diaryDiv(temp_s0_3, hundred);
-        temp_a5 = &D_006E9408[arg2];
-        M2C_FIELD(temp_a5, signed char *, 0) = 0;
-        M2C_FIELD(temp_a5, signed char *, 1) = 0;
-        M2C_FIELD(temp_a5, signed char *, 2) = 0;
-        M2C_FIELD(temp_a5, signed char *, 3) = 0;
-        temp_hi_2 = diaryMod(temp_s0_3, ten);
+    if (idx != 0) {
+        GamItem *item = self->m_stockItems[idx];
+        num = item->m_num;
+        num = (diaryCount(gamSub22220_DEDC(), item->m_uid, 0x20000) == 0) ? 0 : num;
+        num = ((int)num >= 100) ? 99 : num;
+        temp_hi = diaryMod(num, hundred);
+        temp_lo = diaryDiv(num, hundred);
+        s = D_006E9408[buf];
+        s[0] = 0;
+        s[1] = 0;
+        s[2] = 0;
+        s[3] = 0;
+        temp_hi_2 = diaryMod(num, ten);
         temp_lo_2 = diaryDiv(temp_hi, ten);
-        M2C_FIELD(temp_a5, signed char *, 0) = 0x20;
+        s[0] = ' ';
         if (temp_lo_2 == 0) {
             if (temp_lo == 0) {
-                M2C_FIELD(&D_006E9408[arg2], signed char *, 0) = 0x20;
+                D_006E9408[buf][0] = ' ';
                 if (temp_hi_2 == 0) {
-                    M2C_FIELD(&D_006E9408[arg2], signed char *, 1) = 0x20;
+                    D_006E9408[buf][1] = ' ';
                 } else {
-                    M2C_FIELD(&D_006E9408[arg2], signed char *, 1) = (signed char) (temp_hi_2 + 0x30);
+                    D_006E9408[buf][1] = temp_hi_2 + '0';
                 }
             } else {
-                M2C_FIELD(&D_006E9408[arg2], signed char *, 0) = 0x30;
+                D_006E9408[buf][0] = '0';
             }
         } else {
-            temp_a1 = &D_006E9408[arg2];
-            M2C_FIELD(temp_a1, signed char *, 0) = (signed char) (temp_lo_2 + 0x30);
-            M2C_FIELD(temp_a1, signed char *, 1) = (signed char) (temp_hi_2 + 0x30);
+            s = D_006E9408[buf];
+            s[0] = temp_lo_2 + '0';
+            s[1] = temp_hi_2 + '0';
         }
-        temp_a2 = arg0 + 0x7D0;
-        temp_v1_2 = arg1 * 0x154;
-        M2C_FIELD((temp_v1_2 + M2C_FIELD(temp_a2, int *, 0x4AC)), int *, 0x144) = 0;
-        M2C_FIELD((temp_v1_2 + M2C_FIELD(temp_a2, int *, 0x4AC)), int *, 0x148) = 0;
-        M2C_FIELD((temp_v1_2 + M2C_FIELD(temp_a2, int *, 0x4AC)), int **, 0x14C) = &D_006E9408[arg2];
+        rpk = &self->m_rpk;
+        rpk->m_sprTbl[spr].m_unk144 = 0;
+        rpk->m_sprTbl[spr].m_unk148 = 0;
+        rpk->m_sprTbl[spr].m_text = D_006E9408[buf];
     }
 }
 #else
