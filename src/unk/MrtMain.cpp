@@ -193,10 +193,12 @@ extern "C" int MrtMain__vfunc_02(MrtMain *self)
     return 0;
 }
 
+// NON_MATCHING: 3/7 differ (size 0x1C, game 0x18), 2 edits
 #ifdef NON_MATCHING
 extern "C" bool func_0014D308(void)
 {
-    return (bool)D_006E98FA.m_b12;
+    unsigned long long bit = D_006E98FA.m_b12;
+    return bit != 0;
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/unk/MrtMain", func_0014D308);
