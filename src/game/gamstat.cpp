@@ -125,8 +125,6 @@ extern "C" int func_001D58D8(void *arg0, void *arg1, float fparg0) {
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D58D8);
 #endif
 
-// NON_MATCHING: 6/111 differ, 3 edits
-#ifdef NON_MATCHING
 struct Cb8_5A0C {
     int w0;
     int w1;
@@ -168,11 +166,14 @@ extern "C" int func_001D5A0C(void *arg0, const u_long128 *arg1, unsigned int arg
 
     {
         register u_long128 *dst PS2_REG("$2") = (u_long128 *)((char *)arg0 + 0x225B0);
-        register u_long128 tmp PS2_REG("$6") = *arg1;
-        *dst = tmp;
+        do {
+            register u_long128 tmp PS2_REG("$6") = *arg1;
+            *dst = tmp;
+        } while (0);
     }
 
-    *(float *)((char *)arg0 + 0x225A0) = (arg2 != 0) ? X_func_001D4A3C_5A0C(arg0, arg2, 0) : 25.0f;
+    register void *ctx PS2_REG("$4") = arg0;
+    *(float *)((char *)arg0 + 0x225A0) = (arg2 != 0) ? X_func_001D4A3C_5A0C(ctx, arg2, 0) : 25.0f;
     *(Cb8_5A0C *)((char *)arg0 + 0x225D0) = X_D_002FC1D8_5A0C;
 
     ret = X_func_001D7C20_5A0C(arg0, 0, arg2, &sp10, arg3);
@@ -194,9 +195,6 @@ extern "C" int func_001D5A0C(void *arg0, const u_long128 *arg1, unsigned int arg
     }
     return ret;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D5A0C);
-#endif
 
 extern "C" void func_001D5BC8(void *arg0, int arg1, int arg2) {
     GamList<StatElem16_5BC8>::iterator it;
