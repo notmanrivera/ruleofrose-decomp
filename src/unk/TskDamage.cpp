@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "task/cmnitask.h"
 
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 

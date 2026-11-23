@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "task/cmnitask.h"
 
 extern "C" int Xiii_func_00218470(int, int, int) asm("func_00218470");
 extern "C" int Xiii_getInfo__9BedMemoryP13BedMemoryInfoi(int, int, int) asm("getInfo__9BedMemoryP13BedMemoryInfoi");

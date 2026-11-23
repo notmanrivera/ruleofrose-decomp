@@ -19,21 +19,9 @@
 #ifndef UNK_TSKMSGMAN_H
 #define UNK_TSKMSGMAN_H
 
+#include "task/cmnitask.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
-
-struct TskVec4 {
-    float f[4];
-} __attribute__((aligned(16)));
-
-class CmnITask {
-public:
-    virtual int get_task_type() { return 0; }
-    virtual void pause(bool) {}
-    virtual void init() = 0;
-    virtual int exec(int, int, void *) = 0;
-    virtual void term() = 0;
-};
 
 // sizeof 0xC0 (__builtin_new in unk/GrgMain, unk/MrtMain, unk/TskMsgMan)
 class TskMoveTypeGen : public CmnITask {

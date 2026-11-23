@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "task/cmnitask.h"
 extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
 extern int _vt$7ObjStat;

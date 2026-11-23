@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "task/cmnitask.h"
 extern "C" int Xiiii_strncpy(int, int, int) asm("strncpy");
 extern "C" void Xff_func_00218424(float, float) asm("func_00218424");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))

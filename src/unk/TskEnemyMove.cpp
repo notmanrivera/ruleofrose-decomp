@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "task/cmnitask.h"
 extern "C" float ctor700_Xf_func_001D4A3C(int, int, int) asm("func_001D4A3C");
 extern "C" float ctor700_Xf_func_001D4AEC(int, int, int) asm("func_001D4AEC");
 extern "C" int ctor700_X_func_0010423C(int, int) asm("func_0010423C");

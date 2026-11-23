@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "task/cmnitask.h"
 struct Ent63C0 {
     int unk0;
     int unk4;
@@ -614,9 +615,6 @@ struct TskMoveSectaFindPathObj {
     int (TskMoveSectaFindPathObj::*m_func)();
 };
 extern "C" int X_func_001ED1D0(TskMoveSectaFindPathObj *) asm("func_001ED1D0");
-struct TskVec4 {
-    float f[4];
-} __attribute__((aligned(16)));
 struct TskHitCheck {
     void *m_origin_pos;
     int m_rotate;

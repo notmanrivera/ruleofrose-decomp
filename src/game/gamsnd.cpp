@@ -1,5 +1,6 @@
 #include "ror.h"
 #include "include_asm.h"
+#include "task/cmnitask.h"
 #include "utl/filereader.h"
 extern "C" int Xi_func_001E4CBC() asm("func_001E4CBC");
 extern "C" int Xiiiii_func_001E5660(int, int, int, int) asm("func_001E5660");

@@ -1,5 +1,6 @@
 #include "ror.h"
 #include "include_asm.h"
+#include "task/cmnitask.h"
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xii___11FileReadReq(int) asm("__11FileReadReq");
 extern "C" int Xiiii_func_001BE524__10FileReaderP11FileReadReqi(int, int, int) asm("func_001BE524__10FileReaderP11FileReadReqi");

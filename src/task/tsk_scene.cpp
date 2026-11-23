@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "task/cmnitask.h"
 extern "C" char vtbl_15ScenePlaySingle[] asm("_vt$15ScenePlaySingle");
 extern "C" char vtbl_11PLScenePlay[] asm("_vt$11PLScenePlay");
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
