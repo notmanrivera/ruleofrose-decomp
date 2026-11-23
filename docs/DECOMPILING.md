@@ -479,6 +479,29 @@ Things that changed codegen so far:
 - An empty function that `--new` writes for you is plain C++: when asm calls
   it, it needs `extern "C"` or the link fails (`msg/msgman`).
 
+### Typed members, not offsets
+
+A match must read and write fields by name. m2c's draft is full of
+`M2C_FIELD(arg0, int *, 0x124)`; before (or while) matching, give the
+function its class (`MnuDiary *self`) and use `self->m_curPage`. If the
+header lacks the field, add it there (`int m_unk124; // +0x124`), with its
+offset in a comment, and keep the size check (`STATIC_ASSERT`/typedef) true.
+This is not cosmetic: with the right types the compiler sees the same
+expressions the original did. unk/MnuDiary func_00199714 went from 136 to
+63 edits, exact size and relocations, only by typing it and using one
+counter variable the way the game does (2026-11-23).
+
+- `tools/offset_check.py <file> --list` lists the raw offsets left in a
+  file's matched code; merges (merge_worker.sh, verify_change.py, the
+  cpp_permuter queue) refuse a file whose count grows. A permuter match on
+  an attempt that still has offsets is logged ("MATCH ... with raw
+  offsets") and waits until someone types it.
+- Declare each type once, in a header. A second copy of a class under
+  another name (`Obj_9A598` beside `MnuStock`, `Msg_9A598` beside
+  `MnuMsgWin`) hides bugs and blocks the next person: reuse or extend the
+  existing one.
+- Unknown is fine, untyped is not: `int m_unk58;` is a typed member.
+
 ### The fast loop
 
 ```bash

@@ -17,7 +17,8 @@
 #    merged); all must report a matching object (functions left as
 #    INCLUDE_ASM or NON_MATCHING are fine, a mismatching compiled function
 #    is not).
-# 3. Cherry-picks them, checks the touched files with tools/host_check.py
+# 3. Cherry-picks them, checks the touched files with tools/offset_check.py
+#    (no new raw offsets in matched code) and tools/host_check.py
 #    (no file may have more errors for a PC compiler than its baseline),
 #    runs the full build and requires build/ok; on any
 #    failure the branch goes back to where it was.
@@ -114,6 +115,14 @@ else
   if ! hc=$("$PY" tools/host_check.py $FILES 2>&1); then
     git reset -q --hard "$BEFORE"
     echo "refusing: the host check (modern g++ and clang++ for a PC) got worse:"; echo "$hc" | grep -v "^host check:" | head -12
+    exit 1
+  fi
+  # Typed members (CLAUDE.md): no file may get more raw-offset accesses in
+  # matched code than its baseline in config/offset_check.tsv.
+  # shellcheck disable=SC2086
+  if ! oc=$("$PY" tools/offset_check.py $FILES 2>&1); then
+    git reset -q --hard "$BEFORE"
+    echo "refusing: new raw-offset accesses (M2C_FIELD / (char *)x + off) in matched code; use typed members:"; echo "$oc" | grep WORSE | head -12
     exit 1
   fi
   if [ -n "$DEFER" ]; then

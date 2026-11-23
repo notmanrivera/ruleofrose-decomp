@@ -64,6 +64,16 @@ roadmap: `notes/PROJECT_STATE.md` (Spanish). Setup: `README.md` (English).
 - A function counts as done only when it compiles to identical bytes,
   relocation targets included. Measure with `tools/compiler_id.py`-style scoring;
   never mark near-matches as matched.
+- Typed members, never fixed offsets: a function is not done if it reads or
+  writes a field as `M2C_FIELD(p, int *, 0x58)` or `*(int *)((char *)p +
+  0x58)`. Use the class's header (`p->m_radius`); an unknown field gets a
+  member named by its offset (`int m_unk58;`) in that header, not an offset
+  in the code. `tools/offset_check.py` enforces it at every merge (no file
+  may get more raw offsets in matched code than `config/offset_check.tsv`;
+  run `--update <file>` after paying some down). Attempts under
+  `NON_MATCHING` may still have them; type them when retrying.
+- Each struct/class is declared once, in a header; no local copies or
+  "layout views" of a class that already has one (reuse it, extend it).
 - Ghidra scripts must not overwrite `USER_DEFINED` names or signatures.
 
 ## Communication

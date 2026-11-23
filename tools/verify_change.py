@@ -119,10 +119,17 @@ def main():
     except SystemExit as e:
         print(f"  host check could not run: {e}")
         worse.append("(host check)")
+    import offset_check
+    base_oc = offset_check.load_baseline()
+    for f in names:
+        n = len(offset_check.accesses(f))
+        if n > base_oc.get(f, 0):
+            worse.append(f + " (raw offsets)")
+            print(f"  WORSE offset check {f}: {n} raw-offset accesses in matched code (baseline {base_oc.get(f, 0)}); use typed members")
     if bad or worse:
-        print(f"FAILED: {len(bad)} not matching ({', '.join(bad)})" + (f"; host check worse: {', '.join(worse)}" if worse else ""))
+        print(f"FAILED: {len(bad)} not matching ({', '.join(bad)})" + (f"; host/offset check worse: {', '.join(worse)}" if worse else ""))
         sys.exit(1)
-    print(f"OK: {len(names)} files match, host check not worse (the coordinator runs the full build at merge)")
+    print(f"OK: {len(names)} files match, host and offset checks not worse (the coordinator runs the full build at merge)")
 
 
 if __name__ == "__main__":
