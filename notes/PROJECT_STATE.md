@@ -256,3 +256,36 @@ del proyecto. Lo que más rindió:
 Pendiente: la lista G de cabeceras (TskMsgMan, efectos, MagLifeBwn,
 MagLifePC, archivos sin clase), las llamadas virtuales para Sektor, y los
 254 intentos NON_MATCHING (138 KB) que quedan.
+
+## Estado (2026-11-23): 40.25 %
+
+461,904 de 1,147,560 bytes del código del juego (127 de 134 archivos).
+La noche del 22 al 23 se pasó de 39.23 % a 40.25 % (+11,772 bytes); la
+sesión entera (desde el 22 a la 01:20) fue de 34.93 % a 40.25 %.
+
+- Cabeceras (lista G, `build/workers/fable-tasks.tsv`): G2 efectos, G3
+  MagLifeBwn, G4 MagLifePC, G5 cuatro archivos sin clase (entre ellos la
+  máquina de guiones `unk/0020ED9C`), G6 los Tsk con `task/cmnitask.h`, G7
+  `mnuBase.h` + MnuPBook. Falta G7 MnuDiary. Neon (Gemini 4 Neon) y Argon
+  sin cuota semanal hasta el 29 y el 30.
+- Permutadores: **Smoke** (cpp_permuter de CriminalRETeam, MIT, C++ sin
+  traducir; `tools/cpp_perm.py`, `tools/cpp_perm_queue.py`, puntuación
+  `tools/cpp_perm_score.py`) es el principal: 3 exactas en la primera
+  noche, y su mejor variante sirvió a Codex para otra. Sektor retirado;
+  Cyrax queda como segunda pasada rápida (tres mutaciones nuevas del kit de
+  Xenosaga). La cola de Smoke quedó en la 20 de 118 (`build/workers/cpp-perm.log`).
+- Codex (GPT-6.1-Sol): 13 exactas en tandas de "casi" de 1 a 11 ediciones.
+- Investigación externa (`notes/research/external-2026-11-23-*.md`):
+  alineación medida con el compilador (cadenas, arrays y structs a 8;
+  tablas de saltos a 16); el compilador es el ee-gcc 2.96 de decompme sin
+  los parches de Xenosaga (decimales truncados como en el juego; ningún
+  "casi" por orden tiene la huella del parche LO_SUM, `tools/order_probe.py`).
+- Herramientas nuevas: `tools/verify_change.py` y `tools/header_brief.py`
+  (los workers comprueban sin el build completo), `tools/regalloc.py
+  --compare`, `tools/map_pal_names.py` (nombres de RoR-Port, GPL, solo como
+  pistas locales; el dueño hablará con su autor), ejecutable PAL extraído
+  a `disc/pal/` (sin símbolos; clase propia `magSeqLoader`).
+
+Pendiente: G7 MnuDiary; seguir la cola de Smoke; pasar a Smoke los trucos
+propios de Cyrax (throw(), PS2_REG, inlines, retipos); unos 250 intentos
+NON_MATCHING.
