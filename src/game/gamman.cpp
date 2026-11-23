@@ -1820,7 +1820,7 @@ INCLUDE_RODATA("asm/nonmatchings/game/gamman", D_002FBB98);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C9920);
 
-// NON_MATCHING: 4/129 differ, 4 edits
+// NON_MATCHING: 3/129 differ, 3 edits
 #ifdef NON_MATCHING
 extern "C" void GamSetSound(int, int, int, int, int, int) asm("func_001E6734");
 extern "C" void GamUseSound(int) asm("func_00237F90");
@@ -1883,7 +1883,11 @@ extern "C" int func_001C9C1C(int self, unsigned int mode, int value)
         left = M2C_FIELD(sound, int *, 0x1590);
         right = M2C_FIELD(sound, int *, 0x1594);
 apply:
-        GamApplySound(receiver, channel, pair, left, right, zero, unused);
+        {
+            register int argLeft PS2_REG("$6") = left;
+            do { pair[0] = left; } while (0);
+            GamSetSound(receiver, channel, argLeft, pair[1] = right, zero, unused);
+        }
         break;
     case 4:
         *(int *)value = M2C_FIELD(self, int *, 0x21FA8);
