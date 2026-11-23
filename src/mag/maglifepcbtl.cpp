@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
+
 struct PcTarget {
     DogVector m_pos;
     DogVector m_unk10;
@@ -7,50 +8,45 @@ struct PcTarget {
     int m_unk24;
     int m_unk28[6];
 };
+
 struct PcTargetList {
     PcTarget m_item[32];
     int m_num;
 };
-extern "C" int X_func_00119FA4(...) asm("func_00119FA4");
-extern "C" float X_func_00119FB0(...) asm("func_00119FB0");
-extern "C" int func_0010376C(PcTargetList *theList, int theA, float theD, int theB, int theC, float theE);
-extern "C" int func_00103654(PcTargetList *theList, float theAngle);
-void vecDirToRot(float *theDir, float *theRot);
-extern "C" int X_func_0011D15C(...) asm("func_0011D15C");
-extern const char *D_00298228[4][5][3];
+
 struct PairF {
     float a;
     float b;
 };
+
+extern "C" void X_func_001026B0(int, int, int) asm("func_001026B0");
+extern "C" int func_00103654(PcTargetList *theList, float theAngle);
+extern "C" int func_0010376C(PcTargetList *theList, DogVector *theA, float theD, int theB, int theC, float theE);
+extern "C" void X_func_00119F88(...) asm("func_00119F88");
+extern "C" DogVector *X_func_00119FA4(MagLifePC *) asm("func_00119FA4");
+extern "C" float X_func_00119FB0(MagLifePC *) asm("func_00119FB0");
+extern "C" int Xiiiui_func_0011C1E8(MagLifePC *, int, unsigned int, int) asm("func_0011C1E8");
+extern "C" float X_func_0011CE5C(MagLifePC *, DogVector *, int, int) asm("func_0011CE5C");
+extern "C" int X_func_0011D15C(MagLifePC *) asm("func_0011D15C");
+extern "C" int X_func_0011D1B0(MagLifePC *, int) asm("func_0011D1B0");
+extern "C" int Xiiuui_func_0011D1CC(MagLifePC *, unsigned int, unsigned int, int) asm("func_0011D1CC");
+extern "C" int Xiiif_func_0011D3D0(MagLifePC *, int, float) asm("func_0011D3D0");
+extern "C" int Xiiiiiif_func_0011D7C0(MagLifePC *, const char *, int, const char *, int, float) asm("func_0011D7C0");
+extern "C" int Xii_func_0011DFD0(MagLifePC *) asm("func_0011DFD0");
+extern "C" float func_0012BC20(MagLifePC *arg0, DogVector *arg1);
+extern "C" const char *func_0012C104(MagLifePC *arg0, unsigned int theWeapon, unsigned int theHeight, unsigned int theCombo);
+extern "C" int func_0012CAA4(MagLifePC *arg0, const float *arg1, int arg2);
+extern "C" void Xiiii_ror_assert(const char *, int, const char *) asm("ror_assert");
+extern "C" float Xf_vecDistXZ__FPCfT0(const float *, const float *) asm("vecDistXZ__FPCfT0");
+void vecDirToRot(float *theDir, float *theRot);
+
+extern const char *D_00298228[4][5][3];
+extern const char D_002EC8B0[];
 extern const PairF D_002EC9C8;
 extern const PairF D_002EC9D0;
 extern const PairF D_002EC9D8[4];
 extern const PairF D_002EC9F8[4][3];
 extern const PairF D_002ECA58[4][3];
-extern "C" float Xf_vecDistXZ__FPCfT0(...) asm("vecDistXZ__FPCfT0");
-extern "C" int X_func_0011D1B0(...) asm("func_0011D1B0");
-extern "C" float func_0012BC20(int arg0, int arg1);
-extern "C" int Xiiif_func_0011D3D0(int, int, float) asm("func_0011D3D0");
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" float X_func_0011CE5C(...) asm("func_0011CE5C");
-extern "C" int X_func_0012CAA4(...) asm("func_0012CAA4");
-extern "C" int Xii_func_0011DFD0(int) asm("func_0011DFD0");
-extern "C" int Xiiii_func_001026B0(int, int, int) asm("func_001026B0");
-extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
-extern "C" int Xiiiiiif_func_0011D7C0(int, int, int, int, int, float) asm("func_0011D7C0");
-extern "C" int Xiiiui_func_0011C1E8(int, int, unsigned int, int) asm("func_0011C1E8");
-extern "C" int Xiiuui_func_0011D1CC(int, unsigned int, unsigned int, int) asm("func_0011D1CC");
-extern "C" int Xiiuuu_func_0012C104(int, unsigned int, unsigned int, unsigned int) asm("func_0012C104");
-// Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_func_001026B0(...) asm("func_001026B0");
-extern "C" int X_func_00119F88(...) asm("func_00119F88");
-extern "C" int X_func_0011C1E8(...) asm("func_0011C1E8");
-extern "C" int X_func_0011D1CC(...) asm("func_0011D1CC");
-extern "C" int X_func_0011D7C0(...) asm("func_0011D7C0");
-extern "C" int X_func_0011DFD0(...) asm("func_0011DFD0");
-extern "C" int X_func_0012C104(...) asm("func_0012C104");
-extern "C" int X_ror_assert(...) asm("ror_assert");
-extern const char D_002EC8B0[];
 extern const char D_002ECAD8[];
 extern const char D_002ECAF8[];
 extern const char D_002ECB18[];
@@ -59,19 +55,16 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012B870);
 
 extern "C" void func_0012BA2C(int arg0)
 {
-    int temp_v0;
-
-    temp_v0 = (*(int *)(int *)((char *)(arg0) + 0x70));
+    int temp_v0 = *(int *)((char *)arg0 + 0x70);
     if (temp_v0 != 0) {
         X_func_00119F88(temp_v0);
     }
 }
 
-
-extern "C" int func_0012BA54(int arg0)
+extern "C" int func_0012BA54(MagLifePC *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0) == 0xB) {
-        if (M2C_FIELD(arg0, int *, 8) == 3) {
+    if (arg0->m_unk00 == 0xB) {
+        if (arg0->m_unk08 == 3) {
             return 1;
         }
     }
@@ -180,27 +173,24 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcbtl", D_002EC8A0);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcbtl", D_002EC8B0);
 
-extern "C" float func_0012BC20(int arg0, int arg1)
+extern "C" float func_0012BC20(MagLifePC *arg0, DogVector *arg1)
 {
-    float temp_f0;
-    int temp_v0;
-
-    temp_v0 = M2C_FIELD(arg0, int *, 0x58);
-    M2C_FIELD(arg1, float *, 0) = M2C_FIELD(temp_v0, float *, 0x40);
-    M2C_FIELD(arg1, float *, 4) = M2C_FIELD(temp_v0, float *, 0x44);
-    M2C_FIELD(arg1, float *, 8) = M2C_FIELD(temp_v0, float *, 0x48);
-    M2C_FIELD(arg1, float *, 4) += -120.0f;
-    if (M2C_FIELD(arg0, int *, 0x58) == 0) {
-        X_ror_assert((int) D_002EC8B0, 0xFB, (int) "m_actor");
+    DogActor *actor = arg0->m_actor;
+    arg1->m_x = actor->m_unk40.m_x;
+    arg1->m_y = actor->m_unk40.m_y;
+    arg1->m_z = actor->m_unk40.m_z;
+    arg1->m_y += -120.0f;
+    if (arg0->m_actor == 0) {
+        Xiiii_ror_assert(D_002EC8B0, 0xFB, "m_actor");
     }
-    return M2C_FIELD(M2C_FIELD(arg0, int *, 0x58), float *, 0x54);
+    return arg0->m_actor->m_unk50.m_y;
 }
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012BC98);
 
-extern "C" float func_0012BEDC(int arg0, float *theYaw, float *thePitch, const DogVector *thePos)
+extern "C" float func_0012BEDC(MagLifePC *arg0, float *theYaw, float *thePitch, const DogVector *thePos)
 {
-    DogVector pos = M2C_FIELD(arg0, DogActor **, 0x58)->m_unk40;
+    DogVector pos = arg0->m_actor->m_unk40;
     DogVector dir;
     DogVector *dp = &dir;
     *dp = *thePos;
@@ -212,7 +202,7 @@ extern "C" float func_0012BEDC(int arg0, float *theYaw, float *thePitch, const D
     vecDirToRot(&dp->m_x, &rot.m_x);
     *theYaw = rot.m_y;
     *thePitch = rot.m_x;
-    float d = *theYaw - M2C_FIELD(arg0, DogActor **, 0x58)->m_unk50.m_y;
+    float d = *theYaw - arg0->m_actor->m_unk50.m_y;
     if (d < -DOG_PI) {
         d += DOG_PI2;
     } else if (d > DOG_PI) {
@@ -221,15 +211,15 @@ extern "C" float func_0012BEDC(int arg0, float *theYaw, float *thePitch, const D
     return d;
 }
 
-extern "C" void func_0012C014(int arg0, float *arg1, float *arg2)
+extern "C" void func_0012C014(MagLifePC *arg0, float *arg1, float *arg2)
 {
-    int n = M2C_FIELD(arg0, int *, 0x128);
+    int n = arg0->m_atk_height;
     PairF def = D_002EC9C8;
     const PairF *p;
     if (n >= 4) {
         p = &D_002EC9D0;
     } else {
-        switch (M2C_FIELD(arg0, int *, 0x124)) {
+        switch (arg0->m_atk_weapon) {
         case 0:
             p = &D_002EC9D8[n];
             break;
@@ -237,10 +227,10 @@ extern "C" void func_0012C014(int arg0, float *arg1, float *arg2)
             p = &def;
             break;
         case 2:
-            p = &D_002EC9F8[n][M2C_FIELD(arg0, int *, 0x12C)];
+            p = &D_002EC9F8[n][arg0->m_atk_combo];
             break;
         case 3:
-            p = &D_002ECA58[n][M2C_FIELD(arg0, int *, 0x12C)];
+            p = &D_002ECA58[n][arg0->m_atk_combo];
             break;
         default:
             p = &def;
@@ -261,16 +251,16 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcbtl", D_002EC9F8);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcbtl", D_002ECA58);
 
-extern "C" const char *func_0012C104(int arg0, unsigned int theWeapon, unsigned int theHeight, unsigned int theCombo)
+extern "C" const char *func_0012C104(MagLifePC *arg0, unsigned int theWeapon, unsigned int theHeight, unsigned int theCombo)
 {
     if (theCombo >= 3U) {
-        Xiiii_ror_assert((int) D_002EC8B0, 0x250, (int) "theCombo >= 0 && theCombo < 3");
+        Xiiii_ror_assert(D_002EC8B0, 0x250, "theCombo >= 0 && theCombo < 3");
     }
     if (theWeapon >= 4U) {
-        Xiiii_ror_assert((int) D_002EC8B0, 0x251, (int) D_002ECAD8);
+        Xiiii_ror_assert(D_002EC8B0, 0x251, D_002ECAD8);
     }
     if (theHeight >= 5U) {
-        Xiiii_ror_assert((int) D_002EC8B0, 0x252, (int) D_002ECAF8);
+        Xiiii_ror_assert(D_002EC8B0, 0x252, D_002ECAF8);
     }
     if (theWeapon == 1 && X_func_0011D15C(arg0) <= 0) {
         return D_002ECB18;
@@ -356,85 +346,85 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcbtl", D_002ECD28);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcbtl", D_002ECD38);
 
-extern "C" void func_0012C1FC(int arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3)
+extern "C" void func_0012C1FC(MagLifePC *arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3)
 {
     if ((unsigned int) (arg3 + 1) >= 4U) {
-        Xiiii_ror_assert((int) D_002EC8B0, 0x291, (int) "theCombo >= -1 && theCombo < 3");
+        Xiiii_ror_assert(D_002EC8B0, 0x291, "theCombo >= -1 && theCombo < 3");
     }
     if (arg1 >= 4U) {
-        Xiiii_ror_assert((int) D_002EC8B0, 0x292, (int) D_002ECAD8);
+        Xiiii_ror_assert(D_002EC8B0, 0x292, D_002ECAD8);
     }
     if (arg2 >= 5U) {
-        Xiiii_ror_assert((int) D_002EC8B0, 0x293, (int) D_002ECAF8);
+        Xiiii_ror_assert(D_002EC8B0, 0x293, D_002ECAF8);
     }
-    M2C_FIELD(arg0, unsigned int *, 0x124) = arg1;
-    M2C_FIELD(arg0, unsigned int *, 0x128) = arg2;
-    M2C_FIELD(arg0, unsigned int *, 0x12C) = arg3;
-    Xiiiiiif_func_0011D7C0(arg0, Xiiuuu_func_0012C104(arg0, arg1, arg2, arg3), 0, 0, -1, 0.01666669361293316f);
+    arg0->m_atk_weapon = arg1;
+    arg0->m_atk_height = arg2;
+    arg0->m_atk_combo = arg3;
+    Xiiiiiif_func_0011D7C0(arg0, func_0012C104(arg0, arg1, arg2, arg3), 0, 0, -1, 0.01666669361293316f);
     Xii_func_0011DFD0(arg0);
-    Xiiii_func_001026B0(Xiiuui_func_0011D1CC((int) arg0, arg2, arg3, 0), 0, 0);
+    X_func_001026B0(Xiiuui_func_0011D1CC(arg0, arg2, arg3, 0), 0, 0);
 }
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcbtl", func_0012C31C);
 
-extern "C" void func_0012C9C0(int arg0, int arg1, int arg2)
+extern "C" void func_0012C9C0(MagLifePC *arg0, int arg1, int arg2)
 {
-    if ((M2C_FIELD(arg0, int *, 0x58) != 0) && ((M2C_FIELD(arg0, int *, 0) != 0xE) || (M2C_FIELD(arg0, int *, 8) >= 8))) {
+    if ((arg0->m_actor != 0) && ((arg0->m_unk00 != 0xE) || (arg0->m_unk08 >= 8))) {
         Xiiiui_func_0011C1E8(arg0, 0xE, (unsigned int) arg1, 1);
-        M2C_FIELD(arg0, int *, 0xC) = arg2;
+        arg0->m_unk0C = arg2;
     }
 }
 
-extern "C" int func_0012CA28(int arg0)
+extern "C" int func_0012CA28(MagLifePC *arg0)
 {
-    int node = M2C_FIELD(arg0, int *, 0x1F0);
+    int node = arg0->m_target_id;
     if (node != 0) {
         DogVector vec;
         X_func_0011CE5C(arg0, &vec, node, 0);
-        return X_func_0012CAA4(arg0, &vec, M2C_FIELD(arg0, int *, 0x1F0));
+        return func_0012CAA4(arg0, &vec.m_x, arg0->m_target_id);
     }
-    register int ret PS2_REG("$3") = M2C_FIELD(arg0, int *, 0x1B0);
+    register int ret PS2_REG("$3") = arg0->m_unk1B0;
     if (ret < 0) ret = 0;
     return ret;
 }
 
-extern "C" int func_0012CAA4(int arg0, int arg1, int arg2)
+extern "C" int func_0012CAA4(MagLifePC *arg0, const float *arg1, int arg2)
 {
     DogVector vec;
-    func_0012BC20(arg0, (int)&vec);
-    float dist = Xf_vecDistXZ__FPCfT0(&vec, arg1);
+    func_0012BC20(arg0, &vec);
+    float dist = Xf_vecDistXZ__FPCfT0(&vec.m_x, arg1);
     if (X_func_0011D1B0(arg0, arg2) == 0 && dist <= 80.0f) {
         return 4;
     }
     return Xiiif_func_0011D3D0(arg0, arg2, dist);
 }
 
-extern "C" void func_0012CB50(int arg0)
+extern "C" void func_0012CB50(MagLifePC *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0) != 0xB) {
-        Xiiii_ror_assert((int) D_002EC8B0, 0x4AF, (int) "m_submode.getMode() == MAG_PC_MODE_TARGETTING");
+    if (arg0->m_unk00 != 0xB) {
+        Xiiii_ror_assert(D_002EC8B0, 0x4AF, "m_submode.getMode() == MAG_PC_MODE_TARGETTING");
     }
-    if (M2C_FIELD(arg0, int *, 0x21C) == 1) {
-        Xiiii_func_001026B0(0x7D, 0, 0);
+    if (arg0->m_unk21C == 1) {
+        X_func_001026B0(0x7D, 0, 0);
     }
-    M2C_FIELD(arg0, int *, 0x1F0) = 0;
-    M2C_FIELD(arg0, int *, 0x1F4) = -1;
+    arg0->m_target_id = 0;
+    arg0->m_target_unk = -1;
     PcTargetList list;
     list.m_num = 0;
-    int a = X_func_00119FA4(arg0);
+    DogVector *a = X_func_00119FA4(arg0);
     if (func_0010376C(&list, a, X_func_00119FB0(arg0), 0, 1, 500.0f) > 0) {
         int i = func_00103654(&list, 1.5707965f);
         if (i >= 0) {
             int id = list.m_item[i].m_id;
             int u = list.m_item[i].m_unk24;
-            M2C_FIELD(arg0, DogVector *, 0x1C0) = list.m_item[i].m_pos;
-            M2C_FIELD(arg0, int *, 0x1F0) = id;
-            M2C_FIELD(arg0, int *, 0x1F4) = u;
+            arg0->m_unk1C0 = list.m_item[i].m_pos;
+            arg0->m_target_id = id;
+            arg0->m_target_unk = u;
         } else {
-            M2C_FIELD(arg0, int *, 0x1F0) = 0;
+            arg0->m_target_id = 0;
         }
     } else {
-        M2C_FIELD(arg0, int *, 0x1F0) = 0;
+        arg0->m_target_id = 0;
     }
     Xiiiui_func_0011C1E8(arg0, 5, 0, 0);
 }
