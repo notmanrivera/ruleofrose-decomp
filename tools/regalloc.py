@@ -13,6 +13,7 @@ that should win needs more priority (more uses, a shorter life).
     tools/.venv/Scripts/python.exe tools/regalloc.py game/gamman func_001CD044
     tools/.venv/Scripts/python.exe tools/regalloc.py unk/MnuPBook func_00196EFC --nm
     tools/.venv/Scripts/python.exe tools/regalloc.py bed/bedsubmode push__10BedSubMode --src build/try.cpp
+    tools/.venv/Scripts/python.exe tools/regalloc.py unk/SctLayer func_0017B918 --src a.cpp --compare b.cpp
 
 The function is found by its `;; Function` header (cc1 prints the demangled
 C++ name): an extern "C" name as is, a mangled name by its method part.
@@ -53,24 +54,23 @@ def section(text, func):
     sys.exit(f"no ';; Function' for {func}; functions here: " + "; ".join(heads))
 
 
-def main():
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("name", help="file as in config/splits.tsv, e.g. game/gamman")
-    ap.add_argument("function")
-    ap.add_argument("--src", help="compile this variant of the file instead")
-    ap.add_argument("--nm", action="store_true", help="compile with -DNON_MATCHING")
-    a = ap.parse_args()
-    dumps = Path("build/match/dumps") / a.name
-    for old in (ROOT / dumps).glob("*") if (ROOT / dumps).exists() else []:
-        old.unlink()
-    extra = "-dlg" + (" -DNON_MATCHING" if a.nm else "")
-    match.compile_file(a.name, a.src, extra=extra, dumps=dumps.as_posix())
+def analyze(name, function, src, nm, tag):
+    """(header, [(priority, pseudo, refs, live, hard reg, notes)]) of one
+    compile; dumps go to a directory of their own per tag (two variants,
+    or two sessions, never share one)."""
+    import os
+    dumps = Path("build/match/dumps") / name / f"{tag}-{os.getpid()}"
+    if (ROOT / dumps).exists():
+        for old in (ROOT / dumps).glob("*"):
+            old.unlink()
+    extra = "-dlg" + (" -DNON_MATCHING" if nm else "")
+    match.compile_file(name, src, extra=extra, dumps=dumps.as_posix())
     lreg = next((ROOT / dumps).glob("*.lreg"), None)
     greg = next((ROOT / dumps).glob("*.greg"), None)
     if not lreg or not greg:
         sys.exit(f"cc1 left no .lreg/.greg in {dumps}")
-    head, lsec = section(lreg.read_text(errors="replace"), a.function)
-    _, gsec = section(greg.read_text(errors="replace"), a.function)
+    head, lsec = section(lreg.read_text(errors="replace"), function)
+    _, gsec = section(greg.read_text(errors="replace"), function)
     disp = {}
     m = re.search(r";; Register dispositions:\n(.*?)\n\n", gsec, re.S)
     for p, h in re.findall(r"(\d+) in (\d+)", m.group(1) if m else ""):
@@ -85,15 +85,62 @@ def main():
         size = int(re.search(r"(\d+) bytes", rest).group(1)) if "bytes" in rest else 4
         prio = (math.floor(math.log2(refs)) if refs > 1 else 0) * refs * size / max(live, 1)
         tags = [t for t in ("user var", "crosses") if t in rest]
+        c = re.search(r"crosses (\d+) calls?", rest)
+        if c:
+            tags[tags.index("crosses")] = f"crosses {c.group(1)} call" + ("s" if c.group(1) != "1" else "")
         if r.group(4):
             tags.append("local" + r.group(4).replace(" in block", ""))
         if "FP_REGS" in rest:
             tags.append("float")
         rows.append((prio, pseudo, refs, live, disp.get(pseudo), ", ".join(tags)))
-    print(f"{head}  ({a.name}{', NON_MATCHING' if a.nm else ''})")
+    return head, rows, dumps
+
+
+def table(rows):
     print(f"  {'pseudo':>6} {'reg':>5} {'refs':>4} {'live':>5} {'priority':>8}  notes")
     for prio, pseudo, refs, live, h, tags in sorted(rows, key=lambda r: -r[0]):
         print(f"  {pseudo:>6} {hard(h) if h is not None else 'mem':>5} {refs:>4} {live:>5} {prio:>8.2f}  {tags}")
+
+
+def compare(a_rows, b_rows):
+    """Per hard register, what lives there in A and in B, where they differ
+    (pseudo numbers differ between compiles; refs/live/notes say which value
+    it is). Correlation, not proof: preferences, classes and reload decide too."""
+    def by_reg(rows):
+        out = {}
+        for prio, pseudo, refs, live, h, tags in rows:
+            if h is not None:
+                out.setdefault(h, []).append(f"p{pseudo} refs {refs} live {live} prio {prio:.1f}" + (f" ({tags})" if tags else ""))
+        return out
+    A, B = by_reg(a_rows), by_reg(b_rows)
+    diff = [h for h in sorted(set(A) | set(B)) if sorted(x.split(" ", 1)[1] for x in A.get(h, [])) != sorted(x.split(" ", 1)[1] for x in B.get(h, []))]
+    if not diff:
+        print("  same allocation (by refs/live/notes) in both")
+    for h in diff:
+        print(f"  {hard(h):>5}  A: {'; '.join(A.get(h, ['-']))}")
+        print(f"  {'':>5}  B: {'; '.join(B.get(h, ['-']))}")
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("name", help="file as in config/splits.tsv, e.g. game/gamman")
+    ap.add_argument("function")
+    ap.add_argument("--src", help="compile this variant of the file instead")
+    ap.add_argument("--nm", action="store_true", help="compile with -DNON_MATCHING")
+    ap.add_argument("--compare", metavar="SRC2", help="also compile this variant (B) and show, per register, "
+                    "what changed between the two (A = --src or the file)")
+    a = ap.parse_args()
+    head, rows, dumps = analyze(a.name, a.function, a.src, a.nm, "a")
+    print(f"{head}  ({a.name}{', NON_MATCHING' if a.nm else ''})")
+    table(rows)
+    if a.compare:
+        _, brows, bdumps = analyze(a.name, a.function, a.compare, a.nm, "b")
+        print(f"B: {a.compare}")
+        table(brows)
+        print("registers that changed (A -> B):")
+        compare(rows, brows)
+        print(f"dumps: {dumps.as_posix()}/ and {bdumps.as_posix()}/")
+        return
     print(f"dumps: {dumps.as_posix()}/ (.lreg = local alloc, .greg = global alloc)")
 
 
