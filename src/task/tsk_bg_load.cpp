@@ -5,6 +5,8 @@
 extern "C" int Xii___11FileReadReq(int) asm("__11FileReadReq");
 extern "C" int Xiiii_func_001BE524__10FileReaderP11FileReadReqi(int, int, int) asm("func_001BE524__10FileReaderP11FileReadReqi");
 #include "sdk/string.h"
+extern "C" int Xiii_func_001FCC68(int, int) asm("func_001FCC68");
+extern "C" int Xiiii_memset(int, int, int) asm("memset");
 extern "C" int Xiiii_strncpy(int, int, int) asm("strncpy");
 struct BgIter {
     char *m_top;                    // +0x00
@@ -63,18 +65,15 @@ extern "C" int func_001FCC68(BgIter *self, const int *theName)
 }
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" void func_001FCCF4(BgIter *self, const char *theName)
 {
-    int name[2];
-    memset(name, 0, 8);
-    strncpy((char *)name, theName, 8);
-    func_001FCC68(self, name);
+  unsigned char new_var;
+  int name[2];
+  new_var = 0;
+  memset(name, new_var, 8);
+  strncpy((char *) name, theName, 8);
+  func_001FCC68(self, name);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/task/tsk_bg_load", func_001FCCF4);
-#endif
 
 
 extern "C" void func_001FCD4C(BgIter *self, int theNo)
