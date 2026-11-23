@@ -79,6 +79,7 @@ extern "C" int func_001D5610(void *arg0, unsigned int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamstat", func_001D56F4);
 
+// NON_MATCHING: 9/77 differ, 4 edits
 #ifdef NON_MATCHING
 struct Cb8_58D8 {
     unsigned int m_a;
@@ -98,18 +99,21 @@ extern "C" int func_001D58D8(void *arg0, void *arg1, float fparg0) {
         return 0;
     }
     func_001D8064(p0, p1, *(void **)((char *)temp_v1 + 0x114), 0);
-    {
+    do {
         register u_long128 *dst1 PS2_REG("$2") = (u_long128 *)((char *)p0 + 0x225B0);
         register u_long128 tmp1 PS2_REG("$6") = *(u_long128 *)p1;
         *dst1 = tmp1;
-    }
+    } while (0);
     *(float *)p1 += Xff_sinf(fparg0) * *(float *)((char *)p0 + 0x21FC4);
-    *(float *)((char *)p1 + 8) += Xff_cosf(fparg0) * *(float *)((char *)p0 + 0x21FC4);
-    {
+    float cosAngle = Xff_cosf(fparg0);
+    do {
+        register float scale PS2_REG("$f2") = *(float *)((char *)p0 + 0x21FC4);
+        register float height PS2_REG("$f1") = *(float *)((char *)p1 + 8);
+        *(float *)((char *)p1 + 8) = height + cosAngle * scale;
         register u_long128 *dst2 PS2_REG("$2") = (u_long128 *)((char *)p0 + 0x225C0);
         register u_long128 tmp2 PS2_REG("$6") = *(u_long128 *)p1;
         *dst2 = tmp2;
-    }
+    } while (0);
     {
         register float f1 PS2_REG("$f1") = *(float *)((char *)p0 + 0x21FBC);
         register float f0 PS2_REG("$f0") = *(float *)((char *)p0 + 0x21FC0);
