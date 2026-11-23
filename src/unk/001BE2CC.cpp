@@ -1,6 +1,7 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+#include "unk/001BE2CC.h"
 extern int D_002B8DA8[];
 extern "C" void X_func_001C6A40(GamMan *, int) asm("func_001C6A40");
 extern "C" int X_func_001F184C(...) asm("func_001F184C");
@@ -33,9 +34,9 @@ extern "C" int X_func_00191DC8(...) asm("func_00191DC8");
 extern "C" int X_func_00191ED0(...) asm("func_00191ED0");
 extern "C" int X_func_00191F98(...) asm("func_00191F98");
 extern "C" int func_001C8A28(void *, int, int);
-extern "C" int func_001BFFCC(int, int);
-extern "C" int func_001C020C(int, int);
-extern "C" int func_001C0254(int, int);
+extern "C" int func_001BFFCC(FntCanvas *, int);
+extern "C" int func_001C020C(FntCanvas *, int);
+extern "C" int func_001C0254(FntCanvas *, int);
 extern "C" int func_001BE084(int);
 extern "C" void func_001BDC54(int);
 extern "C" void func_0018BC18(char *, int);
@@ -85,15 +86,15 @@ extern "C" float func_0010A650__8DogActor(void *);
 extern "C" int X_func_001C772C(...) asm("func_001C772C");
 extern "C" int X_func_001E4540(...) asm("func_001E4540");
 extern "C" void *bsearch(const void *, const void *, unsigned int, unsigned int, int (*)(const void *, const void *));
-extern "C" int func_001C0534(int, unsigned int);
+extern "C" int func_001C0534(FntCanvas *, unsigned int);
 extern "C" int func_001BFFAC(unsigned short *, unsigned short *);
 extern "C" int Xiiu_func_001D2D00(int, unsigned int) asm("func_001D2D00");
 extern "C" int func_001D966C(int);
 extern "C" int X_loadModel__9MagSystemii(void *, int, int) asm("loadModel__9MagSystemii");
 extern "C" void func_001CCC30(GamMan *, int);
-extern "C" int func_001C0148(int, int);
-extern "C" int func_001C0298(int, int);
-extern "C" int func_001C02B8(int, int);
+extern "C" int func_001C0148(FntCanvas *, int);
+extern "C" int func_001C0298(FntCanvas *, int);
+extern "C" int func_001C02B8(FntCanvas *, int);
 struct __attribute__((aligned(8))) DogVector {
     float m_x;
     float m_y;
@@ -155,16 +156,14 @@ extern "C" int X_func_00243C40(int, int, int) asm("func_00243C40");
 extern "C" int X_func_001CBE38(int, int) asm("func_001CBE38");
 extern int D_006FE6A0;
 extern "C" void X_func_00144500(...) asm("func_00144500");
-extern "C" int func_001C0298(int arg0, int arg1);
 extern char *D_007B205C;
 extern "C" int X_func_00191E58(...) asm("func_00191E58");
 extern char D_006FBD80[];
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
 extern "C" void X_func_001BE564(...) asm("func_001BE564");
-extern "C" int Xiiiii_func_001BE444(int, int, int, int) asm("func_001BE444");
-extern "C" int Xiii_func_001BE3C4(int, int) asm("func_001BE3C4");
-extern "C" int Xiiiii_func_001BE36C(int, int, int, int) asm("func_001BE36C");
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiiiii_func_001BE444(FileReader *, int, int, int) asm("func_001BE444");
+extern "C" int Xiii_func_001BE3C4(FileReader *, int) asm("func_001BE3C4");
+extern "C" int Xiiiii_func_001BE36C(FileReader *, int, int, int) asm("func_001BE36C");
 extern "C" int X_FlushCache(...) asm("FlushCache");
 extern "C" int X_func_001E71FC(...) asm("func_001E71FC");
 extern "C" int X_sceGsExecLoadImage(...) asm("sceGsExecLoadImage");
@@ -260,73 +259,66 @@ static inline void *gamSub22220() {
     return (char *)p + 0x22220;
 }
 
-extern "C" void __10FileReader(int arg0)
+extern "C" void __10FileReader(FileReader *arg0)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x0)) = 0;
-    (*(int *)(int *)((char *)(arg0) + 0x4)) = -1;
+    arg0->m_req = 0;
+    arg0->m_fd = -1;
 }
 
-extern "C" int func_001BE414(int);
-
-class FileReader {
-public:
-    int unk0;
-    int unk4;
-    ~FileReader();
-};
+extern "C" int func_001BE414(FileReader *);
 
 FileReader::~FileReader()
 {
-    if (unk4 >= 0) {
-        func_001BE414((int)this);
+    if (m_fd >= 0) {
+        func_001BE414(this);
     }
 }
 
-extern "C" int func_001BE338(int arg0, int arg1)
+extern "C" int func_001BE338(FileReader *arg0, int arg1)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x4)) = X_func_00243788(arg1, 0x8001);
+    arg0->m_fd = X_func_00243788(arg1, 0x8001);
     return 0;
 }
 
-extern "C" int func_001BE36C(int arg0, int arg1, int arg2, int arg3)
+extern "C" int func_001BE36C(FileReader *arg0, int arg1, int arg2, int arg3)
 {
     return X_func_00243938(arg1, arg2, arg3);
 }
 
-extern "C" int func_001BE38C(int arg0, int arg1, int arg2)
+extern "C" int func_001BE38C(FileReader *arg0, int arg1, int arg2)
 {
     int temp_v1;
 
-    temp_v1 = M2C_FIELD(arg0, int *, 4);
+    temp_v1 = arg0->m_fd;
     if (temp_v1 < 0) {
         return -1;
     }
-    return Xiiiii_func_001BE36C((int) arg0, temp_v1, arg1, arg2);
+    return Xiiiii_func_001BE36C(arg0, temp_v1, arg1, arg2);
 }
 
-extern "C" int func_001BE3C4(int arg0, int arg1)
+extern "C" int func_001BE3C4(FileReader *arg0, int arg1)
 {
-    if (arg1 == (*(int *)(int *)((char *)(arg0) + 0x4))) {
+    if (arg1 == arg0->m_fd) {
         X_func_002437F8(arg1);
-        (*(int *)(int *)((char *)(arg0) + 0x4)) = -1;
+        arg0->m_fd = -1;
         return 1;
     }
     X_func_002437F8(arg1);
     return 2;
 }
 
-extern "C" int func_001BE414(int arg0)
+extern "C" int func_001BE414(FileReader *arg0)
 {
     int temp_v1;
 
-    temp_v1 = M2C_FIELD(arg0, int *, 4);
+    temp_v1 = arg0->m_fd;
     if (temp_v1 < 0) {
         return -1;
     }
     return Xiii_func_001BE3C4(arg0, temp_v1);
 }
 
-extern "C" int func_001BE444(int theA, int theB, int theC, int theD)
+extern "C" int func_001BE444(FileReader *theA, int theB, int theC, int theD)
 {
     int mode = 0;
 
@@ -343,92 +335,90 @@ extern "C" int func_001BE444(int theA, int theB, int theC, int theD)
     return X_func_00243C40(theB, theC, mode);
 }
 
-extern "C" int func_001BE490(int arg0, int arg1, int arg2)
+extern "C" int func_001BE490(FileReader *arg0, int arg1, int arg2)
 {
     int temp_v1;
 
-    temp_v1 = M2C_FIELD(arg0, int *, 4);
+    temp_v1 = arg0->m_fd;
     if (temp_v1 < 0) {
         return -1;
     }
-    return Xiiiii_func_001BE444((int) arg0, temp_v1, arg1, arg2);
+    return Xiiiii_func_001BE444(arg0, temp_v1, arg1, arg2);
 }
 
-extern "C" int func_001BE4C8(int arg0, int arg1, int arg2)
+extern "C" int func_001BE4C8(FileReader *arg0, int arg1, int *arg2)
 {
     int temp_v0;
     int var_v1;
 
     var_v1 = 0;
-    temp_v0 = (*(int *)(int *)((char *)(arg0) + 0x4));
+    temp_v0 = arg0->m_fd;
     if (temp_v0 >= 0) {
         var_v1 = X_func_00243CD8(temp_v0, 1);
     }
     if (arg2 != 0) {
-        (*(int *)(arg2)) = (*(int *)(int *)((char *)(arg0) + 0x4));
+        *arg2 = arg0->m_fd;
     }
     return var_v1 == 0;
 }
 
-extern "C" void func_001BE524__10FileReaderP11FileReadReqi(int self, int theReq, int theA)
+extern "C" void func_001BE524__10FileReaderP11FileReadReqi(FileReader *self, FileReadReq *theReq, int theA)
 {
-    *(int *)(self) = theReq;
-    *(int *)(theReq + 4) = 0;
+    self->m_req = theReq;
+    theReq->m_state = 0;
     return X_func_001BE564(self, theA);
 }
 
-extern "C" void func_001BE548(int *theOut, int theA, int theB)
+extern "C" void func_001BE548(FileReader *theOut, FileReadReq *theA, int theB)
 {
-    *theOut = theA;
+    theOut->m_req = theA;
     return X_func_001BE564(theOut, theB);
 }
 
-struct FileReadReq1BE564 { int fd; int state; int unk8; int path; int seekOffset; int seekWhence; int buf; int size; int closeFlag; };
-struct FileReader1BE564 { FileReadReq1BE564 *req; int fd; };
 extern "C" int X_func_002051CC(int) asm("func_002051CC");
 extern int D_002D8FFC;
-extern "C" int func_001BE564(FileReader1BE564 *self, int arg1)
+extern "C" int func_001BE564(FileReader *self, int arg1)
 {
     while (1) {
-        while ((self->req->state & 1) == 0) {
-            FileReadReq1BE564 *req = self->req;
-            int state = req->state;
+        while ((self->m_req->m_state & 1) == 0) {
+            FileReadReq *req = self->m_req;
+            int state = req->m_state;
             switch (state >> 1) {
             case 0:
-                if (req->path != 0) {
-                    func_001BE338((int)self, req->path);
-                    register FileReadReq1BE564 *r PS2_REG("$3") = self->req;
-                    r->fd = self->fd;
-                    self->req->path = 0;
+                if (req->m_path != 0) {
+                    func_001BE338(self, req->m_path);
+                    register FileReadReq *r PS2_REG("$3") = self->m_req;
+                    r->m_fd = self->m_fd;
+                    self->m_req->m_path = 0;
                     goto inc_state;
                 }
-                req->state = state + 2;
+                req->m_state = state + 2;
                 continue;
             case 1:
-                if (req->seekWhence >= 0) {
-                    func_001BE444((int)self, req->fd, req->seekOffset, req->seekWhence);
-                    self->req->seekWhence = -1;
+                if (req->m_seekWhence >= 0) {
+                    func_001BE444(self, req->m_fd, req->m_seekOffset, req->m_seekWhence);
+                    self->m_req->m_seekWhence = -1;
                     goto inc_state;
                 }
-                req->state = state + 2;
+                req->m_state = state + 2;
                 continue;
             case 2:
-                if (req->size > 0) {
-                    func_001BE36C((int)self, req->fd, req->buf, req->size);
-                    self->req->size = 0;
+                if (req->m_size > 0) {
+                    func_001BE36C(self, req->m_fd, req->m_buf, req->m_size);
+                    self->m_req->m_size = 0;
                     goto inc_state;
                 }
-                req->state = state + 2;
+                req->m_state = state + 2;
                 continue;
             case 3:
-                if (req->closeFlag != 0) {
-                    func_001BE3C4((int)self, req->fd);
-                    self->req->closeFlag = 0;
+                if (req->m_closeFlag != 0) {
+                    func_001BE3C4(self, req->m_fd);
+                    self->m_req->m_closeFlag = 0;
                 inc_state:
-                    self->req->state++;
+                    self->m_req->m_state++;
                     continue;
                 }
-                req->state = state + 2;
+                req->m_state = state + 2;
                 return 0;
             default:
                 return 0;
@@ -443,9 +433,9 @@ extern "C" int func_001BE564(FileReader1BE564 *self, int arg1)
                     X_func_0024B3F8(1);
                     X_func_0017F200(&D_007B2580);
                 }
-            } while (func_001BE4C8((int)self, 0, 0) != 1);
+            } while (func_001BE4C8(self, 0, 0) != 1);
         } else {
-            int r = func_001BE4C8((int)self, 0, 0);
+            int r = func_001BE4C8(self, 0, 0);
             if (r < 0) {
                 return -100;
             }
@@ -453,14 +443,14 @@ extern "C" int func_001BE564(FileReader1BE564 *self, int arg1)
                 return 1;
             }
         }
-        self->req->state++;
+        self->m_req->m_state++;
     }
 }
 
-extern "C" void __11FileReadReq(int arg0)
+extern "C" void __11FileReadReq(FileReadReq *arg0)
 {
-    Xiiii_memset(arg0, 0, 0x24);
-    (*(int *)(arg0)) = -1;
+    Xiiii_memset((int)arg0, 0, 0x24);
+    arg0->m_fd = -1;
 }
 
 extern "C" int func_001BE768(const char *theName)
@@ -617,26 +607,26 @@ extern "C" int func_001BEA18(const unsigned char *arg0, const unsigned char *arg
 INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BEA18);
 #endif
 
-extern "C" void func_001BEB70(int arg0)
+extern "C" void func_001BEB70(FntCanvas *arg0)
 {
     register int state PS2_REG("$2") = 2;
     register int mode PS2_REG("$3") = 4;
-    M2C_FIELD(arg0, int *, 0x18) = mode;
-    M2C_FIELD(arg0, int *, 0x34) = state;
-    M2C_FIELD(arg0, int *, 0x64) = 0x80;
-    M2C_FIELD(arg0, int *, 0x68) = 1;
-    M2C_FIELD(arg0, int *, 4) = 0;
-    M2C_FIELD(arg0, int *, 0xC) = 0;
-    M2C_FIELD(arg0, int *, 0x10) = 0;
-    M2C_FIELD(arg0, int *, 0x14) = 0;
-    M2C_FIELD(arg0, int *, 0x1C) = 0;
-    M2C_FIELD(arg0, int *, 0x2C) = 0;
-    M2C_FIELD(arg0, int *, 0x38) = 0;
-    M2C_FIELD(arg0, int *, 0x3C) = 0;
-    M2C_FIELD(arg0, int *, 0x44) = 0;
-    M2C_FIELD(arg0, int *, 0x54) = 0;
-    M2C_FIELD(arg0, int *, 0x30) = 0;
-    M2C_FIELD(arg0, int *, 0) = 0;
+    arg0->m_bpp = mode;
+    arg0->m_propStep = state;
+    arg0->m_bgColor = 0x80;
+    arg0->m_alphaFlag = 1;
+    arg0->m_ownBuf = 0;
+    arg0->m_buf = 0;
+    arg0->m_width = 0;
+    arg0->m_height = 0;
+    arg0->m_bufSize = 0;
+    arg0->m_fgColor = 0;
+    arg0->m_cellW = 0;
+    arg0->m_cellH = 0;
+    arg0->m_glyphCount = 0;
+    arg0->m_fnt = 0;
+    arg0->m_fixedStep = 0;
+    arg0->m_unk00 = 0;
 }
 
 extern "C" void func_001BEBC4(void *self, int theFlags)
@@ -648,42 +638,45 @@ extern "C" void func_001BEBC4(void *self, int theFlags)
 
 // NON_MATCHING: 18/113 differ, 18 edits
 #ifdef NON_MATCHING
-extern "C" void X_func_001C0078(int, int, int *, int *, int *) asm("func_001C0078");
-extern "C" void func_001BEBEC(int arg0, char *arg1)
+extern "C" void X_func_001C0078(FntCanvas *, int, int *, int *, int *) asm("func_001C0078");
+extern "C" void func_001BEBEC(FntCanvas *arg0, FntDataHdr *arg1)
 {
     if (arg1 == 0) {
         return;
     }
 
-    M2C_FIELD(arg0, char **, 0x54) = arg1;
-    M2C_FIELD(arg0, int *, 0x38) = M2C_FIELD(arg1, unsigned char *, 0xE);
-    M2C_FIELD(arg0, int *, 0x3C) = M2C_FIELD(arg1, unsigned char *, 0xF);
-    M2C_FIELD(arg0, int *, 0x40) = M2C_FIELD(arg1, unsigned char *, 0x10);
-    int count = M2C_FIELD(arg1, unsigned short *, 0xC);
-    M2C_FIELD(arg0, int *, 0x44) = count;
-    if (M2C_FIELD(arg1, unsigned char *, 0xB) & 2) {
-        M2C_FIELD(arg0, int *, 0x44) = count - 0x1130;
+    arg0->m_fnt = arg1;
+    arg0->m_cellW = arg1->m_cellW;
+    arg0->m_cellH = arg1->m_cellH;
+    arg0->m_fntBpp = arg1->m_bpp;
+    int count = arg1->m_glyphCount;
+    arg0->m_glyphCount = count;
+    if (arg1->m_flags0B & 2) {
+        arg0->m_glyphCount = count - 0x1130;
     }
-    char *p = M2C_FIELD(arg0, char **, 0x54);
-    if (M2C_FIELD(p, unsigned char *, 0xB) & 4) {
-        M2C_FIELD(arg0, int *, 0x44) = M2C_FIELD(arg0, int *, 0x44) - 0xDE0;
+    FntDataHdr *p = arg0->m_fnt;
+    if (p->m_flags0B & 4) {
+        arg0->m_glyphCount = arg0->m_glyphCount - 0xDE0;
     }
-    M2C_FIELD(arg0, int *, 0x58) = 0;
-    M2C_FIELD(arg0, int *, 0x5C) = 0;
-    M2C_FIELD(arg0, int *, 0x60) = 0;
-    M2C_FIELD(arg0, int *, 0x28) = 0;
-    M2C_FIELD(arg0, int *, 0x24) = 0;
+    arg0->m_codeTbl = 0;
+    arg0->m_metricTbl = 0;
+    arg0->m_bmpTbl = 0;
+    arg0->m_useProp = 0;
+    arg0->m_hasMetrics = 0;
 
-    if (M2C_FIELD(p, int *, 0x14) != 0) {
-        M2C_FIELD(arg0, int *, 0x58) = (int)((long)M2C_FIELD(p, int *, 0x14) + M2C_FIELD(arg0, int *, 0x54) + 4);
+    if (p->m_codeTblOff != 0) {
+        register long off PS2_REG("$5") = p->m_codeTblOff;
+        arg0->m_codeTbl = (int)(off + (int)arg0->m_fnt + 4);
     }
-    if (M2C_FIELD(p, int *, 0x1C) != 0) {
-        M2C_FIELD(arg0, int *, 0x5C) = (int)((long)M2C_FIELD(p, int *, 0x1C) + M2C_FIELD(arg0, int *, 0x54) + 4);
-        M2C_FIELD(arg0, int *, 0x24) = 1;
-        M2C_FIELD(arg0, int *, 0x28) = 1;
+    if (p->m_metricTblOff != 0) {
+        register long off PS2_REG("$5") = p->m_metricTblOff;
+        arg0->m_metricTbl = (int)(off + (int)arg0->m_fnt + 4);
+        arg0->m_useProp = 1;
+        arg0->m_hasMetrics = 1;
     }
-    if (M2C_FIELD(p, int *, 0x20) != 0) {
-        M2C_FIELD(arg0, int *, 0x60) = (int)((long)M2C_FIELD(p, int *, 0x20) + M2C_FIELD(arg0, int *, 0x54) + 4);
+    if (p->m_bmpTblOff != 0) {
+        register long off PS2_REG("$5") = p->m_bmpTblOff;
+        arg0->m_bmpTbl = (int)(off + (int)arg0->m_fnt + 4);
     }
 
     int a = 0;
@@ -694,12 +687,12 @@ extern "C" void func_001BEBEC(int arg0, char *arg1)
     X_func_001C0078(arg0, 'a', &a, &b, &c);
     X_func_001C0078(arg0, 'z', &a, &b, &c);
 
-    int bits = M2C_FIELD(arg0, int *, 0x38) * M2C_FIELD(arg0, int *, 0x40);
+    int bits = arg0->m_cellW * arg0->m_fntBpp;
     int stride = (bits >> 3) + ((bits & 7) != 0);
-    int glyphSize = stride * M2C_FIELD(arg0, int *, 0x3C);
-    M2C_FIELD(arg0, int *, 0x4C) = stride;
-    M2C_FIELD(arg0, int *, 0x50) = glyphSize;
-    M2C_FIELD(arg0, int *, 0x48) = glyphSize * count;
+    int glyphSize = stride * arg0->m_cellH;
+    arg0->m_rowBytes = stride;
+    arg0->m_glyphBytes = glyphSize;
+    arg0->m_totalBmpSize = glyphSize * count;
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BEBEC);
@@ -717,33 +710,30 @@ extern "C" int func_001BEDB8()
 
 // NON_MATCHING: 1/51 differ, 1 edits
 #ifdef NON_MATCHING
-extern "C" int Xii_func_001BEE8C(int) asm("func_001BEE8C");
-extern "C" int func_001BEDC0(int arg0, int arg1, int arg2, int arg3, int arg4)
+extern "C" int Xii_func_001BEE8C(FntCanvas *) asm("func_001BEE8C");
+extern "C" int func_001BEDC0(FntCanvas *arg0, unsigned char *arg1, int arg2, int arg3, int arg4)
 {
     Xii_func_001BEE8C(arg0);
-    M2C_FIELD(arg0, int *, 0x10) = arg2 & 0xFF80;
-    register int depth PS2_REG("$2") = 4;
-    if (arg4 == depth) {
-        M2C_FIELD(arg0, int *, 0x14) = arg3 & 0xFF80;
+    arg0->m_width = arg2 & 0xFF80;
+    if (arg4 == 4) {
+        arg0->m_height = arg3 & 0xFF80;
+    } else if (arg4 == 8) {
+        arg0->m_height = arg3 & 0xFFC0;
     } else {
-        depth = 8;
-        if (arg4 != depth) {
-            return 0;
-        }
-        M2C_FIELD(arg0, int *, 0x14) = arg3 & 0xFFC0;
+        return 0;
     }
 
-    int w = M2C_FIELD(arg0, int *, 0x10);
+    int w = arg0->m_width;
     if (w == 0) {
         return 0;
     }
-    int h = M2C_FIELD(arg0, int *, 0x14);
+    int h = arg0->m_height;
     if (h == 0) {
         return 0;
     }
 
     int size = w * h;
-    M2C_FIELD(arg0, int *, 0x18) = arg4;
+    arg0->m_bpp = arg4;
     switch (arg4) {
     case 4:
         size >>= 1;
@@ -752,69 +742,69 @@ extern "C" int func_001BEDC0(int arg0, int arg1, int arg2, int arg3, int arg4)
     default:
         return 0;
     }
-    M2C_FIELD(arg0, int *, 0xC) = arg1;
-    M2C_FIELD(arg0, int *, 0x1C) = size;
-    M2C_FIELD(arg0, int *, 4) = 0;
+    arg0->m_buf = arg1;
+    arg0->m_bufSize = size;
+    arg0->m_ownBuf = 0;
     return 1;
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BEDC0);
 #endif
 
-extern "C" int func_001BEE8C(int arg0)
+extern "C" int func_001BEE8C(FntCanvas *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 4) == 1) {
-        if (M2C_FIELD(arg0, int *, 0xC) == 0) {
+    if (arg0->m_ownBuf == 1) {
+        if (arg0->m_buf == 0) {
             return 0;
         }
-        M2C_FIELD(arg0, int *, 4) = 0;
-        M2C_FIELD(arg0, int *, 0xC) = 0;
+        arg0->m_ownBuf = 0;
+        arg0->m_buf = 0;
     } else {
-        if (M2C_FIELD(arg0, int *, 0xC) == 0) {
+        if (arg0->m_buf == 0) {
             return 0;
         }
-        M2C_FIELD(arg0, int *, 4) = 0;
-        M2C_FIELD(arg0, int *, 0xC) = 0;
+        arg0->m_ownBuf = 0;
+        arg0->m_buf = 0;
     }
     return 1;
 }
 
-extern "C" int func_001BEEB4(int self)
+extern "C" int func_001BEEB4(FntCanvas *self)
 {
-    void *p = *(void **)(self + 0xC);
+    void *p = self->m_buf;
 
     if (p == 0) {
         return 0;
     }
-    Xiiii_memset((int)p, *(int *)(self + 0x64), *(int *)(self + 0x1C));
+    Xiiii_memset((int)p, self->m_bgColor, self->m_bufSize);
     return 1;
 }
 
-extern "C" int func_001BEEEC(int self, int theA)
+extern "C" int func_001BEEEC(FntCanvas *self, int theA)
 {
     if (func_001C0298(self, theA) == 1) {
-        return *(int *)(self + 0x38) >> 1;
+        return self->m_cellW >> 1;
     }
-    return *(int *)(self + 0x38);
+    return self->m_cellW;
 }
 
-extern "C" int func_001BEF24(char *arg0, int arg1, int arg2, int arg3, int arg4)
+extern "C" int func_001BEF24(FntCanvas *arg0, int arg1, int arg2, int arg3, int arg4)
 {
-    unsigned char *buf = M2C_FIELD(arg0, unsigned char **, 0xC);
+    unsigned char *buf = arg0->m_buf;
     if (buf == 0) {
         return 0;
     }
 
-    int pitch = M2C_FIELD(arg0, int *, 0x10);
+    int pitch = arg0->m_width;
     int x, y;
     unsigned char *p;
-    if (M2C_FIELD(arg0, int *, 0x18) == 4) {
-        int c = M2C_FIELD(arg0, int *, 0x64) & 0xF;
+    if (arg0->m_bpp == 4) {
+        int c = arg0->m_bgColor & 0xF;
         unsigned char color = c | (c << 4);
         unsigned char *row = buf + (arg1 >> 1) + ((pitch >> 1) * arg2);
         int w = arg3 >> 1;
         for (y = 0; y < arg4; y++) {
-            p = row + (M2C_FIELD(arg0, int *, 0x10) >> 1) * y;
+            p = row + (arg0->m_width >> 1) * y;
             if (w > 0) {
                 x = w;
                 do {
@@ -826,12 +816,12 @@ extern "C" int func_001BEF24(char *arg0, int arg1, int arg2, int arg3, int arg4)
     } else {
         unsigned char *row = buf + arg1 + (pitch * arg2);
         for (y = 0; y < arg4; y++) {
-            p = row + M2C_FIELD(arg0, int *, 0x10) * y;
+            p = row + arg0->m_width * y;
             if (arg3 > 0) {
                 x = arg3;
                 do {
                     --x;
-                    *p++ = (unsigned char)M2C_FIELD(arg0, int *, 0x64);
+                    *p++ = (unsigned char)arg0->m_bgColor;
                 } while (x != 0);
             }
         }
@@ -848,9 +838,9 @@ INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BF8C4);
 #ifdef NON_MATCHING
 extern "C" void *X_memmove(void *, const void *, unsigned int) asm("memmove");
 extern "C" void *X_memset(void *, int, unsigned int) asm("memset");
-extern "C" void func_001BFE30(char *arg0, int arg1)
+extern "C" void func_001BFE30(FntCanvas *arg0, int arg1)
 {
-    int temp_v1 = M2C_FIELD(arg0, int *, 0x14);
+    int temp_v1 = arg0->m_height;
     if (arg1 >= temp_v1 || arg1 < -temp_v1) {
         return;
     }
@@ -862,62 +852,62 @@ extern "C" void func_001BFE30(char *arg0, int arg1)
         abs_arg1 = -arg1;
     }
 
-    int size = M2C_FIELD(arg0, int *, 0x10) * abs_arg1;
+    int size = arg0->m_width * abs_arg1;
     int fill = 0;
-    switch (M2C_FIELD(arg0, int *, 0x18)) {
+    switch (arg0->m_bpp) {
     case 4:
         size >>= 1;
-        fill = (M2C_FIELD(arg0, int *, 0x64) & 0xF) | ((M2C_FIELD(arg0, int *, 0x64) & 0xF) << 4);
+        fill = (arg0->m_bgColor & 0xF) | ((arg0->m_bgColor & 0xF) << 4);
         break;
     case 8:
-        fill = M2C_FIELD(arg0, int *, 0x64);
+        fill = arg0->m_bgColor;
         break;
     }
 
-    char *buf = M2C_FIELD(arg0, char **, 0xC);
-    int total = M2C_FIELD(arg0, int *, 0x1C);
+    unsigned char *buf = arg0->m_buf;
+    int total = arg0->m_bufSize;
     if (arg1 < 0) {
         X_memmove(buf, buf + size, total - size);
-        X_memset(M2C_FIELD(arg0, char **, 0xC) + (M2C_FIELD(arg0, int *, 0x1C) - size), fill, size);
+        X_memset(arg0->m_buf + (arg0->m_bufSize - size), fill, size);
     } else {
         X_memmove(buf + size, buf, total - size);
-        X_memset(M2C_FIELD(arg0, char **, 0xC), fill, size);
+        X_memset(arg0->m_buf, fill, size);
     }
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001BFE30);
 #endif
 
-extern "C" void func_001BFF28(char *self, int theA)
+extern "C" void func_001BFF28(FntCanvas *self, int theA)
 {
-    *(int *)(self + 0x64) = theA;
+    self->m_bgColor = theA;
 
-    switch (*(int *)(self + 0x18)) {
+    switch (self->m_bpp) {
     case 4:
         break;
     case 8:
-        if (*(int *)(self + 0x68) != 0) {
-            *(int *)(self + 0x64) = theA | 0x80;
+        if (self->m_alphaFlag != 0) {
+            self->m_bgColor = theA | 0x80;
         }
         break;
     }
 }
 
-extern "C" void func_001BFF5C(int arg0, int arg1)
+extern "C" void func_001BFF5C(FntCanvas *arg0, int arg1)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x68)) = arg1;
+    arg0->m_alphaFlag = arg1;
 }
 
-extern "C" void func_001BFF64(char *self, int theA)
+extern "C" void func_001BFF64(FntCanvas *self, int theA)
 {
-    switch (*(int *)(self + 0x18)) {
+    switch (self->m_bpp) {
     case 4:
-        *(int *)(self + 0x2C) = theA & 0xF;
+        self->m_fgColor = theA & 0xF;
         break;
     case 8:
-        *(int *)(self + 0x2C) = theA & 0xFF;
-        if (*(int *)(self + 0x68) != 0) {
-            *(int *)(self + 0x2C) = (theA & 0xFF) | 0x80;
+        self->m_fgColor = theA & 0xFF;
+        if (self->m_alphaFlag != 0) {
+            self->m_fgColor = (theA & 0xFF) | 0x80;
         }
         break;
     }
@@ -934,28 +924,28 @@ extern "C" int func_001BFFAC(unsigned short *theA, unsigned short *theB)
     return b < a;
 }
 
-extern "C" int func_001BFFCC(int arg0, int arg1)
+extern "C" int func_001BFFCC(FntCanvas *arg0, int arg1)
 {
     short key = arg1;
 
-    if (*(int *)(*(int *)((char *)arg0 + 0x54) + 8) & 0x06000000) {
+    if (*(int *)&arg0->m_fnt->m_unk08[0] & 0x06000000) {
         if ((unsigned short)arg1 > 0x813F) {
             int ret = func_001C0534(arg0, (unsigned short)arg1);
             if (ret >= 0) {
-                ret += *(int *)((char *)arg0 + 0x44);
+                ret += arg0->m_glyphCount;
             }
             return ret;
         }
     }
 
-    void *found = bsearch(&key, *(void **)((char *)arg0 + 0x58), *(int *)((char *)arg0 + 0x44), 2, (int (*)(const void *, const void *))func_001BFFAC);
+    void *found = bsearch(&key, (void *)arg0->m_codeTbl, arg0->m_glyphCount, 2, (int (*)(const void *, const void *))func_001BFFAC);
     if (found == 0) {
         return -1;
     }
-    return ((int)found - *(int *)((char *)arg0 + 0x58)) / 2;
+    return ((int)found - arg0->m_codeTbl) / 2;
 }
 
-extern "C" void func_001C0078(int arg0, int arg1, int *arg2, int *arg3, int *arg4)
+extern "C" void func_001C0078(FntCanvas *arg0, int arg1, int *arg2, int *arg3, int *arg4)
 {
     if (arg1 < 0x20) {
         *arg2 = 0;
@@ -964,11 +954,11 @@ extern "C" void func_001C0078(int arg0, int arg1, int *arg2, int *arg3, int *arg
         return;
     }
 
-    if (*(int *)(arg0 + 0x24) != 0) {
+    if (arg0->m_hasMetrics != 0) {
         int temp = func_001BFFCC(arg0, arg1);
         if (temp < 0) {
             *arg2 = 0;
-            *arg3 = *(int *)(arg0 + 0x38);
+            *arg3 = arg0->m_cellW;
             *arg4 = 0;
             return;
         }
@@ -977,10 +967,10 @@ extern "C" void func_001C0078(int arg0, int arg1, int *arg2, int *arg3, int *arg
         *arg3 = func_001C0254(arg0, temp);
 
         register int var_a0 PS2_REG("$4");
-        if (*(int *)(arg0 + 0x24) != 0) {
-            var_a0 = *(int *)(arg0 + 0x34);
+        if (arg0->m_hasMetrics != 0) {
+            var_a0 = arg0->m_propStep;
         } else {
-            var_a0 = *(int *)(arg0 + 0x30);
+            var_a0 = arg0->m_fixedStep;
         }
         *arg4 = var_a0;
         return;
@@ -991,14 +981,14 @@ extern "C" void func_001C0078(int arg0, int arg1, int *arg2, int *arg3, int *arg
     *arg4 = 0;
 }
 
-extern "C" int func_001C0148(int arg0, int arg1)
+extern "C" int func_001C0148(FntCanvas *arg0, int arg1)
 {
     register int one PS2_REG("$18") = 1;
     register int var_v0 PS2_REG("$2");
     int flag = 0;
 
-    if (M2C_FIELD(arg0, int *, 0x24) == one) {
-        flag = M2C_FIELD(arg0, int *, 0x28) == one;
+    if (arg0->m_hasMetrics == one) {
+        flag = arg0->m_useProp == one;
     }
     if (flag == one) {
         var_v0 = 6;
@@ -1006,44 +996,44 @@ extern "C" int func_001C0148(int arg0, int arg1)
             return func_001C0254(arg0, func_001BFFCC(arg0, arg1));
         }
     } else if (func_001C0298(arg0, arg1) == one) {
-        var_v0 = M2C_FIELD(arg0, int *, 0x38) / 2;
+        var_v0 = arg0->m_cellW / 2;
     } else {
         var_v0 = 0;
         if (arg1 >= 0x21) {
-            var_v0 = M2C_FIELD(arg0, int *, 0x38);
+            var_v0 = arg0->m_cellW;
         }
     }
     return var_v0;
 }
 
-extern "C" int func_001C020C(int arg0, int arg1)
+extern "C" int func_001C020C(FntCanvas *arg0, int arg1)
 {
     register int one PS2_REG("$3") = 1;
     int flag = 0;
 
-    if (M2C_FIELD(arg0, int *, 0x24) == one) {
-        flag = (M2C_FIELD(arg0, int *, 0x28) == one);
+    if (arg0->m_hasMetrics == one) {
+        flag = (arg0->m_useProp == one);
     }
     if (flag == one) {
         if (arg1 < 0) {
-            return M2C_FIELD(arg0, int *, 0x38);
+            return arg0->m_cellW;
         }
-        return *(unsigned char *)((arg1 * 2) + M2C_FIELD(arg0, int *, 0x5C));
+        return *(unsigned char *)((arg1 * 2) + arg0->m_metricTbl);
     }
     return 0;
 }
 
-extern "C" int func_001C0254(int self, int theA)
+extern "C" int func_001C0254(FntCanvas *self, int theA)
 {
-    int r = *(int *)(self + 0x38);
+    int r = self->m_cellW;
 
-    if (*(int *)(self + 0x24) != 0 && *(int *)(self + 0x28) != 0 && theA >= 0) {
-        r = *(unsigned char *)(*(int *)(self + 0x5C) + ((theA << 1) + 1 & 0xFF));
+    if (self->m_hasMetrics != 0 && self->m_useProp != 0 && theA >= 0) {
+        r = *(unsigned char *)(self->m_metricTbl + ((theA << 1) + 1 & 0xFF));
     }
     return r;
 }
 
-extern "C" int func_001C0298(int arg0, int arg1)
+extern "C" int func_001C0298(FntCanvas *arg0, int arg1)
 {
     if ((unsigned int)(arg1 - 0x20) < 0x60U) {
         return 1;
@@ -1051,7 +1041,7 @@ extern "C" int func_001C0298(int arg0, int arg1)
     return (unsigned int)(arg1 - 0xA0) < 0x40U;
 }
 
-extern "C" int func_001C02B8(int arg0, int arg1)
+extern "C" int func_001C02B8(FntCanvas *arg0, int arg1)
 {
     int v = arg1 & 0xFF00;
 
@@ -1061,7 +1051,7 @@ extern "C" int func_001C02B8(int arg0, int arg1)
     return (unsigned int)(v - 0xE000) < 0xA01U;
 }
 
-extern "C" int func_001C02E4(int arg0, int arg1)
+extern "C" int func_001C02E4(FntCanvas *arg0, int arg1)
 {
     return (unsigned int) (arg1 - 0x20) < 0xE0U;
 }
@@ -1073,7 +1063,7 @@ extern "C" int func_001C02F0()
 
 // NON_MATCHING: 37/53 differ, 1 reloc differs (size 0xD4, game 0xD8), 21 edits
 #ifdef NON_MATCHING
-extern "C" int func_001C02F8(int arg0, const unsigned char *arg1)
+extern "C" int func_001C02F8(FntCanvas *arg0, const unsigned char *arg1)
 {
     const unsigned char *p = arg1;
     int total = 0;
@@ -1100,10 +1090,10 @@ extern "C" int func_001C02F8(int arg0, const unsigned char *arg1)
             width = func_001C0148(arg0, c);
         add_total:
             total += width;
-            if (*(int *)((char *)arg0 + 0x24) != 0) {
-                total += *(int *)((char *)arg0 + 0x34);
+            if (arg0->m_hasMetrics != 0) {
+                total += arg0->m_propStep;
             } else {
-                total += *(int *)((char *)arg0 + 0x30);
+                total += arg0->m_fixedStep;
             }
         }
     }
@@ -1113,7 +1103,7 @@ extern "C" int func_001C02F8(int arg0, const unsigned char *arg1)
 INCLUDE_ASM("asm/nonmatchings/unk/001BE2CC", func_001C02F8);
 #endif
 
-extern "C" int func_001C03D0(int arg0, const unsigned char *arg1)
+extern "C" int func_001C03D0(FntCanvas *arg0, const unsigned char *arg1)
 {
     int total = 0;
     int c;
@@ -1130,10 +1120,10 @@ extern "C" int func_001C03D0(int arg0, const unsigned char *arg1)
                 width = func_001C0148(arg0, c);
             }
             total += width;
-            if (*(int *)((char *)arg0 + 0x24) != 0) {
-                total += *(int *)((char *)arg0 + 0x34);
+            if (arg0->m_hasMetrics != 0) {
+                total += arg0->m_propStep;
             } else {
-                total += *(int *)((char *)arg0 + 0x30);
+                total += arg0->m_fixedStep;
             }
         }
     }
@@ -1145,7 +1135,7 @@ extern "C" int func_001C047C()
     return X_func_001C02F8();
 }
 
-extern "C" int func_001C0490(int arg0, const unsigned char *arg1)
+extern "C" int func_001C0490(FntCanvas *arg0, const unsigned char *arg1)
 {
     int total = 0;
     int c;
@@ -1170,7 +1160,7 @@ do_add:
 #ifdef NON_MATCHING
 struct C0534Entry { unsigned short m_start; unsigned short m_unk02; unsigned short m_num; unsigned short m_unk06; };
 extern C0534Entry D_002B8DE8[] asm("D_002B8DE8");
-extern "C" int func_001C0534(int arg0, unsigned int arg1)
+extern "C" int func_001C0534(FntCanvas *arg0, unsigned int arg1)
 {
     unsigned int key = arg1 & 0xFFFF;
     int total = 0;
