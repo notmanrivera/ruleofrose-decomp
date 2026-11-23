@@ -984,18 +984,18 @@ extern "C" void renderPreMain__9EffWater1PQ24Eff011RENDERPARAM(EffWater1 *arg0, 
 INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", renderPreMain__9EffWater1PQ24Eff011RENDERPARAM);
 #endif
 
-// NON_MATCHING: 2/14 differ, 2 edits (sw 0x28 vs 0x24 order)
-#ifdef NON_MATCHING
-extern "C" void func_0017AFD8(EffWater3 *arg0)
+extern "C" void func_0017AFD8(EffWater3 *);
+struct EffWater3Ctor_17AFD8 : EffWater3 {
+    EffWater3Ctor_17AFD8() asm("func_0017AFD8");
+};
+
+EffWater3Ctor_17AFD8::EffWater3Ctor_17AFD8()
 {
-    Xii_func_0016A914(arg0);
-    arg0->m_vtbl = vtbl_9EffWater3;
-    arg0->m_entries = 0;
-    arg0->m_count = 0;
+    Xii_func_0016A914(this);
+    m_vtbl = vtbl_9EffWater3;
+    m_entries = 0;
+    m_count = 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/EffWater1", func_0017AFD8);
-#endif
 
 extern "C" void dtor_9EffWater3(EffWater3 *arg0, int arg1)
 {
