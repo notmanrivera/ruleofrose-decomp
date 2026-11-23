@@ -896,8 +896,6 @@ extern "C" int func_001764FC(int arg0, int arg1)
     return tbl[arg1];
 }
 
-// NON_MATCHING: function matches (0xac); blocked on D_002F2A18 .align 3 in config/rodata_align_manual.tsv
-#ifdef NON_MATCHING
 struct EffSceneObj_17653C {
     char pad0[0x11C];
     char *f11C;
@@ -925,9 +923,6 @@ extern "C" void func_0017653C(char *arg0)
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_0017653C);
-#endif
 
 extern "C" void func_001765E8(EffLight3 *self, float scale)
 {
