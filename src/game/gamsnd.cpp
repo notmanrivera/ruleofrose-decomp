@@ -3397,8 +3397,6 @@ extern "C" int func_001E63C0(Obj63C0 *arg0, int arg1, int arg2, int arg3, int ar
     return 1;
 }
 
-// NON_MATCHING: 13/53 differ, 10 edits
-#ifdef NON_MATCHING
 struct Ent649C {
     char pad0[4];
     int unk04;
@@ -3422,7 +3420,8 @@ extern "C" int X_def_func_001E649C(Obj649C *, unsigned int, int) asm("func_001E6
 
 extern "C" int X_def_func_001E649C(Obj649C *arg0, unsigned int arg1, int arg2)
 {
-    int off = arg2 * 0x28;
+    register int scaled PS2_REG("$2") = arg2 * 5;
+    int off = scaled << 3;
     Sub649C *sub = &arg0->sub;
     if (arg2 < 0) {
         return 0;
@@ -3434,15 +3433,15 @@ extern "C" int X_def_func_001E649C(Obj649C *arg0, unsigned int arg1, int arg2)
         return 0;
     }
     X_649C_func_00180EA8(&X_649C_D_007B2580, arg2);
-    ((Ent649C *)(sub->m_begin + off))->unk04 = 0;
-    ((Ent649C *)(sub->m_begin + off))->unk08 = 0;
-    ((Ent649C *)(sub->m_begin + off))->unk0C = 0;
-    ((Ent649C *)(sub->m_begin + off))->unk18 = -1;
-    return 1;
+    register int result PS2_REG("$2") = 1;
+    do {
+        ((Ent649C *)(sub->m_begin + off))->unk04 = 0;
+        ((Ent649C *)(sub->m_begin + off))->unk08 = 0;
+        ((Ent649C *)(sub->m_begin + off))->unk0C = 0;
+        ((Ent649C *)(sub->m_begin + off))->unk18 = -1;
+    } while (0);
+    return result;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E649C);
-#endif
 
 extern "C" void func_001E6570(Obj6570 *arg0, int arg1) {
     Ent6570 def;
