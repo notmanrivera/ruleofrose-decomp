@@ -194,3 +194,15 @@ Tested at `-Os` against this repo's `NON_MATCHING` functions (sources: gt4-decom
 
 Inline asm with instructions, `.word`, `volatile` added only to pin an
 access, and raw address casts where the game used a symbol (`&D_...`).
+
+## Our compiler is the stock decompme ee-gcc2.96 (2026-11-23)
+
+docker/Dockerfile downloads `ee-gcc2.96.tar.xz` from decompme/compilers
+(cc1 "2.96-ee-001003-1"). decomp-compat-kit (LinuxJessi; Xenosaga, `-O2`)
+byte-patches that cc1 to match Xenosaga's retail code (literal rounding,
+loop padding, LO_SUM alias, gcse, extendqidi2). Rule of Rose does not need
+the literal patch: stock cc1 truncates decimal float literals (0.1f ->
+0x3DCCCCCC, 0.3f -> 0x3E999999) and the game has exactly those (4 each,
+never the rounded 0x3DCCCCCD / 0x3E99999A); test in
+notes/research/float_literal_test_2026-11-23.cpp. The other patches are
+unmeasured here; hundreds of functions match with the stock cc1.
