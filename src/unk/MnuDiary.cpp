@@ -1720,25 +1720,33 @@ extern "C" int func_0019C048(MnuStock *self, int uid)
     return -1;
 }
 
-// NON_MATCHING: 2/18 differ (size 0x48, game 0x48), 2 edits (m_begin/m_end load order)
-#ifdef NON_MATCHING
 extern "C" int func_0019C09C()
 {
-    register char *base PS2_REG("$2") = (char *)&D_007812C0;
-    GamItemHave *have = (GamItemHave *)(base + 0x1A6C0);
-    GamItem *it = have->m_begin;
+    char *base = (char *)&D_007812C0;
+    __typeof__(base + 0x1A6C0) perm_e7 = 0x1A6C0 + base;
+    __typeof__(perm_e7) perm_e5 = base + 0x1A6C0;
+    __typeof__(0x1A6C0 + base) perm_e4 = perm_e5;
+    __typeof__(0x1A6C0 + base) perm_e3 = perm_e4;
+    __typeof__(base + 0x1A6C0) perm_e9 = base + 0x1A6C0;
+    __typeof__(0x1A6C0 + base) perm_e10 = 0x1A6C0 + base;
+    __typeof__(perm_e10) perm_e6 = perm_e9;
+    __typeof__(perm_e6) perm_e2 = perm_e3;
+    __typeof__(base + 0x1A6C0) perm_e8 = base + 0x1A6C0;
+    __typeof__(perm_e8) perm_e0 = perm_e2;
+    register GamItemHave * have PS2_REG("$2") = (GamItemHave *)(perm_e0);
     register int count PS2_REG("$6") = 0;
-    while (it != have->m_end) {
-        if (it->m_uid != 0xA00) {
-            count++;
-        }
-        it++;
+    __typeof__(have->m_end) perm_t1 = have->m_end;
+    GamItem *it = have->m_begin;
+    if (it != perm_t1) {
+        do {
+            if (it->m_uid != 0xA00) {
+                count++;
+            }
+            it++;
+        } while (it != perm_t1);
     }
     return count;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019C09C);
-#endif
 
 extern "C" void func_0019C0E4(MnuStock *arg0, int arg1)
 {
