@@ -596,14 +596,14 @@ int MagCharaLoader::func_00142908()
                     list->func_001420F8(num, pfh.m_name, pfh.m_file_offset, pfh.m_file_size, 0, 0);
                     list->func_00141E44();
                 } else {
-                    ASSERT(0);
+                    ror_assert(ASSERT_FILE, 0x257, "0");
                 }
             } else {
 
 
 
 
-                ASSERT(0);
+                ror_assert(ASSERT_FILE, 0x25E, "0");
             }
         }
     }
