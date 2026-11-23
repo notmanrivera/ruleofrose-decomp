@@ -11,6 +11,10 @@ extern const char D_002EDED0[];
 #include "mag/magscene.h"
 #include "dog/dogtexinfo.h"
 #include "bed/bedmemory.h"
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+extern "C" int Xiii_func_00142FD0(int, int) asm("func_00142FD0");
+extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
+extern "C" int Xiiiiii_func_001377F0__8MagSceneP7I3dDrawiii(int, int, int, int, int) asm("func_001377F0__8MagSceneP7I3dDrawiii");
 extern BedMemory D_006E9800;
 extern "C" void *func_00142FD0(void *theLoader, const char *theName);
 extern "C" int func_00142C88(void *theLoader, int theID);
@@ -234,9 +238,7 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magscene2", D_002EDE30);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene2", func_0013836C);
 
-// NON_MATCHING: other registers.
-#ifdef NON_MATCHING
-extern "C" void func_00138610(MagScene *self, I3dDraw *theDraw, const char *theName)
+extern "C" int func_00138610(MagScene *self, I3dDraw *theDraw, const char *theName)
 {
 #line 763
     ASSERT_S(theName, D_002EDED0);
@@ -245,10 +247,8 @@ extern "C" void func_00138610(MagScene *self, I3dDraw *theDraw, const char *theN
     ASSERT_S(p, D_002EDD80);
     int no = func_001377F0_0(self, theDraw, 9999, p, 0);
     *(void **)((char *)self + no * 0x520 + 0x29540) = p;
+    return no;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/magscene2", func_00138610);
-#endif
 
 
 // NON_MATCHING: other registers.
