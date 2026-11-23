@@ -1077,9 +1077,9 @@ extern "C" void func_001EC344(TskMovePointPath *arg0, int arg1, unsigned int arg
     arg0->m_unk30 = arg2;
     arg0->m_unk14 = temp_a1;
     arg0->m_chrID = arg4;
-    arg0->m_unk18 = arg3;
     arg0->m_unk2C = fparg0;
     arg0->m_unk7C = (int)arg5;
+    arg0->m_unk18 = arg3;
     arg0->m_unk80 = fparg1;
     d = getDogActor(&D_006FBD80, temp_a1);
     arg0->m_unk1C = 0;
