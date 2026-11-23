@@ -744,136 +744,76 @@ tick:
     return 1;
 }
 
-// NON_MATCHING: 178/184 differ, 9 relocs differ (size 0x2E0, game 0x2F4), 136 edits
+// NON_MATCHING: 73/189 differ (size 0x2F4, game 0x2F4), 63 edits
 #ifdef NON_MATCHING
-extern "C" int Xiii_func_00194370(int, int) asm("func_00194370");
-extern "C" int Xiii_func_0019A20C(int, int) asm("func_0019A20C");
-extern "C" int Xiii_func_0019A24C(int, int) asm("func_0019A24C");
-extern "C" int diary99714_AB4(int, int, int) asm("func_00199AB4");
-extern "C" void func_00199714(int arg0)
+extern "C" void P714_func_00194370(MnuBase *, int) asm("func_00194370");
+extern "C" int func_0019A20C(MnuDiary *, int);
+extern "C" int func_0019A24C(MnuDiary *, int);
+extern "C" void func_00199AB4(MnuDiary *, int, int);
+extern "C" void func_00199714(MnuDiary *self)
 {
-    int var_v1;
-    int temp_a0;
-    int temp_a0_2;
-    int temp_a1;
-    int temp_a1_2;
-    int temp_a1_3;
-    int temp_a1_4;
-    int temp_a1_5;
-    int temp_a2;
-    int temp_s0;
-    int var_a1;
-    int var_a1_2;
-    int var_a1_3;
-    int var_a1_4;
-    int var_s2;
-    int var_v0;
-    int temp_v0;
-    int temp_v1;
-    int var_s3;
-
-    temp_v0 = M2C_FIELD(arg0, int *, 0x128);
-    var_s3 = temp_v0;
-    if (temp_v0 != 0) {
-        var_s2 = 4;
-        do {
-            bool disabled = !(M2C_FIELD(var_s3, int *, 0) & 1);
-            if (!disabled) {
-                temp_a2 = M2C_FIELD(var_s3, int *, 0xC);
-                temp_a0 = M2C_FIELD(var_s3, int *, 0x10);
-                temp_v1 = M2C_FIELD(arg0, int *, 0x9C) + (temp_a2 * 0x10);
-                if (temp_a0 < M2C_FIELD(temp_v1, int *, 4)) {
-                    temp_a0_2 = temp_a0 + 1;
-                    M2C_FIELD(var_s3, int *, 0x10) = temp_a0_2;
-                    temp_s0 = M2C_FIELD(temp_v1, int *, 4) - temp_a0_2;
-                    if (temp_s0 == 0) {
-                        temp_a1 = M2C_FIELD(var_s3, int *, 0x14);
-                        if (!(temp_a2 & 1)) {
-                            diary99714_AB4(arg0, (temp_a1 * 2) + 1, 1);
-                        } else {
-                            diary99714_AB4(arg0, (temp_a1 * 2) + 2, 0);
-                        }
-                    } else if (temp_s0 == 4) {
-                        temp_a1_2 = M2C_FIELD(var_s3, int *, 0x14);
-                        temp_s0 = Xiii_func_0019A20C(arg0, (((temp_a2 & 1) ^ 0) != 0) ? (temp_a1_2 - 1) : (temp_a1_2 + 1));
-                        if (temp_s0 != -1) {
-                            var_v1 = (temp_s0 << 5) + M2C_FIELD(arg0, int *, 0x128);
-                            var_v0 = (*(int *)(var_v1)) & ~3;
-                            goto block_14;
-                        }
-                    } else if (temp_a0_2 == 4) {
-                        temp_a1_3 = M2C_FIELD(var_s3, int *, 0x14);
-                        temp_s0 = Xiii_func_0019A20C(arg0, (((temp_a2 & 1) ^ 0) != 0) ? (temp_a1_3 + 1) : (temp_a1_3 - 1));
-                        if (temp_s0 != -1) {
-                            var_v1 = (temp_s0 << 5) + M2C_FIELD(arg0, int *, 0x128);
-                            var_v0 = (*(int *)(var_v1)) | 2;
-block_14:
-                            (*(int *)(var_v1)) = var_v0;
-                        }
+    MnuBookPage *pg = self->m_slots;
+    int n, paper, page, tex, t;
+    if (pg != 0) {
+    for (n = 4; n >= 0; n--, pg++) {
+        bool disabled = !(pg->m_flags & 1);
+        if (!disabled) {
+            int anim = pg->m_animIdx;
+            int frame = pg->m_frame;
+            MnuAnimSlot *a = &self->m_animSlots[anim];
+            if (frame < a->m_len) {
+                pg->m_frame = ++frame;
+                t = a->m_len - frame;
+                if (t == 0) {
+                    if (!(anim & 1)) {
+                        func_00199AB4(self, pg->m_page * 2 + 1, 1);
+                    } else {
+                        func_00199AB4(self, pg->m_page * 2 + 2, 0);
+                    }
+                } else if (t == 4) {
+                    t = func_0019A20C(self, ((anim & 1) ^ 0) != 0 ? pg->m_page - 1 : pg->m_page + 1);
+                    if (t != -1) {
+                        self->m_slots[t].m_flags &= ~3;
+                    }
+                } else if (frame == 4) {
+                    t = func_0019A20C(self, ((anim & 1) ^ 0) != 0 ? pg->m_page + 1 : pg->m_page - 1);
+                    if (t != -1) {
+                        self->m_slots[t].m_flags |= 2;
                     }
                 }
             }
-            var_s2 -= 1;
-            var_s3 += 0x20;
-        } while (var_s2 >= 0);
-        var_s2 = ((int) (M2C_FIELD(arg0, int *, 0x124) + 1) / 2) - 2;
-        if (var_s2 >= -1) {
-            var_a1 = var_s2;
-loop_18:
-            temp_a1_4 = var_s2 - 1;
-            if (Xiii_func_0019A20C(arg0, var_a1) == -1) {
-                var_s2 = (temp_a1_4 * 2) + 2;
-                if (var_s2 >= 0) {
-                    var_a1_2 = var_s2;
-                    do {
-                        var_s2 -= 1;
-                        temp_s0 = Xiii_func_0019A24C(arg0, var_a1_2);
-                        var_s3 = -1;
-                        if (temp_s0 != var_s3) {
-                            Xiii_func_00194370(arg0, temp_s0);
-                            *(int *)((temp_s0 * 4) + M2C_FIELD(arg0, int *, 0x8B8)) = var_s3;
-                        }
-                        var_a1_2 = var_s2;
-                    } while (var_s2 >= 0);
-                }
-            } else {
-                var_s2 = temp_a1_4;
-                var_a1 = var_s2;
-                if (var_s2 >= -1) {
-                    goto loop_18;
-                }
-            }
         }
-        var_s2 = ((int) (M2C_FIELD(arg0, int *, 0x124) + 1) / 2) + 1;
-        if (var_s2 < M2C_FIELD(arg0, int *, 0x12C)) {
-            var_a1_3 = var_s2;
-loop_28:
-            temp_a1_5 = var_s2 + 1;
-            if (Xiii_func_0019A20C(arg0, var_a1_3) == -1) {
-                var_s2 = (temp_a1_5 * 2) + 1;
-                if (var_s2 < M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 8)) {
-                    var_a1_4 = var_s2;
-                    do {
-                        var_s2 += 1;
-                        temp_s0 = Xiii_func_0019A24C(arg0, var_a1_4);
-                        var_s3 = -1;
-                        if (temp_s0 != var_s3) {
-                            Xiii_func_00194370(arg0, temp_s0);
-                            *(int *)((temp_s0 * 4) + M2C_FIELD(arg0, int *, 0x8B8)) = var_s3;
-                        }
-                        var_a1_4 = var_s2;
-                    } while (var_s2 < M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 8));
-                }
-            } else {
-                var_s2 = temp_a1_5;
-                var_a1_3 = var_s2;
-                if (var_s2 >= M2C_FIELD(arg0, int *, 0x12C)) {
-
-                } else {
-                    goto loop_28;
-                }
+    }
+    n = (self->m_curPage + 1) / 2 - 2;
+    while (n >= -1) {
+        int prev = n - 1;
+        if (func_0019A20C(self, n) == -1) {
+            for (n = prev * 2 + 2; n >= 0; n--) {
+            t = func_0019A24C(self, n);
+            if (t != -1) {
+                P714_func_00194370(self, t);
+                self->m_texPageMap[t] = -1;
             }
+            }
+            break;
         }
+        n = prev;
+    }
+    n = (self->m_curPage + 1) / 2 + 1;
+    while (n < self->m_paperNum) {
+        int next = n + 1;
+        if (func_0019A20C(self, n) == -1) {
+            for (n = next * 2 + 1; n < self->m_info->m_pageCount; n++) {
+            t = func_0019A24C(self, n);
+            if (t != -1) {
+                P714_func_00194370(self, t);
+                self->m_texPageMap[t] = -1;
+            }
+            }
+            break;
+        }
+        n = next;
+    }
     }
 }
 #else
