@@ -111,8 +111,6 @@ extern "C" int func_001A0788(MnuSub104 *self, int arg1)
 }
 
 
-// NON_MATCHING: 6/29 differ (size 0x74 == game 0x74; $v1/$a0 swapped in 2nd loop)
-#ifdef NON_MATCHING
 extern "C" int func_001A0860(MnuSub104 *self)
 {
     for (int i = 0; i < 7; i++) {
@@ -124,14 +122,12 @@ extern "C" int func_001A0860(MnuSub104 *self)
     self->m_active = 0;
     self->m_max[2] = 2;
     self->m_unk60 = -1;
-    for (int i = 0; i < 32; i++) {
-        self->m_lines[i] = 0;
+    int i = 0;
+    for (register int count PS2_REG("$4") = 31; count >= 0; --count) {
+        self->m_lines[i++] = 0;
     }
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mnu/mnuselect", func_001A0860);
-#endif
 
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnuselect", func_001A08D4);
