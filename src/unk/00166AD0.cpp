@@ -472,9 +472,10 @@ extern "C" int func_00167A64(int arg0,float *arg1,float *arg2) {
     return 0;
 }
 
-// NON_MATCHING: 20/57 differ (size 0xE4, game 0xE8), 3 edits
-#ifdef NON_MATCHING
-static inline bool flag1_7CA0(int p) { return (*(int *)(*(int *)((char *)p + 8) + 0x3EC) & 1); }
+static inline bool flag1_7CA0(int p) {
+    unsigned int flag = *(unsigned int *)(*(int *)((char *)p + 8) + 0x3EC) & 1;
+    return (unsigned long long)flag != 0;
+}
 extern "C" int func_00167CA0(int arg0, float *arg1, int arg2, float fparg0, float fparg1, float fparg2)
 {
     float x = arg1[0];
@@ -507,9 +508,6 @@ extern "C" int func_00167CA0(int arg0, float *arg1, int arg2, float fparg0, floa
     }
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/00166AD0", func_00167CA0);
-#endif
 
 extern "C" void func_00167D88(unsigned int *arg0, float *arg1, float fparg0)
 {
