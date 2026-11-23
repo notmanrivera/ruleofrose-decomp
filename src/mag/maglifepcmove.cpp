@@ -1,38 +1,65 @@
 #include "include_asm.h"
-// Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_func_0010B328__8DogActoriiPPCc(...) asm("func_0010B328__8DogActoriiPPCc");
-extern "C" int X_func_0011F9F8(...) asm("func_0011F9F8");
-extern "C" int X_func_0011FF10(...) asm("func_0011FF10");
-extern "C" int X_func_001203A0(...) asm("func_001203A0");
-extern int D_00297160;
-extern int D_002971A0;
-extern int D_00297238;
+#include "mag/maglifepc.h"
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmove", func_0011DF7C);
+extern "C" void X_func_0010B328__8DogActoriiPPCc(DogActor *, int, int, const char **) asm("func_0010B328__8DogActoriiPPCc");
+extern const char *D_00297160[];
+extern const char *D_002971A0[];
+extern int D_00297220[];
+extern const char *D_00297238[];
 
-extern "C" void func_0011DFD0(int arg0)
+extern "C" void func_0011DF7C(MagLifePC *arg0)
 {
-    X_func_0010B328__8DogActoriiPPCc((*(int *)(int *)((char *)(arg0) + 0x58)), 0, (int) -1, 0);
+    int id = D_00297220[arg0->m_unkDC];
+    const char **tbl;
+    if (arg0->m_unkDC == 4) {
+        tbl = D_002971A0;
+    } else {
+        tbl = D_00297160;
+    }
+    X_func_0010B328__8DogActoriiPPCc(arg0->m_actor, 0, id, tbl);
 }
 
-
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmove", func_0011DFF8);
-
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmove", func_0011E080__9MagLifePC);
-
-extern "C" int func_0011E0AC(int arg0)
+extern "C" void func_0011DFD0(MagLifePC *arg0)
 {
-    int temp_a0;
-    int var_v1;
+    X_func_0010B328__8DogActoriiPPCc(arg0->m_actor, 0, -1, 0);
+}
 
-    temp_a0 = (*(int *)(arg0));
-    var_v1 = 0;
+extern "C" void func_0011DFF8(MagLifePC *arg0, int arg1)
+{
+    int wep = arg0->m_unk21C;
+    if (wep == 3) {
+        return X_func_0010B328__8DogActoriiPPCc(arg0->m_actor, 0, 0xA5, D_002971A0);
+    }
+    if (wep == 0) {
+        return X_func_0010B328__8DogActoriiPPCc(arg0->m_actor, 0, -1, D_00297238);
+    }
+    if (arg1 == 0) {
+        return X_func_0010B328__8DogActoriiPPCc(arg0->m_actor, 0, 0x19, D_00297238);
+    }
+    X_func_0010B328__8DogActoriiPPCc(arg0->m_actor, 0, -1, D_00297238);
+}
+
+int MagLifePC::func_0011E080()
+{
+    switch (m_unkEC) {
+    case 1:
+        return 6;
+    case 2:
+        return 7;
+    default:
+        return 5;
+    }
+}
+
+extern "C" int func_0011E0AC(MagLifePC *arg0)
+{
+    int temp_a0 = arg0->m_unk00;
+    int var_v1 = 0;
     if (((unsigned int) (temp_a0 - 1) < 0xAU) || (temp_a0 == 0xE)) {
         var_v1 = 1;
     }
     return var_v1;
 }
-
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmove", func_0011E0D8);
 
@@ -96,7 +123,6 @@ extern "C" int func_0011F4A0()
 {
     return 0;
 }
-
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcmove", D_002EA9F8);
 

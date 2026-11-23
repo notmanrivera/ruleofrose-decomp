@@ -55,7 +55,7 @@ struct MagLifePCModeRun2D : public MagLifePCMode {};
 
 // Size: 0x08 bytes (placed at MagLifePC + 0x148, next at +0x150; _vt$17MagLifePCModeTurn at 0x0011C028)
 struct MagLifePCModeTurn : public MagLifePCMode {
-    int m_unk04;                    // +0x04 (size 0x04, DOUBTFUL: unreferenced in this asm slice; deduced from 8-byte stride +0x148 to +0x150)
+    float m_unk04;                  // +0x04 (size 0x04, float accessed in maglifepcmode)
 };
 
 // Size: 0x04 bytes (placed at MagLifePC + 0x150, next at +0x154; _vt$22MagLifePCModeAtkWait2D at 0x0011C030)
@@ -217,7 +217,11 @@ struct MagLifePC : public MagLifeControlChara {
     float m_unk114;                 // +0x114 (size 0x04) - 0x0011AC70: swc1 $f0, 0x114($s1); 0x0011B13C: lwc1 $f1, 0x114($s0)
 
     int m_unk118;                   // +0x118 (size 0x04) - 0x0011C074: sw $zero, 0x118($fp)
-    int m_unk11C[5];                // +0x11C..+0x12F (size 0x14, DOUBTFUL: unreferenced in this asm slice)
+    int m_unk11C;                   // +0x11C
+    int m_unk120;                   // +0x120
+    int m_atk_weapon;               // +0x124 (0..3, maglifepcbtl)
+    int m_atk_height;               // +0x128 (0..4, maglifepcbtl)
+    int m_atk_combo;                // +0x12C (-1..2, maglifepcbtl)
 
     // Proposed name: m_mode_timer (reset to 0 in func_0011C2AC, incremented each live() tick, set to -100 on dog command in vfunc_16)
     int m_unk130;                   // +0x130 (size 0x04) - 0x0011AEDC: sw $v0, 0x130($s0); 0x0011C2D0: sw $zero, 0x130($a0)
@@ -257,7 +261,9 @@ struct MagLifePC : public MagLifeControlChara {
     int m_unk1BC;                   // +0x1BC (size 0x04, DOUBTFUL: unreferenced; likely padding to align DogVector at +0x1C0)
     DogVector m_unk1C0;             // +0x1C0 (size 0x10) - 0x0011C01C: addiu $a2, $fp, 0x1C0; 0x0011C13C..0x0011C148: swc1 (0,0,0,1)
     DogVector m_unk1D0;             // +0x1D0 (size 0x10) - 0x0011C024: addiu $a3, $fp, 0x1D0; 0x0011C14C..0x0011C158: swc1 (0,0,0,1)
-    int m_unk1E0[6];                // +0x1E0..+0x1F7 (size 0x18, DOUBTFUL: unreferenced in this asm slice)
+    int m_unk1E0[4];                // +0x1E0..+0x1EF
+    int m_target_id;                // +0x1F0 (current target ID, maglifepcbtl)
+    int m_target_unk;               // +0x1F4 (maglifepcbtl)
 
     // Proposed name: m_stick_deadzone (init 0.1f, range [0.0f, 1.0f), compared with stick magnitude in func_0011AC24)
     float m_unk1F8;                 // +0x1F8 (size 0x04) - 0x0011AC64: lwc1 $f1, 0x1F8($s1); 0x0011B9C0: swc1 $f20, 0x1F8($s0)
@@ -298,6 +304,7 @@ struct MagLifePC : public MagLifeControlChara {
     void func_0012CDDC();
     void func_0012CE08();
 };
+STATIC_ASSERT(sizeof(MagLifePC) == 0x220, MagLifePC_size);
 
 
 // ============================================================================
