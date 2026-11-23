@@ -145,3 +145,11 @@ tags functions with their source files (about a minute). Open the project with
   functions call them.
 - `sce-sdb` — SDK, libc or libgcc function whose masked bytes match a
   signature in PS2Recomp's database.
+
+## License
+
+Our own work in this repository (source code, tools, notes and derived
+symbol data) is under the [MIT License](LICENSE). It covers nothing of the
+game itself: Rule of Rose and its code, data and assets belong to their
+owners, and none of them is in this repository (each contributor extracts
+the executable from their own disc).
