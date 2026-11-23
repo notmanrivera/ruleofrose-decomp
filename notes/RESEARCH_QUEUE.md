@@ -17,7 +17,7 @@ judgement and go to Sonnet.
 
 ## Open
 
-- [ ] R23 Make our permuters find more matches (2026-11-22). Code names:
+- [x] R23 Make our permuters find more matches (2026-11-22). Code names:
   **Sektor** = the official decomp-permuter (tools/perm_official.py; random
   mutations; C only: 62 of 77 queued near misses could not be prepared,
   "base.c does not compile as C"; 18 exact overall), **Cyrax** = ours
@@ -36,7 +36,9 @@ judgement and go to Sonnet.
   Sektor on C++ (perm_official.py's C translation: classes, references,
   this->, asm labels) and whether a better translation could prepare most
   of them; (4) a ranked plan with expected yield and cost. Read-only;
-  output notes/research/R23-permuters.md.
+  output notes/research/R23-permuters.md. Done 2026-11-22 (Sonnet); checked:
+  12,695/15,350 perm-loop.log lines are fix_hi16 noise, 8 "no rewrite left",
+  Sektor sends compiler errors to /dev/null, Cyrax has no throw() rewrite.
 
 - [x] R22 Plan shared class headers for the class families (2026-11-22).
   Lesson of the day: a class header (real fields and types instead of
