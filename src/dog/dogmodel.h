@@ -65,11 +65,11 @@ public:
     unsigned char m_user195;        // +0x195
     unsigned char m_unk196[0xA];    // +0x196
 
-    DogModel()
-    {
-        m_submode.m_all = 0;
-        init();
-    }
+#ifdef TARGET_PS2
+    DogModel() { m_submode.m_all = 0; init(); }
+#else
+    DogModel() { m_submode.m_mode = m_submode.m_step = m_submode.m_unk08 = m_submode.m_unk0C = 0; init(); }
+#endif
     void init();
     DogSubMode *getSubMode() { return &m_submode; }
     int decRefCount() { return m_ref_count > 0 ? --m_ref_count : 0; }
