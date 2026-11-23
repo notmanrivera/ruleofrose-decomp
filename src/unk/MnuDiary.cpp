@@ -428,16 +428,15 @@ extern "C" void func_00198B54(MnuDiary *arg0)
     X_func_0019397C_v2(arg0, buf, 2, 1);
 }
 
-// NON_MATCHING: 80/132 differ, 11 relocs differ (size 0x210, game 0x20C), 14 edits
-#ifdef NON_MATCHING
-extern "C" int Xii_func_0019381C(int) asm("func_0019381C");
-extern "C" int Xii_func_0019A1D0(int) asm("func_0019A1D0");
-extern "C" int Xiiff_func_00192E94(int, float, float) asm("func_00192E94");
-extern "C" int Xiiii_func_00193FEC(int, int, int) asm("func_00193FEC");
-extern "C" int Xiiii_func_00194148(int, int, int) asm("func_00194148");
-extern "C" int Xiiii_func_00199AB4(int, int, int) asm("func_00199AB4");
-extern "C" int Xiiiii_func_00199A08(int, int, int, int) asm("func_00199A08");
-extern "C" void func_00198CA8(int arg0)
+extern "C" void func_00192E94(MnuBase *, float, float);
+extern "C" void func_0019381C(MnuBase *);
+extern "C" void func_00194148(MnuBase *, int, int);
+extern "C" void func_00193FEC(MnuBase *, int, int);
+extern "C" int func_0019A1D0(MnuDiary *);
+extern "C" void func_00199A08(MnuDiary *, int, int, int);
+extern "C" void func_00199AB4(MnuDiary *, int, int);
+extern "C" void func_0019A290(MnuDiary *, int);
+extern "C" void func_00198CA8(MnuDiary *arg0)
 {
     int temp_s0_2;
     int temp_s0_3;
@@ -445,68 +444,56 @@ extern "C" void func_00198CA8(int arg0)
     int temp_s1;
     int temp_s3;
     int doubled;
-    int temp_v1;
     int var_s2;
-    int var_s2_2;
     unsigned int temp_s0;
-    int temp_v1_2;
-    int temp_v1_3;
-    int temp_v1_4;
+    MnuAnimSlot *temp_v1_2;
+    MnuBookPage *temp_v1_3;
+    MnuBookPage *temp_v1_4;
     int var_a1;
 
     var_s2 = 1;
-    Xiiff_func_00192E94(arg0, 512.0f, 0.785398080945015f);
-    Xii_func_0019381C(arg0);
-    var_a1 = (int) 1;
+    func_00192E94(arg0, 512.0f, 0.785398080945015f);
+    func_0019381C(arg0);
     do {
-        var_s2 += 1;
-        Xiiii_func_00194148(arg0, var_a1, 0);
-        var_a1 = (int) var_s2;
-    } while (var_s2 < 5);
-    var_s2_2 = 0;
-    if (M2C_FIELD(arg0, int *, 0xA0) > 0) {
+        func_00194148(arg0, var_s2, 0);
+    } while (++var_s2 < 5);
+    var_s2 = 0;
+    if (arg0->m_unkA0 >= 1) {
         do {
-            temp_v1 = var_s2_2 * 0x10;
-            var_s2_2 += 1;
-            temp_v1_2 = temp_v1 + M2C_FIELD(arg0, int *, 0x9C);
-            M2C_FIELD(temp_v1_2, int *, 4) = (int) (M2C_FIELD(temp_v1_2, int *, 4) * 2);
-        } while (var_s2_2 < M2C_FIELD(arg0, int *, 0xA0));
+            arg0->m_animSlots[var_s2].m_len *= 2;
+            var_s2 += 1;
+        } while (var_s2 < arg0->m_unkA0);
     }
-    temp_s0 = M2C_FIELD(arg0, int *, 0x124) + 1;
+    temp_s0 = arg0->m_curPage + 1;
     temp_s0_2 = temp_s0 + (temp_s0 >> 0x1F);
-    var_s2 = Xii_func_0019A1D0(arg0);
     temp_s0_3 = temp_s0_2 >> 1;
-    temp_v1_3 = M2C_FIELD(arg0, int *, 0x128) + (var_s2 << 5);
+    var_s2 = func_0019A1D0(arg0);
+    temp_v1_3 = &arg0->m_slots[var_s2];
     temp_s1 = temp_s0_3 - 1;
-    M2C_FIELD(temp_v1_3, int *, 0xC) = 1;
-    M2C_FIELD(temp_v1_3, int *, 0x14) = temp_s1;
-    M2C_FIELD(temp_v1_3, int *, 0) = (int) (M2C_FIELD(temp_v1_3, int *, 0) | 3);
-
-
-    M2C_FIELD(temp_v1_3, int *, 0x10) = (int) M2C_FIELD(M2C_FIELD(arg0, int *, 0x9C), int *, 0x14);
-    temp_s3 = temp_s0_3 * 2;
-    Xiiii_func_00193FEC(arg0, var_s2, 1);
+    temp_v1_3->m_animIdx = 1;
+    temp_v1_3->m_page = temp_s1;
+    temp_v1_3->m_flags |= 3;
+    temp_v1_3->m_frame = arg0->m_animSlots[1].m_len;
+    func_00193FEC(arg0, var_s2, 1);
     doubled = temp_s1 * 2;
-    Xiiiii_func_00199A08(arg0, temp_s1, doubled + 1, 0);
-    Xiiiii_func_00199A08(arg0, temp_s1, doubled + 2, 1);
-    var_s2 = Xii_func_0019A1D0(arg0);
-    temp_v1_4 = M2C_FIELD(arg0, int *, 0x128) + (var_s2 << 5);
-    M2C_FIELD(temp_v1_4, int *, 0x14) = temp_s0_3;
-    M2C_FIELD(temp_v1_4, int *, 0xC) = 0;
-    M2C_FIELD(temp_v1_4, int *, 0) = (int) (M2C_FIELD(temp_v1_4, int *, 0) | 3);
-    M2C_FIELD(temp_v1_4, int *, 0x10) = (int) M2C_FIELD(M2C_FIELD(arg0, int *, 0x9C), int *, 4);
-    Xiiii_func_00193FEC(arg0, var_s2, 0);
-    Xiiiii_func_00199A08(arg0, temp_s0_3, temp_s3 + 1, 0);
-    Xiiiii_func_00199A08(arg0, temp_s0_3, temp_s3 + 2, 1);
-    Xiiii_func_00199AB4(arg0, M2C_FIELD(arg0, int *, 0x124), 0);
-    Xiiii_func_00199AB4(arg0, M2C_FIELD(arg0, int *, 0x124) + 1, 1);
-    temp_s0_4 = (int) (M2C_FIELD(arg0, int *, 0x124) + 1) / 2;
-    Xiii_func_0019A290(arg0, temp_s0_4 + 1);
-    Xiii_func_0019A290(arg0, temp_s0_4 - 2);
+    func_00199A08(arg0, temp_s1, doubled + 1, 0);
+    func_00199A08(arg0, temp_s1, doubled + 2, 1);
+    var_s2 = func_0019A1D0(arg0);
+    temp_v1_4 = &arg0->m_slots[var_s2];
+    temp_v1_4->m_page = temp_s0_3;
+    temp_v1_4->m_animIdx = 0;
+    temp_v1_4->m_flags |= 3;
+    temp_v1_4->m_frame = arg0->m_animSlots[0].m_len;
+    func_00193FEC(arg0, var_s2, 0);
+    temp_s3 = temp_s0_3 * 2;
+    func_00199A08(arg0, temp_s0_3, temp_s3 + 1, 0);
+    func_00199A08(arg0, temp_s0_3, temp_s3 + 2, 1);
+    func_00199AB4(arg0, arg0->m_curPage, 0);
+    func_00199AB4(arg0, arg0->m_curPage + 1, 1);
+    temp_s0_4 = (arg0->m_curPage + 1) / 2;
+    func_0019A290(arg0, temp_s0_4 + 1);
+    func_0019A290(arg0, temp_s0_4 - 2);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00198CA8);
-#endif
 
 extern "C" void func_00198EB4(MnuDiary *arg0)
 {
