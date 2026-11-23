@@ -725,18 +725,14 @@ extern "C" void func_0011BC64(MagPC *self)
 }
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" void func_0011BCD8(MagPC *self)
 {
 #line 1674
-    ASSERT_S((unsigned int)(I(self, 0xD8) - 1) < 4, "m_submode_level > 0 && m_submode_level <= 4");
+    if ((unsigned int)(I(self, 0xD8) - 1) >= 4)
+        ror_assert(D_002E9F28, 1674, "m_submode_level > 0 && m_submode_level <= MAX_SUBMODE_STACK");
     I(self, 0xD8)--;
-    *(u_long128 *)self = ((u_long128 *)((char *)self + 0x90))[I(self, 0xD8)];
+    *(SubModeState_BC64 *)self = ((SubModeState_BC64 *)self->m_submode_stack)[self->m_submode_level];
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011BCD8);
-#endif
 
 
 extern "C" void setActor__9MagLifePCP8DogActorii(MagPC *self, DogActor *theActor, int theA, int theB)
