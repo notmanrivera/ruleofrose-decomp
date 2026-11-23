@@ -209,58 +209,61 @@ int MagNameList::func_00141F54(int theNum, const char *theNameBuf, const int *th
 
 
 
-// NON_MATCHING: 4/258 differ, 3 edits
-#ifdef NON_MATCHING
 void MagNameList::func_001420F8(int theNum, const char *theNameBuf, const int *theOffset, const int *theSize, int theBase, int theSort)
 {
 
-
     int old = m_num;
+    char *names;
     if (old == 0) {
         func_00141F54(theNum, theNameBuf, theOffset, theSize, theBase);
         return;
     }
     int len[1024];
     int ofs[1024];
-    int total = old + theNum;
     int nameSize = func_00141E90(len, ofs, theNum, theNameBuf);
     int allNames = m_name_size + nameSize;
-    int dataSize = func_00141E78(total, allNames);
+    int dataSize = func_00141E78((old + theNum), allNames);
     int *data = (int *)D_006E9800.alloc(dataSize, -1);
+
     ASSERT(data);
+    int total = old + theNum;
     int *offset = data + total;
-    const char **name = (const char **)(offset + total);
-    unsigned char *lens = (unsigned char *)(name + total);
-    char *names = (char *)lens + total;
-    memcpy(names, m_name_buf, m_name_size);
-    memcpy(names + m_name_size, theNameBuf, nameSize);
-    for (int i0 = 0; i0 < m_num; i0++) {
-        ((int *)name)[i0] = (int)m_name[i0] - (int)m_name_buf;
+    {
+        const char **name = (const char **)(offset + total);
+        unsigned char *lens = (unsigned char *)(name + total);
+        names = (char *)lens + total;
+        memcpy(names, m_name_buf, m_name_size);
+        memcpy(names + m_name_size, theNameBuf, nameSize);
+        for (int i0 = 0; i0 < m_num; i0++) {
+            ((int *)name)[i0] = (int)m_name[i0] - (int)m_name_buf;
+        }
+        for (int i1 = m_num; i1 < total; i1++) {
+            ((int *)name)[i1] = ofs[i1 - m_num] + m_name_size;
+        }
+        for (int i2 = 0; i2 < total; i2++) {
+            name[i2] = (int)name[i2] + names;
+        }
+        for (int i3 = 0; i3 < m_num; i3++) {
+            data[i3] = m_size[i3];
+            offset[i3] = m_offset[i3];
+            lens[i3] = m_len[i3];
+        }
+        for (int i4 = 0; i4 < theNum; i4++) {
+            data[i4 + m_num] = theSize[i4];
+            offset[i4 + m_num] = theOffset[i4] + theBase;
+            lens[i4 + m_num] = len[i4];
+        }
+        func_0014259C();
+        m_num = total; m_data = data;
+        m_data_size = dataSize;
+        m_size = data;
+        m_offset = offset;
+        m_name = name;
+        m_len = lens;
+        m_name_size = allNames; m_name_buf = names;
     }
-    for (int i1 = m_num; i1 < total; i1++) {
-        ((int *)name)[i1] = ofs[i1 - m_num] + m_name_size;
-    }
-    for (int i2 = 0; i2 < total; i2++) {
-        name[i2] = names + (int)name[i2];
-    }
-    for (int i3 = 0; i3 < m_num; i3++) {
-        data[i3] = m_size[i3];
-        offset[i3] = m_offset[i3];
-        lens[i3] = m_len[i3];
-    }
-    for (int i4 = 0; i4 < theNum; i4++) {
-        data[i4 + m_num] = theSize[i4];
-        offset[i4 + m_num] = theOffset[i4] + theBase;
-        lens[i4 + m_num] = len[i4];
-    }
-    func_0014259C();
-    m_num = total; m_data = data;
-    m_data_size = dataSize;
-    m_size = data;
-    m_offset = offset;
-    m_name = name;
-    m_len = lens;
-    m_name_buf = names; m_name_size = allNames;
+
+
     if (theSort) {
         int last = total - 1;
         for (int a = old; a < last; a++) {
@@ -283,9 +286,6 @@ void MagNameList::func_001420F8(int theNum, const char *theNameBuf, const int *t
         }
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/magloader", func_001420F8);
-#endif
 
 int MagNameList::func_00142500(const char *theName)
 {
