@@ -806,22 +806,17 @@ extern "C" void reset4MapJump__9MagLifePC(MagPC *self)
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011BF0C);
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" void func_0011C1E8(MagPC *self, int theMode, int theA, int theForce)
 {
 #line 2340
-    ASSERT(theMode >= 0);
+    if (theMode < 0) ror_assert(D_002E9F28, 2340, "theMode >= 0");
     if (I(self, 0) == theMode && theMode != 0 && !theForce) {
         return;
     }
     func_0011A130(self);
     self->vfunc09(theMode, theA);
-    func_0011C2AC(self, 1);
+    return func_0011C2AC(self, 1);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011C1E8);
-#endif
 
 
 extern "C" void func_0011C2AC(MagPC *self, int theA)
