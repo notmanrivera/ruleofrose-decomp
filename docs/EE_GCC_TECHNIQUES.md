@@ -178,8 +178,17 @@ Tested at `-Os` against this repo's `NON_MATCHING` functions (sources: gt4-decom
 - A string or float literal goes to `.rodata` when the first function using
   it is compiled, in first-use order. A string the asm still uses stays an
   `INCLUDE_RODATA`: refer to its `D_` symbol (`ASSERT_S`, `ASSERT_FILE`).
-- 8-byte data is 8-aligned (`config/rodata_align_manual.tsv` when splat's
-  piece lacks the `.align`); jump tables are 16-aligned.
+- Alignment, measured on ee-gcc 2.96 -Os with `-S` (2026-11-23): every
+  string literal (any length, 8 to 32 bytes tried), every named array
+  (char, short, int, float, double) and struct goes `.align 3` (8 bytes):
+  the R5900's word is 64 bits. Jump tables go `.align 4` (16). In the game
+  the assert file-name strings sit 76 times at 0 mod 16 and 66 times at 8
+  mod 16: no 16 rule for strings; a 16-aligned one has something else
+  before it (game/gamsnd: 12 zero bytes after its jump table).
+- When a function MATCHes but its object's .rodata does not, an
+  INCLUDE_RODATA piece after it usually needs splat's `.align` raised:
+  `tools/rodata_align_fix.py <file> <func>` finds it and writes
+  `config/rodata_align_manual.tsv` (merge by hand: config/).
 
 ## Not allowed as a fix
 
