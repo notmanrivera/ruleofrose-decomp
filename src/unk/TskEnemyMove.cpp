@@ -2058,8 +2058,6 @@ extern "C" int func_00202380(int arg0, float inputAngle) {
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202380);
 #endif
 
-// NON_MATCHING: 30/143 differ, 21 edits
-#ifdef NON_MATCHING
 extern "C" float e2638_yaw(void *) asm("func_0010A650__8DogActor");
 extern "C" int e2638_state(void *) asm("func_0010DB18__8DogActor");
 extern "C" float e2638_time(void *) asm("func_0010DA4C__8DogActor");
@@ -2075,12 +2073,13 @@ extern "C" int func_00202638(int arg0) {
  float y;
  float *r = rot;
  float *p = pos;
+ void *actor0 = M2C_FIELD(arg0,void **,0x28);
  delta[0] = delta[1] = delta[2] = 0.0f; delta[3] = 1.0f;
  r[0] = rot[1] = rot[2] = 0.0f; rot[3] = 1.0f;
  p[0] = pos[1] = pos[2] = 0.0f; pos[3] = 1.0f;
  y = 0.0f;
  value = y;
- register float yaw PS2_REG("$f23") = e2638_yaw(M2C_FIELD(arg0,void **,0x28));
+ register float yaw PS2_REG("$f23") = e2638_yaw(actor0);
  if (e2638_state(M2C_FIELD(arg0,void **,0x28)) < 0) {
   float t = e2638_time(M2C_FIELD(arg0,void **,0x28));
   if (t >= y) {
@@ -2106,9 +2105,6 @@ extern "C" int func_00202638(int arg0) {
  }
  return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202638);
-#endif
 
 extern "C" void func_00202874(TskEnemyMove *arg0, float fparg0)
 {
