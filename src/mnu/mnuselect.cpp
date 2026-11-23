@@ -35,7 +35,7 @@ extern "C" int func_001A06D4(MnuSub104 *self, int arg1)
 }
 
 
-// NON_MATCHING: 7/25 differ (size 0x64 == game 0x64; sw 0x54 hoisted before 0x60)
+// NON_MATCHING: 2/25 differ, 2 edits
 #ifdef NON_MATCHING
 extern "C" int func_001A06E8(MnuSub104 *self)
 {
@@ -43,15 +43,17 @@ extern "C" int func_001A06E8(MnuSub104 *self)
         return -1;
     }
     register int v100 PS2_REG("$5") = 100;
+    do {
     self->m_unk5C = 0x7FFF;
     self->m_open = 1;
-    self->m_active = 0;
     self->m_unk60 = -1;
+    self->m_active = 0;
     self->m_unk58 = v100;
     self->m_unk68 = 0;
     self->m_step = 0;
     self->m_mode = 0;
     self->m_subStep = 0;
+    } while (0);
     self->m_unk54 = v100;
     func_001A08D4(self);
     return 0;
