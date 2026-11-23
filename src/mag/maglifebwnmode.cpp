@@ -1,86 +1,120 @@
 #include "include_asm.h"
-extern "C" float Xfi_func_00119FB0(int) asm("func_00119FB0");
-extern "C" int Xii_func_00124D7C(int) asm("func_00124D7C");
-extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
-extern "C" int Xiiis_func_0011A320(int, int, short) asm("func_0011A320");
+#include "mag/maglifebwn.h"
+
+extern "C" int Xiif_func_00119B60(MagLifeBwn *, int, float) asm("func_00119B60");
+extern "C" float Xfi_func_00119FB0(MagLifeBwn *) asm("func_00119FB0");
+extern "C" int Xii_func_0011A028(MagLifeBwn *) asm("func_0011A028");
+extern "C" int Xii_func_0011A03C(MagLifeBwn *) asm("func_0011A03C");
+extern "C" int Xii_func_0011A054(MagLifeBwn *) asm("func_0011A054");
+extern "C" int Xii_func_00123BB8(MagLifeBwn *) asm("func_00123BB8");
+extern "C" int Xii_func_00124150(MagLifeBwn *) asm("func_00124150");
+extern "C" int Xii_func_00124D7C(MagLifeBwn *) asm("func_00124D7C");
+extern "C" int Xii_func_00124E18(MagLifeBwn *) asm("func_00124E18");
+extern "C" int Xii_func_00125014(MagLifeBwn *) asm("func_00125014");
+extern "C" int X_live__14MagLifeBwnModeR10MagLifeBwn(MagLifeBwnMode *, MagLifeBwn *) asm("live__14MagLifeBwnModeR10MagLifeBwn");
+extern "C" void Xiiii_ror_assert(const char *, int, const char *) asm("ror_assert");
+extern "C" int Xiiis_func_0011A320(MagLifeBwn *, int, short) asm("func_0011A320");
 extern const char D_002EBC70[];
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" int Xiii_func_001264F8(int, int) asm("func_001264F8");
-// Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_func_00119B60(...) asm("func_00119B60");
-extern "C" int X_func_0011A028(...) asm("func_0011A028");
-extern "C" int X_func_0011A03C(...) asm("func_0011A03C");
-extern "C" int X_func_0011A054(...) asm("func_0011A054");
-extern "C" int X_func_0011A320(...) asm("func_0011A320");
-extern "C" int X_func_00123BB8(...) asm("func_00123BB8");
-extern "C" int X_func_00124150(...) asm("func_00124150");
-extern "C" int X_func_00124D7C(...) asm("func_00124D7C");
-extern "C" int X_func_00124E18(...) asm("func_00124E18");
-extern "C" int X_func_00125014(...) asm("func_00125014");
-extern "C" int X_live__14MagLifeBwnModeR10MagLifeBwn(...) asm("live__14MagLifeBwnModeR10MagLifeBwn");
+extern "C" void func_001264F8(MagLifeBwnModeRotate *, MagLifeBwn *);
 
-extern "C" void init__18MagLifeBwnModePathR10MagLifeBwn(int arg0, int arg1)
+extern "C" void init__18MagLifeBwnModePathR10MagLifeBwn(MagLifeBwnModePath *arg0, MagLifeBwn *arg1)
 {
-    (*(int *)(int *)((char *)(arg0) + 0xC)) = 0;
-    X_func_0011A03C(arg1);
-    X_func_00125014(arg1);
-    X_func_00124D7C(arg1);
+    arg0->m_unk0C = 0;
+    Xii_func_0011A03C(arg1);
+    Xii_func_00125014(arg1);
+    Xii_func_00124D7C(arg1);
 }
-
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnmode", D_002EBC70);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnmode", live__18MagLifeBwnModePathR10MagLifeBwn);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnmode", term__18MagLifeBwnModePathR10MagLifeBwni);
-
-extern "C" void init__18MagLifeBwnModeTurnR10MagLifeBwn(int arg0, int arg1)
+extern "C" int term__18MagLifeBwnModePathR10MagLifeBwni(MagLifeBwnModePath *arg0, MagLifeBwn *arg1, int arg2)
 {
-    X_func_0011A320(arg1, (*(int *)(int *)((char *)(arg1) + 0xC)) + 0x2B, -1);
-    X_func_00124D7C(arg1);
+    if (arg2 == 0) {
+        if (arg0->m_unk08 == 0x1000) {
+            return 0;
+        }
+        int st = Xii_func_0011A028(arg1);
+        if (st >= 0x60 && st < 0x68) {
+            Xiiis_func_0011A320(arg1, 0x68, -1);
+            return 0;
+        }
+        return 1;
+    }
+    if (arg0->m_unk08 == 0x1000) {
+        Xii_func_00124150(arg1);
+        int sct = Xiif_func_00119B60(arg1, 0, 75.0f);
+        arg1->m_sctFlag = sct;
+        if (sct == 0) {
+            arg0->m_unk08 = 0;
+        }
+        return 1;
+    }
+    Xii_func_00123BB8(arg1);
+    return Xii_func_0011A054(arg1) != 0;
 }
 
-
-extern "C" void init__17MagLifeBwnModeOneR10MagLifeBwn(int arg0, int arg1)
+extern "C" void init__18MagLifeBwnModeTurnR10MagLifeBwn(MagLifeBwnModeTurn *arg0, MagLifeBwn *arg1)
 {
-    (*(int *)(int *)((char *)(arg1) + 0xCC0)) = 0;
-    X_func_0011A320(arg1, 0, -1);
-    X_func_0011A320(arg1, (*(int *)(int *)((char *)(arg1) + 0x8)), -1);
-    X_func_00124E18(arg1);
+    Xiiis_func_0011A320(arg1, arg1->m_unk0C + 0x2B, -1);
+    Xii_func_00124D7C(arg1);
 }
 
-
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnmode", live__17MagLifeBwnModeOneR10MagLifeBwn);
-
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnmode", init__18MagLifeBwnModeWallR10MagLifeBwn);
-
-extern "C" void init__20MagLifeBwnModeRotateR10MagLifeBwn(int arg0, int arg1)
+extern "C" void init__17MagLifeBwnModeOneR10MagLifeBwn(MagLifeBwnModeOne *arg0, MagLifeBwn *arg1)
 {
-    M2C_FIELD(arg0, float *, 4) = (float) M2C_FIELD(arg1, float *, 8);
-    Xiii_func_001264F8((int) arg0, (int) arg1);
+    arg1->m_unkCC0 = 0;
+    Xiiis_func_0011A320(arg1, 0, -1);
+    Xiiis_func_0011A320(arg1, arg1->m_unk08, -1);
+    Xii_func_00124E18(arg1);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnmode", D_002EBCB8);
+extern "C" int live__17MagLifeBwnModeOneR10MagLifeBwn(MagLifeBwnModeOne *arg0, MagLifeBwn *arg1)
+{
+    if (arg1->m_unk0C == 0) {
+        return X_live__14MagLifeBwnModeR10MagLifeBwn(arg0, arg1);
+    }
+    if (arg1->m_unkCC0 == 0) {
+        Xii_func_00123BB8(arg1);
+        if (Xii_func_0011A054(arg1) != 0) {
+            arg1->m_unkCC0 = 1;
+        }
+    }
+    return 0;
+}
 
-extern "C" void func_001264F8(int arg0, int arg1)
+extern "C" void init__18MagLifeBwnModeWallR10MagLifeBwn(MagLifeBwnModeWall *arg0, MagLifeBwn *arg1)
+{
+    int table[4] = { 0x1D, 0x1F, 0x21, 0x23 };
+    Xiiis_func_0011A320(arg1, table[arg1->m_unk08 % 4], -1);
+    Xii_func_00124E18(arg1);
+}
+
+extern "C" void init__20MagLifeBwnModeRotateR10MagLifeBwn(MagLifeBwnModeRotate *arg0, MagLifeBwn *arg1)
+{
+    arg0->m_target_rot = *(float *)&arg1->m_unk08;
+    func_001264F8(arg0, arg1);
+}
+
+extern "C" void func_001264F8(MagLifeBwnModeRotate *arg0, MagLifeBwn *arg1)
 {
     float temp_f1;
     float var_f1;
     int var_a1;
 
-    temp_f1 = M2C_FIELD(arg0, float *, 4);
+    temp_f1 = arg0->m_target_rot;
     if (!(temp_f1 >= -3.141593039035797f) || !(temp_f1 < 3.141593039035797f)) {
-        Xiiii_ror_assert((int) D_002EBC70, 0x278, (int) "(m_target_rot >= -DOG_PI) && (m_target_rot < DOG_PI)");
+        Xiiii_ror_assert(D_002EBC70, 0x278, "(m_target_rot >= -DOG_PI) && (m_target_rot < DOG_PI)");
     }
-    M2C_FIELD(arg1, int *, 0xCC0) = 0;
-    var_f1 = M2C_FIELD(arg0, float *, 4) - Xfi_func_00119FB0(arg1);
+    arg1->m_unkCC0 = 0;
+    var_f1 = arg0->m_target_rot - Xfi_func_00119FB0(arg1);
     if (var_f1 < -3.141593039035797f) {
         var_f1 += 6.283186078071594f;
     } else if (var_f1 >= 3.141593039035797f) {
         var_f1 -= 6.283186078071594f;
     }
     var_a1 = 0x39;
-    M2C_FIELD(arg0, float *, 8) = var_f1;
+    arg0->m_diff_rot = var_f1;
     if (!(var_f1 < -1.5707962810993195f)) {
         var_a1 = 0x2C;
         if (!(var_f1 < -0.7853981405496597f)) {
@@ -94,8 +128,8 @@ extern "C" void func_001264F8(int arg0, int arg1)
                             var_a1 = 0x2E;
                             goto block_16;
                         }
-                        M2C_FIELD(arg1, int *, 0xCC0) = 1;
-                        M2C_FIELD(arg1, int *, 8) = 1;
+                        arg1->m_unkCC0 = 1;
+                        arg1->m_unk08 = 1;
                         return;
                     }
                 }
@@ -107,4 +141,31 @@ block_16:
     Xii_func_00124D7C(arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnmode", live__20MagLifeBwnModeRotateR10MagLifeBwn);
+extern "C" int live__20MagLifeBwnModeRotateR10MagLifeBwn(MagLifeBwnModeRotate *arg0, MagLifeBwn *arg1)
+{
+    if (arg1->m_unkCC0 != 0) {
+        return 0;
+    }
+    if (Xii_func_00123BB8(arg1) == -1) {
+        Xiiis_func_0011A320(arg1, 2, -1);
+        return 0;
+    }
+    float tmp = arg0->m_target_rot - Xfi_func_00119FB0(arg1);
+    float diff;
+    if (tmp < -DOG_PI) {
+        diff = tmp + DOG_PI2;
+    } else {
+        diff = tmp;
+        if (diff >= DOG_PI) {
+            diff -= DOG_PI2;
+        }
+    }
+    if ((diff > -0.034906589426100254f && diff < 0.034906589426100254f) || (diff * arg0->m_diff_rot < 0.0f)) {
+        arg1->m_unkCC0 = 1;
+    }
+    arg0->m_diff_rot = diff;
+    if (Xii_func_0011A054(arg1) != 0) {
+        func_001264F8(arg0, arg1);
+    }
+    return 0;
+}
