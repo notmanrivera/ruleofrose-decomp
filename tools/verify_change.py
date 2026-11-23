@@ -31,8 +31,10 @@ def git(*args):
 
 
 def changed(base):
-    """src/ paths changed since base (committed or not) and untracked ones."""
-    out = set(git("diff", "--name-only", base, "--", "src"))
+    """src/ paths changed on this branch since it left base (committed or
+    not: base...HEAD, so what base gained meanwhile does not count) and
+    untracked ones."""
+    out = set(git("diff", "--name-only", f"{base}...HEAD", "--", "src")) if base != "HEAD" else set()
     out |= set(git("diff", "--name-only", "--", "src"))
     out |= set(git("ls-files", "--others", "--exclude-standard", "--", "src"))
     return {p for p in out if p.endswith((".cpp", ".h")) and (ROOT / p).exists()}
