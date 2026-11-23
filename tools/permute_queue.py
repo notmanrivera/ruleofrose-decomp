@@ -95,6 +95,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--minutes", type=float, default=10, help="per function")
     ap.add_argument("--max-off", type=int, default=8, help="only attempts this close")
+    ap.add_argument("--avoid", default="", help="skip files under these prefixes (another worker's), comma-separated")
+    ap.add_argument("--skip", help="file of '<file> <function>' lines to leave out (another permuter's)")
     ap.add_argument("--jobs", type=int, default=4, help="compiles at once (permute.py --jobs)")
     ap.add_argument("--merge", action="store_true", help="merge each MATCH right away")
     ap.add_argument("--list", action="store_true", help="only list the queue")
@@ -103,8 +105,12 @@ def main():
     if main_dir == ROOT and not a.list:
         sys.exit("run it in its own worktree (tools/new_worktree.sh perm), not in the main checkout")
     py = sys.executable
-    queue = [q for q in near_misses(a.max_off, held_files(main_dir))
-             if (q[1], q[2]) not in done_before(a.minutes)]
+    avoid = tuple(p for p in a.avoid.split(",") if p) or ("\0",)
+    queue = [q for q in near_misses(a.max_off, held_files(main_dir)) if not q[1].startswith(avoid)
+             and (q[1], q[2]) not in done_before(a.minutes)]
+    if a.skip:                       # "<file> <function>" lines another permuter has
+        skip = {tuple(ln.split()[:2]) for ln in Path(a.skip).read_text().splitlines() if ln.strip()}
+        queue = [q for q in queue if (q[1], q[2]) not in skip]
     for off, name, fn, status in queue:
         print(f"{off:4} off  {name} {fn}  ({status})")
     if a.list:
