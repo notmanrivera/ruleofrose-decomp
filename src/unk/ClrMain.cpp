@@ -1,725 +1,814 @@
 #include "include_asm.h"
 #include "emy/emy.h"
 #include "ror.h"
-struct m2c_v34_10_i { char pad[52]; virtual void v1(); virtual int call(); };
-extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
-extern "C" int Xiii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
-extern int _vt$7ClrMain;
-extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
-extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
-extern int _vt$7HfmMain;
-extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
-extern "C" int Xii_EmyMain__vfunc_01(int, int) asm("EmyMain__vfunc_01");
-extern "C" int Xii_func_00202F10(int) asm("func_00202F10");
-extern "C" int Xiiii_func_001680A0(int, int, int) asm("func_001680A0");
-extern "C" int Xiiiiff_func_001679B4(int, int, int, float, float) asm("func_001679B4");
-extern "C" int Xiiiiff_func_00169BAC(int, int, int, float, float) asm("func_00169BAC");
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" float Xfff_func_001044B8(float, float) asm("func_001044B8");
-extern "C" int Xiiif_func_00166F50(int, int, float) asm("func_00166F50");
-// Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_func_001044B8(...) asm("func_001044B8");
-extern "C" int X_func_0014E2EC(...) asm("func_0014E2EC");
-extern "C" int X_func_0014E300(...) asm("func_0014E300");
-extern "C" int X_func_0014E314(...) asm("func_0014E314");
-extern "C" int X_func_0014E328(...) asm("func_0014E328");
-extern "C" int X_func_0014E33C(...) asm("func_0014E33C");
-extern "C" int X_func_0014E350(...) asm("func_0014E350");
-extern "C" int X_func_0014E364(...) asm("func_0014E364");
-extern "C" int X_func_0014E36C(...) asm("func_0014E36C");
-extern "C" int X_func_0014E374(...) asm("func_0014E374");
-extern "C" int X_func_0014E37C(...) asm("func_0014E37C");
-extern "C" int X_func_0014E384(...) asm("func_0014E384");
-extern "C" int X_func_0014E38C(...) asm("func_0014E38C");
-extern "C" int X_func_00165A68(...) asm("func_00165A68");
-extern "C" int X_func_00165AA8(...) asm("func_00165AA8");
-extern "C" int X_func_00165D7C(...) asm("func_00165D7C");
-extern "C" int X_func_0016649C(...) asm("func_0016649C");
-extern "C" int X_func_00166AD0(...) asm("func_00166AD0");
-extern "C" int X_func_00166DA4(...) asm("func_00166DA4");
-extern "C" int X_func_00166F50(...) asm("func_00166F50");
-extern "C" int X_func_0016968C(...) asm("func_0016968C");
-extern "C" int X_func_00169BAC(...) asm("func_00169BAC");
-extern "C" int X_func_001D10D0(...) asm("func_001D10D0");
-extern "C" int X_func_001D1410(...) asm("func_001D1410");
-extern int D_007812C0;
-extern int D_007A3350;
-extern int D_007B205C;
 
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrMain__vfunc_07);
+struct ClrVtblEntry {
+    short m_delta;
+    short m_index;
+    void *m_fn;
+};
 
-extern "C" void ClrMain__vfunc_01(int arg0, int arg1)
+struct ClrStateTable {
+    unsigned char m_unk00;
+    unsigned char m_count;
+    unsigned char m_pad02[0xA];
+    signed char *m_flags;
+};
+
+struct ClrActorPtr {
+    unsigned char m_pad00[0x100];
+    int m_id;
+};
+
+struct ClrDmgEntry {
+    int m_active;
+    int m_delay;
+    int m_duration;
+    int m_kind;
+    float m_radius;
+    float m_pos[3];
+};
+
+struct ClrMain : public EmyMain {
+    unsigned char m_unk204;             // +0x204
+    unsigned char m_pad205[3];
+    int m_condFlags[14];                // +0x208..+0x23F
+    int m_unk240;                       // +0x240
+    unsigned char m_unk244;             // +0x244
+    unsigned char m_pad245[3];
+    int m_unk248;                       // +0x248
+    int m_unk24C;                       // +0x24C
+    float m_pos[4];                     // +0x250..+0x25F
+    int m_phase;                        // +0x260
+    int m_heightMode;                   // +0x264
+    int m_unk268;                       // +0x268
+    int m_unk26C;                       // +0x26C
+    int m_dmgCursor;                    // +0x270
+    ClrDmgEntry m_dmgList[64];          // +0x274..+0xA73
+};
+
+struct ClrOutUp : public EmyOut {
+    unsigned char m_pad38[0x08];        // +0x38
+    float m_pos[4];                     // +0x40
+    unsigned char m_pad50[0x40];        // +0x50
+    int m_unk90;                        // +0x90
+    float m_timer;                      // +0x94
+    int m_unk98;                        // +0x98
+    int m_step;                         // +0x9C
+    int m_unkA0;                        // +0xA0
+    int m_unkA4;                        // +0xA4
+    int m_unkA8;                        // +0xA8
+    int m_effId;                        // +0xAC
+    unsigned char m_padB0[0x30];        // +0xB0
+}; // size 0xE0
+
+struct ClrOutDeathUp : public EmyOut {
+    unsigned char m_pad38[0x08];        // +0x38
+    float m_pos[4];                     // +0x40
+    unsigned char m_pad50[0x40];        // +0x50
+    int m_unk90;                        // +0x90
+    int m_unk94;                        // +0x94
+    int m_unk98;                        // +0x98
+    int m_step;                         // +0x9C
+    unsigned char m_padA0[0x10];        // +0xA0
+}; // size 0xB0
+
+struct ClrOutMove : public EmyOut {
+    unsigned char m_pad38[0x08];        // +0x38
+    float m_pos[4];                     // +0x40
+    float m_basePos[4];                 // +0x50
+    unsigned char m_pad60[0x10];        // +0x60
+    float m_rot[4];                     // +0x70
+    unsigned char m_pad80[0x10];        // +0x80
+    int m_unk90;                        // +0x90
+    float m_timer;                      // +0x94
+    float m_targetY;                    // +0x98
+    int m_step;                         // +0x9C
+    int m_hit0;                         // +0xA0
+    int m_hit1;                         // +0xA4
+    int m_waitTimer;                    // +0xA8
+    int m_seHandle;                     // +0xAC
+    int m_effId;                        // +0xB0
+    unsigned char m_padB4[0x24];        // +0xB4
+    float m_effPos[4];                  // +0xD8
+    float m_effDir[4];                  // +0xE8
+    unsigned char m_padF8[0x08];        // +0xF8
+}; // size 0x100
+
+struct ClrOutAtk : public EmyOut {
+    unsigned char m_pad38[0x140];       // +0x38
+    int m_unk178;                       // +0x178
+    int m_unk17C;                       // +0x17C
+    int m_unk180;                       // +0x180
+    int m_unk184;                       // +0x184
+    float m_yawSpeed;                   // +0x188
+    int m_unk18C;                       // +0x18C
+    int m_unk190;                       // +0x190
+    int m_unk194;                       // +0x194
+    int m_unk198;                       // +0x198
+}; // size 0x19C
+
+struct ClrOutWin : public EmyOut {
+    float m_dist;                       // +0x38
+};
+
+struct ClrOutVtbl {
+    unsigned char m_pad00[0x34];
+    virtual void v1();
+    virtual void v2();
+    virtual int v3();
+    virtual void v4();
+};
+
+struct ClrMainVtbl {
+    unsigned char m_pad00[0x200];
+    virtual void v1();
+    virtual int v2();
+};
+
+struct ClrGlobal7B205C {
+    unsigned char m_pad00[0x788];
+    int m_effId;                        // +0x788
+};
+
+struct ClrEffParamA {
+    int m_kind;                         // +0x00
+    int m_unk04;                        // +0x04
+    int m_unk08;                        // +0x08
+    int m_unk0C;                        // +0x0C
+    float *m_p0;                        // +0x10
+    float *m_p1;                        // +0x14
+    float m_f18;                        // +0x18
+    float m_f1C;                        // +0x1C
+    float m_f20;                        // +0x20
+    float m_f24;                        // +0x24
+    float m_f28;                        // +0x28
+    float m_f2C;                        // +0x2C
+    float m_f30;                        // +0x30
+    int m_i34;                          // +0x34
+    int m_pad[18];                      // +0x38..+0x7F
+};
+
+struct ClrEffParamC {
+    int m_kind;                         // +0x00
+    int m_unk04;                        // +0x04
+    int m_unk08;                        // +0x08
+    int m_unk0C;                        // +0x0C
+    float m_pos[3];                     // +0x10..+0x1B
+    float m_unk1C;                      // +0x1C
+    float m_col[4];                     // +0x20..+0x2F
+    int m_dur;                          // +0x30
+    int m_pad[19];                      // +0x34..+0x7F
+};
+
+extern int vtbl_ClrMain asm("_vt$7ClrMain");
+extern int vtbl_ClrOutUp asm("_vt$8ClrOutUp");
+extern int vtbl_ClrOutDeathUp asm("_vt$13ClrOutDeathUp");
+extern int vtbl_ClrOutMove asm("_vt$10ClrOutMove");
+extern int vtbl_ClrOutAtk asm("_vt$9ClrOutAtk");
+
+extern char D_006FBD80[];
+extern char D_006FE6A0[];
+extern int D_00724EA0[];
+extern char D_007812C0[];
+extern ClrActorPtr *D_007A3350;
+extern ClrActorPtr *D_007A3354;
+extern ClrGlobal7B205C *D_007B205C;
+
+extern "C" void *X___builtin_new(unsigned int) asm("__builtin_new");
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void X_EmyMain__vfunc_01(void *, int) asm("EmyMain__vfunc_01");
+extern "C" int X_func_0010423C(int, int) asm("func_0010423C");
+extern "C" float X_func_001044B8(float, float) asm("func_001044B8");
+extern "C" float X_func_0010A650(void *) asm("func_0010A650__8DogActor");
+extern "C" int X_func_0014E4D4(ClrMain *) asm("func_0014E4D4");
+extern "C" int X_func_0014E850(ClrOutUp *, int) asm("func_0014E850");
+extern "C" int X_func_0014FEBC(ClrOutAtk *, int) asm("func_0014FEBC");
+extern "C" int X_func_00165A68(ClrMain *) asm("func_00165A68");
+extern "C" int X_func_00165AA8(ClrMain *) asm("func_00165AA8");
+extern "C" int X_func_00165D7C(ClrMain *) asm("func_00165D7C");
+extern "C" void X_func_0016649C(EmyMain *, int) asm("func_0016649C");
+extern "C" void X_func_00166A1C(EmyOut *, int, void *, EmyMain *) asm("func_00166A1C");
+extern "C" void X_func_00166AD0(void) asm("func_00166AD0");
+extern "C" void X_func_00166B74(EmyOut *, float *) asm("func_00166B74");
+extern "C" void X_func_00166DA4(EmyOut *, int) asm("func_00166DA4");
+extern "C" void X_func_00166F50(EmyOut *, int, float) asm("func_00166F50");
+extern "C" int X_func_001679B4(EmyOut *, int, int, float, float) asm("func_001679B4");
+extern "C" void X_func_001680A0(EmyOut *, int, int) asm("func_001680A0");
+extern "C" int X_func_0016968C(void *, int) asm("func_0016968C");
+extern "C" int X_func_00169BAC(int, int, void *, float, float) asm("func_00169BAC");
+extern "C" void X_func_0016A6B4(float *) asm("func_0016A6B4");
+extern "C" void X_func_00176CC8(void *, void *) asm("func_00176CC8");
+extern "C" int X_func_001CBE38(void *, int) asm("func_001CBE38");
+extern "C" void X_func_001D10D0(void *, int, int) asm("func_001D10D0");
+extern "C" void X_func_001D1410(void *, int, int) asm("func_001D1410");
+extern "C" void X_func_001D890C(void *, float *) asm("func_001D890C");
+extern "C" void X_func_001D8964(void *, float *) asm("func_001D8964");
+extern "C" void X_func_001D89C4(void *, float *) asm("func_001D89C4");
+extern "C" void X_func_001D8A8C(void *, float *) asm("func_001D8A8C");
+extern "C" void X_func_00202F10(void *) asm("func_00202F10");
+extern "C" float X_func_0026CB00(float, float) asm("func_0026CB00");
+extern "C" void *X_memset(void *, int, unsigned int) asm("memset");
+
+extern "C" int func_0014E2EC(ClrMain *self);
+extern "C" int func_0014E300(ClrMain *self);
+extern "C" int func_0014E314(ClrMain *self);
+extern "C" int func_0014E328(ClrMain *self);
+extern "C" int func_0014E33C(ClrMain *self);
+extern "C" int func_0014E350(ClrMain *self);
+extern "C" int func_0014E364(void);
+extern "C" int func_0014E36C(ClrMain *self);
+extern "C" int func_0014E374(ClrMain *self);
+extern "C" int func_0014E37C(ClrMain *self);
+extern "C" int func_0014E384(ClrMain *self);
+extern "C" int func_0014E38C(ClrMain *self);
+extern "C" int func_0014E3D0(ClrMain *self, float *pos, int delay, int duration, int kind, float radius);
+extern "C" int func_0014ED10(ClrOutDeathUp *self, int reset);
+
+// NON_MATCHING: 78/118 differ, 3 relocs differ (size 0x1D8 == game 0x1D8), 86 edits
+#ifdef NON_MATCHING
+extern "C" void ClrMain__vfunc_07(ClrMain *self)
 {
-    M2C_FIELD(arg0, int *, 0x200) = (int)&_vt$7ClrMain;
-    Xii_EmyMain__vfunc_01(arg0, 0);
-    if (arg1 & 1) {
-        return Xv___builtin_delete((void *)arg0);
+    int i;
+    EmyOut *out;
+
+    *(int *)(self->m_padEC + 0x08) = 6;
+    *(int *)(self->m_padEC + 0x28) = 0xC;
+    self->m_phase = 5;
+    *(int *)(self->m_padEC + 0x04) = 5;
+    *(int *)(self->m_padEC + 0x24) = 0xC;
+    *(int *)(self->m_padEC + 0x1C) = 0x12;
+    self->m_heightMode = 1;
+    self->m_unk204 = 0;
+    self->m_unk244 = 0;
+    *(int *)(self->m_padEC + 0x00) = 1;
+    self->m_stateFlags[0] = 0;
+    self->m_stateFlags[1] = 1;
+    self->m_stateFlags[2] = 1;
+    self->m_stateFlags[3] = 1;
+    self->m_stateFlags[4] = 1;
+    self->m_stateFlags[5] = 1;
+    self->m_unk26C = X_func_0010423C(0x5A, 0xD2);
+    X_func_001D890C(self->m_objStat, self->m_pos);
+    self->m_pos[1] = -52.652984619140625f;
+    X_func_001D89C4(self->m_objStat, self->m_pos);
+
+    out = (EmyOut *)X___builtin_new(0x100);
+    X_func_00166A1C(out, self->m_id, self->m_objStat, self);
+    out->m_vtbl = &vtbl_ClrOutMove;
+    ((EmyOut **)self->m_unk48)[1] = out;
+
+    out = (EmyOut *)X___builtin_new(0x19C);
+    X_func_00166A1C(out, self->m_id, self->m_objStat, self);
+    out->m_vtbl = &vtbl_ClrOutAtk;
+    ((EmyOut **)self->m_unk48)[2] = out;
+
+    out = (EmyOut *)X___builtin_new(0xE0);
+    X_func_00166A1C(out, self->m_id, self->m_objStat, self);
+    out->m_vtbl = &vtbl_ClrOutUp;
+    ((EmyOut **)self->m_unk48)[3] = out;
+
+    out = (EmyOut *)X___builtin_new(0xB0);
+    X_func_00166A1C(out, self->m_id, self->m_objStat, self);
+    out->m_vtbl = &vtbl_ClrOutDeathUp;
+    ((EmyOut **)self->m_unk48)[4] = out;
+
+    out = (EmyOut *)X___builtin_new(0xE0);
+    X_func_00166A1C(out, self->m_id, self->m_objStat, self);
+    out->m_vtbl = &vtbl_ClrOutUp;
+    ((EmyOut **)self->m_unk48)[5] = out;
+
+    self->m_dmgCursor = 0;
+    for (i = 0; i < 0x40; i++) {
+        self->m_dmgList[i].m_active = 0;
+    }
+    self->m_unk24C = 0;
+    self->m_unk248 = 0;
+}
+#else
+INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrMain__vfunc_07);
+#endif
+
+extern "C" void ClrMain__vfunc_01(ClrMain *self, int flags)
+{
+    self->m_vtbl = &vtbl_ClrMain;
+    X_EmyMain__vfunc_01(self, 0);
+    if (flags & 1) {
+        return Xv___builtin_delete(self);
     }
 }
 
-extern "C" void ClrMain__vfunc_04(int arg0)
+extern "C" void ClrMain__vfunc_04(ClrMain *self)
 {
     int temp_v0;
-    int var_v0;
     int temp_v1;
 
-    if ((M2C_FIELD(arg0, int *, 0x28) != 0) && (M2C_FIELD(arg0, int *, 0x2C) != 0) && (M2C_FIELD(arg0, int *, 0x24) == -1)) {
-        if ((M2C_FIELD(arg0, int *, 0x23C) != 0) && (X_func_0014E364() != 0)) {
-            M2C_FIELD(arg0, int *, 0x24) = 0xD;
+    if ((self->m_unk28 != 0) && (self->m_unk2C != 0) && (self->m_nextState == -1)) {
+        if ((self->m_condFlags[13] != 0) && (func_0014E364() != 0)) {
+            self->m_nextState = 0xD;
         }
-        if ((M2C_FIELD(arg0, int *, 0x238) != 0) && (X_func_0014E36C(arg0) != 0)) {
-            M2C_FIELD(arg0, int *, 0x24) = 0xC;
+        if ((self->m_condFlags[12] != 0) && (func_0014E36C(self) != 0)) {
+            self->m_nextState = 0xC;
         }
-        if ((M2C_FIELD(arg0, int *, 0x234) != 0) && (X_func_0014E374(arg0) != 0)) {
-            M2C_FIELD(arg0, int *, 0x24) = 0xB;
+        if ((self->m_condFlags[11] != 0) && (func_0014E374(self) != 0)) {
+            self->m_nextState = 0xB;
         }
-        if ((M2C_FIELD(arg0, int *, 0x230) != 0) && (X_func_0014E37C(arg0) != 0)) {
-            M2C_FIELD(arg0, int *, 0x24) = 0xA;
+        if ((self->m_condFlags[10] != 0) && (func_0014E37C(self) != 0)) {
+            self->m_nextState = 0xA;
         }
-        if ((M2C_FIELD(arg0, int *, 0x22C) != 0) && (X_func_0014E384(arg0) != 0)) {
-            M2C_FIELD(arg0, int *, 0x24) = 9;
+        if ((self->m_condFlags[9] != 0) && (func_0014E384(self) != 0)) {
+            self->m_nextState = 9;
         }
-        temp_v1 = X_func_0014E38C(arg0);
-        if (M2C_FIELD(arg0, unsigned char *, 0x204) != 0) {
-            temp_v0 = (unsigned char)(M2C_FIELD(arg0, unsigned char *, 0x204) = temp_v1);
+        temp_v1 = func_0014E38C(self);
+        if (self->m_unk204 != 0) {
+            temp_v0 = (unsigned char)(self->m_unk204 = temp_v1);
             if (temp_v0 == 0) {
-                
-                if (M2C_FIELD(arg0, int *, 0x210) != 0) {
-                    M2C_FIELD(arg0, int *, 0x24) = 2;
+                if (self->m_condFlags[2] != 0) {
+                    self->m_nextState = 2;
                 }
             } else {
-                if ((M2C_FIELD(arg0, int *, 0x214) != 0) && (X_func_0014E2EC(arg0) != 0)) {
-                    M2C_FIELD(arg0, int *, 0x24) = 3;
+                if ((self->m_condFlags[3] != 0) && (func_0014E2EC(self) != 0)) {
+                    self->m_nextState = 3;
                 }
-                if ((M2C_FIELD(arg0, int *, 0x218) != 0) && (X_func_0014E300(arg0) != 0)) {
-                    M2C_FIELD(arg0, int *, 0x24) = 4;
+                if ((self->m_condFlags[4] != 0) && (func_0014E300(self) != 0)) {
+                    self->m_nextState = 4;
                 }
-                if ((M2C_FIELD(arg0, int *, 0x21C) != 0) && (X_func_0014E314(arg0) != 0)) {
-                    M2C_FIELD(arg0, int *, 0x24) = 5;
+                if ((self->m_condFlags[5] != 0) && (func_0014E314(self) != 0)) {
+                    self->m_nextState = 5;
                 }
-                if ((M2C_FIELD(arg0, int *, 0x220) != 0) && (X_func_0014E328(arg0) != 0)) {
-                    M2C_FIELD(arg0, int *, 0x24) = 6;
+                if ((self->m_condFlags[6] != 0) && (func_0014E328(self) != 0)) {
+                    self->m_nextState = 6;
                 }
-                if ((M2C_FIELD(arg0, int *, 0x224) != 0) && (X_func_0014E33C(arg0) != 0)) {
-                    M2C_FIELD(arg0, int *, 0x24) = 7;
+                if ((self->m_condFlags[7] != 0) && (func_0014E33C(self) != 0)) {
+                    self->m_nextState = 7;
                 }
-                if (M2C_FIELD(arg0, int *, 0x228) != 0) {
-                    
-                    if (X_func_0014E350(arg0) != 0) {
-                        M2C_FIELD(arg0, int *, 0x24) = 8;
+                if (self->m_condFlags[8] != 0) {
+                    if (func_0014E350(self) != 0) {
+                        self->m_nextState = 8;
                     }
                 }
             }
         } else {
-            temp_v0 = (unsigned char)(M2C_FIELD(arg0, unsigned char *, 0x204) = temp_v1);
+            temp_v0 = (unsigned char)(self->m_unk204 = temp_v1);
             if (temp_v0 != 0) {
-                if (M2C_FIELD(arg0, int *, 0x208) != 0) {
-                    M2C_FIELD(arg0, int *, 0x24) = 0;
+                if (self->m_condFlags[0] != 0) {
+                    self->m_nextState = 0;
                 }
-                
-                if (M2C_FIELD(arg0, int *, 0x20C) != 0) {
-block_44:
-                    M2C_FIELD(arg0, int *, 0x24) = 1;
+                if (self->m_condFlags[1] != 0) {
+                    self->m_nextState = 1;
                 }
             }
         }
     }
 }
 
+// NON_MATCHING: 17/46 differ (beql+bltzl clamp vs movz+movn), 13 edits
+#ifdef NON_MATCHING
+static inline int ClrClampState(int v)
+{
+    if (v >= 6) {
+        return 0;
+    }
+    if (v < 0) {
+        return 0;
+    }
+    return v;
+}
+
+extern "C" void ClrMain__vfunc_05(ClrMain *self)
+{
+    int flags;
+
+    self->m_stateChanged = 0;
+    flags = self->m_flags30;
+    if (flags & 2) {
+        self->m_stateChanged = 1;
+        self->m_curState = 4;
+    } else {
+        int nextState = self->m_nextState;
+        if (nextState != -1) {
+            int next = ClrClampState(X_func_0016968C(self->m_brain, nextState));
+            if (next != 0) {
+                self->m_curState = next;
+                self->m_stateChanged = 1;
+                self->m_unk24C = 0;
+                self->m_unk204 = 0;
+            }
+        } else if (flags & 1) {
+            ((EmyBrainView *)self->m_brain)->m_state = self->m_curState;
+            self->m_stateChanged = 1;
+            self->m_unk24C++;
+        }
+    }
+    self->m_flags30 = 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrMain__vfunc_05);
+#endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrMain__vfunc_06);
+extern "C" void ClrMain__vfunc_06(ClrMain *self)
+{
+    int idx = X_func_001CBE38(D_007812C0, self->m_id) & 0xFFFF;
+    D_00724EA0[idx] &= ~0x60;
+    X_func_0014E4D4(self);
+    if (self->m_stateChanged != 0) {
+        ((ClrOutVtbl *)self->m_curOut)->v4();
+        ((ClrMainVtbl *)self)->v2();
+    }
+    self->m_nextState = ((ClrOutVtbl *)self->m_curOut)->v3();
+}
 
-extern "C" int ClrMain__vfunc_02(int arg0)
+extern "C" int ClrMain__vfunc_02(ClrMain *self)
 {
     int v;
-    int obj;
-    int vt;
-    register int e8 PS2_REG("$3");
+    EmyOut *obj;
+    ClrVtblEntry *vt;
+    register ClrStateTable *e8 PS2_REG("$3");
     int count;
-    register int base PS2_REG("$7");
+    register signed char *base PS2_REG("$7");
     register int v2 PS2_REG("$2");
     int i;
     int *dst;
 
-    v = M2C_FIELD(arg0, int *, 0x3C);
+    v = self->m_curState;
     if (v != 0) {
         if (v >= 0) {
-            if (v < 0x6) {
-                obj = M2C_FIELD(arg0 + v * 4, int *, 0x48);
-                M2C_FIELD(arg0, int *, 0x44) = obj;
-                vt = M2C_FIELD(obj, int *, 0x34) + 0x10;
-                ((void (*)(int)) M2C_FIELD(vt, int *, 4))(obj + M2C_FIELD(vt, short *, 0));
+            if (v < 6) {
+                char *slot = (char *)((v * 4) + (int)self);
+                obj = ((EmyOut **)(slot + 0x48))[0];
+                self->m_curOut = obj;
+                vt = (ClrVtblEntry *)((char *)obj->m_vtbl + 0x10);
+                ((void (*)(char *))vt->m_fn)((char *)obj + vt->m_delta);
             }
         }
     }
     i = 0;
-    e8 = M2C_FIELD(arg0, int *, 0xE8);
-    count = M2C_FIELD(e8, unsigned char *, 1);
-    v2 = M2C_FIELD(arg0, int *, 0x3C);
-    base = M2C_FIELD(e8, int *, 0xC) + (v2 * count);
+    e8 = (ClrStateTable *)self->m_unkE8;
+    count = e8->m_count;
+    v2 = self->m_curState;
+    base = e8->m_flags + (v2 * count);
     for (; i < count; i++) {
-        dst = (int *) (arg0 + 8);
-        if (M2C_FIELD(base, signed char *, i) != 0) {
-            M2C_FIELD(dst + i, int *, 0x200) = 1;
+        dst = (int *)((char *)self + 8);
+        if (base[i] != 0) {
+            ((int *)((char *)(dst + i) + 0x200))[0] = 1;
         } else {
-            M2C_FIELD(dst + i, int *, 0x200) = 0;
+            ((int *)((char *)(dst + i) + 0x200))[0] = 0;
         }
     }
     return 0;
 }
 
-extern "C" int func_0014E2EC()
+extern "C" int func_0014E2EC(ClrMain *self)
 {
-    return X_func_00165A68();
+    return X_func_00165A68(self);
 }
 
-
-extern "C" int func_0014E300()
+extern "C" int func_0014E300(ClrMain *self)
 {
-    return X_func_00165A68();
+    return X_func_00165A68(self);
 }
 
-
-extern "C" int func_0014E314()
+extern "C" int func_0014E314(ClrMain *self)
 {
-    return X_func_00165AA8();
+    return X_func_00165AA8(self);
 }
 
-
-extern "C" int func_0014E328()
+extern "C" int func_0014E328(ClrMain *self)
 {
-    return X_func_00165AA8();
+    return X_func_00165AA8(self);
 }
 
-
-extern "C" int func_0014E33C()
+extern "C" int func_0014E33C(ClrMain *self)
 {
-    return X_func_00165D7C();
+    return X_func_00165D7C(self);
 }
 
-
-extern "C" int func_0014E350()
+extern "C" int func_0014E350(ClrMain *self)
 {
-    return X_func_00165D7C();
+    return X_func_00165D7C(self);
 }
 
-
-extern "C" int func_0014E364()
+extern "C" int func_0014E364(void)
 {
     return 0;
 }
 
-
-extern "C" int func_0014E36C()
+extern "C" int func_0014E36C(ClrMain *self)
 {
+    (void)self;
     return 0;
 }
 
-
-extern "C" int func_0014E374()
+extern "C" int func_0014E374(ClrMain *self)
 {
+    (void)self;
     return 0;
 }
 
-
-extern "C" int func_0014E37C()
+extern "C" int func_0014E37C(ClrMain *self)
 {
+    (void)self;
     return 0;
 }
 
-
-extern "C" int func_0014E384()
+extern "C" int func_0014E384(ClrMain *self)
 {
+    (void)self;
     return 0;
 }
 
-
-extern "C" int func_0014E38C(int arg0)
+extern "C" int func_0014E38C(ClrMain *self)
 {
     int var_a1;
 
     var_a1 = 0;
-    if ((*(int *)&D_007A3350) != 0) {
-        var_a1 = M2C_FIELD((*(int *)&D_007A3350), int *, 0x100);
+    if (D_007A3350 != 0) {
+        var_a1 = D_007A3350->m_id;
     }
-    return Xiiiiff_func_00169BAC(1, var_a1, M2C_FIELD(arg0, int *, 0x20), 0.0f, 2.356194317340851f);
+    return X_func_00169BAC(1, var_a1, self->m_objStat, 0.0f, 2.356194317340851f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014E3D0);
-
-// NON_MATCHING: 129/143 differ, 8 relocs differ (size 0x23C, game 0x268), 81 edits
-#ifdef NON_MATCHING
-extern "C" void X_func_001E4EBC(int,int,int,int,int) asm("func_001E4EBC");
-extern "C" void X_func_001FAC60(int,int,int,int,int,int,int) asm("func_001FAC60");
-extern "C" int Xiiiif_func_0016A424(int, int, int, float) asm("func_0016A424");
-struct ClrGlobals { char sound[0x18E00]; char soundObject[0x9290]; int player0; int player1; };
-extern ClrGlobals clrGlobals asm("D_007812C0");
-extern "C" int func_0014E4D4(int arg0)
+extern "C" int func_0014E3D0(ClrMain *self, float *pos, int delay, int duration, int kind, float radius)
 {
-    struct { int sp0; } stack;
-    int temp_s1_2;
-    int temp_v1;
-    int var_v1;
-    int temp_s0;
-    int temp_s0_2;
-    int temp_s1;
-    int temp_v0;
-    int temp_v0_2;
-    register int var_fp PS2_REG("$30");
-    int var_s3;
-    int var_s5;
-    int var_s6;
-    register int var_s7 PS2_REG("$23");
+    int ret = -1;
+    int pass;
 
-    var_s7 = 0;
-    var_fp = 0;
-    if (clrGlobals.player0 != 0) {
-        var_fp = M2C_FIELD(clrGlobals.player0, int *, 0x100);
-    }
-    stack.sp0 = 0;
-    var_s6 = 0;
-    if (clrGlobals.player1 != 0) {
-        stack.sp0 = M2C_FIELD(clrGlobals.player1, int *, 0x100);
-    }
-    var_s5 = arg0 + 0x288;
-    var_s3 = 0x270;
-    do {
-        temp_s1 = arg0 + 4;
-        if (*(int *)(temp_s1 + var_s3) != 0) {
-            temp_s0 = arg0 + 8;
-            var_v1 = temp_s0 + var_s3;
-            if (*(int *)(temp_s0 + var_s3) == 1) {
-                if (M2C_FIELD((arg0 + var_s3), int *, 0x10) == 0) {
-                    if ((var_s6 % 20) == 0) {
-                        X_func_001E4EBC((int)&clrGlobals.soundObject, 0x1F010594, 0, 0, 0);
-                    }
-                } else {
-                    X_func_001E4EBC((int)&clrGlobals.soundObject, 0x1F010594, 0, 0, 0);
+    for (pass = 0; pass < 2; pass++) {
+        int start = self->m_dmgCursor;
+        int end = 0x40;
+        int i;
+
+        if (pass != 0) {
+            end = start;
+            start = 0;
+        }
+        for (i = start; i < end; i++) {
+            if (self->m_dmgList[i].m_active == 0) {
+                self->m_dmgList[i].m_active = 1;
+                self->m_dmgList[i].m_delay = delay;
+                self->m_dmgList[i].m_duration = duration;
+                self->m_dmgList[i].m_kind = kind;
+                self->m_dmgList[i].m_radius = radius;
+                self->m_dmgList[i].m_pos[0] = pos[0];
+                self->m_dmgList[i].m_pos[1] = pos[1];
+                self->m_dmgList[i].m_pos[2] = pos[2];
+                self->m_dmgCursor = i + 1;
+                if (i + 1 >= 0x40) {
+                    self->m_dmgCursor = 0;
                 }
-                var_v1 = temp_s0 + var_s3;
-            }
-            temp_v0 = (*(int *)(var_v1));
-            if (temp_v0 <= 0) {
-                temp_v1 = arg0 + 0xC + var_s3;
-                temp_v0_2 = (*(int *)(temp_v1));
-                if (temp_v0_2 <= 0) {
-                    *(int *)(temp_s1 + var_s3) = 0;
-                } else {
-                    (*(int *)(temp_v1)) = temp_v0_2 - 1;
-                }
-                temp_s0_2 = arg0 + 4;
-                temp_s1_2 = temp_s0_2 + ((var_s6 << 5) + 0x280);
-                if (Xiiiif_func_0016A424(var_s5, 1, var_fp, (*(float *)(temp_s1_2))) == 1) {
-                    var_s7 = 1;
-                    *(int *)(temp_s0_2 + var_s3) = 0;
-                }
-                if (Xiiiif_func_0016A424(var_s5, 1, stack.sp0, (*(float *)(temp_s1_2))) == 1) {
-                    var_s7 = 2;
-                    *(int *)(temp_s0_2 + var_s3) = 0;
-                }
-            } else {
-                (*(int *)(var_v1)) = temp_v0 - 1;
+                ret = i;
+                break;
             }
         }
-        var_s6 += 1;
-        var_s5 += 0x20;
-        var_s3 += 0x20;
-    } while (var_s6 < 0x40);
-    if (var_s7 & 1) {
-        X_func_001FAC60(0xB, (*(int *)(arg0)), 0, 0, 0x32, var_fp, 0);
+        if (ret >= 0) {
+            break;
+        }
     }
-    if (var_s7 & 2) {
-        X_func_001FAC60(0xB, (*(int *)(arg0)), 0, 0, 0x32, stack.sp0, 0);
-    }
-    return var_s7;
+    return ret;
 }
-#else
+
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014E4D4);
-#endif
 
-extern "C" void ClrOutUp__vfunc_02(int arg0)
+extern "C" void ClrOutUp__vfunc_02(ClrOutUp *self)
 {
-    (*(int *)(int *)((char *)(arg0) + 0xAC)) = (int) (*(int *)(int *)((char *)(D_007B205C) + 0x788));
+    self->m_effId = D_007B205C->m_effId;
 }
 
+extern "C" int ClrOutUp__vfunc_03(ClrOutUp *self)
+{
+    int ret = -1;
+    ClrMain *owner = (ClrMain *)self->m_owner;
 
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrOutUp__vfunc_03);
+    switch (owner->m_phase) {
+    case 5:
+        owner->m_phase = 6;
+        X_func_0016649C(self->m_owner, 0);
+        X_func_001D10D0(D_007812C0, self->m_unk00, 0x400);
+    case 6:
+        X_func_0014E850(self, 1);
+        ((ClrMain *)self->m_owner)->m_phase = 7;
+        break;
+    case 7:
+        if (X_func_0014E850(self, 0) == 1) {
+            ClrMain *o;
+            ((ClrMain *)self->m_owner)->m_phase = 0;
+            ret = 0xD;
+            o = (ClrMain *)self->m_owner;
+            o->m_unk26C = X_func_0010423C(0x1E, 0x96);
+        }
+        break;
+    }
+    return ret;
+}
 
-extern "C" void ClrOutUp__vfunc_04()
+extern "C" void ClrOutUp__vfunc_04(void)
 {
     X_func_00166AD0();
 }
 
-
-// NON_MATCHING: 146/191 differ, 10 relocs differ (size 0x2FC, game 0x304), 10 edits
-#ifdef NON_MATCHING
-#define F(o,t) (*(t *)((char *)arg0 + (o)))
-extern "C" void clrSetMode(int,int,int) asm("func_001680A0");
-extern "C" int clrCheck(int,int) asm("func_001D19A8");
-extern "C" void clrGetPos(int,float *) asm("func_001D890C");
-extern "C" void clrSetPos(int,float *) asm("func_001D89C4");
-extern "C" void clrEffect(int,int,int,int,int,float,float) asm("func_001F627C");
-extern "C" void clrSound(int,int,int,int,int) asm("func_001E4EBC");
-inline void clrMaybeMode(int obj,int flag) { if(flag) clrSetMode(obj,10,0x100); }
-extern "C" int func_0014E850(int arg0, int arg1)
-{
-    int result = 0;
-    X_func_0016649C(F(0xC,int),0);
-    X_func_001D10D0((int)&D_007812C0,F(0,int),0x400);
-    if(arg1 == 1) F(0x9C,int)=0;
-    switch(F(0x9C,int)) {
-    case 0:
-        F(0x9C,int)=1;
-        F(0xA8,int)=0;
-        F(0x90,int)=0;
-        clrSetMode(arg0,10,0x100);
-        F(0x94,float)=0.0f;
-    case 1: {
-        int check=clrCheck((int)&D_007812C0,F(0,int));
-        if(check) {
-            M2C_FIELD(F(0xC,int),int *,0x2C)=1;
-            clrMaybeMode(arg0,check);
-        }
-        float *pos=(float *)((char *)arg0+0x40);
-        clrGetPos(F(8,int),pos);
-        F(0x94,float) += 1.0f;
-        if(((int)F(0x94,float)&3)==0)
-            clrEffect(F(0xAC,int),2,-1,0,0,0.0166666667f,32769.0f);
-        int interval=20;
-        if((int)F(0x94,float)%interval==0)
-            clrSound((int)&D_007812C0+0x18E00,0x1F010596,0,0,0);
-        F(0x44,float) -= 4.0f;
-        if(F(0x44,float)<=-347.34599f) {
-            pos[0]=-800.0f;
-            result=1;
-            F(0x44,float)=-347.34599f;
-            F(0x48,float)=-800.0f;
-            clrSetMode(arg0,1,0x100);
-            F(0x9C,int)=2;
-            F(0x94,float)=0.0f;
-        }
-        clrSetPos(F(8,int),pos);
-        break;
-    }
-    case 9999: result=1; break;
-    case 2: {
-        int interval=3;
-        if((int)F(0x94,float)%interval==0)
-            clrEffect(F(0xAC,int),2,-1,0,0,0.0166666667f,32769.0f);
-        if((int)F(0x94,float)>=121) F(0x9C,int)=3;
-        F(0x94,float)+=1.0f;
-        break;
-    }
-    case 3: F(0x9C,int)=9999; break;
-    }
-    if(F(0xA8,int)==1) {
-        X_func_0016649C(F(0xC,int),0);
-        X_func_001D10D0((int)&D_007812C0,F(0,int),0x400);
-    }
-    if(F(0xA8,int)==0) {
-        if(M2C_FIELD(F(0xC,int),int *,0x30)&1) F(0xA8,int)=1;
-    }
-    return result;
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014E850);
-#endif
 
-extern "C" void ClrOutDeathUp__vfunc_02(int arg0)
+extern "C" void ClrOutDeathUp__vfunc_02(ClrOutDeathUp *self)
 {
-    int temp_a0;
+    ClrMain *owner;
 
-    X_func_001D1410((int)&D_007812C0, (*(int *)(int *)((char *)(arg0) + 0x0)), 0x40);
-    X_func_001D10D0((int)&D_007812C0, (*(int *)(int *)((char *)(arg0) + 0x0)), 0x10000000);
-    X_func_001D10D0((int)&D_007812C0, (*(int *)(int *)((char *)(arg0) + 0x0)), 0x400);
-    temp_a0 = (*(int *)(int *)((char *)(arg0) + 0xC));
-    if ((*(int *)(int *)((char *)(temp_a0) + 0x260)) == 5) {
-        (*(int *)(int *)((char *)(temp_a0) + 0x260)) = 6;
+    X_func_001D1410(D_007812C0, self->m_unk00, 0x40);
+    X_func_001D10D0(D_007812C0, self->m_unk00, 0x10000000);
+    X_func_001D10D0(D_007812C0, self->m_unk00, 0x400);
+    owner = (ClrMain *)self->m_owner;
+    if (owner->m_phase == 5) {
+        owner->m_phase = 6;
     }
 }
-
 
 // D_002EF7B8: the end of unk/MrtMain's .rodata now (config/splits_manual.tsv)
-
 // D_002EF7C8: the end of unk/MrtMain's .rodata now (config/splits_manual.tsv)
-
 // D_002EF7D8: the end of unk/MrtMain's .rodata now (config/splits_manual.tsv)
-
 // D_002EF7E8: the end of unk/MrtMain's .rodata now (config/splits_manual.tsv)
 
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrOutDeathUp__vfunc_03);
+extern "C" int ClrOutDeathUp__vfunc_03(ClrOutDeathUp *self)
+{
+    switch (((ClrMain *)self->m_owner)->m_phase) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 8:
+        break;
+    case 5:
+        X_func_001D1410(D_007812C0, self->m_unk00, 0x40);
+        X_func_001D10D0(D_007812C0, self->m_unk00, 0x10000000);
+        X_func_001D10D0(D_007812C0, self->m_unk00, 0x400);
+        ((ClrMain *)self->m_owner)->m_phase = 6;
+        break;
+    case 6:
+        func_0014ED10(self, 1);
+        ((ClrMain *)self->m_owner)->m_phase = 7;
+        break;
+    case 7:
+        X_func_001D1410(D_007812C0, self->m_unk00, 0x40);
+        X_func_001D10D0(D_007812C0, self->m_unk00, 0x10000000);
+        X_func_001D10D0(D_007812C0, self->m_unk00, 0x400);
+        if (func_0014ED10(self, 0) == 1) {
+            ClrMain *o;
+            ((ClrMain *)self->m_owner)->m_phase = 0;
+            o = (ClrMain *)self->m_owner;
+            o->m_unk26C = X_func_0010423C(0x1E, 0x96);
+        }
+        break;
+    }
+    return -1;
+}
 
-extern "C" void ClrOutDeathUp__vfunc_04()
+extern "C" void ClrOutDeathUp__vfunc_04(void)
 {
     X_func_00166AD0();
 }
 
-
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014ED10);
-
-extern "C" void ClrOutMove__vfunc_02(int arg0)
+extern "C" int func_0014ED10(ClrOutDeathUp *self, int reset)
 {
-    X_func_0016649C((*(int *)(int *)((char *)(arg0) + 0xC)), 1);
-    X_func_001D1410((int)&D_007812C0, (*(int *)(int *)((char *)(arg0) + 0x0)), 0x400);
-    X_func_00166DA4(arg0, 0x64);
-    (*(int *)(int *)((char *)(arg0) + 0xB0)) = (int) (*(int *)(int *)((char *)(D_007B205C) + 0x788));
+    int ret = 0;
+
+    X_func_0016649C(self->m_owner, 0);
+    X_func_001D10D0(D_007812C0, self->m_unk00, 0x400);
+    if (reset == 1) {
+        self->m_step = 0;
+    }
+    switch (self->m_step) {
+    case 0:
+        self->m_step = 1;
+        self->m_unk90 = 0;
+        X_func_001680A0(self, 0xA, 0x100);
+    case 1:
+        X_func_001D890C((void *)self->m_unk08, self->m_pos);
+        self->m_pos[1] -= 2.0f;
+        if (self->m_pos[1] <= -347.345977783203125f) {
+            self->m_pos[1] = -347.345977783203125f;
+            X_func_001680A0(self, 1, 0x100);
+            self->m_step = 2;
+            ret = 1;
+        }
+        X_func_001D89C4((void *)self->m_unk08, self->m_pos);
+        break;
+    case 2:
+        self->m_step = 9999;
+    case 9999:
+        ret = 1;
+        break;
+    }
+    return ret;
 }
 
+extern "C" void ClrOutMove__vfunc_02(ClrOutMove *self)
+{
+    X_func_0016649C(self->m_owner, 1);
+    X_func_001D1410(D_007812C0, self->m_unk00, 0x400);
+    X_func_00166DA4(self, 0x64);
+    self->m_effId = D_007B205C->m_effId;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF828);
 
-// NON_MATCHING: 154/226 differ, 22 relocs differ (size 0x388, game 0x384), 60 edits
-#ifdef NON_MATCHING
-extern "C" float Xf_func_001044B8(float, float) asm("func_001044B8");
-extern "C" int X_func_0010423C(...) asm("func_0010423C");
-extern "C" int X_func_0014F23C(...) asm("func_0014F23C");
-extern "C" int X_func_0014F360(...) asm("func_0014F360");
-extern "C" int X_func_0014F72C(...) asm("func_0014F72C");
-extern "C" int X_func_00166C8C(...) asm("func_00166C8C");
-extern "C" int X_func_001693EC(...) asm("func_001693EC");
-extern "C" int X_func_0016947C(...) asm("func_0016947C");
-extern "C" int X_func_001694CC(...) asm("func_001694CC");
-extern "C" int X_func_00180EA8(...) asm("func_00180EA8");
-extern "C" void ClrMoveGetPos(int,int) asm("func_001D890C");
-extern "C" int X_func_001D89C4(...) asm("func_001D89C4");
-extern "C" int X_func_001D8A8C(...) asm("func_001D8A8C");
-extern int D_002EF898;
-extern int D_002EF8B0;
-extern int D_007B2580;
-struct ClrMoveGlobals { char pad[0x22090]; int player; };
-extern ClrMoveGlobals clrMoveGlobals asm("D_007812C0");
-extern "C" int ClrOutMove__vfunc_03(int arg0)
-{
-    register int self PS2_REG("$17") = arg0;
-    struct { float sp0, sp4, sp8, spC; } stack;
-    register int temp_s0 PS2_REG("$16");
-    float temp_f0;
-    float temp_f0_2;
-    float temp_f0_3;
-    float var_f1;
-    int temp_v0;
-    register int var_s4 PS2_REG("$20");
-    register int rotation PS2_REG("$19");
-    register int globals PS2_REG("$18");
-    unsigned int temp_v1;
-    int temp_a0;
-
-    temp_a0 = M2C_FIELD(self, int *, 0xC);
-    temp_v1 = M2C_FIELD(temp_a0, unsigned int *, 0x260);
-    var_s4 = -1;
-    switch (temp_v1) {
-    case 0:
-        temp_s0 = self + 0x40;
-        X_func_0016649C(temp_a0, 1);
-        globals = (int)&D_007812C0;
-        X_func_001D1410(globals, M2C_FIELD(self, int *, 0), 0x400);
-        M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x248) = 1;
-        rotation = self + 0x70;
-        if (X_func_0010423C(0, 0x64) < 0x32) {
-            ClrMoveGetPos(M2C_FIELD(self, int *, 8), temp_s0);
-            (*(float *)temp_s0) = Xf_func_001044B8(-340.0f, 340.0f);
-            M2C_FIELD(self, float *, 0x48) = Xf_func_001044B8(-340.0f, 340.0f);
-        } else {
-            X_func_00166C8C(self, (int)&stack);
-            ClrMoveGetPos(((ClrMoveGlobals *)globals)->player, (int)&stack);
-            ClrMoveGetPos(M2C_FIELD(self, int *, 8), temp_s0);
-            (*(float *)temp_s0) = (float) (stack.sp0 + Xf_func_001044B8(-60.0f, 60.0f));
-            M2C_FIELD(self, float *, 0x48) = (float) (stack.sp8 + Xf_func_001044B8(-60.0f, 60.0f));
-            temp_f0 = (*(float *)temp_s0);
-            if (temp_f0 < -340.0f) {
-                (*(float *)temp_s0) = -340.0f;
-            } else if (temp_f0 > 340.0f) {
-                (*(float *)temp_s0) = 340.0f;
-            }
-            temp_f0_2 = M2C_FIELD(self, float *, 0x48);
-            var_f1 = -340.0f;
-            if ((temp_f0_2 < -340.0f) || (var_f1 = 340.0f, (temp_f0_2 > 340.0f))) {
-                M2C_FIELD(self, float *, 0x48) = var_f1;
-            }
-        }
-        X_func_001D89C4(M2C_FIELD(self, int *, 8), self + 0x40);
-        M2C_FIELD(self, int *, 0x74) = 0;
-        X_func_001D8A8C(M2C_FIELD(self, int *, 8), rotation);
-        X_func_0014F23C(self, 1);
-        M2C_FIELD(self, int *, 0xA8) = X_func_0010423C(0x3C, 0x96);
-        M2C_FIELD(M2C_FIELD(self, int *, 0xC), unsigned int *, 0x260) = 1U;
-    default:
-block_27:
-
-        break;
-    case 1:
-        temp_v0 = M2C_FIELD(self, int *, 0xA8) - 1;
-        M2C_FIELD(self, int *, 0xA8) = temp_v0;
-        if (temp_v0 == 0xA) {
-            X_func_0016947C(self);
-            M2C_FIELD(self, int *, 0xAC) = X_func_001694CC(self, ((int *)&D_002EF8B0)[X_func_0010423C(0, 3)]);
-        } else if (temp_v0 >= 0xB) {
-            X_func_001693EC(self, 4, 0x14, ((int *)&D_002EF898)[X_func_0010423C(0, 5)]);
-        }
-
-        if (M2C_FIELD(self, int *, 0xA8) < 0) {
-            M2C_FIELD(M2C_FIELD(self, int *, 0xC), unsigned int *, 0x260) = 2U;
-            M2C_FIELD(self, float *, 0x94) = 10.0f;
-            X_func_0014F72C(self);
-            break;
-        }
-        break;
-    case 2:
-        temp_f0_3 = M2C_FIELD(self, float *, 0x94) - 1.0f;
-        M2C_FIELD(self, float *, 0x94) = temp_f0_3;
-        if (temp_f0_3 < 0.0f) {
-            M2C_FIELD(self, float *, 0x94) = 0.0f;
-            M2C_FIELD(temp_a0, unsigned int *, 0x260) = 3U;
-            M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x264) = 1;
-        }
-        break;
-    case 3:
-        X_func_0014F360(self, 1);
-        M2C_FIELD(M2C_FIELD(self, int *, 0xC), unsigned int *, 0x260) = 4U;
-        break;
-    case 4:
-
-        if (X_func_0014F360(self, 0) == 1) {
-            M2C_FIELD(M2C_FIELD(self, int *, 0xC), unsigned int *, 0x260) = 5U;
-            break;
-        }
-        break;
-    case 5:
-        var_s4 = 0xD;
-        X_func_00180EA8((int)&D_007B2580, M2C_FIELD(self, int *, 0xAC));
-        break;
-    case 8:
-        var_s4 = 0xD;
-        M2C_FIELD(temp_a0, unsigned int *, 0x260) = 5U;
-        break;
-    }
-    return var_s4;
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrOutMove__vfunc_03);
-#endif
 
-extern "C" void ClrOutMove__vfunc_04()
+extern "C" void ClrOutMove__vfunc_04(void)
 {
     X_func_00166AD0();
 }
 
-
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014F23C);
-
-// NON_MATCHING: 233/240 differ, 18 relocs differ (size 0x3C0, game 0x3CC), 49 edits
-#ifdef NON_MATCHING
-#define CMF(o,t) M2C_FIELD(arg0,t *,o)
-extern "C" void ClrRiseGetPos(int,int) asm("func_001D890C");
-extern "C" void ClrRiseSetPos(int,int) asm("func_001D89C4");
-extern "C" void ClrRiseEffect(int,int,int,int,int,float,float) asm("func_001F627C");
-extern "C" void ClrRiseSound(int,int,int,int,int) asm("func_001E4EBC");
-extern "C" int ClrRiseCheck(int,int) asm("func_001D19A8");
-extern "C" int ClrRiseNear(int,int,float) asm("func_001F5350");
-extern "C" void ClrRiseHit(int,int,int,int,int,int,int) asm("func_001FAC60");
-extern "C" void ClrRiseMode(int,int,int) asm("func_001680A0");
-extern int D_007A3354;
-struct ClrRiseGlobals { char pad[0x22090]; int player;
- int playerID() { int id=0; if(player) id=*(int *)((char *)player+0x100); return id; }
- void sound(int id) { ClrRiseSound((int)this+0x18E00,id,0,0,0); }
-};
-extern ClrRiseGlobals clrRiseGlobals asm("D_007812C0");
-extern "C" int func_0014F360(int arg0, int arg1)
+extern "C" int func_0014F23C(ClrOutMove *self)
 {
-    register int result PS2_REG("$19")=0;
-    int one=1;
-    if(arg1==one) CMF(0x9C,int)=0;
-    switch(CMF(0x9C,int)) {
-    case 0: {
-        CMF(0x90,int)=0;
-        CMF(0x9C,int)=one;
-        int actor=CMF(0xC,int);
-        switch(M2C_FIELD(actor,int *,0x264)) {
-        case 0: CMF(0x98,float)=0.0f; break;
-        case 1: CMF(0x98,float)=-52.6529855f; break;
-        case 2: CMF(0x98,float)=-97.345981f; break;
-        }
-        M2C_FIELD(actor,int *,0x268)=4;
-        ClrRiseGetPos(CMF(8,int),arg0+0x50);
-        CMF(0x94,float)=0.0f;
-        CMF(0xA0,int)=0;
-        CMF(0xA4,int)=0;
-        ClrRiseEffect(CMF(0xB0,int),2,-1,0,0,0.0166666667f,32769.0f);
-        break;
+    float targetPos[4];
+    float selfPos[4];
+    float rot[4];
+    float yaw;
+
+    X_func_001D890C(D_007A3350, targetPos);
+    X_func_001D890C((void *)self->m_unk08, selfPos);
+    yaw = X_func_0026CB00(targetPos[0] - selfPos[0], targetPos[2] - selfPos[2]);
+    X_func_001D8964((void *)self->m_unk08, rot);
+    yaw -= rot[1];
+    if ((double)yaw < -3.14159265358979323846) {
+        yaw = (float)((double)yaw + 6.28318530717958647692);
     }
-    case 1: {
-        int pos=arg0+0x40;
-        ClrRiseGetPos(CMF(8,int),pos);
-        float time=CMF(0x94,float);
-        float velocity=time*0.8f;
-        CMF(0x94,float)=time+1.0f;
-        float squared=velocity*velocity;
-        CMF(0x44,float)=CMF(0x54,float)+squared+time+1.0f;
-        int interval=3;
-        if((int)CMF(0x94,float)%interval==0)
-            ClrRiseEffect(CMF(0xB0,int),2,-1,0,0,0.0166666667f,32769.0f);
-        interval=10;
-        if((int)CMF(0x94,float)%interval==0)
-            clrRiseGlobals.sound(0x1F010597);
-        float height=CMF(0x98,float);
-        if(height<=CMF(0x44,float)) {
-            CMF(0x44,float)=height;
-            ClrRiseMode(arg0,9,0);
-            CMF(0x9C,int)=2;
-            CMF(0x94,float)=0.0f;
-        }
-        ClrRiseSetPos(CMF(8,int),pos);
-        if(CMF(0xA0,int)==0) {
-            int player=clrRiseGlobals.playerID();
-            if(ClrRiseNear(CMF(0,int),player,60.0f)) {
-                ClrRiseHit(11,CMF(0,int),0,0,0x31,player,0);
-                CMF(0xA0,int)=1;
-                clrRiseGlobals.sound(0x1F0105AC);
-            }
-        }
-        if(CMF(0xA4,int)==0) {
-            int player=0;
-            if(D_007A3354) player=M2C_FIELD(D_007A3354,int *,0x100);
-            if(ClrRiseNear(CMF(0,int),player,60.0f)) {
-                ClrRiseHit(11,CMF(0,int),0,0,0x31,player,0);
-                CMF(0xA4,int)=1;
-            }
-        }
-        break;
+    if ((double)yaw > 3.14159265358979323846) {
+        yaw = (float)((double)yaw - 6.28318530717958647692);
     }
-    case 2: {
-        int check=ClrRiseCheck((int)&D_007812C0,CMF(0,int));
-        if(check) {
-            M2C_FIELD(CMF(0xC,int),int *,0x2C)=one;
-            if(check) {
-                CMF(0xA0,int)=0;
-                CMF(0x9C,int)=9999;
-                result=1;
-                ClrRiseMode(arg0,1,0x100);
-            }
-        }
-        break;
+    rot[1] = yaw;
+    X_func_001D8A8C((void *)self->m_unk08, rot);
+    return 0;
+}
+
+INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014F360);
+
+// NON_MATCHING: 19/88 differ (size 0x160 == game 0x160, store scheduling), 15 edits
+#ifdef NON_MATCHING
+extern "C" void func_0014F72C(ClrOutMove *self)
+{
+    ClrEffParamA param0;
+    ClrEffParamC param1;
+    int off = 0x837E0;
+    char *effMgr = D_006FBD80 + off;
+    float one = 1.0f;
+    float half = 0.5f;
+
+    {
+        register float x PS2_REG("$f2") = self->m_pos[0];
+        register float y PS2_REG("$f0") = self->m_pos[1];
+        register float z PS2_REG("$f1") = self->m_pos[2];
+        self->m_effPos[0] = x;
+        self->m_effPos[1] = y;
+        self->m_effPos[2] = z;
     }
-    case 9999: result=1; break;
-    }
-    return result;
+    self->m_effPos[3] = 0.0f;
+    self->m_effDir[0] = 0.0f;
+    self->m_effDir[1] = one;
+    self->m_effDir[2] = 0.0f;
+    self->m_effDir[3] = 0.0f;
+
+    X_memset(&param0, 0, sizeof(param0));
+    param0.m_kind = 0xA;
+    param0.m_p0 = self->m_effPos;
+    param0.m_p1 = self->m_effDir;
+    param0.m_f18 = half;
+    param0.m_f1C = one;
+    param0.m_f20 = one;
+    param0.m_f24 = one;
+    param0.m_f28 = one;
+    param0.m_f2C = one;
+    param0.m_f30 = one;
+    param0.m_i34 = 8;
+    param0.m_unk08 = 0;
+    X_func_00176CC8(effMgr, &param0);
+
+    param1.m_col[2] = one;
+    param1.m_col[3] = half;
+    param1.m_dur = 0x64;
+    param1.m_col[0] = one;
+    param1.m_col[1] = one;
+    param1.m_kind = 0xC;
+    param1.m_unk08 = 0x14;
+    param1.m_pos[0] = self->m_pos[0];
+    param1.m_pos[1] = -10.0f;
+    param1.m_pos[2] = self->m_pos[2];
+    param1.m_unk1C = 100.0f;
+    X_func_00176CC8(effMgr, &param1);
+
+    func_0014E3D0((ClrMain *)self->m_owner, param1.m_pos, param1.m_unk08, param1.m_dur, 1, 25.0f);
 }
 #else
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014F360);
+INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014F72C);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014F72C);
-
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrOutAtk__vfunc_02);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF868);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF870);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF878);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF880);
+extern "C" void ClrOutAtk__vfunc_02(ClrOutAtk *self)
+{
+    X_func_00166DA4(self, 0x64);
+    X_func_0014FEBC(self, 1);
+    X_func_0016649C(self->m_owner, 1);
+    X_func_001D1410(D_007812C0, self->m_unk00, 0x400);
+    self->m_unk184 = -1;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF888);
 
@@ -727,203 +816,7 @@ INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF898);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF8B0);
 
-// NON_MATCHING: 297/354 differ, 65 relocs differ (size 0x588, game 0x5D4), 107 edits
-#ifdef NON_MATCHING
-extern "C" float Xf_dptofp(...) asm("dptofp");
-extern "C" float ClrAtkYaw(int) asm("func_0010A650__8DogActor");
-extern "C" int X_dpadd(...) asm("dpadd");
-extern "C" int X_dpcmp(...) asm("dpcmp");
-extern "C" int X_dpsub(...) asm("dpsub");
-extern "C" int X_fptodp(...) asm("fptodp");
-extern "C" int ClrAtkCall_0014FEBC(...) asm("func_0014FEBC");
-extern "C" void ClrAtkCall_00150290(int) asm("func_00150290");
-extern "C" int ClrAtkCall_00150804(...) asm("func_00150804");
-extern "C" int ClrAtkCall_00150A1C(...) asm("func_00150A1C");
-extern "C" int ClrAtkCall_0016649C(...) asm("func_0016649C");
-extern "C" int ClrAtkEmit(int,int) asm("func_001694CC");
-extern "C" int ClrAtkCall_001D10D0(...) asm("func_001D10D0");
-extern "C" int ClrAtkCall_001D1410(...) asm("func_001D1410");
-extern "C" void ClrAtkSetRot(int,void *) asm("func_001D8A8C");
-extern "C" void ClrAtkCall_001E4EBC(int,int,int,int,int) asm("func_001E4EBC");
-extern "C" int ClrAtkCall_001E7D7C(...) asm("func_001E7D7C");
-extern "C" void ClrAtkCall_001FAC60(int,int,int,int,int,int,int) asm("func_001FAC60");
-extern "C" int ClrAtkActor(int,int) asm("func_001CBE38");
-extern "C" int ClrAtkCheck(int,int) asm("func_001D19A8");
-extern int D_002EF8D8;
-extern int D_002EF8E0;
-extern int D_002EF8E8;
-extern int D_002EF8F0;
-extern int D_006FE6A0;
-extern int D_007A3D80;
-extern const double ClrAtkMinYaw asm("D_002EF8D8");
-extern const double ClrAtkTurn1 asm("D_002EF8E0");
-extern const double ClrAtkMaxYaw asm("D_002EF8E8");
-extern const double ClrAtkTurn2 asm("D_002EF8F0");
-struct ClrAtkGlobals { char pad[0x22090]; int first, second; int firstID() { int id=0; if(first) id=*(int *)((char *)first+0x100); return id; } int secondID() { int id=0; if(second) id=*(int *)((char *)second+0x100); return id; } };
-extern ClrAtkGlobals clrAtkGlobals asm("D_007812C0");
-inline float clrAtkFlagFloat(int flag) { if(flag>=0) return (float)flag; return 2.0f*(float)flag; }
-extern "C" int ClrOutAtk__vfunc_03(int arg0)
-{
-    register int self PS2_REG("$17") = arg0;
-    struct { float x,y,z,w; } stack;
-    float temp_f0;
-    float var_f1;
-    register float var_f20 PS2_REG("$f20");
-    int temp_a0_4;
-    int temp_v0;
-    int temp_v0_2;
-    int temp_v0_3;
-    int temp_v0_4;
-    int temp_v0_5;
-    int temp_v0_6;
-    int temp_v0_7;
-    int var_a1;
-    int var_a1_2;
-    int var_a5;
-    int var_a5_2;
-    register int var_s2 PS2_REG("$18");
-    register int var_v1 PS2_REG("$3");
-    int temp_a0;
-    int temp_a0_2;
-    int temp_a0_3;
-
-    temp_v0 = M2C_FIELD(self, int *, 4);
-    var_s2 = -1;
-    switch (temp_v0) {
-    case 1:
-        temp_a0 = M2C_FIELD(self, int *, 0xC);
-        if (M2C_FIELD(temp_a0, int *, 0x24C) > 0) {
-            ClrAtkCall_0016649C(temp_a0, 0);
-            ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
-        }
-        if (ClrAtkCall_001E7D7C((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(self, int *, 8), int *, 0x3E0)) == 0) {
-            ClrAtkCall_0016649C(M2C_FIELD(self, int *, 0xC), 0);
-            ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
-            goto block_55;
-        }
-        break;
-    case 2:
-        temp_v0_2 = M2C_FIELD(self, int *, 0x178) - 1;
-        M2C_FIELD(self, int *, 0x178) = temp_v0_2;
-        if (temp_v0_2 <= 0) {
-            M2C_FIELD(self, int *, 4) = 3;
-            M2C_FIELD(self, int *, 0x178) = 0;
-            ClrAtkCall_0016649C(M2C_FIELD(self, int *, 0xC), 1);
-            ClrAtkCall_001D1410((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
-            ClrAtkCall_001E4EBC((int)&D_007812C0 + 0x18E00, 0x1F0105A7, 0, 0, 0);
-        }
-        if (ClrAtkCall_001E7D7C((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(self, int *, 8), int *, 0x3E0)) == 0) {
-            ClrAtkCall_0016649C(M2C_FIELD(self, int *, 0xC), 0);
-            ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
-            var_s2 = ClrAtkCall_0014FEBC(self, 0);
-        }
-        if (M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x30) & 1) {
-            ClrAtkCall_0016649C(M2C_FIELD(self, int *, 0xC), 0);
-            ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
-            var_s2 = ClrAtkCall_0014FEBC(self, 0);
-            M2C_FIELD(self, int *, 0x184) = (int) M2C_FIELD(self, int *, 0x180);
-        }
-        break;
-    case 3:
-        temp_a0_2 = M2C_FIELD(self, int *, 0xC);
-        if (M2C_FIELD(temp_a0_2, int *, 0x24C) > 0) {
-            ClrAtkCall_0016649C(temp_a0_2, 0);
-            ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
-        }
-        temp_v0_3 = M2C_FIELD(self, int *, 0x17C) - 1;
-        M2C_FIELD(self, int *, 0x17C) = temp_v0_3;
-        if (temp_v0_3 <= 0) {
-            M2C_FIELD(self, int *, 4) = 4;
-        }
-        if (ClrAtkCall_001E7D7C((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(self, int *, 8), int *, 0x3E0)) == 0) {
-            ClrAtkCall_0016649C(M2C_FIELD(self,int *,0xC),0);
-            ClrAtkCall_001D10D0((int)&D_007812C0,M2C_FIELD(self,int *,0),0x400);
-            goto block_55;
-        } else {
-            M2C_FIELD(self,int *,0x178) += 1;
-            ClrAtkCall_00150290(self);
-        }
-        break;
-    case 4:
-        temp_a0_3 = M2C_FIELD(self, int *, 0xC);
-        if (M2C_FIELD(temp_a0_3, int *, 0x24C) > 0) {
-            ClrAtkCall_0016649C(temp_a0_3, 0);
-            ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
-        }
-        if (ClrAtkCall_001E7D7C((int)&D_007A3D80, M2C_FIELD(M2C_FIELD(self, int *, 8), int *, 0x3E0)) != 0) {
-            temp_v0_4 = ClrAtkCheck((int)&D_007812C0, M2C_FIELD(self, int *, 0));
-            if (temp_v0_4 != 0) {
-                M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x2C) = 1;
-                if (temp_v0_4 != 0) {
-                    goto block_55;
-                }
-            }
-        } else {
-            goto block_55;
-        }
-        break;
-    case 5:
-        stack.x = stack.z = 0.0f;
-        temp_f0 = ClrAtkYaw((int)&D_006FE6A0 + (ClrAtkActor((int)&D_007812C0, M2C_FIELD(self, int *, 0)) * 0x4D0));
-        stack.y = temp_f0;
-        var_f20 = temp_f0 + M2C_FIELD(self, float *, 0x188);
-        if ((double)var_f20 < ClrAtkMinYaw) var_f20 = (float)((double)var_f20 + ClrAtkTurn1);
-        if ((double)var_f20 > ClrAtkMaxYaw) var_f20 = (float)((double)var_f20 - ClrAtkTurn2);
-        stack.y = var_f20;
-        ClrAtkSetRot(M2C_FIELD(self,int *,8), &stack);
-        M2C_FIELD(self, int *, 0x18C) = (int) (M2C_FIELD(self, int *, 0x18C) + 1);
-        ClrAtkCall_0016649C(M2C_FIELD(self, int *, 0xC), 0);
-        ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
-        temp_a0_4 = M2C_FIELD(self, int *, 0x18C);
-        var_v1 = 0;
-        if (temp_a0_4 >= 0xB) {
-            var_v1 = (temp_a0_4 > 0x1C) == 0;
-        }
-        var_f1 = clrAtkFlagFloat(var_v1);
-        if (var_f1 != 0.0f) {
-            if (M2C_FIELD(self, int *, 0x190) == 0) {
-                var_a1 = clrAtkGlobals.firstID();
-                if (ClrAtkCall_00150804(self, var_a1) != 0) {
-                    M2C_FIELD(self, int *, 0x190) = 1;
-                    ClrAtkEmit(self, 7);
-                    var_a5 = clrAtkGlobals.firstID();
-                    ClrAtkCall_001FAC60(0xB, M2C_FIELD(self, int *, 0), 0, 0, 0x33, var_a5, 0);
-                }
-            }
-            if (M2C_FIELD(self, int *, 0x194) == 0) {
-                var_a1_2 = clrAtkGlobals.secondID();
-                if (ClrAtkCall_00150804(self, var_a1_2) != 0) {
-                    M2C_FIELD(self, int *, 0x190) = 1;
-                    ClrAtkEmit(self, 7);
-                    var_a5_2 = clrAtkGlobals.secondID();
-                    ClrAtkCall_001FAC60(0xB, M2C_FIELD(self, int *, 0), 0, 0, 0x33, var_a5_2, 0);
-                }
-            }
-        }
-        temp_v0_7 = ClrAtkCheck((int)&D_007812C0, M2C_FIELD(self, int *, 0));
-        if (temp_v0_7 != 0) {
-            M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x2C) = 1;
-            if (temp_v0_7 != 0) {
-                ClrAtkCall_0016649C(M2C_FIELD(self, int *, 0xC), 1);
-                ClrAtkCall_001D1410((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
-                ClrAtkCall_001D10D0((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x40);
-                ClrAtkCall_001D1410((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x10000000);
-                ClrAtkCall_001D1410((int)&D_007812C0, M2C_FIELD(self, int *, 0), 0x400);
-                goto block_55;
-            }
-        }
-        break;
-    }
-    goto finish;
-block_55:
-    var_s2 = ClrAtkCall_0014FEBC(self, 0);
-finish:
-    ClrAtkCall_00150A1C(self, 1);
-    return var_s2;
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", ClrOutAtk__vfunc_03);
-#endif
 
 INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF8D8);
 
@@ -933,263 +826,9 @@ INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF8E8);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF8F0);
 
-// NON_MATCHING: 232/242 differ, 26 relocs differ (size 0x3C8, game 0x3D4), 123 edits
-#ifdef NON_MATCHING
-extern "C" int ClrAttackRandom(int,int) asm("func_0010423C");
-extern "C" int X_func_001506A0(...) asm("func_001506A0");
-extern "C" int X_func_001680A0(...) asm("func_001680A0");
-extern "C" void ClrAttackSound(int,int,int,int,int) asm("func_001E4EBC");
-extern "C" void ClrAttackCamera(int,void *) asm("func_001F9D90");
-extern "C" int func_0014FEBC(int arg0, int arg1)
-{
-    register int globals PS2_REG("$16") = (int)&D_007812C0;
-    register int self PS2_REG("$18") = arg0;
-    struct { int target; int pad4; int camera; char padC[12]; int motion; int frames; int mode; int flags; float distance; int pad2C; } stack;
-    int temp_a1;
-    int temp_a4;
-    int temp_a5;
-    int temp_a5_2;
-    int temp_v0;
-    int temp_v0_2;
-    int temp_v1;
-    register int var_s1 PS2_REG("$17");
-    unsigned int var_v1;
-
-    M2C_FIELD(self, int *, 0x194) = 0;
-    M2C_FIELD(self, int *, 0x190) = 0;
-    temp_v1 = M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x24C);
-    var_s1 = 0x5A;
-    if (temp_v1 < 2) {
-        var_s1 = 0x46;
-        if (temp_v1 == 0) {
-            if (arg1 != 0) {
-                goto block_10;
-            }
-            var_s1 = 0x28;
-            goto block_6;
-        }
-    }
-block_6:
-    if (ClrAttackRandom(0, 0x63) < var_s1) {
-    X_func_0016649C(M2C_FIELD(self, int *, 0xC), 0);
-    X_func_001D10D0(globals, M2C_FIELD(self, int *, 0), 0x400);
-    M2C_FIELD(self, int *, 0x184) = -1;
-    return 0xD;
-    }
-block_10:
-        temp_v0 = ClrAttackRandom(0, 0x63);
-        temp_a1 = M2C_FIELD(self, int *, 0x184);
-        var_s1 = 0x14;
-        if (temp_v0 >= 0x28) {
-            var_s1 = (temp_v0 >= 0x50) ? 0x13 : 0x12;
-        }
-        if (temp_a1 >= 0) {
-            var_s1 = ((temp_a1 ^ 0x14) != 0) ? 0x14 : var_s1;
-        }
-        if (M2C_FIELD(M2C_FIELD(self, int *, 0xC), int *, 0x14) != 0) {
-            var_v1 = var_s1 - 3;
-            if (ClrAttackRandom(0, 0x63) < 0x50) {
-                temp_v0_2 = X_func_001506A0(self);
-                var_s1 = ((temp_v0_2 ^ 2) == 0) ? 4 : (((temp_v0_2 ^ 1) == 0) ? 3 : var_s1);
-                goto block_17;
-            }
-        } else {
-block_17:
-            var_v1 = var_s1 - 3;
-        }
-        M2C_FIELD(self, int *, 0x180) = var_s1;
-        switch (var_v1) {
-        case 15:
-            temp_a5 = M2C_FIELD(self, int *, 0x14);
-            stack.target = temp_a5;
-            stack.camera = 0x2F;
-            stack.motion = 0x12;
-            stack.frames = 0xF;
-            stack.mode = 1;
-            stack.flags = 5;
-            stack.distance = 25.0f;
-            ClrAttackCamera(M2C_FIELD(self,int *,0),&stack);
-            M2C_FIELD(self, int *, 0x178) = 0xA;
-            M2C_FIELD(self, int *, 4) = 2;
-            M2C_FIELD(self, int *, 0x17C) = 0x78;
-            X_func_0016649C(M2C_FIELD(self, int *, 0xC), 0);
-block_24:
-            X_func_001D10D0(globals, M2C_FIELD(self, int *, 0), 0x400);
-            break;
-        case 16:
-            temp_a5_2 = M2C_FIELD(self, int *, 0x14);
-            stack.target = temp_a5_2;
-            stack.camera = 0x30;
-            stack.motion = 0x13;
-            stack.frames = 0xF;
-            stack.mode = 1;
-            stack.flags = 5;
-            stack.distance = 25.0f;
-            ClrAttackCamera(M2C_FIELD(self,int *,0),&stack);
-            M2C_FIELD(self, int *, 0x178) = 0xA;
-            M2C_FIELD(self, int *, 4) = 2;
-            M2C_FIELD(self, int *, 0x17C) = 0x12C;
-            X_func_0016649C(M2C_FIELD(self, int *, 0xC), 0);
-            goto block_24;
-        case 17:
-            X_func_0016649C(M2C_FIELD(self, int *, 0xC), 1);
-            X_func_001D1410(globals, M2C_FIELD(self, int *, 0), 0x400);
-            temp_a4 = M2C_FIELD(self, int *, 0x14);
-            stack.target = temp_a4;
-            stack.camera = 0x2E;
-            stack.motion = 0x14;
-            stack.frames = 0xA;
-            stack.mode = 1;
-            stack.flags = 5;
-            stack.distance = 80.0f;
-            ClrAttackCamera(M2C_FIELD(self,int *,0),&stack);
-            ClrAttackSound(globals + 0x18E00, 0x1F0105AC, 0, 0, 0);
-            M2C_FIELD(self, int *, 0x178) = 0;
-            M2C_FIELD(self, int *, 4) = 1;
-            break;
-        case 1:
-            M2C_FIELD(self, int *, 0x198) = 0;
-            M2C_FIELD(self, int *, 4) = 5;
-            X_func_001680A0(self, var_s1, 0);
-            M2C_FIELD(self, float *, 0x188) = 0.09519977308809757f;
-            X_func_001D1410(globals, M2C_FIELD(self, int *, 0), 0x40);
-            X_func_001D10D0(globals, M2C_FIELD(self, int *, 0), 0x10000000);
-            goto block_24;
-        case 0:
-            M2C_FIELD(self, int *, 4) = 5;
-            M2C_FIELD(self, int *, 0x198) = 1;
-            X_func_001680A0(self, var_s1, 0);
-            M2C_FIELD(self, float *, 0x188) = -0.09519977308809757f;
-            X_func_001D1410(globals, M2C_FIELD(self, int *, 0), 0x40);
-            X_func_001D10D0(globals, M2C_FIELD(self, int *, 0), 0x10000000);
-            X_func_001D10D0(globals, M2C_FIELD(self, int *, 0), 0x400);
-            break;
-        }
-        X_func_0016649C(M2C_FIELD(self, int *, 0xC), 1);
-        X_func_001D1410(globals, M2C_FIELD(self, int *, 0), 0x400);
-        M2C_FIELD(self, int *, 0x184) = (int) M2C_FIELD(self, int *, 0x180);
-        return -1;
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_0014FEBC);
-#endif
 
-// NON_MATCHING: 181/257 differ, 13 relocs differ (size 0x404, game 0x410), 86 edits
-#ifdef NON_MATCHING
-extern "C" void ClrEmitDamage(int,int,int,int,int,float) asm("func_0014E3D0");
-extern "C" void ClrEmitParticle(int,int) asm("func_00176CC8");
-extern "C" int ClrEmitFindNode(...) asm("func_0022B3D8");
-extern "C" int X_memset(...) asm("memset");
-extern "C" int ClrEmitAssert(...) asm("ror_assert");
-extern const char ClrEmitFile[] asm("D_002EF950");
-extern const char ClrEmitRoot[] asm("D_002EF960");
-extern const char ClrEmitParam[] asm("D_002EF970");
-extern const char D_002EF978[];
-extern int D_00298DD0;
-struct ClrEmitModel { char pad[148]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16(); virtual int call(int, int); };
-extern int ClrEmitPool asm("D_006FBD80");
-extern "C" void func_00150290(int arg0)
-{
-    struct { char pad0[32]; float sp20,sp24,sp28,sp2C,sp30,sp34,sp38,sp3C; char sp40[48]; float sp70,sp74,sp78,sp7C; int sp80; char pad84[4]; int sp88; char pad8C[4]; int sp90; int sp94; float sp98; float sp9C; float spA0; float spA4; float spA8; float spAC; float spB0; int spB4; char padB8[72]; int sp100; char pad104[4]; int sp108; char pad10C[4]; float sp110; float sp114; float sp118; float sp11C; float sp120; float sp124; float sp128; float sp12C; int sp130; char pad134[76]; } stack;
-    int temp_v0;
-    int temp_v1_2;
-    register float var_f21 PS2_REG("$f21");
-    register int temp_s2 PS2_REG("$18");
-    int temp_v0_2;
-    int temp_v0_5;
-    int temp_s0;
-    register int temp_s1 PS2_REG("$17");
-    int temp_v0_3;
-    int temp_v0_4;
-    int temp_v0_6;
-    int temp_v1;
-
-    temp_s2 = M2C_FIELD(M2C_FIELD(arg0, int *, 8), int *, 0x108);
-    if (temp_s2 >= 0) {
-        if ((*(int *)&D_00298DD0) >= 8) {
-            (*(int *)&D_00298DD0) = 0;
-        } else {
-            (*(int *)&D_00298DD0) += 1;
-        }
-        temp_v0 = (int) "p_eff";
-        temp_s1 = (temp_s2 * 0x4D0) + (int)&ClrEmitPool + 0x2920;
-        if (M2C_FIELD(temp_s1, int *, 0x11C) == 0) {
-            ClrEmitAssert((int) ClrEmitFile, 0x131, (int) ClrEmitRoot);
-        }
-        if (temp_v0 == 0) {
-            ClrEmitAssert((int) ClrEmitFile, 0x131, (int) ClrEmitParam);
-        }
-        temp_v0_2 = ClrEmitFindNode(M2C_FIELD(temp_s1, int *, 0x11C), temp_v0);
-        if (temp_v0_2 >= 0) {
-            ((ClrEmitModel *)(temp_s1))->call((int)&stack, temp_v0_2);
-            temp_v1 = arg0 + 8;
-            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0x30) = stack.sp30;
-            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0x34) = stack.sp34;
-            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0x38) = stack.sp38;
-            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0x3C) = stack.sp3C;
-            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0xD0) = stack.sp20;
-            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0xD4) = stack.sp24;
-            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0xD8) = stack.sp28;
-            M2C_FIELD((((*(int *)&D_00298DD0) * 0x10) + temp_v1), float *, 0xDC) = stack.sp2C;
-            X_memset((int)&stack.sp80, 0, 0x80);
-            temp_v0_4 = arg0 + ((*(int *)&D_00298DD0) * 0x10);
-            stack.sp80 = 0xA;
-            stack.sp90 = temp_v0_4 + 0x38;
-            stack.sp94 = temp_v0_4 + 0xD8;
-            stack.sp98 = 0.5f;
-            stack.spB0 = 1.0f;
-            stack.spB4 = 8;
-            stack.sp88 = 0;
-            stack.sp9C = 1.0f;
-            stack.spA0 = 1.0f;
-            stack.spA4 = 1.0f;
-            stack.spA8 = 1.0f;
-            stack.spAC = 1.0f;
-            if (((*(int *)&D_00298DD0) == 0) || ((*(int *)&D_00298DD0) == 4)) {
-                ClrEmitParticle((int)&ClrEmitPool + 0x837E0, (int)&stack.sp80);
-            }
-        }
-        if (((*(int *)&D_00298DD0) == 1) || ((*(int *)&D_00298DD0) == 4) || ((*(int *)&D_00298DD0) == 7)) {
-            temp_v1_2 = (int) D_002EF978;
-            temp_s0 = (temp_s2 * 0x4D0) + (int)&ClrEmitPool + 0x2920;
-            if (M2C_FIELD(temp_s0, int *, 0x11C) == 0) {
-                ClrEmitAssert((int) ClrEmitFile, 0x131, (int) ClrEmitRoot);
-            }
-            if (temp_v1_2 == 0) {
-                ClrEmitAssert((int) ClrEmitFile, 0x131, (int) ClrEmitParam);
-            }
-            temp_v0_5 = ClrEmitFindNode(M2C_FIELD(temp_s0, int *, 0x11C), temp_v1_2);
-            if (temp_v0_5 >= 0) {
-                register float oneZ PS2_REG("$f20") = 1.0f;
-                register float oneX PS2_REG("$f22") = 1.0f;
-                register float oneY PS2_REG("$f23") = 1.0f;
-                var_f21 = -3.0f;
-                ((ClrEmitModel *)(temp_s1))->call((int)&stack.sp40, temp_v0_5);
-                if ((stack.sp70 > -380.0f) && (stack.sp70 < -190.0f) && (stack.sp78 > -15.0f) && (stack.sp78 < 15.0f)) {
-                    var_f21 = -65.0f;
-                }
-                stack.sp130 = 0xC8;
-                stack.sp100 = 0xC;
-                stack.sp108 = 0xA;
-                stack.sp110 = stack.sp70;
-                stack.sp114 = var_f21;
-                stack.sp118 = stack.sp78;
-                stack.sp120 = oneX;
-                stack.sp124 = oneY;
-                stack.sp128 = oneZ;
-                stack.sp12C = 0.5f;
-                stack.sp11C = 100.0f;
-                ClrEmitParticle((int)&ClrEmitPool + 0x837E0, (int)&stack.sp100);
-                ClrEmitDamage(M2C_FIELD(arg0, int *, 0xC), (int)&stack.sp110, stack.sp108, stack.sp130, 0, 80.0f);
-            }
-        }
-    }
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_00150290);
-#endif
-
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_001506A0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF950);
 
@@ -1199,106 +838,65 @@ INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF970);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF978);
 
-INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF980);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF988);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF990);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF998);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF9A0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/ClrMain", D_002EF9A8);
-
-// NON_MATCHING: 125/127 differ, 24 relocs differ (size 0x1FC, game 0x218), 85 edits
-#ifdef NON_MATCHING
-struct ClrVec { float x,y,z; };
-extern "C" float Xfiiifff_func_001D4A3C(int, int, int, float, float, float) asm("func_001D4A3C");
-extern "C" int X_func_001CBE38(int, int) asm("func_001CBE38");
-extern "C" int X_func_0022B3D8(...) asm("func_0022B3D8");
-extern "C" int X_ror_assert(...) asm("ror_assert");
-extern "C" int Xiiif_func_00169B0C(int, int, float) asm("func_00169B0C");
-extern const char D_002EF950[];
-extern const char D_002EF960[];
-extern const char D_002EF970[];
-extern int D_006FBD80;
-struct m2c_v94_88_iii { char pad[148]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16(); virtual int call(int, int); };
-extern "C" int func_00150804(int arg0, int arg1)
+extern "C" int func_001506A0(ClrOutAtk *self)
 {
-    struct { char pad0[16]; float sp10; float sp14; float sp18; char pad1C[4]; char sp20[48]; float sp50; float sp54; float sp58; float sp5C; } stack;
-    int temp_v0;
-    int var_s1;
-    float temp_f20;
-    int temp_s0;
-    int temp_s0_2;
-    int temp_v1;
-    int temp_v1_2;
+    float selfPos[4];
+    float targetPos[4];
+    char *actor;
+    float yaw;
+    register int ret PS2_REG("$2");
 
-    temp_v0 = (int) "Bip01 Spine1";
-    temp_s0 = ((X_func_001CBE38((int)&D_007812C0, 0) * 0x4D0) + ((int)&D_006FBD80)) + 0x2920;
-    if (M2C_FIELD(temp_s0, int *, 0x11C) == 0) {
-        X_ror_assert((int) D_002EF950, 0x131, (int) D_002EF960);
+    actor = D_006FE6A0 + X_func_001CBE38(D_007812C0, self->m_unk00) * 0x4D0;
+    X_func_00166B74(self, selfPos);
+    X_func_0016A6B4(targetPos);
+    yaw = X_func_0026CB00(targetPos[0] - selfPos[0], targetPos[2] - selfPos[2]);
+    yaw -= X_func_0010A650(actor);
+    if ((double)yaw < -3.14159265358979323846) {
+        yaw = (float)((double)yaw + 6.28318530717958647692);
     }
-    if (temp_v0 == 0) {
-        X_ror_assert((int) D_002EF950, 0x131, (int) D_002EF970);
+    if ((double)yaw > 3.14159265358979323846) {
+        yaw = (float)((double)yaw - 6.28318530717958647692);
     }
-    ((m2c_v94_88_iii *)(temp_s0))->call((int)&stack.sp20, X_func_0022B3D8(M2C_FIELD(temp_s0, int *, 0x11C), temp_v0));
-    temp_f20 = Xfiiifff_func_001D4A3C((int)&D_007812C0, arg1, 0, stack.sp50, stack.sp54, stack.sp58) + 32.0f;
-    if (M2C_FIELD(arg0, int *, 0x198) != 0) {
-        var_s1 = (int) "nodel_p_arm_r";
+    if ((double)yaw < (3.14159265358979323846 / 3.0) && (double)yaw > (-3.14159265358979323846 / 3.0)) {
+        ret = 0;
+    } else if (yaw > 0.0f) {
+        ret = 2;
     } else {
-        var_s1 = (int) "nodel_p_arm_l";
+        ret = 1;
     }
-    temp_s0_2 = ((X_func_001CBE38((int)&D_007812C0, M2C_FIELD(arg0, int *, 0)) * 0x4D0) + ((int)&D_006FBD80)) + 0x2920;
-    if (M2C_FIELD(temp_s0_2, int *, 0x11C) == 0) {
-        X_ror_assert((int) D_002EF950, 0x131, (int) D_002EF960);
-    }
-    if (var_s1 == 0) {
-        X_ror_assert((int) D_002EF950, 0x131, (int) D_002EF970);
-    }
-    ((m2c_v94_88_iii *)(temp_s0_2))->call((int)&stack.sp20, X_func_0022B3D8(M2C_FIELD(temp_s0_2, int *, 0x11C), var_s1));
-    float *position = &stack.sp10;
-    position[0] = stack.sp50;
-    stack.sp14 = stack.sp54;
-    stack.sp18 = stack.sp58;
-    return Xiiif_func_00169B0C((int)&stack.sp10, (int)&stack, temp_f20) != 0;
+    return ret;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_00150804);
-#endif
 
-extern "C" int func_00150A1C()
+INCLUDE_ASM("asm/nonmatchings/unk/ClrMain", func_00150804);
+
+extern "C" int func_00150A1C(void)
 {
     return 0;
 }
 
-
-extern "C" void ClrOutAtk__vfunc_04()
+extern "C" void ClrOutAtk__vfunc_04(void)
 {
     X_func_00166AD0();
 }
 
-
-extern "C" void ClrOutWin__vfunc_02(int arg0)
+extern "C" void ClrOutWin__vfunc_02(ClrOutWin *self)
 {
-    M2C_FIELD(arg0, float *, 0x38) = Xfff_func_001044B8(100.0f, 200.0f);
-    Xiiif_func_00166F50(arg0, M2C_FIELD(arg0, int *, 0x14), 10.0f);
-    M2C_FIELD(arg0, int *, 4) = 0;
+    self->m_dist = X_func_001044B8(100.0f, 200.0f);
+    X_func_00166F50(self, self->m_unk14, 10.0f);
+    self->m_unk04 = 0;
 }
 
-extern "C" int ClrOutWin__vfunc_03(int arg0)
+extern "C" int ClrOutWin__vfunc_03(ClrOutWin *self)
 {
-    if ((M2C_FIELD(arg0, int *, 4) == 0) && (Xiiiiff_func_001679B4(arg0, M2C_FIELD(arg0, int *, 0x14), 1, M2C_FIELD(arg0, float *, 0x38), 0.7853981405496597f) != 0)) {
-        Xii_func_00202F10(M2C_FIELD(M2C_FIELD(arg0, int *, 0xC), int *, 0x1F0));
-        Xiiii_func_001680A0(arg0, 0x15, 0x100);
-        M2C_FIELD(arg0, int *, 4) = 1;
+    if ((self->m_unk04 == 0) && (X_func_001679B4(self, self->m_unk14, 1, self->m_dist, 0.7853981405496597f) != 0)) {
+        X_func_00202F10(self->m_owner->m_unk1F0);
+        X_func_001680A0(self, 0x15, 0x100);
+        self->m_unk04 = 1;
     }
     return -1;
 }
 
-extern "C" void ClrOutWin__vfunc_04()
+extern "C" void ClrOutWin__vfunc_04(void)
 {
     X_func_00166AD0();
 }
-
