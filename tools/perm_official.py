@@ -232,13 +232,17 @@ def c_struct(item, structs, sizes=None):
     declares a virtual function. Methods, access labels, static members
     and nested types go. Unchanged when it is not a class definition; None
     when it cannot be expressed (then the parser decides)."""
-    m = re.match(r"\s*(class|struct)\s+([A-Za-z_]\w*)\s*(?::\s*([^{]+?))?\s*\{(.*)\}\s*;\s*$", item, re.S)
+    m = re.match(r"\s*(class|struct)\s+((?:__attribute__\s*\(\(.*?\)\)\s*)*)([A-Za-z_]\w*)\s*(?::\s*([^{]+?))?\s*\{(.*)\}\s*"
+                 r"((?:__attribute__\s*\(\(.*?\)\)\s*)*);\s*$", item, re.S)
     fwd = re.match(r"\s*(class|struct)\s+([A-Za-z_]\w*)\s*;\s*$", item)
     if fwd:
         return f"typedef struct {fwd.group(2)} {fwd.group(2)};"
     if not m:
         return item
-    _, name, bases, body = m.groups()
+    _, pre_attrs, name, bases, body, attrs = m.groups()
+    # aligned(16) and such keep the layout: before or after the body, at the end
+    attrs = " ".join(a.strip() for a in (pre_attrs, attrs) if a and a.strip())
+    attrs = (" " + attrs) if attrs else ""
     sizes = sizes if sizes is not None else {}
     fields, vptr = [], False
     for b in (bases or "").split(","):
@@ -274,7 +278,8 @@ def c_struct(item, structs, sizes=None):
             fields.append(re.sub(r"\b(public|private|protected)\s*:", "", mem))
             continue
         # a nested type alone: hoisted to file scope (C has no nested scope)
-        if re.match(r"(?:struct|class)\s+[A-Za-z_]\w*\s*(?::[^{]*)?\{.*\}\s*;$", mem, re.S):
+        if re.match(r"(?:struct|class)\s+(?:__attribute__\s*\(\(.*?\)\)\s*)*[A-Za-z_]\w*\s*(?::[^{]*)?\{.*\}\s*"
+                    r"(?:__attribute__\s*\(\(.*?\)\)\s*)*;$", mem, re.S):
             h = c_struct(mem, structs, sizes)
             if h:
                 hoisted.append(h)
@@ -291,6 +296,15 @@ def c_struct(item, structs, sizes=None):
         mem = re.sub(r"\bmutable\s+", "", mem)
         if "<" in mem and TEMPLATES:
             mem = template_uses(mem, structs, sizes)
+        # 'float x, y, z;' / 'Node *prev, *next;': one field per declarator
+        if "," in mem and "(" not in mem and "{" not in mem:
+            parts = [p.strip() for p in mem.rstrip(";").split(",")]
+            g = re.match(r"^(.*?)([\s\*]*[A-Za-z_]\w*(?:\s*\[[^\]]*\])*)$", parts[0], re.S)
+            if g and g.group(1).strip():
+                typ = g.group(1).strip()
+                for d in [g.group(2).strip()] + parts[1:]:
+                    fields.append(f"{typ} {d};")
+                continue
         bare = re.sub(r"\s*__attribute__\s*\(\(.*?\)\)", "", mem)   # aligned(64) and such stay in the field
         if FIELD.match(bare) or re.search(r"\(\s*\*\s*\w+\s*\)", mem):
             fields.append(mem)
@@ -301,7 +315,7 @@ def c_struct(item, structs, sizes=None):
         vptr = True
     structs[name] = (fields, vptr)
     return ("\n".join(hoisted + [""]) if hoisted else "") + \
-        f"typedef struct {name} {name};\nstruct {name} {{\n    " + "\n    ".join(fields or ["char _empty;"]) + "\n};"
+        f"typedef struct {name} {name};\nstruct {name} {{\n    " + "\n    ".join(fields or ["char _empty;"]) + f"\n}}{attrs};"
 
 
 # ---- Non-virtual method calls as plain C calls. A method gets the object as
