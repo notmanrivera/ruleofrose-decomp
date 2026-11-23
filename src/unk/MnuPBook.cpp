@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "unk/mnuBase.h"
 #include "bed/bedpfh.h"
 extern "C" int Xiii_func_001874F4(int, int) asm("func_001874F4");
 extern "C" int Xiiu_func_001348B0(int, unsigned int) asm("func_001348B0");
@@ -1595,39 +1596,26 @@ extern "C" void func_00196878(int arg0, float *arg1)
     }
 }
 
-struct PBookBase6A9C {
-    int m_00;
-    unsigned char m_pad04[0x108];
-    virtual void vfunc0();
-    PBookBase6A9C() asm("func_00192AC0");
-};
 struct PBookMsg6A9C {
     unsigned char m_data[0x3BC];
     PBookMsg6A9C() asm("func_0018330C");
 };
 inline void *operator new(unsigned int, void *p) { return p; }
-struct MnuPBook : public PBookBase6A9C {
-    int m_110, m_114, m_118, m_11C, m_120, m_124, m_128, m_12C;
-    int m_130, m_134, m_138, m_13C;
-    unsigned char m_msgs[2*0x3BC];
-    void vfunc0();
-    MnuPBook() asm("func_00196A9C");
-};
 MnuPBook::MnuPBook()
 {
     int i = 1;
-    register PBookMsg6A9C *p PS2_REG("$18") = (PBookMsg6A9C *)m_msgs;
+    register PBookMsg6A9C *p PS2_REG("$18") = (PBookMsg6A9C *)m_msgWin;
     do { new (p) PBookMsg6A9C; p++; } while (--i != -1);
-    m_134 = i;
-    m_138 = i;
-    m_114 = i;
-    m_118 = i;
-    m_11C = -1;
-    m_120 = i;
-    m_00 = 7;
-    m_13C = 0;
-    m_110 = 0;
-    m_12C = 0;
+    m_unk134 = i;
+    m_msgId = i;
+    m_unk114 = i;
+    m_unk118 = i;
+    m_unk11C = -1;
+    m_unk120 = i;
+    m_type = 7;
+    m_textBuf = 0;
+    m_info = 0;
+    m_pages = 0;
 }
 
 extern "C" void X_MnuPBook__vfunc_03_v1(void *) asm("MnuPBook__vfunc_03");

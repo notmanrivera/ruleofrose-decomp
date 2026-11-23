@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "unk/mnuBase.h"
 extern "C" void Xvi_func_0019279C(int) asm("func_0019279C");
 extern "C" int Xii_func_001927EC(int) asm("func_001927EC");
 extern "C" int Xii_func_0019280C(int) asm("func_0019280C");
@@ -6,13 +7,11 @@ extern "C" int Xiii_func_0021B5A0(int, int) asm("func_0021B5A0");
 extern "C" int Xiiii_func_0021E5A0(int, int, int) asm("func_0021E5A0");
 extern "C" int Xif_func_00223298(int, float) asm("func_00223298");
 extern "C" void Xvppp_func_002377D0(void *, void *, void *) asm("func_002377D0");
-struct m2c_v10C_38_ii { char pad[268]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual int call(int); };
 struct m2c_v94_10_i { char pad[148]; virtual void v1(); virtual int call(); };
-extern "C" int Xii_func_00194688(int) asm("func_00194688");
-extern "C" int Xiii_func_00193F98(int, int) asm("func_00193F98");
-extern "C" int Xiii_func_00194280(int, int) asm("func_00194280");
-extern "C" int Xiii_func_00194370(int, int) asm("func_00194370");
-struct m2c_v10C_58_i { char pad[268]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual int call(); };
+extern "C" int Xii_func_00194688(void *) asm("func_00194688");
+extern "C" int Xiii_func_00193F98(MnuBase *, int) asm("func_00193F98");
+extern "C" int Xiii_func_00194280(MnuBase *, int) asm("func_00194280");
+extern "C" int Xiii_func_00194370(MnuBase *, int) asm("func_00194370");
 extern "C" float Xfp_func_0022E958(int) asm("func_0022E958");
 extern "C" void Xviii_func_0021A760(int, int, int) asm("func_0021A760");
 extern "C" void Xviiif_func_0022E960(int, int, int, float) asm("func_0022E960");
@@ -31,8 +30,8 @@ extern int D_0029BC88;
 extern int D_0029BCC0;
 extern "C" void Xvii_func_00223228(int, int) asm("func_00223228");
 extern "C" int Xii_func_00223558(int, void *) asm("func_00223558");
-extern "C" int Xiii_func_001943D8(int, int) asm("func_001943D8");
-extern "C" void Xviiiiii_func_0019368C(int, int, void *, int, int, int) asm("func_0019368C");
+extern "C" int Xiii_func_001943D8(MnuBase *, int) asm("func_001943D8");
+extern "C" void Xviiiiii_func_0019368C(MnuBase *, int, void *, int, int, int) asm("func_0019368C");
 extern "C" void Xvp_func_00237340(void *) asm("func_00237340");
 extern "C" void Xvppi_func_002378B0(void *, void *, int) asm("func_002378B0");
 extern "C" void Xvppi_func_00237A40(void *, void *, int) asm("func_00237A40");
@@ -44,13 +43,13 @@ extern "C" void Xvii_func_00223398(int, int) asm("func_00223398");
 extern "C" void Xvii_func_001812A8(int, int) asm("func_001812A8");
 extern "C" int Xiiif_func_001925F0(int, int, float) asm("func_001925F0");
 extern "C" int Xii_getViewMatrix__9DogCamera(int) asm("getViewMatrix__9DogCamera");
-extern "C" int Xii___10FileReader(int) asm("__10FileReader");
-extern "C" int Xii___11FileReadReq(int) asm("__11FileReadReq");
-extern "C" int Xii_func_00194588(int) asm("func_00194588");
-extern "C" int Xiiii_func_001BE524__10FileReaderP11FileReadReqi(int, int, int) asm("func_001BE524__10FileReaderP11FileReadReqi");
-extern "C" int Xii__10FileReader(int, int) asm("_$_10FileReader");
-extern "C" int Xv_mnuBase__vfunc_03(int) asm("mnuBase__vfunc_03");
-extern int _vt$7mnuBase;
+extern "C" int Xii___10FileReader(void *) asm("__10FileReader");
+extern "C" int Xii___11FileReadReq(void *) asm("__11FileReadReq");
+extern "C" void *Xii_func_00194588(int) asm("func_00194588");
+extern "C" int Xiiii_func_001BE524__10FileReaderP11FileReadReqi(void *, void *, int) asm("func_001BE524__10FileReaderP11FileReadReqi");
+extern "C" int Xii__10FileReader(void *, int) asm("_$_10FileReader");
+extern "C" int Xv_mnuBase__vfunc_03(MnuBase *) asm("mnuBase__vfunc_03");
+extern "C" char vtbl_7mnuBase[] asm("_vt$7mnuBase");
 extern "C" void Xv_func_0018154C(int, int, int, int) asm("func_0018154C");
 extern int D_0029BFB0;
 extern "C" void Xv_func_00192850(int, int, int, int) asm("func_00192850");
@@ -836,36 +835,36 @@ extern "C" int func_00192A70(int arg0, int arg1, int arg2)
     return 1;
 }
 
-extern "C" void func_00192AC0(int arg0)
+extern "C" void func_00192AC0(MnuBase *arg0)
 {
-    M2C_FIELD(arg0, int *, 0x10C) = (int)&_vt$7mnuBase;
-    Xii___10FileReader(arg0 + 0x68);
-    M2C_FIELD(arg0, int *, 0) = 0;
-    M2C_FIELD(arg0, int *, 0x14) = -1;
-    M2C_FIELD(arg0, int *, 0x10) = -1;
-    M2C_FIELD(arg0, int *, 4) = 0;
-    M2C_FIELD(arg0, int *, 8) = 0;
-    M2C_FIELD(arg0, int *, 0xC) = 0;
-    M2C_FIELD(arg0, int *, 0x18) = 0;
-    M2C_FIELD(arg0, int *, 0x1C) = 0;
-    M2C_FIELD(arg0, int *, 0x20) = 0;
-    M2C_FIELD(arg0, int *, 0x64) = 0;
-    M2C_FIELD(arg0, signed char *, 0x24) = 0;
-    M2C_FIELD(arg0, int *, 0x94) = 0;
-    M2C_FIELD(arg0, int *, 0x98) = 0;
-    M2C_FIELD(arg0, int *, 0x9C) = 0;
-    M2C_FIELD(arg0, int *, 0xA0) = 0;
-    M2C_FIELD(arg0, int *, 0xA4) = 0;
-    M2C_FIELD(arg0, int *, 0xA8) = 0;
+    M2C_FIELD(arg0, void **, 0x10C) = vtbl_7mnuBase;
+    Xii___10FileReader(arg0->m_fileReader);
+    arg0->m_type = 0;
+    arg0->m_state = -1;
+    arg0->m_unk10 = -1;
+    arg0->m_flags = 0;
+    arg0->m_scene = 0;
+    arg0->m_unk0C = 0;
+    arg0->m_resSlots = 0;
+    arg0->m_resNum = 0;
+    arg0->m_resUsed = 0;
+    arg0->m_readBuf = 0;
+    arg0->m_rpkPath[0] = 0;
+    arg0->m_models = 0;
+    arg0->m_unk98 = 0;
+    arg0->m_animSlots = 0;
+    arg0->m_unkA0 = 0;
+    arg0->m_texSlots = 0;
+    arg0->m_texSlotNum = 0;
 }
 
-extern "C" void mnuBase__vfunc_01(int arg0, int arg1)
+extern "C" void mnuBase__vfunc_01(MnuBase *arg0, int arg1)
 {
-    M2C_FIELD(arg0, int *, 0x10C) = (int)&_vt$7mnuBase;
+    M2C_FIELD(arg0, void **, 0x10C) = vtbl_7mnuBase;
     Xv_mnuBase__vfunc_03(arg0);
-    Xii__10FileReader(arg0 + 0x68, 2);
+    Xii__10FileReader(arg0->m_fileReader, 2);
     if (arg1 & 1) {
-        return Xv___builtin_delete((void *)arg0);
+        return Xv___builtin_delete(arg0);
     }
 }
 
@@ -892,7 +891,7 @@ extern "C" void func_00192BA4(int arg0, int arg1, int arg2, int arg3, int arg4, 
     temp_s3 = arg3 << 5;
     Xi_func_001946E4();
     register int sz2 PS2_REG("$2") = (arg4 + arg5) * 0x10;
-    temp_v0 = Xii_func_00194588(sz2 + (temp_s0 + temp_s3));
+    temp_v0 = (int)Xii_func_00194588(sz2 + (temp_s0 + temp_s3));
     M2C_FIELD(arg0, int *, 0x1C) = arg2;
     temp_s0_2 = temp_v0 + temp_s0;
     M2C_FIELD(arg0, int *, 0x18) = temp_v0;
@@ -943,77 +942,90 @@ extern "C" void func_00192BA4(int arg0, int arg1, int arg2, int arg3, int arg4, 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192BA4);
 #endif
 
-extern "C" void mnuBase__vfunc_03(int arg0, int arg1)
+extern "C" void mnuBase__vfunc_03(MnuBase *arg0, int arg1)
 {
-    int temp_a0;
+    MnuResSlot *temp_a0;
 
-    if (M2C_FIELD(arg0, int *, 0x94) != 0) {
-        for (int i = 0; i < M2C_FIELD(arg0, int *, 0x98); i++) {
+    if (arg0->m_models != 0) {
+        for (int i = 0; i < arg0->m_unk98; i++) {
             Xiii_func_00193F98(arg0, i);
         }
-        M2C_FIELD(arg0, int *, 0x94) = 0;
-        M2C_FIELD(arg0, int *, 0x98) = 0;
+        arg0->m_models = 0;
+        arg0->m_unk98 = 0;
     }
-    if (M2C_FIELD(arg0, int *, 0x9C) != 0) {
-        for (int i = 0; i < M2C_FIELD(arg0, int *, 0xA0); i++) {
+    if (arg0->m_animSlots != 0) {
+        for (int i = 0; i < arg0->m_unkA0; i++) {
             Xiii_func_00194280(arg0, i);
         }
-        M2C_FIELD(arg0, int *, 0x9C) = 0;
-        M2C_FIELD(arg0, int *, 0xA0) = 0;
+        arg0->m_animSlots = 0;
+        arg0->m_unkA0 = 0;
     }
-    if (M2C_FIELD(arg0, int *, 0xA4) != 0) {
-        for (int i = 0; i < M2C_FIELD(arg0, int *, 0xA8); i++) {
+    if (arg0->m_texSlots != 0) {
+        for (int i = 0; i < arg0->m_texSlotNum; i++) {
             Xiii_func_00194370(arg0, i);
         }
-        M2C_FIELD(arg0, int *, 0xA4) = 0;
-        M2C_FIELD(arg0, int *, 0xA8) = 0;
+        arg0->m_texSlots = 0;
+        arg0->m_texSlotNum = 0;
     }
-    temp_a0 = M2C_FIELD(arg0, int *, 0x18);
+    temp_a0 = arg0->m_resSlots;
     if (temp_a0 != 0) {
         Xii_func_00194688(temp_a0);
-        M2C_FIELD(arg0, int *, 0x18) = 0;
+        arg0->m_resSlots = 0;
     }
-    M2C_FIELD(arg0, int *, 0x1C) = 0;
-    M2C_FIELD(arg0, int *, 0x20) = 0;
-    ((m2c_v10C_58_i *)(arg0))->call();
-    M2C_FIELD(arg0, int *, 0xC) = 0;
-    M2C_FIELD(arg0, int *, 4) = 0;
-    M2C_FIELD(arg0, int *, 0x14) = -1;
-    M2C_FIELD(arg0, int *, 0x10) = -1;
+    arg0->m_resNum = 0;
+    arg0->m_resUsed = 0;
+    arg0->vfunc11();
+    arg0->m_unk0C = 0;
+    arg0->m_flags = 0;
+    arg0->m_state = -1;
+    arg0->m_unk10 = -1;
 }
 
 // NON_MATCHING: 4/42 differ, 10 edits
 #ifdef NON_MATCHING
+struct MnuCamEntity {
+    unsigned char m_pad00[0x40];
+    float m_x, m_y, m_z, m_w;
+    unsigned char m_pad50[0x40];
+    int m_dirty;
+    unsigned char m_pad94[0xAC];
+    float m_fov;
+
+    inline void setPos(float x, float y, float z) {
+        m_dirty = 1;
+        m_x = x;
+        m_y = y;
+        m_z = z;
+    }
+};
+
 extern "C" int Xii_func_001C5FFC(int) asm("func_001C5FFC");
-extern "C" int Xiifff_setRot__9DogEntityfff(int, float, float, float) asm("setRot__9DogEntityfff");
-extern "C" void func_00192E94(int arg0, float fparg0, float fparg1)
+extern "C" int Xiifff_setRot__9DogEntityfff(MnuCamEntity *, float, float, float) asm("setRot__9DogEntityfff");
+extern "C" void func_00192E94(MnuBase *arg0, float fparg0, float fparg1)
 {
     int temp_a0;
-    int temp_s0;
+    MnuCamEntity *cam;
 
     Xii_func_001C5FFC((int)&D_007812C0);
-    temp_s0 = M2C_FIELD(arg0, int *, 8) + 0x2AB70;
-    M2C_FIELD(temp_s0, float *, 0x48) =
-        M2C_FIELD(temp_s0, float *, 0x44) =
-        M2C_FIELD(temp_s0, float *, 0x40) = 0.0f;
-    M2C_FIELD(temp_s0, int *, 0x90) = 1;
-    Xiifff_setRot__9DogEntityfff((int) temp_s0, 0.0f, 0.0f, 0.0f);
-    M2C_FIELD(temp_s0, float *, 0x140) = fparg1;
-    temp_a0 = M2C_FIELD(arg0, int *, 8);
-    M2C_FIELD(arg0, float *, 0x108) = (float) M2C_FIELD(temp_a0, float *, 0x2AA14);
+    cam = (MnuCamEntity *)(arg0->m_scene + 0x2AB70);
+    cam->setPos(0.0f, 0.0f, 0.0f);
+    Xiifff_setRot__9DogEntityfff(cam, 0.0f, 0.0f, 0.0f);
+    cam->m_fov = fparg1;
+    temp_a0 = arg0->m_scene;
+    arg0->m_savedFov = M2C_FIELD(temp_a0, float *, 0x2AA14);
     Xiif_func_00131618(temp_a0, fparg0);
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192E94);
 #endif
 
-extern "C" void func_00192F3C(int arg0)
+extern "C" void func_00192F3C(MnuBase *arg0)
 {
-    Xiif_func_00131618(M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, float *, 0x108));
+    Xiif_func_00131618(arg0->m_scene, arg0->m_savedFov);
     Xii_func_001C621C((int)&D_007812C0);
 }
 
-extern "C" void func_00192F68(int arg0, int arg1)
+extern "C" void func_00192F68(MnuBase *arg0, int arg1)
 {
     struct Mat64 { long long q[8]; };
     union {
@@ -1030,20 +1042,18 @@ extern "C" void func_00192F68(int arg0, int arg1)
     int temp_v0_3;
     int temp_v0_4;
     int temp_v0_5;
-    int temp_a0;
     int temp_s0;
     int temp_s0_2;
-    int temp_s2;
     int temp_s2_2;
 
-    temp_s0 = M2C_FIELD(arg0, int *, 8);
+    temp_s0 = arg0->m_scene;
     temp_s0_2 = temp_s0 + 0x2AB70;
     ((m2c_v94_10_i *)(temp_s0_2))->call();
-    *(Mat64 *)(arg0 + 0xC0) = *(Mat64 *)temp_s0_2;
-    temp_s2_2 = M2C_FIELD(arg0, int *, 8) + 0x2AA10;
+    *(Mat64 *)arg0->m_camMat = *(Mat64 *)temp_s0_2;
+    temp_s2_2 = arg0->m_scene + 0x2AA10;
     temp_f2 = M2C_FIELD(temp_s2_2, float *, 4) / M2C_FIELD(temp_s2_2, float *, 0);
-    M2C_FIELD(arg0, float *, 0x100) = (M2C_FIELD(temp_s2_2, float *, 0xC) - M2C_FIELD(temp_s2_2, float *, 8)) * temp_f2;
-    M2C_FIELD(arg0, float *, 0x104) = (M2C_FIELD(temp_s2_2, float *, 0x14) - M2C_FIELD(temp_s2_2, float *, 0x10)) * temp_f2;
+    arg0->m_projW = (M2C_FIELD(temp_s2_2, float *, 0xC) - M2C_FIELD(temp_s2_2, float *, 8)) * temp_f2;
+    arg0->m_projH = (M2C_FIELD(temp_s2_2, float *, 0x14) - M2C_FIELD(temp_s2_2, float *, 0x10)) * temp_f2;
     Xvp_func_00237340(&mat);
     long long a = M2C_FIELD(arg0, long long *, 0xF0);
     long long b = M2C_FIELD(arg0, long long *, 0xF8);
@@ -1051,27 +1061,26 @@ extern "C" void func_00192F68(int arg0, int arg1)
     mat.s.r3.p[1] = b;
     float y = M2C_FIELD(temp_s2_2, float *, 4);
     mat.s.r3.f[2] += y;
-    temp_a0 = arg0 + 0xC0;
-    Xvppp_func_002377D0((void *)temp_a0, &mat, (void *)temp_a0);
-    ((m2c_v10C_38_ii *)(arg0))->call(arg1);
+    Xvppp_func_002377D0(arg0->m_camMat, &mat, arg0->m_camMat);
+    arg0->vfunc07(arg1);
     temp_v0_3 = Xif_func_00223298(arg1, 0.0f);
-    M2C_FIELD(arg0, int *, 0xB0) = temp_v0_3;
+    arg0->m_unkB0 = temp_v0_3;
     temp_v0_4 = Xiii_func_0021B5A0(temp_v0_3, arg1);
-    M2C_FIELD(arg0, int *, 0xB0) = temp_v0_4;
+    arg0->m_unkB0 = temp_v0_4;
     temp_v0_5 = Xiii_func_0021B550(temp_v0_4, 0x47, 0x5000D);
-    M2C_FIELD(arg0, int *, 0xB0) = temp_v0_5;
-    M2C_FIELD(arg0, int *, 0xB0) = Xiiii_func_0021E5A0(temp_v0_5, arg1, 1);
+    arg0->m_unkB0 = temp_v0_5;
+    arg0->m_unkB0 = Xiiii_func_0021E5A0(temp_v0_5, arg1, 1);
 }
 
-extern "C" void func_001930F8(int arg0, int arg1)
+extern "C" void func_001930F8(MnuBase *arg0, int arg1)
 {
-    X_func_002232F0(arg1, X_func_0021E688((*(int *)(int *)((char *)(arg0) + 0xB0))));
-    (*(int *)(int *)((char *)(arg0) + 0xB0)) = 0;
-    (*(int *)(int *)((char *)(arg0) + 0xAC)) = 0;
+    X_func_002232F0(arg1, X_func_0021E688(arg0->m_unkB0));
+    arg0->m_unkB0 = 0;
+    arg0->m_unkAC = 0;
 }
 
 
-extern "C" void mnuBase__vfunc_07(int arg0, int arg1)
+extern "C" void mnuBase__vfunc_07(MnuBase *arg0, int arg1)
 {
     int arr[64];
     struct {
@@ -1082,24 +1091,18 @@ extern "C" void mnuBase__vfunc_07(int arg0, int arg1)
         int unk10;
         int unk14;
     } q;
-    struct SubA4 {
-        int unk00;
-        int unk04;
-        int unk08;
-        int unk0C;
-    };
     int count = 0;
     int i = 0;
-    if (M2C_FIELD(arg0, int *, 0xA8) > 0) {
+    if (arg0->m_texSlotNum > 0) {
         int *dst = arr;
         do {
             if (Xiii_func_001943D8(arg0, i) != 0) {
-                SubA4 *p = (SubA4 *)(i * 0x10 + M2C_FIELD(arg0, int *, 0xA4));
-                *dst++ = p->unk08;
-                p->unk0C = count++;
+                MnuTexSlot *p = (MnuTexSlot *)(i * 0x10 + (int)arg0->m_texSlots);
+                *dst++ = p->m_texId;
+                p->m_unk0C = count++;
             }
             i++;
-        } while (i < M2C_FIELD(arg0, int *, 0xA8));
+        } while (i < arg0->m_texSlotNum);
     }
     q.unk08 = count;
     q.unk00 = 0;
@@ -1108,19 +1111,19 @@ extern "C" void mnuBase__vfunc_07(int arg0, int arg1)
     q.unk10 = 0;
     q.unk14 = 0;
     int v = Xii_func_00223558(arg1, &q);
-    M2C_FIELD(arg0, int *, 0xAC) = v;
+    arg0->m_unkAC = v;
     Xvii_func_00223228(arg1, v);
 }
 
-extern "C" void func_00193210(int arg0, int arg1)
+extern "C" void func_00193210(MnuBase *arg0, int arg1)
 {
-    (*(int *)(int *)((char *)(arg0) + 0xB0)) = X_func_0021B4F8((*(int *)(int *)((char *)(arg0) + 0xB0)), X_func_0021B260((*(int *)(int *)((char *)(arg0) + 0xAC)), (*(int *)(int *)((char *)(((arg1 * 0x10) + (*(int *)(int *)((char *)(arg0) + 0xA4)))) + 0xC))));
+    arg0->m_unkB0 = X_func_0021B4F8(arg0->m_unkB0, X_func_0021B260(arg0->m_unkAC, arg0->m_texSlots[arg1].m_unk0C));
 }
 
 
 INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00193258);
 
-extern "C" void func_001935C4(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7)
+extern "C" void func_001935C4(MnuBase *arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7)
 {
     struct Mat {
         float m[3][4];
@@ -1136,83 +1139,83 @@ extern "C" void func_001935C4(int arg0, int arg1, int arg2, int arg3, int arg4, 
     Xviiiiii_func_0019368C(arg0, arg1, &mat, arg5, arg6, arg7);
 }
 
-extern "C" void func_0019368C(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
+extern "C" void func_0019368C(MnuBase *arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
 {
     int temp_s1;
     int temp_s2;
-    int temp_s0;
-    int temp_s3;
+    MnuAnimSlot *temp_s0;
+    MnuModelSlot *temp_s3;
 
-    temp_s3 = M2C_FIELD(arg0, int *, 0x94) + (arg3 << 5);
+    temp_s3 = &arg0->m_models[arg3];
     if (arg4 == -1) {
-        Xiiiiii_i3dCallLocked__FPvN40(arg1, M2C_FIELD(temp_s3, int *, 0), 0, (int) arg2, 0);
+        Xiiiiii_i3dCallLocked__FPvN40(arg1, (int)temp_s3->m_data, 0, arg2, 0);
         return;
     }
-    temp_s2 = M2C_FIELD(temp_s3, int *, 4);
-    temp_s0 = M2C_FIELD(arg0, int *, 0x9C) + (arg4 * 0x10);
-    temp_s1 = M2C_FIELD(temp_s0, int *, 0);
-    Xviiif_func_0022E960(temp_s1, temp_s2, 0x111, (Xfp_func_0022E958(temp_s1) * (float) arg5) / (float) M2C_FIELD(temp_s0, int *, 4));
-    Xviii_func_0022F7A0(M2C_FIELD(temp_s3, int *, 4), M2C_FIELD(temp_s3, int *, 8), M2C_FIELD(temp_s3, int *, 0x10));
-    Xviii_func_0021A760(M2C_FIELD(temp_s3, int *, 0), M2C_FIELD(temp_s3, int *, 0xC), M2C_FIELD(temp_s3, int *, 8));
-    Xiiiiii_i3dCallLocked__FPvN40(arg1, M2C_FIELD(temp_s3, int *, 0), M2C_FIELD(temp_s3, int *, 0xC), (int) arg2, 0);
+    temp_s2 = temp_s3->m_unk04;
+    temp_s0 = &arg0->m_animSlots[arg4];
+    temp_s1 = temp_s0->m_unk00;
+    Xviiif_func_0022E960(temp_s1, temp_s2, 0x111, (Xfp_func_0022E958(temp_s1) * (float)arg5) / (float)temp_s0->m_len);
+    Xviii_func_0022F7A0(temp_s3->m_unk04, temp_s3->m_unk08, temp_s3->m_unk10);
+    Xviii_func_0021A760((int)temp_s3->m_data, temp_s3->m_unk0C, temp_s3->m_unk08);
+    Xiiiiii_i3dCallLocked__FPvN40(arg1, (int)temp_s3->m_data, temp_s3->m_unk0C, arg2, 0);
 }
 
-extern "C" void func_001937C0(int arg0, int arg1, int arg2)
+extern "C" void func_001937C0(MnuBase *arg0, float *arg1, float *arg2)
 {
-    M2C_FIELD(arg1, float *, 0) = M2C_FIELD(arg0, float *, 0x100) * (M2C_FIELD(arg2, float *, 0) - 256.0f) * 0.001953125f;
-    M2C_FIELD(arg1, float *, 4) = (float) ((M2C_FIELD(arg0, float *, 0x104) * (M2C_FIELD(arg2, float *, 4) - 224.0f)) / 448.0f);
+    arg1[0] = arg0->m_projW * (arg2[0] - 256.0f) * 0.001953125f;
+    arg1[1] = (arg0->m_projH * (arg2[1] - 224.0f)) / 448.0f;
 }
 
-extern "C" void func_0019381C(int arg0)
+extern "C" void func_0019381C(MnuBase *arg0)
 {
     int base;
 
     base = (int)&D_007812C0;
     if (~M2C_FIELD(base, int *, 0x22214) == 0) {
-        M2C_FIELD(arg0, int *, 4) = M2C_FIELD(arg0, int *, 4) | 0x10;
+        arg0->m_flags = arg0->m_flags | 0x10;
         Xiii_func_001D3AC8(base, 0);
     }
 }
 
-extern "C" void func_00193868(int arg0)
+extern "C" void func_00193868(MnuBase *arg0)
 {
     int temp_v1;
 
-    temp_v1 = M2C_FIELD(arg0, int *, 4);
+    temp_v1 = arg0->m_flags;
     if (temp_v1 & 0x10) {
-        M2C_FIELD(arg0, int *, 4) = (int) (temp_v1 & ~0x10);
+        arg0->m_flags = temp_v1 & ~0x10;
         Xiii_func_001D3AC8((int)&D_007812C0, 1);
     }
 }
 
-extern "C" void mnuBase__vfunc_10(int arg0)
+extern "C" void mnuBase__vfunc_10(MnuBase *arg0)
 {
-    int temp_s1;
+    unsigned char *temp_s1;
 
-    temp_s1 = arg0 + 0x70;
-    M2C_FIELD(arg0, int *, 0x64) = Xii_func_00194588(0x1000);
+    temp_s1 = arg0->m_fileReq;
+    arg0->m_readBuf = Xii_func_00194588(0x1000);
     Xii___11FileReadReq(temp_s1);
-    M2C_FIELD(arg0, int *, 0x7C) = (int) (arg0 + 0x24);
+    M2C_FIELD(arg0, char **, 0x7C) = arg0->m_rpkPath;
     M2C_FIELD(arg0, int *, 0x8C) = 0x1000;
-    M2C_FIELD(arg0, int *, 0x88) = (int) M2C_FIELD(arg0, int *, 0x64);
+    M2C_FIELD(arg0, void **, 0x88) = arg0->m_readBuf;
     M2C_FIELD(arg0, int *, 0x84) = 0;
     M2C_FIELD(arg0, int *, 0x80) = 0;
     M2C_FIELD(arg0, int *, 0x90) = 0;
-    Xiiii_func_001BE524__10FileReaderP11FileReadReqi((int) (arg0 + 0x68), (int) temp_s1, 0);
+    Xiiii_func_001BE524__10FileReaderP11FileReadReqi(arg0->m_fileReader, temp_s1, 0);
     M2C_FIELD(arg0, int *, 0x88) = 0;
 }
 
-extern "C" void mnuBase__vfunc_11(int arg0)
+extern "C" void mnuBase__vfunc_11(MnuBase *arg0)
 {
-    if ((*(int *)(int *)((char *)(arg0) + 0x64)) != 0) {
-        (*(int *)(int *)((char *)(arg0) + 0x84)) = 0;
-        (*(int *)(int *)((char *)(arg0) + 0x80)) = 0;
-        (*(int *)(int *)((char *)(arg0) + 0x8C)) = 0;
-        (*(int *)(int *)((char *)(arg0) + 0x88)) = 0;
-        (*(int *)(int *)((char *)(arg0) + 0x90)) = 1;
-        X_func_001BE524__10FileReaderP11FileReadReqi(arg0 + 0x68, arg0 + 0x70, 0);
-        X_func_00194688((*(int *)(int *)((char *)(arg0) + 0x64)));
-        (*(int *)(int *)((char *)(arg0) + 0x64)) = 0;
+    if (arg0->m_readBuf != 0) {
+        M2C_FIELD(arg0, int *, 0x84) = 0;
+        M2C_FIELD(arg0, int *, 0x80) = 0;
+        M2C_FIELD(arg0, int *, 0x8C) = 0;
+        M2C_FIELD(arg0, int *, 0x88) = 0;
+        M2C_FIELD(arg0, int *, 0x90) = 1;
+        X_func_001BE524__10FileReaderP11FileReadReqi(arg0->m_fileReader, arg0->m_fileReq, 0);
+        X_func_00194688(arg0->m_readBuf);
+        arg0->m_readBuf = 0;
     }
 }
 

@@ -12,37 +12,8 @@
 #ifndef UNK_MNUDIARY_H
 #define UNK_MNUDIARY_H
 
+#include "unk/mnuBase.h"
 #include "game/gamman.h"
-
-struct MnuModelSlot {
-    char *m_data;               // +0x00
-    int m_pad[7];               // +0x04
-}; // size 0x20
-
-struct MnuAnimSlot {
-    int m_unk00;                // +0x00
-    int m_len;                  // +0x04
-    int m_unk08;                // +0x08
-    int m_unk0C;                // +0x0C
-}; // size 0x10
-
-struct MnuTexSlot {
-    int m_unk00;                // +0x00
-    int m_unk04;                // +0x04
-    int m_texId;                // +0x08
-    int m_unk0C;                // +0x0C
-}; // size 0x10
-
-struct MnuBookPage {
-    int m_flags;                // +0x00
-    int m_leftTex;              // +0x04
-    int m_rightTex;             // +0x08
-    int m_animIdx;              // +0x0C
-    int m_frame;                // +0x10
-    int m_page;                 // +0x14
-    int m_unk18;                // +0x18
-    int m_unk1C;                // +0x1C
-}; // size 0x20
 
 struct MnuDiaryInfo {
     int m_id;                   // +0x00 (-1 terminates D_0029C368)
@@ -51,58 +22,10 @@ struct MnuDiaryInfo {
     char m_prefix[0x24];        // +0x0C
 }; // size 0x30
 
-struct MnuPBookInfo {
-    int m_unk00;                // +0x00
-    int m_msgBase;              // +0x04
-    int m_pageCount;            // +0x08
-};
-
 struct MnuMsgWinCtor {
     unsigned char m_unk[0x3BC];
     MnuMsgWinCtor() asm("func_0018330C");
 }; // size 0x3BC
-
-struct MnuBase {
-    int m_type;                         // +0x000
-    int m_flags;                        // +0x004
-    int m_scene;                        // +0x008
-    unsigned char m_pad0C[0x08];        // +0x00C
-    int m_state;                        // +0x014
-    unsigned char m_pad18[0x0C];        // +0x018
-    char m_rpkPath[0x40];               // +0x024
-    unsigned char m_pad64[0x30];        // +0x064
-    MnuModelSlot *m_models;             // +0x094
-    int m_unk98;                        // +0x098
-    MnuAnimSlot *m_animSlots;           // +0x09C
-    int m_unkA0;                        // +0x0A0
-    MnuTexSlot *m_texSlots;             // +0x0A4
-    int m_texSlotNum;                   // +0x0A8
-    int m_unkAC;                        // +0x0AC
-    unsigned char m_padB0[0x5C];        // +0x0B0
-    virtual void vfunc01();             // +0x10C vtable
-    virtual void vfunc02();
-    virtual void vfunc03();
-    virtual void vfunc04();
-    virtual void vfunc05();
-    virtual void vfunc06();
-    virtual void vfunc07();
-    virtual void vfunc08();
-    virtual void vfunc09();
-    virtual void vfunc10();
-    MnuBase() asm("func_00192AC0");
-}; // size 0x110
-
-struct MnuPBook : public MnuBase {
-    MnuPBookInfo *m_info;               // +0x110
-    unsigned char m_pad114[0x14];       // +0x114
-    int m_curPage;                      // +0x128
-    MnuBookPage *m_pages;               // +0x12C
-    int m_pageNum;                      // +0x130
-    int m_unk134;                       // +0x134
-    int m_msgId;                        // +0x138
-    char *m_textBuf;                    // +0x13C
-    unsigned char m_msgWin[0x3BC];      // +0x140
-};
 
 struct MnuDiary : public MnuBase {
     MnuDiaryInfo *m_info;               // +0x110
