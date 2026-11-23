@@ -206,3 +206,9 @@ the literal patch: stock cc1 truncates decimal float literals (0.1f ->
 never the rounded 0x3DCCCCCD / 0x3E99999A); test in
 notes/research/float_literal_test_2026-11-23.cpp. The other patches are
 unmeasured here; hundreds of functions match with the stock cc1.
+Measured 2026-11-23 with tools/order_probe.py on the 40 "order" near misses
+that compile: no global load (R_MIPS_LO16) is ever ordered differently from
+a store, in either direction; the 35 load/store pairs that differ are other
+loads, split 15 game-first / 20 ours-first. So nothing points to Xenosaga's
+A3 (LO_SUM alias) fix: an "order" near miss here is a source-order or
+temporary problem, not a compiler build.
