@@ -124,18 +124,24 @@ extern "C" int DwfOutWin__vfunc_03(DwfOutWin *self)
     return -1;
 }
 
-#ifdef NON_MATCHING
 extern "C" void func_00160D94(DwfOutWin *self)
 {
     if (self->m_unk04 == 0 && self->m_unk24 != 0) {
         X_func_00202F10(self->m_owner->m_unk1F0);
-        int f = *(int *)((char *)self->m_unk08 + 0x3EC);
-        int b1 = f & 0x10;
+        register EmyOut *receiver PS2_REG("$4") = self;
+        char *obj = (char *)self->m_unk08;
+        register int animFlags PS2_REG("$6") = 0x100;
+        int f;
+        int b1;
+        do {
+            f = *(int *)(obj + 0x3EC);
+            b1 = f & 0x10;
+        } while (0);
         int b0 = f & 8;
         if (b0 && b1) {
-            X_func_001687BC(self, 0xA, 0x100);
+            X_func_001687BC(receiver, 0xA, animFlags);
         } else {
-            X_func_001687BC(self, 0x15, 0x100);
+            X_func_001687BC(receiver, 0x15, animFlags);
             int snd = X_func_001694CC(self, 0xD);
             self->m_unk2C = snd;
             X_func_00180EEC(&D_007B2580, snd, 1);
@@ -143,9 +149,6 @@ extern "C" void func_00160D94(DwfOutWin *self)
         self->m_unk04 = 1;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", func_00160D94);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/DwfOutAtkFar", func_00160E44);
 
