@@ -546,19 +546,17 @@ extern "C" void func_001C1378(GamMan *arg0)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C143C);
 
-// NON_MATCHING: 37/41 differ (size 0xA4, game 0xA8), 9 edits
-#ifdef NON_MATCHING
 extern "C" void func_001C19C4(GamMan *arg0, int *arg1)
 {
-    register int *var_a2 PS2_REG("$6");
+    int *var_a2;
     register int *temp_t0 PS2_REG("$8");
     register int temp_a3 PS2_REG("$7");
     register int var_a5 PS2_REG("$9");
     register int var_v1 PS2_REG("$3");
 
     var_a2 = arg1 + 8;
-    temp_t0 = var_a2;
     temp_a3 = *var_a2;
+    temp_t0 = var_a2;
     arg0->m_unk22200 = temp_t0;
     var_a2 = arg1 + 9;
     *temp_t0 = 0;
@@ -583,9 +581,6 @@ extern "C" void func_001C19C4(GamMan *arg0, int *arg1)
     }
     M2C_FIELD(arg0, int **, 0x22204) = (int *)temp_a3;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001C19C4);
-#endif
 
 extern "C" int func_001C1A6C(GamMan *self, int theIdx)
 {
