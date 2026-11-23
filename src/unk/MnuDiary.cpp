@@ -549,6 +549,7 @@ INCLUDE_RODATA("asm/nonmatchings/unk/MnuDiary", D_002F8228);
 
 // NON_MATCHING: 44/238 differ, 1 reloc differs (size 0x3B8, game 0x3BC), 33 edits
 #ifdef NON_MATCHING
+
 extern int diaryV5Sound asm("D_007B2580");
 extern int diaryV5Work asm("D_007A4440");
 extern "C" int diaryV5X_func_00279C98(...) asm("func_00279C98");
@@ -567,15 +568,12 @@ extern "C" int diaryV5Xiiiii_func_001311BC(int, int, int, int) asm("func_001311B
 extern "C" int diaryV5Xiiiii_func_001C5094(int, int, int, int) asm("func_001C5094");
 extern "C" int diaryV5Xiiiii_func_001D83D0(int, int, int, int) asm("func_001D83D0");
 extern "C" int diaryV5Xiiui_func_001351B0(int, unsigned int, int) asm("func_001351B0");
-struct m2c_v10C_18_i { char pad[268]; virtual void v1(); virtual void v2(); virtual int call(); };
-struct m2c_v10C_50_i { char pad[268]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual int call(); };
-struct m2c_v10C_58_i { char pad[268]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual int call(); };
 inline bool diaryV5Ready(int p) { return diaryV5Xii_func_00131550(p) >= 5; }
 inline int diaryV5SlotA(char *p) { return *(int *)(p+0xDC1C); }
 inline int diaryV5SlotB(char *p) { return *(int *)(p+0xDC20); }
 inline void diaryV5Clear(int *p, int mask) { *p &= ~mask; }
 inline void diaryV5Set(int *p, int mask) { *p |= mask; }
-extern "C" int MnuDiary__vfunc_05(int arg0, int arg1)
+extern "C" int MnuDiary__vfunc_05(MnuDiary *arg0, int arg1)
 {
     int temp_a1;
     int temp_a0;
@@ -590,86 +588,86 @@ extern "C" int MnuDiary__vfunc_05(int arg0, int arg1)
     int temp_v0_4;
 
     var_s2 = 0;
-    diaryV5Xii_func_00193A1C(arg0);
-    diaryV5Xii_func_00199714(arg0);
-    temp_v1 = M2C_FIELD(arg0, unsigned int *, 0x14);
-    M2C_FIELD(arg0, unsigned int *, 0x10) = temp_v1;
+    diaryV5Xii_func_00193A1C((int)arg0);
+    diaryV5Xii_func_00199714((int)arg0);
+    temp_v1 = (unsigned int)arg0->m_state;
+    arg0->m_unk10 = temp_v1;
     switch (temp_v1) {
     case 0:
-        if (!(M2C_FIELD(arg0, int *, 4) & 0x20000) && diaryV5Ready(M2C_FIELD(arg0, int *, 8))) {
-            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x20000);
+        if (!(arg0->m_flags & 0x20000) && diaryV5Ready(arg0->m_scene)) {
+            arg0->m_flags = (int) (arg0->m_flags | 0x20000);
         }
-        temp_v1_2 = M2C_FIELD(arg0, int *, 4);
-        if (!(temp_v1_2 & 0x10000) && (M2C_FIELD(arg0, int *, 0x20) == 0)) {
-            M2C_FIELD(arg0, int *, 4) = (int) (temp_v1_2 | 0x10000);
-            ((m2c_v10C_58_i *)(arg0))->call();
-            diaryV5X_func_00279C98(arg0 + 0x24, (int) "data/mnurpk/mnupbook/%s.rpk", M2C_FIELD(arg0, int *, 0x110) + 0xC);
-            ((m2c_v10C_50_i *)(arg0))->call();
-            diaryV5Xii_func_00198B54(arg0);
-            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x20000);
+        temp_v1_2 = arg0->m_flags;
+        if (!(temp_v1_2 & 0x10000) && (arg0->m_resUsed == 0)) {
+            arg0->m_flags = (int) (temp_v1_2 | 0x10000);
+            arg0->vfunc11();
+            diaryV5X_func_00279C98(arg0->m_rpkPath, (int) "data/mnurpk/mnupbook/%s.rpk", arg0->m_info->m_prefix);
+            arg0->vfunc10();
+            diaryV5Xii_func_00198B54((int)arg0);
+            arg0->m_flags = (int) (arg0->m_flags | 0x20000);
         }
         var_v0 = 0;
-        if ((M2C_FIELD(arg0, int *, 4) & 0x30000) == 0x30000) {
-            M2C_FIELD(arg0, unsigned int *, 0x14) = 1U;
+        if ((arg0->m_flags & 0x30000) == 0x30000) {
+            arg0->m_state = 1U;
         } else { return 0;
         default:
             break;
         }
         break;
     case 1:
-        if (M2C_FIELD(arg0, int *, 0x20) != 0) return 0;
-        if (M2C_FIELD(arg0, int *, 0x20) == 0) {
-            diaryV5Xii_func_00198CA8(arg0);
-            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & 0xFFFCFFFF);
-            diaryV5Xiiiii_func_00131184((int) M2C_FIELD(arg0, int *, 8), 0xF, 7, 0);
-            M2C_FIELD(arg0, unsigned int *, 0x14) = 2U;
+        if (arg0->m_resUsed != 0) return 0;
+        if (arg0->m_resUsed == 0) {
+            diaryV5Xii_func_00198CA8((int)arg0);
+            arg0->m_flags = (int) (arg0->m_flags & 0xFFFCFFFF);
+            diaryV5Xiiiii_func_00131184((int) arg0->m_scene, 0xF, 7, 0);
+            arg0->m_state = 2U;
             break;
         }
         break;
     case 2:
-        if (!(M2C_FIELD(arg0, int *, 4) & 0x20000) && diaryV5Ready(M2C_FIELD(arg0, int *, 8))) {
-            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x20000);
+        if (!(arg0->m_flags & 0x20000) && diaryV5Ready(arg0->m_scene)) {
+            arg0->m_flags = (int) (arg0->m_flags | 0x20000);
         }
-        temp_v1_3 = M2C_FIELD(arg0, int *, 4);
-        if (!(temp_v1_3 & 0x10000) && (M2C_FIELD(arg0, int *, 0x20) == 0)) {
-            M2C_FIELD(arg0, int *, 4) = (int) (temp_v1_3 | 0x10000);
-            diaryV5Xii_func_00198EB4(arg0);
+        temp_v1_3 = arg0->m_flags;
+        if (!(temp_v1_3 & 0x10000) && (arg0->m_resUsed == 0)) {
+            arg0->m_flags = (int) (temp_v1_3 | 0x10000);
+            diaryV5Xii_func_00198EB4((int)arg0);
         }
-        temp_a0 = M2C_FIELD(arg0, int *, 4);
+        temp_a0 = arg0->m_flags;
         var_v0 = 0;
         if ((temp_a0 & 0x30000) == 0x30000) {
-            M2C_FIELD(arg0, unsigned int *, 0x14) = 3U;
-            M2C_FIELD(arg0, int *, 4) = (int) (temp_a0 & ~2);
+            arg0->m_state = 3U;
+            arg0->m_flags = (int) (temp_a0 & ~2);
             break;
         }
         break;
     case 3:
-        if (diaryV5Xiii_func_0019946C(arg0, arg1) == 0) {
-            diaryV5Xiiiii_func_001311BC((int) M2C_FIELD(arg0, int *, 8), 0xF, 7, 0);
+        if (diaryV5Xiii_func_0019946C((int)arg0, arg1) == 0) {
+            diaryV5Xiiiii_func_001311BC((int) arg0->m_scene, 0xF, 7, 0);
             diaryV5Xiii_func_0017F8FC((int) (int)&diaryV5Sound, 2);
             diaryV5Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 0, 0);
-            diaryV5Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x130), 1);
-            M2C_FIELD(arg0, unsigned int *, 0x14) = 4U;
+            diaryV5Xiiui_func_001351B0((int) arg0->m_scene, (unsigned int)arg0->m_unk130, 1);
+            arg0->m_state = 4U;
         }
         break;
     case 4:
-        if (diaryV5Ready(M2C_FIELD(arg0, int *, 8))) {
-            M2C_FIELD(arg0, unsigned int *, 0x14) = 5U;
+        if (diaryV5Ready(arg0->m_scene)) {
+            arg0->m_state = 5U;
         }
         break;
     case 5:
-        M2C_FIELD(diaryV5SlotA((char *)&diaryV5Work), int *, 0x44) = diaryV5Xiiiii_func_001D83D0((int) (int)&D_007812C0, 1, M2C_FIELD(arg0, int *, 0x114), 2);
-        M2C_FIELD(diaryV5SlotA((char *)&diaryV5Work), int *, 0x194) = (int) M2C_FIELD(arg0, int *, 0x118);
+        M2C_FIELD(diaryV5SlotA((char *)&diaryV5Work), int *, 0x44) = diaryV5Xiiiii_func_001D83D0((int) (int)&D_007812C0, 1, arg0->m_diaryId, 2);
+        M2C_FIELD(diaryV5SlotA((char *)&diaryV5Work), int *, 0x194) = (int) arg0->m_unk118;
         diaryV5Clear((int *)(diaryV5SlotB((char *)&diaryV5Work)+4), 0x04000000);
         if (diaryV5Xii_func_001D44E4((int)&D_007812C0) != 0) {
             diaryV5Set((int *)(diaryV5SlotB((char *)&diaryV5Work)+4), 0x02000000);
         }
-        temp_v0_3 = diaryV5Xiiiii_func_001D83D0((int) (int)&D_007812C0, 1, M2C_FIELD(arg0, int *, 0x114), 6);
+        temp_v0_3 = diaryV5Xiiiii_func_001D83D0((int) (int)&D_007812C0, 1, arg0->m_diaryId, 6);
         temp_a1 = ((temp_v0_3 >> 5) * 4) + diaryV5SlotB((char *)&diaryV5Work);
         var_s2 = 1;
         (*(int *)(temp_a1)) &= ~(1 << (temp_v0_3 & 0x1F));
-        diaryV5Xii_func_00192F3C(arg0);
-        ((m2c_v10C_18_i *)(arg0))->call();
+        diaryV5Xii_func_00192F3C((int)arg0);
+        arg0->vfunc03();
         break;
     }
     return var_s2;
@@ -906,6 +904,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_00199B3C);
 
 // NON_MATCHING: 180/207 differ, 10 relocs differ (size 0x33C, game 0x338), 26 edits
 #ifdef NON_MATCHING
+
 struct DiaryV6Pair { long long a,b; };
 extern "C" int X_func_0021B550(...) asm("func_0021B550");
 extern "C" int X_func_00237340(...) asm("func_00237340");
@@ -916,17 +915,17 @@ extern "C" int Xiii_func_00193210(int, int) asm("func_00193210");
 extern "C" int Xiiiff_func_00193258(int, float, float, int) asm("func_00193258");
 extern "C" int Xiiiiiii_func_0019368C(int, int, int, int, int, int) asm("func_0019368C");
 extern int D_002F8270;
-extern "C" void MnuDiary__vfunc_06(int arg0, int arg1)
+extern "C" void MnuDiary__vfunc_06(MnuDiary *arg0, int arg1)
 {
     struct { float sp0; float sp4; float sp8; float spC; float sp10; float sp14; float sp18; float sp1C; float sp20; float sp24; float sp28; float sp2C; float sp30; char pad34[12]; DiaryV6Pair vec; int sp50; char pad54[44]; float sp80; float sp84; float sp88; } stack;
     float temp_f0;
     float temp_f0_2;
     int var_s1;
-    int var_s0;
+    MnuBookPage *var_s0;
 
-    if ((unsigned int) (M2C_FIELD(arg0, int *, 0x10) - 2) < 3U) {
-        Xiii_func_00192F68(arg0, arg1);
-        Xiii_func_00193210(arg0, 1);
+    if ((unsigned int) (arg0->m_unk10 - 2) < 3U) {
+        Xiii_func_00192F68((int)arg0, arg1);
+        Xiii_func_00193210((int)arg0, 1);
         stack.sp0 = 0.0f;
         stack.sp8 = 512.0f;
         stack.spC = 448.0f;
@@ -934,11 +933,11 @@ extern "C" void MnuDiary__vfunc_06(int arg0, int arg1)
 
 
         stack.sp18 = stack.sp2C = stack.sp28 = stack.sp24 = stack.sp20 = 1.0f;
-        Xiiiff_func_00193258(arg0, stack.sp4 = stack.sp30 = stack.sp10 = stack.sp14 = stack.sp0, stack.sp0, (int)&stack);
-        Xiii_func_00193210(arg0, 0);
-        if ((M2C_FIELD(arg0, int *, 0x124) - 1) >= 0) {
-            if (M2C_FIELD(arg0, int *, 4) & 0x80000) {
-                var_s1 = (unsigned int) ((unsigned int) M2C_FIELD(arg0, unsigned int *, 0x8B4) >> 1) % 3U;
+        Xiiiff_func_00193258((int)arg0, stack.sp4 = stack.sp30 = stack.sp10 = stack.sp14 = stack.sp0, stack.sp0, (int)&stack);
+        Xiii_func_00193210((int)arg0, 0);
+        if ((arg0->m_curPage - 1) >= 0) {
+            if (arg0->m_flags & 0x80000) {
+                var_s1 = (unsigned int) ((unsigned int) (unsigned int)arg0->m_unk8B4 >> 1) % 3U;
             } else {
                 var_s1 = 0;
             }
@@ -949,11 +948,11 @@ extern "C" void MnuDiary__vfunc_06(int arg0, int arg1)
             stack.sp10 = 0.0f;
             stack.sp14 = temp_f0 * 0.0078125f;
             stack.sp1C = (temp_f0 + 16.0f) * 0.0078125f;
-            Xiiiff_func_00193258(arg0, 100.0f, 412.0f, (int)&stack);
+            Xiiiff_func_00193258((int)arg0, 100.0f, 412.0f, (int)&stack);
         }
-        if ((M2C_FIELD(arg0, int *, 0x124) + 2) < M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 8)) {
-            if (M2C_FIELD(arg0, int *, 4) & 0x100000) {
-                var_s1 = (unsigned int) ((unsigned int) M2C_FIELD(arg0, unsigned int *, 0x8B4) >> 1) % 3U;
+        if ((arg0->m_curPage + 2) < arg0->m_info->m_pageCount) {
+            if (arg0->m_flags & 0x100000) {
+                var_s1 = (unsigned int) ((unsigned int) (unsigned int)arg0->m_unk8B4 >> 1) % 3U;
             } else {
                 var_s1 = 0;
             }
@@ -964,25 +963,25 @@ extern "C" void MnuDiary__vfunc_06(int arg0, int arg1)
             stack.sp18 = 0.21875f;
             stack.sp14 = temp_f0_2 * 0.0078125f;
             stack.sp1C = (temp_f0_2 + 16.0f) * 0.0078125f;
-            Xiiiff_func_00193258(arg0, 384.0f, 412.0f, (int)&stack);
+            Xiiiff_func_00193258((int)arg0, 384.0f, 412.0f, (int)&stack);
         }
         var_s1 = 0;
-        M2C_FIELD(arg0, int *, 0xB0) = X_func_0021B550(M2C_FIELD(arg0, int *, 0xB0), 0x47, 0x503FD);
-        Xiii_func_001930F8(arg0, arg1);
+        arg0->m_unkB0 = X_func_0021B550(arg0->m_unkB0, 0x47, 0x503FD);
+        Xiii_func_001930F8((int)arg0, arg1);
         stack.vec = *(DiaryV6Pair *)&D_002F8270;
         X_func_00237340((int)&stack.sp50);
         X_func_002378B0((int)&stack.sp50, (int)&stack.sp50, (int)&stack.vec);
         stack.sp80 = 21.0f;
         stack.sp84 = 8.0f;
         stack.sp88 = 220.0f;
-        Xiiiiiii_func_0019368C(arg0, arg1, (int)&stack.sp50, 5, -1, 0);
-        var_s0 = M2C_FIELD(arg0, int *, 0x128);
+        Xiiiiiii_func_0019368C((int)arg0, arg1, (int)&stack.sp50, 5, -1, 0);
+        var_s0 = arg0->m_slots;
         do {
-            if (M2C_FIELD(var_s0, int *, 0) & 2) {
-                Xiiiiiii_func_0019368C(arg0, arg1, (int)&stack.sp50, var_s1, M2C_FIELD(var_s0, int *, 0xC), M2C_FIELD(var_s0, int *, 0x10));
+            if (var_s0->m_flags & 2) {
+                Xiiiiiii_func_0019368C((int)arg0, arg1, (int)&stack.sp50, var_s1, var_s0->m_animIdx, var_s0->m_frame);
             }
             var_s1 += 1;
-            var_s0 += 0x20;
+            var_s0++;
         } while (var_s1 < 5);
     }
 }
