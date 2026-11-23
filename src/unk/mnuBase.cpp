@@ -981,8 +981,6 @@ extern "C" void mnuBase__vfunc_03(MnuBase *arg0, int arg1)
     arg0->m_unk10 = -1;
 }
 
-// NON_MATCHING: 4/42 differ, 10 edits
-#ifdef NON_MATCHING
 struct MnuCamEntity {
     unsigned char m_pad00[0x40];
     float m_x, m_y, m_z, m_w;
@@ -1000,7 +998,7 @@ struct MnuCamEntity {
 };
 
 extern "C" int Xii_func_001C5FFC(int) asm("func_001C5FFC");
-extern "C" int Xiifff_setRot__9DogEntityfff(MnuCamEntity *, float, float, float) asm("setRot__9DogEntityfff");
+extern "C" void Xiifff_setRot__9DogEntityfff(MnuCamEntity *, float, float, float) asm("setRot__9DogEntityfff");
 extern "C" void func_00192E94(MnuBase *arg0, float fparg0, float fparg1)
 {
     int temp_a0;
@@ -1015,9 +1013,6 @@ extern "C" void func_00192E94(MnuBase *arg0, float fparg0, float fparg1)
     arg0->m_savedFov = M2C_FIELD(temp_a0, float *, 0x2AA14);
     Xiif_func_00131618(temp_a0, fparg0);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/mnuBase", func_00192E94);
-#endif
 
 extern "C" void func_00192F3C(MnuBase *arg0)
 {
