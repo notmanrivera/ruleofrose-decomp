@@ -714,18 +714,15 @@ extern "C" void func_0011B964(MagPC *self, int theType, float theValue)
     }
 }
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
+struct SubModeState_BC64 { long long words[2]; };
 extern "C" void func_0011BC64(MagPC *self)
 {
 #line 1666
-    ASSERT_S((unsigned int)I(self, 0xD8) < 4, "m_submode_level >= 0 && m_submode_level < 4");
-    ((u_long128 *)((char *)self + 0x90))[I(self, 0xD8)] = *(u_long128 *)self;
+    if ((unsigned int)I(self, 0xD8) >= 4)
+        ror_assert(D_002E9F28, 1666, "m_submode_level >= 0 && m_submode_level < MAX_SUBMODE_STACK");
+    ((SubModeState_BC64 *)self->m_submode_stack)[self->m_submode_level] = *(SubModeState_BC64 *)self;
     I(self, 0xD8)++;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepc", func_0011BC64);
-#endif
 
 
 // NON_MATCHING: close, not identical yet.
