@@ -67,8 +67,6 @@ extern "C" void func_0017B7CC(const float *arg0, float *arg1, const float *arg2)
     }
 }
 
-// NON_MATCHING: 18/79 differ, 17 edits
-#ifdef NON_MATCHING
 extern "C" int X_func_0016AD94_17B918() asm("func_0016AD94");
 extern "C" void func_0017B918(const char *arg0, float *arg1, const float *arg2)
 {
@@ -80,29 +78,26 @@ extern "C" void func_0017B918(const char *arg0, float *arg1, const float *arg2)
     arg1[2] = s * ((float)X_func_0016AD94_17B918() / c);
     arg1[3] = s + s * 0.5f * ((float)X_func_0016AD94_17B918() / c);
     float x = arg1[0];
-    float w = arg2[2] - arg2[0];
-    if (w <= x) {
+    s = arg2[2] - arg2[0];
+    if (s <= x) {
         float nx;
         do {
-            nx = x - w;
+            nx = x - s;
             x = nx;
-        } while (w <= nx);
+        } while (s <= nx);
         arg1[0] = nx;
     }
     float z = arg1[2];
-    float h = arg2[3] - arg2[1];
-    if (h <= z) {
+    s = arg2[3] - arg2[1];
+    if ((arg2[3] - arg2[1]) <= z) {
         float nz;
         do {
-            nz = z - h;
+            nz = z - s;
             z = nz;
-        } while (h <= nz);
+        } while (s <= nz);
         arg1[2] = nz;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/SctLayer", func_0017B918);
-#endif
 
 extern "C" int func_0017BA54(const SctCell *arg0, const float *arg1, int arg2)
 {
