@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "mnu/mnusvld.h"
+extern "C" int Xii_func_0018741C(int) asm("func_0018741C");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" void func_001A5BF4(MnuSvld *);
 extern "C" void func_001A5C80(MnuSvld *);
@@ -25,7 +26,7 @@ extern "C" void X_func_0013511C(void *, int, int, int, int) asm("func_0013511C")
 extern "C" void X_func_001351B0(void *, int, int) asm("func_001351B0");
 extern "C" void X_func_00135594(void *, int) asm("func_00135594");
 extern "C" void X_func_0017F8FC(void *, int) asm("func_0017F8FC");
-extern "C" void X_func_0018741C(void *) asm("func_0018741C");
+extern "C" unsigned int X_func_0018741C(void *) asm("func_0018741C");
 extern "C" void X_func_00187464(void *) asm("func_00187464");
 extern "C" void X_func_001874AC(void *) asm("func_001874AC");
 extern "C" void X_func_0018BCC0(void *, int) asm("func_0018BCC0");
@@ -368,32 +369,28 @@ extern "C" void func_001A5CD8(MnuSvld *arg0, int arg1)
     }
 }
 
-// NON_MATCHING: 3/28 differ (size 0x70, game 0x70), 2 edits (store order)
-#ifdef NON_MATCHING
 extern "C" int func_001A5D04(MnuSvld *arg0)
 {
-    if (arg0->m_open == 1) {
-        return -1;
-    }
-    arg0->m_open = 1;
-    arg0->m_mode = 1;
-    arg0->m_step = 0;
-    arg0->m_subStep = 0;
-    arg0->m_unk24EC = 0;
-    arg0->m_unk24F4 = 0;
-    arg0->m_unk24FC = 0;
-    arg0->m_unk2500 = 0;
-    arg0->m_unk2504 = 0;
-    arg0->m_cursor[1] = 0;
-    arg0->m_cursor[2] = 0;
-    arg0->m_unk1470 = 6;
-    arg0->m_unk24E4 = 3;
-    X_func_0018741C(arg0->m_msgWin);
-    return 0;
+  if (arg0->m_open == 1)
+  {
+    return -1;
+  }
+  arg0->m_open = 1;
+  arg0->m_mode = 1;
+  arg0->m_step = 0;
+  arg0->m_subStep = 0;
+  arg0->m_unk24EC = 0;
+  arg0->m_unk24F4 = 0;
+  arg0->m_unk24FC = 0;
+  arg0->m_unk2500 = 0;
+  arg0->m_unk2504 = 0;
+  arg0->m_cursor[1] = 0;
+  arg0->m_cursor[2] = 0;
+  arg0->m_unk1470 = 6;
+  arg0->m_unk24E4 = 3;
+  X_func_0018741C(arg0->m_msgWin);
+  return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A5D04);
-#endif
 
 extern "C" int func_001A5D74(MnuSvld *arg0)
 {
