@@ -11,6 +11,11 @@ extern const char D_002EDED0[];
 #include "mag/magscene.h"
 #include "dog/dogtexinfo.h"
 #include "bed/bedmemory.h"
+extern "C" int Xiii_func_001388E8(int, int) asm("func_001388E8");
+extern "C" int Xiii_func_00142B18(int, int) asm("func_00142B18");
+extern "C" int Xiii_func_00142C88(int, int) asm("func_00142C88");
+extern "C" int Xiiiiii_func_00138CE8(int, int, int, int, int) asm("func_00138CE8");
+extern "C" int Xiiu_func_00138AC8(int, unsigned int) asm("func_00138AC8");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiii_func_00142FD0(int, int) asm("func_00142FD0");
 extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
@@ -377,8 +382,6 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magscene2", D_002EDF50);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene2", func_00138CE8);
 
-// NON_MATCHING: other registers.
-#ifdef NON_MATCHING
 int MagScene::func_00138ED0(I3dDraw *theDraw, int theID, const char *thePack)
 {
     if (theID < 0) {
@@ -391,17 +394,14 @@ int MagScene::func_00138ED0(I3dDraw *theDraw, int theID, const char *thePack)
         return func_00138AC8(this, no);
     }
     void *loader = (char *)this + 0x215C;
-    int k = func_00142C88(loader, theID);
+    no = func_00142C88(loader, theID);
 #line 1302
-    ASSERT_S(k >= 0, D_002EDF50);
-    void *p = func_00142B18(loader, k);
+    ASSERT_S(no >= 0, D_002EDF50);
+    void *p = func_00142B18(loader, no);
 #line 1304
     ASSERT_S(p, D_002EDD80);
     return func_00138CE8(this, theDraw, theID, p, 0);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/magscene2", func_00138ED0__8MagSceneP7I3dDrawiPCc);
-#endif
 
 
 extern "C" void func_00139010(MagScene *self, int theN)
