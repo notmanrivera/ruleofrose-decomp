@@ -1998,7 +1998,7 @@ extern "C" int func_00213BFC(int arg0, int arg1, int arg2, int arg3)
     return 0;
 }
 
-// NON_MATCHING: 6/37 differ, 5 edits
+// NON_MATCHING: 1/37 differ, 1 edits
 #ifdef NON_MATCHING
 extern "C" int func_00213B28(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5);
 extern "C" int func_00213C6C(int arg0, unsigned int arg1, int arg2, int arg3)
@@ -2009,7 +2009,7 @@ extern "C" int func_00213C6C(int arg0, unsigned int arg1, int arg2, int arg3)
     NodeIter end0;
     NodeIter end1;
     NodeIter end2;
-    NodeIter *end_ptr;
+    register NodeIter *end_ptr PS2_REG("$10");
     register char *p PS2_REG("$2");
     switch ((int)(arg1 >> 30)) {
     case 0:
@@ -2024,9 +2024,18 @@ extern "C" int func_00213C6C(int arg0, unsigned int arg1, int arg2, int arg3)
         p = *(char **)(self + 0x18);
         end_ptr = &end2;
     do_call:
-        beg.m_node = *(int **)(p + 0xD4);
-        end_ptr->m_node = (int *)(p + 0xD0);
-        return func_00213B28(arg0, arg1, (int)&beg, (int)end_ptr, a2, arg3);
+        register int out PS2_REG("$8");
+        register NodeIter *begin PS2_REG("$6");
+        do {
+            out = a2;
+            begin = &beg;
+        } while (0);
+        int *firstNode = *(int **)(p + 0xD4);
+        int *endNode = (int *)(p + 0xD0);
+        register NodeIter *endArg PS2_REG("$7") = end_ptr;
+        beg.m_node = firstNode;
+        end_ptr->m_node = endNode;
+        return func_00213B28(arg0, arg1, (int)begin, (int)endArg, out, arg3);
     }
     return 0;
 }
