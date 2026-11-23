@@ -41,6 +41,7 @@ def main():
         sys.exit(f"{a.name}: no NON_MATCHING attempt of {a.function}")
     head = m.group(1).split("{", 1)[0]
     # the name cpp_permuter must find: Class::method or the free function's name
+    head = re.sub(r"\b(?:asm|__asm__|__attribute__)\s*\((?:[^()]|\([^()]*\))*\)", "", head)
     fname = re.findall(r"([A-Za-z_][\w:]*)\s*\(", head)[-1]
     out = ROOT / "build" / "cpp_perm" / a.function
     out.mkdir(parents=True, exist_ok=True)
