@@ -738,10 +738,70 @@ def expects(lines):
     return out
 
 
+# ---- From decomp-compat-kit's MATCHING-PLAYBOOK (ee-gcc 2.96, Xenosaga, -O2;
+# unproven at -Os until Cyrax's stats say so).
+
+def chain_assigns(lines):
+    """'a = K; b = K;' <-> 'a = b = K;': a chained float zero goes through an
+    FP register (mtc1 + swc1) where separate stores use sw $zero."""
+    out = []
+    stmt = re.compile(r"^(\s*)([^=;]*[^=!<>+\-*/%&|^\s])\s*=\s*([^=;][^;]*);\s*$")
+    for i in body(lines):
+        m = stmt.match(lines[i])
+        if not m or CONTROL.match(lines[i]) or DECL.match(lines[i]):
+            continue
+        if i + 1 < len(lines):
+            n = stmt.match(lines[i + 1])
+            if n and not DECL.match(lines[i + 1]) and n.group(3).strip() == m.group(3).strip() \
+                    and re.fullmatch(r"[-\w.]+f?", m.group(3).strip()) and "=" not in m.group(2) + n.group(2):
+                new = list(lines)
+                new[i:i + 2] = [f"{m.group(1)}{m.group(2)} = {n.group(2).strip()} = {m.group(3).strip()};"]
+                out.append(new)
+        c = re.match(r"^(\s*)([^=;]+?)\s*=\s*([^=;]+?)\s*=\s*([^=;]+);\s*$", lines[i])
+        if c and not DECL.match(lines[i]) and not CONTROL.match(lines[i]):
+            new = list(lines)
+            new[i:i + 1] = [f"{c.group(1)}{c.group(2)} = {c.group(4).strip()};", f"{c.group(1)}{c.group(3)} = {c.group(4).strip()};"]
+            out.append(new)
+    return out
+
+
+def subscripts(lines):
+    """'A[B]' <-> '*(A + B)' and '&A[B]' -> '(A + B)' one at a time: the
+    form changes what g++ hoists and the addu operand order."""
+    out = []
+    sub = re.compile(r"(&?)\b([A-Za-z_]\w*(?:(?:->|\.)\w+)*)\[([^\[\]]+)\]")
+    for i in body(lines):
+        if DECL.match(lines[i]) or lines[i].lstrip().startswith("#"):
+            continue
+        for m in sub.finditer(lines[i]):
+            rep = f"({m.group(2)} + {m.group(3)})" if m.group(1) else f"*({m.group(2)} + {m.group(3)})"
+            new = list(lines)
+            new[i] = lines[i][:m.start()] + rep + lines[i][m.end():]
+            out.append(new)
+        for m in re.finditer(r"\*\(([A-Za-z_]\w*(?:(?:->|\.)\w+)*) \+ ([^()]+)\)", lines[i]):
+            new = list(lines)
+            new[i] = lines[i][:m.start()] + f"{m.group(1)}[{m.group(2)}]" + lines[i][m.end():]
+            out.append(new)
+    return out
+
+
+def unsigned_switches(lines):
+    """'switch (e)' -> 'switch ((unsigned int)(e))': an equality-chain switch
+    with a signed selector becomes an slti tree."""
+    out = []
+    for i in body(lines):
+        m = re.match(r"^(\s*switch\s*\()(.*)(\)\s*\{?\s*)$", lines[i])
+        if m and "unsigned" not in m.group(2):
+            new = list(lines)
+            new[i] = f"{m.group(1)}(unsigned int)({m.group(2)}){m.group(3)}"
+            out.append(new)
+    return out
+
+
 MUTATIONS = [swaps, commutes, compares, ands, signedness, invert_ifs, loops, temps, inlines,
              decl_swaps, wide_commutes, term_swaps, extracts,
              nothrows, early_returns, shared_returns, do_whiles, pins, inline_calls, retypes,
-             assign_temps, split_adds, expects]
+             assign_temps, split_adds, expects, chain_assigns, subscripts, unsigned_switches]
 
 
 def stats_path():
