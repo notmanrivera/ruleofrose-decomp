@@ -158,7 +158,7 @@ extern "C" void Xv_func_00183C4C(void *) asm("func_00183C4C");
 extern "C" void Xv_func_00183BB8(void *) asm("func_00183BB8");
 extern "C" int Xii_func_00184A94(int) asm("func_00184A94");
 extern "C" int atoi(const char *);
-extern "C" int func_0027BBA8(const char *theStr, int theA, int theBase);
+extern "C" long long func_0027BBA8(const char *theStr, int theA, int theBase);
 extern const char *D_00298FE8[];
 extern "C" void func_00134FA0(void *theScene, int theNo, int theA);
 extern "C" void func_00135014(void *theScene, int theNo, int theA);
@@ -1109,22 +1109,18 @@ extern "C" int func_00184578(MsgWin *self, const char *theStr, int *theOut)
 }
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 extern "C" int func_00184600(MsgWin *self, const char *theStr, int *theOut)
 {
     char buf[16];
     memset(buf, 0, sizeof(buf));
     int n = func_0018454C(self, theStr);
-    if (n) {
+    if (n == 0) return 0;
+    {
         memcpy(buf, theStr, n < 16 ? n : 15);
         *theOut = (int)func_0027BBA8(buf, 0, 16);
     }
     return n;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184600);
-#endif
 
 
 // NON_MATCHING: close, not identical yet.
