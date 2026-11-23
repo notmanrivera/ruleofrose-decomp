@@ -832,7 +832,7 @@ extern "C" int func_001881C0(int arg0)
 INCLUDE_ASM("asm/nonmatchings/mcd/mcdman", func_001881C0);
 #endif
 
-// NON_MATCHING: 42/131 differ (size 0x20C, game 0x214), 14 edits
+// NON_MATCHING: 1/133 differ, 1 edits
 #ifdef NON_MATCHING
 extern "C" int F883_chdir(...) asm("sceMcChdir");
 extern "C" int F883_sync(int, int *, int *) asm("sceMcSync");
@@ -887,14 +887,13 @@ extern "C" int func_001883C0(int arg0)
             if (*out == -2) {
                 register int error PS2_REG("$4") = 7;
                 M2C_FIELD(arg0, int *, 0x58) = error;
-                if (M2C_FIELD(arg0, int *, 0xBC) >= 8) {
-                    status = M2C_FIELD(arg0, volatile int *, 0x64);
-                    goto finish;
-                }
-                {
+                if (M2C_FIELD(arg0, int *, 0xBC) < 8) {
                     M2C_FIELD(arg0, int *, 0x60) = 3;
                     M2C_FIELD(arg0, int *, 0x64) = 1;
                     M2C_FIELD(arg0, int *, 0x58) = 1;
+                } else {
+                    status = M2C_FIELD(arg0, int *, 0x64);
+                    goto finish;
                 }
                 break;
             }
