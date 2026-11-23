@@ -4,7 +4,14 @@ address) on our function starts; accepted when at least 5 of 7 agree and
 the name itself lands on a start. Writes build/ror_port_names.tsv
 (not committed: a lead list, the names are descriptive and GPL-sourced)."""
 import csv, glob, collections, os, pickle, re
-starts = pickle.load(open('build/func_starts.pkl', 'rb'))
+starts = {}
+for p in glob.glob('asm/nonmatchings/**/*.s', recursive=True):   # every function's first address
+    with open(p, encoding='utf8', errors='replace') as fh:
+        for line in fh:
+            m = re.match(r'\s*/\* [0-9A-F]+ ([0-9A-F]{8}) ', line)
+            if m:
+                starts[int(m.group(1), 16)] = os.path.splitext(os.path.basename(p))[0]
+                break
 srcs = {}
 for l in open('symbols/function_sources.tsv', encoding='utf8').read().splitlines()[1:]:
     w = l.split('\t')
