@@ -1,10 +1,10 @@
 #include "include_asm.h"
-#include "task/cmnitask.h"
-extern "C" float ctor700_Xf_func_001D4A3C(int, int, int) asm("func_001D4A3C");
-extern "C" float ctor700_Xf_func_001D4AEC(int, int, int) asm("func_001D4AEC");
+#include "unk/TskEnemyMove.h"
+extern "C" float ctor700_Xf_func_001D4A3C(void *, int, int) asm("func_001D4A3C");
+extern "C" float ctor700_Xf_func_001D4AEC(void *, unsigned int, int) asm("func_001D4AEC");
 extern "C" int ctor700_X_func_0010423C(int, int) asm("func_0010423C");
-extern "C" int ctor700_X_func_00163DB8(int, int) asm("func_00163DB8");
-extern "C" int ctor700_X_func_001D2B8C(int, int) asm("func_001D2B8C");
+extern "C" int ctor700_X_func_00163DB8(void *, unsigned int) asm("func_00163DB8");
+extern "C" TskEnemyObj *ctor700_X_func_001D2B8C(void *, unsigned int) asm("func_001D2B8C");
 extern float D_002FF260[];
 extern float D_002FF270[];
 extern int D_002FF280[];
@@ -59,51 +59,19 @@ extern "C" int Xiiiii_func_00202E20(void *, float *, float *, int) asm("func_002
 extern "C" int Xii_func_001FBB04(int) asm("func_001FBB04");
 extern "C" int Xiiiiiif_func_001F5BDC(int, int, int, int, int, float, float) asm("func_001F5BDC");
 extern "C" int Xiiu_func_001D19A8(int, unsigned int) asm("func_001D19A8");
-extern "C" int X_2E20_1D5A0C(void *, float *, int, int, int, void *) asm("func_001D5A0C");
+extern "C" int X_2E20_1D5A0C(void *, float *, unsigned int, int, int, void *) asm("func_001D5A0C");
 extern "C" void X_2E20_17C340(void *, float *, void *, int, float, float) asm("func_0017C340");
 extern char D_006FBD80[];
-struct S_00202E20_sub {
-    int f00;
-    int f04;
-    int f08;
-    int f0C;
-    int f10[4];
-};
-struct S_00202E20 {
-    char pad00[0x8];
-    struct S_00202E20_sub sub;
-};
 extern "C" int X_v4_200988(void *, void *) asm("func_00200988");
 extern "C" void X_v4_200D18(void *, void *) asm("func_00200D18");
 extern "C" void X_v4_202FE4(void *, void *) asm("func_00202FE4");
 extern "C" void X_v4_16A594(unsigned int, void *) asm("func_0016A594");
 extern float D_006E97D8[];
 extern "C" int X_2874_DogActor(void *, int, int, float, int, int) asm("func_0010B1B0__8DogActoriifii");
-struct S_00202874 {
-    char pad00[0x28];
-    void *f28;      // 0x28
-    int f2C;        // 0x2C
-    char pad30[0x1C];
-    float f4C;      // 0x4C
-    char pad50[0x0C];
-    int f5C;        // 0x5C
-    char pad60[0x10];
-    int f70;        // 0x70
-    char pad74[0xA0C];
-    int fA80;       // 0xA80
-};
 struct v94_1FF25C { char pad[148]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16(); virtual void call(void *, int); };
 extern "C" void X_2F60_180EA8(void *, int) asm("func_00180EA8");
 extern "C" void X_2F10_180EA8(void *, int) asm("func_00180EA8");
-extern "C" void X_2F10_1640AC(void *, int, int) asm("func_001640AC");
-struct S_002006B0 {
-    int *vt;
-    int f04;
-    char pad08[0x20];
-    int f28;
-    char pad2c[0xA98];
-    int fAC4;
-};
+extern "C" void X_2F10_1640AC(void *, unsigned int, int) asm("func_001640AC");
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
 extern "C" int X_vt_12TskEnemyMove asm("_vt$12TskEnemyMove");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -1158,109 +1126,107 @@ block_4:
 extern "C" void TskEnemyMove__vfunc_03(void) {
 }
 
-extern "C" void TskEnemyMove__vfunc_05(int arg0)
+extern "C" void TskEnemyMove__vfunc_05(TskEnemyMove *arg0)
 {
-    int temp_v0;
-
-    temp_v0 = (*(int *)(int *)((char *)(arg0) + 0xAB8));
-    if (temp_v0 >= 0) {
-        X_func_00180EA8((int)&D_007B2580, temp_v0);
+    int h = arg0->m_sndHandle;
+    if (h >= 0) {
+        X_func_00180EA8((int)&D_007B2580, h);
     }
 }
 
 
-extern "C" void func_002006B0(struct S_002006B0 *arg0)
+extern "C" void func_002006B0(TskEnemyMove *arg0)
 {
-    arg0->vt = &X_vt_12TskEnemyMove;
-    arg0->f04 = 0;
-    arg0->f28 = 0;
-    arg0->fAC4 = 0;
+    *(int **)arg0 = &X_vt_12TskEnemyMove;
+    arg0->m_active = 0;
+    arg0->m_actor = 0;
+    arg0->m_paused = 0;
 }
 
-extern "C" void TskEnemyMove__vfunc_06(void *arg0, int arg1)
+extern "C" void TskEnemyMove__vfunc_06(TskEnemyMove *arg0, int arg1)
 {
-    M2C_FIELD(arg0, int **, 0) = &X_vt_12TskEnemyMove;
+    *(int **)arg0 = &X_vt_12TskEnemyMove;
     if (arg1 & 1) {
         return X___builtin_delete(arg0);
     }
 }
 
-extern "C" void func_00200700(int arg0, int arg1)
+extern "C" void func_00200700(TskEnemyMove *arg0, TskEnemyMoveParam *arg1)
 {
     float var_f2;
-    int temp_v0_2;
-    int temp_a1;
+    int *temp_v0_2;
+    unsigned int temp_a1;
     int temp_a1_2;
     int temp_v0;
 
-    M2C_FIELD(arg0, int *, 4) = 1;
-    M2C_FIELD(arg0, int *, 0xAC4) = 0;
-    temp_a1 = M2C_FIELD(arg1, int *, 0);
-    M2C_FIELD(arg0, int *, 8) = temp_a1;
-    temp_v0 = M2C_FIELD(ctor700_X_func_001D2B8C((int)&D_007812C0, temp_a1), int *, 0x108);
-    M2C_FIELD(arg0, int *, 0x2C) = 0;
-    M2C_FIELD(arg0, int *, 0xC) = temp_v0;
-    M2C_FIELD(arg0, int *, 0x28) = (int) ((int)&D_006FE6A0 + (temp_v0 * 0x4D0));
-    temp_v0_2 = M2C_FIELD(arg1, int *, 4);
-    M2C_FIELD(arg0, int *, 0x30) = temp_v0_2;
-    (*(int *)(temp_v0_2)) = 0;
-    M2C_FIELD(arg0, int *, 0x34) = 1;
-    M2C_FIELD(arg0, int *, 0x38) = (int) M2C_FIELD(arg1, int *, 0x28);
-    M2C_FIELD(arg0, float *, 0x3C) = (float) M2C_FIELD(arg1, float *, 0x2C);
-    M2C_FIELD(arg0, float *, 0x40) = (float) M2C_FIELD(arg1, float *, 0x30);
-    M2C_FIELD(arg0, float *, 0x44) = (float) M2C_FIELD(arg1, float *, 0x34);
-    M2C_FIELD(arg0, float *, 0x48) = (float) M2C_FIELD(arg1, float *, 0x38);
-    M2C_FIELD(arg0, int *, 0x10) = (int) M2C_FIELD(arg1, int *, 8);
-    M2C_FIELD(arg0, float *, 0x4C) = (float) (M2C_FIELD(arg1, float *, 0xC) * 0.016666694078594446f);
-    M2C_FIELD(arg0, float *, 0x54) = (float) (M2C_FIELD(arg1, float *, 0x10) * M2C_FIELD(arg1, float *, 0xC));
-    M2C_FIELD(arg0, float *, 0x58) = (float) (M2C_FIELD(arg1, float *, 0x14) * M2C_FIELD(arg1, float *, 0xC));
-    M2C_FIELD(arg0, float *, 0xA90) = (float) M2C_FIELD(arg1, float *, 0x18);
-    M2C_FIELD(arg0, float *, 0xA94) = (float) M2C_FIELD(arg1, float *, 0x1C);
-    M2C_FIELD(arg0, float *, 0x50) = (float) M2C_FIELD(arg1, float *, 0x10);
-    M2C_FIELD(arg0, int *, 0x60) = 0x40;
-    M2C_FIELD(arg0, int *, 0x5C) = 0;
-    M2C_FIELD(arg0, int *, 0x64) = (int) (M2C_FIELD(arg1, int *, 0x20) + 3);
-    M2C_FIELD(arg0, int *, 0x68) = 0;
-    M2C_FIELD(arg0, int *, 0x6C) = 0;
-    M2C_FIELD(arg0, int *, 0x70) = (int) M2C_FIELD(arg1, int *, 0x24);
-    M2C_FIELD(arg0, int *, 0x74) = 0;
-    M2C_FIELD(arg0, float *, 0xA84) = (float) M2C_FIELD(arg1, float *, 0x3C);
-    M2C_FIELD(arg0, float *, 0xA88) = ctor700_Xf_func_001D4AEC((int)&D_007812C0, M2C_FIELD(arg0, int *, 8), 0);
-    temp_a1_2 = M2C_FIELD(arg0, int *, 0x38);
+    arg0->m_active = 1;
+    arg0->m_paused = 0;
+    temp_a1 = arg1->m_oid;
+    arg0->m_oid = temp_a1;
+    temp_v0 = ctor700_X_func_001D2B8C(&D_007812C0, temp_a1)->m_chrID;
+    arg0->m_moveState = 0;
+    arg0->m_chrID = temp_v0;
+    arg0->m_actor = (TskEnemyActor *)((char *)&D_006FE6A0 + (temp_v0 * 0x4D0));
+    temp_v0_2 = arg1->m_donePtr;
+    arg0->m_donePtr = temp_v0_2;
+    *temp_v0_2 = 0;
+    arg0->m_unk34 = 1;
+    arg0->m_targetOid = arg1->m_targetOid;
+    arg0->m_unk3C = arg1->m_unk2C;
+    arg0->m_unk40 = arg1->m_unk30;
+    arg0->m_unk44 = arg1->m_unk34;
+    arg0->m_unk48 = arg1->m_unk38;
+    arg0->m_unk10 = arg1->m_unk08;
+    arg0->m_mtnSpeed = arg1->m_speedScale * 0.016666694078594446f;
+    arg0->m_unk54 = arg1->m_walkSpeed * arg1->m_speedScale;
+    arg0->m_unk58 = arg1->m_unk14 * arg1->m_speedScale;
+    arg0->m_unkA90 = arg1->m_unk18;
+    arg0->m_unkA94 = arg1->m_unk1C;
+    arg0->m_walkSpeed = arg1->m_walkSpeed;
+    arg0->m_unk60 = 0x40;
+    arg0->m_curMtn = 0;
+    arg0->m_unk64 = arg1->m_moveMode + 3;
+    arg0->m_unk68 = 0;
+    arg0->m_unk6C = 0;
+    arg0->m_unk70 = arg1->m_unk24;
+    arg0->m_pathCount = 0;
+    arg0->m_stopAngle = arg1->m_stopAngle;
+    arg0->m_selfRadius = ctor700_Xf_func_001D4AEC(&D_007812C0, arg0->m_oid, 0);
+    temp_a1_2 = arg0->m_targetOid;
     if (temp_a1_2 != 0) {
-        var_f2 = ctor700_Xf_func_001D4A3C((int)&D_007812C0, temp_a1_2, 0);
+        var_f2 = ctor700_Xf_func_001D4A3C(&D_007812C0, temp_a1_2, 0);
     } else {
         var_f2 = 0.0f;
     }
-    M2C_FIELD(arg0, float *, 0xA8C) = var_f2;
-    M2C_FIELD(arg0, float *, 0xA8C) = (float) (var_f2 + (M2C_FIELD(arg0, float *, 0xA88) + M2C_FIELD(arg1, float *, 0x5C)));
-    M2C_FIELD(arg0, int *, 0x14) = ctor700_X_func_00163DB8((int)&D_007B2140, M2C_FIELD(arg0, int *, 8));
-    M2C_FIELD(arg0, int *, 0xA98) = (int) M2C_FIELD(arg1, int *, 0x44);
-    M2C_FIELD(arg0, int *, 0xAA0) = (int) M2C_FIELD(arg1, int *, 0x48);
-    M2C_FIELD(arg0, int *, 0xAA8) = (int) M2C_FIELD(arg1, int *, 0x4C);
-    M2C_FIELD(arg0, int *, 0xAB0) = (int) M2C_FIELD(arg1, int *, 0x50);
-    M2C_FIELD(arg0, float *, 0xAB4) = (float) M2C_FIELD(arg1, float *, 0x58);
-    M2C_FIELD(arg0, int *, 0xABC) = ctor700_X_func_0010423C(0xF, 0x1E);
-    M2C_FIELD(arg0, int *, 0xAB8) = -1;
-    M2C_FIELD(arg0, int *, 0xAC0) = (int) M2C_FIELD(arg1, int *, 0x54);
+    arg0->m_stopDist = var_f2;
+    arg0->m_stopDist = var_f2 + (arg0->m_selfRadius + arg1->m_stopMargin);
+    arg0->m_sectaId = ctor700_X_func_00163DB8(&D_007B2140, arg0->m_oid);
+    arg0->m_unkA98 = arg1->m_unk44;
+    arg0->m_unkAA0 = arg1->m_unk48;
+    arg0->m_unkAA8 = arg1->m_unk4C;
+    arg0->m_unkAB0 = arg1->m_unk50;
+    arg0->m_unkAB4 = arg1->m_unk58;
+    arg0->m_sndTimer = ctor700_X_func_0010423C(0xF, 0x1E);
+    arg0->m_sndHandle = -1;
+    arg0->m_sndType = arg1->m_sndType;
 }
 
-extern "C" int TskEnemyMove__vfunc_04(void *arg0)
+extern "C" int TskEnemyMove__vfunc_04(TskEnemyMove *arg0)
 {
     struct { float v[4]; } stack;
-    void *temp_v1;
+    TskEnemyActor *temp_v1;
 
-    if (M2C_FIELD(arg0, int *, 0xAC4) != 0) {
+    if (arg0->m_paused != 0) {
         return 0;
     }
-    if (M2C_FIELD(arg0, int *, 4) == 0) {
+    if (arg0->m_active == 0) {
         return 0;
     }
-    temp_v1 = M2C_FIELD(arg0, void **, 0x28);
-    D_006E97D8[0] = M2C_FIELD(temp_v1, float *, 0x40);
-    D_006E97D8[1] = M2C_FIELD(temp_v1, float *, 0x44);
-    D_006E97D8[2] = M2C_FIELD(temp_v1, float *, 0x48);
-    X_v4_16A594(M2C_FIELD(arg0, unsigned int *, 8), &stack);
+    temp_v1 = arg0->m_actor;
+    D_006E97D8[0] = temp_v1->m_pos[0];
+    D_006E97D8[1] = temp_v1->m_pos[1];
+    D_006E97D8[2] = temp_v1->m_pos[2];
+    X_v4_16A594(arg0->m_oid, &stack);
     if (X_v4_200988(arg0, &stack) != 0) {
         X_v4_200D18(arg0, &stack);
     }
@@ -1352,35 +1318,35 @@ block_19:
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00200988);
 #endif
 
-extern "C" int func_00200BC4(int arg0)
+extern "C" int func_00200BC4(TskEnemyMove *arg0)
 {
     int r = 0;
 
-    if (M2C_FIELD(arg0, int *, 0x2C) != 0) {
+    if (arg0->m_moveState != 0) {
         return 0;
     }
-    if (M2C_FIELD(arg0, int *, 0x34) != 0) {
-        M2C_FIELD(arg0, int *, 0x34) = 0;
+    if (arg0->m_unk34 != 0) {
+        arg0->m_unk34 = 0;
         r = 1;
     } else {
-        if (M2C_FIELD(arg0, int *, 0xA98) != 0 && M2C_FIELD(arg0, int *, 0x74) == 0) {
-            if (--M2C_FIELD(arg0, int *, 0xA9C) < 0) {
-                int v = M2C_FIELD(arg0, int *, 0xA98);
-                M2C_FIELD(arg0, int *, 0xA9C) = Xiii_func_0010423C(v * 80, v * 120) / 100;
+        if (arg0->m_unkA98 != 0 && arg0->m_pathCount == 0) {
+            if (--arg0->m_unkA9C < 0) {
+                int v = arg0->m_unkA98;
+                arg0->m_unkA9C = Xiii_func_0010423C(v * 80, v * 120) / 100;
                 r = 4;
             }
         }
-        if (M2C_FIELD(arg0, int *, 0xAB0) != 0) {
-            if (--M2C_FIELD(arg0, int *, 0xAAC) < 0) {
-                int v = M2C_FIELD(arg0, int *, 0xAA8);
-                M2C_FIELD(arg0, int *, 0xAAC) = Xiii_func_0010423C(v * 80, v * 120) / 100;
+        if (arg0->m_unkAB0 != 0) {
+            if (--arg0->m_unkAAC < 0) {
+                int v = arg0->m_unkAA8;
+                arg0->m_unkAAC = Xiii_func_0010423C(v * 80, v * 120) / 100;
                 r = 3;
             }
         }
-        if (M2C_FIELD(arg0, int *, 0xAA0) != 0) {
-            if (--M2C_FIELD(arg0, int *, 0xAA4) < 0) {
-                int v = M2C_FIELD(arg0, int *, 0xAA0);
-                M2C_FIELD(arg0, int *, 0xAA4) = Xiii_func_0010423C(v * 80, v * 120) / 100;
+        if (arg0->m_unkAA0 != 0) {
+            if (--arg0->m_unkAA4 < 0) {
+                int v = arg0->m_unkAA0;
+                arg0->m_unkAA4 = Xiii_func_0010423C(v * 80, v * 120) / 100;
                 r = 2;
             }
         }
@@ -1855,19 +1821,19 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00201D58);
 #endif
 
 extern "C" float Xfi_func_0010A650__8DogActor(void *) asm("func_0010A650__8DogActor");
-extern "C" int func_00201FA4(void *arg0, float *arg1)
+extern "C" int func_00201FA4(TskEnemyMove *arg0, float *arg1)
 {
   float v1[4];
   float v2[4];
   float yaw;
   float dist = 70.0f;
-  yaw = Xfi_func_0010A650__8DogActor(*((void **) (((char *) arg0) + 0x28)));
+  yaw = Xfi_func_0010A650__8DogActor(arg0->m_actor);
   v1[1] = (v2[1] = arg1[1]);
   v1[0] = arg1[0] + (sinf(yaw) * dist);
   v1[2] = arg1[2] + (cosf(yaw) * dist);
   v2[0] = D_006E97D8[0] + (sinf(yaw) * dist);
   v2[2] = D_006E97D8[2] + (cosf(yaw) * dist);
-  if (Xiiiii_func_00202E20(arg0, v1, v2, *((int *) (((char *) arg0) + 0x38))) != 0)
+  if (Xiiiii_func_00202E20(arg0, v1, v2, arg0->m_targetOid) != 0)
   {
     Xiiif_func_00202900(arg0, arg1, yaw);
     return 1;
@@ -1877,7 +1843,7 @@ extern "C" int func_00201FA4(void *arg0, float *arg1)
   v1[2] = arg1[2] + (cosf(yaw) * dist);
   v2[0] = D_006E97D8[0] + (sinf(yaw) * dist);
   v2[2] = D_006E97D8[2] + (cosf(yaw) * dist);
-  if (Xiiiii_func_00202E20(arg0, v1, v2, *((int *) (((char *) arg0) + 0x38))) != 0)
+  if (Xiiiii_func_00202E20(arg0, v1, v2, arg0->m_targetOid) != 0)
   {
     Xiiif_func_00202900(arg0, arg1, yaw);
  do { } while (0);
@@ -1886,7 +1852,7 @@ extern "C" int func_00201FA4(void *arg0, float *arg1)
   return 0;
 }
 
-extern "C" int func_00202138(void *arg0, float *arg1)
+extern "C" int func_00202138(TskEnemyMove *arg0, float *arg1)
 {
     float v1[4];
     float v2[4];
@@ -1894,12 +1860,12 @@ extern "C" int func_00202138(void *arg0, float *arg1)
     int var_v0;
 
     v1[1] = v2[1] = arg1[1];
-    yaw = Xf_func_0010A650__8DogActor(M2C_FIELD(arg0, void **, 0x28));
-    v1[0] = arg1[0] + sinf(yaw) * M2C_FIELD(arg0, float *, 0x50);
-    v1[2] = arg1[2] + cosf(yaw) * M2C_FIELD(arg0, float *, 0x50);
-    v2[0] = D_006E97D8[0] + sinf(yaw) * M2C_FIELD(arg0, float *, 0x50);
-    v2[2] = D_006E97D8[2] + cosf(yaw) * M2C_FIELD(arg0, float *, 0x50);
-    var_v0 = Xiiiii_func_00202E20(arg0, v1, v2, M2C_FIELD(arg0, int *, 0x38));
+    yaw = Xf_func_0010A650__8DogActor(arg0->m_actor);
+    v1[0] = arg1[0] + sinf(yaw) * arg0->m_walkSpeed;
+    v1[2] = arg1[2] + cosf(yaw) * arg0->m_walkSpeed;
+    v2[0] = D_006E97D8[0] + sinf(yaw) * arg0->m_walkSpeed;
+    v2[2] = D_006E97D8[2] + cosf(yaw) * arg0->m_walkSpeed;
+    var_v0 = Xiiiii_func_00202E20(arg0, v1, v2, arg0->m_targetOid);
     if (var_v0 != 0) {
         Xiiif_func_00202900(arg0, arg1, yaw);
         var_v0 = 1;
@@ -2011,16 +1977,16 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF4C8);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF4D0);
 
-extern "C" int func_00202234(void *arg0, float *arg1)
+extern "C" int func_00202234(TskEnemyMove *arg0, float *arg1)
 {
     float pos[4];
     int info[8];
     float yaw;
     int mot;
 
-    if (X_2234_1D5A0C(&D_007812C0, arg1, M2C_FIELD(arg0, int *, 0x8), 0, 0, info) != 0) {
+    if (X_2234_1D5A0C(&D_007812C0, arg1, arg0->m_oid, 0, 0, info) != 0) {
         X_2234_16A594(info[4], pos);
-        yaw = X_2234_atan2f(pos[0] - arg1[0], pos[2] - arg1[2]) - X_2234_10A650(M2C_FIELD(arg0, void **, 0x28));
+        yaw = X_2234_atan2f(pos[0] - arg1[0], pos[2] - arg1[2]) - X_2234_10A650(arg0->m_actor);
         if (yaw < -3.14159265358979323846) {
             yaw += 2.0 * 3.14159265358979323846;
         }
@@ -2028,9 +1994,9 @@ extern "C" int func_00202234(void *arg0, float *arg1)
             yaw -= 2.0 * 3.14159265358979323846;
         }
         mot = (yaw > 0.0f) ? 0x10 : 0x11;
-        X_2234_10B1B0(M2C_FIELD(arg0, void **, 0x28), mot, 0, M2C_FIELD(arg0, float *, 0x4C), -1, -1);
-        M2C_FIELD(arg0, int *, 0x5C) = mot;
-        M2C_FIELD(arg0, int *, 0x2C) = 1;
+        X_2234_10B1B0(arg0->m_actor, mot, 0, arg0->m_mtnSpeed, -1, -1);
+        arg0->m_curMtn = mot;
+        arg0->m_moveState = 1;
         return 1;
     }
     return 0;
@@ -2144,24 +2110,24 @@ extern "C" int func_00202638(int arg0) {
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202638);
 #endif
 
-extern "C" void func_00202874(struct S_00202874 *arg0, float fparg0)
+extern "C" void func_00202874(TskEnemyMove *arg0, float fparg0)
 {
     int temp_s1;
-    int f70 = arg0->f70;
-    int f5C = arg0->f5C;
+    int f70 = arg0->m_unk70;
+    int f5C = arg0->m_curMtn;
 
     if (fparg0 > 0.0f) {
         temp_s1 = (f70 != 0) ? 0xF : 9;
-        arg0->fA80 = 0;
+        arg0->m_turnDir = 0;
     } else {
         temp_s1 = (f70 != 0) ? 0xE : 8;
-        arg0->fA80 = 1;
+        arg0->m_turnDir = 1;
     }
     if (f5C != temp_s1) {
-        X_2874_DogActor(arg0->f28, temp_s1, 1, arg0->f4C, -1, -1);
-        arg0->f5C = temp_s1;
+        X_2874_DogActor(arg0->m_actor, temp_s1, 1, arg0->m_mtnSpeed, -1, -1);
+        arg0->m_curMtn = temp_s1;
     }
-    arg0->f2C = 2;
+    arg0->m_moveState = 2;
 }
 
 // NON_MATCHING: 261/329 differ, 50 relocs differ (size 0x524, game 0x520), 73 edits
@@ -2255,106 +2221,106 @@ failed:
 INCLUDE_ASM("asm/nonmatchings/unk/TskEnemyMove", func_00202900);
 #endif
 
-extern "C" int func_00202E20(struct S_00202E20 *arg0, float *arg1, float *arg2, int arg3)
+extern "C" int func_00202E20(TskEnemyMove *arg0, float *arg1, float *arg2, int arg3)
 {
     int off = 0x8542C;
 
-    X_2E20_17C340(D_006FBD80 + off, arg2, arg0->sub.f10, 0, 40.0f, 0.0f);
-    if (arg0->sub.f10[arg0->sub.f0C] == 0) {
+    X_2E20_17C340(D_006FBD80 + off, arg2, arg0->m_hitTbl, 0, 40.0f, 0.0f);
+    if (arg0->m_hitTbl[arg0->m_sectaId] == 0) {
         return 1;
     }
-    return X_2E20_1D5A0C(&D_007812C0, arg1, arg0->sub.f00, arg3, 0, 0) != 0;
+    return X_2E20_1D5A0C(&D_007812C0, arg1, arg0->m_oid, arg3, 0, 0) != 0;
 }
 
-extern "C" void TskEnemyMove__vfunc_02(int arg0, int arg1)
+extern "C" void TskEnemyMove__vfunc_02(TskEnemyMove *arg0, int arg1)
 {
-    int temp_v0;
+    TskEnemyActor *temp_v0;
 
-    if (M2C_FIELD(arg0, int *, 4) != 0) {
-        temp_v0 = M2C_FIELD(arg0, int *, 0x28);
+    if (arg0->m_active != 0) {
+        temp_v0 = arg0->m_actor;
         if (arg1 != 0) {
             if (temp_v0 != 0) {
-                M2C_FIELD(temp_v0, float *, 0x1E8) = 9.999999583953922e-08f;
+                temp_v0->m_mtnSpeed = 9.999999583953922e-08f;
             }
         } else if (temp_v0 != 0) {
-            M2C_FIELD(temp_v0, float *, 0x1E8) = (float) M2C_FIELD(arg0, float *, 0x4C);
+            temp_v0->m_mtnSpeed = arg0->m_mtnSpeed;
         }
     }
 }
 
-extern "C" void func_00202F10(void *arg0)
+extern "C" void func_00202F10(TskEnemyMove *arg0)
 {
-    M2C_FIELD(arg0, int *, 4) = 0;
-    X_2F10_180EA8(&D_007B2580, M2C_FIELD(arg0, int *, 0xAB8));
-    M2C_FIELD(arg0, int *, 0xAB8) = -1;
-    X_2F10_1640AC(&D_007B2140, M2C_FIELD(arg0, int *, 8), 0);
+    arg0->m_active = 0;
+    X_2F10_180EA8(&D_007B2580, arg0->m_sndHandle);
+    arg0->m_sndHandle = -1;
+    X_2F10_1640AC(&D_007B2140, arg0->m_oid, 0);
 }
 
-extern "C" void func_00202F60(void *arg0)
+extern "C" void func_00202F60(TskEnemyMove *arg0)
 {
-    void *temp_a0;
+    TskEnemyActor *temp_a0;
 
-    M2C_FIELD(arg0, int *, 0xAC4) = 1;
-    X_2F60_180EA8(&D_007B2580, M2C_FIELD(arg0, int *, 0xAB8));
-    if (M2C_FIELD(arg0, int *, 4) == 0) {
+    arg0->m_paused = 1;
+    X_2F60_180EA8(&D_007B2580, arg0->m_sndHandle);
+    if (arg0->m_active == 0) {
         return;
     }
-    temp_a0 = M2C_FIELD(arg0, void **, 0x28);
+    temp_a0 = arg0->m_actor;
     if (temp_a0 != 0) {
-        M2C_FIELD(temp_a0, float *, 0x1E8) = 9.999999583953922e-08f;
+        temp_a0->m_mtnSpeed = 9.999999583953922e-08f;
     }
 }
 
-extern "C" void func_00202FBC(int arg0)
+extern "C" void func_00202FBC(TskEnemyMove *arg0)
 {
-    int temp_v0;
+    TskEnemyActor *temp_v0;
 
-    M2C_FIELD(arg0, int *, 0xAC4) = 0;
-    if (M2C_FIELD(arg0, int *, 4) != 0) {
-        temp_v0 = M2C_FIELD(arg0, int *, 0x28);
+    arg0->m_paused = 0;
+    if (arg0->m_active != 0) {
+        temp_v0 = arg0->m_actor;
         if (temp_v0 != 0) {
-            M2C_FIELD(temp_v0, float *, 0x1E8) = (float) M2C_FIELD(arg0, float *, 0x4C);
+            temp_v0->m_mtnSpeed = arg0->m_mtnSpeed;
         }
     }
 }
 
-extern "C" void func_00202FE4(void *arg0, float *arg1)
+extern "C" void func_00202FE4(TskEnemyMove *arg0, float *arg1)
 {
-    if (M2C_FIELD(arg0, int *, 0xAB8) >= 0) {
-        int r = X_2FE4_180CA8(&D_007B2580, M2C_FIELD(arg0, int *, 0xAB8));
+    if (arg0->m_sndHandle >= 0) {
+        int r = X_2FE4_180CA8(&D_007B2580, arg0->m_sndHandle);
         if (r != -1) {
             return;
         }
-        M2C_FIELD(arg0, int *, 0xAB8) = r;
-        X_2FE4_1640AC(&D_007B2140, M2C_FIELD(arg0, int *, 8), 0);
+        arg0->m_sndHandle = r;
+        X_2FE4_1640AC(&D_007B2140, arg0->m_oid, 0);
     }
-    if (--M2C_FIELD(arg0, int *, 0xABC) > 0) {
+    if (--arg0->m_sndTimer > 0) {
         return;
     }
-    if (X_2FE4_169A98(arg1, (char *)arg0 + 0x78, 60.0f) != 0) {
+    if (X_2FE4_169A98(arg1, arg0->m_targetPos, 60.0f) != 0) {
         return;
     }
-    M2C_FIELD(arg0, int *, 0xABC) = X_2FE4_10423C(0x1E, 0x50);
+    arg0->m_sndTimer = X_2FE4_10423C(0x1E, 0x50);
     if (X_2FE4_1640E8(&D_007B2140) >= 4) {
         return;
     }
-    switch (M2C_FIELD(arg0, int *, 0xAC0)) {
+    switch (arg0->m_sndType) {
     case 0:
     case 1:
     case 2:
     case 3:
     case 4:
     case 5:
-        M2C_FIELD(arg0, int *, 0xAB8) = X_2FE4_16A8A4(M2C_FIELD(arg0, int *, 8), 0xC);
+        arg0->m_sndHandle = X_2FE4_16A8A4(arg0->m_oid, 0xC);
         break;
     case 6:
-        M2C_FIELD(arg0, int *, 0xAB8) = X_2FE4_16A8A4(M2C_FIELD(arg0, int *, 8), D_002FF5C0[X_2FE4_10423C(0, 0xF)]);
+        arg0->m_sndHandle = X_2FE4_16A8A4(arg0->m_oid, D_002FF5C0[X_2FE4_10423C(0, 0xF)]);
         break;
     case 10:
-        M2C_FIELD(arg0, int *, 0xAB8) = X_2FE4_16A8A4(M2C_FIELD(arg0, int *, 8), D_002FF600[X_2FE4_10423C(0, 3)]);
+        arg0->m_sndHandle = X_2FE4_16A8A4(arg0->m_oid, D_002FF600[X_2FE4_10423C(0, 3)]);
         break;
     }
-    X_2FE4_1640AC(&D_007B2140, M2C_FIELD(arg0, int *, 8), 1);
+    X_2FE4_1640AC(&D_007B2140, arg0->m_oid, 1);
 }
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskEnemyMove", D_002FF4F8);
