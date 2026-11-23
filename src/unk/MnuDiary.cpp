@@ -1608,7 +1608,96 @@ INCLUDE_RODATA("asm/nonmatchings/unk/MnuDiary", D_002F8490);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuDiary", D_002F8498);
 
+// NON_MATCHING: 229/284 differ, 20 relocs differ (size 0x470, game 0x470), 136 edits
+#ifdef NON_MATCHING
+extern char D_002A4500[][3];
+extern char D_002A2DA8[];
+extern int D_002A42A8;
+extern "C" void B384_func_0018C448(MnuRpk *, int, int) asm("func_0018C448");
+extern "C" void B384_func_0018C4D8(MnuRpk *, int, int) asm("func_0018C4D8");
+extern "C" int B384_func_001DD00C(void *, int, int) asm("func_001DD00C");
+extern "C" int B384_sprintf(char *, const char *, ...) asm("func_00279C98");
+extern "C" void func_0019B384(MnuStock *self, int idx)
+{
+    GamItemHave *have = D_007812C0.getItemHavePtr();
+    GamItem *end = have->m_end;
+    GamItem *it;
+    int i;
+    if (idx >= 0) {
+        for (it = have->m_begin, i = 0; it != end; it++, i++) {
+            if (i == idx) {
+                self->m_haveItems[i] = it;
+                break;
+            }
+        }
+    } else if (idx == -1) {
+        GamItem **dst = self->m_haveItems;
+        for (it = have->m_begin; it != end; it++) {
+            *dst++ = it;
+        }
+    }
+    for (it = have->m_begin, i = 0; it != end; it++, i++) {
+        GamItem *item;
+        MnuRpk *rpk;
+        int icon, num;
+        char *text;
+        item = self->m_haveItems[i];
+        rpk = &self->m_rpk;
+        icon = i + 0x4D;
+        num = i + 0x59;
+        if (item->m_uid != 0xA00) {
+            B384_func_0018C448(rpk, icon, func_0019AF08((int)self, item->m_uid));
+            rpk->m_sprTbl[icon].m_iconId = func_0019AF34(self, item->m_uid);
+            B384_func_0018C4D8(rpk, icon, 0);
+            rpk->m_sprTbl[icon].m_vis0C = 1;
+            rpk->m_sprTbl[icon].m_vis10 = 1;
+            B384_func_0018C448(rpk, num, (int)D_002A2DA8);
+            rpk->m_sprTbl[num].m_iconId = i + 0x61;
+            B384_func_0018C4D8(rpk, num, 0);
+            rpk->m_sprTbl[num].m_vis0C = 1;
+            rpk->m_sprTbl[num].m_vis10 = 1;
+            rpk->m_sprTbl[num].m_color = &D_002A42A8;
+            rpk->m_sprTbl[num].m_rgba[0] = 0x80;
+            rpk->m_sprTbl[num].m_rgba[1] = 0x80;
+            rpk->m_sprTbl[num].m_rgba[2] = 0x80;
+            rpk->m_sprTbl[num].m_rgba[3] = 0x80;
+            if (B384_func_001DD00C(gamSub22220_DEDC(), item->m_uid, 0x20000) != 0) {
+                B384_sprintf(text = D_002A4500[i], "%2d", item->m_num);
+                rpk->m_sprTbl[num].m_unk144 = 0;
+                rpk->m_sprTbl[num].m_unk148 = 0;
+                rpk->m_sprTbl[num].m_text = text;
+                continue;
+            }
+            if (item->m_uid != 0xA3E && item->m_uid != 0xA43) {
+                rpk->m_sprTbl[num].m_vis0C = 0;
+                rpk->m_sprTbl[num].m_vis10 = 0;
+                B384_sprintf(text = D_002A4500[i], "  ");
+                rpk->m_sprTbl[num].m_unk144 = 0;
+                rpk->m_sprTbl[num].m_unk148 = 0;
+                rpk->m_sprTbl[num].m_text = text;
+            } else {
+                B384_sprintf(text = D_002A4500[i], "%2d", item->m_num);
+                rpk->m_sprTbl[num].m_unk144 = 0;
+                rpk->m_sprTbl[num].m_unk148 = 0;
+                rpk->m_sprTbl[num].m_text = text;
+            }
+        } else {
+            B384_func_0018C448(rpk, icon, func_0019AF08((int)self, 0xB3B));
+            B384_func_0018C4D8(rpk, icon, 0);
+            rpk->m_sprTbl[icon].m_vis0C = 0;
+            rpk->m_sprTbl[icon].m_vis10 = 0;
+            rpk->m_sprTbl[num].m_vis0C = 0;
+            rpk->m_sprTbl[num].m_vis10 = 0;
+            B384_sprintf(text = D_002A4500[i], "  ");
+            rpk->m_sprTbl[num].m_unk144 = 0;
+            rpk->m_sprTbl[num].m_unk148 = 0;
+            rpk->m_sprTbl[num].m_text = text;
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019B384);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019B7F4);
 
