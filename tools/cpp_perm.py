@@ -39,10 +39,21 @@ def main():
     m = next((m for m in regalloc_triage.NM.finditer(text) if m.group(2) == a.function), None)
     if not m:
         sys.exit(f"{a.name}: no NON_MATCHING attempt of {a.function}")
-    head = m.group(1).split("{", 1)[0]
-    # the name cpp_permuter must find: Class::method or the free function's name
-    head = re.sub(r"\b(?:asm|__asm__|__attribute__)\s*\((?:[^()]|\([^()]*\))*\)", "", head)
-    fname = re.findall(r"([A-Za-z_][\w:]*)\s*\(", head)[-1]
+    # the name cpp_permuter must find: Class::method or the free function's
+    # name. The block may start with helper structs and declarations: take
+    # the head of the last top-level definition (a line ending in ')' or
+    # 'const', followed by '{' at column 0)
+    blk = m.group(1)
+    strip = lambda h: re.sub(r"\b(?:asm|__asm__|__attribute__|throw)\s*\((?:[^()]|\([^()]*\))*\)", "", h)
+    names = []
+    for d in re.finditer(r"^([^\s#/}][^\n;{}]*\)[^\n;{}]*?)\s*\n?\{", blk, re.M):
+        f = re.findall(r"([A-Za-z_~][\w:~]*)\s*\(", strip(d.group(1)))
+        if f and f[0] not in ("if", "while", "for", "switch", "return", "sizeof"):
+            names.append(f[0])
+    short = a.function.split("__")[0] if "__" in a.function and not a.function.startswith("func_") else a.function
+    fname = next((n for n in reversed(names) if short in n), names[-1] if names else None)
+    if not fname:
+        sys.exit(f"{a.name} {a.function}: could not find the function's name in its attempt")
     out = ROOT / "build" / "cpp_perm" / a.function
     out.mkdir(parents=True, exist_ok=True)
     pilot = out / "attempt.cpp"
