@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "unk/0020ED9C.h"
 struct Iter12FBC {
     int *node;
     Iter12FBC() : node(0) {}
@@ -12,8 +13,7 @@ extern "C" int F113DC_alloc() asm("func_00214AC4");
 extern "C" void F113DC_select(unsigned int) asm("func_00214310");
 extern "C" void F113DC_load(int) asm("func_00214BCC");
 extern "C" int F113DC_exec(int) asm("func_00214C24");
-struct Block780_47E0;
-struct State12A5C { int data[28]; Block780_47E0 *buffer; int rest[3]; } ALIGNED(8);
+struct State12A5C { int data[28]; ScrBlock780 *buffer; int rest[3]; } ALIGNED(8);
 extern State12A5C F12A5C_state asm("D_007B4700");
 extern int F12A5C_mode asm("D_007B4DC0");
 extern "C" void F12A5C_run(int, unsigned int, int, int, int, int) asm("func_00211830");
@@ -115,35 +115,14 @@ struct m2c_block16 { int w[4]; };
 struct m2c_block32 { int w[8]; };
 struct m2c_ulong { long v; } __attribute__((packed));
 struct F788_block { char data[0xB0]; };
-struct Block80_47E0 {
-    unsigned char b[0x80];
-};
-struct Block780_47E0 {
-    unsigned char b[0x780];
-};
-struct Inner47E0 {
-    int flags;
-    unsigned char unk04[0x28];
-    Block80_47E0 unk2C;
-    Block780_47E0 *unkAC;
-};
-struct Obj47E0 {
-    unsigned char pad0000[0xDC24];
-    int unkDC24;
-    unsigned char padDC28[8];
-    Inner47E0 unkDC30;
-};
 struct Global47E0_b {
     unsigned char unk00[0x70];
-    Block780_47E0 *unk70;
+    ScrBlock780 *unk70;
     unsigned char unk74[0x0C];
 };
 extern int X47E0_D_007B4640 asm("D_007B4640");
 extern Global47E0_b X47E0_D_007B4700 asm("D_007B4700");
 extern "C" int func_002149A8();
-struct Block80_4310 {
-    unsigned char b[0x80];
-};
 struct Elem48_4310 {
     int unk00;
     int unk04;
@@ -158,7 +137,7 @@ struct Elem48_4310 {
     int unk28;
     int unk2C;
 };
-extern Block80_4310 D_002D9C08[];
+extern ScrBlock80 D_002D9C08[];
 extern Elem48_4310 D_007B4850[];
 extern int X4310_D_007B4700[32] asm("D_007B4700");
 extern int D_007B47E0;
@@ -166,120 +145,8 @@ extern int D_007B47F0;
 extern int D_007B4800;
 extern int D_007B4820;
 extern int D_007B4830;
-struct Block80_44CC {
-    unsigned char b[0x80];
-};
-struct Block780_44CC {
-    unsigned char b[0x780];
-};
-struct Inner44CC {
-    int flags;
-    unsigned char unk04[0x28];
-    Block80_44CC unk2C;
-    Block780_44CC *unkAC;
-};
-struct Obj44CC {
-    unsigned char pad[0xDCE0];
-    Inner44CC *unkDCE0;
-};
 extern "C" void *X20F1FC_memset(void *, int, unsigned int) asm("memset");
-struct Item20F1FC {
-    unsigned int a;
-    int b;
-    int c;
-    int d;
-};
-struct List20F1FC {
-    struct Node {
-        Node *m_prev;
-        Node *m_next;
-        Item20F1FC m_data;
-    };
-    struct Chain {
-        Node m_head;
-        int m_num;
-        void push_back(Node *theNode)
-        {
-            if (m_num == 0) {
-                m_head.m_next = theNode;
-                theNode->m_prev = &m_head;
-            } else {
-                m_head.m_prev->m_next = theNode;
-                theNode->m_prev = m_head.m_prev;
-            }
-            theNode->m_next = &m_head;
-            m_head.m_prev = theNode;
-            ++m_num;
-        }
-        void unlink(Node *theNode)
-        {
-            if (theNode == m_head.m_next) {
-                Node *next = theNode->m_next;
-                m_head.m_next = next;
-                next->m_prev = &m_head;
-            } else {
-                Node *p = theNode->m_prev;
-                if (theNode == m_head.m_prev) {
-                    m_head.m_prev = p;
-                    p->m_next = &m_head;
-                } else {
-                    p->m_next = theNode->m_next;
-                    Node *prev = theNode->m_prev;
-                    p = theNode->m_next;
-                    p->m_prev = prev;
-                }
-            }
-            --m_num;
-        }
-    };
-    struct iterator {
-        Node *m_node;
-        iterator() : m_node(0) {}
-        iterator(Node *theNode) : m_node(theNode) {}
-        iterator(const iterator &theIt) : m_node(theIt.m_node) {}
-        Item20F1FC &operator*() const { return m_node->m_data; }
-        iterator &operator++()
-        {
-            m_node = m_node->m_next;
-            return *this;
-        }
-        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; }
-    };
-    Chain m_free;
-    Chain m_used;
-    iterator begin() { return iterator(m_used.m_head.m_next); }
-    iterator end() { return iterator(&m_used.m_head); }
-    iterator erase(iterator thePos)
-    {
-        iterator next = thePos;
-        ++next;
-        Node *n = thePos.m_node;
-        m_used.unlink(n);
-        m_free.push_back(n);
-        return next;
-    }
-};
-struct Obj20F1FC {
-    unsigned char pad0000[0xC3C0];
-    List20F1FC m_list;
-    unsigned char padC3F8[0xDC1C - (0xC3C0 + sizeof(List20F1FC))];
-    char *m_state;
-    char *m_flags;
-};
 extern int D_007B4770;
-struct Block80_4664 {
-    unsigned char b[0x80];
-};
-struct Block780_4664 {
-    unsigned char b[0x780];
-};
-struct Obj4640 {
-    unsigned char unk00[0x10];
-    int flags;
-    unsigned char unk14[0x28];
-    Block80_4664 unk3C;
-    Block780_4664 *unkBC;
-};
 struct Block40_B8 {
     unsigned char b[0x40];
 };
@@ -315,141 +182,8 @@ struct Obj215430 {
 };
 extern "C" int X2D08_func_00213C6C(int arg0, int arg1, int arg2, int arg3) asm("func_00213C6C");
 extern "C" int func_00213D90(int arg0, int arg1, int arg2);
-struct Data212E64 {
-    unsigned char b[0xB0];
-};
-struct List212E64 {
-    struct Node {
-        Node *m_prev;
-        Node *m_next;
-        int m_pad08;
-        int m_pad0C;
-        Data212E64 m_data;
-    } ALIGNED(16);
-    struct Chain {
-        Node m_head;
-        int m_num;
-        Node *pop_back()
-        {
-            Node *n = m_head.m_prev;
-            Node *prev = n->m_prev;
-            m_head.m_prev = prev;
-            prev->m_next = &m_head;
-            --m_num;
-            return n;
-        }
-        void push_back(Node *theNode)
-        {
-            if (m_num == 0) {
-                m_head.m_next = theNode;
-                theNode->m_prev = &m_head;
-            } else {
-                m_head.m_prev->m_next = theNode;
-                theNode->m_prev = m_head.m_prev;
-            }
-            theNode->m_next = &m_head;
-            m_head.m_prev = theNode;
-            ++m_num;
-        }
-    };
-    Chain m_free;
-    Chain m_used;
-    void push_back(const Data212E64 &theData)
-    {
-        Node *n = m_free.pop_back();
-        n->m_data = theData;
-        m_used.push_back(n);
-    }
-};
-struct Obj212E64 {
-    unsigned char pad[0x6200];
-    List212E64 m_list;
-};
-struct Item2127F4 {
-    unsigned int a;
-    int b;
-    int c;
-    int d;
-};
-struct List2127F4 {
-    struct Node {
-        Node *m_prev;
-        Node *m_next;
-        Item2127F4 m_data;
-    };
-    struct Chain {
-        Node m_head;
-        int m_num;
-        void push_back(Node *theNode)
-        {
-            if (m_num == 0) {
-                m_head.m_next = theNode;
-                theNode->m_prev = &m_head;
-            } else {
-                m_head.m_prev->m_next = theNode;
-                theNode->m_prev = m_head.m_prev;
-            }
-            theNode->m_next = &m_head;
-            m_head.m_prev = theNode;
-            ++m_num;
-        }
-        void unlink(Node *theNode)
-        {
-            if (theNode == m_head.m_next) {
-                Node *next = theNode->m_next;
-                m_head.m_next = next;
-                next->m_prev = &m_head;
-            } else {
-                Node *p = theNode->m_prev;
-                if (theNode == m_head.m_prev) {
-                    m_head.m_prev = p;
-                    p->m_next = &m_head;
-                } else {
-                    p->m_next = theNode->m_next;
-                    Node *prev = theNode->m_prev;
-                    p = theNode->m_next;
-                    p->m_prev = prev;
-                }
-            }
-            --m_num;
-        }
-    };
-    struct iterator {
-        Node *m_node;
-        iterator() : m_node(0) {}
-        iterator(Node *theNode) : m_node(theNode) {}
-        iterator(const iterator &theIt) : m_node(theIt.m_node) {}
-        Item2127F4 &operator*() const { return m_node->m_data; }
-        iterator &operator++()
-        {
-            m_node = m_node->m_next;
-            return *this;
-        }
-        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; }
-    };
-    Chain m_free;
-    Chain m_used;
-    iterator begin() { return iterator(m_used.m_head.m_next); }
-    iterator end() { return iterator(&m_used.m_head); }
-    iterator erase(iterator thePos)
-    {
-        iterator next = thePos;
-        ++next;
-        Node *n = thePos.m_node;
-        m_used.unlink(n);
-        m_free.push_back(n);
-        return next;
-    }
-};
-struct Obj2127F4 {
-    unsigned char pad[0xC3C0];
-    List2127F4 m_list;
-};
 struct Block30000_1 { char b[0x30000]; };
-struct Elem214AC4 {
-    unsigned char b[0x80];
-};
-extern Elem214AC4 D_007B4920[];
+extern ScrBlock80 D_007B4920[];
 extern "C" void func_00211E84(int, int, int);
 extern "C" void func_00213F48(int, int, int);
 struct Block18000_1 { char b[0x18000]; };
@@ -531,7 +265,6 @@ struct NodeIter {
 extern "C" int strcmp(const char *, const char *);
 extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
 extern "C" int Xii___builtin_vec_delete(int) asm("__builtin_vec_delete");
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiiii_memset(int, int, int) asm("memset");
 extern int D_002D9950;
 extern int D_007B4790;
@@ -605,80 +338,72 @@ extern "C" void func_0020F0C8(int arg0, int arg1)
     }
 }
 
-extern "C" int func_0020F140(int arg0)
+extern "C" int func_0020F140(ScrMan *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0xDC24) & 0x100) {
-        return M2C_FIELD(arg0, int *, 0xDC58);
+    if (arg0->m_flags & 0x100) {
+        return arg0->m_immCtx.m_arg;
     }
-    return M2C_FIELD((*(int *)&D_007B4640), int *, 0x38);
+    return (*(ScrCtxNode **)&D_007B4640)->m_ctx.m_arg;
 }
 
-extern "C" int func_0020F174(int arg0)
+extern "C" int func_0020F174(ScrMan *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0xDC24) & 0x100) {
-        return M2C_FIELD(arg0, int *, 0xDC34);
+    if (arg0->m_flags & 0x100) {
+        return arg0->m_immCtx.m_id;
     }
-    return M2C_FIELD((*(int *)&D_007B4640), int *, 0x14);
+    return (*(ScrCtxNode **)&D_007B4640)->m_ctx.m_id;
 }
 
-extern "C" void func_0020F1A8(int arg0)
+extern "C" void func_0020F1A8(ScrMan *arg0)
 {
-    X_memset((*(int *)(int *)((char *)(arg0) + 0xDC1C)), 0, 0x800);
-    X_memset((*(int *)(int *)((char *)(arg0) + 0xDC20)) + 4, 0, 0x7FC);
+    X_memset(arg0->m_varBufA, 0, 0x800);
+    X_memset(arg0->m_varBufB + 4, 0, 0x7FC);
 }
 
-
-extern "C" void func_0020F1FC(Obj20F1FC *arg0)
+extern "C" void func_0020F1FC(ScrMan *arg0)
 {
-    X20F1FC_memset(arg0->m_state + 0x300, 0, 0x200);
-    X20F1FC_memset(arg0->m_flags + 0x20, 0, 0x200);
-    List20F1FC::iterator it;
-    List20F1FC::iterator end;
-    it = arg0->m_list.begin();
-    end = arg0->m_list.end();
+    X20F1FC_memset(arg0->m_varBufA + 0x300, 0, 0x200);
+    X20F1FC_memset(arg0->m_varBufB + 0x20, 0, 0x200);
+    ScrHookList::iterator it;
+    ScrHookList::iterator end;
+    it = arg0->m_hookList.begin();
+    end = arg0->m_hookList.end();
     for (; it != end; ++it) {
         if (((*it).a >> 30) == 1) {
-            it = arg0->m_list.erase(it);
+            it = arg0->m_hookList.erase(it);
         }
     }
 }
 
-extern "C" void func_0020F37C(int arg0)
+extern "C" void func_0020F37C(ScrMan *arg0)
 {
-    int temp_a0;
-    int temp_a0_2;
-    int temp_a0_3;
-    int temp_s0;
-    int temp_s0_2;
-    int temp_s0_3;
-
-    temp_s0 = M2C_FIELD(arg0, int *, 0x10);
+    ScrCtxList *temp_s0 = arg0->m_slot0;
     if (temp_s0 != 0) {
-        temp_a0 = M2C_FIELD(temp_s0, int *, 0x1C0);
+        void *temp_a0 = temp_s0->m_poolBuf;
         if (temp_a0 != 0) {
-            Xii___builtin_vec_delete(temp_a0);
+            Xii___builtin_vec_delete((int)temp_a0);
         }
-        Xii___builtin_delete(temp_s0);
+        Xii___builtin_delete((int)temp_s0);
     }
-    temp_s0_2 = M2C_FIELD(arg0, int *, 0x14);
+    ScrCtxList *temp_s0_2 = arg0->m_slot1;
     if (temp_s0_2 != 0) {
-        temp_a0_2 = M2C_FIELD(temp_s0_2, int *, 0x1C0);
+        void *temp_a0_2 = temp_s0_2->m_poolBuf;
         if (temp_a0_2 != 0) {
-            Xii___builtin_vec_delete(temp_a0_2);
+            Xii___builtin_vec_delete((int)temp_a0_2);
         }
-        Xii___builtin_delete(temp_s0_2);
+        Xii___builtin_delete((int)temp_s0_2);
     }
-    temp_s0_3 = M2C_FIELD(arg0, int *, 0x18);
+    ScrCtxList *temp_s0_3 = arg0->m_slot2;
     if (temp_s0_3 != 0) {
-        temp_a0_3 = M2C_FIELD(temp_s0_3, int *, 0x1C0);
+        void *temp_a0_3 = temp_s0_3->m_poolBuf;
         if (temp_a0_3 != 0) {
-            Xii___builtin_vec_delete(temp_a0_3);
+            Xii___builtin_vec_delete((int)temp_a0_3);
         }
-        Xii___builtin_delete(temp_s0_3);
+        Xii___builtin_delete((int)temp_s0_3);
     }
-    M2C_FIELD(arg0, int *, 0x10) = 0;
-    M2C_FIELD(arg0, int *, 0x14) = 0;
-    M2C_FIELD(arg0, int *, 0x18) = 0;
+    arg0->m_slot0 = 0;
+    arg0->m_slot1 = 0;
+    arg0->m_slot2 = 0;
 }
 
 extern "C" void func_0020F428(int arg0, char *arg1)
@@ -732,113 +457,111 @@ extern "C" void func_0020F4FC(Obj20F4FC *self)
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_0020F4FC);
 #endif
 
-extern "C" void func_0020F788(int arg0)
+extern "C" void func_0020F788(ScrMan *arg0)
 {
     int temp_v0_2;
     int temp_v1;
-    int temp_a2;
-    int temp_a3;
-    int temp_a4;
-    int temp_v0;
-    int temp_v0_3;
-    int temp_v1_2;
-    int var_a0;
-    int var_a1;
+    ScrCtxNode *temp_a2;
+    ScrCtxChain *temp_a3;
+    ScrCtxNode *temp_v0;
+    ScrCtxNode *temp_v0_3;
+    ScrCtxChain *temp_v1_2;
+    ScrCtx *var_a0;
+    ScrCtx *var_a1;
 
     X_func_00214310((*(int *)((int)&D_007B4DD0)));
-    if ((*(int *)&D_007B4640) != (*(int *)((int)&D_007B4650))) {
+    if ((*(ScrCtxNode **)&D_007B4640) != (*(ScrCtxNode **)((int)&D_007B4650))) {
         do {
             X_func_00214664(arg0);
-            int *flags = (int *)((*(int *)&D_007B4640) + 0x10);
+            int *flags = &(*(ScrCtxNode **)&D_007B4640)->m_ctx.m_flags;
             temp_v1 = *flags;
             if (temp_v1 & 0x80) {
                 *flags = temp_v1 & ~0x80;
-                X_func_00214BCC(M2C_FIELD((*(int *)&D_007B4640), int *, 0x1C));
+                X_func_00214BCC((*(ScrCtxNode **)&D_007B4640)->m_ctx.m_regSlot);
             }
-            temp_v0_2 = X_func_00214C24(M2C_FIELD((*(int *)&D_007B4640), int *, 0x18));
+            temp_v0_2 = X_func_00214C24((*(ScrCtxNode **)&D_007B4640)->m_ctx.m_pc);
             if (temp_v0_2 != 0) {
-                M2C_FIELD((*(int *)&D_007B4640), int *, 0x18) = temp_v0_2;
+                (*(ScrCtxNode **)&D_007B4640)->m_ctx.m_pc = temp_v0_2;
             } else {
-                temp_a3 = arg0 + 0x6200;
-                var_a0 = (*(int *)&D_007B4640) + 0x10;
-                temp_a2 = M2C_FIELD(arg0, int *, 0x6200);
-                temp_a4 = (*(int *)&D_007B4640) + 0xB0;
-                temp_v0_3 = M2C_FIELD(temp_a2, int *, 0);
-                var_a1 = temp_a2 + 0x10;
-                M2C_FIELD(arg0, int *, 0x6200) = temp_v0_3;
-                M2C_FIELD(temp_v0_3, int *, 4) = temp_a3;
-                M2C_FIELD(temp_a3, int *, 0xC0) = (int) (M2C_FIELD(temp_a3, int *, 0xC0) - 1);
+                temp_a3 = &arg0->m_doneList.m_free;
+                var_a0 = &(*(ScrCtxNode **)&D_007B4640)->m_ctx;
+                temp_a2 = arg0->m_doneList.m_free.m_head.m_prev;
+                temp_v0_3 = temp_a2->m_prev;
+                var_a1 = &temp_a2->m_ctx;
+                arg0->m_doneList.m_free.m_head.m_prev = temp_v0_3;
+                temp_v0_3->m_next = &temp_a3->m_head;
+                temp_a3->m_num = temp_a3->m_num - 1;
                 *(F788_block *)var_a1 = *(F788_block *)var_a0;
-                temp_v1_2 = temp_a3 + 0xD0;
-                if (M2C_FIELD(temp_v1_2, int *, 0xC0) == 0) {
-                    M2C_FIELD(temp_v1_2, int *, 4) = temp_a2;
-                    M2C_FIELD(temp_a2, int *, 0) = temp_v1_2;
+                temp_v1_2 = (ScrCtxChain *)((char *)temp_a3 + 0xD0);
+                if (temp_v1_2->m_num == 0) {
+                    temp_v1_2->m_head.m_next = temp_a2;
+                    temp_a2->m_prev = &temp_v1_2->m_head;
                 } else {
-                    M2C_FIELD(M2C_FIELD(temp_v1_2, int *, 0), int *, 4) = temp_a2;
-                    M2C_FIELD(temp_a2, int *, 0) = M2C_FIELD(temp_v1_2, int *, 0);
+                    temp_v1_2->m_head.m_prev->m_next = temp_a2;
+                    temp_a2->m_prev = temp_v1_2->m_head.m_prev;
                 }
-                M2C_FIELD(temp_a2, int *, 4) = temp_v1_2;
-                M2C_FIELD(temp_v1_2, int *, 0) = temp_a2;
-                M2C_FIELD(temp_v1_2, int *, 0xC0) = (int) (M2C_FIELD(temp_v1_2, int *, 0xC0) + 1);
+                temp_a2->m_next = &temp_v1_2->m_head;
+                temp_v1_2->m_head.m_prev = temp_a2;
+                temp_v1_2->m_num = temp_v1_2->m_num + 1;
             }
-            temp_v0 = M2C_FIELD((*(int *)&D_007B4640), int *, 4);
-            (*(int *)&D_007B4640) = temp_v0;
-        } while (temp_v0 != (*(int *)((int)&D_007B4650)));
+            temp_v0 = (*(ScrCtxNode **)&D_007B4640)->m_next;
+            (*(ScrCtxNode **)&D_007B4640) = temp_v0;
+        } while (temp_v0 != (*(ScrCtxNode **)((int)&D_007B4650)));
     }
     X_func_002144C4((*(int *)((int)&D_007B4DD0)));
 }
 
 // NON_MATCHING: 342/360 differ, 16 relocs differ (size 0x5A0, game 0x5A8), 6 edits
 #ifdef NON_MATCHING
-extern "C" void F98C_cleanup(int) asm("func_0020F4FC");
+extern "C" void F98C_cleanup(ScrMan *) asm("func_0020F4FC");
 extern "C" void F98C_finish(void *) asm("func_001CD25C");
-extern "C" void func_0020F98C(int arg0)
+extern "C" void func_0020F98C(ScrMan *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 0xDC24) & 1) return;
+    if (arg0->m_flags & 1) return;
     {
-        List212E64 *pending = (List212E64 *)(arg0 + 0x6200);
-        List212E64 *active = (List212E64 *)(arg0 + 0x40);
+        ScrCtxList *pending = &arg0->m_doneList;
+        ScrCtxList *active = &arg0->m_queueList;
         if (pending->m_used.m_num != 0) {
             F98C_cleanup(arg0);
             if (pending->m_used.m_num != 0) {
-                List212E64::Chain *used = (List212E64::Chain *)(arg0 + 0x62D0);
+                ScrCtxChain *used = &arg0->m_doneList.m_used;
                 if (used->m_num != 0) {
                     pending->m_free.m_head.m_prev->m_next = used->m_head.m_next;
-                    List212E64::Node *p = pending->m_free.m_head.m_prev;
+                    ScrCtxNode *p = pending->m_free.m_head.m_prev;
                     p->m_next->m_prev = p;
-                    List212E64::Node *last = used->m_head.m_prev;
+                    ScrCtxNode *last = used->m_head.m_prev;
                     pending->m_free.m_head.m_prev = last;
                     last->m_next = &pending->m_free.m_head;
                     pending->m_free.m_num += used->m_num;
                     used->m_num = 0;
                     used->m_head.m_prev = &used->m_head;
                     used->m_head.m_next = &used->m_head;
-                    active = (List212E64 *)(arg0 + 0x40);
+                    active = &arg0->m_queueList;
                 }
             }
         }
         if (active->m_used.m_num != 0) {
-            List212E64::Chain *used = (List212E64::Chain *)(arg0 + 0x110);
+            ScrCtxChain *used = &arg0->m_queueList.m_used;
             Iter12FBC it;
             Iter12FBC end;
             it = Iter12FBC((int *)active->m_used.m_head.m_next);
             end = Iter12FBC((int *)used);
             for (; it != end; ++it) {
-                Data212E64 *data = (Data212E64 *)((char *)it.node + 0x10);
-                int kind = *(unsigned int *)(data->b + 4) >> 30;
+                ScrCtx *data = (ScrCtx *)((char *)it.node + 0x10);
+                int kind = data->m_id >> 30;
                 switch (kind) {
-                case 0: ((List212E64 *)M2C_FIELD(arg0, int *, 0x10))->push_back(*data); break;
-                case 1: ((List212E64 *)M2C_FIELD(arg0, int *, 0x14))->push_back(*data); break;
-                case 2: ((List212E64 *)M2C_FIELD(arg0, int *, 0x18))->push_back(*data); break;
+                case 0: arg0->m_slot0->push_back(*data); break;
+                case 1: arg0->m_slot1->push_back(*data); break;
+                case 2: arg0->m_slot2->push_back(*data); break;
                 }
                 int id = it.node[12];
                 if (id) func_001E0C2C(D_007812C0.getTrg(), 3, id, 0x02000000);
             }
             if (active->m_used.m_num != 0 && used->m_num != 0) {
                 active->m_free.m_head.m_prev->m_next = used->m_head.m_next;
-                List212E64::Node *p = active->m_free.m_head.m_prev;
+                ScrCtxNode *p = active->m_free.m_head.m_prev;
                 p->m_next->m_prev = p;
-                List212E64::Node *last = used->m_head.m_prev;
+                ScrCtxNode *last = used->m_head.m_prev;
                 active->m_free.m_head.m_prev = last;
                 last->m_next = &active->m_free.m_head;
                 active->m_free.m_num += used->m_num;
@@ -848,23 +571,23 @@ extern "C" void func_0020F98C(int arg0)
             }
         }
         D_007B4DD0 = 0;
-        if (M2C_FIELD(M2C_FIELD(arg0, int *, 16), int *, 0x190) != 0) {
-            D_007B4640 = M2C_FIELD(M2C_FIELD(arg0, int *, 16), int *, 0xD4);
-            D_007B4650 = M2C_FIELD(arg0, int *, 16) + 0xD0;
+        if (arg0->m_slot0->m_used.m_num != 0) {
+            D_007B4640 = (int)arg0->m_slot0->m_used.m_head.m_next;
+            D_007B4650 = (int)&arg0->m_slot0->m_used.m_head;
             Iter12FBC temp((int *)D_007B4650);
             func_0020F788(arg0);
         }
         D_007B4DD0 = 1;
-        if (M2C_FIELD(M2C_FIELD(arg0, int *, 20), int *, 0x190) != 0) {
-            D_007B4640 = M2C_FIELD(M2C_FIELD(arg0, int *, 20), int *, 0xD4);
-            D_007B4650 = M2C_FIELD(arg0, int *, 20) + 0xD0;
+        if (arg0->m_slot1->m_used.m_num != 0) {
+            D_007B4640 = (int)arg0->m_slot1->m_used.m_head.m_next;
+            D_007B4650 = (int)&arg0->m_slot1->m_used.m_head;
             Iter12FBC temp((int *)D_007B4650);
             func_0020F788(arg0);
         }
         D_007B4DD0 = 2;
-        if (M2C_FIELD(M2C_FIELD(arg0, int *, 24), int *, 0x190) != 0) {
-            D_007B4640 = M2C_FIELD(M2C_FIELD(arg0, int *, 24), int *, 0xD4);
-            D_007B4650 = M2C_FIELD(arg0, int *, 24) + 0xD0;
+        if (arg0->m_slot2->m_used.m_num != 0) {
+            D_007B4640 = (int)arg0->m_slot2->m_used.m_head.m_next;
+            D_007B4650 = (int)&arg0->m_slot2->m_used.m_head;
             Iter12FBC temp((int *)D_007B4650);
             func_0020F788(arg0);
         }
@@ -1153,20 +876,22 @@ RESET_AT_STATE;
 extern "C" void func_002107AC(unsigned int arg0, unsigned int arg1, int arg2)
 {
     if (arg1 != 1) {
-        if ((arg1 == 0) && (((int *)&D_007B4700)[arg0] < 0)) {
-            register int delta PS2_REG("$3") = (*(int *)&D_007B4780);
-            delta -= (*(int *)&D_007B47D0);
-            int result = (short)(arg2 * 4) + delta;
-            delta = 0x80000000;
-            (*(int *)&D_007B47C0) = (result + 0x8164) | delta;
+        if (arg1 == 0) {
+            register unsigned int off PS2_REG("$2") = arg0 << 2;
+            if (*(int *)((char *)&D_007B4700 + off) < 0) {
+                goto do_branch;
+            }
         }
-    } else if (((int *)&D_007B4700)[arg0] >= 0) {
-        register int delta PS2_REG("$3") = (*(int *)&D_007B4780);
-        delta -= (*(int *)&D_007B47D0);
-        int result = (short)(arg2 * 4) + delta;
-        delta = 0x80000000;
-        (*(int *)&D_007B47C0) = (result + 0x8164) | delta;
+        return;
+    } else if (((int *)&D_007B4700)[arg0] < 0) {
+        return;
     }
+do_branch:
+    register int delta PS2_REG("$3") = (*(int *)&D_007B4780);
+    delta -= (*(int *)&D_007B47D0);
+    int result = (short)(arg2 * 4) + delta;
+    delta = 0x80000000;
+    (*(int *)&D_007B47C0) = (result + 0x8164) | delta;
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002107AC);
@@ -1575,52 +1300,52 @@ extern "C" void func_002112D8(unsigned int arg0, unsigned int arg1, unsigned int
     *(int *)(base + ((arg3 >> 9) & 0x7C)) = x * y;
 };
 
-extern "C" int func_00211318(int arg0, int arg1)
+extern "C" int func_00211318(ScrMan *arg0, int arg1)
 {
-    int temp_a0 = (*(int *)&D_007B4640) + 0x10;
-    int temp_v1 = M2C_FIELD(temp_a0, int *, 0x1C);
-    if (temp_v1 == -1 || (M2C_FIELD(arg0, int *, 0xDC24) & 0x400)) {
-        M2C_FIELD(arg0, int *, 0xDC24) &= ~0x400;
-        M2C_FIELD((*(int *)&D_007B4640), int *, 0x2C) = arg1;
+    ScrCtx *temp_a0 = &(*(ScrCtxNode **)&D_007B4640)->m_ctx;
+    int temp_v1 = temp_a0->m_timer;
+    if (temp_v1 == -1 || (arg0->m_flags & 0x400)) {
+        arg0->m_flags &= ~0x400;
+        (*(ScrCtxNode **)&D_007B4640)->m_ctx.m_timer = arg1;
         return 1;
     } else {
         int temp_v0 = temp_v1 - 1;
-        M2C_FIELD(temp_a0, int *, 0x1C) = temp_v0;
+        temp_a0->m_timer = temp_v0;
         if (temp_v0 == 0) {
-            M2C_FIELD((*(int *)&D_007B4640), int *, 0x2C) = -1;
+            (*(ScrCtxNode **)&D_007B4640)->m_ctx.m_timer = -1;
             return 0;
         }
         return 1;
     }
 }
 
-extern "C" void func_002113A4(int arg0, int arg1)
+extern "C" void func_002113A4(ScrMan *arg0, int arg1)
 {
-    (*(unsigned int *)&D_007B47B0) = (arg1 + (*(int *)&D_007B47D0)) - M2C_FIELD((((*(int *)((int)&D_007B4DD0)) * 4) + arg0), int *, 0xDC08);
+    (*(unsigned int *)&D_007B47B0) = (arg1 + (*(int *)&D_007B47D0)) - arg0->m_slotBase[*(int *)((int)&D_007B4DD0)];
 }
 
-extern "C" void func_002113DC(int arg0, unsigned int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, const char *arg7)
+extern "C" void func_002113DC(ScrMan *arg0, unsigned int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, const char *arg7)
 {
     State12A5C backup;
     unsigned int index = arg1 >> 30;
-    int var_a3 = arg2 + D_007B4850[index].unk00 - M2C_FIELD(arg0 + index * 4, int *, 0xDC08);
-    if (F113DC_check(arg0, arg1, arg3) != 0) return;
+    int var_a3 = arg2 + D_007B4850[index].unk00 - arg0->m_slotBase[index];
+    if (F113DC_check((int)arg0, arg1, arg3) != 0) return;
     backup = F12A5C_state;
-    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+    if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
         var_a3 += 4;
-        if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+        if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
             var_a3 += 4;
-            if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+            if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                 var_a3 += 4;
-                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                     var_a3 -= 0x1C;
-                    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                    if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                         var_a3 += 4;
-                        if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                        if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                             var_a3 += 4;
-                            if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                            if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                                 var_a3 += 4;
-                                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                                if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                                     var_a3 += 4;
                                 }
                             }
@@ -1631,80 +1356,78 @@ extern "C" void func_002113DC(int arg0, unsigned int arg1, int arg2, int arg3, i
         }
     }
 
-    M2C_FIELD(arg0, int *, 0xDC30) = arg4;
-    M2C_FIELD(arg0, int *, 0xDC34) = arg1;
-    M2C_FIELD(arg0, int *, 0xDC38) = var_a3;
-    M2C_FIELD(arg0, int *, 0xDC4C) = -1;
-    M2C_FIELD(arg0, int *, 0xDC50) = arg6;
-    M2C_FIELD(arg0, int *, 0xDC54) = 1;
-    M2C_FIELD(arg0, int *, 0xDC58) = arg3;
-    M2C_FIELD(arg0, int *, 0xDCDC) = 0;
-    F11E_strncpy((char *)(arg0 + 0xDC40), arg7, 8);
-    if (arg5) M2C_FIELD(arg0, int *, 0xDC3C) = F113DC_alloc();
+    arg0->m_immCtx.m_flags = arg4;
+    arg0->m_immCtx.m_id = arg1;
+    arg0->m_immCtx.m_pc = var_a3;
+    arg0->m_immCtx.m_timer = -1;
+    arg0->m_immCtx.m_trgId = arg6;
+    arg0->m_immCtx.m_state = 1;
+    arg0->m_immCtx.m_arg = arg3;
+    arg0->m_immCtx.m_savedStack = 0;
+    F11E_strncpy(arg0->m_immCtx.m_name, arg7, 8);
+    if (arg5) arg0->m_immCtx.m_regSlot = F113DC_alloc();
     F113DC_select(index);
-    if (arg5) F113DC_load(M2C_FIELD(arg0, int *, 0xDC3C));
-    M2C_FIELD(arg0, int *, 0xDC24) |= 0x100;
+    if (arg5) F113DC_load(arg0->m_immCtx.m_regSlot);
+    arg0->m_flags |= 0x100;
     register int result PS2_REG("$4");
-    result = F113DC_exec(M2C_FIELD(arg0, int *, 0xDC38));
+    result = F113DC_exec(arg0->m_immCtx.m_pc);
 #ifdef TARGET_PS2
     asm("" : "+r"(result) : : "$7");
 #endif
-    int chain = arg0 + 0x40;
+    ScrCtxChain *chain = &arg0->m_queueList.m_free;
     if (result != 0) {
-        M2C_FIELD(arg0, int *, 0xDC38) = result;
-        result = arg0 + 0xDC30;
-        int node = M2C_FIELD(chain, int *, 0);
-        int prev = M2C_FIELD(node, int *, 0);
-        M2C_FIELD(chain, int *, 0) = prev;
-        M2C_FIELD(prev, int *, 4) = chain;
-        --M2C_FIELD(chain, int *, 0xC0);
-        *(F11E_record *)(node + 0x10) = *(F11E_record *)result;
-        int used = chain + 0xD0;
-        if (M2C_FIELD(used, int *, 0xC0) == 0) {
-            M2C_FIELD(used, int *, 4) = node;
-            M2C_FIELD(node, int *, 0) = used;
+        arg0->m_immCtx.m_pc = result;
+        result = (int)&arg0->m_immCtx;
+        ScrCtxNode *node = chain->m_head.m_prev;
+        ScrCtxNode *prev = node->m_prev;
+        chain->m_head.m_prev = prev;
+        prev->m_next = &chain->m_head;
+        --chain->m_num;
+        *(F11E_record *)&node->m_ctx = *(F11E_record *)result;
+        ScrCtxChain *used = (ScrCtxChain *)((char *)chain + 0xD0);
+        if (used->m_num == 0) {
+            used->m_head.m_next = node;
+            node->m_prev = &used->m_head;
         } else {
-            M2C_FIELD(M2C_FIELD(used, int *, 0), int *, 4) = node;
-            M2C_FIELD(node, int *, 0) = M2C_FIELD(used, int *, 0);
+            used->m_head.m_prev->m_next = node;
+            node->m_prev = used->m_head.m_prev;
         }
-        M2C_FIELD(node, int *, 4) = used;
-        M2C_FIELD(used, int *, 0) = node;
-        ++M2C_FIELD(used, int *, 0xC0);
+        node->m_next = &used->m_head;
+        used->m_head.m_prev = node;
+        ++used->m_num;
     } else {
-        func_0020F428(arg0, (char *)(arg0 + 0xDC30));
+        func_0020F428((int)arg0, (char *)&arg0->m_immCtx);
     }
-    M2C_FIELD(arg0, int *, 0xDC24) &= ~0x100;
+    arg0->m_flags &= ~0x100;
     F113DC_select(D_007B4DD0);
     F12A5C_state = backup;
 }
 
-// NON_MATCHING: 3/237 differ, 3 edits
-#ifdef NON_MATCHING
 extern "C" int F11830_check(int, unsigned int, int) asm("func_00213D00");
 extern "C" int F11830_alloc() asm("func_00214AC4");
 extern "C" void F11830_select(unsigned int) asm("func_00214310");
 extern "C" void F11830_load(int) asm("func_00214BCC");
 extern "C" int F11830_exec(int) asm("func_00214C24");
-extern "C" void func_00211830(int arg0, unsigned int arg1, int arg2, int arg3, int arg4, int arg5)
+extern "C" void func_00211830(ScrMan *arg0, unsigned int arg1, int arg2, int arg3, int arg4, int arg5)
 {
     unsigned int index = arg1 >> 30;
-    int var_a3 = arg2 + D_007B4850[index].unk00 - M2C_FIELD(arg0 + index * 4, int *, 0xDC08);
-    if (F11830_check(arg0, arg1, arg3) != 0) return;
-    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+    int var_a3 = arg2 + D_007B4850[index].unk00 - arg0->m_slotBase[index];
+    if (F11830_check((int)arg0, arg1, arg3) != 0) return;
+    if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
         var_a3 += 4;
-        if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+        if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
             var_a3 += 4;
-            if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+            if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                 var_a3 += 4;
-                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                     var_a3 -= 0x1C;
-                    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                    if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                         var_a3 += 4;
-                        if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                        if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                             var_a3 += 4;
-                            if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                            if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                                 var_a3 += 4;
-                                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                                if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                                     var_a3 += 4;
                                 }
                             }
@@ -1715,83 +1438,82 @@ extern "C" void func_00211830(int arg0, unsigned int arg1, int arg2, int arg3, i
         }
     }
 
-    M2C_FIELD(arg0, int *, 0xDC30) = arg4;
-    M2C_FIELD(arg0, int *, 0xDC34) = arg1;
-    M2C_FIELD(arg0, int *, 0xDC38) = var_a3;
-    M2C_FIELD(arg0, int *, 0xDC4C) = -1;
-    M2C_FIELD(arg0, int *, 0xDC54) = 1;
-    M2C_FIELD(arg0, int *, 0xDC58) = arg3;
-    M2C_FIELD(arg0, int *, 0xDC50) = 0;
-    M2C_FIELD(arg0, int *, 0xDCDC) = 0;
-    F11E_strncpy((char *)(arg0 + 0xDC40), "imdy", 8);
-    if (arg5) M2C_FIELD(arg0, int *, 0xDC3C) = F11830_alloc();
+    arg0->m_immCtx.m_flags = arg4;
+    arg0->m_immCtx.m_id = arg1;
+    arg0->m_immCtx.m_pc = var_a3;
+    arg0->m_immCtx.m_timer = -1;
+    arg0->m_immCtx.m_state = 1;
+    arg0->m_immCtx.m_arg = arg3;
+    arg0->m_immCtx.m_trgId = 0;
+    arg0->m_immCtx.m_savedStack = 0;
+    F11E_strncpy(arg0->m_immCtx.m_name, "imdy", 8);
+    if (arg5) arg0->m_immCtx.m_regSlot = F11830_alloc();
     F11830_select(index);
-    if (arg5) F11830_load(M2C_FIELD(arg0, int *, 0xDC3C));
-    M2C_FIELD(arg0, int *, 0xDC24) |= 0x100;
-    var_a3 = F11830_exec(M2C_FIELD(arg0, int *, 0xDC38));
-    int chain = arg0 + 0x40;
-    if (var_a3 != 0) {
-        M2C_FIELD(arg0, int *, 0xDC38) = var_a3;
-        var_a3 = arg0 + 0xDC30;
-        int node = M2C_FIELD(chain, int *, 0);
-        int prev = M2C_FIELD(node, int *, 0);
-        M2C_FIELD(chain, int *, 0) = prev;
-        M2C_FIELD(prev, int *, 4) = chain;
-        --M2C_FIELD(chain, int *, 0xC0);
-        *(F11E_record *)(node + 0x10) = *(F11E_record *)var_a3;
-        int used = chain + 0xD0;
-        if (M2C_FIELD(used, int *, 0xC0) == 0) {
-            M2C_FIELD(used, int *, 4) = node;
-            M2C_FIELD(node, int *, 0) = used;
+    if (arg5) F11830_load(arg0->m_immCtx.m_regSlot);
+    arg0->m_flags |= 0x100;
+    register int result PS2_REG("$4");
+    result = F11830_exec(arg0->m_immCtx.m_pc);
+#ifdef TARGET_PS2
+    asm("" : "+r"(result) : : "$7");
+#endif
+    ScrCtxChain *chain = &arg0->m_queueList.m_free;
+    if (result != 0) {
+        arg0->m_immCtx.m_pc = result;
+        result = (int)&arg0->m_immCtx;
+        ScrCtxNode *node = chain->m_head.m_prev;
+        ScrCtxNode *prev = node->m_prev;
+        chain->m_head.m_prev = prev;
+        prev->m_next = &chain->m_head;
+        --chain->m_num;
+        *(F11E_record *)&node->m_ctx = *(F11E_record *)result;
+        ScrCtxChain *used = (ScrCtxChain *)((char *)chain + 0xD0);
+        if (used->m_num == 0) {
+            used->m_head.m_next = node;
+            node->m_prev = &used->m_head;
         } else {
-            M2C_FIELD(M2C_FIELD(used, int *, 0), int *, 4) = node;
-            M2C_FIELD(node, int *, 0) = M2C_FIELD(used, int *, 0);
+            used->m_head.m_prev->m_next = node;
+            node->m_prev = used->m_head.m_prev;
         }
-        M2C_FIELD(node, int *, 4) = used;
-        M2C_FIELD(used, int *, 0) = node;
-        ++M2C_FIELD(used, int *, 0xC0);
+        node->m_next = &used->m_head;
+        used->m_head.m_prev = node;
+        ++used->m_num;
     } else {
-        func_0020F428(arg0, (char *)(arg0 + 0xDC30));
+        func_0020F428((int)arg0, (char *)&arg0->m_immCtx);
     }
-    M2C_FIELD(arg0, int *, 0xDC24) &= ~0x100;
+    arg0->m_flags &= ~0x100;
     F11830_select(2);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_00211830);
-#endif
 
-extern "C" void func_00211BE4(int arg0, unsigned int arg1, int arg2, int arg3, int arg4)
+extern "C" void func_00211BE4(ScrMan *arg0, unsigned int arg1, int arg2, int arg3, int arg4)
 {
     F11E_record stack;
-    int temp_a1;
     int var_a3;
-    int temp_a1_2;
-    int temp_s0;
-    int temp_v0;
-    int temp_v1;
-    int var_a0;
-    int var_a2;
+    ScrCtxNode *temp_a1_2;
+    ScrCtxChain *temp_s0;
+    ScrCtxNode *temp_v0;
+    ScrCtxChain *temp_v1;
+    ScrCtx *var_a0;
 
     unsigned int index = arg1 >> 30;
-    register unsigned int base PS2_REG("$7") = M2C_FIELD(arg0 + index * 4, int *, 0xDC08);
+    register unsigned int base PS2_REG("$7") = arg0->m_slotBase[index];
     var_a3 = arg2 + D_007B4850[index].unk00 - base;
-    if (F11BE4_check(arg0, arg1, arg3, base) != 0) return;
-    temp_s0 = arg0 + 0x40;
-    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+    if (F11BE4_check((int)arg0, arg1, arg3, base) != 0) return;
+    temp_s0 = &arg0->m_queueList.m_free;
+    if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
         var_a3 += 4;
-        if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+        if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
             var_a3 += 4;
-            if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+            if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                 var_a3 += 4;
-                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                     var_a3 -= 0x1C;
-                    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                    if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                         var_a3 += 4;
-                        if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                        if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                             var_a3 += 4;
-                            if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                            if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                                 var_a3 += 4;
-                                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                                if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                                     var_a3 += 4;
                                 }
                             }
@@ -1809,58 +1531,58 @@ extern "C" void func_00211BE4(int arg0, unsigned int arg1, int arg2, int arg3, i
     stack.data[9] = 1;
     stack.data[10] = arg3;
     stack.data[43] = 0;
-    F11E_strncpy((char *)(arg0 + 0xDC40), "single", 8);
-    temp_a1_2 = M2C_FIELD(temp_s0, int *, 0);
-    var_a2 = (int)&stack;
-    temp_v0 = M2C_FIELD(temp_a1_2, int *, 0);
-    var_a0 = temp_a1_2 + 0x10;
-    M2C_FIELD(temp_s0, int *, 0) = temp_v0;
-    M2C_FIELD(temp_v0, int *, 4) = temp_s0;
-    M2C_FIELD(temp_s0, int *, 0xC0) = (int) (M2C_FIELD(temp_s0, int *, 0xC0) - 1);
+    F11E_strncpy(arg0->m_immCtx.m_name, "single", 8);
+    temp_a1_2 = temp_s0->m_head.m_prev;
+    temp_v0 = temp_a1_2->m_prev;
+    var_a0 = &temp_a1_2->m_ctx;
+    temp_s0->m_head.m_prev = temp_v0;
+    temp_v0->m_next = &temp_s0->m_head;
+    temp_s0->m_num = temp_s0->m_num - 1;
     *(F11E_record *)var_a0 = stack;
-    temp_v1 = temp_s0 + 0xD0;
-    if (M2C_FIELD(temp_v1, int *, 0xC0) == 0) {
-        M2C_FIELD(temp_v1, int *, 4) = temp_a1_2;
-        M2C_FIELD(temp_a1_2, int *, 0) = temp_v1;
+    temp_v1 = (ScrCtxChain *)((char *)temp_s0 + 0xD0);
+    if (temp_v1->m_num == 0) {
+        temp_v1->m_head.m_next = temp_a1_2;
+        temp_a1_2->m_prev = &temp_v1->m_head;
     } else {
-        M2C_FIELD(M2C_FIELD(temp_v1, int *, 0), int *, 4) = temp_a1_2;
-        M2C_FIELD(temp_a1_2, int *, 0) = M2C_FIELD(temp_v1, int *, 0);
+        temp_v1->m_head.m_prev->m_next = temp_a1_2;
+        temp_a1_2->m_prev = temp_v1->m_head.m_prev;
     }
-    M2C_FIELD(temp_a1_2, int *, 4) = temp_v1;
-    M2C_FIELD(temp_v1, int *, 0) = temp_a1_2;
-    M2C_FIELD(temp_v1, int *, 0xC0) = (int) (M2C_FIELD(temp_v1, int *, 0xC0) + 1);
+    temp_a1_2->m_next = &temp_v1->m_head;
+    temp_v1->m_head.m_prev = temp_a1_2;
+    temp_v1->m_num = temp_v1->m_num + 1;
 }
 
 extern "C" void func_00211E84(int arg0, int arg1, int arg2)
 {
+    ScrMan *self = (ScrMan *)arg0;
+    ScrEntryBlock *blk = (ScrEntryBlock *)arg2;
     F11E_record stack;
     int temp_a1;
     int var_a3;
-    int temp_a1_2;
-    int temp_s0;
-    int temp_v0;
-    int temp_v1;
-    int var_a0;
-    int var_a2;
+    ScrCtxNode *temp_a1_2;
+    ScrCtxChain *temp_s0;
+    ScrCtxNode *temp_v0;
+    ScrCtxChain *temp_v1;
+    ScrCtx *var_a0;
 
-    var_a3 = arg2 + 0xA4;
-    temp_s0 = arg0 + 0x40;
+    var_a3 = (int)&blk->m_insnA4;
+    temp_s0 = &self->m_queueList.m_free;
     temp_a1 = var_a3;
-    if ((M2C_FIELD(arg2, int *, 0xA4) & 0xFFFF0000) != 0x27BD0000) {
-        var_a3 = arg2 + 0xA8;
-        if ((M2C_FIELD(arg2, int *, 0xA8) & 0xFFFF0000) != 0x27BD0000) {
-            var_a3 = arg2 + 0xAC;
-            if ((M2C_FIELD(arg2, int *, 0xAC) & 0xFFFF0000) != 0x27BD0000) {
-                var_a3 = arg2 + 0xB0;
-                if ((M2C_FIELD(arg2, int *, 0xB0) & 0xFFFF0000) != 0x27BD0000) {
-                    var_a3 = arg2 + 0x94;
-                    if ((M2C_FIELD(arg2, int *, 0x94) & 0xFFFF0000) != 0x27BD0000) {
-                        var_a3 = arg2 + 0x98;
-                        if ((M2C_FIELD(arg2, int *, 0x98) & 0xFFFF0000) != 0x27BD0000) {
-                            var_a3 = arg2 + 0x9C;
-                            if ((M2C_FIELD(arg2, int *, 0x9C) & 0xFFFF0000) != 0x27BD0000) {
-                                var_a3 = arg2 + 0xA0;
-                                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) var_a3 = temp_a1;
+    if ((blk->m_insnA4 & 0xFFFF0000) != 0x27BD0000) {
+        var_a3 = (int)&blk->m_insnA8;
+        if ((blk->m_insnA8 & 0xFFFF0000) != 0x27BD0000) {
+            var_a3 = (int)&blk->m_insnAC;
+            if ((blk->m_insnAC & 0xFFFF0000) != 0x27BD0000) {
+                var_a3 = (int)&blk->m_insnB0;
+                if ((blk->m_insnB0 & 0xFFFF0000) != 0x27BD0000) {
+                    var_a3 = (int)&blk->m_insn94;
+                    if ((blk->m_insn94 & 0xFFFF0000) != 0x27BD0000) {
+                        var_a3 = (int)&blk->m_insn98;
+                        if ((blk->m_insn98 & 0xFFFF0000) != 0x27BD0000) {
+                            var_a3 = (int)&blk->m_insn9C;
+                            if ((blk->m_insn9C & 0xFFFF0000) != 0x27BD0000) {
+                                var_a3 = (int)&blk->m_insnA0;
+                                if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) var_a3 = temp_a1;
                             }
                         }
                     }
@@ -1876,26 +1598,25 @@ extern "C" void func_00211E84(int arg0, int arg1, int arg2)
     stack.data[9] = 1;
     stack.data[10] = 0;
     stack.data[43] = 0;
-    F11E_strncpy((char *)(arg0 + 0xDC40), "mst", 8);
-    temp_a1_2 = M2C_FIELD(temp_s0, int *, 0);
-    var_a2 = (int)&stack;
-    temp_v0 = M2C_FIELD(temp_a1_2, int *, 0);
-    var_a0 = temp_a1_2 + 0x10;
-    M2C_FIELD(temp_s0, int *, 0) = temp_v0;
-    M2C_FIELD(temp_v0, int *, 4) = temp_s0;
-    M2C_FIELD(temp_s0, int *, 0xC0) = (int) (M2C_FIELD(temp_s0, int *, 0xC0) - 1);
+    F11E_strncpy(self->m_immCtx.m_name, "mst", 8);
+    temp_a1_2 = temp_s0->m_head.m_prev;
+    temp_v0 = temp_a1_2->m_prev;
+    var_a0 = &temp_a1_2->m_ctx;
+    temp_s0->m_head.m_prev = temp_v0;
+    temp_v0->m_next = &temp_s0->m_head;
+    temp_s0->m_num = temp_s0->m_num - 1;
     *(F11E_record *)var_a0 = stack;
-    temp_v1 = temp_s0 + 0xD0;
-    if (M2C_FIELD(temp_v1, int *, 0xC0) == 0) {
-        M2C_FIELD(temp_v1, int *, 4) = temp_a1_2;
-        M2C_FIELD(temp_a1_2, int *, 0) = temp_v1;
+    temp_v1 = (ScrCtxChain *)((char *)temp_s0 + 0xD0);
+    if (temp_v1->m_num == 0) {
+        temp_v1->m_head.m_next = temp_a1_2;
+        temp_a1_2->m_prev = &temp_v1->m_head;
     } else {
-        M2C_FIELD(M2C_FIELD(temp_v1, int *, 0), int *, 4) = temp_a1_2;
-        M2C_FIELD(temp_a1_2, int *, 0) = M2C_FIELD(temp_v1, int *, 0);
+        temp_v1->m_head.m_prev->m_next = temp_a1_2;
+        temp_a1_2->m_prev = temp_v1->m_head.m_prev;
     }
-    M2C_FIELD(temp_a1_2, int *, 4) = temp_v1;
-    M2C_FIELD(temp_v1, int *, 0) = temp_a1_2;
-    M2C_FIELD(temp_v1, int *, 0xC0) = (int) (M2C_FIELD(temp_v1, int *, 0xC0) + 1);
+    temp_a1_2->m_next = &temp_v1->m_head;
+    temp_v1->m_head.m_prev = temp_a1_2;
+    temp_v1->m_num = temp_v1->m_num + 1;
 }
 
 // NON_MATCHING: 108/160 differ, 2 relocs differ (size 0x280, game 0x284), 18 edits
@@ -1903,28 +1624,31 @@ extern "C" void func_00211E84(int arg0, int arg1, int arg2)
 extern "C" int F120AC_alloc() asm("func_00214AC4");
 extern "C" void func_002120AC(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5, const char *arg6)
 {
+    ScrMan *self = (ScrMan *)arg0;
     F11E_record stack;
-    int temp_a1_2, temp_s0, temp_v0, temp_v1, var_a0, var_a2;
+    ScrCtxNode *temp_a1_2, *temp_v0;
+    ScrCtxChain *temp_s0, *temp_v1;
+    ScrCtx *var_a0;
     unsigned int index = (unsigned)arg1 >> 30;
-    int var_a3 = arg2 + D_007B4850[index].unk00 - M2C_FIELD(arg0 + index * 4, int *, 0xDC08);
-    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000 &&
-        (var_a3 += 4, (M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) &&
-        (var_a3 += 4, (M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000)) {
+    int var_a3 = arg2 + D_007B4850[index].unk00 - self->m_slotBase[index];
+    if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000 &&
+        (var_a3 += 4, (*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) &&
+        (var_a3 += 4, (*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000)) {
         var_a3 += 4;
-        if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000 &&
-            (var_a3 -= 0x1C, (M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000)) {
+        if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000 &&
+            (var_a3 -= 0x1C, (*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000)) {
             var_a3 += 4;
-            if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+            if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                 var_a3 += 4;
-                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                     var_a3 += 4;
-                    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) var_a3 += 4;
+                    if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) var_a3 += 4;
                 }
             }
         }
     }
     stack.data[0] = arg4;
-    temp_s0 = arg0 + 0x40;
+    temp_s0 = &self->m_queueList.m_free;
     stack.data[1] = arg1;
     stack.data[2] = var_a3;
     stack.data[7] = -1;
@@ -1937,50 +1661,51 @@ extern "C" void func_002120AC(int arg0, int arg1, int arg2, int arg3, int arg4, 
         stack.data[0] |= 0x80;
         stack.data[3] = F120AC_alloc();
     }
-    temp_a1_2 = M2C_FIELD(temp_s0, int *, 0);
-    var_a2 = (int)&stack;
-    temp_v0 = M2C_FIELD(temp_a1_2, int *, 0);
-    var_a0 = temp_a1_2 + 0x10;
-    M2C_FIELD(temp_s0, int *, 0) = temp_v0;
-    M2C_FIELD(temp_v0, int *, 4) = temp_s0;
-    M2C_FIELD(temp_s0, int *, 0xC0) = (int) (M2C_FIELD(temp_s0, int *, 0xC0) - 1);
+    temp_a1_2 = temp_s0->m_head.m_prev;
+    temp_v0 = temp_a1_2->m_prev;
+    var_a0 = &temp_a1_2->m_ctx;
+    temp_s0->m_head.m_prev = temp_v0;
+    temp_v0->m_next = &temp_s0->m_head;
+    temp_s0->m_num = temp_s0->m_num - 1;
     *(F11E_record *)var_a0 = stack;
-    temp_v1 = temp_s0 + 0xD0;
-    if (M2C_FIELD(temp_v1, int *, 0xC0) == 0) {
-        M2C_FIELD(temp_v1, int *, 4) = temp_a1_2;
-        M2C_FIELD(temp_a1_2, int *, 0) = temp_v1;
+    temp_v1 = (ScrCtxChain *)((char *)temp_s0 + 0xD0);
+    if (temp_v1->m_num == 0) {
+        temp_v1->m_head.m_next = temp_a1_2;
+        temp_a1_2->m_prev = &temp_v1->m_head;
     } else {
-        M2C_FIELD(M2C_FIELD(temp_v1, int *, 0), int *, 4) = temp_a1_2;
-        M2C_FIELD(temp_a1_2, int *, 0) = M2C_FIELD(temp_v1, int *, 0);
+        temp_v1->m_head.m_prev->m_next = temp_a1_2;
+        temp_a1_2->m_prev = temp_v1->m_head.m_prev;
     }
-    M2C_FIELD(temp_a1_2, int *, 4) = temp_v1;
-    M2C_FIELD(temp_v1, int *, 0) = temp_a1_2;
-    M2C_FIELD(temp_v1, int *, 0xC0) = (int) (M2C_FIELD(temp_v1, int *, 0xC0) + 1);
+    temp_a1_2->m_next = &temp_v1->m_head;
+    temp_v1->m_head.m_prev = temp_a1_2;
+    temp_v1->m_num = temp_v1->m_num + 1;
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/unk/0020ED9C", func_002120AC);
 #endif
 
-extern "C" void func_00212330(int arg0, int arg1, int arg2, int arg3)
+extern "C" void func_00212330(ScrMan *arg0, ScrBindRec *arg1, int arg2, int arg3)
 {
     F11E_record stack;
-    int temp_a1_2, temp_s0, temp_v0, temp_v1, var_a0, var_a2;
-    unsigned int index = M2C_FIELD(arg1, unsigned int *, 0x2C) >> 30;
-    int var_a3 = M2C_FIELD(arg1, int *, 0x34) + D_007B4850[index].unk00 - M2C_FIELD(arg0 + index * 4, int *, 0xDC08);
-    int recordArg = M2C_FIELD(arg1, int *, 0x30);
-    temp_s0 = arg0 + 0x40;
-    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000 &&
-        (var_a3 += 4, (M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) &&
-        (var_a3 += 4, (M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000)) {
+    ScrCtxNode *temp_a1_2, *temp_v0;
+    ScrCtxChain *temp_s0, *temp_v1;
+    ScrCtx *var_a0;
+    unsigned int index = arg1->m_slotTag >> 30;
+    int var_a3 = arg1->m_entryOff + D_007B4850[index].unk00 - arg0->m_slotBase[index];
+    int recordArg = arg1->m_id;
+    temp_s0 = &arg0->m_queueList.m_free;
+    if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000 &&
+        (var_a3 += 4, (*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) &&
+        (var_a3 += 4, (*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000)) {
         var_a3 += 4;
-        if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000 &&
-            (var_a3 -= 0x1C, (M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000)) {
+        if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000 &&
+            (var_a3 -= 0x1C, (*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000)) {
             var_a3 += 4;
-            if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+            if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                 var_a3 += 4;
-                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                     var_a3 += 4;
-                    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) var_a3 += 4;
+                    if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) var_a3 += 4;
                 }
             }
         }
@@ -1989,51 +1714,52 @@ extern "C" void func_00212330(int arg0, int arg1, int arg2, int arg3)
     stack.data[1] = recordArg;
     stack.data[2] = var_a3;
     stack.data[7] = -1;
-    stack.data[8] = arg1;
+    stack.data[8] = (int)arg1;
     stack.data[9] = 1;
     stack.data[10] = arg2;
     stack.data[43] = 0;
     F11E_strncpy((char *)&stack.data[4], D_00301710, 8);
-    temp_a1_2 = M2C_FIELD(temp_s0, int *, 0);
-    var_a2 = (int)&stack;
-    temp_v0 = M2C_FIELD(temp_a1_2, int *, 0);
-    var_a0 = temp_a1_2 + 0x10;
-    M2C_FIELD(temp_s0, int *, 0) = temp_v0;
-    M2C_FIELD(temp_v0, int *, 4) = temp_s0;
-    M2C_FIELD(temp_s0, int *, 0xC0) = (int) (M2C_FIELD(temp_s0, int *, 0xC0) - 1);
+    temp_a1_2 = temp_s0->m_head.m_prev;
+    temp_v0 = temp_a1_2->m_prev;
+    var_a0 = &temp_a1_2->m_ctx;
+    temp_s0->m_head.m_prev = temp_v0;
+    temp_v0->m_next = &temp_s0->m_head;
+    temp_s0->m_num = temp_s0->m_num - 1;
     *(F11E_record *)var_a0 = stack;
-    temp_v1 = temp_s0 + 0xD0;
-    if (M2C_FIELD(temp_v1, int *, 0xC0) == 0) {
-        M2C_FIELD(temp_v1, int *, 4) = temp_a1_2;
-        M2C_FIELD(temp_a1_2, int *, 0) = temp_v1;
+    temp_v1 = (ScrCtxChain *)((char *)temp_s0 + 0xD0);
+    if (temp_v1->m_num == 0) {
+        temp_v1->m_head.m_next = temp_a1_2;
+        temp_a1_2->m_prev = &temp_v1->m_head;
     } else {
-        M2C_FIELD(M2C_FIELD(temp_v1, int *, 0), int *, 4) = temp_a1_2;
-        M2C_FIELD(temp_a1_2, int *, 0) = M2C_FIELD(temp_v1, int *, 0);
+        temp_v1->m_head.m_prev->m_next = temp_a1_2;
+        temp_a1_2->m_prev = temp_v1->m_head.m_prev;
     }
-    M2C_FIELD(temp_a1_2, int *, 4) = temp_v1;
-    M2C_FIELD(temp_v1, int *, 0) = temp_a1_2;
-    M2C_FIELD(temp_v1, int *, 0xC0) = (int) (M2C_FIELD(temp_v1, int *, 0xC0) + 1);
+    temp_a1_2->m_next = &temp_v1->m_head;
+    temp_v1->m_head.m_prev = temp_a1_2;
+    temp_v1->m_num = temp_v1->m_num + 1;
 }
 
-extern "C" void func_00212598(int arg0, unsigned int arg1, int arg2, int arg3, int arg4, int arg5)
+extern "C" void func_00212598(ScrMan *arg0, unsigned int arg1, int arg2, int arg3, int arg4, int arg5)
 {
     F11E_record stack;
-    int temp_a1_2, temp_s0, temp_v0, temp_v1, var_a0, var_a2;
+    ScrCtxNode *temp_a1_2, *temp_v0;
+    ScrCtxChain *temp_s0, *temp_v1;
+    ScrCtx *var_a0;
     unsigned int index = arg1 >> 30;
-    int var_a3 = arg3 + D_007B4850[index].unk00 - M2C_FIELD(arg0 + index * 4, int *, 0xDC08);
-    temp_s0 = arg0 + 0x40;
-    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000 &&
-        (var_a3 += 4, (M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) &&
-        (var_a3 += 4, (M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000)) {
+    int var_a3 = arg3 + D_007B4850[index].unk00 - arg0->m_slotBase[index];
+    temp_s0 = &arg0->m_queueList.m_free;
+    if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000 &&
+        (var_a3 += 4, (*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) &&
+        (var_a3 += 4, (*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000)) {
         var_a3 += 4;
-        if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000 &&
-            (var_a3 -= 0x1C, (M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000)) {
+        if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000 &&
+            (var_a3 -= 0x1C, (*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000)) {
             var_a3 += 4;
-            if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+            if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                 var_a3 += 4;
-                if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) {
+                if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) {
                     var_a3 += 4;
-                    if ((M2C_FIELD(var_a3, int *, 0) & 0xFFFF0000) != 0x27BD0000) var_a3 += 4;
+                    if ((*(int *)var_a3 & 0xFFFF0000) != 0x27BD0000) var_a3 += 4;
                 }
             }
         }
@@ -2047,37 +1773,36 @@ extern "C" void func_00212598(int arg0, unsigned int arg1, int arg2, int arg3, i
     stack.data[10] = arg4;
     stack.data[43] = 0;
     F11E_strncpy((char *)&stack.data[4], D_00301710, 8);
-    temp_a1_2 = M2C_FIELD(temp_s0, int *, 0);
-    var_a2 = (int)&stack;
-    temp_v0 = M2C_FIELD(temp_a1_2, int *, 0);
-    var_a0 = temp_a1_2 + 0x10;
-    M2C_FIELD(temp_s0, int *, 0) = temp_v0;
-    M2C_FIELD(temp_v0, int *, 4) = temp_s0;
-    M2C_FIELD(temp_s0, int *, 0xC0) = (int) (M2C_FIELD(temp_s0, int *, 0xC0) - 1);
+    temp_a1_2 = temp_s0->m_head.m_prev;
+    temp_v0 = temp_a1_2->m_prev;
+    var_a0 = &temp_a1_2->m_ctx;
+    temp_s0->m_head.m_prev = temp_v0;
+    temp_v0->m_next = &temp_s0->m_head;
+    temp_s0->m_num = temp_s0->m_num - 1;
     *(F11E_record *)var_a0 = stack;
-    temp_v1 = temp_s0 + 0xD0;
-    if (M2C_FIELD(temp_v1, int *, 0xC0) == 0) {
-        M2C_FIELD(temp_v1, int *, 4) = temp_a1_2;
-        M2C_FIELD(temp_a1_2, int *, 0) = temp_v1;
+    temp_v1 = (ScrCtxChain *)((char *)temp_s0 + 0xD0);
+    if (temp_v1->m_num == 0) {
+        temp_v1->m_head.m_next = temp_a1_2;
+        temp_a1_2->m_prev = &temp_v1->m_head;
     } else {
-        M2C_FIELD(M2C_FIELD(temp_v1, int *, 0), int *, 4) = temp_a1_2;
-        M2C_FIELD(temp_a1_2, int *, 0) = M2C_FIELD(temp_v1, int *, 0);
+        temp_v1->m_head.m_prev->m_next = temp_a1_2;
+        temp_a1_2->m_prev = temp_v1->m_head.m_prev;
     }
-    M2C_FIELD(temp_a1_2, int *, 4) = temp_v1;
-    M2C_FIELD(temp_v1, int *, 0) = temp_a1_2;
-    M2C_FIELD(temp_v1, int *, 0xC0) = (int) (M2C_FIELD(temp_v1, int *, 0xC0) + 1);
+    temp_a1_2->m_next = &temp_v1->m_head;
+    temp_v1->m_head.m_prev = temp_a1_2;
+    temp_v1->m_num = temp_v1->m_num + 1;
 }
 
 extern "C" void func_002127F4(int arg0)
 {
-    Obj2127F4 *obj = (Obj2127F4 *)arg0;
-    List2127F4::iterator it;
-    List2127F4::iterator end;
-    it = obj->m_list.begin();
-    end = obj->m_list.end();
+    ScrMan *obj = (ScrMan *)arg0;
+    ScrHookList::iterator it;
+    ScrHookList::iterator end;
+    it = obj->m_hookList.begin();
+    end = obj->m_hookList.end();
     while (it != end) {
         if (((*it).a >> 30) == 1) {
-            it = obj->m_list.erase(it);
+            it = obj->m_hookList.erase(it);
         } else {
             ++it;
         }
@@ -2134,80 +1859,73 @@ extern "C" void func_002129B8(int arg0, int arg1, int arg2, int arg3)
     }
 }
 
-extern "C" void func_00212A5C(Obj2127F4 *self, unsigned int arg1, int arg2, int arg3)
+extern "C" void func_00212A5C(ScrMan *self, unsigned int arg1, int arg2, int arg3)
 {
-    List2127F4::iterator it;
-    List2127F4::iterator end;
+    ScrHookList::iterator it;
+    ScrHookList::iterator end;
     struct {
         State12A5C state;
-        Block780_47E0 buffer;
+        ScrBlock780 buffer;
         char unused[0x1680];
     } backup;
-    it = self->m_list.begin();
-    end = self->m_list.end();
+    it = self->m_hookList.begin();
+    end = self->m_hookList.end();
     for (; it != end; ++it) {
         if ((*it).a == arg1) {
             D_007B4DB0 = D_007B4780;
             F12A5C_mode = 2;
             backup.state = F12A5C_state;
-            backup.buffer = *F12A5C_state.buffer;
+            backup.buffer = *(ScrBlock780 *)F12A5C_state.buffer;
             F12A5C_run((int)self, arg1, (*it).b, arg2, 2, arg3);
             F12A5C_state = backup.state;
-            *F12A5C_state.buffer = backup.buffer;
+            *(ScrBlock780 *)F12A5C_state.buffer = backup.buffer;
             return;
         }
     }
 }
 
-extern "C" void func_00212D08(int arg0, int arg1, int arg2)
+extern "C" void func_00212D08(ScrMan *arg0, int arg1, int arg2)
 {
-    List212E64::Node *p = 0;
-    if (X2D08_func_00213C6C(arg0, arg1, (int)&p, arg2) != 0) {
-        ((Obj212E64 *)arg0)->m_list.push_back(p->m_data);
+    ScrCtxNode *p = 0;
+    if (X2D08_func_00213C6C((int)arg0, arg1, (int)&p, arg2) != 0) {
+        arg0->m_doneList.push_back(p->m_ctx);
     }
 }
 
-extern "C" void func_00212E64(int arg0, int arg1)
+extern "C" void func_00212E64(ScrMan *arg0, int arg1)
 {
-    List212E64::Node *p = 0;
-    if (func_00213D90(arg0, arg1, (int)&p) != 0) {
-        ((Obj212E64 *)arg0)->m_list.push_back(p->m_data);
+    ScrCtxNode *p = 0;
+    if (func_00213D90((int)arg0, arg1, (int)&p) != 0) {
+        arg0->m_doneList.push_back(p->m_ctx);
     }
 }
 
-extern "C" void func_00212FBC(int arg0, int arg1)
+extern "C" void func_00212FBC(ScrMan *self, int arg1)
 {
-    struct Object {
-        char pad[0x10];
-        List212E64 *pools[3];
-        char pad1C[0x6200 - 0x1C];
-        List212E64 list;
-    };
-    Object *self = (Object *)arg0;
     Iter12FBC it;
     Iter12FBC end;
-    it = Iter12FBC((int *)self->pools[0]->m_used.m_head.m_next);
-    end = Iter12FBC((int *)&self->pools[0]->m_used.m_head);
+    it = Iter12FBC((int *)self->m_slot0->m_used.m_head.m_next);
+    end = Iter12FBC((int *)&self->m_slot0->m_used.m_head);
     for (; it != end; ++it) {
-        Data212E64 *data = (Data212E64 *)((char *)it.node + 0x10);
-        if (*(int *)(data->b + 0x28) == arg1) {
-            self->list.push_back(*data);
+        ScrCtx *data = (ScrCtx *)((char *)it.node + 0x10);
+        if (data->m_arg == arg1) {
+            self->m_doneList.push_back(*data);
         }
     }
-    it = Iter12FBC((int *)self->pools[1]->m_used.m_head.m_next);
-    end = Iter12FBC((int *)&self->pools[1]->m_used.m_head);
+    it = Iter12FBC((int *)self->m_slot1->m_used.m_head.m_next);
+    end = Iter12FBC((int *)&self->m_slot1->m_used.m_head);
     for (; it != end; ++it) {
-        Data212E64 *data = (Data212E64 *)((char *)it.node + 0x10);
-        if (*(int *)(data->b + 0x28) == arg1) {
-            self->list.push_back(*data);
+        ScrCtx *data = (ScrCtx *)((char *)it.node + 0x10);
+        if (data->m_arg == arg1) {
+            self->m_doneList.push_back(*data);
         }
     }
-    it = Iter12FBC((int *)self->pools[2]->m_used.m_head.m_next);
-    end = Iter12FBC((int *)&self->pools[2]->m_used.m_head);
+    it = Iter12FBC((int *)self->m_slot2->m_used.m_head.m_next);
+    end = Iter12FBC((int *)&self->m_slot2->m_used.m_head);
     for (; it != end; ++it) {
-        Data212E64 *data = (Data212E64 *)((char *)it.node + 0x10);
-        if (*(int *)(data->b + 0x28) == arg1) {
-            self->list.push_back(*data);
+        ScrCtx *data = (ScrCtx *)((char *)it.node + 0x10);
+        if (data->m_arg == arg1) {
+            self->m_doneList.push_back(*data);
         }
     }
 }
@@ -2376,29 +2094,31 @@ extern "C" int func_00213E78(int arg0, int arg1)
 
 // NON_MATCHING: 84/224 differ, 14 relocs differ (size 0x380, game 0x378), 85 edits
 #ifdef NON_MATCHING
-extern Block780_47E0 *F13F48_buffers[] asm("D_002D9E08");
+extern ScrBlock780 *F13F48_buffers[] asm("D_002D9E08");
 extern "C" void func_00213F48(int arg0, int arg1, int arg2)
 {
+    ScrMan *self = (ScrMan *)arg0;
+    ScrBinHdr *hdr = (ScrBinHdr *)arg1;
     int base = arg1 + 0x30;
     D_007B47D0 = base;
-    D_007B4820 = M2C_FIELD(arg1, int *, 0x20);
-    D_007B4830 = M2C_FIELD(arg1, int *, 0x24);
-    D_007B47E0 = arg1 + M2C_FIELD(arg1, int *, 0x14) + M2C_FIELD(arg1, int *, 0x18);
-    D_007B4800 = arg1 + M2C_FIELD(arg1, int *, 0x14);
-    D_007B47F0 = D_007B4800 - M2C_FIELD(arg1, int *, 0x1C) + 8;
-    M2C_FIELD(D_007B47E0, int *, -0x20) = M2C_FIELD(arg0, int *, 0xDC1C);
-    M2C_FIELD(D_007B47E0, int *, -0x10) = M2C_FIELD(arg0, int *, 0xDC20);
+    D_007B4820 = hdr->m_unk20;
+    D_007B4830 = hdr->m_unk24;
+    D_007B47E0 = arg1 + hdr->m_unk14 + hdr->m_unk18;
+    D_007B4800 = arg1 + hdr->m_unk14;
+    D_007B47F0 = D_007B4800 - hdr->m_unk1C + 8;
+    *(char **)(D_007B47E0 - 0x20) = self->m_varBufA;
+    *(char **)(D_007B47E0 - 0x10) = self->m_varBufB;
     D_007B47D0 = base;
-    D_007B47E0 = M2C_FIELD(arg1, int *, 0x10);
-    D_007B4800 = arg1 + M2C_FIELD(arg1, int *, 0x14);
-    D_007B47F0 = D_007B4800 + M2C_FIELD(arg1, int *, 0x1C) + 8;
-    D_007B4820 = M2C_FIELD(arg1, int *, 0x20);
-    D_007B4830 = M2C_FIELD(arg1, int *, 0x24);
-    int tail = arg1 + M2C_FIELD(arg1, int *, 0xC) + (M2C_FIELD(arg1, int *, 0x18) + M2C_FIELD(arg1, int *, 0x14));
+    D_007B47E0 = hdr->m_unk10;
+    D_007B4800 = arg1 + hdr->m_unk14;
+    D_007B47F0 = D_007B4800 + hdr->m_unk1C + 8;
+    D_007B4820 = hdr->m_unk20;
+    D_007B4830 = hdr->m_unk24;
+    int tail = arg1 + hdr->m_unk0C + (hdr->m_unk18 + hdr->m_unk14);
     X4310_D_007B4700[28] = tail + 0x8000;
     X4310_D_007B4700[29] = tail + 0x8780;
-    D_002D9C08[arg2] = *(Block80_4310 *)X4310_D_007B4700;
-    *F13F48_buffers[arg2] = *(Block780_47E0 *)X4310_D_007B4700[28];
+    D_002D9C08[arg2] = *(ScrBlock80 *)X4310_D_007B4700;
+    *F13F48_buffers[arg2] = *(ScrBlock780 *)X4310_D_007B4700[28];
     int off = arg2 * 0x30;
     int off10 = off + 0x10;
     D_007B4850[arg2].unk00 = D_007B47D0;
@@ -2445,50 +2165,50 @@ extern "C" void func_00214310(unsigned int arg0)
     X4310_D_007B4700[28] = D_007B4850[arg0].unk20;
     X4310_D_007B4700[29] = D_007B4850[arg0].unk24;
     D_007B4810 = D_007B4850[arg0].unk18;
-    *(Block80_4310 *)X4310_D_007B4700 = D_002D9C08[arg0];
+    *(ScrBlock80 *)X4310_D_007B4700 = D_002D9C08[arg0];
     X4310_D_007B4700[31] = 0;
 }
 
 extern "C" void func_002144C4(void) {
 }
 
-extern "C" void func_002144CC(Obj44CC *arg0)
+extern "C" void func_002144CC(ScrMan *arg0)
 {
-    Inner44CC *inner = arg0->unkDCE0;
+    ScrCtx *inner = arg0->m_savedCtx;
     if (inner != 0) {
-        if (inner->flags & 0x200) {
-            *(Block80_44CC *)&D_007B4700 = inner->unk2C;
+        if (inner->m_flags & 0x200) {
+            *(ScrBlock80 *)&D_007B4700 = inner->m_savedRegs;
         }
-        if (arg0->unkDCE0->unkAC != 0) {
-            **(Block780_44CC **)&D_007B4770 = *arg0->unkDCE0->unkAC;
+        if (arg0->m_savedCtx->m_savedStack != 0) {
+            **(ScrBlock780 **)&D_007B4770 = *arg0->m_savedCtx->m_savedStack;
         }
     }
-    arg0->unkDCE0 = 0;
+    arg0->m_savedCtx = 0;
 }
 
 extern "C" void func_00214664(void)
 {
-    Obj4640 *obj = *(Obj4640 **)&D_007B4640;
-    if (obj->flags & 0x200) {
-        *(Block80_4664 *)&D_007B4700 = obj->unk3C;
+    ScrCtxNode *obj = *(ScrCtxNode **)&D_007B4640;
+    if (obj->m_ctx.m_flags & 0x200) {
+        *(ScrBlock80 *)&D_007B4700 = obj->m_ctx.m_savedRegs;
     }
-    if ((*(Obj4640 **)&D_007B4640)->unkBC != 0) {
-        **(Block780_4664 **)&D_007B4770 = *(*(Obj4640 **)&D_007B4640)->unkBC;
+    if ((*(ScrCtxNode **)&D_007B4640)->m_ctx.m_savedStack != 0) {
+        **(ScrBlock780 **)&D_007B4770 = *(*(ScrCtxNode **)&D_007B4640)->m_ctx.m_savedStack;
     }
 }
 
-extern "C" void func_002147E0(Obj47E0 *arg0)
+extern "C" void func_002147E0(ScrMan *arg0)
 {
-    Inner47E0 *inner = (Inner47E0 *)(X47E0_D_007B4640 + 0x10);
-    if (arg0->unkDC24 & 0x100) {
-        inner = &arg0->unkDC30;
+    ScrCtx *inner = &(*(ScrCtxNode **)&D_007B4640)->m_ctx;
+    if (arg0->m_flags & 0x100) {
+        inner = &arg0->m_immCtx;
     }
-    inner->unk2C = *(Block80_47E0 *)&X47E0_D_007B4700;
-    inner->flags |= 0x200;
-    if (inner->unkAC == 0) {
-        inner->unkAC = (Block780_47E0 *)func_002149A8();
+    inner->m_savedRegs = *(ScrBlock80 *)&X47E0_D_007B4700;
+    inner->m_flags |= 0x200;
+    if (inner->m_savedStack == 0) {
+        inner->m_savedStack = (ScrBlock780 *)func_002149A8();
     }
-    *inner->unkAC = *X47E0_D_007B4700.unk70;
+    *inner->m_savedStack = *(ScrBlock780 *)X47E0_D_007B4700.unk70;
 }
 
 extern "C" int func_002149A8()
@@ -2534,7 +2254,7 @@ extern "C" int func_00214AC4(void)
             break;
         }
     }
-    D_007B4920[i] = *(Elem214AC4 *)&D_007B4700;
+    D_007B4920[i] = *(ScrBlock80 *)&D_007B4700;
     return i;
 }
 
@@ -2566,7 +2286,7 @@ extern "C" int *func_00214C24(int *pc)
                 int *regs = (int *)&D_007B4700;
                 regs[2] = F14C_sys[((unsigned)(D_007B47B0 - 0x144) >> 6) & 65535](regs[4],regs[5],regs[6],regs[7],regs[8],regs[9]);
                 D_007B47C0 = 0;
-                M2C_FIELD((*(int *)&D_007B4640), int *, 0x34) = 1;
+                (*(ScrCtxNode **)&D_007B4640)->m_ctx.m_state = 1;
                 if (regs[2] == 0) ++pc;
                 else if ((unsigned)regs[2] == 0xCCCCCCCC) {
                     regs[31] = 0;
