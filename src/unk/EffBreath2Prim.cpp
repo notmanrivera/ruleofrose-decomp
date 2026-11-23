@@ -306,11 +306,9 @@ extern "C" int EffCameraAnim1__vfunc_02(EffCameraAnim1 *arg0, EffCameraAnim1Arg 
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", func_0016F80C);
 
-// NON_MATCHING: 4/52 differ, 3 edits (m_dirty store scheduled after swc1)
-#ifdef NON_MATCHING
-extern "C" int Xiifff_setRot__9DogEntityfff(EffCamStub *, float, float, float) asm("setRot__9DogEntityfff");
-extern "C" int Xiii_func_0016F80C(EffCameraAnim1 *, int) asm("func_0016F80C");
-extern "C" int Xiiiii_func_0013CAF0__8MagSceneii(int, int, int, int) asm("func_0013CAF0__8MagSceneii");
+extern "C" void Xiifff_setRot__9DogEntityfff(EffCamStub *, float, float, float) asm("setRot__9DogEntityfff");
+extern "C" void Xiii_func_0016F80C(EffCameraAnim1 *, int) asm("func_0016F80C");
+extern "C" void Xiiiii_func_0013CAF0__8MagSceneii(int, int, int, int) asm("func_0013CAF0__8MagSceneii");
 extern "C" int EffCameraAnim1__vfunc_05(EffCameraAnim1 *arg0)
 {
     int temp_v0;
@@ -332,9 +330,6 @@ extern "C" int EffCameraAnim1__vfunc_05(EffCameraAnim1 *arg0)
     Xiiiii_func_0013CAF0__8MagSceneii((int)(*(int *)&D_00298E08), arg0->m_savedCamId, 0, 0);
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/EffBreath2Prim", EffCameraAnim1__vfunc_05);
-#endif
 
 extern "C" int func_0016FB70(int arg0, int arg1)
 {
