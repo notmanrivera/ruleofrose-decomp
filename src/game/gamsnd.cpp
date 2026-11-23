@@ -923,7 +923,7 @@ extern "C" void func_001E15D0(int arg0, int arg1)
     *(m2c_block36 *)((char *)(arg0) + 0x15a0) = *(m2c_block36 *)((char *)(arg1) + 0x0);
 }
 
-// NON_MATCHING: 14/101 differ, 14 edits
+// NON_MATCHING: 2/101 differ, 4 edits
 #ifdef NON_MATCHING
 struct Ent15A0_1620 {
     int unk00_1620;
@@ -948,6 +948,7 @@ struct Obj1620 {
     char pad1678_1620[0xC];
     int unk1684_1620;
 }; // 1620
+static inline int *relative1620(char *base, int offset) { return (int *)(base + offset); }
 extern "C" void func_001E1620(Obj1620 *arg0, int arg1, int arg2, int arg3) {
     if (arg0->unk1684_1620 < 0) {
         return;
@@ -970,21 +971,23 @@ extern "C" void func_001E1620(Obj1620 *arg0, int arg1, int arg2, int arg3) {
 after_if1:
 
     if (arg1 != 2) {
+        char *base20 = (char *)arg0 + 0x20;
+        char *base14 = (char *)arg0 + 0x14;
         if (arg2 != 0) {
-            if (arg2 == arg0->arr15A0_1620[arg0->unk1684_1620].unk00_1620) {
-                arg0->arr15A0_1620[arg0->unk1684_1620].unk00_1620 = 0;
+            if (arg2 == *relative1620(base20, arg0->unk1684_1620 * 0x24 + 0x1580)) {
+                *relative1620(base20, arg0->unk1684_1620 * 0x24 + 0x1580) = 0;
                 arg0->arr15A0_1620[arg0->unk1684_1620].unk04_1620 = 0;
                 arg0->arr15A0_1620[arg0->unk1684_1620].unk08_1620 = 0;
             }
-            if (arg2 == arg0->arr1654_1620[arg0->unk1684_1620].unk00_1620) {
-                arg0->arr1654_1620[arg0->unk1684_1620].unk00_1620 = 0;
+            if (arg2 == *relative1620(base14, arg0->unk1684_1620 * 0xC + 0x1640)) {
+                *relative1620(base14, arg0->unk1684_1620 * 0xC + 0x1640) = 0;
                 goto clear_1658;
             }
         } else {
-            arg0->arr15A0_1620[arg0->unk1684_1620].unk00_1620 = 0;
+            *relative1620(base20, arg0->unk1684_1620 * 0x24 + 0x1580) = 0;
             arg0->arr15A0_1620[arg0->unk1684_1620].unk04_1620 = 0;
             arg0->arr15A0_1620[arg0->unk1684_1620].unk08_1620 = 0;
-            arg0->arr1654_1620[arg0->unk1684_1620].unk00_1620 = 0;
+            *relative1620(base14, arg0->unk1684_1620 * 0xC + 0x1640) = 0;
         clear_1658:
             arg0->arr1654_1620[arg0->unk1684_1620].unk04_1620 = 0;
             arg0->arr1654_1620[arg0->unk1684_1620].unk08_1620 = 0;
