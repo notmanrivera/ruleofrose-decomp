@@ -169,10 +169,35 @@ def mini(pct, n=10):
     return "█" * f + "░" * (n - f)
 
 
+TOTAL = [None]
+
+
 def progress():
-    """(bytes, percent) of the game, from tools/progress.py."""
-    m = re.search(r"^game\s.*?([\d,]+) / [\d,]+\s+([\d.]+)%", run([PY, os.path.join(MAIN, "tools", "progress.py")]), re.M)
-    return (int(m.group(1).replace(",", "")), float(m.group(2))) if m else (None, None)
+    """(bytes, percent) of the game, from tools/progress.py (TOTAL[0]: the
+    game's .text size)."""
+    m = re.search(r"^game\s.*?([\d,]+) / ([\d,]+)\s+([\d.]+)%", run([PY, os.path.join(MAIN, "tools", "progress.py")]), re.M)
+    if not m:
+        return None, None
+    TOTAL[0] = int(m.group(2).replace(",", ""))
+    return int(m.group(1).replace(",", "")), float(m.group(3))
+
+
+def merged_since(since):
+    """(exact functions, NON_MATCHING attempts) committed on the main branch
+    since a time, from git: one-function commits '<file>: <fn>' and the
+    header commits' '+N matched' / 'match N functions'."""
+    log = run(["git", "-C", MAIN, "log", f"--since={since}", "--format=%s"])
+    exact = near = 0
+    for s in log.splitlines():
+        if s.endswith("(NON_MATCHING)"):
+            near += 1
+        elif re.fullmatch(r"[\w/]+: [\w$]+(?: \(permuter\))?", s):
+            exact += 1
+        else:
+            m = re.search(r"\+(\d+) (?:matched|more)|match(?:es)? (\d+) (?:more )?functions?", s)
+            if m:
+                exact += int(m.group(1) or m.group(2))
+    return exact, near
 
 
 def session(reset=False):
@@ -272,6 +297,8 @@ def worker(name, env, idle):
     if key in ("busy", "wait") and quiet is not None and quiet > STALE_MIN * 60:
         note = col(f"  pantalla quieta {quiet / 60:.0f} min", "red")
     on = env.get("FILE", "") if key in ("busy", "wait") else ""
+    if key not in ("busy", "wait") and env.get("RESUME"):
+        note = col(f"  vuelve {env['RESUME']}", "dim")   # when its quota comes back
     model = model.removeprefix("auto · ")
     out.append(f" {col(icon, colour)} {col(f'{SHOWN.get(name, name):<10}', 'bold')}"
                f"{col(f'{model:<26}', 'dim')} {col(f'{what:<11}', colour)}"
@@ -391,8 +418,8 @@ def permuter():
         lines = lines[starts[-1]:]
         is_q = is_q[starts[-1]:]
     queue = [ln for ln, q in zip(lines, is_q) if q]
-    started = [i for i, ln in enumerate(lines) if ln.startswith("== ")]
-    matches = all_matches
+    started = [i for i, ln in enumerate(lines) if ln.startswith("== ") and not ln.startswith("== Cyrax run")]
+    matches = [ln.split("MATCH committed:", 1)[1].strip() for ln in lines if "MATCH committed:" in ln]  # this run
     total = len(queue) or len(started)
     done = len(started) - (1 if running and started else 0)
     out = [f"{col('Cyrax', 'bold') + col(' (nuestro permutador)', 'dim')} " + (col("trabajando", "green") if running else col("parado", "yellow"))
@@ -404,8 +431,9 @@ def permuter():
     left = ""
     if running and per:
         left = f"  quedan \u2264{(total - done) * per / 60:.1f} h"
-    out.append(f"  cola de 'casi'  {big} {done}/{total} probadas" + (f" (tanda {runs})" if runs > 1 else "") + ", "
-               + col(f"{len(matches)} exactas", "green" if matches else "dim") + left)
+    out.append(f"  cola de 'casi'  {big} {done}/{total} probadas, "
+               + col(f"{len(matches)} exactas", "green" if matches else "dim") + left
+               + col(f"  (histórico {len(all_matches)})", "dim"))
     if running and started:
         i = started[-1]
         head = lines[i][3:]
@@ -647,9 +675,11 @@ def perm_official():
         return out
     f = round(WIDTH * done / total)
     big = "\u2588" * f + "\u2591" * (WIDTH - f)
+    now_ok = sum(1 for m in ends if m.group(4) == "MATCH")
     out.append(f"  cola de 'casi'  {big} {done}/{total} probadas, "
-               + col(f"{len(matches)} exactas", "green" if matches else "dim")
-               + (f", {skipped} no se pudieron preparar" if skipped else ""))
+               + col(f"{now_ok} exactas", "green" if now_ok else "dim")
+               + (f", {skipped} no se pudieron preparar" if skipped else "")
+               + col(f"  (histórico {len(matches)})", "dim"))
     if running and starts and (not ends or int(starts[-1].group(1)) > int(ends[-1].group(1))):
         out.append(f"    \u25c0 ahora {starts[-1].group(3)}")
     for m in ends[-3:]:
@@ -684,7 +714,8 @@ def render(reset=False):
         today = ""
         if s:
             today = col(f"hoy +{p - s[2]:.2f} %  (+{b - s[1]:,} bytes)", "green")
-        out.append(col(f"         {b:,} de {round(b * 100 / p):,} bytes del código del juego", "dim") + "   " + today)
+        out.append(col(f"         {b:,} de {TOTAL[0] or round(b * 100 / p):,} bytes del código del juego", "dim")
+                   + "   " + today)
     out.append("")
     # Workers: the busy ones first.
     envs = [(fn[:-4], read_env(os.path.join(ST, fn))) for fn in sorted(os.listdir(ST)) if fn.endswith(".env")]
@@ -716,8 +747,8 @@ def render(reset=False):
     res = research()
     newest = max((p for p in os.listdir(ST) if re.match(r"research-R\d+\.log$", p)),
                  key=lambda p: os.path.getmtime(os.path.join(ST, p)), default=None)
-    if res and newest and recent(newest, STALE_HOURS):
-        pq += res
+    if res and newest and (recent(newest, 1) or "terminada" not in res[0]):
+        pq += res                                  # a finished one stays an hour
     for log_name, fn in (("qwen.log", qwen), ("qwen-names.log", qwen_names),
                          ("perm-official.log", perm_official), ("perm-loop.log", permuter),
                          ("auto-run.log", auto_m2c), ("twin-sweep.log", twin_sweeps),
@@ -743,13 +774,9 @@ def render(reset=False):
             per.setdefault(r["worker"], [0, 0])
             per[r["worker"]][0] += r["exact"]
             per[r["worker"]][1] += int(r.get("non_matching", 0) or 0)
-        if per:
-            out.append("   fusionadas  " + col("  ·  ", "dim").join(
-                f"{SHOWN.get(w, w)} {col(str(e), 'green')}" + (col(f" (+{nm} casi)", "dim") if nm else "")
-                for w, (e, nm) in sorted(per.items(), key=lambda kv: -kv[1][0])))
-            out.append(col("   (sin contar las fusiones a mano de Neon: van en su lista de tareas)", "dim"))
-        else:
-            out.append("   fusionadas: ninguna todavía")
+        exact, near = merged_since(s[0])
+        out.append(f"   fusionadas  {col(str(exact), 'green')} funciones exactas"
+                   + col(f"  ·  {near} intentos 'casi' guardados", "dim") + col("  (todos los workers, de git)", "dim"))
     by = {}
     week = time.strftime("%Y-%m-%d %H:%M", time.localtime(time.time() - 7 * 86400))
     for r in rows:
