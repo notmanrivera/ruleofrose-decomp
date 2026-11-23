@@ -20,7 +20,13 @@ struct MnuSprElem {
     int m_unk08;                        // +0x008
     int m_vis0C;                        // +0x00C
     int m_vis10;                        // +0x010
-    unsigned char m_pad14[0xC4];        // +0x014..0x0D7
+    int m_unk14;                        // +0x014
+    int m_rgba[4];                      // +0x018..0x027
+    unsigned char m_pad28[0x50];        // +0x028..0x077
+    int m_pos[4];                       // +0x078..0x087
+    unsigned char m_pad88[0x48];        // +0x088..0x0CF
+    int m_unkD0;                        // +0x0D0
+    int m_unkD4;                        // +0x0D4
     int m_iconId;                       // +0x0D8
     unsigned char m_padDC[0x68];        // +0x0DC..0x143
     int m_unk144;                       // +0x144
