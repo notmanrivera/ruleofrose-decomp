@@ -70,7 +70,7 @@ def apply_match(name, fn):
     if not outs:
         return False
     src = ROOT / "src" / f"{name}.cpp"
-    while LOCK.exists() or subprocess.run(["pgrep", "-f", "ninja|merge_worker"], capture_output=True).returncode == 0:
+    while LOCK.exists() or subprocess.run(["sh", "-c", "pgrep -f 'ninja|merge_worker'"], capture_output=True).returncode == 0:
         time.sleep(15)
     LOCK.mkdir()
     try:
