@@ -730,6 +730,35 @@ def cpp_perm():
     return out
 
 
+def mnudiary_perm():
+    """build/workers/mnudiary_perm.sh (log build/workers/mnudiary-perm.log):
+    cpp_permuter over unk/MnuDiary's closest attempts, results only (the
+    coordinator applies them)."""
+    path = os.path.join(ST, "mnudiary-perm.log")
+    try:
+        lines = open(path, encoding="utf-8", errors="replace").read().splitlines()
+    except OSError:
+        return []
+    running = alive("mnudiary_perm", path, 25)
+    starts = [re.search(r"\[(\d+)/(\d+)\] (\S+ \S+)", ln) for ln in lines]
+    starts = [m for m in starts if m]
+    out = [f"{col('Smoke · MnuDiary', 'bold') + col(' (permutador sobre los casi de unk/MnuDiary)', 'dim')} "
+           + (col("trabajando", "green") if running and not lines[-1].endswith("== done") else col("terminado", "dim"))]
+    if not starts:
+        return out
+    total = int(starts[0].group(2))
+    res = [ln.strip() for ln in lines if ", best " in ln]
+    zeros = sum(1 for r in res if r.endswith("best 0"))
+    f = round(WIDTH * len(res) / total)
+    out.append(f"  funciones      {'█' * f}{'░' * (WIDTH - f)} {len(res)}/{total} probadas, "
+               + col(f"{zeros} con puntuación 0", "green" if zeros else "dim"))
+    if len(res) < len(starts):
+        out.append(f"    ◀ ahora {starts[-1].group(3)}")
+    for m, r in list(zip(starts, res))[-3:]:
+        out.append(col(f"    {m.group(3).split()[-1]}: {r.split('  ', 1)[-1]}", "dim"))
+    return out
+
+
 STALE_HOURS = 6
 
 
@@ -791,7 +820,7 @@ def render(reset=False):
     if res and newest and (recent(newest, 1) or "terminada" not in res[0]):
         pq += res                                  # a finished one stays an hour
     for log_name, fn in (("qwen.log", qwen), ("qwen-names.log", qwen_names),
-                         ("cpp-perm.log", cpp_perm), ("perm-official.log", perm_official), ("perm-loop.log", permuter),
+                         ("cpp-perm.log", cpp_perm), ("mnudiary-perm.log", mnudiary_perm), ("perm-official.log", perm_official), ("perm-loop.log", permuter),
                          ("auto-run.log", auto_m2c), ("twin-sweep.log", twin_sweeps),
                          ("flag-sweep.log", flag_sweep)):
         if not recent(log_name, STALE_HOURS):
