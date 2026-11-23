@@ -2803,7 +2803,49 @@ extern "C" void func_001CD25C(GamMan *self)
     }
 }
 
+// NON_MATCHING: 37/130 differ, 2 relocs differ, 27 edits
+#ifdef NON_MATCHING
+extern "C" float X_sinf_CD404(float) asm("sinf");
+extern "C" float X_cosf_CD404(float) asm("cosf");
+extern "C" void X_func_0025B878_CD404(float *, const float *, const float *) asm("func_0025B878");
+extern "C" void X_func_00144398_CD404(float *) asm("func_00144398");
+extern "C" void X_func_001443D8_CD404(float *) asm("func_001443D8");
+struct VecCopy_CD404 {
+    float v[4];
+    void assign(const float *p) { v[0] = p[0]; v[1] = p[1]; v[2] = p[2]; v[3] = p[3]; }
+};
+extern "C" void func_001CD404(GamMan *self)
+{
+    float offset[4] __attribute__((aligned(16)));
+    float rot[4] __attribute__((aligned(16)));
+    VecCopy_CD404 vec __attribute__((aligned(16)));
+    float *pcRot = self->m_pcRot;
+    float *pcPos = self->m_pcPos;
+    func_001D890C((int)self->m_pc, (int)pcPos);
+    GamRotGetActor(self->m_pc, pcRot);
+    float *savedRot = rot;
+    register u_long128 state PS2_REG("$6") = *(u_long128 *)pcRot;
+    *(u_long128 *)savedRot = state;
+    float *dogPos = self->m_dogPos;
+    float distance = 35.0f;
+    float angle = rot[1] - 1.5707963267948966;
+    if (angle < -3.141592653589793) angle += 6.283185307179586;
+    if (angle > 3.141592653589793) angle -= 6.283185307179586;
+    offset[0] = X_sinf_CD404(angle) * distance;
+    offset[2] = X_cosf_CD404(angle) * distance;
+    offset[1] = 0.0f;
+    offset[3] = 0.0f;
+    X_func_0025B878_CD404(dogPos, pcPos, offset);
+    func_001D89C4((int)self->m_dog, (int)dogPos);
+    GamRotSetActor(self->m_dog, savedRot);
+    vec.assign(dogPos);
+    X_func_00144398_CD404(vec.v);
+    vec.assign(savedRot);
+    X_func_001443D8_CD404(vec.v);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001CD404);
+#endif
 
 // NON_MATCHING: 105/109 differ, 11 relocs differ, 48 edits
 #ifdef NON_MATCHING
