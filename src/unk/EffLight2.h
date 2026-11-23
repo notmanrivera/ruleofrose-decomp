@@ -12,40 +12,7 @@
 #ifndef UNK_EFFLIGHT2_H
 #define UNK_EFFLIGHT2_H
 
-struct EffVec2 {
-    float x, y;
-};
-
-struct EffVec3 {
-    float x, y, z;
-};
-
-struct EffVec4 {
-    float x, y, z, w;
-};
-
-struct EffVec4A8 {
-    float x, y, z, w;
-} __attribute__((aligned(8)));
-
-struct EffMat4 {
-    float m[4][4];
-} __attribute__((aligned(8)));
-
-struct EffRenderParam {
-    int m_unk00;                        // +0x00
-    int m_unk04;                        // +0x04
-    int m_unk08;                        // +0x08
-};
-
-struct Eff0Base {
-    unsigned short m_flags;             // +0x00
-    unsigned char m_pad02[0x0E];        // +0x02
-    float m_zDepth;                     // +0x10
-    unsigned char m_pad14[0x08];        // +0x14
-    int m_unk1C;                        // +0x1C
-    void *m_vtbl;                       // +0x20
-}; // size 0x24
+#include "unk/Eff0.h"
 
 struct EffFoot1CheckArg {
     unsigned int m_flags;               // +0x00
@@ -84,7 +51,7 @@ struct EffFoot1Arg {
     float m_unk34;                      // +0x34
 };
 
-struct EffFoot1 : public Eff0Base {
+struct EffFoot1 : public Eff0 {
     float m_center[3];                  // +0x24
     float m_size[3];                    // +0x30
     int m_unk3C;                        // +0x3C
@@ -102,7 +69,7 @@ struct EffFoot1PrimArg {
     float m_unk28;                      // +0x28
 };
 
-struct EffFoot1Prim : public Eff0Base {
+struct EffFoot1Prim : public Eff0 {
     unsigned char m_pad24[0x0C];        // +0x24
     EffVec4 m_pos;                      // +0x30
     int m_unk40;                        // +0x40
@@ -126,7 +93,7 @@ struct EffFoot2PrimArg {
     float m_unk24;                      // +0x24
 };
 
-struct EffFoot2Prim : public Eff0Base {
+struct EffFoot2Prim : public Eff0 {
     int m_unk24;                        // +0x24
     unsigned char m_pad28[0x08];        // +0x28
     EffVec3 m_pos;                      // +0x30
@@ -181,7 +148,7 @@ struct EffUvTrack {
     EffUvKey m_keys[1];                 // +0x28
 };
 
-struct EffGeneric1 : public Eff0Base {
+struct EffGeneric1 : public Eff0 {
     char *m_buf24;                      // +0x24
     int m_unk28;                        // +0x28
     void *m_buf2C;                      // +0x2C
@@ -203,7 +170,7 @@ struct EffLight1Arg {
     int m_flag;                         // +0x38
 };
 
-struct EffLight1 : public Eff0Base {
+struct EffLight1 : public Eff0 {
     unsigned char m_pad24[0x0C];        // +0x24
     EffVec3 m_pos;                      // +0x30
     float m_w;                          // +0x3C
@@ -227,7 +194,7 @@ struct EffLight2Arg {
     int m_flag;                         // +0x40
 };
 
-struct EffLight2 : public Eff0Base {
+struct EffLight2 : public Eff0 {
     unsigned char m_pad24[0x0C];        // +0x24
     EffVec3 m_pos;                      // +0x30
     float m_w;                          // +0x3C
@@ -245,7 +212,7 @@ struct EffLight2 : public Eff0Base {
     int m_fade;                         // +0x78
 };
 
-struct EffLight3 : public Eff0Base {
+struct EffLight3 : public Eff0 {
     int m_entries[6][16][2];            // +0x24..0x323 ([i][j][0]=idx, [i][j][1]=handle)
     unsigned char m_pad324[0x0C];       // +0x324..0x32F
     float m_ambColor[3];                // +0x330..0x33B
@@ -265,7 +232,7 @@ struct EffFindItem1Arg {
     float m_zBias;                      // +0x1C
 };
 
-struct EffFindItem1 : public Eff0Base {
+struct EffFindItem1 : public Eff0 {
     unsigned char m_pad24[0x0C];        // +0x24
     EffVec4 m_pos;                      // +0x30
     float m_zBias;                      // +0x40

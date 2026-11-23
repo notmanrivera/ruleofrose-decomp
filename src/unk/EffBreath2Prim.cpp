@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "unk/Eff0.h"
 #include "sdk/math.h"
 struct Vec4_f55c { float x, y, z, w; } __attribute__((aligned(8)));
 struct Param_f55c { float *sp10; float sp14; float sp18; float sp1C; int sp20; int sp24; int sp28; };
@@ -48,7 +49,6 @@ extern "C" int Xpi_func_0022AEC0(void *) asm("func_0022AEC0");
 extern "C" void *Xpi_func_0022AED8(void *, int) asm("func_0022AED8");
 extern "C" const char *Xpi_func_0022AF08(void *, int) asm("func_0022AF08");
 extern "C" const char *X_strstr(const char *, const char *) asm("strstr");
-struct EffVec4 { float x, y, z, w; };
 extern "C" int Xiii_Eff0__vfunc_02(int, int) asm("Eff0__vfunc_02");
 extern "C" int Xi_func_0016AD94() asm("func_0016AD94");
 extern "C" void Xvpff_func_00237360(float *, float *, float) asm("func_00237360");

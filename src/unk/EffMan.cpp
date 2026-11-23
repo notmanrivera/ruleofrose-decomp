@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "unk/Eff0.h"
 struct EffNameTable_177F54 {
     const char *names[54];
 };

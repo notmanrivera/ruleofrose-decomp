@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "unk/Eff0.h"
 extern "C" int X_88EC_func_0013FE64__8MagSceneii(int, int, int) asm("func_0013FE64__8MagSceneii");
 extern "C" int X_9C30_func_0016AD94() asm("func_0016AD94");
 extern "C" void X_9C30_func_00176CC8(int, void *) asm("func_00176CC8");

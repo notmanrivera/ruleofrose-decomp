@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "unk/Eff0.h"
 #include "dog/doglightpool.h"
 extern "C" int X_func_00223558(...) asm("func_00223558");
 struct Arg_Stay2 {
@@ -39,8 +40,28 @@ struct Scene_AF20 {
     DogLightPool m_light_pool;
 };
 extern Scene_AF20 *D_00298E08_AF20 asm("D_00298E08");
-struct m2c_v20_28_i { char pad[32]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual int call(); };
-struct m2c_v20_58_i { char pad[32]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual int call(); };
+struct Eff0VCall {
+    unsigned short m_flags;             // +0x00
+    unsigned short m_pad02;             // +0x02
+    int m_timer;                        // +0x04
+    int m_unk08;                        // +0x08
+    int m_unk0C;                        // +0x0C
+    float m_zDepth;                     // +0x10
+    void *m_parent;                     // +0x14
+    int m_kind;                         // +0x18
+    int m_delay;                        // +0x1C
+    virtual void v1();                  // +0x08
+    virtual void v2();                  // +0x10
+    virtual void v3();                  // +0x18
+    virtual void v4();                  // +0x20
+    virtual int liveExec();             // +0x28 (slot 5)
+    virtual void v6();                  // +0x30
+    virtual void renderPreMain(EffRenderParam *); // +0x38 (slot 7)
+    virtual int renderMain(EffRenderParam *, int, int); // +0x40 (slot 8)
+    virtual int createPacketEntry(int); // +0x48 (slot 9)
+    virtual void v10();                 // +0x50
+    virtual void liveActivateExec();    // +0x58 (slot 11)
+};
 struct Vec3_E65C {
     float x;
     float y;
@@ -68,7 +89,7 @@ extern "C" float Xii_func_0016FF18(int, int) asm("func_0016FF18");
 extern "C" int Xii_func_0016A914(int) asm("func_0016A914");
 extern "C" int Xii_func_00173DF8(int) asm("func_00173DF8");
 extern "C" int Xiiii_memset(int, int, int) asm("memset");
-extern int _vt$4Eff0;
+extern "C" char vtbl_4Eff0[] asm("_vt$4Eff0");
 extern int _vt$14EffBloodSpray1;
 extern int _vt$14EffBloodSpray2;
 extern int _vt$6EffBg1;
@@ -98,91 +119,135 @@ extern "C" int X_strcasecmp(...) asm("strcasecmp");
 extern const char D_002F21D0[];
 extern int D_00298E08;
 extern int D_00308050;
-extern int D_008282A0;
+extern int D_007812C0;
+extern int D_007B2140;
+extern int D_008282A0[];
 extern int D_00828378;
+extern float D_002F1ED0;
+extern "C" void X_func_0016A594(int, float *) asm("func_0016A594");
+extern "C" int X_func_00163EA0(void *, int, int) asm("func_00163EA0");
+extern "C" int X_func_001E4EBC(void *, int, int, float *, int) asm("func_001E4EBC");
+extern "C" void X_func_00223228(int, int) asm("func_00223228");
+extern "C" int X_func_00223298(int, float) asm("func_00223298");
+extern "C" void X_func_002232F0(int, int) asm("func_002232F0");
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016A8A4);
-
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016A914);
-
-extern "C" void X_Eff0__vfunc_03(int) asm("Eff0__vfunc_03");
-extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
-extern "C" void dtor_4Eff0(int, int) asm("_$_4Eff0");
-
-extern "C" void dtor_4Eff0(int arg0, int arg1)
+extern "C" int func_0016A8A4(int arg0, int arg1)
 {
-    M2C_FIELD(arg0, int *, 0x20) = (int)&_vt$4Eff0;
-    X_Eff0__vfunc_03(arg0);
+    float pos[4];
+    int id;
+    int off = 0x18E00;
+
+    X_func_0016A594(arg0, pos);
+    id = X_func_00163EA0(&D_007B2140, arg0, arg1);
+    return X_func_001E4EBC((char *)&D_007812C0 + off, id, 0, pos, 0);
+}
+
+extern "C" void func_0016A914(Eff0 *self)
+{
+    register void *vt PS2_REG("$2") = vtbl_4Eff0;
+    float z = D_002F1ED0;
+    self->m_timer = -1;
+    self->m_vtbl = vt;
+    self->m_zDepth = z;
+    self->m_kind = 0;
+    self->m_flags = 0;
+    self->m_delay = 0;
+    self->m_unk08 = 0;
+    self->m_unk0C = 0;
+    self->m_parent = 0;
+}
+
+extern "C" void X_Eff0__vfunc_03(Eff0 *) asm("Eff0__vfunc_03");
+extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void dtor_4Eff0(Eff0 *, int) asm("_$_4Eff0");
+
+extern "C" void dtor_4Eff0(Eff0 *self, int arg1)
+{
+    self->m_vtbl = vtbl_4Eff0;
+    X_Eff0__vfunc_03(self);
     if (arg1 & 1) {
-        return X___builtin_delete((void *)arg0);
+        return X___builtin_delete(self);
     }
 }
 
-extern "C" int Eff0__vfunc_02(int arg0, int arg1)
+extern "C" int Eff0__vfunc_02(Eff0 *self, Eff0Arg *arg1)
 {
-    int temp_v1;
+    void *parent;
 
-    (*(int *)(int *)((char *)(arg0) + 0x18)) = (int) (*(int *)(int *)((char *)(arg1) + 0x0));
-    (*(int *)(int *)((char *)(arg0) + 0x1C)) = (int) (*(int *)(int *)((char *)(arg1) + 0x8));
-    temp_v1 = (*(int *)(int *)((char *)(arg1) + 0xC));
-    if (temp_v1 != 0) {
-        (*(int *)(int *)((char *)(arg0) + 0x14)) = temp_v1;
-        (*(int *)(int *)((char *)(temp_v1) + 0x2C)) = (int) ((*(int *)(int *)((char *)(temp_v1) + 0x2C)) + 1);
+    self->m_kind = arg1->m_kind;
+    self->m_delay = arg1->m_delay;
+    parent = arg1->m_parent;
+    if (parent != 0) {
+        self->m_parent = parent;
+        M2C_FIELD(parent, int *, 0x2C) = M2C_FIELD(parent, int *, 0x2C) + 1;
     }
     return 1;
 }
 
 
-extern "C" void Eff0__vfunc_03(int arg0)
+extern "C" void Eff0__vfunc_03(Eff0 *self)
 {
-    int temp_v1;
+    void *parent;
 
-    temp_v1 = M2C_FIELD(arg0, int *, 0x14);
-    M2C_FIELD(arg0, short *, 0) = 0;
-    M2C_FIELD(arg0, int *, 0x18) = 0;
-    if (temp_v1 != 0) {
-        M2C_FIELD(temp_v1, int *, 0x2C) = (int) (M2C_FIELD(temp_v1, int *, 0x2C) - 1);
+    parent = self->m_parent;
+    self->m_flags = 0;
+    self->m_kind = 0;
+    if (parent != 0) {
+        M2C_FIELD(parent, int *, 0x2C) = M2C_FIELD(parent, int *, 0x2C) - 1;
     }
 }
 
-extern "C" void Eff0__vfunc_10(int arg0, int arg1)
+extern "C" void Eff0__vfunc_10(Eff0 *self, int arg1)
 {
-    unsigned short temp_v0 = (*(unsigned short *)(arg0));
+    unsigned short flags = self->m_flags;
 
-    (*(unsigned short *)(arg0)) = arg1 != 0 ? (temp_v0 & 0xFFFB) : (temp_v0 | 4);
-    (*(unsigned short *)(arg0)) |= 8;
+    self->m_flags = arg1 != 0 ? (flags & 0xFFFB) : (flags | 4);
+    self->m_flags |= 8;
 }
 
-extern "C" int Eff0__vfunc_04(int arg0)
+extern "C" int Eff0__vfunc_04(Eff0 *self)
 {
     int temp_v0;
-    int temp_v0_3;
-    int temp_v0_4;
     int temp_v1;
     int var_v0;
-    int temp_v0_2;
-    int temp_v0_5;
 
-    temp_v0 = M2C_FIELD(arg0, int *, 0x1C);
+    temp_v0 = self->m_delay;
     temp_v1 = temp_v0 - 1;
-    if ((temp_v0 < 0) || (M2C_FIELD(arg0, int *, 0x1C) = temp_v1, var_v0 = 1, (temp_v1 < 0))) {
-        if (M2C_FIELD(arg0, unsigned short *, 0) & 8) {
-            ((m2c_v20_58_i *)(arg0))->call();
+    if ((temp_v0 < 0) || (self->m_delay = temp_v1, var_v0 = 1, (temp_v1 < 0))) {
+        if (self->m_flags & 8) {
+            ((Eff0VCall *)self)->liveActivateExec();
         }
-        if (M2C_FIELD(arg0, int *, 4) >= 0) {
-            if (--M2C_FIELD(arg0, int *, 4) <= 0) {
-                M2C_FIELD(arg0, int *, 4) = -1;
-                M2C_FIELD(arg0, unsigned short *, 0) |= 2;
+        if (self->m_timer >= 0) {
+            if (--self->m_timer <= 0) {
+                self->m_timer = -1;
+                self->m_flags |= 2;
             }
         }
-        var_v0 = ((m2c_v20_28_i *)(arg0))->call();
+        var_v0 = ((Eff0VCall *)self)->liveExec();
     }
     return var_v0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", render__4Eff0PQ24Eff011RENDERPARAM);
+extern "C" void render__4Eff0PQ24Eff011RENDERPARAM(Eff0 *self, EffRenderParam *param)
+{
+    if (self->m_delay < 0) {
+        param->m_unk08 = param->m_unk00;
+        ((Eff0VCall *)self)->renderPreMain(param);
+    }
+}
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", renderPreMain__4Eff0PQ24Eff011RENDERPARAM);
+extern "C" void renderPreMain__4Eff0PQ24Eff011RENDERPARAM(Eff0 *self, EffRenderParam *param)
+{
+    int *tbl = D_008282A0;
+    if (tbl[self->m_kind] == 0) {
+        tbl[self->m_kind] = ((Eff0VCall *)self)->createPacketEntry(param->m_unk08);
+    }
+    int pkt = tbl[self->m_kind];
+    X_func_00223228(param->m_unk08, pkt);
+    int ctx = X_func_00223298(param->m_unk08, 0.0f);
+    int res = ((Eff0VCall *)self)->renderMain(param, pkt, ctx);
+    X_func_002232F0(param->m_unk08, res);
+}
 
 struct Arg223558_PE {
     float unk00;
@@ -199,17 +264,13 @@ struct Sub14Hdr_PE {
     int unk54;
     int unk58;
 };
-struct Obj_PE {
-    unsigned char pad00[0x14];
-    Sub14Hdr_PE *m_14;
-};
 extern "C" int X_func_00223558_PE(int, Arg223558_PE *) asm("func_00223558");
-extern "C" int createPacketEntry__4Eff0P20tag_I3dRenderStage_s(Obj_PE *arg0, int arg1)
+extern "C" int createPacketEntry__4Eff0P20tag_I3dRenderStage_s(Eff0 *self, int arg1)
 {
   int arr[8];
   Arg223558_PE q;
   int ret = 0;
-  Sub14Hdr_PE *sub = arg0->m_14;
+  Sub14Hdr_PE *sub = (Sub14Hdr_PE *)self->m_parent;
   if (sub->unk58 != 0)
   {
     int i = 0;
@@ -222,11 +283,11 @@ extern "C" int createPacketEntry__4Eff0P20tag_I3dRenderStage_s(Obj_PE *arg0, int
         *(dst++) = *(src++);
         i++;
       }
-      while (i < arg0->m_14->unk58);
+      while (i < ((Sub14Hdr_PE *)self->m_parent)->unk58);
     }
     q.unk00 = 1.0f;
     q.unk04 = arr;
-    q.unk08 = arg0->m_14->unk58;
+    q.unk08 = ((Sub14Hdr_PE *)self->m_parent)->unk58;
     q.unk0C = 0;
     q.unk10 = 0;
     q.unk14 = 0;
@@ -1058,17 +1119,17 @@ extern "C" int EffBloodStay2__vfunc_08(char *obj,int render,int state,int packet
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay2__vfunc_08);
 #endif
 
-extern int _vt$13EffBloodStay3;
+extern "C" char vtbl_13EffBloodStay3[] asm("_vt$13EffBloodStay3");
 extern int D_00298E10;
-extern "C" void dtor_13EffBloodStay3(int, int) asm("_$_13EffBloodStay3");
+extern "C" void dtor_13EffBloodStay3(Eff0 *, int) asm("_$_13EffBloodStay3");
 
-extern "C" void dtor_13EffBloodStay3(int arg0, int arg1)
+extern "C" void dtor_13EffBloodStay3(Eff0 *arg0, int arg1)
 {
-    M2C_FIELD(arg0, int *, 0x20) = (int)&_vt$13EffBloodStay3;
+    arg0->m_vtbl = vtbl_13EffBloodStay3;
     D_00298E10 = -1;
     dtor_4Eff0(arg0, 0);
     if (arg1 & 1) {
-        return X___builtin_delete((void *)arg0);
+        return X___builtin_delete(arg0);
     }
 }
 

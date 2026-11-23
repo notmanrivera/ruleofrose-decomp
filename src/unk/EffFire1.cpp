@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "unk/Eff0.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
 #include "bed/bedpfh.h"
