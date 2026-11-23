@@ -3389,8 +3389,6 @@ extern "C" int func_001D0758(int arg0, unsigned int arg1, float *arg2)
     return 0;
 }
 
-// NON_MATCHING: 5/68 differ, 8 edits
-#ifdef NON_MATCHING
 extern "C" int Xiiu_func_001D2BA8_D080C(int, unsigned int) ASM_NOTHROW asm("func_001D2BA8");
 extern "C" int X_func_00135E20(...) asm("func_00135E20");
 extern "C" int X_func_001D932C(...) asm("func_001D932C");
@@ -3409,7 +3407,8 @@ extern "C" void func_001D080C(int arg0, unsigned int arg1, int arg2)
             actor = (void *)Xiiu_func_001D2BA8_D080C(arg0, arg1);
             break;
         }
-        register void *a0 PS2_REG("$4") = actor;
+        register void *a0 PS2_REG("$4");
+        do { a0 = actor; } while (0);
         X_func_001D932C(a0, 5, arg2);
         X_func_001D932C(actor, 6, pos2);
         Xiiii_func_001D5BC8(arg0, 0, arg1);
@@ -3423,9 +3422,6 @@ extern "C" void func_001D080C(int arg0, unsigned int arg1, int arg2)
         X_func_001D932C(actor, 0x18, stack);
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D080C);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamman", func_001D091C);
 
