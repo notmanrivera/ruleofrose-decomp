@@ -56,6 +56,11 @@ def candidates(a):
         e = re.search(r"(\d+) edits", w[3])
         if not e or int(e.group(1)) > a.max_off or fn in skip or any(name.startswith(x) for x in avoid):
             continue
+        # Permute only register/schedule plateaus: an attempt of another size
+        # or calling/loading the wrong things needs source work first (types,
+        # inlines, control flow), which no permutation finds.
+        if not a.loose and ("(size 0x" in w[3] or "reloc" in w[3]):
+            continue
         if not a.retry and (ROOT / "build" / "cpp_perm" / fn / "permuter_out").exists():
             continue
         out.append((int(e.group(1)), name, fn))
@@ -125,6 +130,8 @@ def main():
     ap.add_argument("--skip", action="append", default=[], help="file listing functions others own")
     ap.add_argument("--avoid", default="", help="comma list of file prefixes to leave alone")
     ap.add_argument("--retry", action="store_true", help="also functions already tried")
+    ap.add_argument("--loose", action="store_true",
+                    help="also attempts of another size or with wrong relocations (default: exact size, relocations right)")
     ap.add_argument("--limit", type=int, default=0)
     a = ap.parse_args()
     if not match.server_up():
