@@ -68,12 +68,17 @@ roadmap: `notes/PROJECT_STATE.md` (Spanish). Setup: `README.md` (English).
   writes a field as `M2C_FIELD(p, int *, 0x58)` or `*(int *)((char *)p +
   0x58)`. Use the class's header (`p->m_radius`); an unknown field gets a
   member named by its offset (`int m_unk58;`) in that header, not an offset
-  in the code. `tools/offset_check.py` enforces it at every merge (no file
-  may get more raw offsets in matched code than `config/offset_check.tsv`;
-  run `--update <file>` after paying some down). Attempts under
-  `NON_MATCHING` may still have them; type them when retrying.
-- Each struct/class is declared once, in a header; no local copies or
+  in the code. Attempts under `NON_MATCHING` may still have them; type
+  them when retrying.
+- One declaration per symbol, under its own name and with real types:
+  `extern "C" int func_001E7D7C(MnuStock *, int);`, not aliases such as
+  `Xiii_func_001E7D7C(int, int) asm("func_001E7D7C")` or `(...)`
+  prototypes; library functions come from their headers. Each
+  struct/class is declared once, in a header; no local copies or
   "layout views" of a class that already has one (reuse it, extend it).
+- `tools/rules_check.py` enforces both at every merge: no file may get
+  more raw offsets or alias declarations in matched code than
+  `config/rules_check.tsv` (run `--update <file>` after paying some down).
 - Ghidra scripts must not overwrite `USER_DEFINED` names or signatures.
 
 ## Communication

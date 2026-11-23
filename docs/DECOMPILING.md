@@ -491,16 +491,49 @@ expressions the original did. unk/MnuDiary func_00199714 went from 136 to
 63 edits, exact size and relocations, only by typing it and using one
 counter variable the way the game does (2026-11-23).
 
-- `tools/offset_check.py <file> --list` lists the raw offsets left in a
-  file's matched code; merges (merge_worker.sh, verify_change.py, the
-  cpp_permuter queue) refuse a file whose count grows. A permuter match on
-  an attempt that still has offsets is logged ("MATCH ... with raw
-  offsets") and waits until someone types it.
+- `tools/rules_check.py <file> --list` lists the raw offsets and alias
+  declarations left in a file's matched code; merges (merge_worker.sh,
+  verify_change.py, the cpp_permuter queue) refuse a file whose counts
+  grow. A permuter match on an attempt that still breaks them is logged
+  ("MATCH ... but ...") and waits until someone cleans it.
+- Declare each game symbol once, under its own name and with its real
+  types: `extern "C" void func_0019A290(MnuDiary *, int);`. m2c's drafts
+  and old files are full of aliases (`Xiii_func_0019A290(int, int)
+  asm("func_0019A290")`, `X_func_...(...)`): one symbol under five names
+  and five types hides wrong argument types and never fails to compile.
+  With its own name, a second declaration that disagrees is an error.
 - Declare each type once, in a header. A second copy of a class under
   another name (`Obj_9A598` beside `MnuStock`, `Msg_9A598` beside
   `MnuMsgWin`) hides bugs and blocks the next person: reuse or extend the
   existing one.
 - Unknown is fine, untyped is not: `int m_unk58;` is a typed member.
+
+### Fake matches: identical bytes, wrong source
+
+A function that matches only through code no programmer would write is a
+fake match: it hides what the source really was (a missing inline, a
+wrong type, two variables merged) and breaks the next function that
+depends on it. Each item below is a clue to look for the real shape, not
+an allowed trick (after the checklist of lemiur's
+Game-Decompilation-Skill-For-Claude, CC BY 4.0):
+
+| In the code | Usually means |
+|---|---|
+| `volatile` on a local or ordinary data | a wrong type or aliasing |
+| a dummy local, a variable only carried around | a missing helper/inline, or two variables the source kept apart |
+| an empty `{}` block or a bare `;` | a scoped local or a macro |
+| `do { ... } while (0)` in a body | a macro the original called |
+| `x + 0`, `x * 1`, `!!x`, `x = x` | steering the compiler: find the real expression |
+| an offset cast `*(T *)((char *)p + 0x58)` | a typed member (rules_check counts these) |
+| padding members or padding virtuals | placeholder members and the real class hierarchy |
+| `goto` into a loop | a structured loop |
+
+The project's one accepted exception is the register pin `PS2_REG("$n")`
+(the owner decided to keep register pins as full matches): keep it rare, and say why
+in a comment. When a plateau is left, diagnose in this order and permute
+only the last: (1) a call or data reference differs (wrong referent or
+type), (2) the set of calls/inlines differs, (3) the control flow
+differs (size or block order), (4) only registers or scheduling differ.
 
 ### The fast loop
 

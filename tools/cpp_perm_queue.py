@@ -25,7 +25,7 @@ os.environ.setdefault("ROR_QUIET_HI16", "1")
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 import match  # noqa: E402
-import offset_check  # noqa: E402
+import rules_check  # noqa: E402
 import regalloc_triage  # noqa: E402
 
 LOG = ROOT / "build" / "workers" / "cpp-perm.log"
@@ -99,9 +99,10 @@ def apply_match(name, fn):
                 log(f"  {fn}: {out.name} scores 0 but match.py says: {rep[-1] if rep else '?'}")
                 continue
             src.write_text(cand, encoding="utf8", newline="\n")
-            if len(offset_check.accesses(name)) > offset_check.load_baseline().get(name, 0):
-                # typed members (CLAUDE.md): a match with raw offsets waits for typing
-                log(f"  {fn}: MATCH in {out.name} but with raw offsets; not merged, type it first")
+            why = rules_check.worse(name)
+            if why:
+                # CLAUDE.md readability rules: such a match waits for typing
+                log(f"  {fn}: MATCH in {out.name} but {why}; not merged, clean it first")
                 src.write_text(text, encoding="utf8", newline="\n")
                 return False
             (ROOT / "build" / "ok").unlink(missing_ok=True)
