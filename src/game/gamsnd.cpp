@@ -1933,8 +1933,6 @@ extern "C" void func_001E3804(char *arg0)
     ((SndQue *)(arg0 + 0x40))->clear();
 }
 
-// NON_MATCHING: 12/238 differ, 2 edits
-#ifdef NON_MATCHING
 struct Entry386C { int unused, left, right; char rest[0x1C]; }; // entry386C // decl386C
 struct Obj386C { // decl386C
     int mode; // decl386C
@@ -1960,6 +1958,7 @@ extern "C" void func_001E386C(Obj386C *self, Item2DB4 *item)
     int oldLeft = 0;
     int oldRight = 0;
     int handle = item->handle;
+    register int flags PS2_REG("$9") = item->flags;
     void *data = item->data;
     int mode = self->mode;
     float distance = item->distance;
@@ -1968,8 +1967,7 @@ extern "C" void func_001E386C(Obj386C *self, Item2DB4 *item)
         oldLeft = entry->left;
         oldRight = entry->right;
     }
-    register int flags PS2_REG("$9") = item->flags;
-    if (flags & 1) {
+    if (item->flags & 1) {
         if (data) {
             calc386C(mode, item, data, &left, &right, flags, distance);
         } else {
@@ -2021,9 +2019,6 @@ extern "C" void func_001E386C(Obj386C *self, Item2DB4 *item)
         }
         volumeOther386C(self, item->id, item->handle, left, right);
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E386C);
-#endif
 
 // NON_MATCHING: 296/306 differ, 17 relocs differ (size 0x4C8, game 0x4FC), 168 edits
 #ifdef NON_MATCHING
@@ -2266,7 +2261,7 @@ extern "C" void func_001E44B4(int arg0, int arg1, int arg2, int arg3, int arg4)
     M2C_FIELD(((arg1 * 4) + arg0), int *, 0x1728) = arg2;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/game/gamsnd", D_002FD770);
+extern const char F386C_file[] asm("D_002FD770") __attribute__((section(".rodata"), aligned(16))) = "game/gamsnd.cpp";
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamsnd", D_002FD780);
 
