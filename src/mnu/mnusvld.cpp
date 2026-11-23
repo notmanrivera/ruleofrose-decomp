@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "mnu/mnusvld.h"
+extern "C" int Xiiii_func_0018C6C4(int, int, int) asm("func_0018C6C4");
 extern "C" int Xii_func_0018741C(int) asm("func_0018741C");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" void func_001A5BF4(MnuSvld *);
@@ -815,29 +816,34 @@ loop_7088:
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A7088);
 #endif
 
-// NON_MATCHING: 6/32 differ (size 0x80, game 0x80), 4 edits
-#ifdef NON_MATCHING
 extern "C" void func_001A7418(MnuSvld *arg0, int type)
 {
-    int row = arg0->m_cursor[1] - arg0->m_cursor[2];
-    switch (type) {
-    case 0: {
-        MnuRpk *rpk = &arg0->m_rpk;
-        X_func_0018C6C4_7418(rpk, 1, row);
-        rpk->setSpr08(1, 5);
-        break;
+  MnuRpk *new_var;
+  int new_var2;
+  int row = arg0->m_cursor[1] - arg0->m_cursor[2];
+  new_var2 = 1;
+  switch (type)
+  {
+    case 0:
+    {
+      MnuRpk *rpk = &arg0->m_rpk;
+      X_func_0018C6C4_7418(rpk, new_var2, row);
+      new_var = rpk;
+      ((MnuRpk *)((MnuRpk *) new_var))->setSpr08(1, 5);
+      break;
     }
-    case 1: {
-        MnuRpk *rpk = &arg0->m_rpk;
-        X_func_0018C6C4_7418(rpk, type, row);
-        rpk->setSpr08(1, 5);
-        break;
+
+    case 1:
+    {
+      MnuRpk *rpk = &arg0->m_rpk;
+      X_func_0018C6C4_7418(rpk, type, row);
+      ((MnuRpk *)((MnuRpk *) rpk))->setSpr08(new_var2, 5);
+      break;
     }
-    }
+
+  }
+
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A7418);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnusvld", func_001A7498);
 
