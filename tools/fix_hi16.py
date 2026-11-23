@@ -20,10 +20,14 @@ the addend).
 Plain stdlib (ELF32 little endian), so it runs in the build image and on the
 host (tools/match.py). Prints one line per repaired instruction.
 """
+import os
 import struct
 import sys
 
 R_MIPS_HI16, R_MIPS_LO16 = 5, 6
+# Set by tools that compile thousands of variants (tools/permute.py): each
+# fixed lui is routine, and the note on every compile buried their logs.
+QUIET = bool(os.environ.get("ROR_QUIET_HI16"))
 SHT_REL = 9
 SHF_EXECINSTR = 4
 
@@ -67,8 +71,9 @@ def fix(path):
             reg = (lo_word >> 21) & 31
             new = 0x3C000000 | reg << 16 | (word & 0xFFFF)
             struct.pack_into("<I", data, base + off, new)
-            print(f"{path}: {name(target)}+0x{off:X}: 0x{word:08X} -> lui ${reg} (as 2.10 bug)",
-                  file=sys.stderr)
+            if not QUIET:
+                print(f"{path}: {name(target)}+0x{off:X}: 0x{word:08X} -> lui ${reg} (as 2.10 bug)",
+                      file=sys.stderr)
             fixed += 1
     if fixed:
         open(path, "wb").write(data)

@@ -26,6 +26,9 @@ version. A closer non-match is saved apart, in build/work/.best/<file>/
 """
 import argparse
 import hashlib
+import os
+
+os.environ.setdefault("ROR_QUIET_HI16", "1")   # before match imports fix_hi16
 import random
 import re
 import sys
@@ -405,8 +408,202 @@ def extracts(lines):
     return out
 
 
+# ---- Rewrites from the near misses matched by hand (notes/research/R23):
+# the callee's exception spec, the shape of the control flow, register pins.
+
+# Lines "//@nothrow NAME" before the function's signature ask for NAME's
+# declarations in the file to have their throw() (or ASM_NOTHROW) toggled:
+# with -fno-exceptions, g++ 2.96 schedules a call to a function it knows
+# cannot throw differently (a bnel/beql vs bne/beq, a delay slot).
+MARK = "//@nothrow "
+TOGGLE = set()      # callees whose declarations the file has (set in main)
+REGS = []           # registers worth pinning a local to (set in main)
+
+
+# a parameter list: its own parentheses (one level inside, for function
+# pointers), not those of an asm("label") after it
+PARAMS = r"\([^;{}()]*(?:\([^;{}()]*\)[^;{}()]*)*\)"
+
+
+def proto_re(callee):
+    return re.compile(rf"^(?P<pre>[A-Za-z_][^;{{}}\n]*\b{re.escape(callee)}\s*{PARAMS}(?:\s*const)?)"
+                      rf"(?P<spec>\s*(?:ASM_NOTHROW|throw\s*\(\s*\)))?(?P<post>[^;{{}}\n]*;)", re.M)
+
+
+def toggled(text):
+    """The assembled file with every //@nothrow mark applied."""
+    for callee in re.findall(rf"^\s*{re.escape(MARK)}(\w+)\s*$", text, re.M):
+        text = proto_re(callee).sub(lambda m: m.group("pre") + flip_spec(m.group("spec"), m.group("post")), text)
+    return text
+
+
+def flip_spec(spec, post):
+    """The declaration's tail with throw() taken out, or put in before an
+    asm("label") (the exception spec belongs to the declarator)."""
+    if spec:
+        return post
+    a = re.search(r"\s*(?:__asm__|asm)\s*\(", post)
+    return (post[:a.start()] + " throw()" + post[a.start():]) if a else " throw()" + post
+
+
+def nothrows(lines):
+    """Toggle one callee's exception spec (add a mark, or drop one)."""
+    marked = {ln.strip()[len(MARK):] for ln in lines if ln.strip().startswith(MARK)}
+    called = set(re.findall(r"\b([A-Za-z_]\w*)\s*\(", "\n".join(lines[i] for i in body(lines))))
+    out = []
+    for callee in sorted((called & TOGGLE) - marked):
+        out.append([MARK + callee] + list(lines))
+    for i, ln in enumerate(lines):
+        if ln.strip().startswith(MARK):
+            out.append(lines[:i] + lines[i + 1:])
+    return out
+
+
+def dedent(block, n=4):
+    return "\n".join(ln[n:] if ln.startswith(" " * n) else ln for ln in block.split("\n"))
+
+
+def indent(block, n=4):
+    return "\n".join((" " * n + ln) if ln.strip() else ln for ln in block.split("\n"))
+
+
+def early_returns(lines):
+    """'if (c) { BODY } return X; }' at the end <-> 'if (!(c)) return X; BODY return X; }',
+    and 'if (c) return X; REST }' -> 'if (!(c)) { REST } return X; }'."""
+    text, out = "\n".join(lines), []
+    # nested -> early return: the function ends with the if's block and a return
+    for m in re.finditer(r"^(\s+)if \(([^\n]*)\) \{\n", text, re.M):
+        end = block_end(text, m.end() - 2)
+        if end is None:
+            continue
+        rest = re.match(rf"\}}\n({re.escape(m.group(1))}return\b[^;\n]*;)\n\}}\s*$", text[end:])
+        if not rest or re.match(r"\s*else\b", text[end + 1:]):
+            continue
+        ret = rest.group(1).strip()
+        blk = text[m.end():end].rstrip()
+        new = (text[:m.start()] + f"{m.group(1)}if (!({m.group(2)})) {ret}\n" + dedent(blk) + "\n"
+               + rest.group(1) + "\n}")
+        out.append(new.split("\n"))
+    # early return -> nested: 'if (c) return X;' then the rest of the function
+    for m in re.finditer(r"^(\s+)if \(([^\n]*)\) (return\b[^;\n]*;)\n", text, re.M):
+        rest = text[m.end():]
+        if not rest.rstrip().endswith("}") or not re.match(rf"{re.escape(m.group(1))}\S", rest):
+            continue
+        tail = rest.rstrip()[:-1].rstrip("\n")       # up to the function's closing brace
+        if "\n}" in tail or re.search(rf"^{re.escape(m.group(1))}\w+:", tail, re.M):
+            continue                                # another top-level block or a label: unsafe
+        new = (text[:m.start()] + f"{m.group(1)}if (!({m.group(2)})) {{\n" + indent(tail) + "\n"
+               + f"{m.group(1)}}}\n{m.group(1)}{m.group(3)}\n}}")
+        out.append(new.split("\n"))
+    return out
+
+
+def shared_returns(lines):
+    """Two or more 'return K;' of one constant: all but the last become
+    'goto perm_ret;' and the last gets the label (one shared exit block)."""
+    out = []
+    by = {}
+    for i in body(lines):
+        m = re.match(r"^(.*?)\breturn ?(-?(?:0x[0-9A-Fa-f]+|\d+)|[A-Za-z_]\w*)?;\s*$", lines[i])
+        if m and "//" not in m.group(1):
+            by.setdefault(m.group(2) or "", []).append(i)
+    for k, at in by.items():
+        if len(at) < 2:
+            continue
+        new = list(lines)
+        last = at[-1]
+        ind = re.match(r"\s*", lines[last]).group(0)
+        if not re.match(r"^\s*return\b", lines[last]):
+            continue                      # the last one must be a plain statement to take the label
+        for i in at[:-1]:
+            new[i] = re.sub(r"\breturn ?[^;]*;\s*$", "goto perm_ret;", lines[i])
+        new[last] = f"perm_ret:\n{ind}return{' ' + k if k else ''};"
+        out.append("\n".join(new).split("\n"))
+    return out
+
+
+def do_whiles(lines):
+    """'for (i; c; s) {B}' -> 'i; if (c) { do { B s; } while (c); }' and
+    'while (c) {B}' -> 'if (c) { do {B} while (c); }' (no continue in B)."""
+    text, out = "\n".join(lines), []
+    for m in re.finditer(r"^(\s*)(?:for \(([^;\n]*); ([^;\n]+); ([^)\n]*)\)|while \(([^\n]+)\)) \{\n", text, re.M):
+        end = block_end(text, m.end() - 2)
+        if end is None or "continue" in text[m.end():end]:
+            continue
+        ind, init, cond, step, wcond = m.groups()
+        cond = cond or wcond
+        blk = text[m.end():end].rstrip()
+        head = (f"{ind}{init};\n" if init and init.strip() else "")
+        body_ = indent(blk) + (f"\n{ind}        {step};" if step and step.strip() else "")
+        new = (text[:m.start()] + head + f"{ind}if ({cond}) {{\n{ind}    do {{\n" + body_ + "\n"
+               + f"{ind}    }} while ({cond});\n{ind}" + text[end:])
+        out.append(new.split("\n"))
+    return out
+
+
+PIN = re.compile(r'\s*PS2_REG\("[^"]*"\)')
+LOCAL = re.compile(r"^(\s+)((?:(?:const|unsigned|signed)\s+)*"
+                   r"(?:int|short|char|long|float|u_int|u_short|u_char|u_long|s32|u32|s16|u16|s8|u8|"
+                   r"[A-Z]\w*\s*\*|void\s*\*|char\s*\*|int\s*\*|float\s*\*)\s*\**)\s*([A-Za-z_]\w*)(\s*=\s*[^;]+)?;\s*$")
+
+
+def pins(lines):
+    """Drop one register pin, or pin one local to a callee-saved register
+    the game's function uses ($16-$23, $f20-$f30)."""
+    out = []
+    for i in body(lines):
+        if 'PS2_REG("' in lines[i]:
+            new = list(lines)
+            new[i] = re.sub(r"\bregister\s+", "", PIN.sub("", lines[i]), count=1)
+            out.append(new)
+            continue
+        m = LOCAL.match(lines[i])
+        if not m or CONTROL.match(lines[i]) or "register" in lines[i]:
+            continue
+        ind, typ, var, init = m.group(1), m.group(2).strip(), m.group(3), m.group(4) or ""
+        flt = typ.startswith("float") and "*" not in typ
+        for r in REGS:
+            if r.startswith("$f") != flt:
+                continue
+            new = list(lines)
+            new[i] = f'{ind}register {typ} {var} PS2_REG("{r}"){init};'
+            out.append(new)
+    return out
+
+
+def game_regs(name, fn):
+    """Callee-saved registers the game's function uses, as PS2_REG names."""
+    p = match.ROOT / "asm" / "nonmatchings" / name / f"{fn}.s"
+    try:
+        s = p.read_text(errors="replace")
+    except OSError:
+        return []
+    # splat writes registers by number ($16) or by name ($s0)
+    gp = {int(n) for n in re.findall(r"\$(1[6-9]|2[0-3])\b", s)} | {16 + int(n) for n in re.findall(r"\$s([0-7])\b", s)}
+    fp = sorted({int(n) for n in re.findall(r"\$f(\d+)\b", s) if 20 <= int(n) <= 30})
+    # and the temporaries it uses most ($2-$15, $24, $25): hand matches pinned
+    # those too (a value that must sit in $v1 or $a2)
+    temps = {}
+    for n in re.findall(r"\$(\d+)\b", s):
+        n = int(n)
+        if 2 <= n <= 15 or n in (24, 25):
+            temps[n] = temps.get(n, 0) + 1
+    top = [n for n, _ in sorted(temps.items(), key=lambda kv: -kv[1])[:6]]
+    return [f"${n}" for n in sorted(gp)] + [f"${n}" for n in top] + [f"$f{n}" for n in fp]
+
+
+def file_callees(name, fn):
+    """Names with a one-line prototype in src/<name>.cpp and no definition
+    there (g++ already knows a function it compiled cannot throw)."""
+    text = (match.ROOT / "src" / f"{name}.cpp").read_text(encoding="utf8", errors="replace")
+    protos = set(re.findall(rf"^[A-Za-z_][^;{{}}\n]*?\b([A-Za-z_]\w*)\s*{PARAMS}[^;{{}}\n]*;", text, re.M))
+    defined = set(re.findall(rf"^[A-Za-z_][^;{{}}\n]*?\b([A-Za-z_]\w*)\s*{PARAMS}\s*(?:const\s*)?\n?\{{", text, re.M))
+    return protos - defined - {fn}
+
+
 MUTATIONS = [swaps, commutes, compares, ands, signedness, invert_ifs, loops, temps, inlines,
-             decl_swaps, wide_commutes, term_swaps, extracts]
+             decl_swaps, wide_commutes, term_swaps, extracts,
+             nothrows, early_returns, shared_returns, do_whiles, pins]
 
 
 def split(work_text):
@@ -417,7 +614,7 @@ def split(work_text):
 def status_of(name, fn, path, slot, sync):
     """The check's status text for one variant, or None if it does not compile."""
     trial = work.WORK / name / f"{fn}.perm{slot}.trial.cpp"
-    trial.write_text(work.assemble(name, fn, path), encoding="utf8", newline="\n")
+    trial.write_text(toggled(work.assemble(name, fn, path)), encoding="utf8", newline="\n")
     try:
         _, report = match.compare(name, trial, diff=False, sync=sync)
     except match.CompileError:
@@ -450,6 +647,8 @@ def main():
     else:
         sys.exit(f"nothing to start from: run tools/work.py {name} {fn} first")
     head, func = split(start)
+    TOGGLE.update(file_callees(name, fn))
+    REGS.extend(game_regs(name, fn))
     rng = random.Random(a.seed)
     slots = [work.WORK / name / f"{fn}.perm{i}.cpp" for i in range(a.jobs)]
     seen = set()
@@ -522,6 +721,16 @@ def main():
     why = "" if time.time() >= end or best_score == 0 else " (no rewrite left to try)"
     print(f"{tries} tries in {(time.time() - t0) / 60:.1f} min{why}; best: {best_score} off")
     if best_score == 0:
+        marks = [ln for ln in best if ln.strip().startswith(MARK)]
+        if marks:
+            # the match needs those declarations toggled in the file itself:
+            # done here, in the worktree's src/ (work.py --done checks it with
+            # them), and the marks leave the function
+            src = match.ROOT / "src" / f"{name}.cpp"
+            src.write_text(toggled("\n".join(marks) + "\n" + src.read_text(encoding="utf8"))
+                           .split("\n", len(marks))[len(marks)], encoding="utf8", newline="\n")
+            best = [ln for ln in best if not ln.strip().startswith(MARK)]
+            print("declarations toggled in src/: " + ", ".join(m.strip()[len(MARK):] for m in marks))
         text = head + "\n".join(best) + "\n"
         scratch.parent.mkdir(parents=True, exist_ok=True)
         scratch.write_text(text, encoding="utf8", newline="\n")
