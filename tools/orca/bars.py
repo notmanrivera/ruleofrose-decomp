@@ -395,7 +395,7 @@ def permuter():
     matches = all_matches
     total = len(queue) or len(started)
     done = len(started) - (1 if running and started else 0)
-    out = [f"{col('permutador', 'bold')} " + (col("trabajando", "green") if running else col("parado", "yellow"))
+    out = [f"{col('Cyrax', 'bold') + col(' (nuestro permutador)', 'dim')} " + (col("trabajando", "green") if running else col("parado", "yellow"))
            + f"  (sin IA; log {os.path.relpath(path, MAIN)})"]
     if not total:
         return out + [col("  (cola vac\u00eda)", "dim")]
@@ -641,7 +641,7 @@ def perm_official():
     done = len(ends)
     matches = [ln.split(" (permuter)")[0] for ln in EXTRA_PERM_MATCHES()]   # git is the record
     skipped = sum(1 for m in ends if m.group(4) == "skipped")
-    out = [f"{col('decomp-permuter', 'bold')} " + (col("trabajando", "green") if running else col("parado", "yellow"))
+    out = [f"{col('Sektor', 'bold') + col(' (decomp-permuter oficial)', 'dim')} " + (col("trabajando", "green") if running else col("parado", "yellow"))
            + f"  (sin IA; log {os.path.relpath(path, MAIN)})"]
     if not total:
         return out

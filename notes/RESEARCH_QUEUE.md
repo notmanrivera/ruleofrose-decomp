@@ -17,6 +17,27 @@ judgement and go to Sonnet.
 
 ## Open
 
+- [ ] R23 Make our permuters find more matches (2026-11-22). Code names:
+  **Sektor** = the official decomp-permuter (tools/perm_official.py; random
+  mutations; C only: 62 of 77 queued near misses could not be prepared,
+  "base.c does not compile as C"; 18 exact overall), **Cyrax** = ours
+  (tools/permute.py + tools/permute_queue.py; directed rewrites on C++; 1
+  match in ~35). Today Codex matched ~28 near misses by hand: its commits on
+  pr-merge from 2026-11-22 (git log --since=2026-11-22 --author, messages
+  "<file>: <func>", and the reports in build/workers/codex-loop.log tables:
+  "what fixed it") are a labelled dataset of rewrites that work at -Os.
+  Find: (1) which of those fixes Cyrax could have found (already in its
+  rewrite list?) and which rewrites it lacks (e.g. ASM_NOTHROW/throw() on
+  callees, a local bool before a test, early return vs nested, 64-bit
+  return/copy types, PS2_REG pins, initializing a local after a call,
+  recomputing an address per use, shared return label, removing a hint);
+  (2) why Cyrax scored 1/35 (search budget, scoring, rewrites never
+  applicable, bugs: read build/workers/perm-loop.log); (3) what blocks
+  Sektor on C++ (perm_official.py's C translation: classes, references,
+  this->, asm labels) and whether a better translation could prepare most
+  of them; (4) a ranked plan with expected yield and cost. Read-only;
+  output notes/research/R23-permuters.md.
+
 - [x] R22 Plan shared class headers for the class families (2026-11-22).
   Lesson of the day: a class header (real fields and types instead of
   M2C_FIELD offsets) gave +76 functions in one session (worker Neon, task E),
