@@ -698,6 +698,38 @@ def perm_official():
     return out
 
 
+def cpp_perm():
+    """tools/cpp_perm_queue.py (log build/workers/cpp-perm.log): cpp_permuter
+    on the NON_MATCHING attempts, C++ as it is."""
+    path = os.path.join(ST, "cpp-perm.log")
+    try:
+        lines = open(path, encoding="utf-8", errors="replace").read().splitlines()
+    except OSError:
+        return []
+    running = alive("cpp_perm_queue", path, 25)
+    merged_all = sum(1 for ln in lines if "MATCH merged" in ln)
+    q = [i for i, ln in enumerate(lines) if re.search(r"== cpp_permuter queue: \d+ functions", ln)]
+    out = [f"{col('Permutador C++', 'bold') + col(' (cpp_permuter)', 'dim')} " + (col("trabajando", "green") if running else col("parado", "yellow"))
+           + f"  (sin IA; log {os.path.relpath(path, MAIN)})"]
+    if not q:
+        return out
+    lines = lines[q[-1]:]
+    total = int(re.search(r"queue: (\d+) functions", lines[0]).group(1))
+    starts = [re.search(r"\[(\d+)/\d+\] (\S+ \S+)", ln) for ln in lines]
+    starts = [m for m in starts if m]
+    done = sum(1 for ln in lines if re.search(r"^\S+\s+base ", ln.strip()) or ln.strip().startswith("base "))
+    done = sum(1 for ln in lines if " base " in ln and ", best " in ln)
+    now_ok = sum(1 for ln in lines if "MATCH merged" in ln)
+    f = round(WIDTH * done / total) if total else 0
+    out.append(f"  cola de 'casi'  {'█' * f}{'░' * (WIDTH - f)} {done}/{total} probadas, "
+               + col(f"{now_ok} exactas", "green" if now_ok else "dim") + col(f"  (histórico {merged_all + 2})", "dim"))
+    if running and starts and done < len(starts):
+        out.append(f"    ◀ ahora {starts[-1].group(2)}")
+    for ln in [l for l in lines if "MATCH merged" in l][-3:]:
+        out.append(f"    {col(chr(0x2713), 'green')} {ln.split('  ', 1)[-1].strip()[:70]}")
+    return out
+
+
 STALE_HOURS = 6
 
 
@@ -759,7 +791,7 @@ def render(reset=False):
     if res and newest and (recent(newest, 1) or "terminada" not in res[0]):
         pq += res                                  # a finished one stays an hour
     for log_name, fn in (("qwen.log", qwen), ("qwen-names.log", qwen_names),
-                         ("perm-official.log", perm_official), ("perm-loop.log", permuter),
+                         ("cpp-perm.log", cpp_perm), ("perm-official.log", perm_official), ("perm-loop.log", permuter),
                          ("auto-run.log", auto_m2c), ("twin-sweep.log", twin_sweeps),
                          ("flag-sweep.log", flag_sweep)):
         if not recent(log_name, STALE_HOURS):
