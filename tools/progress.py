@@ -65,6 +65,15 @@ def main():
         pct = 100 * size_done / size if size else 0
         print(f"{group:12} {files_done:5} / {files:<5} {size_done:9,} / {size:<9,} {pct:6.2f}%")
     print(f"almost: {nm_count} NON_MATCHING attempts ({nm_bytes:,} B) still linked from asm")
+    try:
+        import rules_check
+        offs = alis = 0
+        for n in rules_check.all_names():
+            o, a = rules_check.scan(n)
+            offs, alis = offs + len(o), alis + len(a)
+        print(f"rules debt: {offs:,} raw offsets, {alis:,} alias declarations in matched code (tools/rules_check.py)")
+    except Exception as e:  # never let the debt line break the progress report
+        print(f"rules debt: not measured ({e})")
     print("\ndecompiled:", ", ".join(f"{n} ({s:,} B)" if s == t else f"{n} ({s:,} of {t:,} B)"
                                      for n, s, t in done) or "none")
 
