@@ -1,6 +1,10 @@
 #include "include_asm.h"
 #include "unk/mnuBase.h"
 #include "bed/bedpfh.h"
+#include "bed/bedpad.h"
+
+// still used by func_00193A1C and func_00194148 (their typed versions do not match yet)
+#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiii_func_001874F4(int, int) asm("func_001874F4");
 extern "C" int Xiiu_func_001348B0(int, unsigned int) asm("func_001348B0");
 extern "C" int Xiiuii_func_00134AB8(int, unsigned int, int, int) asm("func_00134AB8");
@@ -98,7 +102,11 @@ extern "C" void X_func_001949BC(int) asm("func_001949BC");
 extern "C" float Xff_cosf(float) asm("cosf");
 extern "C" int Xii_func_0019381C(int) asm("func_0019381C");
 extern "C" int Xiiff_func_00192E94(int, float, float) asm("func_00192E94");
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+struct MnuTexCtx {
+    int m_unk00;
+    int m_unk04;
+    int m_unk08;
+};
 extern "C" int Xii_func_00194688(int) asm("func_00194688");
 extern "C" int Xiii_func_00193F74(int, int) asm("func_00193F74");
 extern "C" int Xiiii_memset(int, int, int) asm("memset");
@@ -156,45 +164,44 @@ extern int D_007812C0;
 
 extern "C" void X_strcpy_pv(char *dst, char *src) asm("strcpy");
 
-extern "C" void func_0019397C(int arg0, char *arg1, int arg2, int arg3)
+extern "C" void func_0019397C(MnuBase *arg0, char *arg1, int arg2, int arg3)
 {
-    char *p;
+    MnuResSlot *p;
     int i;
     int count;
 
-    count = *(int *)((char *)arg0 + 0x20);
-    if (count == *(int *)((char *)arg0 + 0x1C)) {
+    count = arg0->m_resUsed;
+    if (count == arg0->m_resNum) {
         return;
     }
-    p = (char *)*(int *)((char *)arg0 + 0x18);
+    p = arg0->m_resSlots;
     for (i = 0; i < count; i++) {
-        if ((*(int *)(p + 8) & 0xF) == (arg2 & 0xF)) {
-            if (*(int *)(p + 0xC) == arg3) {
+        if ((p->m_type & 0xF) == (arg2 & 0xF)) {
+            if (p->m_slotIdx == arg3) {
                 return;
             }
         }
-        p += 0x30;
+        p++;
     }
-    X_strcpy_pv(p + 0x10, arg1);
-    *(int *)(p + 8) = arg2;
-    *(int *)(p + 0xC) = arg3;
-    *(int *)((char *)arg0 + 0x20) = *(int *)((char *)arg0 + 0x20) + 1;
+    X_strcpy_pv(p->m_name, arg1);
+    p->m_type = arg2;
+    p->m_slotIdx = arg3;
+    arg0->m_resUsed = arg0->m_resUsed + 1;
 }
 
-// NON_MATCHING: 3/192 differ, 3 edits
-#ifdef NON_MATCHING
 extern "C" int X_func_0022B518(...) asm("func_0022B518");
 extern "C" float Xfi_func_0022E958(int) asm("func_0022E958");
 extern "C" int Xii_clear__6BedPfh(int) asm("clear__6BedPfh");
 extern "C" int Xii_func_00194588(int) asm("func_00194588");
-extern "C" int Xiii_func_00193E20_queue(int, int) asm("func_00193E20");
-extern "C" int Xiii_func_001BE564(int, int) asm("func_001BE564");
+extern "C" int Xiii_func_00193E20_queue(MnuBase *, int) asm("func_00193E20");
+extern "C" int Xiii_func_001BE564(void *, int) asm("func_001BE564");
 extern "C" int Xiii_getIndex__C6BedPfhPCc(int, int) asm("getIndex__C6BedPfhPCc");
 extern "C" int Xiii_setTop__6BedPfhPv(int, int) asm("setTop__6BedPfhPv");
-extern "C" int Xiiii_func_001BE524__10FileReaderP11FileReadReqi(int, int, int) asm("func_001BE524__10FileReaderP11FileReadReqi");
-extern "C" int Xiiii_memmove_queue(int, int, int) asm("memmove");
-extern "C" int Xiiiiii_loadTM2__10DogTexInfoPCcPvii(int, int, int, int, int) asm("loadTM2__10DogTexInfoPCcPvii");
+extern "C" int Xiiii_func_001BE524__10FileReaderP11FileReadReqi(void *, void *, int) asm("func_001BE524__10FileReaderP11FileReadReqi");
+extern "C" int Xiiii_memmove_queue(void *, void *, int) asm("memmove");
+extern "C" int Xiiiiii_loadTM2__10DogTexInfoPCcPvii(int, const char *, int, int, int) asm("loadTM2__10DogTexInfoPCcPvii");
 extern "C" char *Xpi_func_00194588(int) asm("func_00194588");
+#ifdef NON_MATCHING
 extern "C" void func_00193A1C(int arg0)
 {
     int first, second;
@@ -222,9 +229,9 @@ extern "C" void func_00193A1C(int arg0)
 loop_1:
     temp_s4 = M2C_FIELD(arg0, int *, 0x18);
     if (M2C_FIELD(arg0, int *, 4) & 4) {
-        if (Xiii_func_001BE564(arg0 + 0x68, 1) == 0) {
+        if (Xiii_func_001BE564((void *)(arg0 + 0x68), 1) == 0) {
             if (M2C_FIELD(arg0, int *, 4) & 8) {
-                Xiii_func_00193E20_queue(arg0, 0);
+                Xiii_func_00193E20_queue((MnuBase *)arg0, 0);
                 M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & ~8);
             } else {
                 temp_a0 = M2C_FIELD(temp_s4, int *, 8) & 0xF;
@@ -259,16 +266,16 @@ loop_1:
                     break;
                 case 4:
                     temp_s0_2 = M2C_FIELD(arg0, int *, 0xA4) + (M2C_FIELD(temp_s4, int *, 0xC) * 0x10);
-                    M2C_FIELD(temp_s0_2, int *, 8) = Xiiiiii_loadTM2__10DogTexInfoPCcPvii((int) M2C_FIELD(arg0, int *, 0xC), (int) (temp_s4 + 0x10), M2C_FIELD(temp_s4, int *, 0), 0, -1);
+                    M2C_FIELD(temp_s0_2, int *, 8) = Xiiiiii_loadTM2__10DogTexInfoPCcPvii((int) M2C_FIELD(arg0, int *, 0xC), (const char *)(temp_s4 + 0x10), M2C_FIELD(temp_s4, int *, 0), 0, -1);
                     M2C_FIELD(temp_s0_2, int *, 0) = (int) M2C_FIELD(temp_s4, int *, 0);
                     M2C_FIELD(temp_s0_2, int *, 4) = (int) M2C_FIELD(temp_s4, int *, 4);
                     break;
                 }
             }
             M2C_FIELD(temp_s4, int *, 0) = 0;
-            Xiii_func_00193E20_queue(arg0, 0);
+            Xiii_func_00193E20_queue((MnuBase *)arg0, 0);
             temp_a0_4 = M2C_FIELD(arg0, int *, 0x18);
-            Xiiii_memmove_queue(temp_a0_4, temp_a0_4 + 0x30, (M2C_FIELD(arg0, int *, 0x20) * 0x30) - 0x30);
+            Xiiii_memmove_queue((void *)temp_a0_4, (void *)(temp_a0_4 + 0x30), (M2C_FIELD(arg0, int *, 0x20) * 0x30) - 0x30);
             M2C_FIELD(arg0, int *, 0x20) = (int) (M2C_FIELD(arg0, int *, 0x20) - 1);
             M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & ~4);
             goto block_19;
@@ -299,11 +306,11 @@ block_19:
             M2C_FIELD(arg0, int *, 0x88) = (int) M2C_FIELD(temp_s4_2, int *, 0);
             temp_a1 = arg0 + 0x70;
             if (M2C_FIELD(temp_s4_2, int *, 8) & 0x10) {
-                Xiiii_func_001BE524__10FileReaderP11FileReadReqi((int) temp_a0_5, (int) temp_a1, 0);
+                Xiiii_func_001BE524__10FileReaderP11FileReadReqi((void *) temp_a0_5, (void *) temp_a1, 0);
                 M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 4);
                 goto loop_1;
             }
-            Xiiii_func_001BE524__10FileReaderP11FileReadReqi((int) temp_a0_5, (int) temp_a1, 1);
+            Xiiii_func_001BE524__10FileReaderP11FileReadReqi((void *) temp_a0_5, (void *) temp_a1, 1);
             M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 4);
         }
     }
@@ -312,93 +319,93 @@ block_19:
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00193A1C);
 #endif
 
-extern "C" int Xiii_func_00193E20(int, int) asm("func_00193E20");
-extern "C" int Xiiii_memmove(int, int, int) asm("memmove");
-extern "C" void func_00193D1C(int arg0, int arg1, int arg2)
+extern "C" int Xiii_func_00193E20(MnuBase *, int) asm("func_00193E20");
+extern "C" int Xiiii_memmove(void *, void *, int) asm("memmove");
+extern "C" void func_00193D1C(MnuBase *arg0, int arg1, int arg2)
 {
-    register int p PS2_REG("$3");
+    register MnuResSlot *p PS2_REG("$3");
     register int count PS2_REG("$4");
     int i;
 
-    count = M2C_FIELD(arg0, int *, 0x20);
+    count = arg0->m_resUsed;
     if (count <= 0) {
         return;
     }
-    p = M2C_FIELD(arg0, int *, 0x18);
+    p = arg0->m_resSlots;
     arg1 &= 0xF;
     i = 1;
-    if ((M2C_FIELD(p, int *, 8) & 0xF) == arg1) {
-        if (M2C_FIELD(p, int *, 0xC) == arg2) {
-            M2C_FIELD(arg0, int *, 4) |= 8;
+    if ((p->m_type & 0xF) == arg1) {
+        if (p->m_slotIdx == arg2) {
+            arg0->m_flags |= 8;
             return;
         }
     }
     goto test;
     do {
-        if ((M2C_FIELD(p, int *, 8) & 0xF) == arg1) {
-            if (M2C_FIELD(p, int *, 0xC) == arg2) {
+        if ((p->m_type & 0xF) == arg1) {
+            if (p->m_slotIdx == arg2) {
                 Xiii_func_00193E20(arg0, i);
-                p = M2C_FIELD(arg0, int *, 0x18) + i * 0x30;
-                Xiiii_memmove(p, p + 0x30, (M2C_FIELD(arg0, int *, 0x20) - i) * 0x30 - 0x30);
-                M2C_FIELD(arg0, int *, 0x20) = M2C_FIELD(arg0, int *, 0x20) - 1;
+                p = &arg0->m_resSlots[i];
+                Xiiii_memmove(p, p + 1, (arg0->m_resUsed - i) * 0x30 - 0x30);
+                arg0->m_resUsed = arg0->m_resUsed - 1;
                 return;
             }
         }
         i++;
     test:
         bool more = i < count;
-        p += 0x30;
+        p++;
         if (!more) break;
     } while (true);
 }
 
-extern "C" void func_00193DFC(int arg0)
+extern "C" void func_00193DFC(MnuBase *arg0)
 {
-    if ((*(int *)(int *)((char *)(arg0) + 0x20)) > 0) {
-        (*(int *)(int *)((char *)(arg0) + 0x20)) = 1;
-        (*(int *)(int *)((char *)(arg0) + 0x4)) = (int) ((*(int *)(int *)((char *)(arg0) + 0x4)) | 8);
+    if (arg0->m_resUsed > 0) {
+        arg0->m_resUsed = 1;
+        arg0->m_flags = arg0->m_flags | 8;
     }
 }
 
 
-extern "C" void func_00193E20(int arg0, int arg1)
+extern "C" void func_00193E20(MnuBase *arg0, int arg1)
 {
-    int temp_s0;
+    MnuResSlot *temp_s0;
     int temp_v0;
 
-    temp_s0 = M2C_FIELD(arg0, int *, 0x18) + (arg1 * 0x30);
-    temp_v0 = M2C_FIELD(temp_s0, int *, 0);
+    temp_s0 = &arg0->m_resSlots[arg1];
+    temp_v0 = temp_s0->m_unk00;
     if (temp_v0 != 0) {
         Xii_func_00194688(temp_v0);
-        M2C_FIELD(temp_s0, int *, 0) = 0;
+        temp_s0->m_unk00 = 0;
     }
-    M2C_FIELD(temp_s0, int *, 4) = 0;
-    M2C_FIELD(temp_s0, signed char *, 0x10) = 0;
-    M2C_FIELD(temp_s0, int *, 8) = 0;
-    M2C_FIELD(temp_s0, int *, 0xC) = -1;
+    temp_s0->m_unk04 = 0;
+    temp_s0->m_name[0] = 0;
+    temp_s0->m_type = 0;
+    temp_s0->m_slotIdx = -1;
 }
 
-extern "C" int func_00193E7C(int arg0, int arg1, int arg2)
+extern "C" int func_00193E7C(MnuBase *arg0, int arg1, int *arg2)
 {
-    if (M2C_FIELD(arg0, int *, 0x64) == 0) {
+    if (arg0->m_readBuf == 0) {
         return 0;
     }
-    if (M2C_FIELD(arg0, int *, 4) & 4) {
+    if (arg0->m_flags & 4) {
         return 0;
     }
 
     BedPfh pfh;
-    pfh.setTop(M2C_FIELD(arg0, void **, 0x64));
+    pfh.setTop(arg0->m_readBuf);
     int idx = pfh.getIndex((const char *)arg1);
     int size = pfh.getFileSize(idx);
     int result = X_func_00194588(size);
-    M2C_FIELD(arg0, int *, 0x84) = 0;
-    M2C_FIELD(arg0, int *, 0x80) = pfh.getFileOffset(idx);
-    M2C_FIELD(arg0, int *, 0x8C) = size;
-    M2C_FIELD(arg0, int *, 0x88) = result;
-    Xiii_func_001BE524__10FileReaderP11FileReadReqi(arg0 + 0x68, arg0 + 0x70, 0);
+    arg0->m_reqSeekWhence = 0;
+    arg0->m_reqSeekOff = pfh.getFileOffset(idx);
+    arg0->m_reqSize = size;
+    arg0->m_reqBuf = (void *)result;
+    Xiii_func_001BE524__10FileReaderP11FileReadReqi((int)arg0->m_fileReader, (int)arg0->m_fileReq, 0);
     if (arg2 != 0) {
-        (*(int *)arg2) = size;
+        *arg2 = size;
     }
     return result;
 }
@@ -411,26 +418,26 @@ extern "C" void func_00193F74(int arg0, int arg1)
 }
 
 
-extern "C" void func_00193F98(int arg0, int arg1)
+extern "C" void func_00193F98(MnuBase *arg0, int arg1)
 {
-    int temp_s0;
-    int temp_v0;
+    MnuModelSlot *temp_s0;
+    char *temp_v0;
 
-    temp_s0 = (arg1 << 5) + M2C_FIELD(arg0, int *, 0x94);
-    temp_v0 = M2C_FIELD(temp_s0, int *, 0);
+    temp_s0 = (MnuModelSlot *)((arg1 << 5) + (int)arg0->m_models);
+    temp_v0 = temp_s0->m_data;
     if (temp_v0 != 0) {
-        Xiii_func_00193F74((int) arg0, temp_v0);
-        Xii_func_00194688(M2C_FIELD(temp_s0, int *, 4));
-        Xiiii_memset(temp_s0, 0, 0x20);
+        Xiii_func_00193F74((int)arg0, (int)temp_v0);
+        Xii_func_00194688(temp_s0->m_unk04);
+        Xiiii_memset((int)temp_s0, 0, 0x20);
     }
 }
 
-extern "C" void func_00193FEC(int arg0, int arg1, int arg2)
+extern "C" void func_00193FEC(MnuBase *arg0, int arg1, int arg2)
 {
     register int temp_a1 PS2_REG("$5");
     register int temp_a2 PS2_REG("$6");
-    int temp_s3;
-    int temp_s1;
+    MnuAnimSlot *temp_s3;
+    MnuModelSlot *temp_s1;
     int temp_v0;
     int temp_a0;
     int var_s2;
@@ -438,16 +445,16 @@ extern "C" void func_00193FEC(int arg0, int arg1, int arg2)
     var_s2 = 0;
     temp_a1 = arg1 << 5;
     temp_a2 = arg2 << 4;
-    temp_s3 = M2C_FIELD(arg0, int *, 0x9C) + temp_a2;
-    temp_s1 = M2C_FIELD(arg0, int *, 0x94) + temp_a1;
-    temp_v0 = X_func_0022B6F8(*(int *)temp_s3, temp_a1, temp_a2);
-    *(short *)M2C_FIELD(temp_s1, int *, 0x10) = temp_v0;
+    temp_s3 = (MnuAnimSlot *)((char *)arg0->m_animSlots + temp_a2);
+    temp_s1 = (MnuModelSlot *)((char *)arg0->m_models + temp_a1);
+    temp_v0 = X_func_0022B6F8(temp_s3->m_unk00, temp_a1, temp_a2);
+    *(short *)temp_s1->m_unk10 = temp_v0;
     if (temp_v0 > 0) {
         do {
             short *out;
-            temp_a0 = X_func_0022B3D8(*(int *)temp_s1,
-                                      X_func_0022B730(*(int *)temp_s3, var_s2 & 0xFFFF));
-            out = (short *)(var_s2 * 2 + M2C_FIELD(temp_s1, int *, 0x10) + 2);
+            temp_a0 = X_func_0022B3D8(temp_s1->m_data,
+                                      X_func_0022B730(temp_s3->m_unk00, var_s2 & 0xFFFF));
+            out = (short *)(var_s2 * 2 + temp_s1->m_unk10 + 2);
             var_s2++;
             if (temp_a0 >= 0) {
                 out[0] = temp_a0;
@@ -458,40 +465,39 @@ extern "C" void func_00193FEC(int arg0, int arg1, int arg2)
     }
 }
 
-extern "C" int func_001940A4(int arg0, int arg1, int arg2)
+extern "C" int func_001940A4(MnuBase *arg0, int arg1, int arg2)
 {
-    char *p;
+    MnuResSlot *p;
     int i;
     int cap;
     int limit;
 
-    cap = *(int *)((char *)arg0 + 0x98);
+    cap = arg0->m_unk98;
     limit = arg2 + 1;
     if (cap < limit) {
         limit = cap;
     }
     for (; arg1 < limit; arg1++) {
-        if (*(int *)(int *)((arg1 << 5) + *(int *)((char *)arg0 + 0x94)) != 0) {
+        if (arg0->m_models[arg1].m_data != 0) {
             continue;
         }
         i = 0;
-        p = *(char **)((char *)arg0 + 0x18);
-        for (; i < *(int *)((char *)arg0 + 0x20); i++) {
-            if ((*(int *)(p + 8) & 0xF) == 1) {
-                if (*(int *)(p + 0xC) == arg1) {
+        p = arg0->m_resSlots;
+        for (; i < arg0->m_resUsed; i++) {
+            if ((p->m_type & 0xF) == 1) {
+                if (p->m_slotIdx == arg1) {
                     break;
                 }
             }
-            p += 0x30;
+            p++;
         }
-        if (i == *(int *)((char *)arg0 + 0x20)) {
+        if (i == arg0->m_resUsed) {
             return arg1;
         }
     }
     return -1;
 }
 
-// NON_MATCHING: 48/76 differ, 7 relocs differ (size 0x130, game 0x138), 28 edits
 #ifdef NON_MATCHING
 extern "C" int func_00194148(int arg0, int arg1, int arg2)
 {
@@ -540,111 +546,111 @@ extern "C" int func_00194148(int arg0, int arg1, int arg2)
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00194148);
 #endif
 
-extern "C" void func_00194280(int arg0, int arg1)
+extern "C" void func_00194280(MnuBase *arg0, int arg1)
 {
-    int temp_s0;
+    MnuAnimSlot *temp_s0;
     int temp_v0;
 
-    temp_s0 = (arg1 * 0x10) + M2C_FIELD(arg0, int *, 0x9C);
-    temp_v0 = (*(int *)(temp_s0));
+    temp_s0 = (MnuAnimSlot *)((arg1 * 0x10) + (int)arg0->m_animSlots);
+    temp_v0 = temp_s0->m_unk00;
     if (temp_v0 != 0) {
-        Xiii_func_00193F74((int) arg0, temp_v0);
-        Xiiii_memset(temp_s0, 0, 0x10);
+        Xiii_func_00193F74((int)arg0, temp_v0);
+        Xiiii_memset((int)temp_s0, 0, 0x10);
     }
 }
 
-extern "C" int func_001942CC(int arg0, int arg1, int arg2)
+extern "C" int func_001942CC(MnuBase *arg0, int arg1, int arg2)
 {
-    char *p;
+    MnuResSlot *p;
     int i;
     int cap;
     int limit;
 
-    cap = *(int *)((char *)arg0 + 0xA0);
+    cap = arg0->m_unkA0;
     limit = arg2 + 1;
     if (cap < limit) {
         limit = cap;
     }
     for (; arg1 < limit; arg1++) {
-        if (*(int *)(int *)((arg1 << 4) + *(int *)((char *)arg0 + 0x9C)) != 0) {
+        if (arg0->m_animSlots[arg1].m_unk00 != 0) {
             continue;
         }
         i = 0;
-        p = *(char **)((char *)arg0 + 0x18);
-        for (; i < *(int *)((char *)arg0 + 0x20); i++) {
-            if ((*(int *)(p + 8) & 0xF) == 2) {
-                if (*(int *)(p + 0xC) == arg1) {
+        p = arg0->m_resSlots;
+        for (; i < arg0->m_resUsed; i++) {
+            if ((p->m_type & 0xF) == 2) {
+                if (p->m_slotIdx == arg1) {
                     break;
                 }
             }
-            p += 0x30;
+            p++;
         }
-        if (i == *(int *)((char *)arg0 + 0x20)) {
+        if (i == arg0->m_resUsed) {
             return arg1;
         }
     }
     return -1;
 }
 
-extern "C" void func_00194370(int arg0, int arg1)
+extern "C" void func_00194370(MnuBase *arg0, int arg1)
 {
-    int temp_s0;
+    MnuTexSlot *temp_s0;
 
     if (X_func_001943D8() != 0) {
-        temp_s0 = (*(int *)(int *)((char *)(arg0) + 0xA4)) + (arg1 * 0x10);
-        X_releaseTex__10DogTexInfoi((*(int *)(int *)((char *)(arg0) + 0xC)), (*(int *)(int *)((char *)(temp_s0) + 0x8)));
-        X_func_00193F74(arg0, (*(int *)(int *)((char *)(temp_s0) + 0x0)));
-        (*(int *)(int *)((char *)(temp_s0) + 0x0)) = 0;
-        (*(int *)(int *)((char *)(temp_s0) + 0x4)) = 0;
-        (*(int *)(int *)((char *)(temp_s0) + 0x8)) = -1;
+        temp_s0 = &arg0->m_texSlots[arg1];
+        X_releaseTex__10DogTexInfoi(arg0->m_unk0C, temp_s0->m_texId);
+        X_func_00193F74(arg0, temp_s0->m_unk00);
+        temp_s0->m_unk00 = 0;
+        temp_s0->m_unk04 = 0;
+        temp_s0->m_texId = -1;
     }
 }
 
 
-extern "C" int func_001943D8(int arg0, int arg1)
+extern "C" int func_001943D8(MnuBase *arg0, int arg1)
 {
     int var_a0;
-    int temp_v1;
+    MnuTexSlot *temp_v1;
 
-    temp_v1 = (*(int *)(int *)((char *)(arg0) + 0xA4)) + (arg1 * 0x10);
+    temp_v1 = &arg0->m_texSlots[arg1];
     var_a0 = 0;
-    if ((*(int *)(int *)((char *)(temp_v1) + 0x0)) != 0) {
-        var_a0 = ~(*(int *)(int *)((char *)(temp_v1) + 0x8)) != 0;
+    if (temp_v1->m_unk00 != 0) {
+        var_a0 = ~temp_v1->m_texId != 0;
     }
     return var_a0;
 }
 
 
-extern "C" int func_00194404(int arg0, int arg1, int arg2)
+extern "C" int func_00194404(MnuBase *arg0, int arg1, int arg2)
 {
-    register int self PS2_REG("$17");
+    register MnuBase *self PS2_REG("$17");
     register int limit PS2_REG("$18");
     register int i PS2_REG("$5");
     register int count PS2_REG("$6");
-    int p;
+    MnuResSlot *p;
     int idx;
 
     idx = arg1;
     self = arg0;
     limit = arg2 + 1;
-    if (M2C_FIELD(self, int *, 0xA8) < limit) {
-        limit = M2C_FIELD(self, int *, 0xA8);
+    if (self->m_texSlotNum < limit) {
+        limit = self->m_texSlotNum;
     }
     while (idx < limit) {
-        if (Xiii_func_001943D8(self, idx) == 0) {
-            count = M2C_FIELD(self, int *, 0x20);
+        if (Xiii_func_001943D8((int)self, idx) == 0) {
+            count = self->m_resUsed;
             i = 0;
-            p = M2C_FIELD(self, int *, 0x18);
+            p = self->m_resSlots;
             while (i < count) {
-                if ((M2C_FIELD(p, int *, 8) & 0xF) == 4) {
-                    if (M2C_FIELD(p, int *, 0xC) == idx) {
+                if ((p->m_type & 0xF) == 4) {
+                    if (p->m_slotIdx == idx) {
                         break;
                     }
                 }
                 i++;
-                p += 0x30;
+                p++;
             }
-            if (i == M2C_FIELD(self, int *, 0x20)) {
+            if (i == self->m_resUsed) {
                 return idx;
             }
         }
@@ -653,6 +659,13 @@ extern "C" int func_00194404(int arg0, int arg1, int arg2)
     return -1;
 }
 
+struct PBookHeapEnt {
+    char *top;
+    unsigned int size;
+    int flags;
+    int unk;
+};
+
 extern "C" void func_001944D0()
 {
     int temp_v0;
@@ -660,9 +673,9 @@ extern "C" void func_001944D0()
     temp_v0 = X_alloc__9BedMemoryii((int)&D_006E9800, 0x100800, -1);
     D_0029BFB4 = temp_v0;
     X_memset(temp_v0, 0, 0x100800);
-    (*(int *)(int *)((char *)(D_0029BFB4) + 0x0)) = D_0029BFB4 + 0x800;
-    (*(int *)(int *)((char *)(D_0029BFB4) + 0x4)) = 0x100000;
-    (*(int *)(int *)((char *)(D_0029BFB4) + 0x8)) = 1;
+    ((PBookHeapEnt *)D_0029BFB4)->top = (char *)(D_0029BFB4 + 0x800);
+    ((PBookHeapEnt *)D_0029BFB4)->size = 0x100000;
+    ((PBookHeapEnt *)D_0029BFB4)->flags = 1;
 }
 
 
@@ -673,14 +686,6 @@ extern "C" void func_00194548()
         D_0029BFB4 = 0;
     }
 }
-
-
-struct PBookHeapEnt {
-    char *top;
-    unsigned int size;
-    int flags;
-    int unk;
-};
 
 extern "C" char *func_00194588(unsigned int size)
 {
@@ -731,23 +736,23 @@ extern "C" char *func_00194588(unsigned int size)
 
 // NON_MATCHING: 18/22 differ (size 0x58, game 0x5C), 5 edits
 #ifdef NON_MATCHING
-extern "C" void func_00194688(int arg0)
+extern "C" void func_00194688(char *arg0)
 {
     int i;
     int v;
-    char *p;
+    PBookHeapEnt *p;
 
     i = 0;
-    p = (char *)D_0029BFB4;
-    v = *(volatile int *)(p + 8);
-    while ((v & 3) != 3 || M2C_FIELD(p, int *, 0) != arg0) {
+    p = (PBookHeapEnt *)D_0029BFB4;
+    v = *(volatile int *)&p->flags;
+    while ((v & 3) != 3 || p->top != arg0) {
         i += 1;
         if (i >= 0x80)
             return;
-        p += 0x10;
-        v = M2C_FIELD(p, int *, 8);
+        p++;
+        v = p->flags;
     }
-    M2C_FIELD(p, int *, 8) = v & -3;
+    p->flags = v & -3;
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00194688);
@@ -791,23 +796,23 @@ extern "C" void func_001946E4()
     } while (i < 0x7F);
 }
 
-extern "C" void func_001947A4(PBookMnuMapName *arg0)
+extern "C" void func_001947A4(MnuMap *arg0)
 {
-    register PBookMnuMapName *self PS2_REG("$16") = arg0;
-    register char *p PS2_REG("$17") = (char *)self + 0x150;
+    register MnuMap *self PS2_REG("$16") = arg0;
+    register char *p PS2_REG("$17") = (char *)self->m_msgWin;
     int i = 1;
     Xii_func_00192AC0_ctor((int)self);
-    M2C_FIELD(self, int *, 0x10C) = (int)&vtbl_MnuMap_ctor;
+    *(int **)((char *)self + 0x10C) = &vtbl_MnuMap_ctor;
     do {
         Xii_func_0018330C_ctor((int)p);
         p += 0x3BC;
         i -= 1;
     } while (i != -1);
-    M2C_FIELD(self, int *, 0) = 4;
-    __builtin_memcpy(self->m_name, "data/mnurpk/mnumap.rpk", 0x17);
+    self->m_type = 4;
+    __builtin_memcpy(((PBookMnuMapName *)self)->m_name, "data/mnurpk/mnumap.rpk", 0x17);
     asm volatile("" ::: "memory");
-    M2C_FIELD(self, int *, 0x144) = i;
-    M2C_FIELD(self, int *, 0x148) = i;
+    self->m_unk144 = i;
+    self->m_unk148 = i;
 }
 
 extern "C" void X_MnuMap__vfunc_03_v1(void *) asm("MnuMap__vfunc_03");
@@ -836,262 +841,278 @@ extern "C" void MnuMap__vfunc_01(char *arg0, int arg1)
     }
 }
 
-extern "C" void MnuMap__vfunc_02(int arg0, int arg1)
+extern "C" void MnuMap__vfunc_02(MnuMap *arg0, int arg1)
 {
-    X_func_00192BA4(arg0, arg1, 0x1B, 0, 0, 0x1A);
-    M2C_FIELD(arg0, int *, 0x14) = 0;
-    ((m2c_v10C_50_i *)arg0)->v10();
-    X_func_001949BC(arg0);
+    X_func_00192BA4((int)arg0, arg1, 0x1B, 0, 0, 0x1A);
+    arg0->m_state = 0;
+    arg0->vfunc10();
+    X_func_001949BC((int)arg0);
 }
 
-extern "C" void MnuMap__vfunc_03(int arg0)
+extern "C" void MnuMap__vfunc_03(MnuMap *arg0)
 {
     int temp_v0;
 
-    temp_v0 = (*(int *)(int *)((char *)(arg0) + 0x144));
+    temp_v0 = arg0->m_unk144;
     if (temp_v0 != -1) {
-        X_func_001348B0((*(int *)(int *)((char *)(arg0) + 0x8)), temp_v0);
-        (*(int *)(int *)((char *)(arg0) + 0x144)) = -1;
+        X_func_001348B0(arg0->m_scene, temp_v0);
+        arg0->m_unk144 = -1;
     }
     X_func_00193868(arg0);
-    X_func_00187464(arg0 + 0x150);
+    X_func_00187464(arg0->m_msgWin);
     X_mnuBase__vfunc_03(arg0);
 }
 
 
 // NON_MATCHING: 296/383 differ, 33 relocs differ (size 0x5FC, game 0x5E8), 163 edits
 #ifdef NON_MATCHING
-#define INIT_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+struct MapAreaInfo {
+    int m_unk00[4];
+    int m_name;
+    int m_unk14;
+    int m_hasFloor;
+    int m_unk1C;
+    float m_offX;
+    float m_offY;
+    float m_offZ;
+};
+struct MapObjEnt {
+    int m_unk00;
+    int m_kind;
+    int m_pad[6];
+};
+struct MapVec4 {
+    union {
+        u_long128 q;
+        struct {
+            float x;
+            float y;
+            float z;
+            float w;
+        };
+    };
+};
 extern "C" int MapInitArea(int) asm("func_001C6C28");
-extern "C" int MapInitInfo(int, int) asm("func_0017EA44");
+extern "C" MapAreaInfo *MapInitInfo(int, int) asm("func_0017EA44");
 extern "C" int MapInitRoom(int) asm("func_001C6C38");
 extern "C" int MapInitFloor(int) asm("func_001DBD90");
 extern "C" int MapInitObjects(int, int, void *) asm("func_001DBDF0");
-extern "C" void MapInitConvert(int, void *) asm("func_00196878");
-extern "C" void MapInitSize(int, int) asm("func_001959EC");
-extern "C" void MapInitClamp(int, int) asm("func_0019586C");
+extern "C" void MapInitConvert(MnuMap *, void *) asm("func_00196878");
+extern "C" void MapInitSize(MnuMap *, void *) asm("func_001959EC");
+extern "C" void MapInitClamp(MnuMap *, void *) asm("func_0019586C");
 extern "C" int MapInitAlloc(int, int, int, int, int) asm("func_00134730");
 extern "C" int MapInitText(int, int, int) asm("func_0013555C");
 extern "C" void MapInitHeight(int, unsigned int, int *) asm("func_00134E18");
 extern "C" void MapInitDraw(int, int, int, int, int, int) asm("func_00135234__8MagSceneiiiii");
-extern "C" void MapInitUpdate(int) asm("func_00195A34");
-extern char MapInitEntries[] asm("D_0029BFB8");
+extern "C" void MapInitUpdate(MnuMap *) asm("func_00195A34");
+extern MnuMapEntry MapInitEntries[] asm("D_0029BFB8");
 struct MapInitMessage { char text[14]; };
-static inline void MapInitPlayer(int game, u_long128 *dst) { *dst = INIT_FIELD(game, u_long128 *, 0x22020); }
-static inline void MapInitTarget(int game, u_long128 *dst) { *dst = INIT_FIELD(game, u_long128 *, 0x22040); }
-static inline void MapInitRotation(int game, u_long128 *dst) { *dst = INIT_FIELD(game, u_long128 *, 0x22030); }
-struct MapInitView { char pad0[4]; int flags; char pad8[0x11C]; float backupX; float backupY; int frame; int limit; int progress; int fade; int fadeStep; int icon; char pad144[0x784]; int map; float playerX; float playerY; float angle; float targetX; float targetY; };
+static inline void MapInitPlayer(int game, u_long128 *dst) { *dst = *(u_long128 *)((char *)game + 0x22020); }
+static inline void MapInitTarget(int game, u_long128 *dst) { *dst = *(u_long128 *)((char *)game + 0x22040); }
+static inline void MapInitRotation(int game, u_long128 *dst) { *dst = *(u_long128 *)((char *)game + 0x22030); }
 static inline int MapInitEmpty(int scene, int x, int y, int mode, int res, MapInitMessage *text, int *height) { *text = *(MapInitMessage *)"N O     M A P"; *height = 0; return MapInitAlloc(scene, x, y, mode, res); }
-extern "C" void func_001949BC(int self)
+extern "C" void func_001949BC(MnuMap *self)
 {
-    struct { char list[0x1000]; u_long128 vector; int height; } stack;
-    MapInitView *view = (MapInitView *)self;
+    struct { MapObjEnt list[0x80]; MapVec4 vector; int height; } stack;
     int game = (int)&D_007812C0;
     int mapObj = PBookMapObject(game);
-    int info = MapInitInfo((int)&D_00298EE0, MapInitArea(game));
-    view->backupX = view->backupY = 0.0f;
+    MapAreaInfo *info = MapInitInfo((int)&D_00298EE0, MapInitArea(game));
+    self->m_unk124 = self->m_unk128 = 0.0f;
     int one = 1;
-    view->frame = one;
-    view->limit = one;
-    view->flags |= 2;
-    view->progress = -1;
-    view->fade = 0;
-    view->fadeStep = 0;
-    view->icon = 0;
+    self->m_unk12C = one;
+    self->m_unk130 = one;
+    self->m_flags |= 2;
+    self->m_unk134 = -1;
+    self->m_unk138 = 0;
+    self->m_unk13C = 0;
+    self->m_unk140 = 0;
     int room = MapInitRoom(game);
     int floor = MapInitFloor(mapObj);
-    INIT_FIELD(self, int *, 0x8C8) = (int)MapInitEntries;
-    int selected = INIT_FIELD(info, int *, 0x18) != 0 ? floor : 0;
-    if (INIT_FIELD(MapInitEntries, int *, 0) != -1) {
-        if (INIT_FIELD(MapInitEntries, int *, 0) != room || INIT_FIELD(MapInitEntries, int *, 4) != selected) {
+    self->m_unk8C8 = MapInitEntries;
+    int selected = info->m_hasFloor != 0 ? floor : 0;
+    if (MapInitEntries[0].m_room != -1) {
+        if (MapInitEntries[0].m_room != room || MapInitEntries[0].m_floor != selected) {
 scan_next:
-            INIT_FIELD(self, int *, 0x8C8) += 0x20;
-            int current = INIT_FIELD(self, int *, 0x8C8);
-            int id = INIT_FIELD(current, int *, 0);
+            self->m_unk8C8++;
+            MnuMapEntry *current = self->m_unk8C8;
+            int id = current->m_room;
             if (id != -1) {
                 if (id != room) goto scan_next;
-                if (INIT_FIELD(current, int *, 4) != selected) goto scan_next;
+                if (current->m_floor != selected) goto scan_next;
             }
         }
     }
-    INIT_FIELD(self, int *, 0x110) = INIT_FIELD(self, int *, 0x8C8);
-    if (INIT_FIELD(INIT_FIELD(self, int *, 0x8C8), int *, 0) == -1) {
-        view->flags |= 0x01000000;
+    self->m_unk110 = self->m_unk8C8;
+    if (self->m_unk8C8->m_room == -1) {
+        self->m_flags |= 0x01000000;
     }
-    int entry = INIT_FIELD(self, int *, 0x110);
-    INIT_FIELD(self, int *, 0x118) = 0x200;
-    INIT_FIELD(self, int *, 0x114) = INIT_FIELD(entry, int *, 0x18) << 7;
-    int count = MapInitObjects(mapObj, INIT_FIELD(entry, int *, 4), stack.list);
-    view->targetY = view->playerX = view->playerY = view->targetX = -100000.0f;
-    if (!(view->flags & 0x01000000)) {
-        char *object = stack.list;
-        for (int i = 0; i < count; ++i, object += 0x20) {
-                int kind = INIT_FIELD(object, int *, 4);
+    MnuMapEntry *entry = self->m_unk110;
+    self->m_unk118 = 0x200;
+    self->m_unk114 = entry->m_tileCount << 7;
+    int count = MapInitObjects(mapObj, entry->m_floor, stack.list);
+    self->m_unk8DC = self->m_unk8CC = self->m_unk8D0 = self->m_unk8D8 = -100000.0f;
+    if (!(self->m_flags & 0x01000000)) {
+        MapObjEnt *object = stack.list;
+        for (int i = 0; i < count; ++i, ++object) {
+                int kind = object->m_kind;
                 if (kind == 1) {
-                    MapInitPlayer((int)&D_007812C0, &stack.vector);
+                    MapInitPlayer((int)&D_007812C0, &stack.vector.q);
                     MapInitConvert(self, &stack.vector);
-                    view->playerX = INIT_FIELD(&stack.vector, float *, 0);
-                    view->playerY = INIT_FIELD(&stack.vector, float *, 8);
+                    self->m_unk8CC = stack.vector.x;
+                    self->m_unk8D0 = stack.vector.z;
                 } else if (kind == 2) {
-                    MapInitTarget((int)&D_007812C0, &stack.vector);
+                    MapInitTarget((int)&D_007812C0, &stack.vector.q);
                     MapInitConvert(self, &stack.vector);
-                    view->targetX = INIT_FIELD(&stack.vector, float *, 0);
-                    view->targetY = INIT_FIELD(&stack.vector, float *, 8);
+                    self->m_unk8D8 = stack.vector.x;
+                    self->m_unk8DC = stack.vector.z;
                 }
         }
-        MapInitRotation((int)&D_007812C0, &stack.vector);
-        float angle = INIT_FIELD(&stack.vector, float *, 4) + 3.1415923f;
-        view->angle = angle;
+        MapInitRotation((int)&D_007812C0, &stack.vector.q);
+        float angle = stack.vector.y + 3.1415923f;
+        self->m_unk8D4 = angle;
         if (angle < -3.1415923f) {
             do { angle += 6.2831845f; } while (angle < -3.1415923f);
-            view->angle = angle;
+            self->m_unk8D4 = angle;
         }
-        angle = view->angle;
+        angle = self->m_unk8D4;
         if (angle >= 3.1415923f) {
             float next;
             do { next = angle - 6.2831845f; angle = next; } while (next >= 3.1415923f);
-            view->angle = next;
+            self->m_unk8D4 = next;
         }
     }
-    int position = self + 0x11C;
+    float *position = &self->m_unk11C;
     MapInitSize(self, position);
-    INIT_FIELD(position, float *, 0) = view->playerX - INIT_FIELD(position, float *, 0) * 0.5f;
-    INIT_FIELD(self, float *, 0x120) = view->playerY - INIT_FIELD(self, float *, 0x120) * 0.5f;
+    *position = self->m_unk8CC - *position * 0.5f;
+    self->m_unk120 = self->m_unk8D0 - self->m_unk120 * 0.5f;
     MapInitClamp(self, position);
-    if (!(view->flags & 0x01000000)) {
+    if (!(self->m_flags & 0x01000000)) {
         stack.height = 0;
-        int handle = MapInitAlloc(INIT_FIELD(self, int *, 8), 0x100, 0x20, 0, -1);
-        INIT_FIELD(self, int *, 0x144) = handle;
-        int width = MapInitText(INIT_FIELD(self, int *, 8), handle, INIT_FIELD(info, int *, 0x10));
-        MapInitHeight(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), &stack.height);
-        Xiiuiii_func_00134A00(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), (0x200 - width) / 2, 0x188 - stack.height, 0x7FFF);
-        Xiiuii_func_00134AB8(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 0x100, 0x20);
-        Xiiuiiii_func_00134CD0(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 0, 0, 0x100, 0x20);
-        Xiiui_func_00135494(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 1);
-        Xiiui_func_00135418(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 0);
-        Xiiu_func_00135594(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144));
-        Xiiui_func_001351B0(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 1);
-        MapInitDraw(INIT_FIELD(self, int *, 8), INIT_FIELD(self, int *, 0x144), 0, 0, INIT_FIELD(info, int *, 0x10), 0);
-        if (view->flags & 0x01000000) goto no_map;
+        int handle = MapInitAlloc(self->m_scene, 0x100, 0x20, 0, -1);
+        self->m_unk144 = handle;
+        int width = MapInitText(self->m_scene, handle, info->m_name);
+        MapInitHeight(self->m_scene, (unsigned int)self->m_unk144, &stack.height);
+        Xiiuiii_func_00134A00(self->m_scene, (unsigned int)self->m_unk144, (0x200 - width) / 2, 0x188 - stack.height, 0x7FFF);
+        Xiiuii_func_00134AB8(self->m_scene, (unsigned int)self->m_unk144, 0x100, 0x20);
+        Xiiuiiii_func_00134CD0(self->m_scene, (unsigned int)self->m_unk144, 0, 0, 0x100, 0x20);
+        Xiiui_func_00135494(self->m_scene, (unsigned int)self->m_unk144, 1);
+        Xiiui_func_00135418(self->m_scene, (unsigned int)self->m_unk144, 0);
+        Xiiu_func_00135594(self->m_scene, (unsigned int)self->m_unk144);
+        Xiiui_func_001351B0(self->m_scene, (unsigned int)self->m_unk144, 1);
+        MapInitDraw(self->m_scene, self->m_unk144, 0, 0, info->m_name, 0);
+        if (self->m_flags & 0x01000000) goto no_map;
     } else {
 no_map:
-        int handle = MapInitEmpty(INIT_FIELD(self, int *, 8), 0x100, 0x20, 0, -1, (MapInitMessage *)stack.list, &stack.height);
-        INIT_FIELD(self, int *, 0x144) = handle;
-        int width = MapInitText(INIT_FIELD(self, int *, 8), handle, (int)stack.list);
-        MapInitHeight(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), &stack.height);
-        Xiiuiii_func_00134A00(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), (0x200 - width) / 2, 0xF0 - stack.height / 2, 0x7FFF);
-        Xiiuii_func_00134AB8(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 0x100, 0x20);
-        Xiiuiiii_func_00134CD0(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 0, 0, 0x100, 0x20);
-        Xiiui_func_00135494(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 1);
-        Xiiui_func_00135418(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 0);
-        Xiiu_func_00135594(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144));
-        Xiiui_func_001351B0(INIT_FIELD(self, int *, 8), INIT_FIELD(self, unsigned int *, 0x144), 1);
-        MapInitDraw(INIT_FIELD(self, int *, 8), INIT_FIELD(self, int *, 0x144), 0, 0, (int)stack.list, 0);
+        int handle = MapInitEmpty(self->m_scene, 0x100, 0x20, 0, -1, (MapInitMessage *)stack.list, &stack.height);
+        self->m_unk144 = handle;
+        int width = MapInitText(self->m_scene, handle, (int)stack.list);
+        MapInitHeight(self->m_scene, (unsigned int)self->m_unk144, &stack.height);
+        Xiiuiii_func_00134A00(self->m_scene, (unsigned int)self->m_unk144, (0x200 - width) / 2, 0xF0 - stack.height / 2, 0x7FFF);
+        Xiiuii_func_00134AB8(self->m_scene, (unsigned int)self->m_unk144, 0x100, 0x20);
+        Xiiuiiii_func_00134CD0(self->m_scene, (unsigned int)self->m_unk144, 0, 0, 0x100, 0x20);
+        Xiiui_func_00135494(self->m_scene, (unsigned int)self->m_unk144, 1);
+        Xiiui_func_00135418(self->m_scene, (unsigned int)self->m_unk144, 0);
+        Xiiu_func_00135594(self->m_scene, (unsigned int)self->m_unk144);
+        Xiiui_func_001351B0(self->m_scene, (unsigned int)self->m_unk144, 1);
+        MapInitDraw(self->m_scene, self->m_unk144, 0, 0, (int)stack.list, 0);
     }
-    Xiiiii_func_0019397C(self, (int)"map01_tcc.tm2", 4, 0);
-    Xiiiii_func_0019397C(self, (int)"map_bg_tcc.tm2", 4, 1);
+    Xiiiii_func_0019397C((int)self, (int)"map01_tcc.tm2", 4, 0);
+    Xiiiii_func_0019397C((int)self, (int)"map_bg_tcc.tm2", 4, 1);
     MapInitUpdate(self);
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_001949BC);
 #endif
 
-extern "C" void func_00194FA4(int arg0)
+extern "C" void func_00194FA4(MnuMap *arg0) throw()
 {
-    Xiiff_func_00192E94(arg0, 256.0f, 1.57079616189003f);
-    Xii_func_0019381C(arg0);
+    Xiiff_func_00192E94((int)arg0, 256.0f, 1.57079616189003f);
+    Xii_func_0019381C((int)arg0);
 }
 
-// NON_MATCHING: 18/275 differ, 24 edits
-#ifdef NON_MATCHING
 extern "C" int Map05_Xii_func_00131550(int) asm("func_00131550");
-extern "C" int Map05_Xii_func_0018741C(int) asm("func_0018741C");
-extern "C" int Map05_Xii_func_00192F3C(int) asm("func_00192F3C");
-extern "C" int Map05_Xii_func_00193A1C(int) asm("func_00193A1C");
-extern "C" int Map05_Xii_func_00193DFC(int) asm("func_00193DFC");
-extern "C" int Map05_Xii_func_00194FA4(int) asm("func_00194FA4");
-extern "C" int Map05_Xii_func_00195A34(int) asm("func_00195A34");
-extern "C" int Map05_Xii_func_00196760(int) asm("func_00196760");
+extern "C" int Map05_Xii_func_0018741C(void *) asm("func_0018741C");
+extern "C" int Map05_Xii_func_00192F3C(MnuMap *) asm("func_00192F3C");
+extern "C" int Map05_Xii_func_00193A1C(MnuMap *) asm("func_00193A1C");
+extern "C" int Map05_Xii_func_00193DFC(MnuMap *) asm("func_00193DFC");
+extern "C" int Map05_Xii_func_00194FA4(MnuMap *) throw() asm("func_00194FA4");
+extern "C" int Map05_Xii_func_00195A34(MnuMap *) asm("func_00195A34");
+extern "C" int Map05_Xii_func_00196760(MnuMap *) asm("func_00196760");
 extern "C" int Map05_Xiii_func_0017F8FC(int, int) asm("func_0017F8FC");
-extern "C" int Map05_Xiii_func_00194370(int, int) asm("func_00194370");
-extern "C" int Map05_Xiii_func_001943D8(int, int) asm("func_001943D8");
-extern "C" int Map05_Xiii_func_00195430(int, int) asm("func_00195430");
-extern "C" int Map05_Xiii_func_0019586C(int, int) asm("func_0019586C");
-extern "C" int Map05_Xiii_func_00195B78(int, int) asm("func_00195B78");
+extern "C" int Map05_Xiii_func_00194370(MnuMap *, int) asm("func_00194370");
+extern "C" int Map05_Xiii_func_001943D8(MnuMap *, int) asm("func_001943D8");
+extern "C" int Map05_Xiii_func_00195430(MnuMap *, int) asm("func_00195430");
+extern "C" int Map05_Xiii_func_0019586C(MnuMap *, float *) asm("func_0019586C");
+extern "C" int Map05_Xiii_func_00195B78(MnuMap *, int) asm("func_00195B78");
 extern "C" int Map05_Xiiiii_func_00131184(int, int, int, int) asm("func_00131184");
 extern "C" int Map05_Xiiiii_func_001311BC(int, int, int, int) asm("func_001311BC");
 extern "C" int Map05_Xiiui_func_001351B0(int, unsigned int, int) asm("func_001351B0");
-struct Map05VTable18 { char pad[268]; virtual void v1(); virtual void v2(); virtual int call(); };
 static inline bool Map05Ready(int object) { return Map05_Xii_func_00131550(object) >= 5; }
-extern "C" int MnuMap__vfunc_05(int arg0, int arg1)
+extern "C" int MnuMap__vfunc_05(MnuMap *arg0, int arg1)
 {
     float baseX;
     float baseY;
-    register float var_f0 PS2_REG("$f0");
-    register float var_f1 PS2_REG("$f1");
     int temp_a0;
-    int temp_v0;
-    int temp_v1;
+    register int temp_v0 PS2_REG("$2");
+    register int temp_v1 PS2_REG("$3");
     int temp_v1_3;
     int temp_v1_4;
     int temp_v1_6;
     int temp_v1_7;
     int var_a0;
-    int var_a1;
     int var_s1;
     int var_s2;
-    int var_v0;
     unsigned int temp_v1_2;
     unsigned int temp_v1_5;
     unsigned int var_v0_2;
     int transitionDir;
-    int temp_v0_2;
-    int var_v0_3;
+    MnuMapEntry *var_v0_3;
 
-    temp_v1 = M2C_FIELD(arg0, int *, 0x12C);
-    temp_a0 = M2C_FIELD(arg0, int *, 0x130);
+    temp_v1 = arg0->m_unk12C;
+    temp_a0 = arg0->m_unk130;
     var_s2 = 0;
     if (temp_v1 < temp_a0) {
         temp_v0 = temp_v1 + 1;
-        M2C_FIELD(arg0, int *, 0x12C) = temp_v0;
+        asm("" : "+r"(temp_v0));
+        arg0->m_unk12C = temp_v0;
         if (temp_v0 == temp_a0) {
-            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & 0xFFF9FFFD);
+            arg0->m_flags = arg0->m_flags & 0xFFF9FFFD;
         }
     }
-    temp_v1_2 = M2C_FIELD(arg0, unsigned int *, 0x134);
+    temp_v1_2 = (unsigned int)arg0->m_unk134;
     if (temp_v1_2 < 0x12U) {
-        M2C_FIELD(arg0, unsigned int *, 0x134) = (unsigned int) (temp_v1_2 + 1);
+        arg0->m_unk134 = (int)(temp_v1_2 + 1);
     }
-    temp_v1_3 = M2C_FIELD(arg0, int *, 0x13C);
+    temp_v1_3 = arg0->m_unk13C;
     if (temp_v1_3 != 0) {
         var_a0 = 0xF;
-        temp_v1_4 = M2C_FIELD(arg0, int *, 0x138) + temp_v1_3;
-        M2C_FIELD(arg0, int *, 0x138) = temp_v1_4;
+        temp_v1_4 = arg0->m_unk138 + temp_v1_3;
+        arg0->m_unk138 = temp_v1_4;
         if (temp_v1_4 < 0x10) {
             var_a0 = (temp_v1_4 < 0) ? 0 : temp_v1_4;
         }
-        M2C_FIELD(arg0, int *, 0x138) = var_a0;
-        if ((unsigned int) (var_a0 - 1) >= 0xEU) {
-            M2C_FIELD(arg0, int *, 0x13C) = 0;
+        arg0->m_unk138 = var_a0;
+        if ((unsigned int)(var_a0 - 1) >= 0xEU) {
+            arg0->m_unk13C = 0;
         }
     }
     Map05_Xii_func_00193A1C(arg0);
-    temp_v1_5 = M2C_FIELD(arg0, unsigned int *, 0x14);
-    M2C_FIELD(arg0, unsigned int *, 0x10) = temp_v1_5;
+    temp_v1_5 = (unsigned int)arg0->m_state;
+    arg0->m_unk10 = (int)temp_v1_5;
     switch (temp_v1_5) {
     case 0:
-        if (Map05Ready(M2C_FIELD(arg0, int *, 8))) {
-            M2C_FIELD(arg0, unsigned int *, 0x14) = 1U;
+        if (Map05Ready(arg0->m_scene)) {
+            arg0->m_state = 1;
         }
         break;
     case 1:
         if (Map05_Xiii_func_001943D8(arg0, 1) != 0) {
-                if (Map05_Xiii_func_001943D8(arg0, 0) != 0) {
+            if (Map05_Xiii_func_001943D8(arg0, 0) != 0) {
                 Map05_Xii_func_00194FA4(arg0);
-                Map05_Xiiiii_func_00131184((int) M2C_FIELD(arg0, int *, 8), 0xF, 7, 0);
-                M2C_FIELD(arg0, unsigned int *, 0x134) = 0U;
-                Map05_Xiii_func_0017F8FC((int) (int)&D_007B2580, 5);
-                M2C_FIELD(arg0, unsigned int *, 0x14) = 2U;
+                Map05_Xiiiii_func_00131184(arg0->m_scene, 0xF, 7, 0);
+                arg0->m_unk134 = 0;
+                Map05_Xiii_func_0017F8FC((int)&D_007B2580, 5);
+                arg0->m_state = 2;
                 break;
             }
         } else {
@@ -1099,9 +1120,9 @@ extern "C" int MnuMap__vfunc_05(int arg0, int arg1)
         }
         break;
     case 2:
-        if (Map05Ready(M2C_FIELD(arg0, int *, 8))) {
-                if ((int) M2C_FIELD(arg0, unsigned int *, 0x134) >= 0x12) {
-                if (M2C_FIELD(arg0, int *, 0x20) == 0) {
+        if (Map05Ready(arg0->m_scene)) {
+            if (arg0->m_unk134 >= 0x12) {
+                if (arg0->m_resUsed == 0) {
                     transitionDir = 1;
                     var_v0_2 = 3;
                     goto block_48;
@@ -1111,121 +1132,114 @@ extern "C" int MnuMap__vfunc_05(int arg0, int arg1)
         }
         break;
     case 3:
-        if (M2C_FIELD(arg0, int *, 0x13C) == 0) {
-            Map05_Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x144), 0);
-            Map05_Xii_func_0018741C(arg0 + 0x150);
+        if (arg0->m_unk13C == 0) {
+            Map05_Xiiui_func_001351B0(arg0->m_scene, (unsigned int)arg0->m_unk144, 0);
+            Map05_Xii_func_0018741C(arg0->m_msgWin);
             Map05_Xiii_func_00195B78(arg0, 1);
-            int flags = M2C_FIELD(arg0, int *, 4) & ~2;
-            M2C_FIELD(arg0, unsigned int *, 0x14) = 4U;
-            M2C_FIELD(arg0, int *, 4) = flags;
+            int flags = arg0->m_flags & ~2;
+            arg0->m_state = 4;
+            arg0->m_flags = flags;
         }
         break;
     case 4:
         if (Map05_Xiii_func_00195430(arg0, arg1) == 0) {
-            Map05_Xiiiii_func_001311BC((int) M2C_FIELD(arg0, int *, 8), 0xF, 7, 0);
-            Map05_Xiii_func_0017F8FC((int) (int)&D_007B2580, 2);
-            Map05_Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x144), 1);
+            Map05_Xiiiii_func_001311BC(arg0->m_scene, 0xF, 7, 0);
+            Map05_Xiii_func_0017F8FC((int)&D_007B2580, 2);
+            Map05_Xiiui_func_001351B0(arg0->m_scene, (unsigned int)arg0->m_unk144, 1);
             Map05_Xiii_func_00195B78(arg0, 0);
-            M2C_FIELD(arg0, unsigned int *, 0x14) = 5U;
+            arg0->m_state = 5;
         }
         break;
     case 5:
-        if (Map05Ready(M2C_FIELD(arg0, int *, 8))) {
-            M2C_FIELD(arg0, unsigned int *, 0x14) = 0xAU;
+        if (Map05Ready(arg0->m_scene)) {
+            arg0->m_state = 0xA;
         }
         break;
     case 6:
         Map05_Xii_func_00193DFC(arg0);
-        Map05_Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x144), 1);
-        M2C_FIELD(arg0, int *, 0x13C) = -1;
-        M2C_FIELD(arg0, unsigned int *, 0x14) = 7U;
+        Map05_Xiiui_func_001351B0(arg0->m_scene, (unsigned int)arg0->m_unk144, 1);
+        arg0->m_unk13C = -1;
+        arg0->m_state = 7;
         break;
     case 7:
-        if (M2C_FIELD(arg0, int *, 0x138) == 0) {
-                if (M2C_FIELD(arg0, int *, 0x20) == 0) {
-                temp_v1_6 = M2C_FIELD(arg0, int *, 4);
+        if (arg0->m_unk138 == 0) {
+            if (arg0->m_resUsed == 0) {
+                temp_v1_6 = arg0->m_flags;
                 if (temp_v1_6 & 0x200000) {
-                    register float *position PS2_REG("$5") = (float *)(arg0 + 0x11C);
-                    baseX = M2C_FIELD(arg0, float *, 0x8CC);
-                    baseY = M2C_FIELD(arg0, float *, 0x8D0);
+                    baseX = arg0->m_unk8CC;
+                    baseY = arg0->m_unk8D0;
+                    register float *position PS2_REG("$5") = &arg0->m_unk11C;
                     if (!(temp_v1_6 & 0x10000)) {
-                        var_f0 = 384.0f;
-                        var_f1 = 256.0f;
+                        *position = baseX - 384.0f;
+                        arg0->m_unk120 = baseY - 256.0f;
                     } else {
-                        var_f0 = 192.0f;
-                        var_f1 = 128.0f;
+                        *position = baseX - 192.0f;
+                        arg0->m_unk120 = baseY - 128.0f;
                     }
-                    *position = baseX - var_f0;
-                    M2C_FIELD(arg0, float *, 0x120) = (float) (baseY - var_f1);
-                    Map05_Xiii_func_0019586C(arg0, (int)position);
+                    Map05_Xiii_func_0019586C(arg0, position);
                 } else {
                     var_s1 = 0;
-                    if (M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 0x18) > 0) {
-                        var_a1 = 2;
+                    if (arg0->m_unk110->m_tileCount > 0) {
                         do {
+                            Map05_Xiii_func_00194370(arg0, var_s1 + 2);
                             var_s1 += 1;
-                            Map05_Xiii_func_00194370(arg0, var_a1);
-                            var_a1 = var_s1 + 2;
-                        } while (var_s1 < M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 0x18));
+                        } while (var_s1 < arg0->m_unk110->m_tileCount);
                     }
-                    temp_v1_7 = M2C_FIELD(arg0, int *, 4);
+                    temp_v1_7 = arg0->m_flags;
                     if (temp_v1_7 & 0x80000) {
-                        var_v0_3 = M2C_FIELD(arg0, int *, 0x110) + 0x20;
+                        var_v0_3 = arg0->m_unk110 + 1;
                     } else if (temp_v1_7 & 0x100000) {
-                        var_v0_3 = M2C_FIELD(arg0, int *, 0x110) - 0x20;
+                        var_v0_3 = arg0->m_unk110 - 1;
                     } else {
                         goto page_unchanged;
                     }
-                    M2C_FIELD(arg0, int *, 0x110) = var_v0_3;
+                    arg0->m_unk110 = var_v0_3;
 page_unchanged:;
                 }
                 Map05_Xii_func_00195A34(arg0);
-                M2C_FIELD(arg0, unsigned int *, 0x14) = 8U;
+                arg0->m_state = 8;
                 break;
             }
         }
         break;
     case 8:
-        if (M2C_FIELD(arg0, int *, 0x20) == 0) {
+        if (arg0->m_resUsed == 0) {
             transitionDir = 1;
             var_v0_2 = 9;
 block_48:
-                    M2C_FIELD(arg0, unsigned int *, 0x14) = var_v0_2;
-                    M2C_FIELD(arg0, int *, 0x13C) = transitionDir;
+            arg0->m_unk13C = transitionDir;
+            arg0->m_state = (int)var_v0_2;
         }
         break;
     case 9:
-        if (M2C_FIELD(arg0, int *, 0x138) == 0xF) {
-            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & 0xFFC7FFFD);
+        if (arg0->m_unk138 == 0xF) {
+            arg0->m_flags = arg0->m_flags & 0xFFC7FFFD;
             if (Map05_Xii_func_00196760(arg0) != 0) {
-                Map05_Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x144), 0);
+                Map05_Xiiui_func_001351B0(arg0->m_scene, (unsigned int)arg0->m_unk144, 0);
             }
-            M2C_FIELD(arg0, unsigned int *, 0x14) = 4U;
+            arg0->m_state = 4;
             break;
         }
         break;
     case 10:
         var_s2 = 1;
         Map05_Xii_func_00192F3C(arg0);
-        ((Map05VTable18 *)(arg0))->call();
+        arg0->vfunc03();
         break;
     }
     return var_s2;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuMap__vfunc_05);
-#endif
 
 // NON_MATCHING: 204/261 differ, 14 relocs differ (size 0x414, game 0x43C), 110 edits
 #ifdef NON_MATCHING
 extern "C" float Xfi_getLeftY__C6BedPad(int) asm("getLeftY__C6BedPad");
-extern "C" int Xii_func_00195A34(int) asm("func_00195A34");
-extern "C" int Xii_func_00196760(int) asm("func_00196760");
-extern "C" int Xiii_func_0019586C(int, int) asm("func_0019586C");
-extern int D_0029BFB8;
+extern "C" int Xii_func_00195A34(MnuMap *) asm("func_00195A34");
+extern "C" int Xii_func_00196760(MnuMap *) asm("func_00196760");
+extern "C" int Xiii_func_0019586C(MnuMap *, void *) asm("func_0019586C");
+extern MnuMapEntry D_0029BFB8[];
 extern "C" void PBookMoveSoundC(int, int) asm("func_0017F8FC");
 static inline void PBookMoveSound(int sound, int code) { PBookMoveSoundC(sound, code); }
-extern "C" int func_00195430(int arg0, int arg1)
+extern "C" int func_00195430(MnuMap *arg0, BedPad *arg1)
 {
     struct { float sp0; float sp4; } stack;
     float temp_f0;
@@ -1248,43 +1262,43 @@ extern "C" int func_00195430(int arg0, int arg1)
     unsigned short temp_v1;
     unsigned int temp_v0_3;
     unsigned int temp_v1_2;
-    int temp_a0;
-    int temp_v0;
+    MnuMapEntry *temp_a0;
+    MnuMapEntry *temp_v0;
 
-    Xii_func_001874AC(arg0 + 0x150);
-    temp_a1 = M2C_FIELD(arg0, int *, 4);
+    Xii_func_001874AC((int)arg0->m_msgWin);
+    temp_a1 = arg0->m_flags;
     if (!(temp_a1 & 2)) {
-        temp_v1 = M2C_FIELD(arg1, unsigned short *, 0x7A);
+        temp_v1 = arg1->m_trigger;
         if (PBookButton(temp_v1, 13) || PBookButton(temp_v1, 0)) {
-            M2C_FIELD(arg0, int *, 4) = temp_a1 | 2;
+            arg0->m_flags = temp_a1 | 2;
             return 0;
         }
         if (PBookButton(temp_v1, 11)) {
-            temp_v0 = M2C_FIELD(arg0, int *, 0x110);
-            if (M2C_FIELD(temp_v0, int *, 0) != M2C_FIELD(temp_v0, int *, 0x20) || (temp_a1 & 0x01000000)) goto fail;
+            temp_v0 = arg0->m_unk110;
+            if (temp_v0[0].m_room != temp_v0[1].m_room || (temp_a1 & 0x01000000)) goto fail;
             var_v0 = 0x80002;
             goto turn;
         }
         if (PBookButton(temp_v1, 10)) {
-            temp_a0 = M2C_FIELD(arg0, int *, 0x110);
-            if ((unsigned int)&D_0029BFB8 >= (unsigned int)temp_a0 || M2C_FIELD(temp_a0, int *, 0) != M2C_FIELD(temp_a0, int *, -0x20) || (temp_a1 & 0x01000000)) goto fail;
+            temp_a0 = arg0->m_unk110;
+            if ((unsigned int)D_0029BFB8 >= (unsigned int)temp_a0 || temp_a0[0].m_room != temp_a0[-1].m_room || (temp_a1 & 0x01000000)) goto fail;
             var_v0 = 0x100002;
 turn:
-        M2C_FIELD(arg0, int *, 0x14) = 6;
-        M2C_FIELD(arg0, int *, 4) = temp_a1 | var_v0;
+        arg0->m_state = 6;
+        arg0->m_flags = temp_a1 | var_v0;
         PBookMoveSound((int)&D_007B2580, 4);
         goto update;
         } else {
             if ((temp_v1 >> 15) != 0) {
                 if (temp_a1 & 0x01000000) goto fail;
-                temp_f2 = M2C_FIELD(arg0, float *, 0x11C);
-                temp_f3 = M2C_FIELD(arg0, float *, 0x120);
+                temp_f2 = arg0->m_unk11C;
+                temp_f3 = arg0->m_unk120;
                 temp_v0_2 = (temp_a1 | 0x20002) ^ 0x10000;
-                M2C_FIELD(arg0, int *, 0x130) = 0x12;
-                M2C_FIELD(arg0, int *, 0x12C) = 0;
-                M2C_FIELD(arg0, int *, 4) = temp_v0_2;
-                M2C_FIELD(arg0, float *, 0x124) = temp_f2;
-                M2C_FIELD(arg0, float *, 0x128) = temp_f3;
+                arg0->m_unk130 = 0x12;
+                arg0->m_unk12C = 0;
+                arg0->m_flags = temp_v0_2;
+                arg0->m_unk124 = temp_f2;
+                arg0->m_unk128 = temp_f3;
                 if (!(temp_v0_2 & 0x10000)) {
                     var_f0 = -192.0f;
                     var_f1 = -128.0f;
@@ -1292,16 +1306,16 @@ turn:
                     var_f0 = 192.0f;
                     var_f1 = 128.0f;
                 }
-                M2C_FIELD(arg0, float *, 0x11C) = (float) (temp_f2 + var_f0);
-                M2C_FIELD(arg0, float *, 0x120) = (float) (temp_f3 + var_f1);
-                Xiii_func_0019586C(arg0, arg0 + 0x11C);
+                arg0->m_unk11C = temp_f2 + var_f0;
+                arg0->m_unk120 = temp_f3 + var_f1;
+                Xiii_func_0019586C(arg0, &arg0->m_unk11C);
                 goto confirm;
             } else if (PBookButton(temp_v1, 12)) {
                 if (!Xii_func_00196760(arg0)) goto fail;
-                temp_a0_2 = M2C_FIELD(arg0, int *, 4);
+                temp_a0_2 = arg0->m_flags;
                 if (temp_a0_2 & 0x01000000) goto fail;
-                M2C_FIELD(arg0, int *, 0x14) = 6;
-                M2C_FIELD(arg0, int *, 4) = temp_a0_2 | 0x200002;
+                arg0->m_state = 6;
+                arg0->m_flags = temp_a0_2 | 0x200002;
 confirm:
                 PBookMoveSound((int)&D_007B2580, 4);
                 goto update;
@@ -1315,55 +1329,55 @@ fail:
         }
 movement:
                 var_s2 = 1;
-                stack.sp0 = Xfi_getLeftX__C6BedPad((int) arg1) * 16.0f;
-                temp_f0 = Xfi_getLeftY__C6BedPad((int) arg1) * 16.0f;
+                stack.sp0 = Xfi_getLeftX__C6BedPad((int)arg1) * 16.0f;
+                temp_f0 = Xfi_getLeftY__C6BedPad((int)arg1) * 16.0f;
                 stack.sp4 = temp_f0;
                 if ((stack.sp0 == 0.0f) && (temp_f0 == 0.0f)) {
-                    temp_a0_3 = M2C_FIELD(arg1, unsigned short *, 0x78);
+                    temp_a0_3 = arg1->m_press;
                     temp_v0_3 = temp_a0_3 & 0xFFFF;
                     var_v0_2 = PBookButton(temp_v0_3, 5);
                     if (PBookButton(temp_v0_3, 7)) {
                         var_v0_2 -= 1;
                     }
                     temp_v1_2 = temp_a0_3 & 0xFFFF;
-                    stack.sp0 = (float) var_v0_2 * 16.0f;
+                    stack.sp0 = (float)var_v0_2 * 16.0f;
                     temp_v1_3 = PBookButton(temp_v1_2, 6);
                     if (PBookButton(temp_v1_2, 4)) {
                         var_f1_2 = 16.0f;
-                        var_f0_2 = (float) (temp_v1_3 - 1);
+                        var_f0_2 = (float)(temp_v1_3 - 1);
                     } else {
-                        var_f1_2 = (float) temp_v1_3;
+                        var_f1_2 = (float)temp_v1_3;
                         var_f0_2 = 16.0f;
                     }
                     stack.sp4 = var_f1_2 * var_f0_2;
                 }
-                stack.sp0 += M2C_FIELD(arg0, float *, 0x11C);
-                stack.sp4 += M2C_FIELD(arg0, float *, 0x120);
-                Xiii_func_0019586C(arg0, (int)&stack);
-                temp_f2_2 = stack.sp0 - M2C_FIELD(arg0, float *, 0x11C);
+                stack.sp0 += arg0->m_unk11C;
+                stack.sp4 += arg0->m_unk120;
+                Xiii_func_0019586C(arg0, &stack);
+                temp_f2_2 = stack.sp0 - arg0->m_unk11C;
                 if (temp_f2_2 >= 0.5f) {
-                    M2C_FIELD(arg0, float *, 0x11C) = stack.sp0;
+                    arg0->m_unk11C = stack.sp0;
                     var_s2 = 0;
-                    M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x400000);
+                    arg0->m_flags = arg0->m_flags | 0x400000;
                 } else if (temp_f2_2 <= -0.5f) {
-                    M2C_FIELD(arg0, float *, 0x11C) = stack.sp0;
+                    arg0->m_unk11C = stack.sp0;
                     var_s2 = 0;
-                    M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & 0xFFBFFFFF);
+                    arg0->m_flags = arg0->m_flags & 0xFFBFFFFF;
                 }
-                temp_f2_3 = stack.sp4 - M2C_FIELD(arg0, float *, 0x120);
+                temp_f2_3 = stack.sp4 - arg0->m_unk120;
                 if (temp_f2_3 >= 0.5f) {
-                    M2C_FIELD(arg0, float *, 0x120) = stack.sp4;
+                    arg0->m_unk120 = stack.sp4;
                     var_s2 = 0;
-                    M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x800000);
+                    arg0->m_flags = arg0->m_flags | 0x800000;
                 } else if (temp_f2_3 <= -0.5f) {
-                    M2C_FIELD(arg0, float *, 0x120) = stack.sp4;
+                    arg0->m_unk120 = stack.sp4;
                     var_s2 = 0;
-                    M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & 0xFF7FFFFF);
+                    arg0->m_flags = arg0->m_flags & 0xFF7FFFFF;
                 }
                 if (var_s2 == 0) {
-                    M2C_FIELD(arg0, int *, 0x140) = (int) ((int) (M2C_FIELD(arg0, int *, 0x140) + 1) % 12);
+                    arg0->m_unk140 = (arg0->m_unk140 + 1) % 12;
                 } else {
-                    M2C_FIELD(arg0, int *, 0x140) = 0;
+                    arg0->m_unk140 = 0;
                 }
     }
 update:
@@ -1374,16 +1388,16 @@ update:
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00195430);
 #endif
 
-extern "C" void func_0019586C(int arg0, float *arg1)
+extern "C" void func_0019586C(MnuMap *arg0, float *arg1)
 {
     float sp[2];
     float target;
     float ratio;
     float d;
 
-    Xiii_func_001959EC(arg0, (int) sp);
+    Xiii_func_001959EC((int)arg0, (int)sp);
 
-    target = (float) M2C_FIELD(arg0, int *, 0x114);
+    target = (float)arg0->m_unk114;
     ratio = sp[0];
     if (ratio <= target) {
         if (arg1[0] < 0.0f) {
@@ -1398,7 +1412,7 @@ extern "C" void func_0019586C(int arg0, float *arg1)
         arg1[0] = target * 0.5f - ratio * 0.5f;
     }
 
-    target = (float) M2C_FIELD(arg0, int *, 0x118);
+    target = (float)arg0->m_unk118;
     ratio = sp[1];
     if (ratio <= target) {
         if (arg1[1] < 0.0f) {
@@ -1414,40 +1428,40 @@ extern "C" void func_0019586C(int arg0, float *arg1)
     }
 }
 
-extern "C" int func_00195958(int arg0, float fparg0, float fparg1)
+extern "C" int func_00195958(MnuMap *arg0, float fparg0, float fparg1)
 {
     float sp[2];
     int var_v0;
 
-    Xiii_func_001959EC(arg0, (int)sp);
+    Xiii_func_001959EC((int)arg0, (int)sp);
     var_v0 = 0;
-    if (!(fparg0 < 0.0f) && !(((float) M2C_FIELD(arg0, int *, 0x114) - sp[0]) < fparg0) && !(fparg1 < 0.0f) && !(((float) M2C_FIELD(arg0, int *, 0x118) - sp[1]) < fparg1)) {
+    if (!(fparg0 < 0.0f) && !(((float)arg0->m_unk114 - sp[0]) < fparg0) && !(fparg1 < 0.0f) && !(((float)arg0->m_unk118 - sp[1]) < fparg1)) {
         var_v0 = 1;
     }
     return var_v0;
 }
 
-extern "C" void func_001959EC(int arg0, int arg1)
+extern "C" void func_001959EC(MnuMap *arg0, float *arg1)
 {
     float var_f0;
     float var_f1;
 
-    if (!(M2C_FIELD(arg0, int *, 4) & 0x10000)) {
+    if (!(arg0->m_flags & 0x10000)) {
         var_f1 = 768.0f;
         var_f0 = 512.0f;
     } else {
         var_f1 = 384.0f;
         var_f0 = 256.0f;
     }
-    M2C_FIELD(arg1, float *, 4) = var_f0;
-    M2C_FIELD(arg1, float *, 0) = var_f1;
+    arg1[1] = var_f0;
+    arg1[0] = var_f1;
 }
 
 // NON_MATCHING: 24/81 differ, 4 relocs differ, 9 edits
 #ifdef NON_MATCHING
-extern "C" float func_00196790(int arg0);
+extern "C" float func_00196790(MnuMap *arg0);
 extern "C" int X_func_00279C98(...) asm("func_00279C98");
-extern "C" int func_00195A34(int arg0)
+extern "C" int func_00195A34(MnuMap *arg0)
 {
     float t;
     float v;
@@ -1457,8 +1471,8 @@ extern "C" int func_00195A34(int arg0)
     char sp[0x20];
 
     t = func_00196790(arg0);
-    v = M2C_FIELD(arg0, float *, 0x124) + (M2C_FIELD(arg0, float *, 0x11C) - M2C_FIELD(arg0, float *, 0x124)) * t;
-    count = (int) v / 0x80;
+    v = arg0->m_unk124 + (arg0->m_unk11C - arg0->m_unk124) * t;
+    count = (int)v / 0x80;
     limit = count - 3;
     i = 0;
     while (i < limit) {
@@ -1467,15 +1481,18 @@ extern "C" int func_00195A34(int arg0)
     }
     limit = count + 6;
     i = count + 9;
-    while (i < M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 0x18)) {
+    while (i < arg0->m_unk110->m_tileCount) {
         func_00194370(arg0, i + 2);
         i++;
     }
-    i = (count > 0) ? count - 2 : 0;
-    while (i < limit + 2 && i < M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 0x18)) {
-        if (Xiii_func_001943D8(arg0, i + 2) == 0) {
-            X_func_00279C98(sp, "%s_%02d.tm2", M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 8), i + 1);
-            Xiiiii_func_0019397C(arg0, (int) sp, 4, i + 2);
+    i = 0;
+    if (count > 0) {
+        i = count - 2;
+    }
+    while (i < limit + 2 && i < arg0->m_unk110->m_tileCount) {
+        if (Xiii_func_001943D8((int)arg0, i + 2) == 0) {
+            X_func_00279C98(sp, "%s_%02d.tm2\0\0\0\0", arg0->m_unk110->m_texPrefix, i + 1);
+            Xiiiii_func_0019397C((int)arg0, (int)sp, 4, i + 2);
         }
         i++;
     }
@@ -1485,87 +1502,94 @@ extern "C" int func_00195A34(int arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00195A34);
 #endif
 
-extern "C" void func_00195B78(int arg0, int arg1)
+extern "C" void func_00195B78(MnuMap *arg0, int arg1)
 {
     int temp_a1;
     int temp_s0;
 
     if (arg1 != 0) {
-        Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 7, 0x10, 0x198);
-        Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 7, 0);
-        Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 7, 1, 0);
-        Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 6, 0x88, 0x198);
-        Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 6, 0);
-        Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 6, 1, 0);
-        Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 0xC, 0xFC, 0x198);
-        Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 0xC, 0);
-        Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 0xC, 1, 0);
-        Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 0xA, 0x118, 0x198);
-        Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 0xA, 0);
-        Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 0xA, 1, 0);
-        Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 9, 0x184, 0x198);
-        Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 9, 0);
-        Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 9, 1, 0);
-        Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 4, 0x1A8, 0x198);
-        Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 4, 0);
-        Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 1, 0);
-        if (M2C_FIELD(arg0, int *, 0x148) == -1) {
-            M2C_FIELD(arg0, int *, 0x148) = Xiiiiii_func_00134730(M2C_FIELD(arg0, int *, 8), 0x200, 0x20, 0, -1);
+        Xiiiii_func_001C5168((int)&D_007812C0, 7, 0x10, 0x198);
+        Xiiii_func_001C51E0((int)&D_007812C0, 7, 0);
+        Xiiiii_func_001C5094((int)&D_007812C0, 7, 1, 0);
+        Xiiiii_func_001C5168((int)&D_007812C0, 6, 0x88, 0x198);
+        Xiiii_func_001C51E0((int)&D_007812C0, 6, 0);
+        Xiiiii_func_001C5094((int)&D_007812C0, 6, 1, 0);
+        Xiiiii_func_001C5168((int)&D_007812C0, 0xC, 0xFC, 0x198);
+        Xiiii_func_001C51E0((int)&D_007812C0, 0xC, 0);
+        Xiiiii_func_001C5094((int)&D_007812C0, 0xC, 1, 0);
+        Xiiiii_func_001C5168((int)&D_007812C0, 0xA, 0x118, 0x198);
+        Xiiii_func_001C51E0((int)&D_007812C0, 0xA, 0);
+        Xiiiii_func_001C5094((int)&D_007812C0, 0xA, 1, 0);
+        Xiiiii_func_001C5168((int)&D_007812C0, 9, 0x184, 0x198);
+        Xiiii_func_001C51E0((int)&D_007812C0, 9, 0);
+        Xiiiii_func_001C5094((int)&D_007812C0, 9, 1, 0);
+        Xiiiii_func_001C5168((int)&D_007812C0, 4, 0x1A8, 0x198);
+        Xiiii_func_001C51E0((int)&D_007812C0, 4, 0);
+        Xiiiii_func_001C5094((int)&D_007812C0, 4, 1, 0);
+        if (arg0->m_unk148 == -1) {
+            arg0->m_unk148 = Xiiiiii_func_00134730(arg0->m_scene, 0x200, 0x20, 0, -1);
         }
-        int ctrl = arg0 + 0x150;
-        Xiiuiii_func_00134A00((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148), 0, 0x19A, 0x7FFF);
-        Xiiuii_func_00134AB8((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148), 0x200, 0x20);
-        Xiiuiiii_func_00134CD0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148), 0, 0, 0x200, 0x20);
-        Xiiui_func_00135494((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148), 1);
-        Xiiui_func_00135418((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148), 0);
-        Xiiu_func_00135594(M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148));
-        Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148), 0);
-        temp_s0 = M2C_FIELD(arg0, int *, 0x148);
+        int ctrl = (int)arg0->m_msgWin;
+        Xiiuiii_func_00134A00(arg0->m_scene, (unsigned int)arg0->m_unk148, 0, 0x19A, 0x7FFF);
+        Xiiuii_func_00134AB8(arg0->m_scene, (unsigned int)arg0->m_unk148, 0x200, 0x20);
+        Xiiuiiii_func_00134CD0(arg0->m_scene, (unsigned int)arg0->m_unk148, 0, 0, 0x200, 0x20);
+        Xiiui_func_00135494(arg0->m_scene, (unsigned int)arg0->m_unk148, 1);
+        Xiiui_func_00135418(arg0->m_scene, (unsigned int)arg0->m_unk148, 0);
+        Xiiu_func_00135594(arg0->m_scene, (unsigned int)arg0->m_unk148);
+        Xiiui_func_001351B0(arg0->m_scene, (unsigned int)arg0->m_unk148, 0);
+        temp_s0 = arg0->m_unk148;
         int texture = Xiu_func_001832E8(0x18U);
         return Xiiiii_func_001874F4(ctrl, temp_s0, texture, 0);
     }
-    Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 7, 0, 0);
-    Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 6, 0, 0);
-    Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 0xC, 0, 0);
-    Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 0xA, 0, 0);
-    Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 9, 0, 0);
-    Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 0, 0);
-    Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x148), 1);
-    temp_a1 = M2C_FIELD(arg0, int *, 0x148);
+    Xiiiii_func_001C5094((int)&D_007812C0, 7, 0, 0);
+    Xiiiii_func_001C5094((int)&D_007812C0, 6, 0, 0);
+    Xiiiii_func_001C5094((int)&D_007812C0, 0xC, 0, 0);
+    Xiiiii_func_001C5094((int)&D_007812C0, 0xA, 0, 0);
+    Xiiiii_func_001C5094((int)&D_007812C0, 9, 0, 0);
+    Xiiiii_func_001C5094((int)&D_007812C0, 4, 0, 0);
+    Xiiui_func_001351B0(arg0->m_scene, (unsigned int)arg0->m_unk148, 1);
+    temp_a1 = arg0->m_unk148;
     if (temp_a1 != -1) {
-        Xiiu_func_001348B0(M2C_FIELD(arg0, int *, 8), (unsigned int) temp_a1);
-        M2C_FIELD(arg0, int *, 0x148) = -1;
+        Xiiu_func_001348B0(arg0->m_scene, (unsigned int)temp_a1);
+        arg0->m_unk148 = -1;
     }
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuMap__vfunc_06);
 
-extern "C" int func_00196760(int arg0)
+extern "C" int func_00196760(MnuMap *arg0)
 {
     int var_a2;
-    int temp_a0;
-    int temp_a1;
+    MnuMapEntry *temp_a0;
+    MnuMapEntry *temp_a1;
 
-    temp_a0 = M2C_FIELD(arg0, int *, 0x8C8);
-    temp_a1 = M2C_FIELD(arg0, int *, 0x110);
+    temp_a0 = arg0->m_unk8C8;
+    temp_a1 = arg0->m_unk110;
     var_a2 = 0;
-    if (M2C_FIELD(temp_a0, int *, 0) == M2C_FIELD(temp_a1, int *, 0)) {
-        var_a2 = M2C_FIELD(temp_a0, int *, 4) == M2C_FIELD(temp_a1, int *, 4);
+    if (temp_a0->m_room == temp_a1->m_room) {
+        var_a2 = temp_a0->m_floor == temp_a1->m_floor;
     }
     return var_a2;
 }
 
-extern "C" float func_00196790(int arg0)
+extern "C" float func_00196790(MnuMap *arg0)
 {
-    return (-Xff_cosf(((((float) M2C_FIELD(arg0, int *, 0x12C) * 180.0f) / (float) M2C_FIELD(arg0, int *, 0x130)) * 3.141592562198639f) / 180.0f) * 0.5f) + 0.5f;
+    return (-Xff_cosf(((((float)arg0->m_unk12C * 180.0f) / (float)arg0->m_unk130) * 3.141592562198639f) / 180.0f) * 0.5f) + 0.5f;
 }
 
-extern "C" float func_00196804(int arg0)
+extern "C" float func_00196804(MnuMap *arg0)
 {
-    return (-Xff_cosf(((((float) M2C_FIELD(arg0, int *, 0x12C) * 180.0f) / (float) M2C_FIELD(arg0, int *, 0x130)) * 3.141592562198639f) / 180.0f) * 0.5f) + 0.5f;
+    return (-Xff_cosf(((((float)arg0->m_unk12C * 180.0f) / (float)arg0->m_unk130) * 3.141592562198639f) / 180.0f) * 0.5f) + 0.5f;
 }
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F7DC0);
+
+struct PBookRoomOff {
+    int m_pad[8];
+    float m_offX;
+    float m_offY;
+    float m_offZ;
+};
 
 extern "C" void func_00196878(int arg0, float *arg1)
 {
@@ -1574,7 +1598,7 @@ extern "C" void func_00196878(int arg0, float *arg1)
     int map = Xii_func_001C6C38((int)&D_007812C0);
     int mode = Xii_func_001DBD90(mapObj);
     int id = Xii_func_001C6C28((int)&D_007812C0);
-    int obj = Xiii_func_0017EA44((int)&D_00298EE0, id);
+    PBookRoomOff *obj = (PBookRoomOff *)Xiii_func_0017EA44((int)&D_00298EE0, id);
     if (map != -1) {
         PBookMapCoords *row = &table.row[map];
         if (map == 0 && mode == 3) {
@@ -1591,8 +1615,8 @@ extern "C" void func_00196878(int arg0, float *arg1)
             case 0x32: row = &table.row[12]; break;
             }
         }
-        arg1[0] = row->v[2] * -(arg1[0] + M2C_FIELD(obj, float *, 0x20)) / row->v[0] + row->v[4];
-        arg1[2] = row->v[3] * (arg1[2] + M2C_FIELD(obj, float *, 0x28)) / row->v[1] + row->v[5];
+        arg1[0] = row->v[2] * -(arg1[0] + obj->m_offX) / row->v[0] + row->v[4];
+        arg1[2] = row->v[3] * (arg1[2] + obj->m_offZ) / row->v[1] + row->v[5];
     }
 }
 
@@ -1645,185 +1669,170 @@ INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F8048);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_02);
 
-extern "C" void MnuPBook__vfunc_03(int arg0)
+extern "C" void MnuPBook__vfunc_03(MnuPBook *arg0)
 {
-    int temp_v0;
-    int temp_a0;
+    char *temp_v0;
+    MnuBookPage *temp_a0;
+    int temp_v0_2;
     int temp_a1;
 
-    temp_v0 = *(int *)(arg0 + 0x13C);
+    temp_v0 = arg0->m_textBuf;
     if (temp_v0 != 0) {
-        X_func_00194688_v1(temp_v0);
-        *(int *)(arg0 + 0x13C) = 0;
+        X_func_00194688_v1((int)temp_v0);
+        arg0->m_textBuf = 0;
     }
-    temp_a0 = *(int *)(arg0 + 0x12C);
+    temp_a0 = arg0->m_pages;
     if (temp_a0 != 0) {
-        X_func_00194688_v1(temp_a0);
-        *(int *)(arg0 + 0x12C) = 0;
+        X_func_00194688_v1((int)temp_a0);
+        arg0->m_pages = 0;
     }
-    *(int *)(arg0 + 0x130) = 0;
-    X_func_00193868_v1(arg0);
-    temp_v0 = *(int *)(arg0 + 0x134);
-    if (temp_v0 != -1) {
-        X_func_001348B0_v1(*(int *)(arg0 + 8), temp_v0);
-        *(int *)(arg0 + 0x134) = -1;
+    arg0->m_pageNum = 0;
+    X_func_00193868_v1((int)arg0);
+    temp_v0_2 = arg0->m_unk134;
+    if (temp_v0_2 != -1) {
+        X_func_001348B0_v1(arg0->m_scene, temp_v0_2);
+        arg0->m_unk134 = -1;
     }
-    temp_a1 = *(int *)(arg0 + 0x138);
+    temp_a1 = arg0->m_msgId;
     if (temp_a1 != -1) {
-        X_func_001348B0_v1(*(int *)(arg0 + 8), temp_a1);
-        *(int *)(arg0 + 0x138) = -1;
+        X_func_001348B0_v1(arg0->m_scene, temp_a1);
+        arg0->m_msgId = -1;
     }
-    X_func_00187464_v1(arg0 + 0x140);
-    *(int *)(arg0 + 0x110) = 0;
-    *(int *)(arg0 + 0x114) = -1;
-    *(int *)(arg0 + 0x118) = -1;
-    *(int *)(arg0 + 0x11C) = -1;
-    *(int *)(arg0 + 0x120) = -1;
-    X_mnuBase__vfunc_03_v1(arg0);
+    X_func_00187464_v1((int)arg0->m_msgWin);
+    arg0->m_info = 0;
+    arg0->m_unk114 = -1;
+    arg0->m_unk118 = -1;
+    arg0->m_unk11C = -1;
+    arg0->m_unk120 = -1;
+    X_mnuBase__vfunc_03_v1((int)arg0);
 }
 
-// NON_MATCHING: 20/21 differ, 1 reloc differs (size 0x54, game 0x50), 15 edits
-#ifdef NON_MATCHING
-extern "C" int func_00196E54(int arg0, int arg1)
+extern "C" int func_00196E54(MnuPBook *arg0, int arg1)
 {
-    int *p;
-    int v;
-
-    for (p = &D_0029C0F8; ; p += 0x0C) {
-        M2C_FIELD(arg0, int **, 0x110) = p;
-        v = *p;
-        if (v == -1)
-            return 0;
-        if (v == arg1)
+    for (arg0->m_info = (MnuPBookInfo *)&D_0029C0F8; arg0->m_info->m_unk00 != -1; arg0->m_info++) {
+        if (arg0->m_info->m_unk00 == arg1) {
             break;
+        }
     }
-    if (*(int *)M2C_FIELD(arg0, int **, 0x110) != -1) {
-        M2C_FIELD(arg0, int *, 0x114) = arg1;
-        return 1;
+    if (arg0->m_info->m_unk00 == -1) {
+        return 0;
     }
-    return 0;
+    arg0->m_unk114 = arg1;
+    return 1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196E54);
-#endif
 
-extern "C" void func_00196EA4(int arg0)
+extern "C" void func_00196EA4(MnuPBook *arg0)
 {
-    M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 2);
-    Xiiiii_func_0019397C(arg0, (int) (int) "ehonbg", 4, 1);
-    Xiiiii_func_0019397C(arg0, (int) (int) "ehontex01_tcc", 4, 0);
+    arg0->m_flags = arg0->m_flags | 2;
+    Xiiiii_func_0019397C((int)arg0, (int)"ehonbg", 4, 1);
+    Xiiiii_func_0019397C((int)arg0, (int)"ehontex01_tcc", 4, 0);
 }
 
 // NON_MATCHING: 23/204 differ, 28 edits
 #ifdef NON_MATCHING
 extern "C" int X_func_00279C98_init(...) asm("func_00279C98");
-extern "C" int Xii_func_00194588_init(int) asm("func_00194588");
+extern "C" MnuBookPage *Xii_func_00194588_init(int) asm("func_00194588");
 extern char D_002F80D0[];
 extern char D_002F80E0[];
-extern "C" void func_00196EFC(int arg0)
+extern "C" void func_00196EFC(MnuPBook *arg0)
 {
-    register int self PS2_REG("$16");
+    register MnuPBook *self PS2_REG("$16");
     self = arg0;
     struct { char pad0[32]; } stack;
-    int var_a2;
+    MnuBookPage *var_a2;
     int temp_a0;
-    int temp_a0_2;
-    int temp_a1;
-    int temp_a1_2;
-    int temp_a3;
     int temp_a3_2;
     int temp_v0_2;
     int temp_v1;
     int temp_v1_2;
     int temp_v1_3;
-    int var_a0;
     int var_s1;
     register int var_s2 PS2_REG("$18");
     int var_s3;
-    int temp_v0;
+    MnuPBookInfo *temp_v0;
 
-    temp_a0 = (int) (M2C_FIELD(M2C_FIELD(self, int *, 0x110), int *, 8) + 1) / 2;
-    M2C_FIELD(self, int *, 0x130) = temp_a0;
-    M2C_FIELD(self, int *, 0x12C) = Xii_func_00194588_init(temp_a0 << 5);
-    temp_v1 = M2C_FIELD(self, int *, 0x128);
+    temp_a0 = (self->m_info->m_pageCount + 1) / 2;
+    self->m_pageNum = temp_a0;
+    self->m_pages = Xii_func_00194588_init(temp_a0 << 5);
+    temp_v1 = self->m_curPage;
     if (temp_v1 >= 0) {
-        var_s3 = (int) (temp_v1 + ((unsigned int) temp_v1 >> 0x1F)) >> 1;
+        var_s3 = (int)(temp_v1 + ((unsigned int)temp_v1 >> 0x1F)) >> 1;
     } else {
         var_s3 = -1;
     }
-    var_a2 = M2C_FIELD(self, int *, 0x12C);
-    for (var_s1 = 0; var_s1 <= var_s3; var_s1++, var_a2 += 0x20) {
-        M2C_FIELD(var_a2, int *, 0) = 3;
-        M2C_FIELD(var_a2, int *, 8) = -1;
-        M2C_FIELD(var_a2, int *, 4) = -1;
-        M2C_FIELD(var_a2, int *, 0xC) = var_s1 * 2 + 1;
-        M2C_FIELD(var_a2, int *, 0x10) = 0;
+    var_a2 = self->m_pages;
+    for (var_s1 = 0; var_s1 <= var_s3; var_s1++, var_a2++) {
+        var_a2->m_flags = 3;
+        var_a2->m_rightTex = -1;
+        var_a2->m_leftTex = -1;
+        var_a2->m_animIdx = var_s1 * 2 + 1;
+        var_a2->m_frame = 0;
     }
-    for (; var_s1 < M2C_FIELD(self, int *, 0x130); var_s1++, var_a2 += 0x20) {
-        M2C_FIELD(var_a2, int *, 0) = 3;
-        M2C_FIELD(var_a2, int *, 8) = -1;
-        M2C_FIELD(var_a2, int *, 4) = -1;
-        M2C_FIELD(var_a2, int *, 0xC) = var_s1 * 2;
-        M2C_FIELD(var_a2, int *, 0x10) = 0;
+    for (; var_s1 < self->m_pageNum; var_s1++, var_a2++) {
+        var_a2->m_flags = 3;
+        var_a2->m_rightTex = -1;
+        var_a2->m_leftTex = -1;
+        var_a2->m_animIdx = var_s1 * 2;
+        var_a2->m_frame = 0;
     }
-    temp_v0 = M2C_FIELD(self, int *, 0x110);
-    M2C_FIELD(self, int *, 0x120) = (int) (M2C_FIELD(temp_v0, int *, 8) - 1);
-    temp_v1_2 = M2C_FIELD(temp_v0, int *, 0xC);
+    temp_v0 = self->m_info;
+    self->m_unk120 = temp_v0->m_pageCount - 1;
+    temp_v1_2 = temp_v0->m_flags0C;
     if (temp_v1_2 & 2) {
-        if (M2C_FIELD(self, int *, 0x11C) > 0) {
+        if (self->m_unk11C > 0) {
             var_s1 = 0;
-            var_a2 = M2C_FIELD(self, int *, 0x12C);
-            if (M2C_FIELD(self, int *, 0x130) > 0) {
+            var_a2 = self->m_pages;
+            if (self->m_pageNum > 0) {
                 do {
                     temp_v0_2 = (var_s1 >= 0) ? (var_s1 * 2) : -1;
                     temp_v1_3 = temp_v0_2 + 1;
+                    if (temp_v0_2 >= self->m_unk11C) {
+                        var_a2->m_flags |= 4;
+                    }
+                    if (temp_v1_3 >= self->m_unk11C) {
+                        var_a2->m_flags |= 8;
+                    }
                     var_s1 += 1;
-                    if (temp_v0_2 >= M2C_FIELD(self, int *, 0x11C)) {
-                        (*(int *)(var_a2)) |= 4;
-                    }
-                    if (temp_v1_3 >= M2C_FIELD(self, int *, 0x11C)) {
-                        (*(int *)(var_a2)) |= 8;
-                    }
-                    var_a2 += 0x20;
-                } while (var_s1 < M2C_FIELD(self, int *, 0x130));
+                    var_a2++;
+                } while (var_s1 < self->m_pageNum);
             }
-            M2C_FIELD(self, int *, 0x120) = M2C_FIELD(self, int *, 0x11C);
+            self->m_unk120 = self->m_unk11C;
         }
     } else if (temp_v1_2 & 1) {
-        if (M2C_FIELD(self, int *, 0x11C) == 0) {
-            var_a2 = M2C_FIELD(self, int *, 0x12C) + 0xE0;
-            M2C_FIELD(var_a2, int *, 0) |= 0x30;
+        if (self->m_unk11C == 0) {
+            var_a2 = &self->m_pages[7];
+            var_a2->m_flags |= 0x30;
         } else {
-            M2C_FIELD(self, int *, 0x120) = M2C_FIELD(self, int *, 0x11C);
+            self->m_unk120 = self->m_unk11C;
         }
     }
-    if ((M2C_FIELD(self, int *, 0x128) + 1) >= M2C_FIELD(self, int *, 0x120)) {
-        M2C_FIELD(self, int *, 4) = (int) (M2C_FIELD(self, int *, 4) | 0x40000);
+    if ((self->m_curPage + 1) >= self->m_unk120) {
+        self->m_flags = self->m_flags | 0x40000;
     }
     var_s1 = 0;
-    Xiiiii_func_0019397C(self, (int) (int) "pb_pagedmy00_tcc\0\0\0\0", 0x14, 0x20);
-    Xiiiii_func_0019397C(self, (int) (int) "pb_pagedmy01_tcc\0\0\0\0", 0x14, 0x21);
-    if (M2C_FIELD(self, int *, 0x130) > 0) {
+    Xiiiii_func_0019397C((int)self, (int)"pb_pagedmy00_tcc\0\0\0\0", 0x14, 0x20);
+    Xiiiii_func_0019397C((int)self, (int)"pb_pagedmy01_tcc\0\0\0\0", 0x14, 0x21);
+    if (self->m_pageNum > 0) {
         do {
-            X_func_00279C98_init((int)&stack, (int) "%s%d_base.i3s", M2C_FIELD(self, int *, 0x110) + 0x10, var_s1);
-            Xiiiii_func_0019397C(self, (int)&stack, 0x11, var_s1++);
-        } while (var_s1 < M2C_FIELD(self, int *, 0x130));
+            X_func_00279C98_init((int)&stack, (int)"%s%d_base.i3s", self->m_info->m_prefix, var_s1);
+            Xiiiii_func_0019397C((int)self, (int)&stack, 0x11, var_s1++);
+        } while (var_s1 < self->m_pageNum);
     }
     var_s1 = 0;
     if (var_s3 >= 0) {
         var_s2 = 1;
         do {
-            X_func_00279C98_init((int)&stack, (int) D_002F80D0, M2C_FIELD(self, int *, 0x110) + 0x10, var_s1);
+            X_func_00279C98_init((int)&stack, (int)D_002F80D0, self->m_info->m_prefix, var_s1);
             temp_a3_2 = var_s2;
             var_s2 += 2;
-            Xiiiii_func_0019397C(self, (int) (int)&stack, 0x12, temp_a3_2);
-            Xiiiii_func_0019844C(self, var_s1++, 0, 1);
+            Xiiiii_func_0019397C((int)self, (int)&stack, 0x12, temp_a3_2);
+            Xiiiii_func_0019844C((int)self, var_s1++, 0, 1);
         } while (var_s3 >= var_s1);
     }
-    for (; var_s1 < M2C_FIELD(self, int *, 0x130); var_s1++) {
-        X_func_00279C98_init((int)&stack, (int) D_002F80E0, M2C_FIELD(self, int *, 0x110) + 0x10, var_s1);
-        Xiiiii_func_0019397C(self, (int) (int)&stack, 0x12, var_s1 * 2);
-        Xiiiii_func_0019844C(self, var_s1, 1, 0);
+    for (; var_s1 < self->m_pageNum; var_s1++) {
+        X_func_00279C98_init((int)&stack, (int)D_002F80E0, self->m_info->m_prefix, var_s1);
+        Xiiiii_func_0019397C((int)self, (int)&stack, 0x12, var_s1 * 2);
+        Xiiiii_func_0019844C((int)self, var_s1, 1, 0);
     }
 }
 #else
@@ -1832,70 +1841,63 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_00196EFC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", func_0019722C);
 
-extern "C" void func_001973FC(int arg0)
+extern "C" void func_001973FC(MnuPBook *arg0)
 {
-    int temp_a1;
     int temp_v0;
     int temp_v0_2;
     int temp_v1;
-    int temp_v1_2;
-    int temp_v1_4;
-    int var_a1;
     int var_s0;
-    int var_s0_2;
     int var_s1;
     int temp_s1;
-    int temp_v1_3;
-    int temp_v1_5;
-    int temp_v1_6;
+    char *temp_v1_6;
 
-    temp_v1 = M2C_FIELD(arg0, int *, 0x128);
+    temp_v1 = arg0->m_curPage;
     if (temp_v1 >= 0) {
-        var_s1 = (int) (temp_v1 + ((unsigned int) temp_v1 >> 0x1F)) >> 1;
+        var_s1 = (int)(temp_v1 + ((unsigned int)temp_v1 >> 0x1F)) >> 1;
     } else {
         var_s1 = -1;
     }
     for (var_s0 = 0; var_s0 <= var_s1; var_s0++) {
-        Xiiiii_func_0019844C(arg0, var_s0, 1, 0);
+        Xiiiii_func_0019844C((int)arg0, var_s0, 1, 0);
     }
-    for (; var_s0 < M2C_FIELD(arg0, int *, 0x130); var_s0++) {
-        Xiiiii_func_0019844C(arg0, var_s0, 0, 1);
+    for (; var_s0 < arg0->m_pageNum; var_s0++) {
+        Xiiiii_func_0019844C((int)arg0, var_s0, 0, 1);
     }
     for (var_s0 = 0; var_s0 <= var_s1; var_s0++) {
-        int row = (var_s0 << 5) + M2C_FIELD(arg0, int *, 0x9C);
-        M2C_FIELD(row, int *, 4) *= 2;
+        MnuAnimSlot *row = (MnuAnimSlot *)((var_s0 << 5) + (int)arg0->m_animSlots);
+        row->m_len *= 2;
     }
-    for (; var_s0 < M2C_FIELD(arg0, int *, 0x130); var_s0++) {
-        int row = (var_s0 << 5) + M2C_FIELD(arg0, int *, 0x9C) + 0x10;
-        M2C_FIELD(row, int *, 4) *= 2;
+    for (; var_s0 < arg0->m_pageNum; var_s0++) {
+        MnuAnimSlot *row = (MnuAnimSlot *)((var_s0 << 5) + (int)arg0->m_animSlots + 0x10);
+        row->m_len *= 2;
     }
-    temp_v1_6 = M2C_FIELD(arg0, int *, 0x13C);
-    temp_s1 = arg0 + 0x140;
+    temp_v1_6 = arg0->m_textBuf;
+    temp_s1 = (int)arg0->m_msgWin;
     *(PBookPageLabel *)temp_v1_6 = *(PBookPageLabel *)&D_002F80F0;
     Xii_func_0018741C(temp_s1);
-    temp_v0 = Xiiiiii_func_00134730(M2C_FIELD(arg0, int *, 8), 0x200, 0x100, 0, -1);
-    M2C_FIELD(arg0, int *, 0x138) = temp_v0;
-    Xiiuiii_func_00134A00((int) M2C_FIELD(arg0, int *, 8), (unsigned int) temp_v0, 0, 0x20, 0x7FFF);
-    Xiiuiiii_func_00134CD0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x138), 0, 0, 0x200, 0x100);
-    Xiiui_func_00135494((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x138), 1);
-    Xiiui_func_00135418((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x138), 0);
-    Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x138), 0);
-    Xiiu_func_00135594(M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x138));
-    Xiiu_func_001985B0(arg0, (unsigned int) M2C_FIELD(arg0, int *, 0x128));
-    Xiiiii_func_001C5168((int) (int)&D_007812C0, (int) 4, 0xDC, 0x198);
-    Xiiii_func_001C51E0((int) (int)&D_007812C0, (int) 4, 0);
-    Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 0, 0);
+    temp_v0 = Xiiiiii_func_00134730(arg0->m_scene, 0x200, 0x100, 0, -1);
+    arg0->m_msgId = temp_v0;
+    Xiiuiii_func_00134A00(arg0->m_scene, (unsigned int)temp_v0, 0, 0x20, 0x7FFF);
+    Xiiuiiii_func_00134CD0(arg0->m_scene, (unsigned int)arg0->m_msgId, 0, 0, 0x200, 0x100);
+    Xiiui_func_00135494(arg0->m_scene, (unsigned int)arg0->m_msgId, 1);
+    Xiiui_func_00135418(arg0->m_scene, (unsigned int)arg0->m_msgId, 0);
+    Xiiui_func_001351B0(arg0->m_scene, (unsigned int)arg0->m_msgId, 0);
+    Xiiu_func_00135594(arg0->m_scene, (unsigned int)arg0->m_msgId);
+    Xiiu_func_001985B0((int)arg0, (unsigned int)arg0->m_curPage);
+    Xiiiii_func_001C5168((int)&D_007812C0, 4, 0xDC, 0x198);
+    Xiiii_func_001C51E0((int)&D_007812C0, 4, 0);
+    Xiiiii_func_001C5094((int)&D_007812C0, 4, 0, 0);
     Xii_func_0018741C(temp_s1);
-    temp_v0_2 = Xiiiiii_func_00134730(M2C_FIELD(arg0, int *, 8), 0x40, 0x20, 0, -1);
-    M2C_FIELD(arg0, int *, 0x134) = temp_v0_2;
-    Xiiuiii_func_00134A00((int) M2C_FIELD(arg0, int *, 8), (unsigned int) temp_v0_2, 0xF6, 0x19A, 0x7FFF);
-    Xiiuiiii_func_00134CD0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 0, 0, 0x40, 0x20);
-    Xiiui_func_00135494((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 1);
-    Xiiui_func_00135418((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 0);
-    Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134), 1);
-    Xiiu_func_00135594(M2C_FIELD(arg0, int *, 8), (unsigned int) M2C_FIELD(arg0, int *, 0x134));
+    temp_v0_2 = Xiiiiii_func_00134730(arg0->m_scene, 0x40, 0x20, 0, -1);
+    arg0->m_unk134 = temp_v0_2;
+    Xiiuiii_func_00134A00(arg0->m_scene, (unsigned int)temp_v0_2, 0xF6, 0x19A, 0x7FFF);
+    Xiiuiiii_func_00134CD0(arg0->m_scene, (unsigned int)arg0->m_unk134, 0, 0, 0x40, 0x20);
+    Xiiui_func_00135494(arg0->m_scene, (unsigned int)arg0->m_unk134, 1);
+    Xiiui_func_00135418(arg0->m_scene, (unsigned int)arg0->m_unk134, 0);
+    Xiiui_func_001351B0(arg0->m_scene, (unsigned int)arg0->m_unk134, 1);
+    Xiiu_func_00135594(arg0->m_scene, (unsigned int)arg0->m_unk134);
     int texture = Xiu_func_001832E8(0x1AU);
-    Xiiiii_func_001874F4(temp_s1, M2C_FIELD(arg0, int *, 0x134), texture, 0);
+    Xiiiii_func_001874F4(temp_s1, arg0->m_unk134, texture, 0);
 }
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F80D0);
@@ -1904,273 +1906,274 @@ INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F80E0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/MnuPBook", D_002F80F0);
 
-# define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
+struct PBookSaveData {
+    int m_pad00[0x11];
+    int m_unk44;
+    int m_pad48[0x53];
+    int m_page;
+};
+struct PBookSysWork {
+    unsigned char m_pad[0xDC1C];
+    PBookSaveData *m_save1;
+    unsigned int *m_save2;
+};
 extern "C" int PBookStateFormat(...) asm("func_00279C98");
 extern "C" int Xii_func_00131550(int) asm("func_00131550");
-extern "C" int Xii_func_00192F3C(int) asm("func_00192F3C");
-extern "C" int Xii_func_00193A1C(int) asm("func_00193A1C");
-extern "C" int Xii_func_00196EFC(int) asm("func_00196EFC");
-extern "C" int Xii_func_0019722C(int) ASM_NOTHROW asm("func_0019722C");
-extern "C" int Xii_func_001973FC(int) asm("func_001973FC");
-extern "C" int Xii_func_00197D28(int) asm("func_00197D28");
+extern "C" int Xii_func_00192F3C(MnuPBook *) asm("func_00192F3C");
+extern "C" int Xii_func_00193A1C(MnuPBook *) asm("func_00193A1C");
+extern "C" int Xii_func_00196EFC(MnuPBook *) asm("func_00196EFC");
+extern "C" int Xii_func_0019722C(MnuPBook *) throw() asm("func_0019722C");
+extern "C" int Xii_func_001973FC(MnuPBook *) asm("func_001973FC");
+extern "C" int Xii_func_00197D28(MnuPBook *) asm("func_00197D28");
 extern "C" int Xii_func_001D44E4(int) asm("func_001D44E4");
-extern "C" int Xiii_func_00197A74(int, int) asm("func_00197A74");
+extern "C" int Xiii_func_00197A74(MnuPBook *, int) asm("func_00197A74");
 extern "C" int Xiiiii_func_00131184(int, int, int, int) asm("func_00131184");
 extern "C" int Xiiiii_func_001311BC(int, int, int, int) asm("func_001311BC");
 extern "C" int Xiiiii_func_001D83D0(int, int, int, int) asm("func_001D83D0");
-extern int D_007A4440;
-struct m2c_v10C_18_i { char pad[268]; virtual void v1(); virtual void v2(); virtual int call(); };
-struct PBookStateVTable50 { char pad[268]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual int call(); };
-struct m2c_v10C_58_i { char pad[268]; virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual int call(); };
+extern PBookSysWork D_007A4440;
 static inline bool PBookStateReady(int object) { return Xii_func_00131550(object) >= 5; }
 extern int D_007812C0, D_007B2580;
-static inline int PBookStateObject1(int game) { return M2C_FIELD(game, int *, 0xDC1C); }
-static inline int PBookStateObject2(int game) { return M2C_FIELD(game, int *, 0xDC20); }
-static inline void PBookStateSetPage(int object, int value) { M2C_FIELD(object, int *, 0x194) = value; }
-static inline void PBookStateClear(int address, int mask) { *(int *)address &= ~mask; }
-static inline void PBookStateSet(int address, int mask) { *(int *)address |= mask; }
-static inline void PBookStateBitClear(int array, unsigned int bit) { ((unsigned int *)array)[bit >> 5] &= ~(1U << (bit & 31)); }
-extern "C" int MnuPBook__vfunc_05(int arg0, int arg1)
+static inline PBookSaveData *PBookStateObject1(PBookSysWork *game) { return game->m_save1; }
+static inline unsigned int *PBookStateObject2(PBookSysWork *game) { return game->m_save2; }
+static inline void PBookStateSetPage(PBookSaveData *object, int value) { object->m_page = value; }
+static inline void PBookStateClear(unsigned int *address, int mask) { *address &= ~mask; }
+static inline void PBookStateSet(unsigned int *address, int mask) { *address |= mask; }
+static inline void PBookStateBitClear(unsigned int *array, unsigned int bit) { array[bit >> 5] &= ~(1U << (bit & 31)); }
+extern "C" int MnuPBook__vfunc_05(MnuPBook *arg0, int arg1)
 {
-    int temp_a1;
     int temp_a0;
     int temp_v1_2;
     int var_s2;
-    int var_v0;
     unsigned int temp_v0_3;
     unsigned int temp_v1;
-    int temp_v0;
-    int temp_v0_2;
-    int temp_v0_4;
 
     var_s2 = 0;
     Xii_func_00193A1C(arg0);
     Xii_func_00197D28(arg0);
-    temp_v1 = M2C_FIELD(arg0, unsigned int *, 0x14);
-    M2C_FIELD(arg0, unsigned int *, 0x10) = temp_v1;
+    temp_v1 = (unsigned int)arg0->m_state;
+    arg0->m_unk10 = (int)temp_v1;
     switch (temp_v1) {
     case 0:
-        if (!(M2C_FIELD(arg0, int *, 4) & 0x20000) && (PBookStateReady(M2C_FIELD(arg0, int *, 8)))) {
-            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x20000);
+        if (!(arg0->m_flags & 0x20000) && (PBookStateReady(arg0->m_scene))) {
+            arg0->m_flags = arg0->m_flags | 0x20000;
         }
-        temp_v1_2 = M2C_FIELD(arg0, int *, 4);
-        if (!(temp_v1_2 & 0x10000) && (M2C_FIELD(arg0, int *, 0x20) == 0)) {
-            M2C_FIELD(arg0, int *, 4) = (int) (temp_v1_2 | 0x10000);
-            ((m2c_v10C_58_i *)(arg0))->call();
-            PBookStateFormat(arg0 + 0x24, (int) "data/mnurpk/mnupbook/%s.rpk", M2C_FIELD(arg0, int *, 0x110) + 0x10);
-            ((PBookStateVTable50 *)(arg0))->call();
+        temp_v1_2 = arg0->m_flags;
+        if (!(temp_v1_2 & 0x10000) && (arg0->m_resUsed == 0)) {
+            arg0->m_flags = temp_v1_2 | 0x10000;
+            arg0->vfunc11();
+            PBookStateFormat(arg0->m_rpkPath, (int)"data/mnurpk/mnupbook/%s.rpk", arg0->m_info->m_prefix);
+            arg0->vfunc10();
             Xii_func_00196EFC(arg0);
-            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x20000);
+            arg0->m_flags = arg0->m_flags | 0x20000;
         }
-        if ((M2C_FIELD(arg0, int *, 4) & 0x30000) == 0x30000) {
-            M2C_FIELD(arg0, unsigned int *, 0x14) = 1U;
+        if ((arg0->m_flags & 0x30000) == 0x30000) {
+            arg0->m_state = 1;
         }
         break;
     case 1:
-        if (M2C_FIELD(arg0, int *, 0x20) == 0) {
+        if (arg0->m_resUsed == 0) {
             Xii_func_0019722C(arg0);
-            Xiiiii_func_00131184((int) M2C_FIELD(arg0, int *, 8), 0xF, 7, 0);
-            int flags = M2C_FIELD(arg0, int *, 4);
-            M2C_FIELD(arg0, unsigned int *, 0x14) = 2U;
-            M2C_FIELD(arg0, int *, 4) = flags & 0xFFFCFFFF;
+            Xiiiii_func_00131184(arg0->m_scene, 0xF, 7, 0);
+            int flags = arg0->m_flags;
+            arg0->m_state = 2;
+            arg0->m_flags = flags & 0xFFFCFFFF;
         }
         break;
     case 2:
-        if (!(M2C_FIELD(arg0, int *, 4) & 0x20000)) {
-            if (PBookStateReady(M2C_FIELD(arg0, int *, 8))) {
-                M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x20000);
+        if (!(arg0->m_flags & 0x20000)) {
+            if (PBookStateReady(arg0->m_scene)) {
+                arg0->m_flags = arg0->m_flags | 0x20000;
             }
         }
-        if (!(M2C_FIELD(arg0, int *, 4) & 0x10000) && (M2C_FIELD(arg0, int *, 0x20) == 0)) {
+        if (!(arg0->m_flags & 0x10000) && (arg0->m_resUsed == 0)) {
             Xii_func_001973FC(arg0);
-            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x10000);
+            arg0->m_flags = arg0->m_flags | 0x10000;
         }
-        temp_a0 = M2C_FIELD(arg0, int *, 4);
+        temp_a0 = arg0->m_flags;
         if ((temp_a0 & 0x30000) == 0x30000) {
-            M2C_FIELD(arg0, unsigned int *, 0x14) = 3U;
-            M2C_FIELD(arg0, int *, 4) = (int) (temp_a0 & ~2);
+            arg0->m_state = 3;
+            arg0->m_flags = temp_a0 & ~2;
         }
         break;
     case 3:
         if (Xiii_func_00197A74(arg0, arg1) == 0) {
-            Xiiiii_func_001311BC((int) M2C_FIELD(arg0, int *, 8), 0xF, 7, 0);
-            Xiii_func_0017F8FC((int) (int)&D_007B2580, 2);
-            Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 0, 0);
-            Xiiui_func_001351B0((int) M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x134), 1);
-            M2C_FIELD(arg0, unsigned int *, 0x14) = 4U;
+            Xiiiii_func_001311BC(arg0->m_scene, 0xF, 7, 0);
+            Xiii_func_0017F8FC((int)&D_007B2580, 2);
+            Xiiiii_func_001C5094((int)&D_007812C0, 4, 0, 0);
+            Xiiui_func_001351B0(arg0->m_scene, (unsigned int)arg0->m_unk134, 1);
+            arg0->m_state = 4;
         }
         break;
     case 4:
-        if (PBookStateReady(M2C_FIELD(arg0, int *, 8))) {
-            M2C_FIELD(arg0, unsigned int *, 0x14) = 5U;
+        if (PBookStateReady(arg0->m_scene)) {
+            arg0->m_state = 5;
         }
         break;
     case 5: {
-        M2C_FIELD(PBookStateObject1((int)&D_007A4440), int *, 0x44) = Xiiiii_func_001D83D0((int) (int)&D_007812C0, 1, M2C_FIELD(arg0, int *, 0x114), 2);
-        int page = M2C_FIELD(arg0, int *, 0x118);
-        PBookStateSetPage(PBookStateObject1((int)&D_007A4440), page);
-        PBookStateClear(PBookStateObject2((int)&D_007A4440) + 4, 0x04000000);
+        PBookStateObject1(&D_007A4440)->m_unk44 = Xiiiii_func_001D83D0((int)&D_007812C0, 1, arg0->m_unk114, 2);
+        int page = arg0->m_unk118;
+        PBookStateSetPage(PBookStateObject1(&D_007A4440), page);
+        PBookStateClear(PBookStateObject2(&D_007A4440) + 1, 0x04000000);
         if (Xii_func_001D44E4((int)&D_007812C0) != 0) {
-            PBookStateSet(PBookStateObject2((int)&D_007A4440) + 4, 0x02000000);
+            PBookStateSet(PBookStateObject2(&D_007A4440) + 1, 0x02000000);
         }
-        temp_v0_3 = Xiiiii_func_001D83D0((int) (int)&D_007812C0, 1, M2C_FIELD(arg0, int *, 0x114), 6);
-        PBookStateBitClear(PBookStateObject2((int)&D_007A4440), temp_v0_3);
+        temp_v0_3 = Xiiiii_func_001D83D0((int)&D_007812C0, 1, arg0->m_unk114, 6);
+        PBookStateBitClear(PBookStateObject2(&D_007A4440), temp_v0_3);
         var_s2 = 1;
         Xii_func_00192F3C(arg0);
-        ((m2c_v10C_18_i *)(arg0))->call();
+        arg0->vfunc03();
         break;
     }
     }
     return var_s2;
 }
 
-extern "C" int func_00197A74(int arg0, int arg1)
+extern "C" int func_00197A74(MnuPBook *arg0, BedPad *arg1)
 {
     int temp_v0;
-    int temp_v0_2;
     int temp_v1;
     int temp_v1_3;
     int var_a1;
     int var_a1_2;
     unsigned int temp_v1_2;
 
-    if (M2C_FIELD(arg0, int *, 4) & 0x40000) {
-        Xiiiii_func_001C5094((int) (int)&D_007812C0, (int) 4, 1, 0);
-        Xiiui_func_001351B0(M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x134), 0);
+    if (arg0->m_flags & 0x40000) {
+        Xiiiii_func_001C5094((int)&D_007812C0, 4, 1, 0);
+        Xiiui_func_001351B0(arg0->m_scene, (unsigned int)arg0->m_unk134, 0);
     }
-    temp_v0 = M2C_FIELD(arg0, int *, 0x124);
+    temp_v0 = arg0->m_unk124;
     if (temp_v0 > 0) {
         temp_v0--;
-        M2C_FIELD(arg0, int *, 0x124) = temp_v0;
+        arg0->m_unk124 = temp_v0;
         if (temp_v0 == 0) {
-            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) & 0xFFE7FFFD);
-            Xiiu_func_001985B0(arg0, M2C_FIELD(arg0, unsigned int *, 0x128));
-            if ((M2C_FIELD(arg0, int *, 0x128) + 1) >= M2C_FIELD(arg0, int *, 0x120)) {
-                M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 0x40000);
+            arg0->m_flags = arg0->m_flags & 0xFFE7FFFD;
+            Xiiu_func_001985B0((int)arg0, (unsigned int)arg0->m_curPage);
+            if ((arg0->m_curPage + 1) >= arg0->m_unk120) {
+                arg0->m_flags = arg0->m_flags | 0x40000;
             }
         }
     }
-    Xii_func_001874AC(arg0 + 0x140);
-    temp_v1 = M2C_FIELD(arg0, int *, 4);
+    Xii_func_001874AC((int)arg0->m_msgWin);
+    temp_v1 = arg0->m_flags;
     if (!(temp_v1 & 2)) {
-        if (PBookButton(M2C_FIELD(arg1, unsigned short *, 0x7A), 13) && (temp_v1 & 0x40000)) {
-            Xiiui_func_001351B0(M2C_FIELD(arg0, int *, 8), M2C_FIELD(arg0, unsigned int *, 0x138), 1);
-            M2C_FIELD(arg0, int *, 4) = (int) (M2C_FIELD(arg0, int *, 4) | 2);
+        if (PBookButton(arg1->m_trigger, 13) && (temp_v1 & 0x40000)) {
+            Xiiui_func_001351B0(arg0->m_scene, (unsigned int)arg0->m_msgId, 1);
+            arg0->m_flags = arg0->m_flags | 2;
             return 0;
         }
-        if (M2C_FIELD(arg0, int *, 0x124) == 0) {
-            if ((((M2C_FIELD(arg1, unsigned short *, 0x78) >> 5) & 1 & 0xFFFF) || Xfi_getLeftX__C6BedPad(arg1) >= 0.75f) && Xiii_func_00198318(arg0, 1)) {
-                temp_v1_3 = M2C_FIELD(arg0, unsigned int *, 0x128) + 2;
-                M2C_FIELD(arg0, unsigned int *, 0x128) = temp_v1_3;
+        if (arg0->m_unk124 == 0) {
+            if ((((arg1->m_press >> 5) & 1 & 0xFFFF) || Xfi_getLeftX__C6BedPad((int)arg1) >= 0.75f) && Xiii_func_00198318((int)arg0, 1)) {
+                temp_v1_3 = arg0->m_curPage + 2;
+                arg0->m_curPage = temp_v1_3;
                 if (temp_v1_3 >= 0) {
                     var_a1_2 = temp_v1_3 / 2;
                 } else {
                     var_a1_2 = -1;
                 }
-                Xiiii_func_00197F18(arg0, var_a1_2, 1);
-                M2C_FIELD(arg0, int *, 4) |= 0x100002;
+                Xiiii_func_00197F18((int)arg0, var_a1_2, 1);
+                arg0->m_flags |= 0x100002;
                 Xiii_func_0017F8FC((int)&D_007B2580, 8);
-                Xiiu_func_001985B0(arg0, -0x63U);
-            } else if ((((M2C_FIELD(arg1, unsigned short *, 0x78) >> 7) & 1 & 0xFFFF) || Xfi_getLeftX__C6BedPad(arg1) <= -0.75f) && Xiii_func_00198318(arg0, 0)) {
-                temp_v1_2 = M2C_FIELD(arg0, unsigned int *, 0x128);
+                Xiiu_func_001985B0((int)arg0, -0x63U);
+            } else if ((((arg1->m_press >> 7) & 1 & 0xFFFF) || Xfi_getLeftX__C6BedPad((int)arg1) <= -0.75f) && Xiii_func_00198318((int)arg0, 0)) {
+                temp_v1_2 = (unsigned int)arg0->m_curPage;
                 if ((int)temp_v1_2 >= 0) {
                     var_a1 = (int)temp_v1_2 / 2;
                 } else {
                     var_a1 = -1;
                 }
-                Xiiii_func_00197F18(arg0, var_a1, 0);
-                M2C_FIELD(arg0, unsigned int *, 0x128) -= 2;
-                M2C_FIELD(arg0, int *, 4) |= 0x80002;
+                Xiiii_func_00197F18((int)arg0, var_a1, 0);
+                arg0->m_curPage -= 2;
+                arg0->m_flags |= 0x80002;
                 Xiii_func_0017F8FC((int)&D_007B2580, 8);
-                Xiiu_func_001985B0(arg0, -0x63U);
+                Xiiu_func_001985B0((int)arg0, -0x63U);
             }
         }
-        if (!(M2C_FIELD(arg0, int *, 4) & 2)) {
+        if (!(arg0->m_flags & 2)) {
             goto done;
         }
     }
 block_30:
-    M2C_FIELD(arg0, unsigned int *, 0x8B8) = (unsigned int) ((unsigned int) (M2C_FIELD(arg0, unsigned int *, 0x8B8) + 1) % 300U);
+    arg0->m_unk8B8 = (int)(((unsigned int)arg0->m_unk8B8 + 1) % 300U);
 done:
     return 1;
 }
 
-extern "C" void func_00197D28(int arg0)
+extern "C" void func_00197D28(MnuPBook *arg0)
 {
-    register int self PS2_REG("$17");
-    register int p PS2_REG("$16");
+    register MnuPBook *self PS2_REG("$17");
+    register MnuBookPage *p PS2_REG("$16");
     register int i PS2_REG("$18");
     int temp_v0;
 
     self = arg0;
-    temp_v0 = M2C_FIELD(self, int *, 0x130);
+    temp_v0 = self->m_pageNum;
     if (temp_v0 != 0) {
-        p = M2C_FIELD(self, int *, 0x12C);
+        p = self->m_pages;
         i = 0;
         if (temp_v0 > 0) {
             do {
-                if (M2C_FIELD(p, int *, 0x10) < M2C_FIELD(M2C_FIELD(self, int *, 0x9C) + (M2C_FIELD(p, int *, 0xC) << 4), int *, 4)) {
-                    M2C_FIELD(p, int *, 0x10)++;
+                if (p->m_frame < ((MnuAnimSlot *)((int)self->m_animSlots + (p->m_animIdx << 4)))->m_len) {
+                    p->m_frame++;
                 }
                 i += 1;
-                p += 0x20;
-            } while (i < M2C_FIELD(self, int *, 0x130));
+                p++;
+            } while (i < self->m_pageNum);
         }
         i = 0;
-        p = M2C_FIELD(self, int *, 0x12C);
-        if (M2C_FIELD(self, int *, 0x130) > 0) {
+        p = self->m_pages;
+        if (self->m_pageNum > 0) {
             do {
-                if (M2C_FIELD(p, int *, 0) & 1) {
-                    if (M2C_FIELD(p, int *, 4) != -1) {
-                        if (Xiii_func_001943D8(self, M2C_FIELD(p, int *, 4)) != 0) {
-                            Xiiiii_func_00197E68(self, i, M2C_FIELD(p, int *, 4), 0);
-                            M2C_FIELD(p, int *, 0) = M2C_FIELD(p, int *, 0) & ~1;
+                if (p->m_flags & 1) {
+                    if (p->m_leftTex != -1) {
+                        if (Xiii_func_001943D8((int)self, p->m_leftTex) != 0) {
+                            Xiiiii_func_00197E68((int)self, i, p->m_leftTex, 0);
+                            p->m_flags = p->m_flags & ~1;
                         }
                     }
                 }
-                if (M2C_FIELD(p, int *, 0) & 2) {
-                    if (M2C_FIELD(p, int *, 8) != -1) {
-                        if (Xiii_func_001943D8(self, M2C_FIELD(p, int *, 8)) != 0) {
-                            Xiiiii_func_00197E68(self, i, M2C_FIELD(p, int *, 8), 1);
-                            M2C_FIELD(p, int *, 0) = M2C_FIELD(p, int *, 0) & ~2;
+                if (p->m_flags & 2) {
+                    if (p->m_rightTex != -1) {
+                        if (Xiii_func_001943D8((int)self, p->m_rightTex) != 0) {
+                            Xiiiii_func_00197E68((int)self, i, p->m_rightTex, 1);
+                            p->m_flags = p->m_flags & ~2;
                         }
                     }
                 }
                 i += 1;
-                p += 0x20;
-            } while (i < M2C_FIELD(self, int *, 0x130));
+                p++;
+            } while (i < self->m_pageNum);
         }
     }
 }
 
-extern "C" void func_00197E68(int arg0, int arg1, int arg2, int arg3)
+extern "C" void func_00197E68(MnuPBook *arg0, int arg1, int arg2, int arg3)
 {
-    PBookHdr **p = Xp_func_0022AED8((*(PBookElem20 **)((char *)arg0 + 0x94))[arg1].unk00 + 0x10, arg3 != 0);
+    PBookHdr **p = Xp_func_0022AED8(arg0->m_models[arg1].m_data + 0x10, arg3 != 0);
     PBookItem *item = *Xp_func_0022AAD0(p, 0);
-    PBookElem10 *base = (PBookElem10 *)M2C_FIELD(arg0, int *, 0xA4);
+    MnuTexSlot *base = arg0->m_texSlots;
     if (arg2 == -1) {
-        item->unk1C = (arg3 ? (base + 0x21) : (base + 0x20))->unk08;
+        item->unk1C = (arg3 ? (base + 0x21) : (base + 0x20))->m_texId;
     } else {
-        item->unk1C = (base + arg2)->unk08;
+        item->unk1C = (base + arg2)->m_texId;
     }
     (*p)->unk08++;
 }
 
-extern "C" void func_00197F18(int arg0, int arg1, int arg2)
+extern "C" void func_00197F18(MnuPBook *arg0, int arg1, int arg2)
 {
     int t;
     int v;
-    int base;
+    MnuBookPage *base;
 
-    base = M2C_FIELD(arg0, int *, 0x12C) + arg1 * 0x20;
+    base = &arg0->m_pages[arg1];
     v = arg1 * 2;
     t = v;
     if (arg2 != 0)
         t = v + 1;
-    M2C_FIELD(base, int *, 0x10) = 0;
-    M2C_FIELD(base, int *, 0xC) = t;
-    Xiiii_func_00193FEC(arg0, arg1, t);
-    M2C_FIELD(arg0, int *, 0x124) = 0xA;
+    base->m_frame = 0;
+    base->m_animIdx = t;
+    Xiiii_func_00193FEC((int)arg0, arg1, t);
+    arg0->m_unk124 = 0xA;
 }
 
 // NON_MATCHING: 19/200 differ, 1 reloc differs, 11 edits
@@ -2178,14 +2181,14 @@ extern "C" void func_00197F18(int arg0, int arg1, int arg2)
 extern "C" int X_func_0021B550(...) asm("func_0021B550");
 extern "C" int X_func_00237340(...) asm("func_00237340");
 extern "C" int X_func_002378B0(...) asm("func_002378B0");
-extern "C" int Xiii_func_00192F68(int, int) asm("func_00192F68");
-extern "C" int Xiii_func_001930F8(int, int) asm("func_001930F8");
-extern "C" int Xiii_func_00193210(int, int) asm("func_00193210");
-extern "C" int Xiiiff_func_00193258(int, float, float, int) asm("func_00193258");
-extern "C" int Xiiiiiii_func_0019368C(int, int, int, int, int, int) asm("func_0019368C");
+extern "C" int Xiii_func_00192F68(MnuPBook *, int) asm("func_00192F68");
+extern "C" int Xiii_func_001930F8(MnuPBook *, int) asm("func_001930F8");
+extern "C" int Xiii_func_00193210(MnuPBook *, int) asm("func_00193210");
+extern "C" int Xiiiff_func_00193258(MnuPBook *, float, float, int) asm("func_00193258");
+extern "C" int Xiiiiiii_func_0019368C(MnuPBook *, int, int, int, int, int) asm("func_0019368C");
 extern const unsigned int D_002F8140[4] __attribute__((aligned(16)));
 struct PBookV6Pair { long long a, b; };
-extern "C" void MnuPBook__vfunc_06(int arg0, int arg1)
+extern "C" void MnuPBook__vfunc_06(MnuPBook *arg0, int arg1)
 {
     struct { float sp0; float sp4; float sp8; float spC; float sp10; float sp14; float sp18; float sp1C; float sp20; float sp24; float sp28; float sp2C; float sp30; char pad34[12]; PBookV6Pair vec; int sp50; char pad54[44]; float sp80; float sp84; float sp88; } stack;
     register float zero PS2_REG("$f12");
@@ -2198,9 +2201,9 @@ extern "C" void MnuPBook__vfunc_06(int arg0, int arg1)
     int temp_a4;
     int temp_a5;
     int var_s0;
-    int var_s1;
+    MnuBookPage *var_s1;
 
-    if ((unsigned int) (M2C_FIELD(arg0, int *, 0x10) - 2) < 3U) {
+    if ((unsigned int)(arg0->m_unk10 - 2) < 3U) {
         Xiii_func_00192F68(arg0, arg1);
         Xiii_func_00193210(arg0, 1);
         stack.sp0 = 0.0f;
@@ -2222,14 +2225,14 @@ extern "C" void MnuPBook__vfunc_06(int arg0, int arg1)
         stack.sp24 = white;
         Xiiiff_func_00193258(arg0, zero, zero, (int)&stack);
         Xiii_func_00193210(arg0, 0);
-        if ((M2C_FIELD(arg0, int *, 0x128) - 1) >= 0) {
-            if (M2C_FIELD(arg0, int *, 4) & 0x80000) {
-                var_s0 = (unsigned int) ((unsigned int) M2C_FIELD(arg0, unsigned int *, 0x8B8) >> 1) % 3U;
+        if ((arg0->m_curPage - 1) >= 0) {
+            if (arg0->m_flags & 0x80000) {
+                var_s0 = ((unsigned int)arg0->m_unk8B8 >> 1) % 3U;
             } else {
                 var_s0 = 0;
             }
             stack.spC = 16.0f;
-            temp_f0 = ((float) var_s0 * 16.0f) + 48.0f;
+            temp_f0 = ((float)var_s0 * 16.0f) + 48.0f;
             stack.sp8 = 28.0f;
             stack.sp18 = 0.21875f;
             stack.sp10 = 0.0f;
@@ -2237,15 +2240,15 @@ extern "C" void MnuPBook__vfunc_06(int arg0, int arg1)
             stack.sp1C = (temp_f0 + 16.0f) * 0.0078125f;
             Xiiiff_func_00193258(arg0, 100.0f, 412.0f, (int)&stack);
         }
-        if ((M2C_FIELD(arg0, int *, 0x128) + 2) < M2C_FIELD(M2C_FIELD(arg0, int *, 0x110), int *, 8)) {
-            if (M2C_FIELD(arg0, int *, 4) & 0x100000) {
-                var_s0 = (unsigned int) ((unsigned int) M2C_FIELD(arg0, unsigned int *, 0x8B8) >> 1) % 3U;
+        if ((arg0->m_curPage + 2) < arg0->m_info->m_pageCount) {
+            if (arg0->m_flags & 0x100000) {
+                var_s0 = ((unsigned int)arg0->m_unk8B8 >> 1) % 3U;
             } else {
                 var_s0 = 0;
             }
             stack.sp10 = 0.0f;
             stack.spC = 16.0f;
-            temp_f0_2 = ((float) var_s0 * 16.0f) + stack.sp10;
+            temp_f0_2 = ((float)var_s0 * 16.0f) + stack.sp10;
             stack.sp8 = 28.0f;
             stack.sp18 = 0.21875f;
             stack.sp14 = temp_f0_2 * 0.0078125f;
@@ -2253,7 +2256,7 @@ extern "C" void MnuPBook__vfunc_06(int arg0, int arg1)
             Xiiiff_func_00193258(arg0, 384.0f, 412.0f, (int)&stack);
         }
         var_s0 = 0;
-        M2C_FIELD(arg0, int *, 0xB0) = X_func_0021B550(M2C_FIELD(arg0, int *, 0xB0), 0x47, 0x503FD);
+        arg0->m_unkB0 = X_func_0021B550(arg0->m_unkB0, 0x47, 0x503FD);
         Xiii_func_001930F8(arg0, arg1);
         stack.vec = *(PBookV6Pair *)&D_002F8140;
         X_func_00237340((int)&stack.sp50);
@@ -2261,16 +2264,16 @@ extern "C" void MnuPBook__vfunc_06(int arg0, int arg1)
         stack.sp80 = 25.0f;
         stack.sp84 = 8.0f;
         stack.sp88 = 220.0f;
-        var_s1 = M2C_FIELD(arg0, int *, 0x12C);
-        if (M2C_FIELD(arg0, int *, 0x130) > 0) {
+        var_s1 = arg0->m_pages;
+        if (arg0->m_pageNum > 0) {
             do {
-                temp_a4 = M2C_FIELD(var_s1, int *, 0xC);
+                temp_a4 = var_s1->m_animIdx;
                 temp_a3 = var_s0;
-                temp_a5 = M2C_FIELD(var_s1, int *, 0x10);
-                var_s1 += 0x20;
+                temp_a5 = var_s1->m_frame;
+                var_s1++;
                 var_s0 += 1;
                 Xiiiiiii_func_0019368C(arg0, arg1, (int)&stack.sp50, temp_a3, temp_a4, temp_a5);
-            } while (var_s0 < M2C_FIELD(arg0, int *, 0x130));
+            } while (var_s0 < arg0->m_pageNum);
         }
     }
 }
@@ -2278,25 +2281,24 @@ extern "C" void MnuPBook__vfunc_06(int arg0, int arg1)
 INCLUDE_ASM("asm/nonmatchings/unk/MnuPBook", MnuPBook__vfunc_06);
 #endif
 
-// NON_MATCHING: 11/34 differ, 6 edits
 extern "C" int X_func_00223228(int, int) asm("func_00223228");
 extern "C" int X_func_00223558(int, int) asm("func_00223558");
-extern "C" void MnuPBook__vfunc_07(int arg0, int arg1)
+extern "C" void MnuPBook__vfunc_07(MnuPBook *arg0, int arg1)
 {
     int arr[16];
     int q[6];
-    int p1;
-    int p2;
+    MnuTexSlot *p1;
+    MnuTexSlot *p2;
     int v;
     int c;
 
-    p1 = M2C_FIELD(arg0, int *, 0xA4);
-    arr[0] = M2C_FIELD(p1, int *, 8);
-    M2C_FIELD(p1, int *, 0xC) = 0;
-    p2 = M2C_FIELD(arg0, int *, 0xA4);
-    arr[1] = M2C_FIELD(p2, int *, 0x18);
+    p1 = arg0->m_texSlots;
+    arr[0] = p1[0].m_texId;
+    p1[0].m_unk0C = 0;
+    p2 = arg0->m_texSlots;
+    arr[1] = p2[1].m_texId;
     c = 1;
-    M2C_FIELD(p2, int *, 0x1C) = c;
+    p2[1].m_unk0C = c;
     c = 2;
     q[2] = c;
     q[0] = 0;
@@ -2305,7 +2307,7 @@ extern "C" void MnuPBook__vfunc_07(int arg0, int arg1)
     q[4] = 0;
     q[5] = 0;
     v = X_func_00223558(arg1, (int)q);
-    M2C_FIELD(arg0, int *, 0xAC) = v;
+    arg0->m_unkAC = v;
     X_func_00223228(arg1, v);
 }
 
