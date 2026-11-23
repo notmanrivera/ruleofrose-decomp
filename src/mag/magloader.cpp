@@ -209,10 +209,12 @@ int MagNameList::func_00141F54(int theNum, const char *theNameBuf, const int *th
 
 
 
-// NON_MATCHING: $s2 and $s3 are swapped (data and name).
+// NON_MATCHING: 4/258 differ, 3 edits
 #ifdef NON_MATCHING
 void MagNameList::func_001420F8(int theNum, const char *theNameBuf, const int *theOffset, const int *theSize, int theBase, int theSort)
 {
+
+
     int old = m_num;
     if (old == 0) {
         func_00141F54(theNum, theNameBuf, theOffset, theSize, theBase);
@@ -252,15 +254,13 @@ void MagNameList::func_001420F8(int theNum, const char *theNameBuf, const int *t
         lens[i4 + m_num] = len[i4];
     }
     func_0014259C();
-    m_num = total;
-    m_size = data;
+    m_num = total; m_data = data;
     m_data_size = dataSize;
+    m_size = data;
     m_offset = offset;
     m_name = name;
     m_len = lens;
-    m_name_buf = names;
-    m_name_size = allNames;
-    m_data = data;
+    m_name_buf = names; m_name_size = allNames;
     if (theSort) {
         int last = total - 1;
         for (int a = old; a < last; a++) {
