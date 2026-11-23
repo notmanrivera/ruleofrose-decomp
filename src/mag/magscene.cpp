@@ -3,6 +3,8 @@
 #include "mag/magscene.h"
 #include "mag/maglifewindow.h"
 #include "dog/dogtexinfo.h"
+extern "C" int Xii_func_0011DD40(int) asm("func_0011DD40");
+extern "C" int Xiiiii_setActor__9MagLifePCP8DogActorii(int, int, int, int) asm("setActor__9MagLifePCP8DogActorii");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
 extern const char D_002ED4A0[];
@@ -92,29 +94,23 @@ extern "C" void func_00131690(MagScene *self)
 }
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
 void MagScene::func_001316B8(int theNo, int theType)
 {
-    void *pc = &m_pc;
     BedSubMode *sub = &m_sub_mode;
     *(int *)((char *)this + 0x853B8) = theNo;
     *(int *)((char *)this + 0x22AC) = theType;
     if (theNo >= 0) {
-        setActor__9MagLifePCP8DogActorii(pc, &m_actor[theNo], theNo, theType);
+        setActor__9MagLifePCP8DogActorii(&m_pc, &m_actor[theNo], theNo, theType);
         m_unk29120[theNo] |= 0x60;
-        func_0011DD40(pc);
+        func_0011DD40(&m_pc);
         ((int *)sub)[0] = 1;
         ((int *)sub)[1] = -1;
     } else {
-        setActor__9MagLifePCP8DogActorii(pc, 0, theNo, theType);
+        setActor__9MagLifePCP8DogActorii(&m_pc, 0, theNo, theType);
         ((int *)sub)[1] = -1;
         ((int *)sub)[0] = 0;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001316B8__8MagSceneii);
-#endif
 
 
 void MagScene::func_00131790(int theNo, int theType)
