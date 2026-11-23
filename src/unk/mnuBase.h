@@ -58,7 +58,17 @@ struct MnuPBookInfo {
     int m_unk00;                // +0x00
     int m_msgBase;              // +0x04
     int m_pageCount;            // +0x08
-};
+    int m_flags0C;              // +0x0C
+    char m_prefix[0x20];        // +0x10
+}; // size 0x30
+
+struct MnuMapEntry {
+    int m_room;                 // +0x00
+    int m_floor;                // +0x04
+    char m_texPrefix[0x10];     // +0x08
+    int m_tileCount;            // +0x18
+    int m_unk1C;                // +0x1C
+}; // size 0x20
 
 struct MnuBase {
     int m_type;                         // +0x000
@@ -73,7 +83,20 @@ struct MnuBase {
     char m_rpkPath[0x40];               // +0x024
     void *m_readBuf;                    // +0x064
     unsigned char m_fileReader[0x08];   // +0x068 (FileReader)
-    unsigned char m_fileReq[0x24];      // +0x070 (FileReadReq)
+    union {
+        unsigned char m_fileReq[0x24];  // +0x070 (FileReadReq)
+        struct {
+            int m_reqFd;                // +0x070
+            int m_reqState;             // +0x074
+            int m_reqUnk08;             // +0x078
+            char *m_reqPath;            // +0x07C
+            int m_reqSeekOff;           // +0x080
+            int m_reqSeekWhence;        // +0x084
+            void *m_reqBuf;             // +0x088
+            int m_reqSize;              // +0x08C
+            int m_reqCloseFlag;         // +0x090
+        };
+    };
     MnuModelSlot *m_models;             // +0x094
     int m_unk98;                        // +0x098
     MnuAnimSlot *m_animSlots;           // +0x09C
@@ -122,7 +145,7 @@ struct MnuPBook : public MnuBase {
 }; // size 0x8BC
 
 struct MnuMap : public MnuBase {
-    void *m_unk110;                     // +0x110
+    MnuMapEntry *m_unk110;              // +0x110
     int m_unk114;                       // +0x114
     int m_unk118;                       // +0x118
     float m_unk11C;                     // +0x11C
@@ -139,7 +162,7 @@ struct MnuMap : public MnuBase {
     int m_unk148;                       // +0x148
     int m_unk14C;                       // +0x14C
     unsigned char m_msgWin[2 * 0x3BC];  // +0x150..+0x8C7
-    int m_unk8C8;                       // +0x8C8
+    MnuMapEntry *m_unk8C8;              // +0x8C8
     float m_unk8CC;                     // +0x8CC
     float m_unk8D0;                     // +0x8D0
     float m_unk8D4;                     // +0x8D4
@@ -154,6 +177,8 @@ typedef char MnuModelSlot_size_check[sizeof(MnuModelSlot) == 0x20 ? 1 : -1];
 typedef char MnuAnimSlot_size_check[sizeof(MnuAnimSlot) == 0x10 ? 1 : -1];
 typedef char MnuTexSlot_size_check[sizeof(MnuTexSlot) == 0x10 ? 1 : -1];
 typedef char MnuBookPage_size_check[sizeof(MnuBookPage) == 0x20 ? 1 : -1];
+typedef char MnuPBookInfo_size_check[sizeof(MnuPBookInfo) == 0x30 ? 1 : -1];
+typedef char MnuMapEntry_size_check[sizeof(MnuMapEntry) == 0x20 ? 1 : -1];
 typedef char MnuBase_size_check[sizeof(MnuBase) == 0x110 ? 1 : -1];
 typedef char MnuPBook_size_check[sizeof(MnuPBook) == 0x8BC ? 1 : -1];
 typedef char MnuMap_size_check[sizeof(MnuMap) == 0x8E0 ? 1 : -1];
