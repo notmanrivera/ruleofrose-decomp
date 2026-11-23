@@ -580,8 +580,6 @@ extern "C" void func_001D9F40(ACHRstat *arg0)
     }
 }
 
-// NON_MATCHING: 13/52 differ (size 0xD0, game 0xD8), 7 edits
-#ifdef NON_MATCHING
 extern "C" float X_func_00133440(void *, int) asm("func_00133440");
 extern "C" int X_func_0010A834__8DogActor(GamTrgDogActor *) asm("func_0010A834__8DogActor");
 extern "C" int func_001D9F84(ACHRstat *arg0)
@@ -590,19 +588,17 @@ extern "C" int func_001D9F84(ACHRstat *arg0)
     if (arg0->m_flg & 0x100) {
         if (X_func_00133440(&D_006FBD80, arg0->m_chrID) < 0.0f) {
             if (X_func_00133440(&D_006FBD80, arg0->m_chrID) >= -0.0000001f) {
-                return 0;
+                goto ret0;
             }
         } else {
             if (X_func_00133440(&D_006FBD80, arg0->m_chrID) <= 0.0000001f) {
+            ret0:
                 return 0;
             }
         }
     }
     return temp_s2;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamtrg", func_001D9F84);
-#endif
 
 extern "C" int func_001DA05C(ACHRstat *arg0)
 {
