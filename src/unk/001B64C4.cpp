@@ -255,7 +255,7 @@ extern int D_007B2140;
 extern int D_007B2580;
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 
-// NON_MATCHING: 111/323 differ, 15 relocs differ, 14 edits
+// NON_MATCHING: 39/322 differ, 2 relocs differ (size 0x508, game 0x50C), 5 edits
 #ifdef NON_MATCHING
 struct C64Item { int words[4]; };
 extern char c64Heap[] asm("D_006E9840");
@@ -269,7 +269,7 @@ extern "C" int c64_func_001C5094(int,int,int,int) asm("func_001C5094");
 extern "C" int c64_func_001C51E0(int,int,int) asm("func_001C51E0");
 extern "C" int c64_func_001B070C(int,int,int) asm("func_001B070C");
 extern "C" int c64_func_001C8214(int,int) asm("func_001C8214");
-extern "C" int c64_func_001AF5E0(int) asm("func_001AF5E0");
+extern "C" int c64_func_001AF5E0(int) ASM_NOTHROW asm("func_001AF5E0");
 extern "C" int c64_func_0018F41C(int,int,int) asm("func_0018F41C");
 extern "C" int c64_func_0018C4D8(int,int,int) asm("func_0018C4D8");
 extern "C" int func_001B64C4(int arg0, int arg1) {
@@ -408,8 +408,8 @@ block_35:
             M2C_FIELD(M2C_FIELD(temp_s0_4, int *, 0x4AC), int *, 0x393C) = 0x80;
             M2C_FIELD(M2C_FIELD(temp_s0_4, int *, 0x4AC), int *, 0x3940) = 0x28;
         }
-        temp_s0_5 = arg0 + 0x98;
         if (var_s3 & 2) {
+            temp_s0_5 = arg0 + 0x98;
             c64_func_0018F0EC(temp_s0_5, 0x2A, 0, -1);
             c64_func_0018F0EC(temp_s0_5, 0x2B, 1, -1);
             M2C_FIELD(M2C_FIELD(temp_s0_5, int *, 0x4AC), int *, 0x37E0) = 0x80;
