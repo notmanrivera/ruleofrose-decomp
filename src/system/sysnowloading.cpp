@@ -75,8 +75,8 @@ extern int D_007A3D80;
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" void *X_alloc__9BedMemoryiPCciii(void *, int, const char *, int, int, int) asm("alloc__9BedMemoryiPCciii");
 extern "C" void X_free__9BedMemoryPv(void *, void *) asm("free__9BedMemoryPv");
-extern "C" int X_func_00117F80__9MagSystemiiiiiii(...) asm("func_00117F80__9MagSystemiiiiiii");
-extern "C" int X_func_0013F980__8MagSceneiiiPfi(void *, int, int, int, float *, int) asm("func_0013F980__8MagSceneiiiPfi");
+extern "C" void X_func_00117F80__9MagSystemiiiiiii(...) asm("func_00117F80__9MagSystemiiiiiii");
+extern "C" void X_func_0013F980__8MagSceneiiiPfi(void *, int, int, int, float *, int) asm("func_0013F980__8MagSceneiiiPfi");
 extern "C" int X_func_00144AE0(...) asm("func_00144AE0");
 extern "C" int X_func_001C541C(...) asm("func_001C541C");
 extern "C" int X_func_001D2724(...) asm("func_001D2724");
@@ -335,8 +335,6 @@ struct SysNowLoadVec4 {
     float m_v[4];
 };
 
-// NON_MATCHING: 3/70 differ, 2 relocs differ, 3 edits (prologue lui schedule)
-#ifdef NON_MATCHING
 extern "C" int func_0020544C()
 {
     char *scene = (char *)&D_006FBD80;
@@ -353,9 +351,6 @@ extern "C" int func_0020544C()
     X_func_001D2724((int)&D_007812C0, 1, 0);
     return 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/system/sysnowloading", func_0020544C);
-#endif
 
 extern "C" int func_00205564()
 {
