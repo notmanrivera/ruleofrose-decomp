@@ -834,6 +834,37 @@ def apply_output(name, fn, out_dir):
     # structs, inline helpers (bSetYaw in unk/00166AD0), as they were
     decls = [it for kind, it in top_items(block.group(1) if block else "")
              if not (kind == "func" and re.search(rf"\b{re.escape(fn)}\s*\(", it.split("{", 1)[0]))]
+    # the permuter also mutates declarations (a callee's return type, say):
+    # a prototype the attempt's block has, changed in the variant, comes in
+    # changed (as C++ again: extern "C", (...), ASM_NOTHROW)
+    def proto_name(d):
+        g = re.search(r"\b([A-Za-z_]\w*)\s*\([^;{]*\)\s*(?:__attribute__\s*\(\([^)]*\)\)\s*)?(?:asm\s*\(\"[^\"]*\"\)\s*)?;\s*$", d.strip())
+        return g.group(1) if g and "{" not in d else None
+    changed = {proto_name(it): it for kind, it in top_items(src) if kind == "decl" and proto_name(it)}
+    for k, d in enumerate(decls):
+        n = proto_name(d)
+        if n and n in changed:
+            v = changed[n].strip().replace("(int, ...)", "(...)").replace("__attribute__((ror_nothrow))", "ASM_NOTHROW")
+            if re.sub(r"\s+", " ", plain_c(d).strip()) != re.sub(r"\s+", " ", changed[n].strip()):
+                if re.match(r'\s*extern\s+"C"', d) and not v.startswith('extern "C"'):
+                    v = re.sub(r"^\s*(?:extern\s+)?", 'extern "C" ', v, count=1)
+                decls[k] = v
+    # one declared elsewhere in the file: changed there, in this worktree's
+    # src/ (work.py checks the whole object, so a caller it breaks shows)
+    srcp = ROOT / "src" / f"{name}.cpp"
+    stext = srcp.read_text(encoding="utf8")
+    inblock = {proto_name(d) for d in decls}
+    for n, v in changed.items():
+        if n in inblock or n == fn:
+            continue
+        m = re.search(rf"^(extern\s+\"C\"\s+)?([^\n;{{}}#]*\b{re.escape(n)}\s*\([^;{{}}]*\)[^;{{}}\n]*;)[ \t]*$", stext, re.M)
+        if not m:
+            continue
+        new = v.strip().replace("(int, ...)", "(...)").replace("__attribute__((ror_nothrow))", "ASM_NOTHROW")
+        new = re.sub(r"^\s*extern\s+", "", new)
+        if re.sub(r"\s+", " ", plain_c(m.group(2))) != re.sub(r"\s+", " ", plain_c(new)):
+            stext = stext[:m.start()] + (m.group(1) or "") + ("" if m.group(1) or new.startswith("extern") else "extern ") + new + stext[m.end():]
+    srcp.write_text(stext, encoding="utf8", newline="\n")
     scratch = work.WORK / name / f"{fn}.cpp"
     subprocess.run([sys.executable, "tools/work.py", name, fn], cwd=ROOT, capture_output=True, text=True)
     head = scratch.read_text(encoding="utf8").split(work.FUNC, 1)[0]
