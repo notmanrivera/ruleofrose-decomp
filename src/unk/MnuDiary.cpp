@@ -295,8 +295,8 @@ extern "C" void func_001985B0(MnuPBook *arg0, int arg1) {
 MnuDiary::MnuDiary()
 {
     int i = 1;
-    MnuMsgWinCtor *p = (MnuMsgWinCtor *)m_msgs;
-    do { new (p) MnuMsgWinCtor; p++; } while (--i != -1);
+    MnuMsgWin *p = (MnuMsgWin *)m_msgs;
+    do { new (p) MnuMsgWin; p++; } while (--i != -1);
     m_unk130 = -1;
     m_msgId = -1;
     m_diaryId = -1;
@@ -1779,7 +1779,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/MnuDiary", func_0019CF48);
 extern "C" void func_0019DBC8(MnuStock *arg0, int arg1, int arg2)
 {
     char *str = 0;
-    MnuStockRpk *spr = &arg0->m_rpk;
+    MnuRpk *spr = &arg0->m_rpk;
     spr->m_sprTbl[arg1].m_color = &D_002A42C0;
     if (arg2 < arg0->m_listCount) {
         if (arg2 == 0) {

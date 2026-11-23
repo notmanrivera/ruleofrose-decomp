@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "mnu/mnucommon.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
 extern "C" void X_func_001C6A40(GamMan *, int) asm("func_001C6A40");

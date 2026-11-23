@@ -13,6 +13,7 @@
 #define UNK_MNUDIARY_H
 
 #include "unk/mnuBase.h"
+#include "mnu/mnucommon.h"
 #include "game/gamman.h"
 
 struct MnuDiaryInfo {
@@ -21,11 +22,6 @@ struct MnuDiaryInfo {
     int m_pageCount;            // +0x08
     char m_prefix[0x24];        // +0x0C
 }; // size 0x30
-
-struct MnuMsgWinCtor {
-    unsigned char m_unk[0x3BC];
-    MnuMsgWinCtor() asm("func_0018330C");
-}; // size 0x3BC
 
 struct MnuDiary : public MnuBase {
     MnuDiaryInfo *m_info;               // +0x110
@@ -49,30 +45,6 @@ struct MnuDiary : public MnuBase {
     int getPaperByPage(int page) { return (page + 1) / 2 - 1; }
     int getPageByPaper(int paper) { return paper * 2 + 1; }
 }; // size 0x8BC
-
-struct MnuStockSprElem {
-    unsigned char m_unk00[0x144];       // +0x000
-    int m_unk144;                       // +0x144
-    int m_unk148;                       // +0x148
-    char *m_text;                       // +0x14C
-    void *m_color;                      // +0x150
-}; // size 0x154
-
-struct MnuStockRpk {
-    unsigned char m_unk000[0x41C];      // +0x000
-    int m_param;                        // +0x41C
-    unsigned char m_unk420[0x8C];       // +0x420
-    MnuStockSprElem *m_sprTbl;          // +0x4AC
-    unsigned char m_unk4B0[0x20];       // +0x4B0
-    int m_renderCtx;                    // +0x4D0
-    unsigned char m_unk4D4[0x418];      // +0x4D4
-
-    inline void setText(int idx, char *str) {
-        m_sprTbl[idx].m_unk144 = 0x20;
-        m_sprTbl[idx].m_unk148 = 0;
-        m_sprTbl[idx].m_text = str;
-    }
-}; // size 0x8EC
 
 struct MnuStockCursor {
     int m_pos;
@@ -110,7 +82,7 @@ struct MnuStock {
     int m_pad48[3];                     // +0x0048
     int m_unk54;                        // +0x0054
     unsigned char m_msgs[2 * 0x3BC];    // +0x0058..+0x07CF
-    MnuStockRpk m_rpk;                  // +0x07D0..+0x10BB
+    MnuRpk m_rpk;                       // +0x07D0..+0x10BB
     char *m_magSys;                     // +0x10BC
     int m_renderCtx;                    // +0x10C0
     unsigned char m_pad10C4[0x4C];      // +0x10C4

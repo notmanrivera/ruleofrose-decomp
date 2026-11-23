@@ -12,20 +12,7 @@
 #ifndef MNU_MNUDLG_H
 #define MNU_MNUDLG_H
 
-struct MnuSub104Base {
-    int m_open;                         // +0x000
-}; // size 0x004
-
-struct MnuSub104 : public MnuSub104Base {
-    unsigned char m_pad04[0x40];        // +0x004..0x043
-    int m_subStep;                      // +0x044
-    unsigned char m_pad48[0x1C];        // +0x048..0x063
-    int m_result;                       // +0x064
-    unsigned char m_pad68[0x08];        // +0x068..0x06F
-    int m_active;                       // +0x070
-    unsigned char m_pad74[0x10];        // +0x074..0x083
-    void *m_lines[32];                  // +0x084..0x103 (rel +0x80)
-}; // size 0x104
+#include "mnu/mnucommon.h"
 
 struct MnuMcdDirEnt {
     unsigned char m_pad00[0x10];        // +0x00
@@ -59,12 +46,6 @@ struct MnuMcdCard {
     }
 }; // size 0xAC0
 
-struct MnuDlgMsgWin {
-    unsigned char m_data[0x3BC];
-    MnuDlgMsgWin() asm("func_0018330C");
-    ~MnuDlgMsgWin() asm("func_00183B24");
-}; // size 0x3BC
-
 struct MnuMcdBase1 {
     int m_open;                         // +0x0000
     int m_active;                       // +0x0004
@@ -91,7 +72,7 @@ struct MnuMcdBase1 {
 }; // size 0x0B80
 
 struct MnuMcdBase2 {
-    MnuDlgMsgWin m_msgWin[2];           // +0x0000..0x0777 (at +0x0B80 in MnuMcd)
+    MnuMsgWin m_msgWin[2];           // +0x0000..0x0777 (at +0x0B80 in MnuMcd)
     inline ~MnuMcdBase2() {}
 }; // size 0x0778
 
@@ -127,7 +108,7 @@ struct MnuDlgObjBase1 {
 }; // size 0x054
 
 struct MnuDlgObjBase2 {
-    MnuDlgMsgWin m_msgWin[2];           // +0x000..0x777 (at +0x054 in MnuDlgObj)
+    MnuMsgWin m_msgWin[2];           // +0x000..0x777 (at +0x054 in MnuDlgObj)
     inline ~MnuDlgObjBase2() {}
 }; // size 0x778
 
@@ -147,5 +128,8 @@ struct MnuDlgObj : public MnuDlgObjBase1, public MnuDlgObjBase2 {
     MnuDlgObj() asm("func_001A4BD8");
     ~MnuDlgObj() asm("func_001A4C34");
 }; // size 0x874
+
+typedef char MnuMcd_size_check[sizeof(MnuMcd) == 0x1400 ? 1 : -1];
+typedef char MnuDlgObj_size_check[sizeof(MnuDlgObj) == 0x874 ? 1 : -1];
 
 #endif

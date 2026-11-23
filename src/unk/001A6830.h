@@ -9,11 +9,7 @@
 //   MnuNow   (0x1AE474..0x1AE867) — MagLifeMenuNow
 //   MnuItem  (0x1AE868..0x1B64C3) — MagLifeMenuItem
 
-struct MnuRpkEntry {
-    int m_id;
-    const char *m_name;
-    unsigned char m_pad08[0x10];
-}; // size 0x18
+#include "mnu/mnusvld.h"
 
 struct MnuBoardTblEnt {
     int m_key;
@@ -26,45 +22,6 @@ struct MnuItemStockEnt {
     unsigned short m_count;             // +0x0A
     unsigned char m_pad0C[0x04];
 }; // size 0x10
-
-// Shared RPK/sprite manager (ctor func_0018BB8C, dtor func_0018BC18, size 0x8EC)
-struct MnuRpk {
-    int m_unk00;                        // +0x000
-    int m_unk04;                        // +0x004
-    unsigned char m_loader[0x414];      // +0x008 (passed to func_0018F744 / func_0018FEBC)
-    int m_param;                        // +0x41C
-    unsigned char m_pad420[0x90];       // +0x420
-    void *m_tbl;                        // +0x4B0
-    unsigned char m_pad4B4[0x1C];       // +0x4B4
-    int m_renderCtx;                    // +0x4D0
-    unsigned char m_pad4D4[0x414];      // +0x4D4
-    int m_unk8E8;                       // +0x8E8
-}; // size 0x8EC
-
-// Shared message window (ctor func_0018330C, dtor func_00183B24, size 0x3BC)
-struct MnuMsgWin {
-    unsigned char m_data[0x3BC];
-}; // size 0x3BC
-
-// Shared sub-object (ctor func_001A066C, dtor func_001A0684, size 0x104)
-struct MnuSub104 {
-    unsigned char m_data[0x104];
-}; // size 0x104
-
-// Embedded MnuMcd (ctor func_001A1244, dtor func_001A12A8, size 0x1400)
-struct MnuMcdStub {
-    unsigned char m_data[0x1400];
-}; // size 0x1400
-
-// Embedded MnuSvld (ctor func_001A59B8, dtor func_001A5A34, size 0x2780)
-struct MnuSvldStub {
-    unsigned char m_pad00[0x24E8];      // +0x0000
-    int m_unk24E8;                      // +0x24E8
-    unsigned char m_pad24EC[0x268];     // +0x24EC
-    int m_result;                       // +0x2754
-    int getResult() { return m_result; }
-    unsigned char m_pad2758[0x28];      // +0x2758
-}; // size 0x2780
 
 // Option menu (MagLifeMenuOpt + 0x40, size 0x10E8)
 struct MnuOpt {
@@ -91,8 +48,8 @@ struct MnuOpt {
 
 // Title menu (MagLifeMenuTitle + 0x40, size 0x56F8)
 struct MnuTitle {
-    MnuMcdStub m_mcd;                   // +0x0000..0x13FF
-    MnuSvldStub m_svld;                 // +0x1400..0x3B7F
+    MnuMcd m_mcd;                       // +0x0000..0x13FF
+    MnuSvld m_svld;                     // +0x1400..0x3B7F
     MnuOpt m_opt;                       // +0x3B80..0x4C67
     MnuSub104 m_sub4C68;                // +0x4C68..0x4D6B
     int m_open;                         // +0x4D6C

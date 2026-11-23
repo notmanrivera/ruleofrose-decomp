@@ -271,11 +271,11 @@ extern int D_007B2580;
 
 extern "C" void func_001A90EC(MnuTitle *arg0)
 {
-    MnuSvldStub *svld = &arg0->m_svld;
+    MnuSvld *svld = &arg0->m_svld;
 
     X_func_001A1244();
     X_func_001A59B8(svld);
-    svld->m_unk24E8 = 0;
+    svld->m_isLoad = 0;
     X_func_001AB474(&arg0->m_opt);
     X_func_001A066C(&arg0->m_sub4C68);
     X_func_0018BB8C(&arg0->m_rpk);
@@ -488,7 +488,7 @@ extern "C" int func_001AAED0(MnuTitle *arg0)
         self->m_subStep = 0xF;
         break;
     case 0xF: {
-        MnuSvldStub *p = &self->m_svld;
+        MnuSvld *p = &self->m_svld;
         if (X_func_001A5CC4(p) != 0) {
             ret = (p->m_result == 0) ? 1 : 2;
             X_func_001A5BF4(p);

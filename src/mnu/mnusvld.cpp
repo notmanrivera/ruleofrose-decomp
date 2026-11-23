@@ -301,7 +301,7 @@ INCLUDE_RODATA("asm/nonmatchings/mnu/mnusvld", D_002F91D0);
 
 extern "C" void func_001A5AF4(MnuSvld *arg0, int arg1)
 {
-    MnuSvldRpk *rpk = &arg0->m_rpk;
+    MnuRpk *rpk = &arg0->m_rpk;
     X_func_0018BCC0(rpk, 0x49);
     rpk->setUnk8E8(1);
     arg0->m_rpk.m_param = arg1;
@@ -360,7 +360,7 @@ extern "C" int func_001A5CC4()
 
 extern "C" void func_001A5CD8(MnuSvld *arg0, int arg1)
 {
-    MnuSvldRpk *rpk = &arg0->m_rpk;
+    MnuRpk *rpk = &arg0->m_rpk;
     arg0->m_renderCtx = arg1;
     if (arg1 != 0) {
         rpk->setRenderCtx(arg1);
@@ -459,7 +459,7 @@ extern "C" int func_001A65F0(MnuSvld *arg0)
 
 extern "C" void func_001A665C(MnuSvld *arg0)
 {
-    MnuSvldRpk *rpk = &arg0->m_rpk;
+    MnuRpk *rpk = &arg0->m_rpk;
     arg0->m_sys = _9MagSystem$m_current_system;
     rpk->setTbl(&D_002A45C0);
     Xiii_func_0018C190(rpk, &D_002A64E0);
@@ -825,13 +825,13 @@ extern "C" void func_001A7418(MnuSvld *arg0, int type)
     int row = arg0->m_cursor[1] - arg0->m_cursor[2];
     switch (type) {
     case 0: {
-        MnuSvldRpk *rpk = &arg0->m_rpk;
+        MnuRpk *rpk = &arg0->m_rpk;
         X_func_0018C6C4_7418(rpk, 1, row);
         rpk->setSpr08(1, 5);
         break;
     }
     case 1: {
-        MnuSvldRpk *rpk = &arg0->m_rpk;
+        MnuRpk *rpk = &arg0->m_rpk;
         X_func_0018C6C4_7418(rpk, type, row);
         rpk->setSpr08(1, 5);
         break;
@@ -1224,7 +1224,7 @@ extern "C" int func_001A8D44(MnuSvld *obj, int arg1)
 
     switch (arg0->m_subStep) {
     case 0: {
-        MnuSvldRpk *rpk = &arg0->m_rpk;
+        MnuRpk *rpk = &arg0->m_rpk;
         arg0->m_cursor[5] = 0;
         arg0->m_subStep = 0xD;
         Xiiii_func_0018C4D8((int)rpk, 0x45, 0);

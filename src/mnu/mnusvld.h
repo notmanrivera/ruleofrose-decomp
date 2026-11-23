@@ -11,6 +11,8 @@
 #ifndef MNU_MNUSVLD_H
 #define MNU_MNUSVLD_H
 
+#include "mnu/mnudlg.h"
+
 struct MnuDlgBase {
     int m_open;                         // +0x000
 }; // size 0x004
@@ -37,66 +39,6 @@ struct MnuDlg : public MnuDlgBase {
     char *m_bodyLines[16];              // +0x834..0x873 (rel +0x830)
 }; // size 0x874
 
-struct MnuSvldSprElem {
-    int m_unk00;                        // +0x000
-    int m_unk04;                        // +0x004
-    int m_unk08;                        // +0x008
-    int m_vis0C;                        // +0x00C
-    int m_vis10;                        // +0x010
-    unsigned char m_pad14[0xC4];        // +0x014
-    int m_iconId;                       // +0x0D8
-    unsigned char m_padDC[0x68];        // +0x0DC
-    int m_unk144;                       // +0x144
-    int m_unk148;                       // +0x148
-    char *m_text;                       // +0x14C
-    void *m_color;                      // +0x150
-}; // size 0x154
-
-struct MnuSvldRpk {
-    int m_unk00;                        // +0x000
-    int m_unk04;                        // +0x004
-    unsigned char m_loader[0x414];      // +0x008
-    int m_param;                        // +0x41C
-    unsigned char m_pad420[0x8C];       // +0x420
-    MnuSvldSprElem *m_sprTbl;           // +0x4AC
-    void *m_tbl;                        // +0x4B0
-    unsigned char m_pad4B4[0x1C];       // +0x4B4
-    int m_renderCtx;                    // +0x4D0
-    unsigned char m_pad4D4[0x414];      // +0x4D4
-    int m_unk8E8;                       // +0x8E8
-
-    MnuSvldRpk() asm("func_0018BB8C");
-    ~MnuSvldRpk() asm("func_0018BC18");
-
-    inline void setUnk04(int v) { m_unk04 = v; }
-    inline void setUnk8E8(int v) { m_unk8E8 = v; }
-    inline void setTbl(void *p) { m_tbl = p; }
-    inline void setRenderCtx(int v) { m_renderCtx = v; }
-    inline void setSpr08(int idx, int v) { m_sprTbl[idx].m_unk08 = v; }
-    inline void setSprVis0C(int idx, int v) { m_sprTbl[idx].m_vis0C = v; }
-    inline void setSprVis10(int idx, int v) { m_sprTbl[idx].m_vis10 = v; }
-}; // size 0x8EC
-
-struct MnuSvldMsgWin {
-    unsigned char m_data[0x3BC];
-    MnuSvldMsgWin() asm("func_0018330C");
-    ~MnuSvldMsgWin() asm("func_00183B24");
-}; // size 0x3BC
-
-struct MnuSvldMcd {
-    unsigned char m_pad00[0x24];        // +0x0000
-    int m_mcdMode;                      // +0x0024
-    unsigned char m_pad28[0x98];        // +0x0028
-    unsigned char m_dirBlk[0x12D0];     // +0x00C0 (+0x90=count, +0x1E0+i*0x40=name)
-    int m_mcdResult;                    // +0x1390
-    unsigned char m_pad1394[0x28];      // +0x1394
-    int m_mcdBusy;                      // +0x13BC
-    unsigned char m_pad13C0[0x40];      // +0x13C0
-
-    MnuSvldMcd() asm("func_001A1244");
-    ~MnuSvldMcd() asm("func_001A12A8");
-}; // size 0x1400
-
 struct MnuSvldSlot {
     int m_status;                       // +0x00 (-1 empty, 0 valid, 1 corrupted)
     int m_clearFlg;                     // +0x04
@@ -112,7 +54,7 @@ struct MnuSvldSlot {
 }; // size 0x2C
 
 struct MnuSvldBase1 {
-    MnuSvldMcd m_mcd;                   // +0x0000..0x13FF
+    MnuMcd m_mcd;                       // +0x0000..0x13FF
     int m_open;                         // +0x1400
     int m_cursor[9];                    // +0x1404..0x1427
     int m_unk1428;                      // +0x1428
@@ -125,14 +67,14 @@ struct MnuSvldBase1 {
     int m_subStep;                      // +0x1454
     int m_pad1458[6];                   // +0x1458..0x146F
     int m_unk1470;                      // +0x1470
-    MnuSvldRpk m_rpk;                   // +0x1474..0x1D5F
+    MnuRpk m_rpk;                       // +0x1474..0x1D5F
     int m_sys;                          // +0x1D60
     int m_renderCtx;                    // +0x1D64
     inline ~MnuSvldBase1() {}
 }; // size 0x1D68
 
 struct MnuSvldBase2 {
-    MnuSvldMsgWin m_msgWin[2];          // +0x0000..0x0777 (at +0x1D68 in MnuSvld)
+    MnuMsgWin m_msgWin[2];              // +0x0000..0x0777 (at +0x1D68 in MnuSvld)
     inline ~MnuSvldBase2() {}
 }; // size 0x778
 
@@ -161,6 +103,10 @@ struct MnuSvld : public MnuSvldBase1, public MnuSvldBase2 {
 
     MnuSvld() asm("func_001A59B8");
     ~MnuSvld() asm("func_001A5A34");
+
+    inline int getResult() { return m_result; }
 }; // size 0x2780
+
+typedef char MnuSvld_size_check[sizeof(MnuSvld) == 0x2780 ? 1 : -1];
 
 #endif

@@ -1,69 +1,135 @@
 #include "ror.h"
 #include "include_asm.h"
-extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
-extern "C" int Xii_func_001A074C(int) asm("func_001A074C");
-extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
-extern "C" void Xv_func_001879C4(void *) asm("func_001A074C");
-struct MnuSel;
-#define I(p, off) (*(int *)((char *)(p) + (off)))
-extern "C" void __builtin_delete(void *);
-extern "C" void func_001A0860(void *self);
-extern "C" void func_001A074C(MnuSel *self);
-extern "C" void func_001A0788(MnuSel *self);
-extern "C" void func_001A08D4(MnuSel *self, int theA);
+#include "mnu/mnucommon.h"
 
-extern "C" void func_001A066C(int *self)
+extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
+extern "C" int func_001A074C(MnuSub104 *self);
+extern "C" int func_001A0788(MnuSub104 *self, int arg1);
+extern "C" int func_001A0860(MnuSub104 *self);
+extern "C" void func_001A08D4(MnuSub104 *self);
+extern "C" void func_001A0950(MnuSub104 *self);
+extern "C" void func_001A0BDC(MnuSub104 *self, int arg1);
+extern "C" int func_001A0BE4(MnuSub104 *self, int arg1);
+extern "C" void *alloc__9BedMemoryiPCciii(void *, int, const char *, int, int, int);
+extern char D_006E9800[];
+
+extern "C" int func_001A066C(MnuSub104 *self)
 {
-    *self = 0;
+    self->m_open = 0;
     return func_001A0860(self);
 }
 
 
-extern "C" void func_001A0684(int arg0, int arg1)
+extern "C" void func_001A0684(MnuSub104 *arg0, int arg1)
 {
-    Xv_func_001879C4((void *)arg0);
+    func_001A074C(arg0);
     if (arg1 & 1) {
         return Xv___builtin_delete((void *)arg0);
     }
 }
 
 
-extern "C" void func_001A06D4(MnuSel *self)
+extern "C" int func_001A06D4(MnuSub104 *self, int arg1)
 {
-    return func_001A0788(self);
+    return func_001A0788(self, arg1);
 }
 
 
-// NON_MATCHING: close, not identical yet.
+// NON_MATCHING: 7/25 differ (size 0x64 == game 0x64; sw 0x54 hoisted before 0x60)
 #ifdef NON_MATCHING
-extern "C" int func_001A06E8(MnuSel *self)
+extern "C" int func_001A06E8(MnuSub104 *self)
 {
-    int r = -1;
-    if (I(self, 0) != 1) {
-        I(self, 0x5C) = 0x7FFF;
-        I(self, 0) = 1;
-        I(self, 0x70) = 0;
-        I(self, 0x60) = -1;
-        I(self, 0x58) = 100;
-        I(self, 0x68) = 0;
-        I(self, 0x3C) = 0;
-        I(self, 0x40) = 0;
-        I(self, 0x44) = 0;
-        I(self, 0x54) = 100;
-        func_001A08D4(self, 1);
-        r = 0;
+    if (self->m_open == 1) {
+        return -1;
     }
-    return r;
+    register int v100 PS2_REG("$5") = 100;
+    self->m_unk5C = 0x7FFF;
+    self->m_open = 1;
+    self->m_active = 0;
+    self->m_unk60 = -1;
+    self->m_unk58 = v100;
+    self->m_unk68 = 0;
+    self->m_step = 0;
+    self->m_mode = 0;
+    self->m_subStep = 0;
+    self->m_unk54 = v100;
+    func_001A08D4(self);
+    return 0;
 }
 #else
 INCLUDE_ASM("asm/nonmatchings/mnu/mnuselect", func_001A06E8);
 #endif
 
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnuselect", func_001A074C);
+extern "C" int func_001A074C(MnuSub104 *self)
+{
+    if (self->m_open == 0) {
+        return -1;
+    }
+    func_001A0950(self);
+    self->m_open = 0;
+    return 0;
+}
 
-INCLUDE_ASM("asm/nonmatchings/mnu/mnuselect", func_001A0788);
 
+extern "C" int func_001A0788(MnuSub104 *self, int arg1)
+{
+    int r = 0;
+    if (self->m_open == 0) {
+        return -1;
+    }
+    switch (self->m_step) {
+    case 0:
+        self->m_step = 1;
+        break;
+    case 1:
+        self->m_step = 2;
+        break;
+    case 2:
+        if (self->m_mode == 0) {
+            switch (func_001A0BE4(self, arg1)) {
+            case 0:
+                break;
+            case 1:
+                self->m_step = 4;
+                break;
+            }
+        }
+        func_001A0BDC(self, arg1);
+        break;
+    case 4:
+        self->m_step = 5;
+    case 3:
+    case 5:
+    default:
+        r = 1;
+        break;
+    }
+    return r;
+}
+
+
+// NON_MATCHING: 6/29 differ (size 0x74 == game 0x74; $v1/$a0 swapped in 2nd loop)
+#ifdef NON_MATCHING
+extern "C" int func_001A0860(MnuSub104 *self)
+{
+    for (int i = 0; i < 7; i++) {
+        self->m_cursor[i] = 0;
+    }
+    self->m_max[0] = 1;
+    self->m_unk6C = 0;
+    self->m_max[1] = 2;
+    self->m_active = 0;
+    self->m_max[2] = 2;
+    self->m_unk60 = -1;
+    for (int i = 0; i < 32; i++) {
+        self->m_lines[i] = 0;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mnu/mnuselect", func_001A0860);
+#endif
+
 
 INCLUDE_ASM("asm/nonmatchings/mnu/mnuselect", func_001A08D4);
