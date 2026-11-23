@@ -53,8 +53,29 @@ def note_off(note):
     return None
 
 
+def measured():
+    """{(file, function): (kind, edits)} from tools/regalloc_triage.py's last
+    run (build/regalloc_triage.tsv of the main checkout): the distance each
+    attempt really has as work.py builds it, where the note in src/ may be
+    old (headers change under the attempts)."""
+    p = main_checkout() / "build" / "regalloc_triage.tsv"
+    out = {}
+    try:
+        for ln in p.read_text(encoding="utf8").splitlines()[1:]:
+            w = ln.split("\t")
+            if len(w) >= 4:
+                e = re.search(r"(\d+) edits", w[3])
+                out[(w[0], w[1])] = (w[2], int(e.group(1)) if e else None)
+    except OSError:
+        pass
+    return out
+
+
 def near_misses(max_off, skip_files):
-    """[(off, file, function, status)], closest first."""
+    """[(off, file, function, status)], closest first. The distance is the
+    triage's measure when it has one (else the note's); broken attempts and
+    ones whose function already matches (the object does not) are left out."""
+    real = measured()
     found = []
     for cpp in sorted((ROOT / "src").rglob("*.cpp")):
         name = cpp.relative_to(ROOT / "src").with_suffix("").as_posix()
@@ -69,7 +90,10 @@ def near_misses(max_off, skip_files):
             for j in range(i + 2, min(i + 2000, len(lines))):
                 g = backlog.INCLUDE.search(lines[j])
                 if g and lines[j - 1].startswith("#else"):
-                    off = note_off(m.group(1))
+                    kind, edits = real.get((name, g.group(2)), (None, None))
+                    if kind in ("broken", "fn_match"):
+                        break
+                    off = edits if edits is not None else note_off(m.group(1))
                     if off is None or off <= max_off:     # unknown: measured when its turn comes
                         found.append((99 if off is None else off, name, g.group(2), m.group(1)))
                     break

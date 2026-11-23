@@ -110,7 +110,11 @@ def triage(name):
         tmp.write_text(text[:m.start()] + m.group(1) + text[m.end():], encoding="utf8", newline="\n")
         try:
             _, report = match.compare(name, source=str(tmp), diff=True)
-        except match.CompileError:
+        except match.CompileError as e:
+            # an attempt that no longer compiles (a header changed under it):
+            # worth fixing before anyone tries to get it closer
+            err = next((ln for ln in str(e).splitlines() if re.search(r":\d+: (?!warning)", ln)), str(e)[-120:])
+            out.append((name, fn, "broken", re.sub(r"\s+", " ", err)[:160], 0, "does not compile"))
             continue
         out += parse(name, report, only=fn)
     tmp.unlink(missing_ok=True)
