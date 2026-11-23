@@ -2,6 +2,7 @@
 #include "include_asm.h"
 #include "task/cmnitask.h"
 #include "utl/filereader.h"
+extern "C" int Xiii_func_001C6A40(int, int) asm("func_001C6A40");
 extern "C" int Xi_func_001E4CBC() asm("func_001E4CBC");
 extern "C" int Xiiiii_func_001E5660(int, int, int, int) asm("func_001E5660");
 extern "C" int Xiiui_func_001E649C(int, unsigned int, int) asm("func_001E649C");
@@ -588,8 +589,6 @@ extern "C" int func_001E0BB0(char *arg0, int arg1)
     return 0;
 }
 
-// NON_MATCHING: func_001E0C2C itself is MATCH (0x144), blocked on .rodata alignment of D_002FD770 (.align 3 in asm vs .align 4)
-#ifdef NON_MATCHING
 struct SndSub0C2C {
     char pad00[0x20];
     unsigned int m_flags;   // +0x20 (elem +0x28, node +0x30)
@@ -668,9 +667,6 @@ extern "C" int func_001E0C2C(char *arg0, int arg1, int arg2, unsigned int arg3)
     } while (--count != 0);
     return arg2 == 0;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E0C2C);
-#endif
 
 extern "C" int func_001E0D70(char *arg0, int arg1)
 {
