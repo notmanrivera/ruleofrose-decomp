@@ -1935,6 +1935,7 @@ extern "C" void func_0019DF78(char *dst, char *src)
 
 // NON_MATCHING: 181/263 differ, 20 relocs differ (size 0x41C, game 0x42C), 105 edits
 #ifdef NON_MATCHING
+
 extern char diaryEBlank[] asm("D_002A42D0");
 inline char *diaryEUnq(char *p) { return p+0x22220; }
 extern "C" int diaryE_func_001DC48C(char *,int,int,void *) asm("func_001DC48C");
@@ -1962,10 +1963,10 @@ extern "C" void func_0019E010(char *arg0, char *arg1) {
     int one;
 
     temp_s4 = diaryESub(arg0);
-    M2C_FIELD(M2C_FIELD(temp_s4, void **, 0x4AC), char **, 0x53A8) = diaryEBlank;
-    M2C_FIELD(M2C_FIELD(temp_s4, void **, 0x4AC), char **, 0x54FC) = diaryEBlank;
-    M2C_FIELD(M2C_FIELD(temp_s4, void **, 0x4AC), char **, 0x5650) = diaryEBlank;
-    M2C_FIELD(M2C_FIELD(temp_s4, void **, 0x4AC), char **, 0x58F8) = diaryEBlank;
+    ((MnuRpk *)temp_s4)->m_sprTbl[0x3E].m_color = diaryEBlank;
+    ((MnuRpk *)temp_s4)->m_sprTbl[0x3F].m_color = diaryEBlank;
+    ((MnuRpk *)temp_s4)->m_sprTbl[0x40].m_color = diaryEBlank;
+    ((MnuRpk *)temp_s4)->m_sprTbl[0x42].m_color = diaryEBlank;
     if (arg1 != 0) {
         temp_v0 = diaryEId(arg1);
         if (temp_v0 != 0xA00) {
@@ -1980,7 +1981,7 @@ extern "C" void func_0019E010(char *arg0, char *arg1) {
             diaryE_func_0018EBA4((int) temp_s4, (char *) sp10, arg0 + 0xD38, 1);
             diaryE_func_0018EBA4((int) temp_s4, (char *) sp10, arg0 + 0xDB8, 2);
             diaryE_func_001DC48C(diaryEUnq((char *)&D_007812C0), (int) diaryEId(arg1), 0x10, &sp0);
-            if (M2C_FIELD(arg0, int *, 0x156C) == one) {
+            if (((MnuStock *)arg0)->m_flg2B == one) {
                 if (sp0 != 0xA00) {
                     temp_v0_2 = func_0019DEDC((MnuStock *)arg0, (unsigned short)sp0);
                     sp4 = temp_v0_2;
@@ -2012,34 +2013,34 @@ extern "C" void func_0019E010(char *arg0, char *arg1) {
                 diaryE_func_0018EBA4((int)temp_s4, temp_s0, temp_s7, 0);
             }
             temp_s0 = diaryESub(arg0);
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x539C) = 0;
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x53A0) = 0;
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), void **, 0x53A4) = (char *) (arg0 + 0xE38);
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x54F0) = 0;
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x54F4) = 0;
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), void **, 0x54F8) = (char *) (arg0 + 0xEB8);
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x5644) = 0;
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x5648) = 0;
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), void **, 0x564C) = (char *) (arg0 + 0xF38);
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x3E].m_unk144 = 0;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x3E].m_unk148 = 0;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x3E].m_text = (char *) (arg0 + 0xE38);
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x3F].m_unk144 = 0;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x3F].m_unk148 = 0;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x3F].m_text = (char *) (arg0 + 0xEB8);
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x40].m_unk144 = 0;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x40].m_unk148 = 0;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x40].m_text = (char *) (arg0 + 0xF38);
             diaryE_func_001DC48C(diaryEUnq((char *)&D_007812C0), (int) diaryEId(arg1), 0xC, &sp4);
             diaryE_func_0018EC58((int) temp_s0, (char *) sp4);
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x58EC) = 0;
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x58F0) = 0;
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), char **, 0x58F4) = sp4;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x42].m_unk144 = 0;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x42].m_unk148 = 0;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x42].m_text = sp4;
             diaryE_func_0018C4D8(temp_s0, 0x43, 0);
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x5908) = one;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x43].m_vis0C = one;
             diaryE_func_0018C4D8(temp_s0, 0x44, 0);
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x5A5C) = one;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x44].m_vis0C = one;
             diaryE_func_0018C4D8(temp_s0, 0x45, 0);
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x5BB0) = one;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x45].m_vis0C = one;
             diaryE_func_0018C4D8(temp_s0, 0x3E, 0);
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x5264) = one;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x3E].m_vis0C = one;
             diaryE_func_0018C4D8(temp_s0, 0x3F, 0);
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x53B8) = one;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x3F].m_vis0C = one;
             diaryE_func_0018C4D8(temp_s0, 0x40, 0);
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x550C) = one;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x40].m_vis0C = one;
             diaryE_func_0018C4D8(temp_s0, 0x42, 0);
-            M2C_FIELD(M2C_FIELD(temp_s0, void **, 0x4AC), int *, 0x57B4) = one;
+            ((MnuRpk *)temp_s0)->m_sprTbl[0x42].m_vis0C = one;
         }
     }
 }
