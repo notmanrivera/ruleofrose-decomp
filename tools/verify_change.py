@@ -88,17 +88,20 @@ def main():
     if not match.server_up():
         match.server("start")
 
-    def one(name):
+    def one(name, sync=False):
+        # the server's copy of headers and asm is brought up to date once,
+        # by the first compile alone: several syncing at once race
         try:
-            ok, rep = match.compare(name)
+            ok, rep = match.compare(name, sync=sync)
             return name, ok, rep[-1] if rep else "", [l for l in rep if "differ" in l or "size" in l][:4]
         except match.CompileError as e:
             err = next((l for l in str(e).splitlines() if re.search(r":\d+: (?!warning)", l)), str(e)[-200:])
             return name, False, "does not compile: " + err.strip()[:200], []
 
     bad = []
+    first = one(names[0], sync=True)
     with ThreadPoolExecutor(a.jobs) as pool:
-        for name, ok, last, why in pool.map(one, names):
+        for name, ok, last, why in [first] + list(pool.map(one, names[1:])):
             print(f"  {'ok ' if ok else 'BAD'} {name}: {last}")
             if not ok:
                 bad.append(name)
