@@ -118,7 +118,7 @@ def main():
         rows = [l.split("\t") for l in hints.read_text(encoding="utf8").splitlines()[1:]]
         here = [r for r in rows if lo <= int(r[0], 16) < (hi or 1 << 32)]
         if here:
-            out += ["", "## Hints from RoR-Port (local only; their guesses: verify, do not copy names into src/)", ""]
+            out += ["", "## Hints from RoR-Port (local only; their guesses: verify, do not copy names into src/; addresses inside their notes are PAL, not ours)", ""]
             out += [f"- {r[0]} {r[4]}: \"{r[2]}\" — {r[7][:160]}" for r in here[:40]]
     # attempts
     near = sorted(((d or 999, fn, k) for (f, fn), (k, d) in tri.items() if f == name), key=lambda t: t[0])
