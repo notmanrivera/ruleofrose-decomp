@@ -601,9 +601,86 @@ def file_callees(name, fn):
     return protos - defined - {fn}
 
 
+INLINE = {}         # method -> [(class, [param names], body statement)] (set in main)
+
+
+def header_inlines(name):
+    """One-statement inline methods of the classes the file sees (its own
+    text and the src/ headers it includes, one level deep)."""
+    import perm_official as po
+    src = match.ROOT / "src"
+    text = (src / f"{name}.cpp").read_text(encoding="utf8", errors="replace")
+    texts = [text]
+    for inc in re.findall(r'^#\s*include\s+"([^"]+)"', text, re.M):
+        for p in (src / inc, src / Path(name).parent / inc):
+            if p.exists():
+                texts.append(p.read_text(encoding="utf8", errors="replace"))
+                break
+    out = {}
+    for t in texts:
+        # without preprocessor lines: an include guard would make the whole
+        # header one #if block for top_items
+        t = "\n".join(ln for ln in t.split("\n") if not ln.lstrip().startswith("#"))
+        for kind, it in po.top_items(t):
+            m = re.match(r"\s*(?:class|struct)\s+([A-Za-z_]\w*)\s*(?::[^{]*)?\{(.*)\}\s*;\s*$", it, re.S)
+            if not m:
+                continue
+            for mem in po.members(re.sub(r"\b(public|private|protected)\s*:", "", m.group(2))):
+                g = re.match(r"^[^{;()]*?\b([A-Za-z_]\w*)\s*\(([^(){};]*)\)\s*(?:const\s*)?\{\s*([^{};]*;)\s*\}$", mem, re.S)
+                if not g or re.search(r"\b(virtual|static)\b", mem.split("(")[0]):
+                    continue
+                params = [p.split()[-1].lstrip("*&") for p in g.group(2).split(",") if p.strip() and p.strip() != "void"]
+                out.setdefault(g.group(1), []).append((m.group(1), params, " ".join(g.group(3).split())))
+    return out
+
+
+def inline_calls(lines):
+    """'X->m(a)' as m's one-statement inline body with this = X: a whole
+    statement for a void method, the returned expression for the others."""
+    out = []
+    for i in body(lines):
+        line = lines[i]
+        for mm in re.finditer(r"([A-Za-z_]\w*(?:(?:->|\.)\w+|\[[^\[\]]+\])*)\s*(->|\.)\s*([A-Za-z_]\w*)\s*\(([^()]*)\)", line):
+            for cls, params, stmt in INLINE.get(mm.group(3), [])[:2]:
+                args = [a.strip() for a in mm.group(4).split(",") if a.strip()]
+                if len(args) != len(params):
+                    continue
+                recv = mm.group(1) if mm.group(2) == "->" else f"(&{mm.group(1)})"
+                s = stmt
+                for p, a in zip(params, args):
+                    s = re.sub(rf"\b{re.escape(p)}\b", f"({a})", s)
+                s = re.sub(r"\bthis\s*->", f"{recv}->", s)
+                # the class's own names: anything not a call, a param, a literal or after -> / .
+                s = re.sub(r"(?<![\w.>])\b(m_\w+)\b", rf"{recv}->\1", s)
+                new = list(lines)
+                if s.startswith("return "):
+                    new[i] = line[:mm.start()] + f"({s[7:].rstrip(';').strip()})" + line[mm.end():]
+                elif line.strip() == mm.group(0) + ";":
+                    new[i] = re.match(r"\s*", line).group(0) + s
+                else:
+                    continue
+                out.append(new)
+    return out
+
+
+def retypes(lines):
+    """'X->f op= v;' with the field read as int or unsigned int: the
+    signedness of a flag field changes ori/xori and the shifts g++ picks."""
+    out = []
+    for i in body(lines):
+        m = re.match(r"^(\s*)([A-Za-z_]\w*(?:(?:->|\.)\w+)+)\s*(\|=|&=|\^=|\+=|-=)\s*(.+;)\s*$", lines[i])
+        if not m:
+            continue
+        for t in ("int", "unsigned int"):
+            new = list(lines)
+            new[i] = f"{m.group(1)}(*({t} *)&{m.group(2)}) {m.group(3)} {m.group(4)}"
+            out.append(new)
+    return out
+
+
 MUTATIONS = [swaps, commutes, compares, ands, signedness, invert_ifs, loops, temps, inlines,
              decl_swaps, wide_commutes, term_swaps, extracts,
-             nothrows, early_returns, shared_returns, do_whiles, pins]
+             nothrows, early_returns, shared_returns, do_whiles, pins, inline_calls, retypes]
 
 
 def split(work_text):
@@ -649,6 +726,7 @@ def main():
     head, func = split(start)
     TOGGLE.update(file_callees(name, fn))
     REGS.extend(game_regs(name, fn))
+    INLINE.update(header_inlines(name))
     rng = random.Random(a.seed)
     slots = [work.WORK / name / f"{fn}.perm{i}.cpp" for i in range(a.jobs)]
     seen = set()
@@ -729,6 +807,11 @@ def main():
             src = match.ROOT / "src" / f"{name}.cpp"
             src.write_text(toggled("\n".join(marks) + "\n" + src.read_text(encoding="utf8"))
                            .split("\n", len(marks))[len(marks)], encoding="utf8", newline="\n")
+            # and in the scratch file itself: its declarations and the lines
+            # above the function's signature (work.py copies there those of
+            # the attempt's NON_MATCHING block)
+            head = toggled("\n".join(marks) + "\n" + head).split("\n", len(marks))[len(marks)]
+            best = toggled("\n".join(best)).split("\n")
             best = [ln for ln in best if not ln.strip().startswith(MARK)]
             print("declarations toggled in src/: " + ", ".join(m.strip()[len(MARK):] for m in marks))
         text = head + "\n".join(best) + "\n"
