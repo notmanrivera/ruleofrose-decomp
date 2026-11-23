@@ -405,23 +405,24 @@ extern "C" void func_001D8EA8(ObjStat *arg0)
     }
 }
 
-// NON_MATCHING: 16/58 differ, 2 relocs differ, 6 edits
+// NON_MATCHING: 2/58 differ, 1 reloc differs, 2 edits
 #ifdef NON_MATCHING
 extern "C" void func_001D8F04(ObjStat *arg0, u_long128 *arg1)
 {
     GamTrgDogActor *actor = &D_006FE6A0[arg0->m_chrID];
     float *pos = arg0->m_posParam;
-    pos[0] = actor->pos[0];
-    pos[1] = actor->pos[1];
-    pos[2] = actor->pos[2];
-    register u_long128 tmp PS2_REG("$6") = *(u_long128 *)pos;
-    *arg1 = tmp;
+    do {
+        pos[0] = actor->pos[0];
+        pos[1] = actor->pos[1];
+        pos[2] = actor->pos[2];
+        register u_long128 tmp PS2_REG("$6") = *(u_long128 *)pos;
+        *arg1 = tmp;
+    } while (0);
     GamTrgSecta *secta = (GamTrgSecta *)arg0->m_secta;
-    GamMan *mgr = &D_007812C0;
     float x;
     float z;
     if ((secta == 0) || (x = pos[0], !(secta->m_minX <= x)) || !(x <= secta->m_maxX) || (z = arg0->m_posParam[2], !(secta->m_minZ <= z)) || !(z <= secta->m_maxZ)) {
-        int *newSecta = X_func_001D8064(mgr, pos, (int *)secta, (((unsigned int)arg0->m_oid >> 0x17) & 0x1F) == 2);
+        int *newSecta = X_func_001D8064(&D_007812C0, pos, (int *)secta, (((unsigned int)arg0->m_oid >> 0x17) & 0x1F) == 2);
         if (newSecta != 0) {
             func_001D8D28(arg0, newSecta);
         }
