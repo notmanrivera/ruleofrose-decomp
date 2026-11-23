@@ -1359,8 +1359,6 @@ extern "C" void func_00148CB4(HfmOutRide *self)
     }
 }
 
-// NON_MATCHING: 2/70 differ (addiu $a1,$sp,0x10 vs addiu $v1,$zero,3 scheduling), 2 edits
-#ifdef NON_MATCHING
 struct HfmVec4 {
     long long xy;
     int z;
@@ -1388,7 +1386,7 @@ extern "C" void HfmOutDead__vfunc_02(HfmOutDead *self)
         register int z PS2_REG("$6") = vec.z;
         register long long xy PS2_REG("$7") = vec.xy;
         float f0 = 100.0f;
-        register int kind PS2_REG("$3") = 3;
+        int kind = 3;
 
         param.m_pos.z = z;
         param.m_kind = kind;
@@ -1396,7 +1394,8 @@ extern "C" void HfmOutDead__vfunc_02(HfmOutDead *self)
         param.m_rot[0] = f1;
         param.m_rot[2] = f0;
     }
-    param.m_num = 0x5A;
+    register int num PS2_REG("$2") = 0x5A;
+    param.m_num = num;
     param.m_pos.w = 0;
     param.m_rot[1] = 0.0f;
     param.m_unk08 = 0;
@@ -1411,9 +1410,6 @@ extern "C" void HfmOutDead__vfunc_02(HfmOutDead *self)
     ((EmyObjStatView *)self->m_unk08)->m_flags |= 0x400;
     ((EmyObjStatView *)self->m_unk08)->m_flags |= 0x2000;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/HfmMain", HfmOutDead__vfunc_02);
-#endif
 
 extern "C" int HfmOutDead__vfunc_03(void)
 {
@@ -1489,7 +1485,7 @@ extern "C" void HfmOutTest__vfunc_02(HfmOutTest *self)
     self->m_owner->m_unk150 = 0;
 }
 
-INCLUDE_RODATA("asm/nonmatchings/unk/HfmMain", D_002EF448);
+extern const double HfmDead_halfPi asm("D_002EF448") __attribute__((section(".rodata"), aligned(8))) = 1.5707963267948966;
 
 INCLUDE_RODATA("asm/nonmatchings/unk/HfmMain", D_002EF450);
 
