@@ -4,6 +4,9 @@
 #include "sdk/string.h"
 #include "game/gamman.h"
 #include "game/gamtrg.h"
+extern "C" int func_001E5E58(void *, int, int, void *);
+extern "C" int func_001E5660(void *, int, int, void *);
+static inline void *getGamSnd(GamMan *g) { return g->m_snd; }
 extern "C" int func_00169BAC(int, int, void *, float, float);
 extern "C" void func_001664A4(EmyMain *, int);
 extern "C" void func_001DA130(void *, int, int);
@@ -44,7 +47,7 @@ extern "C" int X_func_00104394(int, int, int) asm("func_00104394");
 extern "C" int X_func_00118FEC__9MagSystem(void *) asm("func_00118FEC__9MagSystem");
 extern "C" int X_func_001442D4() asm("func_001442D4");
 extern "C" void func_00165280(EmyMain *, float *);
-extern "C" void X_func_00165570(EmyMain *) asm("func_00165570");
+extern "C" void func_00165570(EmyMain *);
 extern "C" void X_func_00166AD0(EmyOut *) asm("func_00166AD0");
 extern "C" void X_func_00168478(EmyOut *) asm("func_00168478");
 extern "C" void X_func_00168520(EmyOut *) asm("func_00168520");
@@ -122,7 +125,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165280);
 
 extern "C" void func_00165398(EmyMain *self, int arg1, int arg2, int arg3)
 {
-    X_func_00165570(self);
+    func_00165570(self);
     self->m_unk154 = arg1;
     self->m_unk160 = arg2;
     self->m_unk164 = 0;
@@ -147,7 +150,21 @@ extern "C" void func_00165404(EmyMain *self, int arg1, int arg2, int arg3)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165498);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165570);
+extern "C" void func_00165570(EmyMain *self)
+{
+    EmyMain154 *m = (EmyMain154 *)self;
+    for (int i = 0; i < 4; i++) {
+        int id = m->m_slots[i].m_unk00;
+        if (id != 0) {
+            if (m->m_slots[i].m_unk0C < 3) {
+                func_001E5E58(getGamSnd(&D_007812C0), id, 8, 0);
+            } else {
+                func_001E5660(getGamSnd(&D_007812C0), id, 8, 0);
+            }
+            memset(&m->m_slots[i], 0, sizeof(EmySlot154));
+        }
+    }
+}
 
 extern "C" void func_00165638(EmyMain *self, int arg1)
 {
