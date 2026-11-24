@@ -1,4 +1,6 @@
 #include "include_asm.h"
+#include "sdk/string.h"
+extern "C" int strncmp(const char *, const char *, size_t);
 extern "C" void func_00237830(void *, void *, float);
 struct MagSceneFocusObj {
     unsigned char m_pad00[0x508];
@@ -126,7 +128,17 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magscenefocus", D_002EEB58);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00141184);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_0014159C);
+extern "C" int func_0014159C(const char *arg0, const char *arg1)
+{
+    int len = strlen(arg1);
+    int n = strlen(arg0) - len;
+    for (int i = 0; i <= n; i++) {
+        if (strncmp(arg0 + i, arg1, len) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00141634);
 
