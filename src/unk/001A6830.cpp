@@ -1412,7 +1412,42 @@ extern "C" int func_001ADC6C(MnuBoard *arg0)
     return 0;
 }
 
+// NON_MATCHING: 19/62 differ, 4 relocs differ, 20 edits
+#ifdef NON_MATCHING
+extern "C" int func_00131550(void *);
+extern "C" int func_0017F8FC(void *, int);
+extern "C" int func_001ADCD8(MnuBoard *arg0)
+{
+    int ret = 0;
+    switch (arg0->m_subStep) {
+    case 0:
+        arg0->m_subStep = 1;
+        arg0->m_unk1098 = 0;
+    case 1:
+        arg0->m_subStep = 3;
+        break;
+    case 4: {
+        bool ok = !(func_00131550((char *)arg0->m_sys + 0x12540) < 5);
+        if (ok == 1) {
+            arg0->m_subStep = 0;
+            ret = arg0->m_unk1098;
+        }
+        return ret;
+    }
+    case 3:
+    default:
+        break;
+    }
+    if (!(*(int *)(*(char **)&D_007B2060 + 4) & 0x80)) {
+        arg0->m_subStep = 4;
+        arg0->m_unk1098 = 1;
+        func_0017F8FC(&D_007B2580, 4);
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001ADCD8);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001ADDD0);
 
