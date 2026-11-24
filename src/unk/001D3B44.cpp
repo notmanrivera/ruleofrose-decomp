@@ -1,4 +1,30 @@
 #include "include_asm.h"
+#include "game/gamman.h"
+struct GamSndMan;
+struct GamTaskMan;
+struct Tbl2_4370 {
+    int a;
+    int b;
+};
+struct Actor4370 {
+    unsigned char m_pad00[0x1E8];
+    float m_unk1E8;
+    unsigned char m_pad1EC[0x4D0 - 0x1EC];
+};
+struct Scene4370 {
+    unsigned char m_pad00[0x2920];
+    Actor4370 m_actor[128];
+};
+struct Sys4440 {
+    unsigned char m_pad00[0xDC24];
+    int m_unkDC24;
+};
+extern const Tbl2_4370 D_002FC130;
+extern Scene4370 D_006FBD80;
+extern GamTaskMan D_007A3D80;
+extern Sys4440 D_007A4440;
+extern "C" void func_001E1920(GamSndMan *, int, int, int);
+extern "C" void func_001E747C(GamTaskMan *, int *, int);
 struct Vec2_4730 {
     float x;
     float y;
@@ -125,10 +151,8 @@ extern "C" int X_func_001DB19C(...) asm("func_001DB19C");
 extern "C" int X_func_001DB31C(...) asm("func_001DB31C");
 extern "C" int X_func_001DB520(...) asm("func_001DB520");
 extern int D_006E9840;
-extern int D_006FBD80;
 extern int D_006FE6A0;
 extern int D_00724EA0;
-extern int D_007812C0;
 extern int D_007B205C;
 
 
@@ -136,7 +160,32 @@ extern int D_007B205C;
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D3B44", func_001D3B44);
 
+// NON_MATCHING: 24/92 differ, 1 reloc differs (size 0x170, game 0x174), 6 edits
+#ifdef NON_MATCHING
+extern "C" void func_001D4370(GamMan *arg0, int arg1)
+{
+    if (arg1 != 0) {
+        func_001E1920((GamSndMan *)arg0->m_snd, 0, 0, 1);
+    }
+    if (D_007812C0.chkSysFlg2(0x100000)) {
+        D_007A4440.m_unkDC24 &= ~1;
+        Tbl2_4370 tbl = D_002FC130;
+        func_001E747C(&D_007A3D80, &tbl.a, 0);
+        D_007812C0.unsetSysFlg2(0x100000);
+    }
+    if (arg0->m_sysFlg2 & 0x40000000) {
+        ((Actor4370 *)arg0->m_unk21FE0)->m_unk1E8 = arg0->m_unk21FFC;
+        int no = arg0->m_dogChrNo;
+        Actor4370 *actor = &D_006FBD80.m_actor[no];
+        if (actor != 0) {
+            actor->m_unk1E8 = arg0->m_unk22000;
+        }
+        arg0->m_sysFlg2 &= ~0x40000000;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001D3B44", func_001D4370);
+#endif
 
 extern "C" int func_001D44E4(int arg0)
 {

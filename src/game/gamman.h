@@ -181,7 +181,8 @@ public:
     int m_unk21FF0;                                 // +0x21FF0: is_pc_jnfc: == 2
     int m_pcCostume;                                // +0x21FF4: setPcCostume, first argument
     int m_pcCostume2;                               // +0x21FF8: setPcCostume, second argument
-    unsigned char m_pad21FFC[0x8];
+    float m_unk21FFC;                               // +0x21FFC
+    float m_unk22000;                               // +0x22000
     int m_unk22004;                                 // +0x22004
     int m_unk22008;                                 // +0x22008
     int m_pcEquipItemChrID;                         // +0x2200C: getPcEquipItemChrID
