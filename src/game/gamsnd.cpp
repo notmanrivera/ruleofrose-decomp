@@ -527,7 +527,28 @@ extern "C" void func_001E1FA4(GamSndMan *self)
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E1FA4);
 #endif
 
+// NON_MATCHING: 74/110 differ, 1 reloc differs (size 0x1B8, game 0x1D8), 49 edits
+#ifdef NON_MATCHING
+extern "C" void func_001E2178(GamSndMan *self)
+{
+    GamList<GamSnd3D>::iterator it;
+    GamList<GamSnd3D>::iterator end;
+    it = self->m_queue.begin();
+    end = self->m_queue.end();
+    while (it != end) {
+        if ((*it).flags & 2) {
+            if ((*it).flags & 1) func_001E5660(self, (*it).id, 1, 0);
+            it = self->m_queue.erase(it);
+        } else if ((*it).flags & 4) {
+            func_001E649C(self, (*it).id, (*it).handle);
+            (*it).handle = -1;
+            it = self->m_queue.erase(it);
+        } else ++it;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2178);
+#endif
 
 extern "C" void func_001E2350(GamSndMan *, GamSnd3D *item, const TskVec4 *point, const EffVec3 *origin, float distance)
 {
