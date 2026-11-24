@@ -133,7 +133,19 @@ extern "C" int func_001F9670(TskSnd *self)
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskSnd", func_001F96C0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskSnd", func_001F974C);
+extern "C" int func_001F974C(TskSnd *self)
+{
+    GamSndMessage msg;
+
+    if (self->m_cnt++ >= self->m_maxCnt) {
+        msg.m_unk04 = 0;
+        msg.m_unk08 = 0;
+        msg.m_unk14 = 10;
+        func_001E5E58(getSnd(&D_007812C0), self->m_unk80, 0x13, &msg);
+        return 1;
+    }
+    return 0;
+}
 
 extern "C" int func_001F97C0()
 {
