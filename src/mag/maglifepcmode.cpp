@@ -1,5 +1,7 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
+#include "mag/magscene.h"
+extern "C" int func_0011CE50(MagLifePC *);
 extern "C" int func_0011AF04(MagLifePC *);
 
 extern "C" void X_func_001026B0(int, int, int) asm("func_001026B0");
@@ -411,7 +413,17 @@ extern "C" void init__19MagLifePCModeReloadR9MagLifePC(MagLifePCModeReload *arg0
     X_func_0011D06C(arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", live__19MagLifePCModeReloadR9MagLifePC);
+extern "C" void live__19MagLifePCModeReloadR9MagLifePC(MagLifePCModeReload *arg0, MagLifePC *arg1)
+{
+    if (Xii_func_0011A054(arg1) != 0) {
+        int id = func_0011CE50(arg1);
+        if ((unsigned int)id < MAG_MAX_ACTOR) {
+            DogActor *actor = arg1->m_scene->getActor(id);
+            actor->func_0010B1B0(actor->func_0010AA5C("wait2"), 1, 0.016666694f, -1, -1);
+        }
+        Xiiiui_func_0011C1E8(arg1, 0, 0, 0);
+    }
+}
 
 extern "C" void init__16MagLifePCModeHugR9MagLifePC(MagLifePCModeHug *arg0, MagLifePC *arg1)
 {
