@@ -1093,7 +1093,30 @@ extern "C" void NorOutTest__vfunc_02(NorOutTest *self)
     X_func_001680A0(self, 0x21, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", NorOutTest__vfunc_03);
+extern "C" int NorOutTest__vfunc_03(NorOutTest *self)
+{
+    switch (self->m_unk04) {
+    case 0:
+        if (NorAnimDone(&D_007812C0, self)) {
+            X_func_001680A0(self, 0x28, 0);
+            self->m_unk04 = 1;
+        }
+        break;
+    case 1:
+        if (NorAnimDone(&D_007812C0, self)) {
+            X_func_001680A0(self, 0x28, 0);
+            self->m_unk04 = 2;
+        }
+        break;
+    case 2:
+        if (NorAnimDone(&D_007812C0, self)) {
+            X_func_001680A0(self, 0x28, 0);
+            self->m_unk04 = 0;
+        }
+        break;
+    }
+    return -1;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFBC8);
 INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFBD8);
