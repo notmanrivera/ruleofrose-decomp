@@ -39,7 +39,7 @@ judgement and go to Sonnet.
   names (rx/rxsnd, rx/sndse, rx/rxfile, rx/filecdrom...) from Arc the Lad's
   hidden 2002 debug build (.mdebug file descriptors). R25 must look for RX types in
   the rx/include headers the DWARF does list (rxgeom.h, rxpkt.h...).
-- [ ] R25 RX library types (2026-11-23; source changed: PoPoLoCrois's DWARF
+- [x] R25 RX library types (2026-11-23; source changed: PoPoLoCrois's DWARF
   covers only its own code and rx graphics headers, see R24; Arc the Lad's
   2002 debug build, disc/arc_koga/DATAIMG_KOGA_MAIN.ELF, has .mdebug with
   stabs, which should hold the RX structs: read those instead). From
@@ -50,6 +50,15 @@ judgement and go to Sonnet.
   (include/rx/*.h, one per original header if the DWARF shows them) in
   notes/research/R25-rx-types.md; names and types only, no code. Depends
   on R24's DWARF parser (reuse it).
+  Done 2026-11-23 (Sonnet): the RX library in Arc's build was compiled
+  without -g, so no internal structs and no prototypes; only the public API
+  types its game code included (tagRXFileBranchParam, tagRXFileStrMarkParam,
+  tagRXSysRpcClientData, callback typedefs with return types, RX_* enums),
+  all checked against our asm (EnableMark, EnableBranch, rxSysRpcOpen/Call:
+  no disagreement). Drafts in build/research/R25/include/rx/ (to move into
+  include/ when rx/ is decompiled). Appendix A lists Arc's static function
+  and variable names per RX file (SlotAlloc, gFileMgr...): candidates for
+  our unnamed rx/ functions by size and call graph, not yet applied.
 - [ ] R27 Where to pay the readability debt cheapest (2026-11-23; partly
   answered by tools/retype.py: only ~150 raw offsets sit on a class-typed
   base, and their headers lack those members; the rest are int arg0 in
