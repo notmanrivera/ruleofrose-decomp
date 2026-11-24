@@ -82,9 +82,18 @@ else
   ASM="$(for c in $COMMITS; do git show --format= "$c"; done | grep -E '^\+([^"]*[;{])?[[:space:]]*(__asm__|asm)([[:space:]]+(volatile|goto)|__volatile__)*[[:space:]]*\([[:space:]]*"[^"]' || true)"
   [ -z "$ASM" ] || { echo "refusing: commits add inline assembly:"; echo "$ASM" | head -5; exit 1; }
   # A header (a member named where padding was) can change any file that
-  # includes it: those are checked too.
+  # includes it, directly or through other headers (8f5757a: a new include
+  # in mag/magscene.h reached msg/msgman via mag/magsystem.h): those are
+  # checked too.
   TOUCHED="$(for c in $COMMITS; do git show --name-only --format= "$c"; done | sort -u)"
   HDRS="$(echo "$TOUCHED" | sed -n 's|^src/\(.*\.h\)$|\1|p')"
+  ALL="$HDRS"; NEW="$HDRS"
+  while [ -n "$NEW" ]; do
+    NEW="$(for h in $NEW; do grep -rlF "#include \"$h\"" src include --include='*.h' 2>/dev/null || true; done |
+      sed 's|^src/||; s|^include/||' | sort -u | grep -vxF "$(printf '%s\n' $ALL)" || true)"
+    ALL="$(printf '%s\n' $ALL $NEW | sort -u)"
+  done
+  HDRS="$ALL"
   USERS="$(for h in $HDRS; do grep -rlF "#include \"$h\"" src --include='*.cpp' || true; done)"
   FILES="$( { echo "$TOUCHED" | grep '\.cpp$'; echo "$USERS"; } | sed '/^$/d; s|^src/||; s|\.cpp$||' | sort -u)"
   echo "wt/$NAME: $(echo "$COMMITS" | wc -l | tr -d ' ') commits on: $(echo $FILES)"
