@@ -324,3 +324,33 @@ NON_MATCHING.
 - Guardada para la etapa Vita: `notes/research/vita-porting-guide-reddit-2026-11-23.md`.
 
 Pendiente: ver `notes/NEXT_SESSION.md`.
+
+## Estado (2026-11-24): 45.10 %
+
+517,524 de 1,147,560 bytes del `.text` del juego (de 40.33 % la noche
+anterior). 115 de 127 archivos pasan g++ y clang++ modernos; deuda de
+legibilidad 1,976 desplazamientos y 3,225 alias (de 2,385 y 3,501).
+
+- Hydrogen (Gemini 4) hizo casi todo el avance del día, archivo por
+  archivo (magscene, maglifepcmode, maglifebwn, Eff0, tsk_scene, emy_main,
+  NorOutAttack, GrgMain, magscenecamera, 001A6830, EmyOut, 002039A4,
+  001D1BEC, NorMain, TskSnd, maglifemenusp, EventTestTask, BdsMain...).
+- Codex: G13 (`spr/sprtexture.h`), G14 (`msg/msgman.h`) y G11
+  (`game/gamsnd.h`: tipos de sonido unificados en `SND_PARAM`; deuda de
+  gamsnd 38/99 -> 2/0) y casi resueltas sueltas.
+- `main` = 0x002045A8 (última llamada de crt0; RozuRecomp da el mismo
+  nombre).
+- Registro de técnicas: cada commit de función lleva `Technique:` o
+  `Blocker:`; `tools/techniques.py` los agrupa por familia y modelo y lista
+  los intentos que solo esperan alineación de datos (tres resueltos así).
+  Primera promoción a `docs/EE_GCC_TECHNIQUES.md`: orden de lectura,
+  forma real de las tablas, retornos tempranos, ayudantes por familia.
+- `tools/merge_worker.sh`: acepta bajar `config/rules_check.tsv` (nunca
+  subirlo) y revisa los archivos que incluyen una cabecera cambiada de
+  forma indirecta (un `#include` nuevo en `mag/magscene.h` rompió el
+  build a través de `magsystem.h` -> `msg/msgman`).
+- Permutadores sin cuota: triage completo (253 casi), Smoke 1 de 10,
+  Cyrax 0.
+- Investigación: R29 (rule-of-rose-recomp, recompilación estática PAL,
+  MIT: útil para el port) y R30 (nombres SDK de RozuRecomp por confirmar).
+
