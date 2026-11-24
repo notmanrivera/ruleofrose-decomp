@@ -1,6 +1,8 @@
 #include "ror.h"
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
+extern "C" float func_001040A0();
+extern "C" int func_00104004(DogVector *thePos, unsigned int *theOut, float theA);
 extern "C" int Xiii_func_00125704(MagLifeBwn *, int) asm("func_00125704");
 extern "C" int Xiiii_ror_assert(int, int, int) asm("ror_assert");
 extern const char D_002EB870[];
@@ -333,7 +335,20 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_0012391C);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00123BB8);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00123F78);
+extern "C" unsigned int func_00123F78(MagLifeBwn *arg0, const DogVector *arg1)
+{
+    DogVector pos;
+    unsigned int oid;
+    DogActor *actor = arg0->m_actor;
+    pos.m_x = actor->m_unk40.m_x + arg1->m_x;
+    pos.m_y = actor->m_unk40.m_y + arg1->m_y;
+    pos.m_z = actor->m_unk40.m_z + arg1->m_z;
+    int ret = func_00104004(&pos, &oid, func_001040A0());
+    if (ret != 0) {
+        return (((oid >> 23) & 0x1F) == 2) ? oid : 0;
+    }
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00124008);
 
