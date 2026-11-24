@@ -791,13 +791,13 @@ extern "C" void func_001E34EC(GamSndMan *arg0, int arg1, int arg2) {
     }
 }
 
-// NON_MATCHING: 22/91 differ, 25 edits
-#ifdef NON_MATCHING
 extern "C" void func_001E3698(GamSndMan *self, int key)
 {
     GamList<GamSnd3D>::iterator it;
     GamList<GamSnd3D>::iterator end;
-    it = self->m_queue.begin();
+    // Keep the free-chain base in s1 while s0 holds the used chain.
+    register GamList<GamSnd3D>::Chain *idle PS2_REG("$17") = &self->m_queue.m_free;
+    it = ((GamList<GamSnd3D> *)idle)->begin();
     end = self->m_queue.end();
     while (it != end) {
         if ((*it).zero == key) {
@@ -806,9 +806,6 @@ extern "C" void func_001E3698(GamSndMan *self, int key)
         } else ++it;
     }
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3698);
-#endif
 
 extern "C" void func_001E3804(GamSndMan *arg0)
 {
