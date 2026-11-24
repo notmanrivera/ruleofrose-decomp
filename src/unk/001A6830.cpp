@@ -5,6 +5,11 @@ extern "C" int func_00131550(void *) ASM_NOTHROW;
 extern "C" void func_00131184(void *, int, int, int) ASM_NOTHROW;
 extern "C" void func_001311BC(void *, int, int, int) ASM_NOTHROW;
 #include "bed/bedpad.h"
+extern "C" void func_001C6CCC(void *, int, void *);
+extern "C" void func_0018C190(MnuRpk *, MnuRpkInitEnt *);
+extern "C" void func_001AF928(MnuItem *);
+extern int D_002ACB10;
+extern MnuRpkInitEnt D_002B6F40[];
 extern "C" void func_001AE7F8(MnuNow *);
 extern "C" int func_001AE848(MnuNow *, int);
 extern "C" int func_001AE868(MnuNow *, int);
@@ -2312,7 +2317,38 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B070C);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/001A6830", D_002FAEB0);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B0784);
+extern "C" void func_001B0784(MnuItem *arg0)
+{
+    MnuRpk *rpk = &arg0->m_rpk[0];
+    rpk->m_tbl = &D_002ACB10;
+    int chapter = 1;
+    func_001C6CCC(&D_007812C0, 4, &chapter);
+    for (int i = 0; D_002B6F40[i].m_id >= 0; i++) {
+        if (D_002B6F40[i].m_id == 0x4D) {
+            int icon;
+            switch (chapter) {
+            case 1:  icon = 0x51; break;
+            case 2:  icon = 0x52; break;
+            case 3:  icon = 0x53; break;
+            case 4:  icon = 0x54; break;
+            case 7:  icon = 0x57; break;
+            case 8:  icon = 0x58; break;
+            case 10: icon = 0x59; break;
+            case 11: icon = 0x5A; break;
+            case 12: icon = 0x5B; break;
+            case 5:
+            case 13: icon = 0x55; break;
+            default: icon = 0x56; break;
+            }
+            D_002B6F40[i].m_iconId = icon;
+            break;
+        }
+    }
+    func_0018C190(rpk, D_002B6F40);
+    func_001AF928(arg0);
+    arg0->m_unk1B5C = _9MagSystem$m_current_system;
+    rpk->m_unk04 = 1;
+}
 
 extern "C" int func_001B0908(MnuItem *arg0, int arg1)
 {

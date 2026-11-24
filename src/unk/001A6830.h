@@ -21,6 +21,12 @@ struct MnuBoardTblEnt {
     int m_val;
 }; // size 0x08
 
+struct MnuRpkInitEnt {
+    int m_id;                           // +0x00
+    int m_iconId;                       // +0x04
+    unsigned char m_pad08[0x2C];        // +0x08..0x33
+}; // size 0x34
+
 struct MnuItemUnq {
     unsigned char m_pad00[0xB0];
     int m_flags;                        // +0xB0
