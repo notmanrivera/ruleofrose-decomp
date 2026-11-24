@@ -100,6 +100,13 @@ struct MagLifeBwnCtrlModeFollow : public MagLifeBwnCtrlMode {
     int m_unk04;                        // +0x04
 }; // size 0x08
 
+struct MagLifeBwnCtrlModeFind : public MagLifeBwnCtrlMode {
+    unsigned char m_pad04[0xC];         // +0x04..+0x0F
+    MagBwnVec4 m_unk10;                 // +0x10..+0x1F
+    float m_unk20;                      // +0x20
+    unsigned char m_pad24[0xC];         // +0x24..+0x2F
+}; // size 0x30
+
 struct MagLifeBwnCtrlModeHug : public MagLifeBwnCtrlMode {
     int m_unk04;                        // +0x04
 }; // size 0x08

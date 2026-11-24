@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
 #include "utl/utlfind.h"
+void vecTurnY(float *, float);
+extern "C" int func_0012349C(MagLifeBwn *, MagBwnVec4 *);
 extern "C" void func_00104150(int);
 extern "C" void func_0012A394(MagLifeBwnCtrl *);
 extern "C" void func_00125980(MagLifeBwn *);
@@ -19,7 +21,6 @@ extern "C" int Xii_getMainMotionNo__C14DogMotionBlend(const DogMotionBlend *) as
 extern "C" int Xiii_func_0010AA5C__8DogActorPCc(DogActor *, const char *) asm("func_0010AA5C__8DogActorPCc");
 extern "C" void Xiiii_ror_assert(const char *, int, const char *) asm("ror_assert");
 extern "C" float Xfi_func_0010A650__8DogActor(DogActor *) asm("func_0010A650__8DogActor");
-extern "C" int Xiii_func_0012349C(MagLifeBwn *, MagBwnVec4 *) asm("func_0012349C");
 extern "C" int Xii_func_00103428(int) asm("func_00103428");
 extern "C" int Xii_func_0010344C(int) asm("func_0010344C");
 extern "C" void X_func_00104150(int) asm("func_00104150");
@@ -168,7 +169,24 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeFind__vfunc
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_00128724);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_00128854);
+extern "C" int func_00128854(MagLifeBwnCtrlModeFind *arg0, MagLifeBwnCtrl *arg1, MagBwnVec4 *arg2, int arg3)
+{
+    float z = 95.0f;
+    if (arg3 == 0) {
+        z = -95.0f;
+    }
+    arg2->z = z;
+    arg2->w = 1.0f;
+    arg2->x = 0.0f;
+    arg2->y = 0.0f;
+    vecTurnY(&arg2->x, arg0->m_unk20);
+    MagBwnVec4 *pos = &arg0->m_unk10;
+    arg2->x += pos->x;
+    arg2->y += pos->y;
+    arg2->z += pos->z;
+    arg2->w = 1.0f;
+    return func_0012349C(arg1->m_bwn, arg2);
+}
 
 extern "C" void MagLifeBwnCtrlModeFindEnd__vfunc_01(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
 {
@@ -188,7 +206,7 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeFindEnd__vf
 extern "C" void MagLifeBwnCtrlModeMove__vfunc_01(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
 {
     arg1->m_unk80 = 0;
-    if (Xiii_func_0012349C(arg1->m_bwn, &arg1->m_targetPos) >= 0) {
+    if (func_0012349C(arg1->m_bwn, &arg1->m_targetPos) >= 0) {
         arg1->m_bwn->message(6, 0, 0);
         arg1->m_unk08 = 0;
         arg1->m_unk0C = 0;
