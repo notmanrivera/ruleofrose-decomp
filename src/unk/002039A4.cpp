@@ -112,7 +112,20 @@ extern "C" void func_00203EFC(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_00203F38);
+extern "C" void func_00203F38(GamTaskBase *arg0)
+{
+    unsigned int cur;
+    unsigned int prev;
+    unsigned int diff;
+
+    arg0->m_unk08 = arg0->m_unk04;
+    D_007812C0.getSysTime();
+    cur = D_007812C0.m_unk22368;
+    prev = (unsigned int)arg0->m_unk08;
+    diff = (cur < prev) ? (prev - cur) : (cur - prev);
+    arg0->m_unk04 = cur;
+    arg0->m_unk0C += diff;
+}
 
 extern "C" void func_00204014(GamTaskBase *arg0)
 {

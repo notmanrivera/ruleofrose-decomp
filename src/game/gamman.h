@@ -268,6 +268,11 @@ public:
     void unsetSysFlg2(unsigned int theFlg) { m_sysFlg2 &= ~theFlg; }
     int getChapter() const { return m_chapter; }
     unsigned int getVCount() const { return m_vcount; }
+    unsigned int getSysTime()
+    {
+        m_unk22368 = (unsigned int)((float)(m_vcount * 1000) / 25.0f);
+        return m_unk22368;
+    }
     int getPcChrNo() const { return m_pcChrNo; }
     int getDogChrNo() const { return m_dogChrNo; }
     ACHRstat *getPCPtr() const { return m_pc; }
