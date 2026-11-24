@@ -416,7 +416,29 @@ extern "C" int func_00134624(MagScene *self, const MagUnk437E0 *arg1)
     return -1;
 }
 
+// NON_MATCHING: 10/38 differ, 12 edits
+#ifdef NON_MATCHING
+extern "C" void func_00134698(MagScene *self, int arg1)
+{
+    if (arg1 < 0) {
+        for (int i = 0; i < 0x2000; i++) {
+            MagUnk437E0Sub *sub = &self->m_unk437E0[i].m_sub;
+            sub->m_unk0E = sub->m_unk08 = -1;
+            sub->m_unk0C = 0;
+            sub->m_unk00 = 0;
+            self->m_unk437E0[i].m_unk00_i = 0;
+        }
+    } else {
+        MagUnk437E0Sub *sub = &self->m_unk437E0[arg1].m_sub;
+        sub->m_unk0E = sub->m_unk08 = -1;
+        sub->m_unk0C = 0;
+        sub->m_unk00 = 0;
+        self->m_unk437E0[arg1].m_unk00_i = 0;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00134698);
+#endif
 
 extern "C" int func_00134730(MagScene *self, int theW, int theH, int theA, int theFlag)
 {
