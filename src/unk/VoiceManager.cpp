@@ -50,7 +50,15 @@ extern "C" void func_001F723C(VoiceManager *self)
 
 INCLUDE_ASM("asm/nonmatchings/unk/VoiceManager", func_001F728C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/VoiceManager", func_001F7338);
+extern "C" void func_001F7338(VoiceManager *self, int arg1, int arg2)
+{
+    for (int i = 0; i < self->m_count; i++) {
+        if (self->m_entries[self->m_count].m_unk04 == arg2 &&
+            self->m_entries[self->m_count].m_id == arg1) {
+            func_001F728C(self, i--);
+        }
+    }
+}
 
 extern "C" void func_001F73D4(int arg0)
 {
