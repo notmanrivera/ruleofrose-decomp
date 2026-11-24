@@ -73,6 +73,21 @@ judgement and go to Sonnet.
   (build/workers/fable-tasks.tsv) and files a worker owns
   (build/workers/codex-owns.txt). Output
   notes/research/R27-readability-debt.md: a per-file plan, top 15 first.
+- [ ] R29 What rule-of-rose-recomp knows (2026-11-24; [web]).
+  https://github.com/ptfpinho23/rule-of-rose-recomp (MIT, Pedro Pinho):
+  a static recompiler of the PAL release (SLES-542.18) to x86-64, with a
+  hand-written PS2 runtime (recomp/rt/: kernel HLE, GS/VIF/VU1/IPU, IOP
+  modules incl. iop_rxsnd.c for the game's RXSNDDRV.IRX, memory card).
+  Read recomp/NOTES.md, docs/STATUS.md, recomp/docs/ (rxsnddrv.md) and
+  recomp/rt/iop_rxsnd.c. Find out: (1) every PAL game address it names
+  (pad read 0x101ccc, VU1 builder 0x221000, camera 0x228b80, scheduler
+  0x24c5a0, ...), mapped to NTSC with the code-bytes method of
+  tools/map_pal_names.py (disc/pal/SLES_542.18), as name candidates with
+  their evidence; (2) the RXSNDDRV RPC protocol (command ids, packet
+  layouts) against our rx/ snd code and rxSnd* callers, for names and
+  types; (3) which runtime parts the PC/Vita port could reuse (MIT allows
+  it with attribution) and what they assume. Names and facts only, no
+  code copied. Output notes/research/R29-recomp.md.
 - [x] R28 Which near misses Smoke can close (2026-11-23). Smoke
   (tools/cpp_perm.py + tools/cpp_perm_queue.py, log
   build/workers/cpp-perm.log, runs in build/cpp_perm/) has 3 matches in
