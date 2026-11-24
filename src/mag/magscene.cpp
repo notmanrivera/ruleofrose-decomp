@@ -696,7 +696,21 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133F68);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00134114);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001342BC);
+extern "C" int func_001342BC(MagScene *self, int arg1, unsigned int arg2)
+{
+    for (int i = 0; i < 0x2000; i++) {
+        if (self->m_unk437E0[i].m_sub.m_unk0E == -1) {
+            self->m_unk437E0[i].m_sub.m_unk0E = 4;
+            self->m_unk437E0[i].m_sub.m_unk00 = arg1;
+            self->m_unk437E0[i].m_unk00 = (float)(arg2 & 0xFF) / 255.0f;
+            self->m_unk437E0[i].m_unk04 = (float)((arg2 >> 8) & 0xFF) / 255.0f;
+            self->m_unk437E0[i].m_unk08 = (float)((arg2 >> 16) & 0xFF) / 255.0f;
+            self->m_unk437E0[i].m_unk0C = (float)((arg2 >> 24) & 0xFF) / 128.0f;
+            return i;
+        }
+    }
+    return -1;
+}
 
 // NON_MATCHING: 4/25 differ, 4 edits
 #ifdef NON_MATCHING
