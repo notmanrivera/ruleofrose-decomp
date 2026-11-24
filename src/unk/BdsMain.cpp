@@ -1,5 +1,28 @@
 #include "include_asm.h"
 #include "emy/emy.h"
+struct BdsDeadVec4 {
+    long long xy;
+    int z;
+    int w;
+};
+struct BdsDeadEffParam {
+    int m_kind;
+    int m_unk04;
+    int m_unk08;
+    int m_unk0C;
+    BdsDeadVec4 m_pos;
+    float m_rot[3];
+    int m_num;
+    int m_pad[20];
+};
+struct BdsOutDead : EmyOut {
+};
+extern char D_006FBD80[];
+extern "C" int func_00176CC8(void *, void *);
+extern "C" void func_001D1410(void *, unsigned int, unsigned int);
+extern "C" void func_001D10D0(void *, unsigned int, unsigned int);
+extern "C" void func_00165570(void *);
+extern "C" void func_001687BC(EmyOut *, int, int);
 extern "C" void *__builtin_new(unsigned int);
 extern "C" void func_00166A1C(EmyOut *, int, void *, EmyMain *);
 extern int _vt$10BdsOutWalk;
@@ -607,7 +630,41 @@ extern "C" void BdsOutWin__vfunc_04(void)
     X_func_00166AD0();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsOutDead__vfunc_02);
+extern "C" void BdsOutDead__vfunc_02(BdsOutDead *self)
+{
+    BdsDeadVec4 vec;
+    BdsDeadEffParam param;
+    int off = 0x837E0;
+
+    X_func_001DA228((void *)self->m_unk08, 5, &vec);
+    {
+        float f1 = -1.0f;
+        long long xy = vec.xy;
+        int z = vec.z;
+        float f0 = 100.0f;
+        int kind = 3;
+
+        param.m_pos.xy = xy;
+        param.m_pos.z = z;
+        param.m_kind = kind;
+        param.m_rot[0] = f1;
+        param.m_rot[2] = f0;
+    }
+    register int num PS2_REG("$2") = 0x5A;
+    param.m_num = num;
+    param.m_pos.w = 0;
+    param.m_rot[1] = 0.0f;
+    param.m_unk08 = 0;
+    func_00176CC8(D_006FBD80 + off, &param);
+    self->m_owner->m_unk0C = 0;
+    func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x40);
+    func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x10000000);
+    func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
+    func_00165570(self->m_owner);
+    ((EmyObjStatView *)self->m_unk08)->m_flags |= 0x400;
+    ((EmyObjStatView *)self->m_unk08)->m_flags |= 0x2000;
+    func_001687BC(self, (self->m_owner->m_unk18 != 0) ? 0xA : 0xB, 0x100);
+}
 
 extern "C" int BdsOutDead__vfunc_03(void)
 {
