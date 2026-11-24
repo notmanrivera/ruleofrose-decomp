@@ -1,6 +1,14 @@
 #include "include_asm.h"
 #include "001A6830.h"
 #include "game/gamman.h"
+#include "bed/bedpad.h"
+extern "C" void func_00181150(int);
+extern "C" int func_001816B0(int);
+extern "C" int func_0018173C(int);
+extern "C" int func_001814AC(int, int, int, int);
+extern int D_007B40C0;
+extern int _9MagSystem$m_v_rate;
+static inline unsigned int padTriggerU(const BedPad *p) { return p->m_trigger; }
 extern "C" int func_001B1CD4(MnuItem *);
 extern "C" void func_001B2F64(MnuItem *);
 extern "C" void func_001B3534(MnuItem *);
@@ -1620,7 +1628,49 @@ extern "C" int func_001AE328()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE330);
+extern "C" int func_001AE330(MnuMovie *arg0, const BedPad *arg1)
+{
+    int ret = 0;
+
+    switch (arg0->m_subStep) {
+    case 0:
+        arg0->m_unk96C = 0;
+        arg0->m_subStep = 3;
+        func_00181150((int)&D_007B40C0);
+        func_001814AC((int)&D_007B40C0, (int)&D_007B40C0 + 0x44, 0x200, 0x180);
+        arg0->m_subStep = 3;
+        {
+            int v = 1;
+            _9MagSystem$m_v_rate = v;
+        }
+        break;
+    case 3:
+        if (func_0018173C((int)&D_007B40C0) == 1) {
+            arg0->m_unk96C = 1;
+            arg0->m_subStep = 9;
+        }
+        if ((padTriggerU(arg1) >> BEDPAD_BIT_CROSS) & 1) {
+            arg0->m_unk96C = 1;
+            arg0->m_subStep = 9;
+        }
+        if ((padTriggerU(arg1) >> BEDPAD_BIT_CIRCLE) & 1) {
+            arg0->m_unk96C = 1;
+            arg0->m_subStep = 9;
+        }
+        break;
+    case 9:
+        arg0->m_subStep = 10;
+    case 10:
+        func_001816B0((int)&D_007B40C0);
+        {
+            int v = 2;
+            _9MagSystem$m_v_rate = v;
+        }
+        ret = arg0->m_unk96C;
+        break;
+    }
+    return ret;
+}
 
 extern "C" void func_001AE474(MnuNow *arg0)
 {
