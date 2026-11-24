@@ -81,9 +81,14 @@ extern "C" int X_func_0014A21C(BdsMain *) asm("func_0014A21C");
 extern "C" int X_func_0014A230(BdsMain *) asm("func_0014A230");
 extern "C" int X_func_0014A240(BdsMain *) asm("func_0014A240");
 extern "C" int X_func_0014A268(BdsMain *) asm("func_0014A268");
+extern "C" void func_0014A450(BdsOutWalk *, float *);
+extern "C" void func_0014A700(BdsOutWalk *, int);
 extern "C" void func_0014A78C(BdsOutWalk *, int);
 extern "C" void func_0014A814(BdsOutWalk *, int);
 extern "C" int func_0014A9E8(BdsOutStared *, float *, float);
+extern "C" void func_001670DC(BdsOutWalk *, float *, float);
+extern "C" float func_00169A14(float *);
+extern "C" int func_001D19A8(void *, unsigned int);
 extern "C" int X_func_00165734(...) asm("func_00165734");
 extern "C" int X_func_00166AD0(...) asm("func_00166AD0");
 extern "C" int X_func_00166B74(EmyOut *, void *) asm("func_00166B74");
@@ -105,6 +110,7 @@ extern "C" int X_func_00202F10(void *) asm("func_00202F10");
 extern "C" float X_func_0026CB00(float, float) asm("func_0026CB00");
 
 extern int D_006E9840;
+extern int D_007812C0;
 extern BdsActorPtr *D_007A3350;
 extern int D_007B2580;
 
@@ -275,7 +281,54 @@ extern "C" void BdsOutWalk__vfunc_02(BdsOutWalk *self)
     self->m_unk04 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", BdsOutWalk__vfunc_03);
+static inline int checkHitWalk(BdsOutWalk *self)
+{
+    int r = func_001D19A8(&D_007812C0, self->m_unk00);
+    if (r) {
+        self->m_owner->m_unk2C = 1;
+    }
+    return r;
+}
+
+extern "C" int BdsOutWalk__vfunc_03(BdsOutWalk *self)
+{
+    float vec[4];
+    int step = self->m_unk04;
+    self->m_unk38++;
+
+    switch (step) {
+    case 0: {
+        int r = X_func_0010423C(1, 0x64);
+        if (r < 0x51) {
+            func_0014A450(self, vec);
+            if (func_00169A14(vec) >= 100.0f) {
+                func_001670DC(self, vec, 0.0f);
+                func_0014A814(self, 1);
+                break;
+            }
+        }
+        func_0014A700(self, r);
+        break;
+    }
+    case 1:
+        if (self->m_unk24 != 0) {
+            X_func_00202F10(self->m_owner->m_unk1F0);
+            func_0014A814(self, 0);
+        }
+        break;
+    case 2:
+        if (self->m_unk38 >= 0x1E) {
+            func_0014A814(self, 0);
+        }
+        break;
+    case 3:
+        if (checkHitWalk(self) != 0) {
+            func_0014A814(self, 0);
+        }
+        break;
+    }
+    return -1;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/BdsMain", D_002EF568);
 
