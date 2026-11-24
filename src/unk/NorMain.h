@@ -16,7 +16,9 @@ struct NorMain : public EmyMain {
     int m_unk244;                       // +0x244
     int m_unk248;                       // +0x248
     int m_unk24C;                       // +0x24C
+    int m_unk250;                       // +0x250
+    int m_unk254;                       // +0x254
 };
-STATIC_ASSERT(sizeof(NorMain) == 0x250, NorMain_size);
+STATIC_ASSERT(sizeof(NorMain) == 0x258, NorMain_size);
 
 #endif // UNK_NORMAIN_H

@@ -1,5 +1,7 @@
 #include "include_asm.h"
 #include "unk/NorMain.h"
+extern const int D_002EFA60[];
+extern int *D_00298DD8[];
 
 struct NorActorPtr {
     unsigned char m_pad00[0x100];
@@ -165,7 +167,23 @@ static inline void NorHitBite(NorOutAttack *self, unsigned int target)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_001515C4);
+extern "C" int func_001515C4(NorMain *self)
+{
+    if (++self->m_unk254 == D_002EFA60[self->m_unk250]) {
+        int r = X_func_0010423C(0, 0x63);
+        if (r < 0x1E) {
+            self->m_unk250 = 0;
+        } else if (r < 0x3C) {
+            self->m_unk250 = 1;
+        } else if (r < 0x5A) {
+            self->m_unk250 = 2;
+        } else {
+            self->m_unk250 = 3;
+        }
+        self->m_unk254 = 0;
+    }
+    return D_00298DD8[self->m_unk250][self->m_unk254];
+}
 
 extern "C" void NorOutAttack__vfunc_02(NorOutAttack *self)
 {
