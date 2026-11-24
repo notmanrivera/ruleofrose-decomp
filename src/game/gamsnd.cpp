@@ -1940,7 +1940,188 @@ extern "C" void func_001E6570(GamSndMan *arg0, int arg1) {
     }
 }
 
+// NON_MATCHING: 286/346 differ, 33 relocs differ (size 0x568, game 0x578), 50 edits
+#ifdef NON_MATCHING
+extern "C" void rxSndSetMasterVolume(int,int);
+extern "C" void rxSndSeSetMasterVolume(int,int);
+extern "C" void func_0023DBD0(int,int);
+extern "C" void func_001C9C1C(GamMan *,int,int *);
+extern "C" void func_001E6734(GamSndMan *arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
+    register float left PS2_REG("$f1");
+    register float right PS2_REG("$f0");
+    register float left_2 PS2_REG("$f1");
+    register float right_2 PS2_REG("$f0");
+    GamSndMessage msg;
+    int sp50;
+    float temp_f0;
+    float temp_f0_2;
+    register float temp_f2 PS2_REG("$f2");
+    register float temp_f2_2 PS2_REG("$f2");
+    int temp_s0;
+    int temp_s0_2;
+    int temp_s2;
+    int temp_s2_2;
+    int *var_a7;
+    int var_s0;
+    int var_v0;
+    int var_v0_2;
+    int var_v0_3;
+    TskSnd *temp_v0;
+    TskSnd *temp_v0_2;
+    TskSnd *temp_v0_3;
+    CmnITask *var_a5;
+
+    switch (arg1) {
+    case 13:
+        if (arg4 == 0) {
+            D_007B2580.m_masterLeft = arg2;
+            D_007B2580.m_masterRight = arg3;
+            rxSndSetMasterVolume(arg2, arg3);
+            arg0->m_unk1588 = arg2;
+            arg0->m_unk158C = arg3;
+            return;
+        }
+        arg5 = (int)&D_007A3D80;
+        msg.m_unk20 = arg0->m_unk1588;
+        msg.m_unk24 = arg0->m_unk158C;
+        msg.m_unk04 = arg2;
+        msg.m_unk08 = arg3;
+        msg.m_unk14 = arg4;
+        if (func_001E7D7C((GamTaskMan *)arg5, arg0->m_unk170C) != 0) {
+            func_001E7724((GamTaskMan *)arg5, arg0->m_unk170C);
+            arg0->m_unk170C = -1;
+        }
+        temp_v0 = (TskSnd *)operator new(0xC0);
+        func_001F8FC0(temp_v0, 2, &msg);
+        var_a5 = (CmnITask *)temp_v0;
+        var_a7 = &arg0->m_unk170C;
+        goto block_33;
+    case 14:
+        arg0->m_unk1590 = arg2;
+        arg0->m_unk1594 = arg3;
+        func_001C9C1C(&D_007812C0, 5, &sp50);
+        {
+        if (sp50 < 7) {
+            var_v0 = (int)(((float)sp50 / 6.0f) * 90.0f) + 10;
+        } else if (sp50 < 9) {
+            var_v0 = (int)(((float)(sp50 - 6) * 0.5f) * 28.0f) + 100;
+        } else {
+            var_v0 = 128;
+        }
+        temp_f2 = (float) var_v0 * 0.0078125f;
+        left = (float)arg2 * temp_f2;
+        right = (float)arg3 * temp_f2;
+        arg3 = (int)right;
+        arg2 = (int)left;
+        if (arg3 <= 10) arg3 = 10;
+        if (arg2 <= 10) arg2 = 10;
+        if (arg4 == 0) {
+            rxSndSeSetMasterVolume(arg2, arg3);
+            return;
+        }
+        arg5 = (int)&D_007A3D80;
+        msg.m_unk20 = arg0->m_unk1590;
+        msg.m_unk24 = arg0->m_unk1594;
+        msg.m_unk04 = arg2;
+        msg.m_unk08 = arg3;
+        msg.m_unk14 = arg4;
+        if (func_001E7D7C((GamTaskMan *)arg5, arg0->m_unk1710) != 0) {
+            func_001E7724((GamTaskMan *)arg5, arg0->m_unk1710);
+            arg0->m_unk1710 = -1;
+        }
+        temp_v0_2 = (TskSnd *)operator new(0xC0);
+        func_001F8FC0(temp_v0_2, 3, &msg);
+        var_a5 = (CmnITask *)temp_v0_2;
+        var_a7 = &arg0->m_unk1710;
+        goto block_33;
+        }
+    case 15:
+        arg0->m_unk1598 = arg2;
+        arg0->m_unk159C = arg3;
+        func_001C9C1C(&D_007812C0, 4, &sp50);
+        {
+        if (sp50 < 7) {
+            var_v0_2 = (int)(((float)sp50 / 6.0f) * 90.0f) + 10;
+        } else if (sp50 < 9) {
+            var_v0_2 = (int)(((float)(sp50 - 6) * 0.5f) * 28.0f) + 100;
+        } else {
+            var_v0_2 = 128;
+        }
+        temp_f2_2 = (float) var_v0_2 * 0.0078125f;
+        left_2 = (float)arg2 * temp_f2_2;
+        right_2 = (float)arg3 * temp_f2_2;
+        arg3 = (int)right_2;
+        arg2 = (int)left_2;
+        if (arg3 <= 10) arg3 = 10;
+        if (arg2 <= 10) arg2 = 10;
+        if (arg4 == 0) {
+            func_0023DBD0(arg2, arg3);
+            return;
+        }
+        arg5 = (int)&D_007A3D80;
+        msg.m_unk20 = arg0->m_unk1598;
+        msg.m_unk24 = arg0->m_unk159C;
+        msg.m_unk04 = arg2;
+        msg.m_unk08 = arg3;
+        msg.m_unk14 = arg4;
+        if (func_001E7D7C((GamTaskMan *)arg5, arg0->m_unk1718) != 0) {
+            func_001E7724((GamTaskMan *)arg5, arg0->m_unk1718);
+            arg0->m_unk1718 = -1;
+        }
+        temp_v0_3 = (TskSnd *)operator new(0xC0);
+        func_001F8FC0(temp_v0_3, 4, &msg);
+        var_a5 = (CmnITask *)temp_v0_3;
+        var_a7 = &arg0->m_unk1718;
+block_33:
+        func_001E71FC((GamTaskMan *)arg5, 1, -1, 1, 0, var_a5, 0, var_a7, 0x11);
+        return;
+        }
+    case 16:
+        func_0017F5E8(&D_007B2580, 9);
+        func_001E6570(arg0, 0);
+        return;
+    case 17:
+        func_0017F5E8(&D_007B2580, 8);
+        func_001E6570(arg0, 1);
+        return;
+    case 18:
+        func_0017F5E8(&D_007B2580, 1);
+        func_001E6570(arg0, 2);
+        return;
+    case 25:
+        func_0017F5E8(&D_007B2580, 9);
+        func_00180B30(&D_007B2580, arg5);
+        return;
+    case 28:
+        if (arg2 < 0) {
+            var_s0 = 0;
+        } else {
+            var_s0 = (arg2 >= 0x65) ? 0x64 : arg2;
+        }
+        arg0->m_unk186C = (float) ((float) var_s0 / 100.0f);
+        return;
+    case 29:
+        func_001E111C(arg0, arg2);
+        return;
+    case 30:
+        func_001E1920(arg0, 1, arg2, 0);
+        return;
+    case 31:
+        func_001E111C(arg0, arg2);
+        var_v0_3 = arg0->m_unk1870 | 0x400;
+block_46:
+        arg0->m_unk1870 = var_v0_3;
+    default:
+        return;
+    case 32:
+        func_001E1920(arg0, 1, arg2, 0);
+        var_v0_3 = arg0->m_unk1870 & ~0x400;
+        goto block_46;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E6734);
+#endif
 
 extern "C" int func_001E6CAC(GamSndMan *arg0)
 {
