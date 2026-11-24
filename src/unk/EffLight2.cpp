@@ -33,7 +33,7 @@ inline DogLightAmbient *DogLightPool::getAmbient(int n)
 }
 
 extern "C" int X_Eff0__vfunc_02(void *, void *) asm("Eff0__vfunc_02");
-extern "C" void X_func_0016A914(void *) asm("func_0016A914");
+extern "C" void func_0016A914(Eff0 *);
 extern "C" void X__$_4Eff0(void *, int) asm("_$_4Eff0");
 extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
 extern "C" void X_free__9BedMemoryPv(void *, void *) asm("free__9BedMemoryPv");
@@ -470,23 +470,19 @@ extern "C" int EffFoot2Prim__vfunc_05(EffFoot2Prim *self)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", EffFoot2Prim__vfunc_08);
 
-#ifdef NON_MATCHING
-extern "C" void func_00173DF8(EffGeneric1 *self)
+EffGeneric1::EffGeneric1()
 {
-    X_func_0016A914(self);
-    self->m_vtbl = &vtbl_EffGeneric1;
-    self->m_zDepth = 0.0f;
-    self->m_buf24 = 0;
-    self->m_unk28 = 0;
-    self->m_buf2C = 0;
-    self->m_unk30 = 0;
-    self->m_unk34 = 0;
-    self->m_buf38 = 0;
-    self->m_data = 0;
+    func_0016A914(this);
+    m_zDepth = 0.0f;
+    m_buf24 = 0;
+    m_unk28 = 0;
+    m_buf2C = 0;
+    m_unk30 = 0;
+    m_unk34 = 0;
+    m_buf38 = 0;
+    m_data = 0;
+    m_vtbl = &vtbl_EffGeneric1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00173DF8);
-#endif
 
 extern "C" void EffGeneric1_dtor(EffGeneric1 *self, int flags) asm("_$_11EffGeneric1");
 extern "C" void EffGeneric1_dtor(EffGeneric1 *self, int flags)
@@ -819,7 +815,7 @@ struct EffLight3Ctor_17562C : EffLight3 {
 
 EffLight3Ctor_17562C::EffLight3Ctor_17562C()
 {
-    X_func_0016A914(this);
+    func_0016A914(this);
     m_vtbl = &vtbl_EffLight3;
     m_unk390 = -1;
 }

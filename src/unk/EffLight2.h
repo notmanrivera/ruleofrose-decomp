@@ -149,6 +149,7 @@ struct EffUvTrack {
 };
 
 struct EffGeneric1 : public Eff0 {
+    EffGeneric1() asm("func_00173DF8");
     char *m_buf24;                      // +0x24
     int m_unk28;                        // +0x28
     void *m_buf2C;                      // +0x2C
