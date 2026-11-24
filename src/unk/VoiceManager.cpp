@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "game/gamman.h"
+extern "C" int func_001E50C8(void *, int, int, int, float, int, int, int);
 extern "C" int func_001E5E58(void *, unsigned int, int, void *);
 static inline void *getGamSnd(GamMan *g) { return g->m_snd; }
 struct VoiceEntry {
@@ -30,7 +31,19 @@ extern int _vt$12VoiceManager;
 
 INCLUDE_ASM("asm/nonmatchings/unk/VoiceManager", func_001F6F4C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/VoiceManager", func_001F70C8);
+extern "C" void func_001F70C8(VoiceManager *self, int arg1, int arg2, int arg3, int arg4)
+{
+    int left;
+    int right;
+
+    self->m_entries[self->m_count].m_id = arg1;
+    self->m_entries[self->m_count].m_unk04 = 0;
+    self->m_entries[self->m_count].m_timer = arg4;
+    left = (arg3 >= 0) ? ((0x3F - arg3) * arg2) / 64 : arg2;
+    right = (arg3 <= 0) ? ((arg3 + 0x3F) * arg2) / 64 : arg2;
+    func_001E50C8(getGamSnd(&D_007812C0), arg1, left, right, 1.0f, 0, 0, 0);
+    self->m_count++;
+}
 
 extern "C" void func_001F71B8(VoiceManager *self)
 {
