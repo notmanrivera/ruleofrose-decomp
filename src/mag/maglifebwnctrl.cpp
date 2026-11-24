@@ -438,7 +438,14 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A808);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A89C);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A974);
+extern "C" void func_0012A974(MagLifeBwnCtrl *arg0, MagBwnVec4 *arg1)
+{
+    if (arg0->m_bwn != 0) {
+        if (arg0->m_bwn->getActor() != 0) {
+            *(u_long128 *)arg1 = *(u_long128 *)&arg0->m_bwn->getActor()->m_unk40;
+        }
+    }
+}
 
 extern "C" void func_0012A9EC(MagLifeBwnCtrl *arg0, MagBwnVec4 *arg1)
 {
