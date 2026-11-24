@@ -133,14 +133,24 @@ struct MnuItem {
     int m_open;                         // +0x0000
     int m_cursor[10];                   // +0x0004..0x002B
     int m_max[3];                       // +0x002C..0x0037
-    unsigned char m_pad38[0x60];        // +0x0038
+    unsigned char m_pad38[0x1C];        // +0x0038
+    int m_unk54;                        // +0x0054
+    int m_unk58;                        // +0x0058
+    int m_unk5C;                        // +0x005C
+    unsigned char m_pad60[0x38];        // +0x0060
     MnuRpk m_rpk[3];                    // +0x0098..0x1B5B (0x98, 0x984, 0x1270)
     int m_unk1B5C;                      // +0x1B5C
     int m_scene;                        // +0x1B60
     MnuSub104 m_sub1B64;                // +0x1B64..0x1C67
     MnuMsgWin m_msgWin[2];              // +0x1C68..0x23DF
     int m_param;                        // +0x23E0
-    unsigned char m_pad23E4[0x28];      // +0x23E4
+    unsigned char m_pad23E4[0x10];      // +0x23E4
+    int m_unk23F4;                      // +0x23F4
+    int m_unk23F8;                      // +0x23F8
+    int m_unk23FC;                      // +0x23FC
+    int m_unk2400;                      // +0x2400
+    int m_unk2404;                      // +0x2404
+    int m_unk2408;                      // +0x2408
     int m_canMap;                       // +0x240C
     int m_canOpt;                       // +0x2410
     int m_canDog;                       // +0x2414
@@ -152,7 +162,11 @@ struct MnuItem {
     int m_weaponId;                     // +0x242C
     int m_subItemId;                    // +0x2430
     MnuItemStockEnt *m_slots[12];       // +0x2434..0x2463
-    unsigned char m_pad2464[0x1C];      // +0x2464
+    unsigned char m_pad2464[0x08];      // +0x2464
+    int m_unk246C;                      // +0x246C
+    int m_unk2470;                      // +0x2470
+    int m_unk2474;                      // +0x2474
+    unsigned char m_pad2478[0x08];      // +0x2478
     int m_active;                       // +0x2480
     unsigned char m_pad2484[0x0C];      // +0x2484
     int m_unk2490;                      // +0x2490

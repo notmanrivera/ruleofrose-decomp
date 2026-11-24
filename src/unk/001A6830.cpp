@@ -1,5 +1,8 @@
 #include "include_asm.h"
 #include "001A6830.h"
+#include "game/gamman.h"
+extern "C" void func_001AF024(MnuItem *);
+extern "C" int func_0018741C(MnuMsgWin *);
 extern "C" void Xvp_func_001AEBC8(void *) asm("func_001AEBC8");
 struct SprAE9F4 {
     unsigned char m_unk[0x8EC];
@@ -221,7 +224,7 @@ extern "C" int X_func_001AE848(...) asm("func_001AE848");
 extern "C" int X_func_001AE868(...) asm("func_001AE868");
 extern "C" int X_func_001AEB7C(...) asm("func_001AEB7C");
 extern "C" int X_func_001AEC50(...) asm("func_001AEC50");
-extern "C" int X_func_001AED5C(...) asm("func_001AED5C");
+extern "C" int func_001AED5C(MnuItem *);
 extern "C" int X_func_001AEE50(...) asm("func_001AEE50");
 extern "C" int X_func_001AF21C(...) asm("func_001AF21C");
 extern "C" int X_func_001AF44C(...) asm("func_001AF44C");
@@ -262,7 +265,6 @@ extern int D_002B5F38;
 extern int D_002B60C0;
 extern int D_006E9840;
 extern int D_007812AC;
-extern int D_007812C0;
 extern int D_007A34CC;
 extern int D_007A34CE;
 extern int D_007B205C;
@@ -1768,7 +1770,7 @@ extern "C" void func_001AEACC(MnuItem *arg0, int arg1)
         rpk->m_unk8E8 = 1;
         arg0->m_rpk[0].m_param = arg1;
         font = "fnt16US.bin";
-        X_func_001AED5C(arg0);
+        func_001AED5C(arg0);
         X_func_001AEC50(arg0);
         rpk->m_unk8E8 = 1;
         X_func_0018C2E4(rpk, font, 0);
@@ -1856,7 +1858,42 @@ extern "C" void func_001AED08(MnuItem *arg0, int arg1)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AED5C);
+extern "C" int func_001AED5C(MnuItem *arg0)
+{
+    if (arg0->m_open == 1) {
+        return -1;
+    }
+    arg0->m_open = 1;
+    arg0->m_equipIdx = -1;
+    arg0->m_weaponIdx = -1;
+    arg0->m_unk54 = 0;
+    arg0->m_unk58 = 0;
+    arg0->m_unk5C = 0;
+    arg0->m_unk24A0 = 0;
+    func_001AF024(arg0);
+    arg0->m_unk23F4 = 100;
+    arg0->m_unk23FC = 70;
+    arg0->m_unk2404 = 30;
+    arg0->m_unk23F8 = 100;
+    arg0->m_unk2400 = 70;
+    arg0->m_unk2408 = 30;
+    if (D_007812C0.m_cursolInitFlgItem != 0) {
+        for (int i = 0; i < 10; i++) {
+            arg0->m_cursor[i] = 0;
+        }
+        D_007812C0.m_cursolInitFlgItem = 0;
+    }
+    arg0->m_cursor[0] = 2;
+    arg0->m_subItemId = 0xA23;
+    arg0->m_weaponId = 0xA00;
+    arg0->m_cursor[3] = 0;
+    arg0->m_unk246C = 0;
+    arg0->m_unk2470 = 0;
+    arg0->m_unk2474 = 0;
+    arg0->m_unk2420 = 0;
+    func_0018741C(&arg0->m_msgWin[0]);
+    return 0;
+}
 
 extern "C" int func_001AEE50(MnuItem *arg0)
 {
