@@ -2,23 +2,11 @@
 #include "include_asm.h"
 #include "mag/magscene.h"
 #include "game/gamman.h"
+#include "msg/msgman.h"
 void vecNormalize(float *);
 float vecPitch(const float *);
 float vecYaw(const float *);
 
-struct MagMsgReq {
-    int m_param[16];
-    int m_id;
-    char *m_buf;
-    int m_size;
-};
-class MagMsgWork {
-public:
-    unsigned char m_unk[0x3BC];
-    MagMsgWork() asm("func_0018330C");
-    ~MagMsgWork() asm("func_00183B24");
-    void func_00184128(MagMsgReq *theReq) asm("func_00184128");
-};
 struct MagGameState {
     unsigned char m_unk00[0x54];
     int m_unk54;
@@ -43,7 +31,6 @@ extern "C" void func_001C5E1C(void *theGame);
 extern "C" void func_001C5F70(void *theGame, int theA);
 extern "C" int func_001C97C8(void *theGame);
 extern "C" void func_001C97F0(void *theGame);
-extern "C" int func_001832E8(int theType);
 extern "C" int func_00134730(MagScene *theScene, int theW, int theH, int theA, int theB);
 extern "C" void func_001348B0(MagScene *theScene, int theNo);
 extern "C" void func_00134A00(MagScene *theScene, int theNo, int theX, int theY, int theZ);
@@ -208,7 +195,7 @@ int MagScene::func_0013F280(int theType, const int *theParam, int theA)
 {
     char buf[0x400];
     MagMsgReq req;
-    register int id PS2_REG("$17") = func_001832E8(theType);
+    register const char *text PS2_REG("$17") = func_001832E8(theType);
     if (theParam) {
         for (int i = 0; i < 16; i++) {
             req.m_param[i] = theParam[i];
@@ -216,7 +203,7 @@ int MagScene::func_0013F280(int theType, const int *theParam, int theA)
     }
     req.m_size = 0x400;
     req.m_buf = buf;
-    req.m_id = id;
+    req.m_source = text;
     register char *msg PS2_REG("$17");
     {
         MagMsgWork work[2];

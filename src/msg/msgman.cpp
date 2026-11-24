@@ -37,7 +37,6 @@ extern "C" int func_001831CC(MsgQueue *self);
 extern "C" void func_001831F8(MsgQueue *self, const char *src, int len);
 extern "C" char *func_001832A4(MsgQueue *self);
 extern "C" void func_001832B8(MsgQueue *self, int theN);
-extern "C" const char *func_001832E8(unsigned int theN);
 extern "C" int func_00183B74(MsgWin *arg0);
 extern "C" int func_00183C4C(MsgWin *self);
 extern "C" int func_00184008(MsgWin *arg0);
@@ -464,7 +463,24 @@ extern "C" char *func_00184048(MsgWin *arg0, int arg1)
     return (char *)v;
 }
 
+// NON_MATCHING: 4/36 differ, 6 edits
+#ifdef NON_MATCHING
+extern "C" char *func_00184098(MsgWin *self, char *text)
+{
+    int v;
+    unsigned int cmd = func_00184710(self, text);
+    if (cmd != 0x29) {
+        char *args = text + strlen(func_001847BC(self, cmd));
+        if (cmd == 0x19) {
+            func_00184578(self, args, &v);
+            return func_00184048(self, v);
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184098);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/msg/msgman", D_002F3280);
 
@@ -1720,7 +1736,44 @@ extern "C" int func_00186088(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
+// NON_MATCHING: 53/65 differ, 6 relocs differ (size 0x104, game 0x10C), 10 edits
+#ifdef NON_MATCHING
+extern "C" int func_001860C0(MsgWin *arg0)
+{
+    int value;
+    int temp_a2;
+    int temp_a3;
+    int temp_v0;
+    int temp_v0_2;
+    int temp_v0_3;
+
+    temp_v0 = func_00184578(arg0, arg0->m_str + arg0->m_pos, &value);
+    temp_a2 = arg0->m_pos + temp_v0;
+    arg0->m_pos = temp_a2;
+    if (temp_v0 > 0) {
+        arg0->m_unk24 = value;
+        if (value == 0) {
+            temp_v0_2 = arg0->m_unk54;
+            arg0->m_unk84 = 0;
+            arg0->m_unk60 = temp_v0_2;
+            func_00134A00(&arg0->m_system->m_scene, arg0->m_no, arg0->m_unk5C, temp_v0_2, arg0->m_unk64);
+        } else {
+            arg0->m_unk84 = 1;
+            arg0->m_unk44 = 0x26;
+            temp_v0_3 = func_001850FC(arg0, arg0->m_str + temp_a2);
+            arg0->m_unk80 = temp_v0_3;
+            temp_a3 = arg0->m_unk54 + func_001857C8(arg0, arg0->m_unk44, temp_v0_3, arg0->m_unk6C);
+            arg0->m_unk60 = temp_a3;
+            func_00134A00(&arg0->m_system->m_scene, arg0->m_no, arg0->m_unk5C, temp_a3, arg0->m_unk64);
+        }
+        func_001856F4(arg0, arg0->m_unk24);
+        func_001856FC(arg0);
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001860C0);
+#endif
 
 extern "C" int func_001861CC(MsgWin *self, const char *theStr, int *theLen)
 {
@@ -1770,7 +1823,28 @@ extern "C" int func_001862E4(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
+// NON_MATCHING: 21/38 differ, 5 relocs differ (size 0x98, game 0xA0), 11 edits
+#ifdef NON_MATCHING
+extern "C" int func_0018631C(MsgWin *self)
+{
+    int result = 0;
+    int v;
+    int n = func_00184578(self, self->m_str + self->m_pos, &v);
+    self->m_pos += n;
+    if (n > 0) {
+        self->m_unk50 = v;
+        self->m_unk5C = v;
+        func_00134A00(&self->m_system->m_scene, self->m_no, v, self->m_unk60, self->m_unk64);
+        func_001856FC(self);
+        func_001854AC(self);
+        func_00185348(self);
+        func_00185670(self);
+    }
+    return result;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_0018631C);
+#endif
 
 extern "C" int func_001863BC(MsgWin *self, const char *theStr, int *theLen)
 {
@@ -1780,7 +1854,28 @@ extern "C" int func_001863BC(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
+// NON_MATCHING: 21/38 differ, 5 relocs differ (size 0x98, game 0xA0), 11 edits
+#ifdef NON_MATCHING
+extern "C" int func_001863F4(MsgWin *self)
+{
+    int result = 0;
+    int v;
+    int n = func_00184578(self, self->m_str + self->m_pos, &v);
+    self->m_pos += n;
+    if (n > 0) {
+        self->m_unk54 = v;
+        self->m_unk60 = v;
+        func_00134A00(&self->m_system->m_scene, self->m_no, self->m_unk5C, v, self->m_unk64);
+        func_001856FC(self);
+        func_001854AC(self);
+        func_00185348(self);
+        func_00185670(self);
+    }
+    return result;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001863F4);
+#endif
 
 extern "C" int func_00186494(MsgWin *self, const char *theStr, int *theLen)
 {
@@ -2167,7 +2262,48 @@ extern "C" int func_00187114(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
+// NON_MATCHING: 40/51 differ (size 0xCC, game 0xDC), 25 edits
+#ifdef NON_MATCHING
+extern "C" int func_00187144(MsgWin *arg0)
+{
+    int value;
+    float var_f0;
+    int temp_a1;
+    int temp_hi;
+    int temp_lo;
+    int temp_v0;
+    int var_v0;
+
+    temp_v0 = func_00184578(arg0, arg0->m_str + arg0->m_pos, &value);
+    var_v0 = 0;
+    arg0->m_pos = (int) (arg0->m_pos + temp_v0);
+    if (temp_v0 > 0) {
+        arg0->m_unkE0 = 1;
+        temp_hi = value % 10;
+        temp_lo = value / 10;
+        temp_a1 = arg0->m_unk44 * temp_hi;
+        if (temp_lo != 0) {
+            arg0->m_unkF4 = temp_a1;
+            arg0->m_unkF8 = 0;
+            arg0->m_unkE4 = temp_lo;
+            arg0->m_unkE8 = temp_hi;
+            var_f0 = (float) temp_a1 / (float) temp_lo;
+        } else {
+            var_f0 = (float) temp_a1;
+            arg0->m_unkF4 = temp_a1;
+            arg0->m_unkF8 = 0;
+            arg0->m_unkE4 = 0;
+            arg0->m_unkE8 = temp_hi;
+        }
+        arg0->m_unkF0 = 0;
+        arg0->m_unkEC = var_f0;
+        var_v0 = 1;
+    }
+    return var_v0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00187144);
+#endif
 
 extern "C" int func_00187220(MsgWin *self, const char *theStr, int *theLen)
 {
@@ -2260,54 +2396,66 @@ extern "C" int func_00187414()
 }
 
 
-// Two windows of 0x3BC bytes: the copied pointer keeps the first call's
-// argument separate from the parameter (the game copies $a0 to $s0 and back).
-extern "C" int func_0018741C(MsgWin *arg0)
+// Update both message windows.
+extern "C" int func_0018741C(MsgWin *windows)
 {
-    MsgWin *p = (MsgWin *)arg0;
-    MsgWin *q;
-    int i;
-    q = p;
-    i = 1;
+    MsgWin *p = windows;
+    // The original keeps the two-window loop counter in s1.
+    register int i PS2_REG("$17") = 1;
     for (; i >= 0; i--) {
-        func_00183BB8(q);
-        q = q + 1;
-        p = q;
+        func_00183BB8(p);
+        p++;
     }
     return 0;
 }
 
-extern "C" int func_00187464(MsgWin *arg0)
+extern "C" int func_00187464(MsgWin *windows)
 {
-    MsgWin *p = (MsgWin *)arg0;
-    MsgWin *q;
-    int i;
-    q = p;
-    i = 1;
+    MsgWin *p = windows;
+    // The original keeps the two-window loop counter in s1.
+    register int i PS2_REG("$17") = 1;
     for (; i >= 0; i--) {
-        func_00183C4C(q);
-        q = q + 1;
-        p = q;
+        func_00183C4C(p);
+        p++;
     }
     return 0;
 }
 
-extern "C" int func_001874AC(MsgWin *arg0)
+extern "C" int func_001874AC(MsgWin *windows)
 {
-    MsgWin *p = (MsgWin *)arg0;
-    MsgWin *q;
-    int i;
-    q = p;
-    i = 1;
+    MsgWin *p = windows;
+    // The original keeps the two-window loop counter in s1.
+    register int i PS2_REG("$17") = 1;
     for (; i >= 0; i--) {
-        func_00184008(q);
-        q = q + 1;
-        p = q;
+        func_00184008(p);
+        p++;
     }
     return 0;
 }
 
+// NON_MATCHING: 37/50 differ, 1 reloc differs (size 0xC8, game 0xCC), 11 edits
+#ifdef NON_MATCHING
+extern "C" void func_00183DB0(MsgWin *, int, char *);
+extern "C" void func_001874F4(MsgWin *windows, int id, char *text)
+{
+    if (id >= 0) {
+        int slot = 0x378;
+        for (int i = 0; i < 2; i++) {
+            if (windows[i].m_no == id) return;
+        }
+        for (int i = 0; i < 2; i++) {
+            if (windows[i].m_unk04 == 1) {
+                slot = i;
+                break;
+            }
+        }
+        if (slot != 0x378) func_00183DB0(&windows[slot], id, text);
+    }
+}
+
+#else
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001874F4);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/msg/msgman", D_002F7398);
 

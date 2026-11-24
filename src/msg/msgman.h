@@ -5,6 +5,7 @@
 #define MSG_MSGMAN_H
 #include "ror.h"
 class MagSystem;
+struct MagMsgReq;
 struct MsgWin {
     typedef int (MsgWin::*Command)();
     typedef int (MsgWin::*Parser)(const char *, int *);
@@ -67,7 +68,7 @@ struct MsgWin {
     int m_unkE0; // +0x0E0
     int m_unkE4; // +0x0E4
     int m_unkE8; // +0x0E8
-    int m_unkEC; // +0x0EC
+    float m_unkEC; // +0x0EC
     int m_unkF0; // +0x0F0
     int m_unkF4; // +0x0F4
     int m_unkF8; // +0x0F8
@@ -80,6 +81,7 @@ struct MsgWin {
     Parser m_parsers[41];              // +0x274
     MsgWin() asm("func_0018330C");
     ~MsgWin() asm("func_00183B24");
+    int func_00184128(MagMsgReq *) asm("func_00184128");
 };
 struct MsgQueue {
     int m_wpos;                        // +0x00
@@ -90,9 +92,19 @@ struct MsgQueue {
     char m_unk14[0x2C];                // +0x14
     char m_buf[1];                     // +0x40: variable-sized queue storage
 };
+// Text substitution request consumed by func_00184128.
+struct MagMsgReq {
+    int m_param[16];                   // +0x00
+    const char *m_source;                     // +0x40
+    char *m_buf;                       // +0x44
+    int m_size;                     // +0x48
+};
+STATIC_ASSERT(sizeof(MagMsgReq) == 0x4C, MagMsgReq_size);
+typedef MsgWin MagMsgWork;
 typedef MsgQueue RingBuf;
 struct MsgNameEnt { int id; char *name; };
 STATIC_ASSERT(sizeof(MsgWin::Command) == 8, MsgWin_Command_size);
 STATIC_ASSERT(sizeof(MsgWin::Parser) == 8, MsgWin_Parser_size);
 STATIC_ASSERT(sizeof(MsgWin) == 0x3BC, MsgWin_size);
+extern "C" const char *func_001832E8(unsigned int);
 #endif
