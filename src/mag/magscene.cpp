@@ -272,7 +272,16 @@ extern "C" int func_001330F4(MagScene *self, int theNo)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133144);
+extern "C" void func_00133144(MagScene *self, int theNo, int theID, int theA, int theB, int theC, float theD)
+{
+    if (theA >= 0) {
+        self->m_actor[theNo].func_0010BF00(theA);
+    }
+    DogActor *actor = &self->m_actor[theNo];
+    actor->func_0010AF18(theID, 0, theD, -1, -1);
+    actor->m_motion_flag[0] = theB >> 8;
+    actor->m_motion_flag[1] = theB & 0xFF;
+}
 
 extern "C" void func_001331F4(MagScene *self, int theNo, int theID, int theA, int theB, int theC, float theD)
 {
