@@ -1,30 +1,42 @@
 # Próxima sesión del coordinador
 
-Reescrito el 2026-11-23 (tarde), a 40.33 %; puesto al día esa noche. Las versiones anteriores
+Reescrito el 2026-11-23 (tarde), a 40.33 %; puesto al día el 24 nov a 45.10 %. Las versiones anteriores
 (12 al 15 de noviembre) están en el historial de git; lo que seguía vigente
 de ellas está aquí. Léelo después de `CLAUDE.md`, `notes/PROJECT_STATE.md`
 (sobre todo el último «Estado») y `docs/DECOMPILING.md`.
 
 ## Al abrir
 
-- Docker, `tools/match.py --server start`, la pestaña «Progreso workers» de
-  Orca (`tools/orca/bars.py --watch 20`).
-- Smoke: `tools/cpp_perm_queue.py --max-off 40 --skip
-  build/workers/codex-owns.txt --avoid spr/sprtexture,msg/msgman,unk/001B64C4`
-  (desde R28: 3 min por función, solo los tipos de casi que cierra, pesos de
-  pases y puntuación nuevos; no integra un MATCH que empeore
-  `tools/rules_check.py`). `codex-owns.txt` se vació el 23 nov (la lista
-  vieja está en `codex-owns.old-close.txt`).
-- Workers: Codex hace **G13 y G14** desde el 23 nov (con permiso del dueño;
-  brief `codex-brief-g13g14.txt`); OpenCode (brief `opencode-brief-order5.txt`),
-  Hydrogen en pausa (lo dosifica el dueño). Neon/Argon (Antigravity) vuelven
-  el 29–30 nov: **G8–G12** son suyas (`build/workers/fable-tasks.tsv`).
-- Herramientas nuevas del 23 nov: `tools/disc_scan.py` (busca donantes con
-  símbolos en una imagen de disco; `--deep` mira dentro de archivos
-  grandes) y `tools/retype.py` (cambia desplazamientos por miembros de la
-  cabecera y solo deja lo que sigue idéntico; pásala tras cada tarea G).
+**Pausa del 24 nov, 13:05, a 45.10 %** (el dueño: «pongamos pausa a todo»).
+Todos los workers en `STATUS='paused'`, ningún ciclo en marcha, todo
+integrado, `build/ok` en verde, árbol limpio. Para seguir:
+
+1. Docker, `sh tools/orca/resume.sh --start`, `tools/match.py --server
+   start`, la pestaña «Progreso workers» (`tools/orca/bars.py --watch 20`).
+2. Volver a crear el informe de media hora (cron `7,37 * * * *`).
+3. Hydrogen (gemini): `nohup sh tools/orca/next_batch.sh gemini --loop --max
+   120 --names 6 --budget 400 --avoid
+   mcd/mcdman,unk/TskEnemyMove,unk/0018BD94,unk/TskMsgMan >>
+   build/workers/gemini-loop.log 2>&1 &` (se paró por cuota a las 13:00).
+4. Codex: ~5 % semanal hasta el 29 nov 13:08; tandas de 1-2 casi
+   (`codex-brief-close21.txt` como plantilla). G11 hecha.
+5. Cada informe: `tools/techniques.py --since "1 day ago"` y aplicar su
+   sección «Only data alignment left» (`config/rodata_align_manual.tsv`,
+   configure, build completo): tres funciones gratis el 24 nov.
+
+Lo hecho el 24 nov: G11 (gamsnd.h, Codex), `main` nombrado, registro de
+técnicas (`Technique:`/`Blocker:` en cada commit, `tools/techniques.py`) y
+su primera promoción a `docs/EE_GCC_TECHNIQUES.md`, `merge_worker.sh`
+(acepta bajar `rules_check.tsv`; revisa los que incluyen una cabecera
+cambiada de forma indirecta: el fallo de 07:23), triage completo
+(`build/regalloc_triage.tsv`), Smoke (1 de 10) y Cyrax (0). Investigación
+nueva: R29 (rule-of-rose-recomp, MIT) y R30 (nombres SDK de RozuRecomp).
+Las tareas G8-G10 y G12 siguen reservadas para Neon/Argon (29-30 nov).
+
 - Todo cambio que integre o haga el coordinador debe pasar
-  `tools/rules_check.py` (no subir la deuda de desplazamientos ni de alias).
+  `tools/rules_check.py` (no subir la deuda de desplazamientos ni de alias),
+  y se hace commit en el acto (un cambio sin commit en el checkout principal
+  para todas las integraciones).
 
 ## Trabajo para el coordinador, de más a menos útil
 
