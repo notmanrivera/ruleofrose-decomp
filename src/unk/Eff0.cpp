@@ -1793,7 +1793,61 @@ INCLUDE_RODATA("asm/nonmatchings/unk/Eff0", D_002F2230);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/Eff0", D_002F2240);
 
+// NON_MATCHING: 87/94 differ, 11 relocs differ (size 0x178, game 0x160), 39 edits
+#ifdef NON_MATCHING
+struct EffBreath1Space;
+extern "C" int I3rRoot__CheckIdString(void *);
+extern "C" void func_0017756C(void *, int);
+extern "C" int func_0016E9F4(EffBreath1Space_02 *, Model_E9F4 *);
+extern "C" void func_0016E92C(EffBreath1Space *, int);
+
+struct Model_E7CC {
+    unsigned char m_pad00[0x11C];       // +0x000
+    void *m_i3r_root;                   // +0x11C
+    unsigned char m_pad120[0x4D0 - 0x120];
+    bool isAlive(const char *file) const {
+        if (m_i3r_root) {
+            if (0 != I3rRoot__CheckIdString(m_i3r_root)) {
+                ror_assert(file, 0xF8, "I3D_OK == I3rRoot__CheckIdString( m_i3r_root )");
+            }
+        }
+        return m_i3r_root != 0;
+    }
+};
+
+struct Scene_E7CC {
+    unsigned char m_pad00[0x2920];      // +0x0000
+    Model_E7CC m_models[1];             // +0x2920
+    unsigned char m_pad2DF0[0x837E0 - 0x2DF0];
+    int m_effMgr;                       // +0x837E0
+};
+
+extern "C" int EffBreath1Space__vfunc_05(EffBreath1Space_02 *arg0)
+{
+    int slot = ++arg0->m_unk250;
+    int idx = (slot & 0xF) * 8;
+    int end = idx + 8;
+    int *p = &arg0->m_unk50[idx];
+    do {
+        Model_E7CC *m = &((Scene_E7CC *)D_00298E08)->m_models[idx];
+        if (*p == -1) {
+            if (m->isAlive(D_002F21D0) && func_0016E9F4(arg0, (Model_E9F4 *)m)) {
+                func_0016E92C((EffBreath1Space *)arg0, idx);
+            }
+        } else {
+            if (!m->isAlive(D_002F21D0)) {
+                func_0017756C(&((Scene_E7CC *)D_00298E08)->m_effMgr, *p);
+                *p = -1;
+            }
+        }
+        idx++;
+        p++;
+    } while (idx < end);
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBreath1Space__vfunc_05);
+#endif
 
 // NON_MATCHING: 3/50 differ, 5 edits
 #ifdef NON_MATCHING
