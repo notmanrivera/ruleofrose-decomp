@@ -1,6 +1,22 @@
 #include "include_asm.h"
 #include "unk/Eff0.h"
 #include "dog/doglightpool.h"
+struct EffStay2Pair {
+    EffVec4 a;
+    EffVec4 b;
+};
+struct Obj_Stay2_D3E4 {
+    unsigned char m_pad00[0x30];        // +0x00
+    EffStay2Pair m_30[32];              // +0x30
+    unsigned char m_pad430[0x4B8 - 0x430];
+    float m_4B8;                        // +0x4B8
+    unsigned char m_pad4BC[0x4C8 - 0x4BC];
+    int m_4C8;                          // +0x4C8
+};
+extern "C" void func_00237360(EffVec4 *, EffVec4 *, float);
+extern "C" void func_002373D8(EffVec4 *, EffVec4 *, EffVec4 *);
+extern "C" void func_00237560(EffVec4 *, EffVec4 *, EffVec4 *);
+extern "C" void func_002375D8(EffVec4 *, EffVec4 *);
 struct Param_D8E8 {
     int m_kind;
     int m_unk04;
@@ -1098,7 +1114,21 @@ extern "C" int EffBloodStay2__vfunc_05(char *obj) {
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay2__vfunc_05);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016D3E4);
+extern "C" void func_0016D3E4(Obj_Stay2_D3E4 *arg0, EffVec4 *arg1, EffVec4 *arg2, EffVec4 *arg3)
+{
+    EffVec4 side;
+    func_00237560(&side, arg2, arg3);
+    func_002375D8(&side, &side);
+    EffStay2Pair *pair = &arg0->m_30[arg0->m_4C8];
+    EffVec4 *b = &pair->b;
+    EffVec4 *a = &pair->a;
+    b->w = 1.0f;
+    a->w = 1.0f;
+    func_00237360(a, &side, arg0->m_4B8 * 0.5f);
+    func_002373D8(a, a, arg1);
+    func_00237360(b, &side, -arg0->m_4B8 * 0.5f);
+    func_002373D8(b, b, arg1);
+}
 
 // NON_MATCHING: 145/203 differ, 2 relocs differ (size 0x32C, game 0x348), 114 edits
 #ifdef NON_MATCHING
