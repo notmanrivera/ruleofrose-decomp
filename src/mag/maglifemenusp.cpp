@@ -1,5 +1,7 @@
 #include "ror.h"
 #include "include_asm.h"
+extern void *_vt$8MagLife0[];
+extern "C" void __builtin_delete(void *);
 struct Tbl4s_v09 {
     short m_a[4];
 };
@@ -288,7 +290,15 @@ extern "C" void func_0012EEF0(MagMenuSp2 *self)
     self->m_mode = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifemenusp", MagLifeMenuSpecial2__vfunc_01);
+extern "C" void MagLifeMenuSpecial2__vfunc_01(MagMenuSp2 *self, int arg1)
+{
+    self->m_vtable = _vt$19MagLifeMenuSpecial2;
+    MagLifeMenuSpecial2__vfunc_10((MagMenuSp *)self);
+    self->m_vtable = _vt$8MagLife0;
+    if (arg1 & 1) {
+        return __builtin_delete(self);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ED148);
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ED158);
