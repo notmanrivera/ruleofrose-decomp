@@ -29,7 +29,46 @@ extern "C" void EmyManager_vfunc06(int arg0, int arg1) asm("VoiceManager__vfunc_
 extern int _vt$12VoiceManager;
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 
-INCLUDE_ASM("asm/nonmatchings/unk/VoiceManager", func_001F6F4C);
+#include "dog/dogactor.h"
+extern DogActor D_006FE6A0[];
+extern float D_006E9780[];
+extern const char D_002FE7D8[];
+extern const char D_002FE7E0[];
+extern const char D_002FE7F0[];
+extern const char D_002FE800[];
+extern "C" int func_001E4EBC(void *, unsigned int, int, float *, int);
+
+static inline int getNodeIndexByName_F6F4C(DogActor *actor, const char *p)
+{
+    if (!actor->m_i3r_root) ror_assert(D_002FE7E0, 0x131, D_002FE7F0);
+    if (!p) ror_assert(D_002FE7E0, 0x131, D_002FE800);
+    return func_0022B3D8(actor->m_i3r_root, p);
+}
+
+extern "C" void func_001F6F4C(VoiceManager *self, int arg1, int arg2, int arg3)
+{
+    register int one PS2_REG("$9") = 1;
+    float mat[4][4];
+    float *pos;
+    DogActor *actor = &D_006FE6A0[arg2];
+
+    self->m_entries[self->m_count].m_id = arg1;
+    self->m_entries[self->m_count].m_unk04 = arg2;
+    self->m_entries[self->m_count].m_timer = arg3;
+    *(int *)D_007812C0.m_snd = one;
+    unsigned int node = getNodeIndexByName_F6F4C(actor, D_002FE7D8);
+    if (node < 100) {
+        actor->vfunc17(mat, node);
+        pos = mat[3];
+    } else {
+        D_006E9780[0] = actor->m_unk40.m_x;
+        D_006E9780[1] = actor->m_unk40.m_y;
+        D_006E9780[2] = actor->m_unk40.m_z;
+        pos = D_006E9780;
+    }
+    func_001E4EBC(getGamSnd(&D_007812C0), arg1, 0, pos, 0);
+    self->m_count++;
+}
 
 extern "C" void func_001F70C8(VoiceManager *self, int arg1, int arg2, int arg3, int arg4)
 {
