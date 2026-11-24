@@ -1499,6 +1499,56 @@ INCLUDE_RODATA("asm/nonmatchings/unk/Eff0", D_002F2240);
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBreath1Space__vfunc_05);
 
+// NON_MATCHING: 3/50 differ, 5 edits
+#ifdef NON_MATCHING
+struct EffBreath1Param {
+    int m_kind;                         // +0x00
+    int m_unk04;                        // +0x04
+    int m_unk08;                        // +0x08
+    int m_unk0C;                        // +0x0C
+    EffVec3 m_unk10;                    // +0x10
+    EffVec3 m_unk1C;                    // +0x1C
+    float m_unk28;                      // +0x28
+    EffVec4 m_unk2C;                    // +0x2C
+    void *m_unk3C;                      // +0x3C
+    unsigned char m_pad40[0x40];        // +0x40
+};
+
+struct EffBreath1Space : public Eff0 {
+    EffVec3 m_unk24;                    // +0x24
+    EffVec3 m_unk30;                    // +0x30
+    float m_unk3C;                      // +0x3C
+    EffVec4 m_unk40;                    // +0x40
+    int m_unk50[1];                     // +0x50
+};
+
+struct SceneUnk2920 {
+    unsigned char m_pad00[0x4D0];       // +0x000
+};
+
+struct Scene_E92C {
+    unsigned char m_pad00[0x2920];      // +0x0000
+    SceneUnk2920 m_unk2920[1];          // +0x2920
+    unsigned char m_pad2DF0[0x837E0 - 0x2DF0];
+    int m_effMgr;                       // +0x837E0
+};
+
+extern "C" void func_0016E92C(EffBreath1Space *arg0, int arg1)
+{
+    EffBreath1Param param;
+    Scene_E92C *scene = (Scene_E92C *)D_00298E08;
+    param.m_kind = 8;
+    param.m_unk28 = arg0->m_unk3C;
+    param.m_unk3C = &scene->m_unk2920[arg1];
+    param.m_unk08 = 0;
+    param.m_unk10 = arg0->m_unk24;
+    param.m_unk1C = arg0->m_unk30;
+    param.m_unk2C = arg0->m_unk40;
+    int *slot = arg0->m_unk50 + arg1;
+    *slot = func_00176CC8(&scene->m_effMgr, &param);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016E92C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016E9F4);
