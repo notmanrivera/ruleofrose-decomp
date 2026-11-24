@@ -303,7 +303,34 @@ extern "C" float func_00217F10(float x, float y)
     return ang;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_002180E4);
+extern "C" float func_002180E4(float *outLen, float x, float y)
+{
+    float len = sqrtf(x * x + y * y);
+    *outLen = len;
+    if (len == 0.0f) {
+        *outLen = 0.0f;
+        return 0.0f;
+    }
+
+    float ang = func_0026CAD0(x / len);
+    if (y < 0.0f) {
+        ang = -ang;
+    }
+    if (ang < -3.14159265358979323846) {
+        ang += 6.28318530717958647692;
+    }
+    if (ang > 3.14159265358979323846) {
+        ang -= 6.28318530717958647692;
+    }
+    ang = -ang + 1.57079632679489661923;
+    if (ang < -3.14159265358979323846) {
+        ang += 6.28318530717958647692;
+    }
+    if (ang > 3.14159265358979323846) {
+        ang -= 6.28318530717958647692;
+    }
+    return ang;
+}
 
 extern "C" int func_002182C4(int arg0)
 {
@@ -378,17 +405,3 @@ extern "C" void func_002184B8(void) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_002184C0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301E40);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301E48);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301E50);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301E58);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301E60);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301E68);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301E70);
