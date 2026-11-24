@@ -1450,7 +1450,44 @@ extern "C" int func_001ADCD8(MnuBoard *arg0)
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001ADCD8);
 #endif
 
+// NON_MATCHING: 8/77 differ, 8 edits
+#ifdef NON_MATCHING
+extern "C" int func_00131550(void *) ASM_NOTHROW;
+extern "C" void func_00131184(void *, int, int, int) ASM_NOTHROW;
+extern "C" void func_001311BC(void *, int, int, int) ASM_NOTHROW;
+extern "C" int func_001ADDD0(MnuBoard *arg0, int arg1)
+{
+    int ret = 0;
+    int step = 1;
+    switch (arg0->m_subStep) {
+    case 0:
+        arg0->m_subStep = step;
+        func_00131184((char *)arg0->m_sys + 0x12540, 0xF, 7, 0);
+    case 1:
+        arg0->m_subStep = 3;
+        break;
+    case 4: {
+        bool ok = !(func_00131550((char *)arg0->m_sys + 0x12540) < 5);
+        if (ok == 1) {
+            func_00131184((char *)arg0->m_sys + 0x12540, 0xF, 7, 0);
+            ret = 1;
+        }
+        return ret;
+    }
+    case 3:
+    default:
+        break;
+    }
+    if ((padTrigU_F40(arg1) >> 13) & 1) {
+        step = 4;
+        func_001311BC((char *)arg0->m_sys + 0x12540, 0xF, 7, 0);
+        arg0->m_subStep = step;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001ADDD0);
+#endif
 
 extern "C" void func_001ADF04(MnuMovie *arg0)
 {
