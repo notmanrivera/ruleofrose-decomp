@@ -1,6 +1,27 @@
 #include "include_asm.h"
 #include "game/gamsnd.h"
 #include "game/gamman.h"
+extern "C" void __9BedMemory(void *);
+extern "C" void __9MagSystem(void *);
+extern "C" void destroy__9BedMemory(void *);
+extern "C" void func_0016265C(void *);
+extern "C" void func_0017F0D0(void *);
+extern "C" void func_001810F4(void *);
+extern "C" void func_001C05C0(void *);
+extern "C" void func_001E7094(void *);
+extern "C" void func_0020E454(void *);
+extern "C" void EmyManager__vfunc_06(void *, int);
+extern "C" void GamMan__vfunc_01(void *, int);
+extern "C" void _$_9MagSystem(void *, int);
+extern "C" void func_0017F13C(void *, int);
+extern "C" void func_00181128(void *, int);
+extern "C" void func_001E70DC(void *, int);
+extern "C" void func_0020E63C(void *, int);
+extern int D_006E9800;
+extern int D_006E9840;
+extern int D_007A3D80;
+extern int D_007B2140;
+extern int D_007B40C0;
 struct TskEnemyTurn {
     void *m_vtable;
     int m_active;
@@ -41,7 +62,6 @@ extern "C" int X_sceOpen(...) asm("sceOpen");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_001C0D44(...) asm("func_001C0D44");
 extern "C" int X_func_001C0D70(...) asm("func_001C0D70");
-extern "C" int X_func_002041F8(...) asm("func_002041F8");
 extern "C" int X_func_0020E664(...) asm("func_0020E664");
 extern "C" int X_func_0020E690(...) asm("func_0020E690");
 extern int D_007A4440;
@@ -247,16 +267,35 @@ extern "C" void func_002041A0()
     X_LoadExecPS2((int)&stack, 0, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_002041F8);
+extern "C" void func_002041F8(int arg0, int arg1)
+{
+    if (arg1 == 0xFFFF && arg0 == 1) __9BedMemory(&D_006E9800);
+    if (arg1 == 0xFFFF && arg0 == 1) __9MagSystem(&D_006E9840);
+    if (arg1 == 0xFFFF && arg0 == 1) func_001C05C0(&D_007812C0);
+    if (arg1 == 0xFFFF && arg0 == 1) func_001E7094(&D_007A3D80);
+    if (arg1 == 0xFFFF && arg0 == 1) func_0020E454(&D_007A4440);
+    if (arg1 == 0xFFFF && arg0 == 1) func_0016265C(&D_007B2140);
+    if (arg1 == 0xFFFF && arg0 == 1) func_0017F0D0(&D_007B2580);
+    if (arg1 == 0xFFFF && arg0 == 1) func_001810F4(&D_007B40C0);
+
+    if (arg1 == 0xFFFF && arg0 == 0) func_00181128(&D_007B40C0, 2);
+    if (arg1 == 0xFFFF && arg0 == 0) func_0017F13C(&D_007B2580, 2);
+    if (arg1 == 0xFFFF && arg0 == 0) EmyManager__vfunc_06(&D_007B2140, 2);
+    if (arg1 == 0xFFFF && arg0 == 0) func_0020E63C(&D_007A4440, 2);
+    if (arg1 == 0xFFFF && arg0 == 0) func_001E70DC(&D_007A3D80, 2);
+    if (arg1 == 0xFFFF && arg0 == 0) GamMan__vfunc_01(&D_007812C0, 2);
+    if (arg1 == 0xFFFF && arg0 == 0) _$_9MagSystem(&D_006E9840, 2);
+    if (arg1 == 0xFFFF && arg0 == 0) destroy__9BedMemory(&D_006E9800);
+}
 
 extern "C" void func_0020439C()
 {
-    X_func_002041F8(1, 0xFFFF);
+    func_002041F8(1, 0xFFFF);
 }
 
 
 extern "C" void func_002043BC()
 {
-    X_func_002041F8(0, 0xFFFF);
+    func_002041F8(0, 0xFFFF);
 }
 
