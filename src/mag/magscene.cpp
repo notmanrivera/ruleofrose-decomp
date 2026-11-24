@@ -3,6 +3,18 @@
 #include "mag/magscene.h"
 #include "mag/maglifewindow.h"
 #include "dog/dogtexinfo.h"
+struct MagLifeBase {
+    unsigned char m_unk00[0x14];
+    void *m_vtbl;
+    unsigned char m_unk18[0x68];
+};
+struct MagLifeTest : public MagLifeBase {
+    int m_unk80;
+    int m_unk84;
+    MagLifeTest() asm("func_0013114C");
+};
+extern "C" void func_0011A888(MagLifeTest *);
+extern "C" char _vt$11MagLifeTest[];
 extern "C" int Xii_func_0011DD40(int) asm("func_0011DD40");
 extern "C" int Xiiiii_setActor__9MagLifePCP8DogActorii(int, int, int, int) asm("setActor__9MagLifePCP8DogActorii");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -52,7 +64,13 @@ extern "C" void func_0011AF04(void *thePC);
 extern "C" void message__9MagLifePCiiPv(void *thePC, int theA, int theB, void *theC);
 extern "C" void func_0012C9C0(void *thePC);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_0013114C);
+MagLifeTest::MagLifeTest()
+{
+    func_0011A888(this);
+    m_vtbl = _vt$11MagLifeTest;
+    m_unk80 = 0;
+    m_unk84 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131184);
 
