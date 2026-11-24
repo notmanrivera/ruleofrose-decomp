@@ -41,7 +41,46 @@ extern "C" void live__13MagLifePCModeR9MagLifePC(MagLifePCMode *arg0, MagLifePC 
     }
 }
 
+// NON_MATCHING: 3/44 differ, 1 reloc differs, 3 edits
+#ifdef NON_MATCHING
+extern "C" void init__17MagLifePCModeNullR9MagLifePC(MagLifePCModeNull *arg0, MagLifePC *arg1)
+{
+    if (arg1->m_actor != 0) {
+        int var_a1 = arg1->m_unkDC;
+        unsigned int var_a2;
+        if (arg1->m_unk54 == 1 || arg1->m_unk54 == 3) {
+            var_a1 = 7;
+            var_a2 = 0;
+            goto set_mode;
+        }
+        var_a2 = 0;
+        if (arg1->m_mode_hold.m_unk04 != 0) {
+            var_a1 = 8;
+            goto set_mode;
+        }
+        var_a2 = 3;
+        if (arg1->m_mode_ride.m_unk04 != 0) {
+            var_a1 = 9;
+            goto set_mode;
+        }
+        if (var_a1 != 0) {
+            var_a1 = 5;
+            var_a2 = 0;
+            goto set_mode;
+        }
+        if (arg1->m_last0 == 0xE) {
+            var_a1 = 0xE;
+            var_a2 = 0x11;
+        set_mode:
+            Xiiiui_func_0011C1E8(arg1, var_a1, var_a2, 0);
+        } else {
+            Xiiiui_func_0011C1E8(arg1, 1, 0, 0);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", init__17MagLifePCModeNullR9MagLifePC);
+#endif
 
 extern "C" void live__17MagLifePCModeNullR9MagLifePC(MagLifePCModeNull *arg0, MagLifePC *arg1)
 {
