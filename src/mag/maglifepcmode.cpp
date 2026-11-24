@@ -1,6 +1,23 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
 #include "mag/magscene.h"
+static inline void normAngle(float *a)
+{
+    if (*a < -DOG_PI) {
+        *a += DOG_PI2;
+    } else if (*a >= DOG_PI) {
+        *a -= DOG_PI2;
+    }
+}
+static inline void clampAbs(float *v, float max)
+{
+    float x = *v;
+    if (x < -max) {
+        *v = -max;
+    } else if (x > max) {
+        *v = max;
+    }
+}
 extern "C" int func_0012CA28(MagLifePC *arg0);
 extern const int D_002EAD98[];
 extern "C" int func_0011C64C(MagLifePC *, MagPCItemData *, int, float);
@@ -192,7 +209,20 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcmode", D_002EAD28);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", pad__17MagLifePCModeWaitR9MagLifePCRC6BedPad);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", func_00120DEC);
+extern "C" void func_00120DEC(MagLifePCMode *arg0, MagLifePC *arg1, const BedPad *arg2)
+{
+    DogActor *actor = arg1->m_actor;
+    float diff = X_func_0011B128(arg1) - actor->m_unk50.m_y;
+    normAngle(&diff);
+    float max = 0.2f;
+    if (arg1->m_unkE4 == 2) {
+        max = 0.14f;
+    }
+    clampAbs(&diff, max);
+    actor->addRotY(diff);
+    actor->func_0010E7DC(diff);
+    X_func_001207A8(arg0, arg1);
+}
 
 extern "C" void MagLifePCModeWalk2D__vfunc_01(MagLifePCModeWalk2D *arg0, MagLifePC *arg1)
 {
