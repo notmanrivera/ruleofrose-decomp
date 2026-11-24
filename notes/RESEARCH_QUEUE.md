@@ -39,7 +39,10 @@ judgement and go to Sonnet.
   names (rx/rxsnd, rx/sndse, rx/rxfile, rx/filecdrom...) from Arc the Lad's
   hidden 2002 debug build (.mdebug file descriptors). R25 must look for RX types in
   the rx/include headers the DWARF does list (rxgeom.h, rxpkt.h...).
-- [ ] R25 RX library types from PoPoLoCrois's DWARF 1 (2026-11-23). From
+- [ ] R25 RX library types (2026-11-23; source changed: PoPoLoCrois's DWARF
+  covers only its own code and rx graphics headers, see R24; Arc the Lad's
+  2002 debug build, disc/arc_koga/DATAIMG_KOGA_MAIN.ELF, has .mdebug with
+  stabs, which should hold the RX structs: read those instead). From
   the same .debug: the structs, enums and function prototypes of the RX
   library (rxSnd*, rxSys*, rxFile*, rxTh*, rxGs*, rxmpeg), with member
   names, offsets, sizes and types, and which ones our code uses (our
@@ -47,7 +50,10 @@ judgement and go to Sonnet.
   (include/rx/*.h, one per original header if the DWARF shows them) in
   notes/research/R25-rx-types.md; names and types only, no code. Depends
   on R24's DWARF parser (reuse it).
-- [ ] R27 Where to pay the readability debt cheapest (2026-11-23).
+- [ ] R27 Where to pay the readability debt cheapest (2026-11-23; partly
+  answered by tools/retype.py: only ~150 raw offsets sit on a class-typed
+  base, and their headers lack those members; the rest are int arg0 in
+  m2c code, i.e. G-task work. Keep R27 for ranking those).
   tools/rules_check.py --list gives 2,395 raw offsets and 3,501 alias
   declarations in matched code (config/rules_check.tsv). Rank files by
   offsets that a header already names (the class header exists and has a
@@ -58,7 +64,7 @@ judgement and go to Sonnet.
   (build/workers/fable-tasks.tsv) and files a worker owns
   (build/workers/codex-owns.txt). Output
   notes/research/R27-readability-debt.md: a per-file plan, top 15 first.
-- [ ] R28 Which near misses Smoke can close (2026-11-23). Smoke
+- [x] R28 Which near misses Smoke can close (2026-11-23). Smoke
   (tools/cpp_perm.py + tools/cpp_perm_queue.py, log
   build/workers/cpp-perm.log, runs in build/cpp_perm/) has 3 matches in
   its history; the 11-23 round took 20 candidates (exact size, right
@@ -68,7 +74,11 @@ judgement and go to Sonnet.
   instruction order, extra/missing instruction). Recommend: candidate
   filter (base score cutoff, size), minutes per function, and whether to
   use more of its mutation passes or a second pass with Cyrax rewrites.
-  Output notes/research/R28-smoke-yield.md.
+  Output notes/research/R28-smoke-yield.md. Done 2026-11-23 (Sonnet):
+  hits are small order/expression-shape near misses, all within 2.5 min;
+  applied: 3 min per function, kind/edit filter, no raw-offset code,
+  remove_stmt off and the hit passes weighted up, a length-aware score.
+  Not yet: --resume of partials, a PS2_REG/callee-declaration search tool.
 - [x] R26 Other games with the RX library and symbols (2026-11-23, owner
   with ChatGPT; prompt notes/research/R26-rx-donors-prompt.md). Results and
   checks in notes/research/R26-rx-donors.md: Suikoden Tactics has no RX;

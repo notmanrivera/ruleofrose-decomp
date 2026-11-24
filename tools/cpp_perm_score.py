@@ -9,7 +9,11 @@ Prints "score N" (0 = identical .text bytes, relocations included) as its
 last line. Instruction words that carry a relocation are compared by
 (opcode bits, relocation type, symbol); a replaced instruction costs 1 if
 the opcode is the same (register or immediate difference), 3 otherwise;
-an inserted or missing one costs 5. The final judge is still match.py.
+an inserted or missing one costs 5. A candidate of another length pays 5
+more per word of difference (R28: a shorter function is no progress); one
+of the same length costs at most its count of differing words, so a pure
+reorder has a gradient (3 swapped stores cost 3). The final judge is still
+match.py.
 """
 import difflib
 import sys
@@ -66,6 +70,12 @@ def score(a, b):
     return total
 
 
+def full_score(a, b):
+    if len(a) != len(b):
+        return score(a, b) + 5 * abs(len(a) - len(b))
+    return min(score(a, b), sum(1 for x, y in zip(a, b) if x != y))
+
+
 if __name__ == "__main__":
     cand, target, sym = sys.argv[1:4]
-    print(f"score {score(function(cand, sym), function(target, sym))}")
+    print(f"score {full_score(function(cand, sym), function(target, sym))}")

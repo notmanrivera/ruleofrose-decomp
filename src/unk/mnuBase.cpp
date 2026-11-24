@@ -1186,23 +1186,23 @@ extern "C" void mnuBase__vfunc_10(MnuBase *arg0)
     arg0->m_readBuf = Xii_func_00194588(0x1000);
     Xii___11FileReadReq(temp_s1);
     M2C_FIELD(arg0, char **, 0x7C) = arg0->m_rpkPath;
-    M2C_FIELD(arg0, int *, 0x8C) = 0x1000;
+    arg0->m_reqSize = 0x1000;
     M2C_FIELD(arg0, void **, 0x88) = arg0->m_readBuf;
-    M2C_FIELD(arg0, int *, 0x84) = 0;
-    M2C_FIELD(arg0, int *, 0x80) = 0;
-    M2C_FIELD(arg0, int *, 0x90) = 0;
+    arg0->m_reqSeekWhence = 0;
+    arg0->m_reqSeekOff = 0;
+    arg0->m_reqCloseFlag = 0;
     Xiiii_func_001BE524__10FileReaderP11FileReadReqi(arg0->m_fileReader, temp_s1, 0);
-    M2C_FIELD(arg0, int *, 0x88) = 0;
+    arg0->m_reqBuf = 0;
 }
 
 extern "C" void mnuBase__vfunc_11(MnuBase *arg0)
 {
     if (arg0->m_readBuf != 0) {
-        M2C_FIELD(arg0, int *, 0x84) = 0;
-        M2C_FIELD(arg0, int *, 0x80) = 0;
-        M2C_FIELD(arg0, int *, 0x8C) = 0;
-        M2C_FIELD(arg0, int *, 0x88) = 0;
-        M2C_FIELD(arg0, int *, 0x90) = 1;
+        arg0->m_reqSeekWhence = 0;
+        arg0->m_reqSeekOff = 0;
+        arg0->m_reqSize = 0;
+        arg0->m_reqBuf = 0;
+        arg0->m_reqCloseFlag = 1;
         X_func_001BE524__10FileReaderP11FileReadReqi(arg0->m_fileReader, arg0->m_fileReq, 0);
         X_func_00194688(arg0->m_readBuf);
         arg0->m_readBuf = 0;

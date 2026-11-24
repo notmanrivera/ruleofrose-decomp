@@ -26,6 +26,15 @@ import configure  # noqa: E402
 import regalloc_triage  # noqa: E402
 
 
+# Pass weights from R28 (notes/research/R28-smoke-yield.md): remove_stmt only
+# finds false bests (an uninitialised local); the VC6-oriented passes cannot
+# matter with gcc 2.96; the passes behind every hit so far get more turns.
+WEIGHTS = {"remove_stmt": 0,
+           **{p: 1 for p in ("inequalities", "locals_to_array", "named_op", "use_getter", "cast_operand")},
+           **{p: 6 for p in ("move_stmt", "reorder_saves", "reuse_local", "split_local", "bool_return",
+                             "inline_local", "sink_decl", "hoist_decl", "chain_assign")}}
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("name")
@@ -34,6 +43,7 @@ def main():
     ap.add_argument("--jobs", type=int, default=6)
     ap.add_argument("--check-parse", action="store_true")
     ap.add_argument("--extra", default="", help="more cpp_permuter options")
+    ap.add_argument("--all-passes", action="store_true", help="cpp_permuter's default weights (no WEIGHTS)")
     a = ap.parse_args()
     text = (ROOT / "src" / f"{a.name}.cpp").read_text(encoding="utf8")
     m = next((m for m in regalloc_triage.NM.finditer(text) if m.group(2) == a.function), None)
@@ -64,9 +74,10 @@ def main():
     absflags = flags.replace("-I. ", "-I/tmp/cp/src ").replace("-I../include", "-I/tmp/cp/include").replace("-Wa,-I..", "-Wa,-I/tmp/cp")
     compile_cmd = f"ee-cc {configure.COMPILER} {absflags} -I{{dir}} -c {{src}} -o {{obj}}"
     score_cmd = f"python3 /work/tools/cpp_perm_score.py {{obj}} /tmp/cp/target.o {a.function}"
+    weights = [] if a.all_passes else [x for k, v in WEIGHTS.items() for x in ("--weight", f"{k}={v}")]
     perm = ["/work/build/cpp_permuter/cpp_permuter.bin", "-s", f"/tmp/cp/src/{rel}", "-f", fname,
             "-c", compile_cmd, "--score-cmd", score_cmd, "-j", str(a.jobs), "--keep-ties",
-            *shlex.split(a.extra)]
+            *weights, *shlex.split(a.extra)]
     if a.check_parse:
         perm = ["/work/build/cpp_permuter/cpp_permuter.bin", "--check-parse", f"/tmp/cp/src/{rel}"]
     dest = f"/work/build/cpp_perm/{a.function}"

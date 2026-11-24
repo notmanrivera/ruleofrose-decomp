@@ -39,6 +39,18 @@ def log(msg):
         f.write(line + "\n")
 
 
+def raw_offsets(name, fn):
+    """True when the function's NON_MATCHING attempt still reads fields by
+    offset (M2C_FIELD or a (char *) cast plus a constant)."""
+    try:
+        text = (ROOT / "src" / f"{name}.cpp").read_text(encoding="utf8")
+    except OSError:
+        return False
+    blocks = [b for b in re.findall(r"#ifdef NON_MATCHING\n(.*?)#else", text, re.S) if fn in b]
+    body = blocks[0] if blocks else ""
+    return "M2C_FIELD" in body or bool(re.search(r"\(char \*\)\s*\w+\s*\+\s*0x", body))
+
+
 def candidates(a):
     skip = set()
     for p in a.skip:
@@ -60,6 +72,17 @@ def candidates(a):
         # or calling/loading the wrong things needs source work first (types,
         # inlines, control flow), which no permutation finds.
         if not a.loose and ("(size 0x" in w[3] or "reloc" in w[3]):
+            continue
+        # Which kinds Smoke closes (R28, notes/research/R28-smoke-yield.md):
+        # every hit was an "order" or an "other" source-shape near miss.
+        # "regs" never moved (0 of 7: regalloc.py / PS2_REG work instead),
+        # "other" at 3 edits or fewer never moved (0 of 6), and code still
+        # written with raw offsets is refused by rules_check.py anyway.
+        edits = int(e.group(1))
+        if not a.loose and (w[2] == "regs" or (w[2] == "order" and edits > 30)
+                            or (w[2] == "other" and not 5 <= edits <= 30)):
+            continue
+        if not a.loose and raw_offsets(name, fn):
             continue
         if not a.retry and (ROOT / "build" / "cpp_perm" / fn / "permuter_out").exists():
             continue
@@ -125,14 +148,16 @@ def apply_match(name, fn):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--minutes", type=float, default=10)
+    ap.add_argument("--minutes", type=float, default=3,
+                    help="per function (R28: every hit came within 2.5 minutes)")
     ap.add_argument("--jobs", type=int, default=5)
     ap.add_argument("--max-off", type=int, default=40, help="skip attempts further than this many edits")
     ap.add_argument("--skip", action="append", default=[], help="file listing functions others own")
     ap.add_argument("--avoid", default="", help="comma list of file prefixes to leave alone")
     ap.add_argument("--retry", action="store_true", help="also functions already tried")
     ap.add_argument("--loose", action="store_true",
-                    help="also attempts of another size or with wrong relocations (default: exact size, relocations right)")
+                    help="also attempts of another size or with wrong relocations, register-only ones, "
+                         "'other' ones under 5 or over 30 edits, and raw-offset code (default: R28's filter)")
     ap.add_argument("--limit", type=int, default=0)
     a = ap.parse_args()
     if not match.server_up():
