@@ -1,5 +1,13 @@
 #include "ror.h"
 #include "include_asm.h"
+struct Tbl4s_v09 {
+    short m_a[4];
+};
+struct Tbl3s_v09 {
+    short m_a[3];
+};
+extern const Tbl4s_v09 D_002ED0F0;
+extern const Tbl3s_v09 D_002ED0F8;
 struct MagSceneSp {
     unsigned char m_pad00[0x29120];
     int m_unk29120[0x100];
@@ -193,7 +201,30 @@ extern "C" void func_0012E23C(MagMenuSp1 *self)
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifemenusp", MagLifeMenuSpecial__vfunc_01);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifemenusp", MagLifeMenuSpecial2__vfunc_09);
+extern "C" void MagLifeMenuSpecial2__vfunc_09(MagMenuSp2 *self)
+{
+    int i;
+
+#line 392
+    ASSERT_S(self->m_scene, D_002ED088);
+    Tbl4s_v09 tbl0 = D_002ED0F0;
+    Tbl3s_v09 tbl1 = D_002ED0F8;
+    {
+        int id = func_00138ED0__8MagSceneP7I3dDrawiPCc(self->m_scene, 0, tbl0.m_a[self->m_unk34], 0);
+        self->m_chara[0] = id;
+        ((MagSceneSp *)self->m_scene)->m_unk29120[id] |= 8;
+    }
+    short *q = tbl1.m_a;
+    int *p = &self->m_chara[1];
+    for (i = 0; i < 3; i++) {
+        int id = func_00138ED0__8MagSceneP7I3dDrawiPCc(self->m_scene, 0, *q++, 0);
+        *p++ = id;
+        ((MagSceneSp *)self->m_scene)->m_unk29120[id] |= 8;
+    }
+    func_0013C930(self->m_scene);
+    self->m_unk04 = -1;
+    self->m_mode = 0;
+}
 
 extern "C" void MagLifeMenuSpecial2__vfunc_10(MagMenuSp *self)
 {
