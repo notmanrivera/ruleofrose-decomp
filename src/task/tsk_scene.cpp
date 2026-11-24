@@ -2,6 +2,9 @@
 #include "task/cmnitask.h"
 #include "task/tsk_scene.h"
 #include "sdk/string.h"
+#include "game/gamman.h"
+#include "game/gamsnd.h"
+static inline GamSndMan *getSnd(GamMan *g) { return (GamSndMan *)g->m_snd; }
 extern "C" void func_001F6CB8(void *);
 extern "C" void func_001F71B8(void *);
 extern "C" void ScenePlay__vfunc_05(ScenePlay *);
@@ -28,7 +31,15 @@ extern "C" int X_func_001F76E0(...) asm("func_001F76E0");
 extern "C" int X_func_001F7788(...) asm("func_001F7788");
 extern "C" int X_func_001F7C0C(...) asm("func_001F7C0C");
 
-INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F7570);
+extern "C" void func_001F7570(SceneVoice *self, int id, int vol, int pan, int arg4)
+{
+    self->m_unk08 = arg4;
+    self->m_unk04 = 0;
+    self->m_unk00 = id;
+    int left = (pan >= 0) ? ((0x3F - pan) * vol) / 64 : vol;
+    int right = (pan > 0) ? vol : ((pan + 0x3F) * vol) / 64;
+    func_001E5428(getSnd(&D_007812C0), id, left, right, 0, 1, 0, 1.0f);
+}
 
 extern "C" void func_001F7610(int arg0)
 {

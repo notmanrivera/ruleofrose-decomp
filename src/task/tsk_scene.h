@@ -3,6 +3,12 @@
 
 #include "task/cmnitask.h"
 
+struct SceneVoice {
+    int m_unk00;                // +0x00
+    int m_unk04;                // +0x04
+    int m_unk08;                // +0x08
+};
+
 struct ScenePlaySingle {
     int m_unk00;                // +0x00
     int m_unk04;                // +0x04
