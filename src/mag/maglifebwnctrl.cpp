@@ -674,7 +674,33 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012AB20);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012ADEC);
 
+// NON_MATCHING: 45/88 differ, 4 relocs differ, 17 edits
+#ifdef NON_MATCHING
+extern "C" int func_0012AF70(MagLifeBwnCtrl *arg0)
+{
+    int ret = 0;
+    MagLifeBwn *bwn = arg0->m_bwn;
+    if (bwn != 0 && bwn->m_unkCB8 < 3) {
+        DogVector pos;
+        BwnTargetList list;
+        if (arg0->m_unk74 != 0) {
+            arg0->m_unk74->func_00119F88(&pos);
+            float rot = arg0->m_unk74->func_00119FB0();
+            DogVector ofs(0.0f, 0.0f, 500.0f, 1.0f);
+            DogVector *pOfs = &ofs;
+            vecTurnY(&pOfs->m_x, rot);
+            pos.m_x += pOfs->m_x;
+            pos.m_y += pOfs->m_y;
+            pos.m_z += pOfs->m_z;
+            pos.m_w = 1.0f;
+            ret = func_0010376C(&list, &pos, 0.0f, 0, 1, 500.0f) > 0;
+        }
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012AF70);
+#endif
 
 extern "C" int func_0012B0D0(MagLifeBwnCtrl *arg0)
 {
