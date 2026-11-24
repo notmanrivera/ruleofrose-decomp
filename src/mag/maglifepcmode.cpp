@@ -1,6 +1,10 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
 #include "mag/magscene.h"
+extern "C" int func_0011C64C(MagLifePC *, MagPCItemData *, int, float);
+extern "C" int func_0011CBF4(MagLifePC *, int);
+extern "C" int func_0011CC14(MagLifePC *, int);
+extern "C" int func_0013F210(MagScene *, int, const int *, int);
 extern "C" int func_0010423C(int theMin, int theMax);
 extern "C" int func_001034B8();
 extern "C" float func_0011D720(MagLifePC *);
@@ -518,7 +522,36 @@ extern "C" void init__17MagLifePCModeItemR9MagLifePC(MagLifePCModeItem *arg0, Ma
     Xiiis_func_0011A320(arg1, mot, -1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", live__17MagLifePCModeItemR9MagLifePC);
+extern "C" void live__17MagLifePCModeItemR9MagLifePC(MagLifePCModeItem *arg0, MagLifePC *arg1)
+{
+    int end = Xii_func_0011A054(arg1);
+    int &mot = arg1->m_unk0C;
+    MagScene *scene = arg1->m_scene;
+    if (((mot - 0x81) & 1) == 0) {
+        if (end != 0) {
+            mot = mot + 1;
+            Xiiis_func_0011A320(arg1, mot, -1);
+            MagPCItemData itemdata[10];
+            if (func_0011C64C(arg1, itemdata, 10, 50.0f) > 0) {
+                if (func_0011CBF4(arg1, itemdata[0].m_obj_id) != 0) {
+                    X_func_001026B0(3, 0, 0);
+                    func_0011CC14(arg1, itemdata[0].m_obj_id);
+                    int param[16];
+                    param[0] = itemdata[0].m_unk14[0];
+                    if (param[0] == 0xA64) {
+                        func_0013F210(scene, 0x11, param, 1);
+                        return;
+                    }
+                    scene->func_0013F280(0x11, param, 1);
+                    return;
+                }
+                scene->func_0013F280(0x12, 0, 1);
+            }
+        }
+    } else if (end != 0) {
+        Xiiiui_func_0011C1E8(arg1, 1, 0U, 0);
+    }
+}
 
 extern "C" void init__18MagLifePCModeDogGoR9MagLifePC(MagLifePCModeDogGo *arg0, MagLifePC *arg1)
 {
