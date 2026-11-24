@@ -288,7 +288,7 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcmode", D_002EAD98);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", init__22MagLifePCModeAtkWait2DR9MagLifePC);
 
-extern "C" float func_00121604(float fparg0)
+extern "C" float func_00121604(MagLifePCModeAtkWait2D *arg0, float fparg0)
 {
     if ((fparg0 <= -1.5707963f) || (fparg0 > 1.5707963f)) {
         return 0.0f;
@@ -302,7 +302,37 @@ extern "C" float func_00121604(float fparg0)
     return 0.1f;
 }
 
+// NON_MATCHING: 44/72 differ, 1 reloc differs (size 0x120, game 0x11C), 14 edits
+#ifdef NON_MATCHING
+extern "C" float func_0011CE5C(MagLifePC *self, DogVector *theOut, int theId, int theFlag);
+extern "C" float func_0012BEDC(MagLifePC *arg0, float *theYaw, float *thePitch, const DogVector *thePos);
+extern "C" void live__22MagLifePCModeAtkWait2DR9MagLifePC(MagLifePCModeAtkWait2D *arg0, MagLifePC *arg1)
+{
+    if (arg1->m_unk08 == 0) {
+        register int target PS2_REG("$6") = arg1->m_target_id;
+        register float turn PS2_REG("$f12");
+        if (target == 0) {
+            goto block_5;
+        }
+        {
+            DogVector pos;
+            float yaw;
+            float pitch;
+            func_0011CE5C(arg1, &pos, target, 0);
+            turn = func_00121604(arg0, func_0012BEDC(arg1, &yaw, &pitch, &pos));
+        }
+        if (turn == 0.0f) {
+        block_5:
+            arg1->m_unk08 = 1;
+            return;
+        }
+        arg1->m_actor->addRotY(turn);
+        arg1->m_actor->func_0010E7DC(turn);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", live__22MagLifePCModeAtkWait2DR9MagLifePC);
+#endif
 
 extern "C" int pad__22MagLifePCModeAtkWait2DR9MagLifePCRC6BedPad(MagLifePCModeAtkWait2D *arg0, MagLifePC *arg1, const BedPad *arg2)
 {
