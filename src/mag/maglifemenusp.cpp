@@ -1,5 +1,15 @@
 #include "ror.h"
 #include "include_asm.h"
+struct MagSceneSp {
+    unsigned char m_pad00[0x29120];
+    int m_unk29120[0x100];
+};
+struct Tbl5_v09 {
+    int m_a[5];
+};
+extern const Tbl5_v09 D_002ED090;
+extern "C" int func_00138ED0__8MagSceneP7I3dDrawiPCc(void *, void *, int, const char *);
+extern "C" void func_0013C930(void *);
 struct MagMenuSp2 {
     int m_mode;                     // +0x00
     int m_unk04;                    // +0x04
@@ -65,7 +75,22 @@ struct MagMenuSp {
 extern "C" void func_00139010(void *theScene, int theN);
 extern "C" void func_0013CA10(void *theScene);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifemenusp", MagLifeMenuSpecial__vfunc_09);
+extern "C" void MagLifeMenuSpecial__vfunc_09(MagMenuSp1 *self)
+{
+    int i;
+
+#line 47
+    ASSERT_S(self->m_scene, D_002ED088);
+    Tbl5_v09 tbl = D_002ED090;
+    for (i = 0; i < 5; i++) {
+        int id = func_00138ED0__8MagSceneP7I3dDrawiPCc(self->m_scene, 0, tbl.m_a[i], 0);
+        self->m_chara[i] = id;
+        ((MagSceneSp *)self->m_scene)->m_unk29120[id] |= 8;
+    }
+    func_0013C930(self->m_scene);
+    self->m_unk04 = -1;
+    self->m_mode = 0;
+}
 
 extern "C" void MagLifeMenuSpecial__vfunc_10(MagMenuSp *self)
 {
