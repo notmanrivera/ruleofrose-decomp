@@ -335,7 +335,31 @@ extern "C" void func_001D2428(int arg0, unsigned int arg1, int arg2)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2494);
+extern "C" void func_001D2494(GamMan25E4 *arg0, int arg1)
+{
+    int off = 0x12540;
+
+    switch (arg1) {
+    case 0:
+        func_0013FB3C((char *)&D_006E9840 + off, 7, 0);
+        if (arg0->m_sysFlg & 0x04000000) {
+            func_0013FB3C((char *)&D_006E9840 + off, 6, 1);
+            arg0->m_sysFlg |= 0x10000000;
+        }
+        arg0->m_sysFlg |= 0x08000000;
+        break;
+    case 1:
+        if (arg0->m_sysFlg & 0x04000000) {
+            func_0013FB3C((char *)&D_006E9840 + off, 6, 1);
+            arg0->m_sysFlg |= 0x10000000;
+        }
+        break;
+    case 2:
+        func_0013FB3C((char *)&D_006E9840 + off, 7, 0);
+        arg0->m_sysFlg |= 0x08000000;
+        break;
+    }
+}
 
 extern "C" void func_001D25E4(GamMan25E4 *arg0, int arg1)
 {
