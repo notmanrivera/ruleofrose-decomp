@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "unk/NorMain.h"
+extern "C" int func_001E5250(void *, int, int, float *, int, int);
 extern "C" int func_001513EC(EmyMain *);
 extern "C" void func_00166C8C(EmyOut *, float *);
 extern "C" void func_001D89C4(void *, float *);
@@ -93,7 +94,7 @@ extern "C" int X_func_00151448(EmyMain *) asm("func_00151448");
 extern "C" void func_001517E0(NorOutAttack *);
 extern "C" void func_0015195C(NorOutAttack *);
 extern "C" int func_001519B8(NorOutAttack *);
-extern "C" int X_func_00151F1C(NorOutAttack *) asm("func_00151F1C");
+extern "C" int func_00151F1C(NorOutAttack *);
 extern "C" int func_001520CC(NorOutAttack *);
 extern "C" void func_0015246C(NorOutAttack *);
 extern "C" int X_func_00152544(NorOutAttack *) asm("func_00152544");
@@ -217,7 +218,7 @@ block_11:
             res = func_001519B8(self);
             goto block_11;
         case 3:
-            res = X_func_00151F1C(self);
+            res = func_00151F1C(self);
             goto block_11;
     }
     return ret;
@@ -400,7 +401,45 @@ INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFAD8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_00151D4C);
 
-INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_00151F1C);
+extern "C" int func_00151F1C(NorOutAttack *self)
+{
+    float pos[4];
+
+    func_0016649C(self->m_owner, 0);
+    X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
+    switch (self->m_unk04) {
+    case 0:
+        if (self->m_unk28 != 0) {
+            int off = 0x18E00;
+            ((EmyOut *)self->m_owner->m_unk1F8)->m_unk04 = 0;
+            X_func_00166B74(self, pos);
+            func_001E5250((void *)((int)&D_007812C0 + off), 0x3B8, 1, pos, 0, 0);
+            X_func_001680A0(self, 0x12, 0);
+            D_007B205C->m_unk650 = 1;
+            self->m_unk04 = 1;
+        }
+        break;
+    case 1:
+        if (NorAnimDone(&D_007812C0, self)) {
+            X_func_001680A0(self, 0x13, 0x100);
+            self->m_unk78 = X_func_0010423C(0x2D, 0x3C);
+            self->m_unk04 = 2;
+        }
+        break;
+    case 2:
+        if (--self->m_unk78 <= 0) {
+            func_0016649C(self->m_owner, 1);
+            X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
+            func_0016649C(self->m_owner, 1);
+            ((EmyObjStatView *)self->m_unk08)->m_flags |= 0x400;
+            self->m_owner->m_unk1E4 = 6;
+            D_007B205C->m_unk650 = 0;
+            func_001517E0(self);
+        }
+        break;
+    }
+    return -1;
+}
 
 extern "C" int func_001520CC(NorOutAttack *self)
 {
