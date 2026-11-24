@@ -439,7 +439,39 @@ extern "C" int pad__17MagLifePCModeRideR9MagLifePCRC6BedPad(MagLifePCModeRide *a
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", func_00122C9C);
+extern "C" void func_00122C9C(MagLifePCModeRide *arg0, MagLifePC *arg1, int arg2)
+{
+    int &step = arg1->m_unk08;
+    int &flag = arg1->m_unk0C;
+    if (flag < 2) {
+        step = arg2;
+        switch (arg2) {
+        case 6:
+            Xiiis_func_0011A320(arg1, 0x8F, -1);
+            flag = 2;
+            arg0->m_unk04 = 0;
+            return;
+        case 9:
+            Xiiis_func_0011A320(arg1, 0x94, -1);
+            flag = 2;
+            arg0->m_unk04 = 0;
+            return;
+        case 11:
+            Xiiis_func_0011A320(arg1, 0x9A, -1);
+            flag = 2;
+            arg0->m_unk04 = 0;
+            return;
+        case 13:
+            Xiiis_func_0011A320(arg1, 0x9E, -1);
+            flag = 2;
+            arg0->m_unk04 = 0;
+            return;
+        default:
+            X_ror_assert(D_002EAD28, 0x8B1, D_002EAD60);
+            break;
+        }
+    }
+}
 
 extern "C" void init__18MagLifePCModeRopedR9MagLifePC(MagLifePCModeRoped *arg0, MagLifePC *arg1)
 {
