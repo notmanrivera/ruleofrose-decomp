@@ -711,4 +711,21 @@ extern "C" void func_00135DCC(MagScene *self)
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135E20);
 
+// NON_MATCHING: function matches (0x60/0x60), blocked on .rodata (D_002ED788 bundles 0x50 bytes of trailing maglifebwnctrl.h / 9DogEntity strings)
+#ifdef NON_MATCHING
+#define MAX_PRIVATE_COLLI 256
+struct MagPrivateColli {
+    DogVector m_p1;
+    DogVector m_p2;
+};
+
+extern "C" void func_00135F44(MagPrivateColli *theColli, int theID)
+{
+#line 2773
+    ASSERT(theID >= 0 && theID < MAX_PRIVATE_COLLI);
+    MagPrivateColli *p = &theColli[theID];
+    p->m_p1.m_y = p->m_p2.m_y = 0.0f;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135F44);
+#endif
