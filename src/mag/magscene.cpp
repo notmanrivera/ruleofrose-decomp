@@ -485,16 +485,17 @@ extern "C" float func_0013377C(MagScene *self, DogVector *arg1, DogVector *arg2)
     return 100000.0f;
 }
 
-// NON_MATCHING: 4/104 differ, 4 edits
-#ifdef NON_MATCHING
 extern "C" float fabsf(float);
-extern "C" float func_0013386C(MagScene *self, DogModelHit *theHit, const float *thePos, float theH, float theR)
+extern "C" float func_0013386C(MagScene *self, DogModelHit *theHit, const float *thePos, float theH, float inR)
 {
+    // Preserve the radius input in f21; f22/f23 hold the two loop invariants.
+    register float theR PS2_REG("$f21") = inR;
 #line 1683
     ASSERT(theH < 0.0f);
-    float rr = theR * theR;
+    register float rr PS2_REG("$f22") = theR * theR;
     float cy = thePos[1] + theH * 0.5f;
-    float h = fabsf(theH);
+    // Keep the absolute height in f23 without tying the radius input to f22.
+    register float h PS2_REG("$f23") = fabsf(theH);
     MagPrivateColli *p = self->m_private_colli;
     for (int i = 0; i < 256; i++, p++) {
         if (p->m_p1.m_y == p->m_p2.m_y) {
@@ -524,9 +525,6 @@ extern "C" float func_0013386C(MagScene *self, DogModelHit *theHit, const float 
     }
     return -1.0f;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_0013386C);
-#endif
 
 // NON_MATCHING: 19/93 differ, 19 edits
 #ifdef NON_MATCHING
