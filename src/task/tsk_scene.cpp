@@ -2,6 +2,11 @@
 #include "task/cmnitask.h"
 #include "task/tsk_scene.h"
 #include "sdk/string.h"
+extern "C" void ScenePlay__vfunc_05(ScenePlay *);
+extern "C" void VoiceManager__vfunc_01(void *, int);
+extern "C" void SeManager__vfunc_01(void *, int);
+extern "C" void DisplayMessage__vfunc_01(void *, int);
+extern "C" void __builtin_delete(void *);
 extern "C" void ScenePlay__vfunc_03(ScenePlay *);
 extern "C" void func_001F6C64(void *);
 extern "C" void func_001F6EDC(void *);
@@ -94,7 +99,17 @@ extern "C" void func_001F7D54(ScenePlay *self, int arg1)
     self->m_unk88 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", ScenePlay__vfunc_06);
+extern "C" void ScenePlay__vfunc_06(ScenePlay *self, int flags)
+{
+    self->m_vtable = _vt$9ScenePlay;
+    ScenePlay__vfunc_05(self);
+    VoiceManager__vfunc_01(self->m_voiceManager, 2);
+    SeManager__vfunc_01(self->m_seManager, 2);
+    DisplayMessage__vfunc_01(self->m_displayMessage, 2);
+    if (flags & 1) {
+        return __builtin_delete(self);
+    }
+}
 
 extern "C" void ScenePlay__vfunc_03(ScenePlay *) {
 }
