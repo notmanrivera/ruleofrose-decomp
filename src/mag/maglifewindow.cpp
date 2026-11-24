@@ -122,7 +122,43 @@ void MagLifeWindow::func_0012FE30(int theW, int theH)
 }
 
 
+// NON_MATCHING: 29/37 differ (size 0x94, game 0x90), 13 edits
+#ifdef NON_MATCHING
+extern "C" void func_0012FE68(MagLifeWindow *self, int a1, int a2, int a3)
+{
+    if (a1 <= 0) {
+        a1 = 1;
+    }
+    if (a3 <= 0) {
+        a3 = 1;
+    }
+    if (a2 < 0) {
+        a2 = self->m_unkA8;
+    }
+    if (a2 < 0) {
+        a2 = 0;
+    }
+    if (a3 > 0x80) {
+        a3 = 0x80;
+    }
+    if (a2 >= 0x80) {
+        a2 = 0x7F;
+    }
+    if (a2 >= a3) {
+        a3 = a2 + 1;
+    }
+
+    self->m_unkAC = a1;
+    float f1 = (float)a2;
+    float f2 = (float)a3;
+    self->m_unkBC = f1;
+    self->m_unkB4 = f2;
+    self->m_unkB8 = f1;
+    self->m_unkB0 = (f2 - f1) / (float)a1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifewindow", func_0012FE68);
+#endif
 
 // NON_MATCHING: 4/35 differ, 3 edits
 #ifdef NON_MATCHING
