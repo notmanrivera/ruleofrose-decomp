@@ -560,7 +560,20 @@ extern "C" void func_0012A808(MagLifeBwnCtrl *arg0, MagBwnVec4 *arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A89C);
+extern "C" void func_0012A89C(MagLifeBwnCtrl *arg0, MagBwnVec4 *arg1)
+{
+    if (arg0->m_bwn != 0) {
+        if (arg0->m_bwn->getActor() != 0) {
+            DogActor *actor = arg0->m_bwn->getActor();
+            *(u_long128 *)&actor->m_unk50 = *(u_long128 *)arg1;
+            actor->normalizeRot();
+            actor->m_unk90 = 1;
+            actor->m_base_rot.set(&arg1->x);
+            actor->setRotOffsetY(0.0f);
+            func_0012A56C(arg0, 0, 0, 0);
+        }
+    }
+}
 
 extern "C" void func_0012A974(MagLifeBwnCtrl *arg0, MagBwnVec4 *arg1)
 {
