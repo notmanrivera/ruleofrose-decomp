@@ -405,7 +405,94 @@ extern "C" void func_001E17B4(GamSndMan *arg0, int arg1)
     arg0->m_unk1870 |= 1;
 }
 
+// NON_MATCHING: 214/412 differ, 12 relocs differ (size 0x670, game 0x684), 99 edits
+#ifdef NON_MATCHING
+extern const int D_002FD780[2];
+extern "C" void func_001E1920(GamSndMan *self, int restart, int mode, int reset)
+{
+    GamSndMessage fade, volume, query;
+    self->m_unk1870 &= ~1;
+    if (self->m_currentBgm >= 0) {
+        if (reset) self->m_currentBgm = 0;
+        memcpy(&volume, D_002FD780, sizeof(D_002FD780));
+        if (mode != 1) {
+            int id = self->m_unk15A0[self->m_currentBgm].m_unk0C;
+            if (id != -1) {
+                if (restart || !func_001E5660(self, id, 0x16, 0)) {
+                    func_001E5250(self, self->m_unk15A0[self->m_currentBgm].m_unk0C, 0, 0, 0, 0x100);
+                    func_001E5660(self, self->m_unk15A0[self->m_currentBgm].m_unk0C, 4, (GamSndMessage *)1);
+                } else func_001E5660(self, self->m_unk15A0[self->m_currentBgm].m_unk0C, 0x18, 0);
+                func_001E5660(self, self->m_unk15A0[self->m_currentBgm].m_unk0C, 2, &volume);
+                fade.m_unk04 = self->m_unk15A0[self->m_currentBgm].m_unk10;
+                fade.m_unk08 = self->m_unk15A0[self->m_currentBgm].m_unk14;
+                fade.m_unk14 = 30;
+                func_001E5660(self, self->m_unk15A0[self->m_currentBgm].m_unk0C, 0x13, &fade);
+                self->m_unk15A0[self->m_currentBgm].m_unk0C = -1;
+            }
+            id = self->m_unk15A0[self->m_currentBgm].m_unk18;
+            if (id != -1) {
+                func_001E5660(self, id, 0x18, 0);
+                func_001E5660(self, self->m_unk15A0[self->m_currentBgm].m_unk18, 2, &volume);
+                fade.m_unk04 = self->m_unk15A0[self->m_currentBgm].m_unk1C;
+                fade.m_unk08 = self->m_unk15A0[self->m_currentBgm].m_unk20;
+                fade.m_unk14 = 30;
+                func_001E5660(self, self->m_unk15A0[self->m_currentBgm].m_unk18, 0x14, &fade);
+                self->m_unk15A0[self->m_currentBgm].m_unk18 = -1;
+            }
+        }
+        if (mode != 2) {
+            int id = self->m_unk15A0[self->m_currentBgm].m_unk00;
+            if (id) {
+                if (!func_001E5E58(self, id, 0x16, 0)) func_001E4EBC(self, self->m_unk15A0[self->m_currentBgm].m_unk00, 0, 0, 0);
+                if (self->m_unk15A0[self->m_currentBgm].m_unk00 == 0x0B030352) func_001E5E58(self, 0x0B030352, 4, 0);
+                query.m_unk00 = self->m_unk15A0[self->m_currentBgm].m_unk04;
+                query.m_unk04 = self->m_unk15A0[self->m_currentBgm].m_unk08;
+                if (!func_001E5E58(self, self->m_unk15A0[self->m_currentBgm].m_unk00, 0x21, &query)) {
+                    func_001E5E58(self, self->m_unk15A0[self->m_currentBgm].m_unk00, 2, &volume);
+                    fade.m_unk04 = self->m_unk15A0[self->m_currentBgm].m_unk04;
+                    fade.m_unk08 = self->m_unk15A0[self->m_currentBgm].m_unk08;
+                    fade.m_unk14 = 30;
+                    func_001E5E58(self, self->m_unk15A0[self->m_currentBgm].m_unk00, 0x13, &fade);
+                }
+                self->m_unk15A0[self->m_currentBgm].m_unk00 = 0;
+            }
+            id = self->m_unk1654[self->m_currentBgm].m_unk00;
+            if (id) {
+                if (!func_001E5E58(self, id, 0x16, 0)) func_001E4EBC(self, self->m_unk1654[self->m_currentBgm].m_unk00, 0, 0, 0);
+                if (self->m_unk1654[self->m_currentBgm].m_unk00 == 0x0B030352) func_001E5E58(self, 0x0B030352, 4, 0);
+                query.m_unk00 = self->m_unk1654[self->m_currentBgm].m_unk04;
+                query.m_unk04 = self->m_unk1654[self->m_currentBgm].m_unk08;
+                if (!func_001E5E58(self, self->m_unk1654[self->m_currentBgm].m_unk00, 0x21, &query)) {
+                    func_001E5E58(self, self->m_unk1654[self->m_currentBgm].m_unk00, 2, &volume);
+                    fade.m_unk04 = self->m_unk1654[self->m_currentBgm].m_unk04;
+                    fade.m_unk08 = self->m_unk1654[self->m_currentBgm].m_unk08;
+                    fade.m_unk14 = 30;
+                    func_001E5E58(self, self->m_unk1654[self->m_currentBgm].m_unk00, 0x14, &fade);
+                }
+                self->m_unk1654[self->m_currentBgm].m_unk00 = 0;
+            }
+        }
+        if (self->m_unk1708 > 0) {
+            int i = 0;
+            do {
+                GamSndAmbient *ambient = &self->m_ambient[i];
+                if (!func_001E5E58(self, ambient->m_unk00, 0x16, 0)) func_001E4EBC(self, self->m_ambient[self->m_currentBgm].m_unk00, 0, 0, 0);
+                func_001E5E58(self, ambient->m_unk00, 4, (GamSndMessage *)1);
+                ++i;
+                func_001E5E58(self, ambient->m_unk00, 2, &volume);
+                fade.m_unk04 = ambient->m_unk04;
+                fade.m_unk08 = ambient->m_unk08;
+                fade.m_unk14 = 30;
+                func_001E5E58(self, ambient->m_unk00, 0x15, &fade);
+            } while (i < self->m_unk1708);
+            self->m_unk1708 = 0;
+        }
+        --self->m_currentBgm;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E1920);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E1FA4);
 
