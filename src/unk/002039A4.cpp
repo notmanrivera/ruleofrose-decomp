@@ -1,6 +1,7 @@
 #include "include_asm.h"
 #include "game/gamsnd.h"
 #include "game/gamman.h"
+extern "C" void func_00203DD0(GamTaskBase *);
 extern "C" void func_00203F38(GamTaskBase *);
 extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
@@ -19,7 +20,6 @@ extern "C" int X_func_0016A8A4(...) asm("func_0016A8A4");
 extern "C" int X_func_00180CA8(...) asm("func_00180CA8");
 extern "C" int X_func_001C0D44(...) asm("func_001C0D44");
 extern "C" int X_func_001C0D70(...) asm("func_001C0D70");
-extern "C" int X_func_00203DD0(...) asm("func_00203DD0");
 extern "C" int X_func_002041F8(...) asm("func_002041F8");
 extern "C" int X_func_0020E664(...) asm("func_0020E664");
 extern "C" int X_func_0020E690(...) asm("func_0020E690");
@@ -60,9 +60,9 @@ INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_00203A28);
 
 INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_00203B44);
 
-extern "C" int func_00203D94()
+extern "C" void func_00203D94(GamTaskBase *arg0)
 {
-    return X_func_00203DD0();
+    return func_00203DD0(arg0);
 }
 
 
@@ -73,7 +73,24 @@ extern "C" void func_00203DA8(void *arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_00203DD0);
+extern "C" void func_00203DD0(GamTaskBase *arg0)
+{
+    unsigned int t;
+
+    arg0->m_vtable = 0;
+    D_007812C0.m_unk22368 = (unsigned int)((float)(D_007812C0.m_vcount * 1000) / 25.0f);
+    t = D_007812C0.m_unk22368;
+    arg0->m_unk04 = t;
+    arg0->m_unk08 = t;
+    arg0->m_unk10 = t;
+    arg0->m_unk0C = 0;
+    arg0->m_unk14 = 0;
+    arg0->m_prio = 0;
+    arg0->m_unk1C = 0;
+    arg0->m_unk20 = 0;
+    arg0->m_unk24 = 0;
+    arg0->m_unk28 = 0;
+}
 
 extern "C" void func_00203EA8(int arg0)
 {
