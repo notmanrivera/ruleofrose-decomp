@@ -47,7 +47,30 @@ extern "C" void live__17MagLifePCModeNullR9MagLifePC(MagLifePCModeNull *arg0, Ma
     }
 }
 
+// NON_MATCHING: 17/30 differ, 4 relocs differ (size 0x78, game 0x74), 3 edits
+#ifdef NON_MATCHING
+extern "C" void func_0011DFF8(MagLifePC *, int);
+extern const int D_002EAD00[];
+extern const int D_002EAD10[];
+extern "C" void init__17MagLifePCModeWaitR9MagLifePC(MagLifePCModeWait *arg0, MagLifePC *arg1)
+{
+    int var_a1;
+    int a1 = arg1->m_unkEC;
+    int v1 = arg1->m_unkE4;
+    if (a1 == 2) {
+        if (v1 < 3) {
+            a1 = v1;
+        }
+        var_a1 = D_002EAD00[a1];
+    } else {
+        var_a1 = D_002EAD10[v1];
+    }
+    Xiiis_func_0011A320(arg1, var_a1, -1);
+    func_0011DFF8(arg1, 0);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", init__17MagLifePCModeWaitR9MagLifePC);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", func_00120A54);
 
