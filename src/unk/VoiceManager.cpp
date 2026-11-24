@@ -29,7 +29,16 @@ INCLUDE_ASM("asm/nonmatchings/unk/VoiceManager", func_001F6F4C);
 
 INCLUDE_ASM("asm/nonmatchings/unk/VoiceManager", func_001F70C8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/VoiceManager", func_001F71B8);
+extern "C" void func_001F71B8(VoiceManager *self)
+{
+    for (int i = 0; i < self->m_count; i++) {
+        if (self->m_entries[i].m_timer != 0) {
+            if (--self->m_entries[i].m_timer == 0) {
+                func_001F728C(self, i--);
+            }
+        }
+    }
+}
 
 extern "C" void func_001F723C(VoiceManager *self)
 {
