@@ -1,6 +1,9 @@
 #include "ror.h"
 #include "include_asm.h"
 #include "mag/maglifewindow.h"
+extern "C" void func_001BF024(MagFntMan *theMan, int x, int y, int ch);
+extern "C" void func_001BFE30(MagFntMan *theMan, int y);
+extern "C" void func_001BFF64(MagFntMan *theMan, int a);
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 
 #undef ASSERT_FILE
@@ -282,7 +285,46 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifewindow", D_002ED340);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifewindow", func_00130258);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifewindow", func_001305EC);
+extern "C" void func_001305EC(MagLifeWindow *self, const char *theStr, int arg2)
+{
+#line 503
+    ASSERT_S(self->m_fntman, FNTMAN);
+    const char *p = theStr;
+    func_001BFF64(self->m_fntman, arg2 * 4);
+    int x = self->m_unkD8;
+    int y = self->m_unkDC;
+    while (*p != '\0') {
+        int w = 0;
+        char c = *p;
+        int ch = c;
+        p++;
+        if (((unsigned int)(ch - 0x81) < 0x1FU) || ((unsigned int)(ch - 0xE0) < 0x1DU)) {
+            w = self->m_ch_w;
+            ch = ((ch & 0xFF) << 8) | (unsigned char)*p;
+            p++;
+        } else if (ch == '\n') {
+            x = 0;
+            y += self->m_ch_h;
+        } else if (ch != '\r') {
+            w = self->m_ch_w / 2;
+        }
+        if (self->m_buf_w < x + w) {
+            x = 0;
+            y += self->m_ch_h;
+        }
+        if (self->m_buf_h < y + self->m_ch_h) {
+            int dy = self->m_buf_h - (y + self->m_ch_h);
+            y += dy;
+            func_001BFE30(self->m_fntman, dy);
+        }
+        if (ch >= 0x20) {
+            func_001BF024(self->m_fntman, x, y, ch);
+            x += w;
+        }
+    }
+    self->m_unkD8 = x;
+    self->m_unkDC = y;
+}
 
 void MagLifeWindow::func_00130778(MagFntMan *thefontManager)
 {
