@@ -1,6 +1,19 @@
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
 #include "utl/utlfind.h"
+struct BwnTarget {
+    DogVector m_pos;
+    DogVector m_unk10;
+    int m_id;
+    int m_unk24;
+    int m_unk28[6];
+};
+struct BwnTargetList {
+    BwnTarget m_item[32];
+    int m_num;
+    BwnTargetList() { m_num = 0; }
+};
+extern "C" int func_0010376C(BwnTargetList *, DogVector *, float, int, int, float);
 void vecTurnY(float *, float);
 extern "C" int func_0012349C(MagLifeBwn *, MagBwnVec4 *);
 extern "C" void func_00104150(int);
@@ -43,7 +56,17 @@ extern "C" int func_001267D8(int arg0, int arg1, int arg2, int arg3)
     return X_utlFindNearest__FP7UtlFindPfi(arg1, arg3);
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_001267F4);
+extern "C" int func_001267F4(int arg0, MagLifeBwnCtrl *arg1, float arg2)
+{
+    register int ret PS2_REG("$2") = 0;
+    if (arg1->m_bwn->m_unkCB8 < 3) {
+        DogVector pos;
+        arg1->m_bwn->func_00119F88(&pos);
+        BwnTargetList list;
+        ret = func_0010376C(&list, &pos, 0.0f, 0, 1, arg2);
+    }
+    return ret;
+}
 
 extern "C" int func_001268B4(int arg0, MagLifeBwnCtrl *arg1)
 {
