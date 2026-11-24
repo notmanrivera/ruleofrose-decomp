@@ -274,7 +274,13 @@ extern "C" int func_001330F4(MagScene *self, int theNo)
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133144);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001331F4);
+extern "C" void func_001331F4(MagScene *self, int theNo, int theID, int theA, int theB, int theC, float theD)
+{
+    if (theA >= 0) {
+        self->m_actor[theNo].func_0010BF00(theA);
+    }
+    self->m_actor[theNo].func_0010B1B0(theID, theB >> 8, theD, theB & 0xFF, -1);
+}
 
 extern "C" void func_00133288(MagScene *self, int theNo, const char *theName, int theA, int theB, int theC, float theD)
 {
