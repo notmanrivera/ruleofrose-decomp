@@ -565,7 +565,53 @@ extern "C" void func_001E2350(GamSndMan *, GamSnd3D *item, const TskVec4 *point,
     *(u_long128 *)&item->m_unk00 = copy;
 }
 
+// NON_MATCHING: 22/218 differ, 23 edits
+#ifdef NON_MATCHING
+extern "C" void func_001E239C(GamSndMan *self, unsigned int id, EffVec3 *position, int scene, int flags)
+{
+    if (scene == -1) scene = func_001C6C28(&D_007812C0);
+    GamTrgMapInfo *entry = func_0017EA44(D_00298EE0, scene);
+    if (entry) {
+        GamSnd3D item;
+        item.scene = scene;
+        item.distance = 3000.0f;
+        item.handle = -1;
+        item.flags = flags;
+        item.id = id;
+        item.zero = 0;
+        item.a = 0;
+        item.b = 0;
+        item.position.x = position->x + entry->m_unk20;
+        item.position.y = position->y + entry->m_unk24;
+        item.position.z = position->z + entry->m_unk28;
+        float horizontal = sqrtf(item.position.x * item.position.x + item.position.z * item.position.z);
+        float distance = sqrtf(item.position.y * item.position.y + horizontal * horizontal);
+        func_001E4908(self, id, &item.data, 1);
+        if (item.data) {
+            if (flags & 0x20) {
+                if (func_001E5E58(self, item.id, 0x16, 0) != 0) return;
+                item.flags |= 0x200;
+                item.handle = func_001E4EBC(self, item.id, 0, (EffVec4 *)position, 0x80);
+            }
+            register GamList<GamSnd3D> *queue PS2_REG("$4") = &self->m_queue;
+            GamList<GamSnd3D>::iterator it;
+            GamList<GamSnd3D>::iterator last;
+            it = queue->begin();
+            last = queue->end();
+            while (it != last) {
+                if (distance <= (*it).distance) {
+                    queue->insert(it, item);
+                    return;
+                }
+                ++it;
+            }
+            queue->push_back(item);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E239C);
+#endif
 
 extern "C" void func_001E2704(GamSndMan *self, unsigned int id, int key, int flags)
 {
