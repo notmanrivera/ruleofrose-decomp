@@ -223,7 +223,17 @@ extern "C" void MagLifeBwnCtrlModeDamage__vfunc_01(MagLifeBwnCtrlMode *arg0, Mag
     arg1->m_bwn->message(1, var_s1, (void *)1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeDamage__vfunc_02);
+extern "C" void MagLifeBwnCtrlModeDamage__vfunc_02(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
+{
+    MagLifeBwn *bwn = arg1->m_bwn;
+    if (bwn->m_unkCC0 != 0) {
+        Xiiiii_func_0012A56C(arg1, 1, 0, 0);
+        return;
+    }
+    if (bwn->func_0011A064() != 0) {
+        Xiiii_ror_assert(D_002EBE28, 0x813, "!theBwnCtrl.m_bwn->isMotionStateEndless()");
+    }
+}
 
 extern "C" void MagLifeBwnCtrlModeBark__vfunc_01(MagLifeBwnCtrlModeBark *arg0, MagLifeBwnCtrl *arg1)
 {
