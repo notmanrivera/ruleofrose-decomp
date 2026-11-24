@@ -2,6 +2,19 @@
 #include "unk/Eff0.h"
 #include "dog/doglightpool.h"
 #include "sdk/string.h"
+struct FogParam_AE00 {
+    float m_color[3];                   // +0x00
+    float m_unk0C;                      // +0x0C
+    float m_near;                       // +0x10
+    float m_min;                        // +0x14
+    float m_far;                        // +0x18
+    float m_max;                        // +0x1C
+};
+struct Scene_AE00 {
+    unsigned char m_pad00[0x2AAE0];     // +0x0000
+    FogParam_AE00 m_fog;                // +0x2AAE0
+};
+extern "C" float func_0026CB30(float, float);
 struct Model_E9F4 {
     unsigned char m_pad00[0x40];        // +0x00
     EffVec3 m_pos;                      // +0x40
@@ -462,7 +475,26 @@ extern "C" void func_0016ADD8()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016AE00);
+extern "C" void func_0016AE00(EffVec3 *arg0, float dist)
+{
+    FogParam_AE00 *fog = &((Scene_AE00 *)D_00298E08)->m_fog;
+    float near = fog->m_near;
+    if (dist <= near) {
+        return;
+    }
+    float far = fog->m_far;
+    if (dist >= far) {
+        arg0->x *= fog->m_color[0];
+        arg0->y *= fog->m_color[1];
+        arg0->z *= fog->m_color[2];
+    } else {
+        float p = func_0026CB30((dist - near) / (far - near), 2.0f);
+        float t = fog->m_min + (fog->m_max - fog->m_min) * p;
+        arg0->x *= (fog->m_color[0] - 1.0f) * t + 1.0f;
+        arg0->y *= (fog->m_color[1] - 1.0f) * t + 1.0f;
+        arg0->z *= (fog->m_color[2] - 1.0f) * t + 1.0f;
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/Eff0", D_002F1E88);
 
