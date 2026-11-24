@@ -266,7 +266,20 @@ extern "C" void init__20MagLifePCModeDogStayR9MagLifePC(MagLifePCModeDogStay *ar
     arg1->m_unk08 = 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", live__20MagLifePCModeDogStayR9MagLifePC);
+extern "C" void live__20MagLifePCModeDogStayR9MagLifePC(MagLifePCModeDogStay *arg0, MagLifePC *arg1)
+{
+    int s1 = arg1->m_unk08;
+    int v1 = Xii_func_0011A054(arg1);
+    if (s1 == 1) {
+        if (v1 != 0) {
+            Xiiiui_func_0011C1E8(arg1, 0, 0, 0);
+        }
+    } else if (s1 == 2) {
+        if (v1 != 0) {
+            Xiiiui_func_0011C1E8(arg1, 0, 0, 0);
+        }
+    }
+}
 
 extern "C" void init__17MagLifePCModeHoldR9MagLifePC(MagLifePCModeHold *arg0, MagLifePC *arg1)
 {
