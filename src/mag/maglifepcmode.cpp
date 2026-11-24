@@ -161,7 +161,23 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", func_00121604);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", live__22MagLifePCModeAtkWait2DR9MagLifePC);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", pad__22MagLifePCModeAtkWait2DR9MagLifePCRC6BedPad);
+extern "C" int pad__22MagLifePCModeAtkWait2DR9MagLifePCRC6BedPad(MagLifePCModeAtkWait2D *arg0, MagLifePC *arg1, const BedPad *arg2)
+{
+    if (arg1->m_actor->func_0010D9EC() < 0.0f) {
+        X_func_001207A8(arg0, arg1);
+        return 0;
+    }
+    if (arg1->m_unkDC == 0) {
+        Xiiiui_func_0011C1E8(arg1, 0, 0, 0);
+        return 2;
+    }
+    if (arg1->m_unk104 > 0.0f) {
+        Xiiiui_func_0011C1E8(arg1, 6, 0, 0);
+        return 2;
+    }
+    X_func_001207A8(arg0, arg1);
+    return 0;
+}
 
 extern "C" void MagLifePCModeAtkMove2D__vfunc_01(MagLifePCModeAtkMove2D *arg0, MagLifePC *arg1)
 {
