@@ -130,7 +130,35 @@ extern "C" void func_001FC880(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/task/naga_chunk", func_001FC89C);
 
+// NON_MATCHING: 29/36 differ, 5 relocs differ (size 0x90, game 0x88), 15 edits
+#ifdef NON_MATCHING
+extern "C" int X_func_00279C98(...) asm("func_00279C98");
+extern "C" int X_sceClose(...) asm("sceClose");
+extern "C" int X_sceOpen(...) asm("sceOpen");
+extern "C" int X_sceWrite(...) asm("sceWrite");
+extern const char D_002FF008[];
+extern "C" int func_001FC9E8(int arg0, int arg1)
+{
+    struct { char pad0[64]; } stack;
+    int temp_v0;
+    int var_v0;
+
+    var_v0 = 0;
+    if (M2C_FIELD(arg0, int *, 0x504) != 0) {
+        X_func_00279C98((int)&stack, (int) D_002FF008, arg1);
+        temp_v0 = X_sceOpen((int)&stack, 0x602);
+        var_v0 = 0;
+        if (temp_v0 >= 0) {
+            X_sceWrite(temp_v0, M2C_FIELD(arg0, int *, 0x504), (M2C_FIELD(arg0, int *, 0x508) + 0xF) & ~0xF);
+            X_sceClose(temp_v0);
+            var_v0 = 1;
+        }
+    }
+    return var_v0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/task/naga_chunk", func_001FC9E8);
+#endif
 
 extern "C" void func_001FCA70(int arg0)
 {
