@@ -1,6 +1,20 @@
 #include "include_asm.h"
 #include "001A6830.h"
 #include "game/gamman.h"
+extern "C" int func_001B1CD4(MnuItem *);
+extern "C" void func_001B2F64(MnuItem *);
+extern "C" void func_001B3534(MnuItem *);
+extern "C" int func_001B3E20(MnuItem *);
+extern "C" void func_001B3E28(MnuItem *);
+extern "C" void func_001B4488(MnuItem *);
+extern "C" int func_001B5C20(MnuItem *);
+extern "C" int func_001B64C4(MnuItem *);
+extern "C" int func_001BA3A0(MnuItem *);
+extern "C" int func_001BA8E4(MnuItem *);
+extern "C" int func_001BB12C(MnuItem *);
+extern "C" int func_001BB4F0(MnuItem *);
+extern "C" void func_001BBCFC(MnuItem *);
+extern "C" int func_001BC370(MnuItem *);
 extern "C" void func_001CB460(GamMan *, int, void *);
 extern "C" void func_001CB490(GamMan *, int, void *);
 extern "C" void func_001AF024(MnuItem *);
@@ -2233,7 +2247,70 @@ extern "C" int func_001B1B98()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B1BA0);
+extern "C" int func_001B1BA0(MnuItem *arg0)
+{
+    int ret;
+
+    switch (arg0->m_unk58) {
+    case 0:
+        ret = func_001B1CD4(arg0);
+        if (ret == 1) {
+            arg0->m_unk54 = 6;
+        }
+        break;
+    case 1:
+        func_001B2F64(arg0);
+        break;
+    case 2:
+        func_001B3534(arg0);
+        break;
+    case 8:
+        func_001B3E20(arg0);
+        break;
+    case 3:
+        func_001B3E28(arg0);
+        break;
+    case 4:
+        func_001B4488(arg0);
+        break;
+    case 5:
+        if (func_001B5C20(arg0) == 1) {
+            arg0->m_unk54 = 6;
+        }
+        break;
+    case 7:
+        if (func_001B64C4(arg0) == 1) {
+            arg0->m_unk54 = 6;
+        }
+        break;
+    case 6:
+        func_001BA3A0(arg0);
+        break;
+    case 9:
+        if (func_001BA8E4(arg0) == 1) {
+            arg0->m_unk54 = 6;
+        }
+        break;
+    case 10:
+        if (func_001BB12C(arg0) == 1) {
+            arg0->m_unk54 = 6;
+        }
+        break;
+    case 11:
+        if (func_001BB4F0(arg0) == 1) {
+            arg0->m_unk54 = 6;
+        }
+        break;
+    case 12:
+        func_001BBCFC(arg0);
+        break;
+    case 13:
+        if (func_001BC370(arg0) == 1) {
+            arg0->m_unk54 = 6;
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B1CD4);
 
@@ -2241,7 +2318,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B2F64);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B3534);
 
-extern "C" int func_001B3E20()
+extern "C" int func_001B3E20(MnuItem *)
 {
     return 0;
 }
