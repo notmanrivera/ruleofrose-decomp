@@ -1,5 +1,13 @@
 #include "include_asm.h"
 #include "emy/emy.h"
+extern "C" void *__builtin_new(unsigned int);
+extern "C" void func_00166A1C(EmyOut *, int, void *, EmyMain *);
+extern int _vt$10BdsOutWalk;
+extern int _vt$12BdsOutSearch;
+extern int _vt$9BdsOutAtk;
+extern int _vt$9BdsOutWin;
+extern int _vt$12BdsOutStared;
+extern int _vt$10BdsOutDead;
 
 struct BdsVtblEntry {
     short m_delta;
@@ -114,7 +122,61 @@ extern int D_007812C0;
 extern BdsActorPtr *D_007A3350;
 extern int D_007B2580;
 
-INCLUDE_ASM("asm/nonmatchings/unk/BdsMain", func_00149D18);
+extern "C" void func_00149D18(BdsMain *self)
+{
+    register int c20 PS2_REG("$3") = 0x20;
+    register int one PS2_REG("$2") = 1;
+    register int three PS2_REG("$5") = 3;
+    EmyOut *out;
+
+    ((int *)self->m_padEC)[7] = c20;
+    ((int *)self->m_padEC)[2] = three;
+    ((int *)self->m_padEC)[3] = three;
+    ((int *)self->m_padEC)[4] = three;
+    ((int *)self->m_padEC)[5] = three;
+    self->m_unk204 = 0;
+    self->m_unk205 = 0;
+    ((int *)self->m_padEC)[0] = one;
+    ((int *)self->m_padEC)[1] = one;
+    ((int *)self->m_padEC)[8] = one;
+    ((int *)self->m_padEC)[9] = one;
+    self->m_stateFlags[5] = one;
+    self->m_stateFlags[3] = one;
+    self->m_stateFlags[2] = one;
+    self->m_stateFlags[6] = 0;
+    self->m_stateFlags[4] = 0;
+    self->m_stateFlags[1] = 0;
+
+    out = (EmyOut *)__builtin_new(0x4C);
+    func_00166A1C(out, self->m_id, self->m_objStat, self);
+    out->m_vtbl = &_vt$10BdsOutWalk;
+    self->m_unk48[1] = out;
+
+    out = (EmyOut *)__builtin_new(0x38);
+    func_00166A1C(out, self->m_id, self->m_objStat, self);
+    out->m_vtbl = &_vt$12BdsOutSearch;
+    self->m_unk48[2] = out;
+
+    out = (EmyOut *)__builtin_new(0x44);
+    func_00166A1C(out, self->m_id, self->m_objStat, self);
+    out->m_vtbl = &_vt$9BdsOutAtk;
+    self->m_unk48[3] = out;
+
+    out = (EmyOut *)__builtin_new(0x3C);
+    func_00166A1C(out, self->m_id, self->m_objStat, self);
+    out->m_vtbl = &_vt$9BdsOutWin;
+    self->m_unk48[4] = out;
+
+    out = (EmyOut *)__builtin_new(0x3C);
+    func_00166A1C(out, self->m_id, self->m_objStat, self);
+    out->m_vtbl = &_vt$12BdsOutStared;
+    self->m_unk48[5] = out;
+
+    out = (EmyOut *)__builtin_new(0x38);
+    func_00166A1C(out, self->m_id, self->m_objStat, self);
+    out->m_vtbl = &_vt$10BdsOutDead;
+    self->m_unk48[6] = out;
+}
 
 extern "C" void BdsMain__vfunc_01(BdsMain *self, int flags)
 {
