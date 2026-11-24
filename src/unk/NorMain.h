@@ -4,7 +4,7 @@
 #include "emy/emy.h"
 
 struct NorMain : public EmyMain {
-    unsigned char m_pad204[0x14];       // +0x204..+0x217
+    int m_unk204[5];                    // +0x204..+0x217
     int m_unk218;                       // +0x218
     unsigned char m_pad21C[0x10];       // +0x21C..+0x22B
     unsigned char m_unk22C;             // +0x22C

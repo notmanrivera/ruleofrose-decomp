@@ -1,5 +1,11 @@
 #include "include_asm.h"
 #include "unk/NorMain.h"
+struct NorStateTable {
+    unsigned char m_unk00;
+    unsigned char m_count;
+    unsigned char m_pad02[10];
+    signed char *m_table;
+};
 
 struct NorMainVtbl2 {
     unsigned char m_pad[0x200];
@@ -91,7 +97,36 @@ extern "C" void NorMain__vfunc_06(NorMain *self)
     self->m_nextState = ((NorOutVtbl3 *)self->m_curOut)->v3();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/NorMain", NorMain__vfunc_02);
+extern "C" int NorMain__vfunc_02(NorMain *self)
+{
+    NorStateTable *tbl;
+    unsigned char count;
+    signed char *base;
+    int cur;
+
+    tbl = (NorStateTable *)self->m_unkE8;
+    count = tbl->m_count;
+    base = tbl->m_table;
+    base += self->m_curState * count;
+    for (int i = 0; i < count; ++i) {
+        if (base[i] != 0) {
+            self->m_unk204[i] = 1;
+        } else {
+            self->m_unk204[i] = 0;
+        }
+    }
+    cur = self->m_curState;
+    if (cur != 0) {
+        if (cur >= 0) {
+            if (cur < 9) {
+                EmyOut *obj = self->m_unk48[cur];
+                self->m_curOut = obj;
+                ((NorOutVtbl3 *)obj)->v2();
+            }
+        }
+    }
+    return 0;
+}
 
 extern "C" int func_00151218()
 {
