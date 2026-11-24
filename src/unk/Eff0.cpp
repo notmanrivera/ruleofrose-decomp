@@ -1,6 +1,21 @@
 #include "include_asm.h"
 #include "unk/Eff0.h"
 #include "dog/doglightpool.h"
+#include "sdk/string.h"
+struct EffBreath1SpaceArg : public Eff0Arg {
+    float m_p0[3];                      // +0x10
+    float m_p1[3];                      // +0x1C
+    float m_unk28;                      // +0x28
+    EffVec4 m_unk2C;                    // +0x2C
+};
+struct EffBreath1Space_02 : public Eff0 {
+    float m_min[3];                     // +0x24
+    float m_max[3];                     // +0x30
+    float m_unk3C;                      // +0x3C
+    EffVec4 m_unk40;                    // +0x40
+    int m_unk50[0x80];                  // +0x50
+    int m_unk250;                       // +0x250
+};
 struct EffStay2Pair {
     EffVec4 a;
     EffVec4 b;
@@ -1471,7 +1486,26 @@ extern "C" int func_0016E65C(Obj_E65C *arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBreath1Space__vfunc_02);
+extern "C" int EffBreath1Space__vfunc_02(EffBreath1Space_02 *arg0, EffBreath1SpaceArg *arg1)
+{
+    if (!Eff0__vfunc_02(arg0, arg1)) {
+        return 0;
+    }
+    for (int i = 0; i < 3; i++) {
+        if (arg1->m_p0[i] <= arg1->m_p1[i]) {
+            arg0->m_min[i] = arg1->m_p0[i];
+            arg0->m_max[i] = arg1->m_p1[i];
+        } else {
+            arg0->m_min[i] = arg1->m_p1[i];
+            arg0->m_max[i] = arg1->m_p0[i];
+        }
+    }
+    arg0->m_unk3C = arg1->m_unk28;
+    arg0->m_unk40 = arg1->m_unk2C;
+    arg0->m_unk250 = 0;
+    memset(arg0->m_unk50, -1, sizeof(arg0->m_unk50));
+    return 1;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/Eff0", D_002F1F90);
 
