@@ -7,6 +7,10 @@
 #include "mag/magsystem.h"
 #include "bed/bedmemory.h"
 #include "utl/filereader.h"
+#include "dog/dogactor.h"
+#include "mag/magscene.h"
+#include "sdk/libvu0.h"
+extern "C" float func_00133440(MagScene *, int);
 struct SceneGameState {
     unsigned char m_pad00[0x7C];
     int m_unk7C;
@@ -141,7 +145,25 @@ extern "C" int func_001F76E0(ScenePlaySingle *self)
 
 INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F7788);
 
-INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F7C0C);
+extern "C" void func_001F7C0C(ScenePlaySingle *self)
+{
+    DogActor *actor = D_006FBD80.getActor(self->m_unk08);
+    float turn = 0.0f;
+    DogVector move;
+    move.m_y = move.m_z = 0.0f;
+    DogVector abs;
+    float t = actor->func_0010DA80();
+    actor->func_00109348(t, t + 2.0f * (func_00133440(&D_006FBD80, self->m_unk08) * 60.0f), move, &turn, &abs);
+    float ry = actor->m_base_rot.m_y;
+    move.m_y = 0.0f;
+    move.m_w = 1.0f;
+    float rot = abs.m_y;
+    sceVu0FMATRIX mat;
+    sceVu0UnitMatrix(mat);
+    sceVu0RotMatrixY(mat, mat, ry);
+    sceVu0ApplyMatrix(&move.m_x, mat, &move.m_x);
+    actor->func_0010A038(move, rot, turn);
+}
 
 extern "C" void func_001F7D54(ScenePlay *self, int arg1)
 {
