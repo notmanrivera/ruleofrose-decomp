@@ -410,7 +410,39 @@ extern "C" int createPacketEntry__4Eff0P20tag_I3dRenderStage_s(Eff0 *self, int a
   return ret;
 }
 
+// NON_MATCHING: 6/68 differ, 1 reloc differs, 6 edits
+#ifdef NON_MATCHING
+extern "C" int rand(void);
+extern "C" void *memmove(void *, const void *, size_t);
+extern "C" void func_0016AC84()
+{
+    unsigned char buf[256];
+    unsigned char *p = &buf[255];
+    int i = 255;
+    do {
+        *p = i;
+        i--;
+        p--;
+    } while (i >= 0);
+    i = 256;
+    int pos = rand() % 256;
+    do {
+        int step = i / 4;
+        int r = rand();
+        unsigned char *dst = (256 - i) + (unsigned char *)&D_00828378;
+        pos = (pos + step + r % (i - step * 2)) % i;
+        unsigned char *src = &buf[pos];
+        int tail = i - pos;
+        i--;
+        *dst = *src;
+        memmove(src, src + 1, tail - 1);
+    } while (i > 0);
+    ((unsigned char *)&D_00828378)[255] = buf[0];
+    D_00308050 = 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016AC84);
+#endif
 
 extern "C" int func_0016AD94()
 {
