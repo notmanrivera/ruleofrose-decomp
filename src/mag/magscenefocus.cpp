@@ -314,7 +314,6 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magscenefocus", D_002EEB90);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/magscenefocus", D_002EEBA0);
 
-// NON_MATCHING: fn matches; D_002EEBD0 needs .align 3 in config/rodata_align_manual.tsv
 extern "C" int func_00141770(const char *arg0)
 {
     if (strcmp(arg0, "far1far2") == 0) {
