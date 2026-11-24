@@ -2,6 +2,16 @@
 #include "unk/Eff0.h"
 #include "dog/doglightpool.h"
 #include "sdk/string.h"
+struct Model_E9F4 {
+    unsigned char m_pad00[0x40];        // +0x00
+    EffVec3 m_pos;                      // +0x40
+    unsigned char m_pad4C[0x11C - 0x4C];
+    void *m_i3r_root;                   // +0x11C
+};
+extern "C" int func_0022B3D8(void *, const char *);
+extern const char D_002F21C0[];
+extern const char D_002F21E0[];
+extern const char D_002F21F0[];
 struct EffBloodSpray1Particle {
     EffVec3 m_pos;                      // +0x00
     float m_unk0C;                      // +0x0C
@@ -1711,4 +1721,26 @@ extern "C" void func_0016E92C(EffBreath1Space *arg0, int arg1)
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016E92C);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016E9F4);
+extern "C" int func_0016E9F4(EffBreath1Space_02 *arg0, Model_E9F4 *arg1)
+{
+    const char *pName = D_002F21C0;
+    if (arg1->m_i3r_root == 0) {
+        ror_assert(D_002F21D0, 0x131, D_002F21E0);
+    }
+    if (pName == 0) {
+        ror_assert(D_002F21D0, 0x131, D_002F21F0);
+    }
+    if (func_0022B3D8(arg1->m_i3r_root, pName) == -1) {
+        return 0;
+    }
+    float p[3];
+    p[0] = arg1->m_pos.x;
+    p[1] = arg1->m_pos.y;
+    p[2] = arg1->m_pos.z;
+    if (arg0->m_min[0] <= p[0] && p[0] <= arg0->m_max[0] &&
+        arg0->m_min[2] <= p[2] && p[2] <= arg0->m_max[2] &&
+        arg0->m_min[1] <= p[1] && p[1] <= arg0->m_max[1]) {
+        return 1;
+    }
+    return 0;
+}
