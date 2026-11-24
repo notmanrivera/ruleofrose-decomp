@@ -158,7 +158,68 @@ extern "C" int func_00217D68(int arg0)
     return var_a0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00217DA4);
+extern "C" int func_00217DA4(EventTestTask *self, int arg1, int arg2)
+{
+    int oldVal = self->m_unk14;
+    int cur;
+    int top;
+    int changed;
+
+    if (func_00217CB4((int)self) != 0) {
+        self->m_unk14--;
+    }
+    if (func_00217CF0((int)self) != 0) {
+        self->m_unk14++;
+    }
+    if (arg2 != 0) {
+        if (func_00217D2C((int)self) != 0) {
+            self->m_unk14 -= arg2;
+            self->m_unk18 -= arg2;
+        }
+        if (func_00217D68((int)self) != 0) {
+            self->m_unk14 += arg2;
+            self->m_unk18 += arg2;
+        }
+    }
+
+    int v = self->m_unk14;
+    int clamped;
+    if (v >= 0) {
+        int maxVal = arg1 - 1;
+        clamped = v;
+        if (maxVal < clamped) {
+            clamped = maxVal;
+        }
+    } else {
+        clamped = 0;
+    }
+    self->m_unk14 = clamped;
+
+    if (arg2 < arg1) {
+        int val = self->m_unk18;
+        if (val >= 0) {
+            int limit = arg1 - arg2;
+            top = val;
+            if (limit < top) {
+                top = limit;
+            }
+        } else {
+            top = 0;
+        }
+    } else {
+        top = 0;
+    }
+
+    cur = self->m_unk14;
+    self->m_unk18 = top;
+    changed = (oldVal != cur);
+    if (cur < top) {
+        self->m_unk18 = cur;
+    } else if (top + arg2 < cur + 1) {
+        self->m_unk18 = cur - arg2 + 1;
+    }
+    return changed;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00217F10);
 
