@@ -1,155 +1,108 @@
+#include "game/gamman.h"
+#include "game/gamtrg.h"
+#include "mag/magscene.h"
+#include "sdk/math.h"
 #include "game/gamsnd.h"
 #include "sdk/string.h"
-#include "sdk/math.h"
-extern "C" int snprintf(char *, unsigned int, const char *, ...);
+#include "bed/bedmemory.h"
+#include "ror.h"
 #include "include_asm.h"
-extern "C" void position3138(void *, int, void *, int) asm("func_001DBA3C");
-extern "C" int play3138(void *, unsigned int, int, int, float, int, int, int) asm("func_001E5428");
-extern "C" int scene2DB4(void *) asm("func_001C6C28"); // decl2DB4
-extern "C" void *find2DB4(void *, int) asm("func_0017EA44"); // decl2DB4
-extern "C" int lookup2DB4(void *, unsigned int, void **) asm("func_001E4C1C"); // decl2DB4
-extern "C" int check2DB4(void *, unsigned int, int, void *) asm("func_001E5660"); // decl2DB4
-extern "C" int play2DB4(void *, unsigned int, int, EffVec3 *, int, int) asm("func_001E5250"); // decl2DB4
-extern char world2DB4[] asm("D_007812C0"); // decl2DB4
-extern char bank2DB4[] asm("D_00298EE0"); // decl2DB4
-extern "C" { // 5250
-extern int X_5250_D_007B2580 asm("D_007B2580"); // 5250
-int X_5250_func_001E4C1C(Obj5250 *, int, void **) asm("func_001E4C1C"); // 5250
-void X_5250_func_001E6E00(int, EffVec4 *, void *, int *, int *, float) asm("func_001E6E00"); // 5250
-int X_5250_func_0017FD58(int *, char *, int, int, int) asm("func_0017FD58"); // 5250
-void X_5250_func_00180078(int *, int, int) asm("func_00180078"); // 5250
-void X_5250_func_0017FF58(int *, float, int, int, int, int) asm("func_0017FF58"); // 5250
-} // 5250
+#include "task/cmnitask.h"
+#include "utl/filereader.h"
 
-extern TskMan50C8 X_50C8_D_007A3D80 asm("D_007A3D80");
-extern SysFlg50C8 X_50C8_D_007A320C asm("D_007A320C");
-extern int X_50C8_D_007B2580 asm("D_007B2580");
-extern "C" void *X_50C8_builtin_new(unsigned int) asm("__builtin_new");
-extern "C" void X_50C8_func_001F8FC0(void *, unsigned int, Msg50C8 *) asm("func_001F8FC0");
-extern "C" int X_50C8_func_001E71FC(void *, int, int, int, int, void *, int, int, int) asm("func_001E71FC");
-extern "C" int X_50C8_func_0017F8FC(void *, int) asm("func_0017F8FC");
-extern "C" void X_50C8_func_00180CE0(void *, int, int, int, float, int) asm("func_00180CE0");
-extern "C" void *X_4540_alloc__BedMemory(int, int, const char *, int, int, int) asm("alloc__9BedMemoryiPCciii");
-extern "C" void X_4540_heapFree(void *) asm("heapFree__FPv");
-extern "C" void X_4540_func_001E43E0(int, char *, int *, int *) asm("func_001E43E0");
-extern "C" void X_4540_func_001E44B4(int, int, int, void *, int) asm("func_001E44B4");
-extern "C" int X_4540_func_001E6734(int, int, int, int, int, int) asm("func_001E6734");
 
-extern "C" void X_17B4_func_001E111C(Obj17B4 *, int) asm("func_001E111C");
-extern "C" int X_17B4_func_001E5660(Obj17B4 *, int, int, SndMsg17B4 *) asm("func_001E5660");
-extern "C" int X_17B4_func_001E5E58(Obj17B4 *, int, int, SndMsg17B4 *) asm("func_001E5E58");
-extern "C" void X_17B4_func_001E4120(Obj17B4 *) asm("func_001E4120");
-
-extern "C" void *X_71FC___builtin_new(unsigned int) asm("__builtin_new");
-extern "C" void X_71FC_func_001E7E50(Obj71FC *, int) asm("func_001E7E50");
-extern "C" void X_71FC_func_001E7184(Obj71FC *, Node71FC *) asm("func_001E7184");
-
-extern "C" int X_5540_func_001E4C1C(Obj5540 *, int, Ent5540 **) asm("func_001E4C1C");
-extern "C" int X_5540_func_001E4B48(Obj5540 *, int, Ent5540 *) asm("func_001E4B48");
-
-extern int X_5428_D_007B2580 asm("D_007B2580");
-extern "C" void X_5428_func_00180078(int *, int, int) asm("func_00180078");
-extern "C" void X_5428_func_0017FF58(int *, int, int, int, int, float) asm("func_0017FF58");
-extern "C" int X_5428_func_001E5250(Obj5428 *, int, int, int, int, int) asm("func_001E5250");
-
-extern int X_5C40_D_007B2580 asm("D_007B2580");
-extern "C" int X_5C40_func_001800D0(int *, int) asm("func_001800D0");
-extern "C" void X_5C40_func_0017FF58(int *, int, int, int, int, float) asm("func_0017FF58");
-
-extern int X_6CAC_D_007B2580 asm("D_007B2580");
-extern "C" int X_6CAC_func_001800D0(int *, int) asm("func_001800D0");
-
-extern int X_5B60_D_007B2580 asm("D_007B2580");
-extern "C" int X_5B60_func_001800D0(int *, int) asm("func_001800D0");
-
-extern "C" void X_7D08___builtin_delete(void *) asm("__builtin_delete");
-extern "C" void X_7D08_func_001E7698(void *, Node7D08 *) asm("func_001E7698");
-
-extern "C" void X_76B8_func_001E7698(List76B8 *, Node76B8 *) asm("func_001E7698");
-extern "C" int X_def_func_001E76B8(List76B8 *arg0, int arg1) asm("func_001E76B8");
-
-extern "C" void X_7414_func_001E7340(void *, Node7414 *, int) asm("func_001E7340");
-
-extern int X_5BE0_D_007B2580 asm("D_007B2580");
-extern "C" int X_5BE0_func_001800D0(int *, int) asm("func_001800D0");
-
-extern int X_6368_D_007B2580 asm("D_007B2580");
-extern "C" int X_6368_func_00180CA8(int *, int) asm("func_00180CA8");
-
-extern char D_007812C0[];
-extern "C" int X_7ED8_func_001CBE38(void *, unsigned int) asm("func_001CBE38");
-
-static inline void noop(int *) {}
-extern char D_006E9800;
-extern char D_002FD770;
-extern "C" void *alloc__BedMemory(int, int, const char *, int, int, int) asm("alloc__9BedMemoryiPCciii");
-extern "C" void func_001E107C(int);
-extern "C" void func_001E1FA4(int);
-extern "C" int atoi(const char *);
-
-extern char D_006FBD80;
-extern "C" void func_001E3C24(int, EffVec3 *);
-
-extern "C" void X_237___builtin_delete(void *) asm("__builtin_delete");
+void heapFree(void *);
+void *operator new(unsigned int);
+void operator delete(void *);
+class SndMan;
+extern SndMan D_007B2580;
+extern GamMan D_007812C0;
+extern GamTaskMan D_007A3D80;
+extern unsigned int D_007A320C;
+extern BedMemory D_006E9800;
+extern MagScene D_006FBD80;
+extern char D_00298EE0[];
+extern const char D_002FD770[];
 extern int _vt$9GamSndMan;
-
-extern "C" void func_001E43E0(int, char *, int *, int *);
-extern "C" void func_001E44B4(int, int, int, int, int);
-extern "C" int func_001E4908(int, int, int *, int) asm("func_001E4908");
-extern "C" int func_001E43A4(int, unsigned int, int, unsigned int);
-
-#define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
+extern "C" {
+int atoi(const char *);
+int abs(int);
+int snprintf(char *, unsigned int, const char *, ...);
+void func_001C6A40(GamMan *, unsigned int);
+int func_001C6C28(GamMan *);
+int func_001CBE38(GamMan *, unsigned int);
+void *func_0017EA44(void *, int);
+void func_001DBA3C(GamMapObj *, unsigned int, float *, int);
+int func_0017F5E8(SndMan *, int);
+int func_0017F8FC(SndMan *, int);
+int func_0017FD58(SndMan *, char *, int, int, int);
+int func_0017FF58(SndMan *, float, int, int, int, int);
+void func_00180078(SndMan *, int, int);
+int func_001800D0(SndMan *, int);
+void func_001801C8(SndMan *, int);
+int func_001809D8(SndMan *, int, void *, int);
+void func_00180B30(SndMan *);
+int func_00180CA8(SndMan *, int);
+void func_00180CE0(SndMan *, int, int, int, float, int);
+int func_00180EA8(SndMan *, int);
+void func_001F8FC0(TskSnd *, unsigned int, GamSndMessage *);
+void func_0023A080(int);
+void rxSndReverbSetDepth(int, int);
+void func_002378B0(void *, void *, int);
+void func_00237408(void *, void *, void *);
+void func_002375D8(void *, void *);
+float func_00237580(void *, void *);
+}
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" int Xiiiii_func_001809D8(int, int, int, int) asm("func_001809D8");
-extern "C" int Xiiiiiii_func_001E6734(int, int, int, int, int, int) asm("func_001E6734");
-extern int D_007B2580;
-// Translated mechanically from m2c drafts: only what matches byte for byte.
 
-extern "C" int func_001E0BB0(char *arg0, int arg1)
+// The generic byte-copy inline preserves the unaligned default-record copy.
+static inline void copySoundParam(void *dst, const void *src) { memcpy(dst, src, sizeof(SND_PARAM)); }
+static inline float *soundCamera(MagScene *scene) { return scene->m_unk2AB70; }
+static inline GamMapObj *soundMap(GamMan *game) { return (GamMapObj *)game->m_mapObj; }
+static inline bool soundDisabled(const unsigned int *flags, unsigned int mask) { return (*flags & mask) != 0; }
+extern "C" int func_001E0BB0(GamTrgMan *arg0, int arg1)
 {
-    SndIt it;
-    SndIt last;
+    GamList<GamTrgElem>::iterator it;
+    GamList<GamTrgElem>::iterator last;
 
-    it = SndIt(*(SndNode **)(arg0 + 0x18454));
-    last = ((SndChain *)(arg0 + 0x18450))->end();
+    it = GamList<GamTrgElem>::iterator(arg0->m_list2.m_used.m_head.m_next);
+    last = arg0->m_list2.end();
     while (it != last) {
-        if ((*it).m_unk34 == arg1)
+        if ((*it).m_id == arg1)
             return 1;
         ++it;
     }
     return 0;
 }
 
-extern "C" void X_0C2C_func_001C6A40(char *, int) asm("func_001C6A40");
-
-extern "C" int func_001E0C2C(char *arg0, int arg1, int arg2, unsigned int arg3)
+extern "C" int func_001E0C2C(GamTrgMan *arg0, int arg1, int arg2, unsigned int arg3)
 {
-    char *base = arg0 + 0xC1C0;
-    int count = *(int *)(base + 0x190);
+    GamPool<GamTrgElem, 0x100> *base = &arg0->m_list1;
+    int count = base->m_used.m_num;
     if (count == 0)
         return 0;
-    SndIt0C2C it;
-    SndIt0C2C last;
-    it = SndIt0C2C(*(SndNode0C2C **)(base + 0xD4));
-    last = ((SndChain0C2C *)(base + 0xD0))->end();
+    GamList<GamTrgElem>::iterator it;
+    GamList<GamTrgElem>::iterator last;
+    it = GamList<GamTrgElem>::iterator(base->m_used.m_head.m_next);
+    last = base->end();
     do {
-        if ((*it).m_unk34 == arg2 || arg2 == 0) {
+        if ((*it).m_id == arg2 || arg2 == 0) {
             switch (arg1) {
             case 1:
-                (*it).m_sub.m_flags = arg3;
+                (*it).m_flg = arg3;
                 break;
             case 2:
-                (*it).m_sub.orFlags(arg3);
+                (*it).m_flg |= arg3;
                 break;
             case 3:
-                (*it).m_sub.andNotFlags(arg3);
+                (*it).m_flg &= ~arg3;
                 break;
             case 4:
-                return ((*it).m_sub.m_flags & arg3) != 0;
+                return ((*it).m_flg & arg3) != 0;
             case 5:
-                if ((*it).m_sub.m_flags & 0x20000000) {
-                    X_0C2C_func_001C6A40(D_007812C0, 0x8000);
-                    (*it).m_sub.andNotFlags(0x20000000);
+                if ((*it).m_flg & 0x20000000) {
+                    func_001C6A40(&D_007812C0, 0x8000);
+                    (*it).m_flg &= ~0x20000000;
                     return 1;
                 }
                 return 0;
@@ -162,88 +115,87 @@ extern "C" int func_001E0C2C(char *arg0, int arg1, int arg2, unsigned int arg3)
     return arg2 == 0;
 }
 
-extern "C" int func_001E0D70(char *arg0, int arg1)
+extern "C" int func_001E0D70(GamList<GamTrgElem> *arg0, int arg1)
 {
-    SndIt it;
-    SndIt last;
+    GamList<GamTrgElem>::iterator it;
+    GamList<GamTrgElem>::iterator last;
 
-    if (*(int *)(arg0 + 0x190) == 0)
+    if (arg0->m_used.m_num == 0)
         return 0;
-    it = SndIt(*(SndNode **)(arg0 + 0xD4));
-    last = ((SndChain *)(arg0 + 0xD0))->end();
+    it = GamList<GamTrgElem>::iterator(arg0->m_used.m_head.m_next);
+    last = arg0->end();
     while (it != last) {
-        if ((*it).m_unk34 == arg1)
+        if ((*it).m_id == arg1)
             return 1;
         ++it;
     }
     return 0;
 }
 
-extern "C" void func_001E0DF0(char *arg0)
+extern "C" void func_001E0DF0(GamSndMan *arg0)
 {
-    Range *r;
+    GamSndChannels *r;
 
-    *(int **)(arg0 + 0x1874) = &_vt$9GamSndMan;
-    ((SndQue *)(arg0 + 0x40))->init((SndNode *)(arg0 + 0x140), 0x20);
-    r = (Range *)(arg0 + 0xD40);
-    r->m_end = (char *)(arg0 + 0xD80);
+    arg0->m_vtable = &_vt$9GamSndMan;
+    arg0->m_queue.initPool(arg0->m_queue.m_nodes, 0x20);
+    r = &arg0->m_channels;
+    r->m_end = arg0->m_channels.m_buf;
     r->m_max = 0x30;
-    r->m_begin = (char *)(arg0 + 0xD80);
+    r->m_begin = arg0->m_channels.m_buf;
 }
 
-extern "C" void GamSndMan__vfunc_01(char *arg0, int arg1)
+extern "C" void GamSndMan__vfunc_01(GamSndMan *arg0, int arg1)
 {
-    Range *r;
-    Elem28 *p;
-    Elem28 *e;
+    GamSndChannels *r;
+    GamSndChannel *p;
+    GamSndChannel *e;
 
-    *(int **)(arg0 + 0x1874) = &_vt$9GamSndMan;
-    r = (Range *)(arg0 + 0xD40);
-    e = (Elem28 *)r->m_end;
-    p = (Elem28 *)r->m_begin;
+    arg0->m_vtable = &_vt$9GamSndMan;
+    r = &arg0->m_channels;
+    e = (GamSndChannel *)r->m_end;
+    p = (GamSndChannel *)r->m_begin;
     while (p != e) {
-        p->~Elem28();
+        p->~GamSndChannel();
         p++;
     }
     if (arg1 & 1) {
-        return X_237___builtin_delete(arg0);
+        return operator delete(arg0);
     }
 }
 
-extern "C" void func_001E0F1C(char *arg0)
+extern "C" void func_001E0F1C(GamSndMan *arg0)
 {
-    func_001E107C((int) arg0);
-    func_001E1FA4((int) arg0);
-    *(int *)(arg0 + 0x1540) = (int) alloc__BedMemory((int) &D_006E9800, 0xE000, &D_002FD770, 0x51, 0, 1);
-    *(int *)(arg0 + 0x1544) = (int) alloc__BedMemory((int) &D_006E9800, 0xC4E0, &D_002FD770, 0x52, 0, 1);
-    *(short *)(arg0 + 0x1576) = 0x80;
-    *(short *)(arg0 + 0x1578) = 0x80;
-    *(short *)(arg0 + 0x157A) = 0x6A4;
-    *(short *)(arg0 + 0x157C) = 0x64;
-    *(short *)(arg0 + 0x157E) = 0x80;
-    *(short *)(arg0 + 0x1580) = 0;
-    *(int *)(arg0 + 0x163C) = -1;
-    *(int *)(arg0 + 0x170C) = -1;
-    *(int *)(arg0 + 0x1710) = -1;
-    *(int *)(arg0 + 0x1718) = -1;
-    *(int *)(arg0 + 0x1684) = -1;
-    *(int *)(arg0 + 0x15AC) = -1;
-    *(int *)(arg0 + 0x1630) = 0;
-    *(int *)(arg0 + 0x15A0) = 0;
-    *(float *)(arg0 + 0x186C) = 0.5F;
-    memset(arg0 + 0x1728, -1, 0x104);
+    func_001E107C(arg0);
+    func_001E1FA4(arg0);
+    arg0->m_seTable = (SND_PARAM *)D_006E9800.alloc( 0xE000, D_002FD770, 0x51, 0, 1);
+    arg0->m_streamTable = (SND_PARAM *)D_006E9800.alloc( 0xC4E0, D_002FD770, 0x52, 0, 1);
+    arg0->m_default.m_unk26 = 0x80;
+    arg0->m_default.m_unk28 = 0x80;
+    arg0->m_default.m_unk2A = 0x6A4;
+    arg0->m_default.m_unk2C = 0x64;
+    arg0->m_default.m_unk2E = 0x80;
+    arg0->m_default.m_unk30 = 0;
+    arg0->m_unk15A0[4].m_unk0C = -1;
+    arg0->m_unk170C = -1;
+    arg0->m_unk1710 = -1;
+    arg0->m_unk1718 = -1;
+    arg0->m_unk1680[0].m_unk04 = -1;
+    arg0->m_unk15A0[0].m_unk0C = -1;
+    arg0->m_unk15A0[4].m_unk00 = 0;
+    arg0->m_unk15A0[0].m_unk00 = 0;
+    arg0->m_unk186C = 0.5F;
+    memset(arg0->m_bankIds, -1, 0x104);
 }
 
-extern "C" void func_001E100C(int arg0, EffVec3 *v)
+extern "C" void func_001E100C(GamSndMan *arg0, EffVec3 *v)
 {
     EffVec3 tmp;
     char *base;
     float *src;
 
-    if (*(int *)(arg0 + 0x110) != 0) {
-        if (*(int *)(arg0 + 0) == 1) {
-            base = &D_006FBD80;
-            src = (float *)(base + 0x2AB70);
+    if (arg0->m_queue.m_used.m_num != 0) {
+        if (arg0->m_mode == 1) {
+            src = soundCamera(&D_006FBD80);
             tmp.x = src[0x10];
             tmp.y = src[0x11];
             tmp.z = src[0x12];
@@ -254,174 +206,39 @@ extern "C" void func_001E100C(int arg0, EffVec3 *v)
     }
 }
 
-extern "C" void func_001E107C(int arg0)
+extern "C" void func_001E107C(GamSndMan *arg0)
 {
-    // Volatile only to keep the game's store order: plain stores let the
-    // scheduler move the 4 below the two 0x80s (three instructions off).
-    M2C_FIELD(arg0, volatile int *, 0x171C) = 4;
-    M2C_FIELD(arg0, volatile int *, 0x1720) = 0x80;
-    M2C_FIELD(arg0, volatile int *, 0x1724) = 0x80;
-    M2C_FIELD(arg0, volatile int *, 0) = 0;
-    Xiiiiiii_func_001E6734(arg0, 0xD, 0x80, 0x80, 0, -1);
-    M2C_FIELD(arg0, int *, 0x1598) = 0x80;
-    M2C_FIELD(arg0, int *, 0x159C) = 0x80;
-    M2C_FIELD(arg0, int *, 0x1590) = 0x80;
-    M2C_FIELD(arg0, int *, 0x1594) = 0x80;
-    Xiiiiiii_func_001E6734(arg0, 0xE, 0x80, 0x80, 0, -1);
-    Xiiiiiii_func_001E6734(arg0, 0xF, 0x80, 0x80, 0, -1);
+    arg0->m_unk171C = 4;
+    arg0->m_unk1720 = 0x80;
+    arg0->m_unk1724 = 0x80;
+    arg0->m_mode = 0;
+    func_001E6734(arg0, 0xD, 0x80, 0x80, 0, -1);
+    arg0->m_unk1598 = 0x80;
+    arg0->m_unk159C = 0x80;
+    arg0->m_unk1590 = 0x80;
+    arg0->m_unk1594 = 0x80;
+    func_001E6734(arg0, 0xE, 0x80, 0x80, 0, -1);
+    func_001E6734(arg0, 0xF, 0x80, 0x80, 0, -1);
 }
 
-// NON_MATCHING: 178/298 differ, 6 relocs differ (size 0x4A8, game 0x4B4), 26 edits
-#ifdef NON_MATCHING
-extern int D_007A3D80;
-extern "C" int X_111C_func_001E4908(int, unsigned int, int *, unsigned int) asm("func_001E4908");
-extern "C" int X_111C_func_001E5B60(...) asm("func_001E5B60");
-extern "C" int X_111C_func_001E6368(...) asm("func_001E6368");
-extern "C" int X_111C_func_001E79C0(int, int) asm("func_001E79C0");
-extern "C" int X_111C_func_001E7D7C(int, int) asm("func_001E7D7C");
-extern "C" void X_111C_func_001F9658(int, int, int) asm("func_001F9658");
-extern "C" void func_001E111C(int arg0, int arg1)
-{
-    struct { int sp0; } stack;
-    int temp_a2;
-    int temp_a3;
-    int temp_a0_2;
-    int temp_a1_3;
-    int temp_v0;
-    int temp_v1;
-    int temp_v1_2;
-    int temp_v1_3;
-    int temp_v1_4;
-    int temp_v1_9;
-    int var_s3;
-    int var_s4;
-    unsigned int temp_a1;
-    unsigned int temp_a1_4;
-    unsigned int temp_a1_5;
-    int temp_a0;
-    int temp_a1_2;
-    int temp_a1_6;
-    int temp_a4;
-    int temp_s5;
-    int temp_s6;
-    int temp_v0_2;
-    char *temp_v1_5;
-    char *temp_v1_6;
-    char *temp_v1_7;
-    int temp_v1_8;
-
-    temp_v1 = M2C_FIELD(arg0, int *, 0x1684);
-    if (temp_v1 < 0) {
-        temp_v1_2 = temp_v1 + 1;
-        M2C_FIELD(arg0, int *, 0x1708) = 0;
-        M2C_FIELD(arg0, int *, 0x1684) = temp_v1_2;
-        temp_s6 = arg0 + 0x28;
-        temp_s5 = arg0 + 0x14;
-        M2C_FIELD(((temp_v1_2 * 0x24) + arg0), int *, 0x15A0) = 0;
-        var_s3 = 0;
-        var_s4 = 0x2F;
-        M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + arg0), int *, 0x15AC) = -1;
-        M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + temp_s6), int *, 0x1590) = -1;
-        M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0xC) + temp_s5), int *, 0x1640) = 0;
-        do {
-            int *entries = (int *)(arg0 + 0xD40);
-            temp_a0 = *entries + var_s3;
-            temp_v1_3 = M2C_FIELD(temp_a0, int *, 0);
-            if (!(temp_v1_3 & 0x80)) {
-                if (temp_v1_3 & 1) {
-                    if (arg1 != 1) {
-                        temp_a1 = M2C_FIELD(temp_a0, unsigned int *, 0x14);
-                        if ((temp_a1 != -1U) && (temp_v1_3 & 0x100)) {
-                            temp_v0 = X_111C_func_001E5B60(arg0, temp_a1, M2C_FIELD(temp_a0, int *, 0x18));
-                            if ((temp_v0 != 5) && (temp_v0 != -1)) {
-                                M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + arg0), int *, 0x15AC) = (int) M2C_FIELD((*entries + var_s3), int *, 0x14);
-                                if (X_111C_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x1718)) != 0) {
-                                    int task = X_111C_func_001E79C0((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x1718));
-                                    temp_a1_2 = arg0 + (M2C_FIELD(arg0, int *, 0x1684) * 0x24);
-                                    X_111C_func_001F9658(task, temp_a1_2 + 0x15B0, temp_a1_2 + 0x15B4);
-                                } else {
-                                    M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + arg0), int *, 0x15B0) = (int) M2C_FIELD((*entries + var_s3), int *, 4);
-                                    M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + arg0), int *, 0x15B4) = (int) M2C_FIELD((*entries + var_s3), int *, 8);
-                                }
-                            }
-                            temp_v1_4 = M2C_FIELD(arg0, int *, 0x1684);
-                            temp_a2 = arg0 + 0x20;
-                            temp_a0_2 = temp_v1_4 * 0x24;
-                            temp_a1_3 = temp_a0_2 + 0x1590;
-                            if (*(int *)(temp_a2 + temp_a1_3) == 0) {
-                                temp_a3 = arg0 + 0x24;
-                                if ((*(int *)(temp_a3 + temp_a1_3) == 0) && (temp_v1_4 > 0)) {
-                                    temp_v1_5 = (char *)((temp_a0_2 + arg0) + 0x2C);
-                                    M2C_FIELD(temp_v1_5, int *, 0x1580) = (int) M2C_FIELD(temp_v1_5, int *, 0x155C);
-                                    temp_v1_6 = (char *)((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + temp_a2);
-                                    M2C_FIELD(temp_v1_6, int *, 0x1590) = (int) M2C_FIELD(temp_v1_6, int *, 0x156C);
-                                    temp_v1_7 = (char *)((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + temp_a3);
-                                    M2C_FIELD(temp_v1_7, int *, 0x1590) = (int) M2C_FIELD(temp_v1_7, int *, 0x156C);
-                                }
-                            }
-                        }
-                    }
-                } else if (arg1 != 2) {
-                    temp_a1_4 = M2C_FIELD(temp_a0, unsigned int *, 0xC);
-                    if ((temp_a1_4 != 0) && (temp_a1_4 != 0x0B030352) && (X_111C_func_001E6368(arg0, temp_a1_4, M2C_FIELD(temp_a0, int *, 0x18)) != 0)) {
-                        temp_a4 = *entries + var_s3;
-                        temp_a1_5 = M2C_FIELD(temp_a4, unsigned int *, 0xC);
-                        if ((temp_a1_5 >> 0x18) == 0xB) {
-                            temp_v1_9 = M2C_FIELD(arg0, int *, 0x1684);
-                            temp_v0_2 = (temp_v1_9 * 0x24) + arg0 + 0x15A0;
-                            if (M2C_FIELD(temp_v0_2, unsigned int *, 0) == 0) {
-                                M2C_FIELD(temp_v0_2, unsigned int *, 0) = temp_a1_5;
-                                if (X_111C_func_001E7D7C((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x1710)) != 0) {
-                                    int task = X_111C_func_001E79C0((int)&D_007A3D80, M2C_FIELD(arg0, int *, 0x1710));
-                                    temp_a1_6 = arg0 + (M2C_FIELD(arg0, int *, 0x1684) * 0x24);
-                                    X_111C_func_001F9658(task, temp_a1_6 + 0x15A4, temp_a1_6 + 0x15A8);
-                                } else {
-                                    M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + arg0), int *, 0x15A4) = (int) M2C_FIELD((*entries + var_s3), int *, 4);
-                                    M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + temp_s6), int *, 0x1580) = (int) M2C_FIELD((*entries + var_s3), int *, 8);
-                                }
-                            } else {
-                                M2C_FIELD(((temp_v1_9 * 0xC) + temp_s5), unsigned int *, 0x1640) = temp_a1_5;
-                                M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0xC) + arg0), int *, 0x1658) = (int) M2C_FIELD((*entries + var_s3), int *, 4);
-                                M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0xC) + arg0), int *, 0x165C) = (int) M2C_FIELD((*entries + var_s3), int *, 8);
-                            }
-                        } else {
-                            stack.sp0 = 0;
-                            X_111C_func_001E4908(arg0, M2C_FIELD(temp_a4, unsigned int *, 0xC), &stack.sp0, 1);
-                            temp_v1_8 = *entries + var_s3;
-                            if ((M2C_FIELD(temp_v1_8, int *, 0) & 0x10) || ((stack.sp0 != 0) && (M2C_FIELD(stack.sp0, unsigned short *, 0x36) != 0))) {
-                                M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1708) * 0x10) + arg0), int *, 0x1688) = (int) M2C_FIELD(temp_v1_8, int *, 0xC);
-                                M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1708) * 0x10) + arg0), int *, 0x168C) = (int) M2C_FIELD((*entries + var_s3), int *, 4);
-                                M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1708) * 0x10) + arg0), int *, 0x1690) = (int) M2C_FIELD((*entries + var_s3), int *, 8);
-                                M2C_FIELD(arg0, int *, 0x1708) = (int) (M2C_FIELD(arg0, int *, 0x1708) + 1);
-                            }
-                        }
-                    }
-                }
-            }
-            var_s4 -= 1;
-            var_s3 += 0x28;
-        } while (var_s4 >= 0);
-    }
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E111C);
-#endif
 
-extern "C" void func_001E15D0(int arg0, int arg1)
+extern "C" void func_001E15D0(GamSndMan *arg0, const GamSndBgm *arg1)
 {
-    M2C_FIELD(arg0, int *, 0x1684) = 0;
-    *(m2c_block36 *)((char *)(arg0) + 0x15a0) = *(m2c_block36 *)((char *)(arg1) + 0x0);
+    arg0->m_unk1680[0].m_unk04 = 0;
+    arg0->m_unk15A0[0] = *arg1;
 }
 
+// Existing address-preparation debt: retain until the original inline is identified.
 static inline int *relative1620(char *base, int offset) { return (int *)(base + offset); }
-extern "C" void func_001E1620(Obj1620 *arg0, int arg1, int arg2, int arg3) {
-    if (arg0->m_unk1684 < 0) {
+extern "C" void func_001E1620(GamSndMan *arg0, int arg1, int arg2, int arg3) {
+    if (arg0->m_unk1680[0].m_unk04 < 0) {
         return;
     }
-    arg0->m_unk1684 = 0;
+    arg0->m_unk1680[0].m_unk04 = 0;
 
     if (arg1 != 1) {
-        int *p = &arg0->arr15A0_1620[0].m_unk0C;
+        int *p = &arg0->m_unk15A0[0].m_unk0C;
         if (arg3 != -1) {
             if (arg3 != *p) {
                 goto after_if1;
@@ -430,232 +247,106 @@ extern "C" void func_001E1620(Obj1620 *arg0, int arg1, int arg2, int arg3) {
         } else {
             *p = arg3;
         }
-        arg0->arr15A0_1620[arg0->m_unk1684].m_unk10 = 0;
-        arg0->arr15A0_1620[arg0->m_unk1684].m_unk14 = 0;
+        arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk10 = 0;
+        arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk14 = 0;
     }
 after_if1:
 
     if (arg1 != 2) {
         char *base20 = (char *)arg0 + 0x20;
-        register int index PS2_REG("$3") = arg0->m_unk1684;
+        register int index PS2_REG("$3") = arg0->m_unk1680[0].m_unk04;
         char *base14 = (char *)arg0 + 0x14;
         if (arg2 != 0) {
             if (arg2 == *relative1620(base20, index * 0x24 + 0x1580)) {
-                *relative1620(base20, arg0->m_unk1684 * 0x24 + 0x1580) = 0;
-                arg0->arr15A0_1620[arg0->m_unk1684].m_unk04 = 0;
-                arg0->arr15A0_1620[arg0->m_unk1684].m_unk08 = 0;
+                *relative1620(base20, arg0->m_unk1680[0].m_unk04 * 0x24 + 0x1580) = 0;
+                arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk04 = 0;
+                arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk08 = 0;
             }
-            if (arg2 == *relative1620(base14, arg0->m_unk1684 * 0xC + 0x1640)) {
-                *relative1620(base14, arg0->m_unk1684 * 0xC + 0x1640) = 0;
+            if (arg2 == *relative1620(base14, arg0->m_unk1680[0].m_unk04 * 0xC + 0x1640)) {
+                *relative1620(base14, arg0->m_unk1680[0].m_unk04 * 0xC + 0x1640) = 0;
                 goto clear_1658;
             }
         } else {
             *relative1620(base20, index * 0x24 + 0x1580) = 0;
-            arg0->arr15A0_1620[arg0->m_unk1684].m_unk04 = 0;
-            arg0->arr15A0_1620[arg0->m_unk1684].m_unk08 = 0;
-            *relative1620(base14, arg0->m_unk1684 * 0xC + 0x1640) = 0;
+            arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk04 = 0;
+            arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk08 = 0;
+            *relative1620(base14, arg0->m_unk1680[0].m_unk04 * 0xC + 0x1640) = 0;
         clear_1658:
-            arg0->arr1654_1620[arg0->m_unk1684].m_unk04 = 0;
-            arg0->arr1654_1620[arg0->m_unk1684].m_unk08 = 0;
+            arg0->m_unk1654[arg0->m_unk1680[0].m_unk04].m_unk04 = 0;
+            arg0->m_unk1654[arg0->m_unk1680[0].m_unk04].m_unk08 = 0;
         }
     }
 }
 
-extern "C" void func_001E17B4(Obj17B4 *arg0, int arg1)
+extern "C" void func_001E17B4(GamSndMan *arg0, int arg1)
 {
-    SndMsg17B4 msg;
+    GamSndMessage msg;
 
-    X_17B4_func_001E111C(arg0, 0);
-    int val = arg0->arr15A0[arg0->arr1680[0].m_unk04].m_unk0C;
+    func_001E111C(arg0, 0);
+    int val = arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk0C;
     if (val != -1 && arg1 != 1) {
         msg.m_unk14 = 0x1E;
         msg.m_unk04 = 0;
         msg.m_unk08 = 0;
-        X_17B4_func_001E5660(arg0, val, 0x1B, &msg);
+        func_001E5660(arg0, val, 0x1B, &msg);
     }
     if (arg1 != 2) {
-        int val2 = arg0->arr15A0[arg0->arr1680[0].m_unk04].m_unk00;
+        int val2 = arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk00;
         if (val2 != 0) {
             msg.m_unk14 = 0x1E;
             msg.m_unk04 = 0;
             msg.m_unk08 = 0;
-            X_17B4_func_001E5E58(arg0, val2, 0x13, &msg);
+            func_001E5E58(arg0, val2, 0x13, &msg);
         }
-        int val3 = arg0->arr1654[arg0->arr1680[0].m_unk04].m_unk00;
+        int val3 = arg0->m_unk1654[arg0->m_unk1680[0].m_unk04].m_unk00;
         if (val3 != 0) {
             msg.m_unk14 = 0x1E;
             msg.m_unk04 = 0;
             msg.m_unk08 = 0;
-            X_17B4_func_001E5E58(arg0, val3, 0x14, &msg);
+            func_001E5E58(arg0, val3, 0x14, &msg);
         }
     }
     for (int i = 0; i < arg0->m_unk1708; i++) {
         msg.m_unk14 = 0x1E;
         msg.m_unk04 = 0;
         msg.m_unk08 = 0;
-        X_17B4_func_001E5E58(arg0, arg0->arr1680[i].m_unk08, 0x15, &msg);
+        func_001E5E58(arg0, arg0->m_unk1680[i].m_unk08, 0x15, &msg);
     }
-    X_17B4_func_001E4120(arg0);
+    func_001E4120(arg0);
     arg0->m_unk1870 |= 1;
 }
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E1920);
 
-// NON_MATCHING: 37/118 differ (size 0x1D8, game 0x1D4), 27 edits
-#ifdef NON_MATCHING
-extern int X_1FA4_D_007A3D80 asm("D_007A3D80");
-extern "C" int X_1FA4_func_001E7D7C(void *, int) asm("func_001E7D7C");
-extern "C" void X_1FA4_func_001E7724(void *, int) asm("func_001E7724");
-extern "C" void X_def_func_001E1FA4(Obj1FA4 *arg0) asm("func_001E1FA4"); // 1FA4
-extern "C" void X_def_func_001E1FA4(Obj1FA4 *arg0)
-{
-    Range1FA4 *r;
-    int i;
-
-    arg0->m_unk1684 = -1;
-    arg0->m_unk1708 = 0;
-    for (i = 0; i < 4; i++) {
-        arg0->m_sub.arr[i].m_unk0C = -1;
-        arg0->m_sub.arr[i].m_unk00 = 0;
-    }
-    r = &arg0->m_range;
-    for (i = 0; i < 0x30; i++) {
-        (r->m_begin + i)->m_unk00 = 0;
-        (r->m_begin + i)->m_unk0C = 0;
-        (r->m_begin + i)->m_unk18 = -1;
-        (r->m_begin + i)->m_unk04 = 0;
-        (r->m_begin + i)->m_unk08 = 0;
-    }
-    if (X_1FA4_func_001E7D7C(&X_1FA4_D_007A3D80, arg0->m_unk170C) != 0) {
-        X_1FA4_func_001E7724(&X_1FA4_D_007A3D80, arg0->m_unk170C);
-    }
-    if (X_1FA4_func_001E7D7C(&X_1FA4_D_007A3D80, arg0->m_unk1710) != 0) {
-        X_1FA4_func_001E7724(&X_1FA4_D_007A3D80, arg0->m_unk1710);
-    }
-    if (X_1FA4_func_001E7D7C(&X_1FA4_D_007A3D80, arg0->m_unk1718) != 0) {
-        X_1FA4_func_001E7724(&X_1FA4_D_007A3D80, arg0->m_unk1718);
-    }
-    arg0->m_unk1718 = -1;
-    arg0->m_unk170C = -1;
-    arg0->m_unk1710 = -1;
-    r->clear();
-    arg0->m_que.clear();
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E1FA4);
-#endif
 
-// NON_MATCHING: 74/110 differ, 1 reloc differs (size 0x1B8, game 0x1D8), 49 edits
-#ifdef NON_MATCHING
-extern "C" int X_2178_func_001E5660(Obj2178 *, int, int, int) asm("func_001E5660");
-extern "C" void X_2178_func_001E649C(Obj2178 *, unsigned int, int) asm("func_001E649C");
-extern "C" void func_001E2178(Obj2178 *arg0)
-{
-    GamList2178<Ent2178>::iterator it;
-    GamList2178<Ent2178>::iterator last;
-    it = arg0->m_que.begin();
-    last = arg0->m_que.end();
-    while (it != last) {
-        if ((*it).flags & 2) {
-            if ((*it).flags & 1) {
-                X_2178_func_001E5660(arg0, (*it).m_unk20, 1, 0);
-            }
-            it = arg0->m_que.erase(it);
-        } else if ((*it).flags & 4) {
-            X_2178_func_001E649C(arg0, (*it).m_unk20, (*it).m_unk24);
-            (*it).m_unk24 = -1;
-            it = arg0->m_que.erase(it);
-        } else {
-            ++it;
-        }
-    }
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2178);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2350);
 
-// NON_MATCHING: 90/217 differ (size 0x364, game 0x368), 32 edits
-#ifdef NON_MATCHING
-extern "C" int scene239C(void *) asm("func_001C6C28"); // decl239C
-extern "C" void *find239C(void *, int) asm("func_0017EA44"); // decl239C
-extern "C" int lookup239C(void *, unsigned int, void **, unsigned int) asm("func_001E4908"); // decl239C
-extern "C" int check239C(void *, unsigned int, int, void *) asm("func_001E5E58"); // decl239C
-extern "C" int play239C(void *, unsigned int, int, EffVec3 *, int) asm("func_001E4EBC"); // decl239C
-extern char world239C[] asm("D_007812C0"); // decl239C
-extern char bank239C[] asm("D_00298EE0"); // decl239C
-extern "C" void func_001E239C(Obj239C *self, unsigned int id, EffVec3 *position, int scene, int flags)
-{
-    if (scene == -1) scene = scene239C(world239C);
-    float *entry = (float *)find239C(bank239C, scene);
-    if (entry) {
-        Item239C item;
-        item.scene = scene;
-        item.distance = 3000.0f;
-        item.handle = -1;
-        item.flags = flags;
-        item.id = id;
-        item.zero = 0;
-        item.a = 0;
-        item.b = 0;
-        item.position.x = position->x + entry[8];
-        item.position.y = position->y + entry[9];
-        item.position.z = position->z + entry[10];
-        float horizontal = sqrtf(item.position.x * item.position.x + item.position.z * item.position.z);
-        float distance = sqrtf(item.position.y * item.position.y + horizontal * horizontal);
-        lookup239C(self, id, &item.data, 1);
-        if (item.data) {
-            if (flags & 0x20) {
-                if (check239C(self, item.id, 0x16, 0) != 0) return;
-                item.flags |= 0x200;
-                item.handle = play239C(self, item.id, 0, position, 0x80);
-            }
-            register Que239C *queue PS2_REG("$4") = &self->queue;
-            Iter239C it;
-            Iter239C last;
-            it = queue->begin();
-            last = queue->end();
-            while (it != last) {
-                if (distance <= (*it).distance) {
-                    queue->insert(it, item);
-                    return;
-                }
-                ++it;
-            }
-            queue->push(item);
-        }
-    }
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E239C);
-#endif
 
-extern "C" void position2704(void *, int, void *, int) asm("func_001DBA3C");
-extern "C" int lookup2704(void *, unsigned int, void **, unsigned int) asm("func_001E4908");
-extern "C" int check2704(void *, unsigned int, int, void *) asm("func_001E5E58");
-extern "C" int play2704(void *, unsigned int, int, int, float, int, int, int) asm("func_001E50C8");
-extern "C" void func_001E2704(Obj2DB4 *self, unsigned int id, int key, int flags)
+extern "C" void func_001E2704(GamSndMan *self, unsigned int id, int key, int flags)
 {
-    Item2DB4 item;
+    GamSnd3D item;
     item.distance = 3000.0f;
     item.flags = flags | 4;
     item.id = id;
     item.zero = key;
-    item.scene = scene2DB4(world2DB4);
+    item.scene = func_001C6C28(&D_007812C0);
     item.handle = -1;
-    position2704((void *)((int)world2DB4 + 0x18C00), 2, &item.position, 0);
-    lookup2704(self, id, &item.data, 1);
+    func_001DBA3C((GamMapObj *)D_007812C0.m_mapObj, 2, &item.position.x, 0);
+    func_001E4908(self, id, &item.data, 1);
     float horizontal = sqrtf(item.position.x * item.position.x + item.position.z * item.position.z);
     float distance = sqrtf(item.position.y * item.position.y + horizontal * horizontal);
     if (flags & 0x20) {
-        if (check2704(self, item.id, 0x16, 0) != 0) return;
+        if (func_001E5E58(self, item.id, 0x16, 0) != 0) return;
         item.flags |= 0x200;
-        item.handle = play2704(self, item.id, 1, 1, 1.0f, 1, 0, 0x80);
+        item.handle = func_001E50C8(self, item.id, 1, 1, 1.0f, 1, 0, 0x80);
     }
-    Que2DB4 *queue = &self->queue;
-    Iter2DB4 it;
-    Iter2DB4 last;
+    GamList<GamSnd3D> *queue = &self->m_queue;
+    GamList<GamSnd3D>::iterator it;
+    GamList<GamSnd3D>::iterator last;
     it = queue->begin();
     last = queue->end();
     while (it != last) {
@@ -663,7 +354,7 @@ extern "C" void func_001E2704(Obj2DB4 *self, unsigned int id, int key, int flags
         ++it;
     }
     {
-    Que2DB4 *queue = &self->queue;
+    GamList<GamSnd3D> *queue = &self->m_queue;
     it = queue->begin();
     last = queue->end();
     while (it != last) {
@@ -673,55 +364,49 @@ extern "C" void func_001E2704(Obj2DB4 *self, unsigned int id, int key, int flags
         }
         ++it;
     }
-    queue->push(item);
+    queue->push_back(item);
     }
 }
-
-extern "C" void X_2AA0_func_001E649C(Obj2AA0 *, unsigned int, int) asm("func_001E649C");
-extern "C" void func_001E2AA0(Obj2AA0 *arg0, unsigned int arg1, int arg2) {
-    register SndChain2AA0 *idle PS2_REG("$17") = &arg0->m_que.m_free;
-    SndIt2AA0 it;
-    SndIt2AA0 last;
-    it = ((SndQue2AA0 *)idle)->begin();
-    last = arg0->m_que.end();
+extern "C" void func_001E2AA0(GamSndMan *arg0, unsigned int arg1, int arg2) {
+    register GamList<GamSnd3D>::Chain *idle PS2_REG("$17") = &arg0->m_queue.m_free;
+    GamList<GamSnd3D>::iterator it;
+    GamList<GamSnd3D>::iterator last;
+    it = ((GamList<GamSnd3D> *)idle)->begin();
+    last = arg0->m_queue.end();
     while (it != last) {
-        if ((*it).m_unk20 == arg1 && (arg2 == -1 || (*it).m_unk30 == arg2)) {
-            X_2AA0_func_001E649C(arg0, (*it).m_unk20, (*it).m_unk24);
-            (*it).m_unk24 = -1;
-            it = arg0->m_que.erase(it);
+        if ((*it).id == arg1 && (arg2 == -1 || (*it).scene == arg2)) {
+            func_001E649C(arg0, (*it).id, (*it).handle);
+            (*it).handle = -1;
+            it = arg0->m_queue.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+extern "C" void func_001E2C40(GamSndMan *arg0, int arg1) {
+    register GamList<GamSnd3D>::Chain *idle PS2_REG("$17") = &arg0->m_queue.m_free;
+    GamList<GamSnd3D>::Chain *used = &arg0->m_queue.m_used;
+    GamList<GamSnd3D>::iterator it;
+    GamList<GamSnd3D>::iterator last;
+    it = ((GamList<GamSnd3D> *)idle)->begin();
+    last = GamList<GamSnd3D>::iterator(&used->m_head);
+    while (it != last) {
+        if ((*it).zero == arg1) {
+            func_001E649C(arg0, (*it).id, (*it).handle);
+            (*it).handle = -1;
+            it = arg0->m_queue.erase(it);
         } else {
             ++it;
         }
     }
 }
 
-extern "C" int X_2C40_func_001E649C(Obj2C40 *, unsigned int, int) asm("func_001E649C");
-extern "C" void func_001E2C40(Obj2C40 *arg0, int arg1) {
-    register SndChain2C40 *idle PS2_REG("$17") = &arg0->m_que2C40.m_free2C40;
-    SndChain2C40 *used = &arg0->m_que2C40.m_used2C40;
-    SndIt2C40 it;
-    SndIt2C40 last;
-    it = ((SndQue2C40 *)idle)->begin();
-    last = SndIt2C40(&used->m_head2C40);
-    while (it != last) {
-        if ((*it).m_unk2C == arg1) {
-            X_2C40_func_001E649C(arg0, (*it).m_unk20, (*it).m_unk24);
-            (*it).m_unk24 = -1;
-            it = arg0->m_que2C40.erase(it);
-        } else {
-            ++it;
-        }
-    }
-}
-
-// ---- end
-
-extern "C" void func_001E2DB4(Obj2DB4 *self, unsigned int id, EffVec3 *position, int scene, int flags)
+extern "C" void func_001E2DB4(GamSndMan *self, unsigned int id, EffVec3 *position, int scene, int flags)
 {
-    if (scene == -1) scene = scene2DB4(world2DB4);
-    float *entry = (float *)find2DB4(bank2DB4, scene);
+    if (scene == -1) scene = func_001C6C28(&D_007812C0);
+    float *entry = (float *)func_0017EA44(D_00298EE0, scene);
     if (entry) {
-        Item2DB4 item;
+        GamSnd3D item;
         item.flags = flags | 1;
         item.distance = 3000.0f;
         item.scene = scene;
@@ -731,20 +416,20 @@ extern "C" void func_001E2DB4(Obj2DB4 *self, unsigned int id, EffVec3 *position,
         item.position.x = position->x + entry[8];
         item.position.y = position->y + entry[9];
         item.position.z = position->z + entry[10];
-        void *data;
-        if (lookup2DB4(self, id, &data)) item.data = data;
+        SND_PARAM *data;
+        if (func_001E4C1C(self, id, &data)) item.data = data;
         else item.data = 0;
         float horizontal = sqrtf(item.position.x * item.position.x + item.position.z * item.position.z);
         float distance = sqrtf(item.position.y * item.position.y + horizontal * horizontal);
-        Que2DB4 *queue = &self->queue;
-        Iter2DB4 it;
-        Iter2DB4 last;
+        GamList<GamSnd3D> *queue = &self->m_queue;
+        GamList<GamSnd3D>::iterator it;
+        GamList<GamSnd3D>::iterator last;
         it = queue->begin();
         last = queue->end();
         if (flags & 0x20) {
-            if (check2DB4(self, item.id, 0x16, 0) != 0) return;
+            if (func_001E5660(self, item.id, 0x16, 0) != 0) return;
             item.flags |= 0x200;
-            item.handle = play2DB4(self, item.id, 1, position, 0, 0x80);
+            item.handle = func_001E5250(self, item.id, 1, (EffVec4 *)position, 0, 0x80);
         }
             while (it != last) {
                 if (distance <= (*it).distance) {
@@ -753,44 +438,43 @@ extern "C" void func_001E2DB4(Obj2DB4 *self, unsigned int id, EffVec3 *position,
                 }
                 ++it;
             }
-            queue->push(item);
+            queue->push_back(item);
     }
 }
 
-extern "C" void func_001E3138(Obj2DB4 *self, unsigned int id, unsigned int key, int flags)
+extern "C" void func_001E3138(GamSndMan *self, unsigned int id, unsigned int key, int flags)
 {
     unsigned int kind = (key >> 30) ^ 2;
-    Item2DB4 item;
+    GamSnd3D item;
     item.flags = flags | 5;
     item.distance = 3000.0f;
     item.id = id;
     item.zero = key;
     item.handle = -1;
-    if (kind == 0) item.scene = scene2DB4(world2DB4);
+    if (kind == 0) item.scene = func_001C6C28(&D_007812C0);
     else item.scene = -1;
-    register int world PS2_REG("$4") = (int)world2DB4;
-    world += 0x18C00;
-    position3138((void *)world, 2, &item.position, 0);
+    register GamMapObj *world PS2_REG("$4") = soundMap(&D_007812C0);
+    func_001DBA3C(world, 2, &item.position.x, 0);
     item.data = 0;
     float horizontal = sqrtf(item.position.x * item.position.x + item.position.z * item.position.z);
     float distance = sqrtf(item.position.y * item.position.y + horizontal * horizontal);
-    Que2DB4 *queue = &self->queue;
-    register Node2DB4 *sentinel PS2_REG("$21") = &queue->used.head;
-    Iter2DB4 it;
-    Iter2DB4 last;
+    GamList<GamSnd3D> *queue = &self->m_queue;
+    register GamList<GamSnd3D>::Node *sentinel PS2_REG("$21") = &queue->m_used.m_head;
+    GamList<GamSnd3D>::iterator it;
+    GamList<GamSnd3D>::iterator last;
     it = queue->begin();
-    last = Iter2DB4(sentinel);
+    last = GamList<GamSnd3D>::iterator(sentinel);
     while (it != last) {
         if ((unsigned int)(*it).zero == key && (*it).id == id) return;
         ++it;
     }
     if (flags & 0x20) {
-        if (check2DB4(self, item.id, 0x16, 0) != 0) return;
+        if (func_001E5660(self, item.id, 0x16, 0) != 0) return;
         item.flags |= 0x200;
-        item.handle = play3138(self, item.id, 1, 1, 1.0f, 0, 1, 0);
+        item.handle = func_001E5428(self, item.id, 1, 1, 0, 1, 0, 1.0f);
     }
     it = queue->begin();
-    last = Iter2DB4(sentinel);
+    last = GamList<GamSnd3D>::iterator(sentinel);
     while (it != last) {
         if (distance <= (*it).distance) {
             queue->insert(it, item);
@@ -798,115 +482,83 @@ extern "C" void func_001E3138(Obj2DB4 *self, unsigned int id, unsigned int key, 
         }
         ++it;
     }
-    queue->push(item);
+    queue->push_back(item);
 }
-
-extern "C" int X_34EC_func_001E5660(Obj34EC *, int, int, int) asm("func_001E5660");
-extern "C" int X_34EC_func_001E4CBC(Obj34EC *, int) asm("func_001E4CBC");
-extern "C" void func_001E34EC(Obj34EC *arg0, int arg1, int arg2) {
-    register GamList34EC<Ent34EC>::Chain *idle PS2_REG("$17") = &arg0->m_que.m_free;
-    GamList34EC<Ent34EC>::iterator it;
-    GamList34EC<Ent34EC>::iterator last;
-    it = ((GamList34EC<Ent34EC> *)idle)->begin();
-    last = arg0->m_que.end();
+extern "C" void func_001E34EC(GamSndMan *arg0, int arg1, int arg2) {
+    register GamList<GamSnd3D>::Chain *idle PS2_REG("$17") = &arg0->m_queue.m_free;
+    GamList<GamSnd3D>::iterator it;
+    GamList<GamSnd3D>::iterator last;
+    it = ((GamList<GamSnd3D> *)idle)->begin();
+    last = arg0->m_queue.end();
     while (it != last) {
-        if ((*it).m_unk20 == arg1 && (arg2 == -1 || (*it).m_unk30 == arg2)) {
-            X_34EC_func_001E5660(arg0, arg1, 1, 0);
-            it = arg0->m_que.erase(it);
-            X_34EC_func_001E4CBC(arg0, arg1);
+        if ((*it).id == arg1 && (arg2 == -1 || (*it).scene == arg2)) {
+            func_001E5660(arg0, arg1, 1, 0);
+            it = arg0->m_queue.erase(it);
+            func_001E4CBC(arg0, arg1);
         } else {
             ++it;
         }
     }
 }
 
-// NON_MATCHING: 24/91 differ, 27 edits
-#ifdef NON_MATCHING
-extern "C" int X_3698_func_001E5660(Obj3698 *, int, int, int) asm("func_001E5660");
-extern "C" void func_001E3698(Obj3698 *arg0, int arg1) {
-    SndIt3698 it;
-    SndIt3698 last;
-    it = arg0->m_que3698.begin();
-    last = arg0->m_que3698.end();
-    while (it != last) {
-        if ((*it).m_unk2C == arg1) {
-            X_3698_func_001E5660(arg0, (*it).m_unk20, 1, 0);
-            it = arg0->m_que3698.erase(it);
-        } else {
-            ++it;
-        }
-    }
-}
-
-// ---- end
-#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3698);
-#endif
 
-extern "C" void func_001E3804(char *arg0)
+extern "C" void func_001E3804(GamSndMan *arg0)
 {
-    ((SndQue *)(arg0 + 0x40))->clear();
+    arg0->m_queue.clearUsed();
 }
-extern "C" void calc386C(int, void *, void *, int *, int *, int, float) asm("func_001E6E00"); // decl386C
-extern "C" int active386C(void *, unsigned int, int) asm("func_001E5B60"); // decl386C
-extern "C" int activeOther386C(void *, unsigned int, int) asm("func_001E6368"); // decl386C
-extern "C" void stop386C(void *, unsigned int, int) asm("func_001E34EC"); // decl386C
-extern "C" void stopOther386C(void *, unsigned int, int) asm("func_001E2AA0"); // decl386C
-extern "C" int start386C(void *, unsigned int, int, int, int, float, int, int) asm("func_001E5428"); // decl386C
-extern "C" int startOther386C(void *, unsigned int, int, int, int, float, int, int) asm("func_001E50C8"); // decl386C
-extern "C" void volume386C(void *, unsigned int, int, int, int) asm("func_001E5C40"); // decl386C
-extern "C" void volumeOther386C(void *, unsigned int, int, int, int) asm("func_001E63C0"); // decl386C
-extern "C" int abs(int); // abs386C // decl386C
-extern "C" void func_001E386C(Obj386C *self, Item2DB4 *item)
+extern "C" void func_001E386C(GamSndMan *self, GamSnd3D *item)
 {
     int left, right;
     int oldLeft = 0;
     int oldRight = 0;
     int handle = item->handle;
     register int flags PS2_REG("$9") = item->flags;
-    void *data = item->data;
-    int mode = self->mode;
+    SND_PARAM *data = item->data;
+    int mode = self->m_mode;
     float distance = item->distance;
     if (handle != -1) {
-        Entry386C *entry = &self->entries[handle];
-        oldLeft = entry->left;
-        oldRight = entry->right;
+        GamSndChannel *entry = &self->m_channels.m_begin[handle];
+        oldLeft = entry->m_unk04;
+        oldRight = entry->m_unk08;
     }
-    if (item->flags & 1) {
+    // Keep the flag test in v0; t1 holds the cached flags.
+    register int is3D PS2_REG("$2") = item->flags & 1;
+    if (is3D) {
         if (data) {
-            calc386C(mode, item, data, &left, &right, flags, distance);
+            func_001E6E00(mode, item, data, &left, &right, distance);
         } else {
-            calc386C(mode, item, self->fallback, &left, &right, flags, distance);
+            func_001E6E00(mode, item, &self->m_default, &left, &right, distance);
         }
         if (!left || abs(left - oldLeft) >= 33) left = (int)((left + oldLeft) * 0.75f);
         if (!right || abs(right - oldRight) >= 33) right = (int)((right + oldRight) * 0.75f);
-        if (item->scene != scene2DB4(world2DB4)) {
-            float factor = self->multiplier;
+        if (item->scene != func_001C6C28(&D_007812C0)) {
+            float factor = self->m_unk186C;
             left = (int)((float)left * factor);
             right = (int)((float)right * factor);
         }
         item->a = left;
         item->b = right;
-        if (!active386C(self, item->id, item->handle)) {
+        if (!func_001E5B60(self, item->id, item->handle)) {
             if ((*(long long *)&item->flags & 0x60) == 0x60 || (item->flags & 0x200)) {
-                stop386C(self, item->id, -1);
+                func_001E34EC(self, item->id, -1);
             } else {
-                item->handle = start386C(self, item->id, left, right, 0, 1.0f, 1, 0x80);
+                item->handle = func_001E5428(self, item->id, left, right, 0, 1, 0x80, 1.0f);
                 item->flags |= 0x40;
             }
         }
-        volume386C(self, item->id, item->handle, left, right);
+        func_001E5C40(self, item->id, item->handle, left, right);
         return;
     }
         if (data) {
-            calc386C(mode, item, data, &left, &right, flags, distance);
+            func_001E6E00(mode, item, data, &left, &right, distance);
         } else {
-            calc386C(mode, item, self->fallback, &left, &right, flags, distance);
+            func_001E6E00(mode, item, &self->m_default, &left, &right, distance);
         }
         if (!left || abs(left - oldLeft) >= 33) left = (int)((left + oldLeft) * 0.75f);
         if (!right || abs(right - oldRight) >= 33) right = (int)((right + oldRight) * 0.75f);
-        if (item->scene != scene2DB4(world2DB4)) {
-            float factor = self->multiplier;
+        if (item->scene != func_001C6C28(&D_007812C0)) {
+            float factor = self->m_unk186C;
             left = (int)((float)left * factor);
             right = (int)((float)right * factor);
         }
@@ -914,201 +566,40 @@ extern "C" void func_001E386C(Obj386C *self, Item2DB4 *item)
         right = (unsigned int)right >= 256 ? 0 : right;
         item->a = left;
         item->b = right;
-        if (!activeOther386C(self, item->id, item->handle)) {
+        if (!func_001E6368(self, item->id, item->handle)) {
             if ((*(long long *)&item->flags & 0x60) == 0x60 || (item->flags & 0x200)) {
-                stopOther386C(self, item->id, -1);
+                func_001E2AA0(self, item->id, -1);
             } else {
-                item->handle = startOther386C(self, item->id, left, right, 1, 1.0f, 0, 0x80);
+                item->handle = func_001E50C8(self, item->id, left, right, 1.0f, 1, 0, 0x80);
                 item->flags |= 0x40;
             }
         }
-        volumeOther386C(self, item->id, item->handle, left, right);
+        func_001E63C0(self, item->id, item->handle, left, right);
 }
 
-// NON_MATCHING: 296/306 differ, 17 relocs differ (size 0x4C8, game 0x4FC), 168 edits
-#ifdef NON_MATCHING
-extern "C" int position3C24(void *, int, void *) asm("func_001D05F4"); // decl3C24
-extern "C" void calc3C24(int, Item3C24 *, void *, void *, float) asm("func_001E2350"); // decl3C24
-extern "C" void apply3C24(int, Item3C24 *) asm("func_001E386C"); // decl3C24
-extern "C" void stop3C24(int, unsigned int, int) asm("func_001E649C"); // decl3C24
-extern "C" int check3C24(void *, int) asm("func_001E7D7C"); // decl3C24
-extern "C" void cancel3C24(void *, int) asm("func_001E7724"); // decl3C24
-extern "C" void ctor3C24(void *, int, void *) asm("func_001F8FC0"); // decl3C24
-extern "C" void queue3C24(void *, int, int, int, int, void *, int, int *, int) asm("func_001E71FC"); // decl3C24
-extern "C" void *alloc3C24(unsigned int) asm("__builtin_new"); // decl3C24
-extern "C" void func_001E3C24(int self, EffVec3 *position)
-{
-    Item3C24 *nearest[4];
-    float v[3];
-    if (*(int *)(self+0x1870)&1) return;
-    if (*(int *)(world2DB4+0x21F4C)>=0) {
-        int scene=scene2DB4(world2DB4);
-        char *obj=(char *)find2DB4(bank2DB4,scene);
-        if (obj) {
-            memset(nearest,0,0x10);
-            Iter3C24 it, end;
-            it=Iter3C24(*(Node3C24 **)(self+0xB4));
-            end=Iter3C24((Node3C24 *)(self+0xB0));
-            while(it!=end) {
-                float distance;
-                Item3C24 *item=&*it;
-                if (item->zero) {
-                    if (!position3C24(world2DB4,item->zero,v) || ((it.node->item.flags&2) && it.node->item.scene!=scene)) {
-                        ++it;
-                        continue;
-                    }
-                    distance=(v[0]-((float *)position)[0])+(v[1]-((float *)position)[1])+(v[2]-((float *)position)[2]);
-                    calc3C24(self,&*it,v,0,distance);
-                } else {
-                    float x=(item->x-*(float *)(obj+0x20))-((float *)position)[0];
-                    if(x<0.0f) x=-x;
-                    distance=x;
-                    v[0]=(it.node->item.x-*(float *)(obj+0x20))-((float *)position)[0];
-                    v[1]=(it.node->item.y-*(float *)(obj+0x24))-((float *)position)[1];
-                    v[2]=(it.node->item.z-*(float *)(obj+0x28))-((float *)position)[2];
-                    calc3C24(self,&*it,&it.node->item.x,obj+0x20,x);
-                }
-                float dx=it.node->item.unused[0]-((float *)position)[0];
-                bool far=dx<0.0f ? dx < -15000.0f : dx > 15000.0f;
-                if (!far) {
-                    float dz=it.node->item.unused[2]-((float *)position)[2];
-                    far=dz<0.0f ? dz < -15000.0f : dz > 15000.0f;
-                }
-                if (far) {
-                    Item3C24 *p=&*it;
-                    int handle=p->handle;
-                    if(handle!=-1) {
-                        if(p->flags&1) {
-                            int msg[16];
-                            msg[3]=handle;
-                            int *entry=(int *)(*(int *)(self+0xD40)+handle*0x28);
-                            msg[8]=entry[1]; msg[5]=10; msg[9]=entry[2]; msg[1]=0; msg[2]=0;
-                            if(check3C24(&X_50C8_D_007A3D80,*(int *)(self+0x1718))) {
-                                cancel3C24(&X_50C8_D_007A3D80,*(int *)(self+0x1718));
-                                *(int *)(self+0x1718)=-1;
-                            }
-                            void *task=alloc3C24(0xC0);
-                            ctor3C24(task,1,msg);
-                            queue3C24(&X_50C8_D_007A3D80,1,-1,1,0,task,0,(int *)(self+0x1718),0x11);
-                        } else stop3C24(self,p->id,handle);
-                        it.node->item.handle=-1;
-                    }
-                } else {
-                    Item3C24 *p=&*it;
-                    int count=!(p->flags&1)?3:4;
-                    for(int i=0;i<count;i++) {
-                        if(!nearest[i]) { nearest[i]=p; break; }
-                        if(distance<nearest[i]->distance) {
-                            for(int j=count-1;i<j;j--) if(nearest[j-1]) nearest[j]=nearest[j-1];
-                            nearest[i]=&*it;
-                            break;
-                        }
-                    }
-                }
-                ++it;
-            }
-            for(int i=0;i<4;i++) if(nearest[i]) apply3C24(self,nearest[i]);
-        }
-    }
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3C24);
-#endif
 
-// NON_MATCHING: 132/138 differ, 7 relocs differ (size 0x228, game 0x234), 54 edits
-#ifdef NON_MATCHING
-extern "C" int X___builtin_new(...) asm("__builtin_new"); // 4120decl
-extern "C" void X_func_001E5660(int, unsigned int, int, void *) asm("func_001E5660"); // 4120decl
-extern "C" int X_func_001E5B60(...) asm("func_001E5B60"); // 4120decl
-extern "C" int X_func_001E6368(...) asm("func_001E6368"); // 4120decl
-extern "C" int X_func_001E71FC(...) asm("func_001E71FC"); // 4120decl
-extern "C" int X_func_001F8FC0(...) asm("func_001F8FC0"); // 4120decl
-extern int D_007A3D80; // 4120decl
-extern "C" void func_001E4120(int arg0)
-{
-    Iter4120 it;
-    Iter4120 last;
-    struct { unsigned int sp30; int sp34; int sp38; int sp3C; char pad40[4]; int sp44; char pad48[8]; int sp50; int sp54; int sp58; char pad5C[20]; } stack;
-    int temp_a4_2;
-    int temp_a5;
-    int temp_s0;
-    unsigned int temp_a1;
-    unsigned int temp_a1_2;
-    int temp_v0_3;
-    int temp_a4;
-    int temp_v0;
-    int temp_v0_2;
-    int temp_v1;
-    int temp_v1_2;
-    int temp_v1_3;
-
-    it = Iter4120(M2C_FIELD(arg0, int *, 0xB4));
-    last = Iter4120(arg0 + 0xB0);
-    {
-        while (it != last) {
-            temp_v0_2 = it.node + 0x10;
-            temp_a1 = M2C_FIELD(temp_v0_2, unsigned int *, 0x20);
-            temp_s0 = M2C_FIELD(temp_v0_2, int *, 0x24);
-            if (M2C_FIELD(temp_v0_2, int *, 0x28) & 1) {
-                if (X_func_001E5B60(arg0, temp_a1, temp_s0) != 0) {
-                    temp_a1_2 = M2C_FIELD(it.node, unsigned int *, 0x30);
-                    temp_a5 = temp_s0 * 0x28;
-                    stack.sp30 = temp_a1_2;
-                    Sub4120 *sub = (Sub4120 *)(arg0 + 0xD40);
-                    temp_a4 = (int)sub->arr + temp_a5;
-                    stack.sp3C = M2C_FIELD(temp_a4, int *, 0x18);
-                    stack.sp50 = M2C_FIELD(temp_a4, int *, 4);
-                    stack.sp44 = 0x1E;
-                    stack.sp54 = M2C_FIELD(temp_a4, int *, 8);
-                    stack.sp34 = 0;
-                    stack.sp38 = 0;
-                    M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + arg0), unsigned int *, 0x15B8) = (unsigned int) M2C_FIELD(it.node, unsigned int *, 0x30);
-                    M2C_FIELD(((M2C_FIELD(arg0, int *, 0x1684) * 0x24) + arg0), int *, 0x15BC) = (int) M2C_FIELD(((int)sub->arr + temp_a5), int *, 4);
-                    temp_a4_2 = M2C_FIELD(arg0, int *, 0x1684);
-                    M2C_FIELD(((temp_a4_2 * 0x24) + arg0), int *, 0x15C0) = (int) M2C_FIELD(((int)sub->arr + temp_a5), int *, 8);
-                    X_func_001E5660(arg0, temp_a1_2, 0x15, &stack.sp30);
-                }
-            } else if (X_func_001E6368(arg0, temp_a1, temp_s0) != 0) {
-                temp_v1_3 = M2C_FIELD(arg0, int *, 0xD40) + (temp_s0 * 0x28);
-                stack.sp30 = M2C_FIELD(it.node, unsigned int *, 0x30);
-                stack.sp3C = M2C_FIELD(temp_v1_3, int *, 0x18);
-                stack.sp50 = M2C_FIELD(temp_v1_3, int *, 4);
-                stack.sp44 = 0x3C;
-                stack.sp54 = M2C_FIELD(temp_v1_3, int *, 8);
-                stack.sp34 = 0;
-                stack.sp38 = 0;
-                stack.sp58 = 0;
-                temp_v0_3 = X___builtin_new(0xC0);
-                X_func_001F8FC0(temp_v0_3, 0, (int)&stack.sp30);
-                X_func_001E71FC((int)&D_007A3D80, 1, -1, 1, 0, temp_v0_3, 0, 0, 1);
-            }
-            ++it;
-        }
-    }
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E4120);
-#endif
 
 extern "C" void func_001E4354(void) {
 }
 
-extern "C" int func_001E435C(int arg0, int arg1)
+extern "C" int func_001E435C(GamSndMan *arg0, int arg1)
 {
-    int *p;
+    SND_PARAM *p;
     int r;
 
-    r = func_001E4908(arg0, arg1, (int *) &p, 1);
+    r = func_001E4908(arg0, arg1, &p, 1);
     if (r != 0) {
-        r = func_001E43A4(arg0, *(unsigned short *) ((char *) p + 0x20),
-                          *(unsigned short *) ((char *) p + 0x32), 1);
+        r = func_001E43A4(arg0, p->m_unk20,
+                          p->m_unk32, 1);
     }
     return r;
 }
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E43A4);
 
-extern "C" void func_001E43E0(int arg0, char *arg1, int *arg2, int *arg3)
+extern "C" void func_001E43E0(GamSndMan *arg0, char *arg1, int *arg2, int *arg3)
 {
     char buf[4];
 
@@ -1122,7 +613,7 @@ extern "C" void func_001E43E0(int arg0, char *arg1, int *arg2, int *arg3)
     *arg2 = atoi(buf);
 }
 
-extern "C" void func_001E4458(int arg0, char *arg1, int arg2, int arg3)
+extern "C" void func_001E4458(GamSndMan *arg0, char *arg1, void *arg2, int arg3)
 {
     int a;
     int b;
@@ -1131,34 +622,34 @@ extern "C" void func_001E4458(int arg0, char *arg1, int arg2, int arg3)
     func_001E44B4(arg0, a, b, arg2, arg3);
 }
 
-extern "C" void func_001E44B4(int arg0, int arg1, int arg2, int arg3, int arg4)
+extern "C" void func_001E44B4(GamSndMan *arg0, int arg1, int arg2, void *arg3, int arg4)
 {
-    Xiiiiiii_func_001E6734(arg0, 0x11, 0, 0, 0, -1);
-    Xiiiii_func_001809D8((int) (int)&D_007B2580, arg1, arg3, arg4);
-    M2C_FIELD(((arg1 * 4) + arg0), int *, 0x1728) = arg2;
+    func_001E6734(arg0, 0x11, 0, 0, 0, -1);
+    func_001809D8(&D_007B2580, arg1, arg3, arg4);
+    arg0->m_bankIds[arg1] = arg2;
 }
 
-extern const char F386C_file[] asm("D_002FD770") __attribute__((section(".rodata"), aligned(16))) = "game/gamsnd.cpp";
+extern const char D_002FD770[] __attribute__((section(".rodata"), aligned(16))) = "game/gamsnd.cpp";
 
 INCLUDE_RODATA("asm/nonmatchings/game/gamsnd", D_002FD780);
 
-extern "C" void func_001E4540(int arg0, char *arg1, int arg2) {
+extern "C" void func_001E4540(GamSndMan *arg0, char *arg1, int arg2) {
     char path[0x40];
     int bank;
     int val;
     void *buf;
     char *name;
 
-    X_4540_func_001E6734(arg0, 0x11, 0, 0, 0, -1);
+    func_001E6734(arg0, 0x11, 0, 0, 0, -1);
     FileReader reader;
-    buf = X_4540_alloc__BedMemory((int)&D_006E9800, 0x80040, &D_002FD770, 0x616, 0, 1);
-    X_4540_func_001E43E0(arg0, arg1, &bank, &val);
-    name = (char *)(arg0 + 0x182C);
+    buf = D_006E9800.alloc( 0x80040, D_002FD770, 0x616, 0, 1);
+    func_001E43E0(arg0, arg1, &bank, &val);
+    name = arg0->m_filename;
     strcpy(name, arg1);
-    *(char *)(arg0 + 0x1830) = '.';
-    *(char *)(arg0 + 0x1831) = 's';
-    *(char *)(arg0 + 0x1832) = 'e';
-    *(char *)(arg0 + 0x1833) = '\0';
+    arg0->m_filename[4] = '.';
+    arg0->m_filename[5] = 's';
+    arg0->m_filename[6] = 'e';
+    arg0->m_filename[7] = '\0';
     snprintf(path, 0x40, "data/snd/xv/%s", name);
     FileReadReq req;
     req.m_unk08 = 1;
@@ -1169,127 +660,73 @@ extern "C" void func_001E4540(int arg0, char *arg1, int arg2) {
     req.m_size = 0x80000;
     req.m_unk20 = 1;
     reader.func_001BE524(&req, 0);
-    X_4540_func_001E44B4(arg0, bank, val, buf, arg2);
-    *(int *)(arg0 + bank * 4 + 0x1728) = val;
-    X_4540_heapFree(buf);
+    func_001E44B4(arg0, bank, val, buf, arg2);
+    arg0->m_bankIds[bank] = val;
+    heapFree(buf);
 }
 
-// ---- end
-
-// ---- once unk/TskMtnMove's head, the same file as the code above (config/splits_manual.tsv);
-// its declarations as they were there:
-
-extern "C" int func_00180CA8(int *, int);
-extern "C" void func_00180CE0(int *, int, int, int, int, float);
-
-extern "C" void X7544_func_001E7340(List7544 *, Node7544 *, int) asm("func_001E7340");
-
-extern "C" void X747C_func_001E7340(List747C *, Node747C *, int) asm("func_001E7340");
-
-extern "C" int func_001800D0(int *, int);
-extern "C" void func_001801C8(int *, int);
-
-extern "C" void X7910_func_001E7724(List7910 *, int) asm("func_001E7724");
-
-extern "C" void X785C_func_001E7D08(Obj785C *, Node785C *) asm("func_001E7D08");
-
-extern "C" void func_00237340(void *);
-extern "C" void func_00237830(void *, void *, float);
-extern "C" void func_002378B0(void *, void *, int);
-extern "C" void func_00237408(void *, void *, void *);
-extern "C" void func_002375D8(void *, void *);
-extern "C" float func_00237580(void *, void *);
-
-extern "C" void X77B4_func_001E7698(List77B4 *, Node77B4 *) asm("func_001E7698");
-extern "C" void X77B4_func_001E7D08(List77B4 *, Node77B4 *) asm("func_001E7D08");
-
-extern "C" void X70DC_func_001E7C7C(Obj70DC *, Node70DC *) asm("func_001E7C7C");
-
-extern "C" int X4E20_func_001E4D04(int, int) asm("func_001E4D04");
-extern "C" int func_001E50C8(int, int, int, int, float, int, int, int);
-
-extern "C" void func_001E649C(Obj4D18 *, unsigned int, int);
-
-extern "C" int func_001E76B8(Obj7724 *);
-
-extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
-
-extern "C" int Xiiii_func_001E4908(int, int, int, int) asm("func_001E4908");
-extern "C" int Xii_func_001E4D04(int) asm("func_001E4D04");
-extern "C" int Xiiiiii_func_001E4EBC(int, int, int, int, int) asm("func_001E4EBC");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" int Xiii_func_001E7DE8(int, int) asm("func_001E7DE8");
-// Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_func_0017F5E8(...) asm("func_0017F5E8");
-extern "C" int X_func_00180B30(...) asm("func_00180B30");
-extern "C" int X_func_001E46B8(...) asm("func_001E46B8");
-extern "C" int X_func_001E4A0C(...) asm("func_001E4A0C");
-extern "C" int X_func_001E7698(...) asm("func_001E7698");
-extern "C" int X_func_0023A080(...) asm("func_0023A080");
-extern "C" int X_func_0023A0B8(...) asm("rxSndReverbSetDepth");
-extern int D_006FE6A0;
-extern int D_007B2580;
 
-extern "C" void func_001E46B8(int arg0, int arg1)
+extern "C" void func_001E46B8(GamSndMan *arg0, int arg1)
 {
-    X_func_00180B30((int)&D_007B2580);
-    (*(int *)(int *)((char *)(((arg1 * 4) + arg0)) + 0x1728)) = -1;
+    func_00180B30(&D_007B2580);
+    arg0->m_bankIds[arg1] = -1;
 }
 
-extern "C" void func_001E4700(int arg0)
+extern "C" void func_001E4700(GamSndMan *arg0)
 {
-    X_func_0017F5E8((int)&D_007B2580, 8);
-    X_func_001E46B8(arg0, 0);
-    X_func_001E46B8(arg0, 0xA);
-    X_func_001E46B8(arg0, 0xB);
-    X_func_001E46B8(arg0, 0xC);
-    X_func_001E46B8(arg0, 0x1F);
-    X_func_001E46B8(arg0, 0x20);
-    X_func_001E46B8(arg0, 0x21);
-    X_func_001E46B8(arg0, 0x40);
+    func_0017F5E8(&D_007B2580, 8);
+    func_001E46B8(arg0, 0);
+    func_001E46B8(arg0, 0xA);
+    func_001E46B8(arg0, 0xB);
+    func_001E46B8(arg0, 0xC);
+    func_001E46B8(arg0, 0x1F);
+    func_001E46B8(arg0, 0x20);
+    func_001E46B8(arg0, 0x21);
+    func_001E46B8(arg0, 0x40);
 }
 
-extern "C" void func_001E4790(Obj4790 *arg0, int arg1, const Big4790 *arg2)
+extern "C" void func_001E4790(GamSndMan *arg0, int arg1, const GamSndSETable *arg2)
 {
-    *arg0->m_unk1540 = *arg2;
+    *(GamSndSETable *)arg0->m_seTable = *arg2;
 }
 
-extern "C" void func_001E484C(Obj484C *arg0, int arg1, const Big484C *arg2)
+extern "C" void func_001E484C(GamSndMan *arg0, int arg1, const GamSndStreamTable *arg2)
 {
-    *arg0->m_unk1544 = *arg2;
+    *(GamSndStreamTable *)arg0->m_streamTable = *arg2;
 }
 
-extern "C" int func_001E4908(int arg0, int arg1, int *arg2, int arg3)
+extern "C" int func_001E4908(GamSndMan *arg0, int arg1, SND_PARAM **arg2, int arg3)
 {
-    Ent4908 *e = *(Ent4908 **)(arg0 + 0x1540);
+    SND_PARAM *e = arg0->m_seTable;
     if (e == 0) {
         return 0;
     }
     int i = 1;
-    if (e->m_unk1C != 0) {
+    if (e->id != 0) {
         do {
-            if (arg1 == e->m_unk1C) {
-                *(Ent4908 **)arg2 = e;
+            if (arg1 == e->id) {
+                *(SND_PARAM **)arg2 = e;
                 return 1;
             }
             e++;
             if (i++ >= 0x400) {
                 break;
             }
-        } while (e->m_unk1C != 0);
+        } while (e->id != 0);
     }
-    *(Ent4908 **)arg2 = 0;
+    *(SND_PARAM **)arg2 = 0;
     return 0;
 }
 
-extern "C" int func_001E4970(Obj4970 *arg0, const char *arg1, Ent4970 **arg2)
+extern "C" int func_001E4970(GamSndMan *arg0, const char *arg1, SND_PARAM **arg2)
 {
-    Ent4970 *p = arg0->list;
+    SND_PARAM *p = arg0->m_seTable;
     if (p == 0) {
         return 0;
     }
     int i = 0;
-    while (i++ < 0x400 && p->m_unk1C != 0) {
+    while (i++ < 0x400 && p->id != 0) {
         if (strcmp(arg1, p->name) == 0) {
             *arg2 = p;
             return 1;
@@ -1300,9 +737,9 @@ extern "C" int func_001E4970(Obj4970 *arg0, const char *arg1, Ent4970 **arg2)
     return 0;
 }
 
-extern "C" int func_001E4A0C(Obj4A0C *arg0, const char *arg1)
+extern "C" int func_001E4A0C(GamSndMan *arg0, const char *arg1)
 {
-    Ent4A0C *p = arg0->list;
+    SND_PARAM *p = arg0->m_seTable;
     if (*arg1 == '.' || *arg1 == '*') {
         arg1++;
     }
@@ -1319,9 +756,9 @@ extern "C" int func_001E4A0C(Obj4A0C *arg0, const char *arg1)
     return 0;
 }
 
-extern "C" int func_001E4AB8(void *arg0, const char *arg1)
+extern "C" int func_001E4AB8(GamSndMan *arg0, const char *arg1)
 {
-    Ent4AB8 *p = *(Ent4AB8 **)((char *)arg0 + 0x1544);
+    SND_PARAM *p = arg0->m_streamTable;
     if (p == 0) {
         return 0;
     }
@@ -1335,31 +772,31 @@ extern "C" int func_001E4AB8(void *arg0, const char *arg1)
     return 0;
 }
 
-extern "C" int func_001E4B48(Obj4B48 *arg0, int arg1, Ent4B48 *arg2)
+extern "C" int func_001E4B48(GamSndMan *arg0, int arg1, SND_PARAM *arg2)
 {
     int idx = (arg1 % 100000) / 2;
     for (int i = 0; i < 0x384; i++, idx++) {
-        if (arg0->list[idx].id == -1 || idx >= 0x385) {
+        if (arg0->m_streamTable[idx].id == -1 || idx >= 0x385) {
             idx = 0;
         }
-        if (arg0->list[idx].id == arg1) {
+        if (arg0->m_streamTable[idx].id == arg1) {
             arg2->id = arg1;
-            arg0->list[idx] = *arg2;
+            arg0->m_streamTable[idx] = *arg2;
             return 1;
         }
     }
     return 0;
 }
 
-extern "C" int func_001E4C1C(Obj4C1C *arg0, int arg1, Ent4C1C **arg2)
+extern "C" int func_001E4C1C(GamSndMan *arg0, int arg1, SND_PARAM **arg2)
 {
     int idx = (arg1 % 100000) / 2;
     for (int i = 0; i < 0x384; i++, idx++) {
-        if (arg0->list[idx].id == -1 || idx >= 0x385) {
+        if (arg0->m_streamTable[idx].id == -1 || idx >= 0x385) {
             idx = 0;
         }
-        if (arg0->list[idx].id == arg1) {
-            *arg2 = &arg0->list[idx];
+        if (arg0->m_streamTable[idx].id == arg1) {
+            *arg2 = &arg0->m_streamTable[idx];
             return 1;
         }
     }
@@ -1367,26 +804,26 @@ extern "C" int func_001E4C1C(Obj4C1C *arg0, int arg1, Ent4C1C **arg2)
     return 0;
 }
 
-extern "C" int func_001E4CBC()
+extern "C" int func_001E4CBC(GamSndMan *, int)
 {
     return 0;
 }
 
-extern "C" void func_001E4CC4(int arg0, int arg1, int arg2, int arg3)
+extern "C" void func_001E4CC4(GamSndMan *arg0, int arg1, int arg2, int arg3)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x1720)) = arg2;
-    (*(int *)(int *)((char *)(arg0) + 0x1724)) = arg3;
-    (*(int *)(int *)((char *)(arg0) + 0x171C)) = arg1;
-    X_func_0023A080(arg1);
-    X_func_0023A0B8((*(int *)(int *)((char *)(arg0) + 0x1720)), (*(int *)(int *)((char *)(arg0) + 0x1724)));
+    arg0->m_unk1720 = arg2;
+    arg0->m_unk1724 = arg3;
+    arg0->m_unk171C = arg1;
+    func_0023A080(arg1);
+    rxSndReverbSetDepth(arg0->m_unk1720, arg0->m_unk1724);
 }
 
-extern "C" int func_001E4D04()
+extern "C" int func_001E4D04(GamSndMan *arg0, const char *name)
 {
-    return X_func_001E4A0C();
+    return func_001E4A0C(arg0, name);
 }
 
-extern "C" void func_001E4D18(Obj4D18 *arg0, int arg1)
+extern "C" void func_001E4D18(GamSndMan *arg0, int arg1)
 {
     if (arg1 == 0) {
         return;
@@ -1394,7 +831,7 @@ extern "C" void func_001E4D18(Obj4D18 *arg0, int arg1)
     if (arg1 == 1) {
         for (int i = 0; i < 0x30; i++) {
             if (arg1 == 1) {
-                Ent4D18 *e = &arg0->arr[i];
+                GamSndChannel *e = &arg0->m_channels.m_begin[i];
                 if ((e->m_unk0C >> 24) != 0xB) {
                     func_001E649C(arg0, e->m_unk0C, e->m_unk18);
                 }
@@ -1403,127 +840,67 @@ extern "C" void func_001E4D18(Obj4D18 *arg0, int arg1)
     }
 }
 
-extern "C" int func_001E4DB0(int arg0, int arg1, int arg2, int arg3)
+extern "C" int func_001E4DB0(GamSndMan *arg0, int arg1, int arg2, int arg3)
 {
     int temp_v0;
 
-    temp_v0 = Xii_func_001E4D04((int) arg0);
+    temp_v0 = func_001E4D04(arg0, (const char *)arg1);
     if (temp_v0 != 0) {
-        return Xiiiiii_func_001E4EBC(arg0, temp_v0, arg2, arg3, 0);
+        return func_001E4EBC(arg0, temp_v0, arg2, (EffVec3 *)arg3, 0);
     }
     return -1;
 }
 
-extern "C" int func_001E4E20(int arg0, int arg1, int arg2, int arg3, int arg4, float fparg0)
+extern "C" int func_001E4E20(GamSndMan *arg0, int arg1, int arg2, int arg3, int arg4, float fparg0)
 {
-    int temp_v0 = X4E20_func_001E4D04(arg0, arg1);
+    int temp_v0 = func_001E4D04(arg0, (const char *)arg1);
     if (temp_v0 != 0) {
         return func_001E50C8(arg0, temp_v0, arg2, arg3, fparg0, arg4, 0, 0);
     }
     return -1;
 }
 
-// NON_MATCHING: 123/130 differ, 7 relocs differ (size 0x208, game 0x20C), 18 edits
-#ifdef NON_MATCHING
-
-extern int D_007A320C;
-inline bool flag4E() { return (D_007A320C & 1) != 0; }
-extern "C" int X_func_0017F8FC(...) asm("func_0017F8FC");
-extern "C" void X_func_00180CE0(void *, int, int, int, float, int) asm("func_00180CE0");
-extern "C" int X_func_001E4908(int, unsigned int, int *, unsigned int) asm("func_001E4908");
-extern "C" void X_func_001E6E00(int, void *, int, int *, int *, float) asm("func_001E6E00");
-extern int D_007A320C;
-extern "C" int func_001E4EBC(int arg0, unsigned int arg1, int arg2, int arg3, int arg4)
-{
-    struct { int sp0; int sp4; int sp8; char padC[4]; EffVec4 vec; } stack;
-    float temp_f0;
-    int temp_a0;
-    int var_s1;
-    int var_v0;
-
-    var_v0 = -1;
-    if (!flag4E()) {
-        if (X_func_001E4908(arg0, arg1, &stack.sp8, 1U) == 0) {
-            return -1;
-        }
-        if (arg3 != 0) {
-            stack.vec.x = ((EffVec4 *)arg3)->x;
-            stack.vec.y = ((EffVec4 *)arg3)->y;
-            stack.vec.z = ((EffVec4 *)arg3)->z;
-            stack.vec.w = ((EffVec4 *)arg3)->w;
-            X_func_001E6E00(M2C_FIELD(arg0, int *, 0), &stack.vec, stack.sp8, &stack.sp0, &stack.sp4, 100.0f);
-            var_s1 = X_func_0017F8FC(&D_007B2580, arg1);
-            X_func_00180CE0(&D_007B2580, var_s1, stack.sp0, stack.sp4, -1024.0f, 0);
-        } else {
-            var_s1 = X_func_0017F8FC(&D_007B2580, arg1);
-            if (arg2 != 0) {
-                temp_f0 = (float) M2C_FIELD(stack.sp8, unsigned short *, 0x28) * 0.00390625f;
-                stack.sp0 = (int)((float) M2C_FIELD(stack.sp8, unsigned short *, 0x26) * temp_f0);
-                stack.sp4 = (int)((float) M2C_FIELD(stack.sp8, unsigned short *, 0x26) * (1.0f - temp_f0));
-            } else {
-                stack.sp0 = 100;
-                stack.sp4 = 100;
-            }
-            X_func_00180CE0(&D_007B2580, var_s1, stack.sp0, stack.sp4, -1024.0f, 0);
-        }
-        var_v0 = var_s1;
-        temp_a0 = var_s1 * 0x28;
-        Sub4E *sub = &((Obj4E *)arg0)->sub;
-        *(int *)((int)sub->arr + temp_a0) = arg4;
-        M2C_FIELD(((int)sub->arr + temp_a0), unsigned int *, 0xC) = arg1;
-        M2C_FIELD(((int)sub->arr + temp_a0), int *, 0x18) = var_s1;
-        M2C_FIELD(((int)sub->arr + temp_a0), int *, 4) = stack.sp0;
-        M2C_FIELD(((int)sub->arr + temp_a0), int *, 8) = stack.sp4;
-        
-        return var_v0;
-    }
-    return var_v0;
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E4EBC);
-#endif
 
-extern "C" int func_001E50C8(int arg0, int arg1, int arg2, int arg3, float fparg0, int arg4, int arg5, int arg6) {
-    Msg50C8 msg;
+extern "C" int func_001E50C8(GamSndMan *arg0, int arg1, int arg2, int arg3, float fparg0, int arg4, int arg5, int arg6) {
+    GamSndMessage msg;
     if (arg5 != 0) {
         msg.m_unk00 = arg1;
         msg.m_unk04 = arg2;
         msg.m_unk08 = arg3;
         msg.m_unk18 = fparg0;
         msg.m_unk10 = arg4;
-        int prio = X_50C8_D_007A3D80.m_prio + arg5;
-        void *node = X_50C8_builtin_new(0xC0);
-        X_50C8_func_001F8FC0(node, 5, &msg);
-        X_50C8_func_001E71FC(&X_50C8_D_007A3D80, 1, prio, 1, 0, node, 0, 0, 1);
+        int prio = D_007A3D80.m_base.m_prio + arg5;
+        TskSnd *node = (TskSnd *)operator new(0xC0);
+        func_001F8FC0(node, 5, &msg);
+        func_001E71FC(&D_007A3D80, 1, prio, 1, 0, (CmnITask *)node, 0, 0, 1);
         return -1;
     }
-    if (X_50C8_D_007A320C.chkSysFlg(1)) {
+    if (soundDisabled(&D_007A320C, 1)) {
         return -1;
     }
-    int idx = X_50C8_func_0017F8FC(&X_50C8_D_007B2580, arg1);
-    X_50C8_func_00180CE0(&X_50C8_D_007B2580, idx, arg2, arg3, fparg0, arg4);
-    Range50C8 *r = (Range50C8 *)(arg0 + 0xD40);
-    int off = idx * sizeof(Elem28_50C8);
-    ((Elem28_50C8 *)(r->m_begin + off))->m_unk00 = arg6;
-    ((Elem28_50C8 *)(r->m_begin + off))->m_unk0C = arg1;
-    ((Elem28_50C8 *)(r->m_begin + off))->m_unk18 = idx;
-    ((Elem28_50C8 *)(r->m_begin + off))->m_unk04 = arg2;
-    ((Elem28_50C8 *)(r->m_begin + off))->m_unk08 = arg3;
+    int idx = func_0017F8FC(&D_007B2580, arg1);
+    func_00180CE0(&D_007B2580, idx, arg2, arg3, fparg0, arg4);
+    GamSndChannels *r = &arg0->m_channels;
+    int off = idx * sizeof(GamSndChannel);
+    ((GamSndChannel *)((char *)r->m_begin + off))->flags = arg6;
+    ((GamSndChannel *)((char *)r->m_begin + off))->m_unk0C = arg1;
+    ((GamSndChannel *)((char *)r->m_begin + off))->m_unk18 = idx;
+    ((GamSndChannel *)((char *)r->m_begin + off))->m_unk04 = arg2;
+    ((GamSndChannel *)((char *)r->m_begin + off))->m_unk08 = arg3;
     return idx;
 }
 
-// ---- end
-
-extern "C" int func_001E5250(Obj5250 *arg0, int arg1, int arg2, EffVec4 *arg3, int arg4, int arg5) {
+extern "C" int func_001E5250(GamSndMan *arg0, int arg1, int arg2, EffVec4 *arg3, int arg4, int arg5) {
     char buf[0x40];
     int sp40;
     int sp44;
-    void *sp48;
+    SND_PARAM *sp48;
     int s1;
 
     snprintf(buf, 0x40, "s%06d.str", arg1);
     if (arg3 != 0) {
-        if (!X_5250_func_001E4C1C(arg0, arg1, &sp48)) {
+        if (!func_001E4C1C(arg0, arg1, &sp48)) {
             return -1;
         }
         EffVec4 v;
@@ -1531,305 +908,63 @@ extern "C" int func_001E5250(Obj5250 *arg0, int arg1, int arg2, EffVec4 *arg3, i
         v.y = arg3->y;
         v.z = arg3->z;
         v.w = arg3->w;
-        X_5250_func_001E6E00(arg0->m_unk00, &v, sp48, &sp40, &sp44, 100.0f);
-        s1 = X_5250_func_0017FD58(&X_5250_D_007B2580, buf, arg1 > 0x1869F, arg2, (arg5 >> 8) & 1);
-        X_5250_func_00180078(&X_5250_D_007B2580, s1, 0);
-        X_5250_func_0017FF58(&X_5250_D_007B2580, -1024.0f, s1, sp40, sp44, 0);
+        func_001E6E00(arg0->m_mode, &v, sp48, &sp40, &sp44, 100.0f);
+        s1 = func_0017FD58(&D_007B2580, buf, arg1 > 0x1869F, arg2, (arg5 >> 8) & 1);
+        func_00180078(&D_007B2580, s1, 0);
+        func_0017FF58(&D_007B2580, -1024.0f, s1, sp40, sp44, 0);
     } else {
-        s1 = X_5250_func_0017FD58(&X_5250_D_007B2580, buf, arg1 > 0x1869F, arg2, (arg5 >> 8) & 1);
+        s1 = func_0017FD58(&D_007B2580, buf, arg1 > 0x1869F, arg2, (arg5 >> 8) & 1);
         sp40 = 0x80;
         sp44 = 0x80;
     }
-    Sub5250 *sub = &arg0->sub;
-    int off = s1 * sizeof(Ent5250);
-    ((Ent5250 *)((char *)sub->arr + off))->m_unk00 = (arg4 != 0) ? (arg5 | 9) : (arg5 | 1);
-    ((Ent5250 *)((char *)sub->arr + off))->m_unk14 = arg1;
-    ((Ent5250 *)((char *)sub->arr + off))->m_unk18 = s1;
-    ((Ent5250 *)((char *)sub->arr + off))->m_unk04 = sp40;
-    ((Ent5250 *)((char *)sub->arr + off))->m_unk08 = sp44;
+    GamSndChannels *sub = &arg0->m_channels;
+    int off = s1 * sizeof(GamSndChannel);
+    ((GamSndChannel *)((char *)sub->m_begin + off))->flags = (arg4 != 0) ? (arg5 | 9) : (arg5 | 1);
+    ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk14 = arg1;
+    ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk18 = s1;
+    ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk04 = sp40;
+    ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk08 = sp44;
     return s1;
 }
 
-extern "C" int func_001E5428(Obj5428 *arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, float fparg0)
+extern "C" int func_001E5428(GamSndMan *arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, float fparg0)
 {
-    int idx = X_5428_func_001E5250(arg0, arg1, arg5, 0, 0, arg6);
-    X_5428_func_0017FF58(&X_5428_D_007B2580, idx, arg2, arg3, 0, fparg0);
-    X_5428_func_00180078(&X_5428_D_007B2580, idx, arg4);
-    Sub5428 *sub = &arg0->sub;
-    int off = idx * sizeof(Ent5428);
-    ((Ent5428 *)((char *)sub->arr + off))->m_unk00 = arg6 | 1;
-    ((Ent5428 *)((char *)sub->arr + off))->m_unk14 = arg1;
-    ((Ent5428 *)((char *)sub->arr + off))->m_unk18 = idx;
-    ((Ent5428 *)((char *)sub->arr + off))->m_unk04 = arg2;
-    ((Ent5428 *)((char *)sub->arr + off))->m_unk08 = arg3;
+    int idx = func_001E5250(arg0, arg1, arg5, 0, 0, arg6);
+    func_0017FF58(&D_007B2580, fparg0, idx, arg2, arg3, 0);
+    func_00180078(&D_007B2580, idx, arg4);
+    GamSndChannels *sub = &arg0->m_channels;
+    int off = idx * sizeof(GamSndChannel);
+    ((GamSndChannel *)((char *)sub->m_begin + off))->flags = arg6 | 1;
+    ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk14 = arg1;
+    ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk18 = idx;
+    ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk04 = arg2;
+    ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk08 = arg3;
     return idx;
 }
 
-extern "C" void func_001E5540(Obj5540 *arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
+extern "C" void func_001E5540(GamSndMan *arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
 {
-    Ent5540 *p;
-    Ent5540 tmp;
+    SND_PARAM *p;
+    SND_PARAM tmp;
 
-    if (X_5540_func_001E4C1C(arg0, arg1, &p) != 0) {
+    if (func_001E4C1C(arg0, arg1, &p) != 0) {
         p->m_unk2A = arg2;
         p->m_unk2C = arg3;
         p->m_unk2E = arg4;
         p->m_unk30 = arg5;
         return;
     }
-    tmp = arg0->m_unk1550;
+    copySoundParam(&tmp, &arg0->m_default);
     tmp.m_unk2A = arg2;
     tmp.m_unk2C = arg3;
     tmp.m_unk2E = arg4;
     tmp.m_unk30 = arg5;
-    X_5540_func_001E4B48(arg0, arg1, &tmp);
+    func_001E4B48(arg0, arg1, &tmp);
 }
 
-// NON_MATCHING: 311/317 differ, 24 relocs differ (size 0x4F4, game 0x500), 129 edits
-#ifdef NON_MATCHING
-extern "C" void F5660_func_00180108(int, int) asm("func_00180108");
-extern "C" void F5660_func_00180168(int, int) asm("func_00180168");
-extern "C" void F5660_func_00180078(int, int, unsigned int *) asm("func_00180078");
-extern "C" int F5660_func_001800D0(int, int) asm("func_001800D0");
-extern "C" void F5660_func_001801C8(int, int) asm("func_001801C8");
-extern "C" void F5660_func_0017FF58(int, int, int, int, int, float) asm("func_0017FF58");
-extern "C" int F5660_func_001E7D7C(int, int) asm("func_001E7D7C");
-extern "C" void F5660_func_001E7724(int, int) asm("func_001E7724");
-extern "C" int F5660___builtin_new(unsigned int) asm("__builtin_new");
-extern "C" void F5660_func_001F8FC0(int, int, unsigned int *) asm("func_001F8FC0");
-extern "C" int F5660_func_001E71FC(int, int, int, int, int, int, int, int, int) asm("func_001E71FC");
-extern "C" int func_001E5660(int in0, unsigned int in1, int in2, unsigned int *in3) {
-    register int arg0 PS2_REG("$23") = in0;
-    register unsigned int arg1 PS2_REG("$21") = in1;
-    register int arg2 PS2_REG("$17") = in2;
-    register unsigned int *arg3 PS2_REG("$18") = in3;
-    register int *var_s3 PS2_REG("$19");
-    int temp_a1;
-    int temp_a1_10;
-    int temp_a1_3;
-    int temp_a1_4;
-    int temp_a1_5;
-    int temp_a1_7;
-    int temp_a1_8;
-    int temp_a1_9;
-    int temp_s0;
-    int temp_s4;
-    int temp_v0;
-    int temp_v1;
-    int temp_v1_2;
-    register int var_fp PS2_REG("$30");
-    int var_v0;
-    int temp_v0_2;
-    int temp_v0_3;
-    int temp_a1_2;
-    int temp_a1_6;
-
-    var_fp = 0;
-    var_s3 = (int *)(arg0 + 0xD40);
-loop_1:
-    temp_a1_2 = *var_s3 + (var_fp * 0x28);
-    bool free = !((M2C_FIELD(temp_a1_2, int *, 0)) & 1);
-    if (!free && (temp_v1 = M2C_FIELD(temp_a1_2, int *, 0x14), (temp_v1 != -1))) {
-        switch (arg2) {                             /* switch 1; irregular */
-        case 23:                                    /* switch 1 */
-            if (temp_v1 == arg1) {
-                temp_a1_3 = M2C_FIELD(temp_a1_2, int *, 0x18);
-                if (temp_a1_3 != -1) {
-                    F5660_func_00180108((int)&X_5428_D_007B2580, temp_a1_3);
-                }
-            }
-            goto block_45;
-        case 24:                                    /* switch 1 */
-            if (temp_v1 == arg1) {
-                temp_a1_4 = M2C_FIELD(temp_a1_2, int *, 0x18);
-                if (temp_a1_4 != -1) {
-                    F5660_func_00180168((int)&X_5428_D_007B2580, temp_a1_4);
-                }
-            }
-            goto block_45;
-        case 4:                                     /* switch 1 */
-            if (temp_v1 == arg1) {
-                temp_a1_5 = M2C_FIELD(temp_a1_2, int *, 0x18);
-                if (temp_a1_5 != -1) {
-                    F5660_func_00180078((int)&X_5428_D_007B2580, temp_a1_5, arg3);
-                }
-            }
-            /* Duplicate return node #48. Try simplifying control flow for better match */
-            return 0;
-        default:                                    /* switch 1 */
-            temp_s4 = var_fp * 0x28;
-            temp_a1_6 = *var_s3 + temp_s4;
-            if (M2C_FIELD(temp_a1_6, int *, 0x14) == arg1) {
-                temp_a1 = M2C_FIELD(temp_a1_6, int *, 0x18);
-                if (arg2 == 0x1A) {
-                    return F5660_func_001800D0((int)&X_5428_D_007B2580, temp_a1) == 5;
-                }
-                temp_v0 = F5660_func_001800D0((int)&X_5428_D_007B2580, temp_a1);
-                if (temp_v0 != -1) {
-                    switch (arg2) {                 /* switch 2 */
-                    case 1:                         /* switch 2 */
-                    case 8:                         /* switch 2 */
-                        temp_s0 = var_fp * 0x28;
-                        F5660_func_001801C8((int)&X_5428_D_007B2580, M2C_FIELD((*var_s3 + temp_s0), int *, 0x18));
-                        M2C_FIELD((*var_s3 + temp_s0), int *, 0x14) = -1;
-                        M2C_FIELD((*var_s3 + temp_s0), int *, 0x18) = -1;
-                        if (arg2 == 1) {
-                            goto block_47;
-                        }
-                        goto block_45;
-                    case 2:                         /* switch 2 */
-                    case 9:                         /* switch 2 */
-                        if (arg3 != 0) {
-                            temp_a1_7 = var_fp * 0x28;
-                            M2C_FIELD((*var_s3 + temp_a1_7), unsigned int *, 8) = (unsigned int) M2C_FIELD(arg3, unsigned int *, 0);
-                            M2C_FIELD((*var_s3 + temp_a1_7), int *, 4) = (int) M2C_FIELD(arg3, int *, 4);
-                            F5660_func_0017FF58((int)&X_5428_D_007B2580, M2C_FIELD((*var_s3 + temp_a1_7), int *, 0x18), M2C_FIELD(arg3, unsigned int *, 0), M2C_FIELD(arg3, int *, 4), 0, -1024.0f);
-                            var_fp += 1;
-                            if (arg2 == 2) {
-                                goto block_47;
-                            }
-                            goto block_46;
-                        }
-                        /* Duplicate return node #48. Try simplifying control flow for better match */
-                        return 0;
-                    case 3:                         /* switch 2 */
-                    case 10:                        /* switch 2 */
-                        if (arg3 != 0) {
-                            F5660_func_0017FF58((int)&X_5428_D_007B2580, M2C_FIELD((*var_s3 + (var_fp * 0x28)), int *, 0x18), -0x400U, -0x400, 0, M2C_FIELD(arg3, float *, 0));
-                            var_fp += 1;
-                            if (arg2 == 3) {
-                                goto block_47;
-                            }
-                            goto block_46;
-                        }
-                        /* Duplicate return node #48. Try simplifying control flow for better match */
-                        return 0;
-                    case 5:                         /* switch 2 */
-                    case 11:                        /* switch 2 */
-                        if (arg3 != 0) {
-                            temp_a1_8 = var_fp * 0x28;
-                            M2C_FIELD((*var_s3 + temp_a1_8), unsigned int *, 8) = (unsigned int) M2C_FIELD(arg3, unsigned int *, 0);
-                            M2C_FIELD((*var_s3 + temp_a1_8), int *, 4) = (int) M2C_FIELD(arg3, int *, 4);
-                            F5660_func_0017FF58((int)&X_5428_D_007B2580, M2C_FIELD((*var_s3 + temp_a1_8), int *, 0x18), M2C_FIELD(arg3, unsigned int *, 0), M2C_FIELD(arg3, int *, 4), 0, M2C_FIELD(arg3, float *, 8));
-                            var_fp += 1;
-                            if (arg2 == 5) {
-                                goto block_47;
-                            }
-                            goto block_46;
-                        }
-                        /* Duplicate return node #48. Try simplifying control flow for better match */
-                        return 0;
-                    case 19:                        /* switch 2 */
-                        M2C_FIELD(arg3, unsigned int *, 0) = arg1;
-                        temp_a1_9 = var_fp * 0x28;
-                        M2C_FIELD(arg3, int *, 0xC) = (int) M2C_FIELD((*var_s3 + temp_a1_9), int *, 0x18);
-                        M2C_FIELD(arg3, int *, 0x20) = (int) M2C_FIELD((*var_s3 + temp_a1_9), int *, 4);
-                        var_v0 = M2C_FIELD((*var_s3 + temp_a1_9), int *, 8);
-                        M2C_FIELD(arg3, int *, 0x28) = 0;
-block_40:
-                        M2C_FIELD(arg3, int *, 0x24) = var_v0;
-                        if (F5660_func_001E7D7C((int)&X_50C8_D_007A3D80, M2C_FIELD(arg0, int *, 0x1718)) != 0) {
-                            F5660_func_001E7724((int)&X_50C8_D_007A3D80, M2C_FIELD(arg0, int *, 0x1718));
-                            M2C_FIELD(arg0, int *, 0x1718) = -1;
-                        }
-                        temp_v0_2 = F5660___builtin_new(0xC0);
-                        F5660_func_001F8FC0(temp_v0_2, 1, arg3);
-                        F5660_func_001E71FC((int)&X_50C8_D_007A3D80, 1, -1, 1, 0, temp_v0_2, 0, arg0 + 0x1718, 0x11);
-                        return M2C_FIELD(arg0, int *, 0x1718);
-                    case 27:                        /* switch 2 */
-                        M2C_FIELD(arg3, unsigned int *, 0) = arg1;
-                        temp_a1_10 = var_fp * 0x28;
-                        M2C_FIELD(arg3, int *, 0xC) = (int) M2C_FIELD((*var_s3 + temp_a1_10), int *, 0x18);
-                        M2C_FIELD(arg3, int *, 0x20) = (int) M2C_FIELD((*var_s3 + temp_a1_10), int *, 4);
-                        var_v0 = M2C_FIELD((*var_s3 + temp_a1_10), int *, 8);
-                        M2C_FIELD(arg3, int *, 0x28) = 1;
-                        goto block_40;
-                    case 21:                        /* switch 2 */
-                        M2C_FIELD(arg3, unsigned int *, 0) = arg1;
-                        temp_v1_2 = var_fp * 0x28;
-                        M2C_FIELD(arg3, int *, 0xC) = (int) M2C_FIELD((*var_s3 + temp_v1_2), int *, 0x18);
-                        M2C_FIELD(arg3, int *, 0x20) = (int) M2C_FIELD((*var_s3 + temp_v1_2), int *, 4);
-                        M2C_FIELD(arg3, int *, 0x28) = 1;
-                        M2C_FIELD(arg3, int *, 0x24) = (int) M2C_FIELD((*var_s3 + temp_v1_2), int *, 8);
-                        temp_v0_3 = F5660___builtin_new(0xC0);
-                        F5660_func_001F8FC0(temp_v0_3, 1, arg3);
-                        F5660_func_001E71FC((int)&X_50C8_D_007A3D80, 1, -1, 1, 0, temp_v0_3, 0, 0, 1);
-                        goto block_47;
-                    case 22:                        /* switch 2 */
-                        return 1;
-                    }
-                } else {
-                    M2C_FIELD((*var_s3 + temp_s4), int *, 0x14) = temp_v0;
-                    goto block_45;
-                }
-            } else {
-                goto block_45;
-            }
-            break;
-        }
-    } else {
-
-block_45:
-        var_fp += 1;
-block_46:
-        var_s3 = (int *)(arg0 + 0xD40);
-        if (var_fp >= 0x30) {
-block_47:
-            return 0;
-        }
-        goto loop_1;
-    }
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5660);
-#endif
 
-extern "C" int func_001E5B60(Obj5B60 *arg0, int arg1, int arg2)
-{
-    if (arg2 < 0) {
-        return 0;
-    }
-    if (X_5B60_func_001800D0(&X_5B60_D_007B2580, arg2) == -1) {
-        return 0;
-    }
-    Sub5B60 *sub = &arg0->sub;
-    int off = arg2 * sizeof(Ent5B60);
-    return ((Ent5B60 *)((char *)sub->arr + off))->m_unk14 == arg1;
-}
-
-extern "C" int func_001E5BE0(Obj5BE0 *arg0, int arg1)
-{
-    if (arg1 < 0) {
-        return -1;
-    }
-    if (X_5BE0_func_001800D0(&X_5BE0_D_007B2580, arg1) == -1) {
-        return -1;
-    }
-    Sub5BE0 *sub = &arg0->sub;
-    int off = arg1 * sizeof(Ent5BE0);
-    return ((Ent5BE0 *)((char *)sub->arr + off))->m_unk14;
-}
-
-extern "C" int func_001E5C40(Obj5C40 *arg0, int arg1, int arg2, int arg3, int arg4)
-{
-    if (arg2 < 0) {
-        return 0;
-    }
-    if (X_5C40_func_001800D0(&X_5C40_D_007B2580, arg2) == -1) {
-        return 0;
-    }
-    Sub5C40 *sub = &arg0->sub;
-    int off = arg2 * sizeof(Ent5C40);
-    if (((Ent5C40 *)((char *)sub->arr + off))->m_unk14 != arg1) {
-        return 0;
-    }
-    ((Ent5C40 *)((char *)sub->arr + off))->m_unk04 = arg3;
-    ((Ent5C40 *)((char *)sub->arr + off))->m_unk08 = arg4;
-    X_5C40_func_0017FF58(&X_5C40_D_007B2580, arg2, arg3, arg4, 0, -1024.0f);
-    return 1;
-}
-
-extern "C" int func_001E5D1C(Obj5D1C *arg0, int arg1, int arg2)
+extern "C" int func_001E5B60(GamSndMan *arg0, int arg1, int arg2)
 {
     if (arg2 < 0) {
         return 0;
@@ -1837,22 +972,67 @@ extern "C" int func_001E5D1C(Obj5D1C *arg0, int arg1, int arg2)
     if (func_001800D0(&D_007B2580, arg2) == -1) {
         return 0;
     }
-    Sub5D1C *sub = &arg0->sub;
-    int off = arg2 * sizeof(Ent5D1C);
-    if (((Ent5D1C *)((char *)sub->arr + off))->m_unk14 != arg1) {
+    GamSndChannels *sub = &arg0->m_channels;
+    int off = arg2 * sizeof(GamSndChannel);
+    return ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk14 == arg1;
+}
+
+extern "C" int func_001E5BE0(GamSndMan *arg0, int arg1)
+{
+    if (arg1 < 0) {
+        return -1;
+    }
+    if (func_001800D0(&D_007B2580, arg1) == -1) {
+        return -1;
+    }
+    GamSndChannels *sub = &arg0->m_channels;
+    int off = arg1 * sizeof(GamSndChannel);
+    return ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk14;
+}
+
+extern "C" int func_001E5C40(GamSndMan *arg0, int arg1, int arg2, int arg3, int arg4)
+{
+    if (arg2 < 0) {
         return 0;
     }
-    func_001801C8(&D_007B2580, arg2);
-    ((Ent5D1C *)((char *)sub->arr + off))->m_unk14 = -1;
-    ((Ent5D1C *)((char *)sub->arr + off))->m_unk18 = -1;
+    if (func_001800D0(&D_007B2580, arg2) == -1) {
+        return 0;
+    }
+    GamSndChannels *sub = &arg0->m_channels;
+    int off = arg2 * sizeof(GamSndChannel);
+    if (((GamSndChannel *)((char *)sub->m_begin + off))->m_unk14 != arg1) {
+        return 0;
+    }
+    ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk04 = arg3;
+    ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk08 = arg4;
+    func_0017FF58(&D_007B2580, -1024.0f, arg2, arg3, arg4, 0);
     return 1;
 }
 
-extern "C" void func_001E5DE4(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
+extern "C" int func_001E5D1C(GamSndMan *arg0, int arg1, int arg2)
+{
+    if (arg2 < 0) {
+        return 0;
+    }
+    if (func_001800D0(&D_007B2580, arg2) == -1) {
+        return 0;
+    }
+    GamSndChannels *sub = &arg0->m_channels;
+    int off = arg2 * sizeof(GamSndChannel);
+    if (((GamSndChannel *)((char *)sub->m_begin + off))->m_unk14 != arg1) {
+        return 0;
+    }
+    func_001801C8(&D_007B2580, arg2);
+    ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk14 = -1;
+    ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk18 = -1;
+    return 1;
+}
+
+extern "C" void func_001E5DE4(GamSndMan *arg0, int arg1, int arg2, int arg3, int arg4, int arg5)
 {
     int p[4];
 
-    if (Xiiii_func_001E4908(arg0, arg1, (int)p, 1) != 0) {
+    if (func_001E4908(arg0, arg1, (SND_PARAM **)p, 1) != 0) {
         *(short *)(p[0] + 0x2A) = arg2;
         *(short *)(p[0] + 0x2C) = arg3;
         *(short *)(p[0] + 0x2E) = arg4;
@@ -1860,251 +1040,78 @@ extern "C" void func_001E5DE4(int arg0, int arg1, int arg2, int arg3, int arg4, 
     }
 }
 
-// NON_MATCHING: 248/328 differ, 20 relocs differ (size 0x520, game 0x510), 109 edits
-#ifdef NON_MATCHING
-extern "C" int F5E58_func_00180CA8(int, int) asm("func_00180CA8");
-extern "C" void F5E58_func_00180EA8(int, int) asm("func_00180EA8");
-extern "C" void F5E58_func_00180CE0(int, int, int, int, int, float) asm("func_00180CE0");
-extern "C" void F5E58_func_00180EEC(int, int, unsigned int *) asm("func_00180EEC");
-extern "C" int F5E58_func_001E7D7C(int, int) asm("func_001E7D7C");
-extern "C" void F5E58_func_001E7724(int, int) asm("func_001E7724");
-extern "C" int F5E58___builtin_new(unsigned int) asm("__builtin_new");
-extern "C" void F5E58_func_001F8FC0(int, int, unsigned int *) asm("func_001F8FC0");
-extern "C" int F5E58_func_001E71FC(int, int, int, int, int, int, int, int *, int) asm("func_001E71FC");
-extern "C" int func_001E5E58(int arg0, unsigned int arg1, int arg2, unsigned int *arg3) {
-    unsigned int *sp10;
-    int *temp_v1_4;
-    int *var_s0;
-    int *var_s1;
-    int temp_a1;
-    int temp_a1_2;
-    int temp_a1_3;
-    int temp_a1_4;
-    int temp_a1_5;
-    int temp_s0;
-    int temp_s5;
-    int temp_v0;
-    int temp_v1_3;
-    int var_s3;
-    int var_v0;
-    int temp_v0_2;
-    int temp_v0_3;
-    int temp_v1;
-    int temp_v1_2;
-    int temp_v1_5;
-
-    sp10 = 0;
-    var_s3 = 0;
-loop_1:
-    var_s1 = (int *)(arg0 + 0xD40);
-    temp_s5 = var_s3 * 0x28;
-    temp_v1 = *var_s1 + temp_s5;
-    if (M2C_FIELD(temp_v1, int *, 0) & 1) goto block_31;
-    if ((temp_v0 = M2C_FIELD(temp_v1, int *, 0xC), (temp_v0 != 0)) && (temp_v0 == arg1)) {
-        if (F5E58_func_00180CA8((int)&X_5428_D_007B2580, M2C_FIELD(temp_v1, int *, 0x18)) == -1) {
-            M2C_FIELD((*var_s1 + temp_s5), int *, 0xC) = 0;
-            goto block_31;
-        }
-        switch (arg2) {
-        case 22:
-            return 1;
-        case 1:
-        case 8:
-            temp_s0 = var_s3 * 0x28;
-            temp_v1_2 = *var_s1 + temp_s0;
-            if (!(M2C_FIELD(temp_v1_2, int *, 0) & 0x80)) {
-                F5E58_func_00180EA8((int)&X_5428_D_007B2580, M2C_FIELD(temp_v1_2, int *, 0x18));
-                M2C_FIELD((*var_s1 + temp_s0), int *, 0xC) = 0;
-                M2C_FIELD((*var_s1 + temp_s0), int *, 0x18) = -1;
-                M2C_FIELD((*var_s1 + temp_s0), int *, 4) = 0;
-                M2C_FIELD((*var_s1 + temp_s0), int *, 8) = 0;
-                if (arg2 == 1) {
-                    goto block_33;
-                }
-            }
-            goto block_31;
-        case 2:
-        case 9:
-            temp_a1 = var_s3 * 0x28;
-            M2C_FIELD((*var_s1 + temp_a1), int *, 4) = (int) M2C_FIELD(arg3, int *, 0);
-            M2C_FIELD((*var_s1 + temp_a1), float *, 8) = (int) M2C_FIELD(arg3, int *, 4);
-            F5E58_func_00180CE0((int)&X_5428_D_007B2580, M2C_FIELD((*var_s1 + temp_a1), int *, 0x18), M2C_FIELD(arg3, int *, 0), M2C_FIELD(arg3, int *, 4), 0, -1024.0f);
-            var_s3 += 1;
-            if (arg2 == 2) {
-                goto block_33;
-            }
-            goto block_32;
-        case 3:
-        case 10:
-            F5E58_func_00180CE0((int)&X_5428_D_007B2580, M2C_FIELD((*var_s1 + (var_s3 * 0x28)), int *, 0x18), -1024, -1024, 0, M2C_FIELD(arg3, int *, 0));
-            var_s3 += 1;
-            if (arg2 == 3) {
-                goto block_33;
-            }
-            goto block_32;
-        case 5:
-        case 11:
-            temp_a1_2 = var_s3 * 0x28;
-            M2C_FIELD((*var_s1 + temp_a1_2), float *, 8) = (int) M2C_FIELD(arg3, int *, 4);
-            sp10 = arg3;
-            M2C_FIELD((*var_s1 + temp_a1_2), int *, 4) = (int) M2C_FIELD(arg3, int *, 0);
-            F5E58_func_00180CE0((int)&X_5428_D_007B2580, M2C_FIELD((*var_s1 + temp_a1_2), int *, 0x18), M2C_FIELD(arg3, int *, 0), M2C_FIELD(arg3, int *, 4), M2C_FIELD(arg3, int *, 0x10), M2C_FIELD(arg3, float *, 8));
-            var_s3 += 1;
-            if (arg2 == 5) {
-                goto block_33;
-            }
-            goto block_32;
-        case 6:
-        case 12:
-            F5E58_func_00180CE0((int)&X_5428_D_007B2580, M2C_FIELD((*var_s1 + (var_s3 * 0x28)), int *, 0x18), -1024, -1024, M2C_FIELD(sp10, int *, 0x10), -1024.0f);
-            goto block_33;
-        case 19:
-            M2C_FIELD(arg3, unsigned int *, 0) = arg1;
-            temp_a1_3 = var_s3 * 0x28;
-            M2C_FIELD(arg3, int *, 0xC) = (int) M2C_FIELD((*var_s1 + temp_a1_3), int *, 0x18);
-            M2C_FIELD(arg3, int *, 0x20) = (int) M2C_FIELD((*var_s1 + temp_a1_3), int *, 4);
-            M2C_FIELD(arg3, int *, 0x24) = (int) M2C_FIELD((*var_s1 + temp_a1_3), int *, 8);
-            if (F5E58_func_001E7D7C((int)&X_50C8_D_007A3D80, M2C_FIELD(arg0, int *, 0x1710)) != 0) {
-                F5E58_func_001E7724((int)&X_50C8_D_007A3D80, M2C_FIELD(arg0, int *, 0x1710));
-                M2C_FIELD(arg0, int *, 0x1710) = -1;
-            }
-            var_s0 = (int *)(arg0 + 0x1710);
-block_26:
-            temp_v0_2 = F5E58___builtin_new(0xC0);
-            F5E58_func_001F8FC0(temp_v0_2, 0, arg3);
-            F5E58_func_001E71FC((int)&X_50C8_D_007A3D80, 1, -1, 1, 0, temp_v0_2, 0, var_s0, 0x11);
-            return *var_s0;
-        case 21:
-            M2C_FIELD(arg3, unsigned int *, 0) = arg1;
-            temp_v1_3 = var_s3 * 0x28;
-            M2C_FIELD(arg3, int *, 0xC) = (int) M2C_FIELD((*var_s1 + temp_v1_3), int *, 0x18);
-            M2C_FIELD(arg3, int *, 0x20) = (int) M2C_FIELD((*var_s1 + temp_v1_3), int *, 4);
-            M2C_FIELD(arg3, int *, 0x24) = (int) M2C_FIELD((*var_s1 + temp_v1_3), int *, 8);
-            temp_v0_3 = F5E58___builtin_new(0xC0);
-            F5E58_func_001F8FC0(temp_v0_3, 0, arg3);
-            F5E58_func_001E71FC((int)&X_50C8_D_007A3D80, 1, -1, 1, 0, temp_v0_3, 0, 0, 1);
-            return M2C_FIELD(arg0, int *, 0x1710);
-        case 20:
-            M2C_FIELD(arg3, unsigned int *, 0) = arg1;
-            temp_a1_4 = var_s3 * 0x28;
-            M2C_FIELD(arg3, int *, 0xC) = (int) M2C_FIELD((*var_s1 + temp_a1_4), int *, 0x18);
-            M2C_FIELD(arg3, int *, 0x20) = (int) M2C_FIELD((*var_s1 + temp_a1_4), int *, 4);
-            M2C_FIELD(arg3, int *, 0x24) = (int) M2C_FIELD((*var_s1 + temp_a1_4), int *, 8);
-            if (F5E58_func_001E7D7C((int)&X_50C8_D_007A3D80, M2C_FIELD(arg0, int *, 0x1714)) != 0) {
-                F5E58_func_001E7724((int)&X_50C8_D_007A3D80, M2C_FIELD(arg0, int *, 0x1714));
-                M2C_FIELD(arg0, int *, 0x1714) = -1;
-            }
-            var_s0 = (int *)(arg0 + 0x1714);
-            goto block_26;
-        case 4:
-            temp_a1_5 = var_s3 * 0x28;
-            temp_v1_4 = (int *)(*var_s1 + temp_a1_5);
-            *temp_v1_4 |= 0x10;
-            F5E58_func_00180EEC((int)&X_5428_D_007B2580, M2C_FIELD((*var_s1 + temp_a1_5), int *, 0x18), arg3);
-            goto block_31;
-        case 33:
-            temp_v1_5 = *var_s1 + (var_s3 * 0x28);
-            var_v0 = 0;
-            if (M2C_FIELD(temp_v1_5, int *, 4) == M2C_FIELD(arg3, unsigned int *, 0)) {
-                var_v0 = 1;
-                if (M2C_FIELD(temp_v1_5, int *, 8) != M2C_FIELD(arg3, int *, 4)) {
-                    goto block_33;
-                }
-            }
-            /* Duplicate return node #34. Try simplifying control flow for better match */
-            return var_v0;
-        }
-    } else {
-block_31:
-        var_s3 += 1;
-block_32:
-        if (var_s3 >= 0x30) {
-block_33:
-            var_v0 = 0;
-            return var_v0;
-        }
-        goto loop_1;
-    }
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5E58);
-#endif
 
-extern "C" int func_001E6368(Obj6368 *arg0, int arg1, int arg2)
+extern "C" int func_001E6368(GamSndMan *arg0, int arg1, int arg2)
 {
     if (arg2 < 0) {
         return 0;
     }
-    Sub6368 *sub = &arg0->sub;
-    int off = arg2 * sizeof(Ent6368);
-    if (((Ent6368 *)((char *)sub->arr + off))->m_unk0C != arg1) {
+    GamSndChannels *sub = &arg0->m_channels;
+    int off = arg2 * sizeof(GamSndChannel);
+    if (((GamSndChannel *)((char *)sub->m_begin + off))->m_unk0C != arg1) {
         return 0;
     }
-    return X_6368_func_00180CA8(&X_6368_D_007B2580, arg2) != -1;
+    return func_00180CA8(&D_007B2580, arg2) != -1;
 }
 
-extern "C" int func_001E63C0(Obj63C0 *arg0, int arg1, int arg2, int arg3, int arg4)
+extern "C" int func_001E63C0(GamSndMan *arg0, int arg1, int arg2, int arg3, int arg4)
 {
     if (arg2 < 0) {
         return 0;
     }
-    Sub63C0 *sub = &arg0->sub;
-    int off = arg2 * sizeof(Ent63C0);
-    if (((Ent63C0 *)((char *)sub->arr + off))->m_unk0C != arg1) {
+    GamSndChannels *sub = &arg0->m_channels;
+    int off = arg2 * sizeof(GamSndChannel);
+    if (((GamSndChannel *)((char *)sub->m_begin + off))->m_unk0C != arg1) {
         return 0;
     }
     if (func_00180CA8(&D_007B2580, arg2) == -1) {
         return 0;
     }
-    ((Ent63C0 *)((char *)sub->arr + off))->m_unk04 = arg3;
-    ((Ent63C0 *)((char *)sub->arr + off))->m_unk08 = arg4;
-    func_00180CE0(&D_007B2580, arg2, arg3, arg4, 0, -1024.0f);
+    ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk04 = arg3;
+    ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk08 = arg4;
+    func_00180CE0(&D_007B2580, arg2, arg3, arg4, -1024.0f, 0);
     return 1;
 }
 
-extern int X_649C_D_007B2580 asm("D_007B2580");
-extern "C" int X_649C_func_00180CA8(int *, int) asm("func_00180CA8");
-extern "C" void X_649C_func_00180EA8(int *, int) asm("func_00180EA8");
-extern "C" int X_def_func_001E649C(Obj649C *, unsigned int, int) asm("func_001E649C");
-
-extern "C" int X_def_func_001E649C(Obj649C *arg0, unsigned int arg1, int arg2)
+extern "C" int func_001E649C(GamSndMan *arg0, unsigned int arg1, int arg2)
 {
     register int scaled PS2_REG("$2") = arg2 * 5;
     int off = scaled << 3;
-    Sub649C *sub = &arg0->sub;
+    GamSndChannels *sub = &arg0->m_channels;
     if (arg2 < 0) {
         return 0;
     }
-    if (((Ent649C *)(sub->m_begin + off))->m_unk0C != arg1) {
+    if (((GamSndChannel *)((char *)sub->m_begin + off))->m_unk0C != arg1) {
         return 0;
     }
-    if (X_649C_func_00180CA8(&X_649C_D_007B2580, arg2) == -1) {
+    if (func_00180CA8(&D_007B2580, arg2) == -1) {
         return 0;
     }
-    X_649C_func_00180EA8(&X_649C_D_007B2580, arg2);
+    func_00180EA8(&D_007B2580, arg2);
     register int result PS2_REG("$2") = 1;
-    do {
-        ((Ent649C *)(sub->m_begin + off))->m_unk04 = 0;
-        ((Ent649C *)(sub->m_begin + off))->m_unk08 = 0;
-        ((Ent649C *)(sub->m_begin + off))->m_unk0C = 0;
-        ((Ent649C *)(sub->m_begin + off))->m_unk18 = -1;
-    } while (0);
+    {
+        ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk04 = 0;
+        ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk08 = 0;
+        ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk0C = 0;
+        ((GamSndChannel *)((char *)sub->m_begin + off))->m_unk18 = -1;
+    }
     return result;
 }
 
-extern "C" void func_001E6570(Obj6570 *arg0, int arg1) {
-    Ent6570 def;
+extern "C" void func_001E6570(GamSndMan *arg0, int arg1) {
+    GamSndChannel def;
     int i;
     switch (arg1) {
     case 0:
         for (i = 0; i < 0x30; i++) {
-            Ent6570 *p = arg0->sub.arr + i;
+            GamSndChannel *p = arg0->m_channels.m_begin + i;
             *p = def;
         }
         break;
     case 1:
         for (i = 0; i < 0x30; i++) {
-            Ent6570 *p = arg0->sub.arr + i;
+            GamSndChannel *p = arg0->m_channels.m_begin + i;
             if ((p->flags & 1) == 0) {
                 *p = def;
             }
@@ -2112,218 +1119,22 @@ extern "C" void func_001E6570(Obj6570 *arg0, int arg1) {
         break;
     case 2:
         for (i = 0; i < 0x30; i++) {
-            if (!arg0->sub.arr[i].isFree()) {
-                arg0->sub.arr[i] = def;
+            if (!arg0->m_channels.m_begin[i].isFree()) {
+                arg0->m_channels.m_begin[i] = def;
             }
         }
         break;
     }
 }
 
-// NON_MATCHING: 297/346 differ, 34 relocs differ (size 0x568, game 0x578), 111 edits
-#ifdef NON_MATCHING
-
-extern Bank6734 bankObj6734 asm("D_007B2580");
-#define bank6734 (&bankObj6734)
-extern char task6734[] asm("D_007A3D80");
-extern char world6734[] asm("D_007812C0");
-extern "C" void F6734_func_00238188(int, int) asm("rxSndSetMasterVolume");
-extern "C" void F6734_func_0023BD70(int, int) asm("rxSndSeSetMasterVolume");
-extern "C" void F6734_func_0023DBD0(int, int) asm("func_0023DBD0");
-extern "C" void F6734_func_001C9C1C(void *, int, int *) asm("func_001C9C1C");
-extern "C" int F6734_func_001E7D7C(void *, int) asm("func_001E7D7C");
-extern "C" void F6734_func_001E7724(void *, int) asm("func_001E7724");
-extern "C" void *F6734___builtin_new(unsigned int) asm("__builtin_new");
-extern "C" void F6734_func_001F8FC0(void *, int, Msg6734 *) asm("func_001F8FC0");
-extern "C" void F6734_func_001E71FC(void *, int, int, int, int, void *, int, int *, int) asm("func_001E71FC");
-extern "C" void F6734_func_0017F5E8(void *, int) asm("func_0017F5E8");
-extern "C" void F6734_func_001E6570(int, int) asm("func_001E6570");
-extern "C" void F6734_func_00180B30(void *, int) asm("func_00180B30");
-extern "C" void F6734_func_001E111C(int, int) asm("func_001E111C");
-extern "C" void F6734_func_001E1920(int, unsigned int *, int, int) asm("func_001E1920");
-extern "C" void func_001E6734(int arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
-    register float left PS2_REG("$f1");
-    register float right PS2_REG("$f0");
-    register float left_2 PS2_REG("$f1");
-    register float right_2 PS2_REG("$f0");
-    Msg6734 msg;
-    int sp50;
-    float temp_f0;
-    float temp_f0_2;
-    register float temp_f2 PS2_REG("$f2");
-    register float temp_f2_2 PS2_REG("$f2");
-    int temp_s0;
-    int temp_s0_2;
-    int temp_s2;
-    int temp_s2_2;
-    int *var_a7;
-    int var_s0;
-    int var_v0;
-    int var_v0_2;
-    int var_v0_3;
-    void *temp_v0;
-    void *temp_v0_2;
-    void *temp_v0_3;
-    void *var_a5;
-
-    switch (arg1) {
-    case 13:
-        if (arg4 == 0) {
-            bankObj6734.left = arg2;
-            bankObj6734.right = arg3;
-            F6734_func_00238188(arg2, arg3);
-            M2C_FIELD(arg0, int *, 0x1588) = arg2;
-            M2C_FIELD(arg0, int *, 0x158C) = arg3;
-            return;
-        }
-        arg5 = (int)task6734;
-        msg.oldLeft = M2C_FIELD(arg0, int *, 0x1588);
-        msg.oldRight = M2C_FIELD(arg0, int *, 0x158C);
-        msg.left = arg2;
-        msg.right = arg3;
-        msg.time = arg4;
-        if (F6734_func_001E7D7C((void *)arg5, M2C_FIELD(arg0, int *, 0x170C)) != 0) {
-            F6734_func_001E7724((void *)arg5, M2C_FIELD(arg0, int *, 0x170C));
-            M2C_FIELD(arg0, int *, 0x170C) = -1;
-        }
-        temp_v0 = F6734___builtin_new(0xC0);
-        F6734_func_001F8FC0(temp_v0, 2, &msg);
-        var_a5 = temp_v0;
-        var_a7 = (int *)(arg0 + 0x170C);
-        goto block_33;
-    case 14:
-        M2C_FIELD(arg0, int *, 0x1590) = arg2;
-        M2C_FIELD(arg0, int *, 0x1594) = arg3;
-        F6734_func_001C9C1C(world6734, 5, &sp50);
-        {
-        if (sp50 < 7) {
-            var_v0 = (int)(((float)sp50 / 6.0f) * 90.0f) + 10;
-        } else if (sp50 < 9) {
-            var_v0 = (int)(((float)(sp50 - 6) * 0.5f) * 28.0f) + 100;
-        } else {
-            var_v0 = 128;
-        }
-        temp_f2 = (float) var_v0 * 0.0078125f;
-        left = (float)arg2 * temp_f2;
-        right = (float)arg3 * temp_f2;
-        arg3 = (int)right;
-        arg2 = (int)left;
-        if (arg3 <= 10) arg3 = 10;
-        if (arg2 <= 10) arg2 = 10;
-        if (arg4 == 0) {
-            F6734_func_0023BD70(arg2, arg3);
-            return;
-        }
-        arg5 = (int)task6734;
-        msg.oldLeft = M2C_FIELD(arg0, int *, 0x1590);
-        msg.oldRight = M2C_FIELD(arg0, int *, 0x1594);
-        msg.left = arg2;
-        msg.right = arg3;
-        msg.time = arg4;
-        if (F6734_func_001E7D7C((void *)arg5, M2C_FIELD(arg0, int *, 0x1710)) != 0) {
-            F6734_func_001E7724((void *)arg5, M2C_FIELD(arg0, int *, 0x1710));
-            M2C_FIELD(arg0, int *, 0x1710) = -1;
-        }
-        temp_v0_2 = F6734___builtin_new(0xC0);
-        F6734_func_001F8FC0(temp_v0_2, 3, &msg);
-        var_a5 = temp_v0_2;
-        var_a7 = (int *)(arg0 + 0x1710);
-        goto block_33;
-        }
-    case 15:
-        M2C_FIELD(arg0, int *, 0x1598) = arg2;
-        M2C_FIELD(arg0, int *, 0x159C) = arg3;
-        F6734_func_001C9C1C(world6734, 4, &sp50);
-        {
-        if (sp50 < 7) {
-            var_v0_2 = (int)(((float)sp50 / 6.0f) * 90.0f) + 10;
-        } else if (sp50 < 9) {
-            var_v0_2 = (int)(((float)(sp50 - 6) * 0.5f) * 28.0f) + 100;
-        } else {
-            var_v0_2 = 128;
-        }
-        temp_f2_2 = (float) var_v0_2 * 0.0078125f;
-        left_2 = (float)arg2 * temp_f2_2;
-        right_2 = (float)arg3 * temp_f2_2;
-        arg3 = (int)right_2;
-        arg2 = (int)left_2;
-        if (arg3 <= 10) arg3 = 10;
-        if (arg2 <= 10) arg2 = 10;
-        if (arg4 == 0) {
-            F6734_func_0023DBD0(arg2, arg3);
-            return;
-        }
-        arg5 = (int)task6734;
-        msg.oldLeft = M2C_FIELD(arg0, int *, 0x1598);
-        msg.oldRight = M2C_FIELD(arg0, int *, 0x159C);
-        msg.left = arg2;
-        msg.right = arg3;
-        msg.time = arg4;
-        if (F6734_func_001E7D7C((void *)arg5, M2C_FIELD(arg0, int *, 0x1718)) != 0) {
-            F6734_func_001E7724((void *)arg5, M2C_FIELD(arg0, int *, 0x1718));
-            M2C_FIELD(arg0, int *, 0x1718) = -1;
-        }
-        temp_v0_3 = F6734___builtin_new(0xC0);
-        F6734_func_001F8FC0(temp_v0_3, 4, &msg);
-        var_a5 = temp_v0_3;
-        var_a7 = (int *)(arg0 + 0x1718);
-block_33:
-        F6734_func_001E71FC((void *)arg5, 1, -1, 1, 0, var_a5, 0, var_a7, 0x11);
-        return;
-        }
-    case 16:
-        F6734_func_0017F5E8(bank6734, 9);
-        F6734_func_001E6570(arg0, 0);
-        return;
-    case 17:
-        F6734_func_0017F5E8(bank6734, 8);
-        F6734_func_001E6570(arg0, 1);
-        return;
-    case 18:
-        F6734_func_0017F5E8(bank6734, 1);
-        F6734_func_001E6570(arg0, 2);
-        return;
-    case 25:
-        F6734_func_0017F5E8(bank6734, 9);
-        F6734_func_00180B30(bank6734, arg5);
-        return;
-    case 28:
-        if (arg2 < 0) {
-            var_s0 = 0;
-        } else {
-            var_s0 = (arg2 >= 0x65) ? 0x64 : arg2;
-        }
-        M2C_FIELD(arg0, float *, 0x186C) = (float) ((float) var_s0 / 100.0f);
-        return;
-    case 29:
-        F6734_func_001E111C(arg0, arg2);
-        return;
-    case 30:
-        F6734_func_001E1920(arg0, (unsigned int *)1, arg2, 0);
-        return;
-    case 31:
-        F6734_func_001E111C(arg0, arg2);
-        var_v0_3 = M2C_FIELD(arg0, int *, 0x1870) | 0x400;
-block_46:
-        M2C_FIELD(arg0, int *, 0x1870) = var_v0_3;
-    default:
-        return;
-    case 32:
-        F6734_func_001E1920(arg0, (unsigned int *)1, arg2, 0);
-        var_v0_3 = M2C_FIELD(arg0, int *, 0x1870) & ~0x400;
-        goto block_46;
-    }
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E6734);
-#endif
 
-extern "C" int func_001E6CAC(Obj6CAC *arg0)
+extern "C" int func_001E6CAC(GamSndMan *arg0)
 {
     for (int i = 0; i < 0x30; i++) {
-        Ent6CAC *p = &arg0->sub.arr[i];
+        GamSndChannel *p = &arg0->m_channels.m_begin[i];
         if (!p->isFree() && (p->flags & 8)) {
-            if (p->m_unk14 != -1 && X_6CAC_func_001800D0(&X_6CAC_D_007B2580, p->m_unk18) != -1) {
+            if (p->m_unk14 != -1 && func_001800D0(&D_007B2580, p->m_unk18) != -1) {
                 return 1;
             }
         }
@@ -2331,9 +1142,9 @@ extern "C" int func_001E6CAC(Obj6CAC *arg0)
     return 0;
 }
 
-extern "C" float func_001E6D54(Obj6D54 *arg0)
+extern "C" float func_001E6D54(GamSndPan *arg0)
 {
-    char mat[0x40];
+    float mat[4][4];
     char vec[0x10];
 
     func_00237340(mat);
@@ -2341,124 +1152,52 @@ extern "C" float func_001E6D54(Obj6D54 *arg0)
     func_002378B0(mat, mat, arg0->m_unk04);
     func_00237408(vec, arg0->m_unk0C, arg0->m_unk00);
     func_002375D8(vec, vec);
-    return ((func_00237580(mat + 0x20, vec) + 1.0f) * 0.5f * 0.7f) + 0.3f;
+    return ((func_00237580(mat[2], vec) + 1.0f) * 0.5f * 0.7f) + 0.3f;
 }
 
-// NON_MATCHING: 99/160 differ, 4 relocs differ (size 0x280, game 0x294), 37 edits
-#ifdef NON_MATCHING
-extern "C" void sub6E00(void *, const void *, const void *) asm("func_00237408");
-extern "C" float pan6E00(void *) asm("func_001E6D54");
-extern char global6E00[] asm("D_006FBD80");
-extern char camera6E00[] asm("D_007812C0");
-extern "C" void func_001E6E00(int mode, Vec6E00 *src, unsigned short *info, int *left, int *right)
-{
-    register Vec6E00 *source PS2_REG("$21") = src;
-    Vec6E00 pos;
-    Vec6E00 dir;
-    Pan6E00 pan;
-    Vec6E00 delta;
-    memset(&pos, 0, 16);
-    pos.w = 1.0f;
-    register Vec6E00 *direction PS2_REG("$20") = &dir;
-    memset(direction, 0, 16);
-    register float farDist PS2_REG("$f24") = info[0x2C/2];
-    register float farVol PS2_REG("$f22") = info[0x30/2];
-    register float nearVol PS2_REG("$f23") = info[0x2E/2];
-    register float nearDist PS2_REG("$f21") = info[0x2A/2];
-    if (mode != 0) {
-        if (mode != 1) {
-            *right = 64;
-            *left = 64;
-            return;
-        }
-        register int base PS2_REG("$2") = (int)global6E00;
-        base += 0x2AB70;
-        float *p = (float *)base;
-        float px = p[0x40/4], py = p[0x44/4], pz = p[0x48/4];
-        float dx = p[0x50/4], dy = p[0x54/4], dz = p[0x58/4];
-        pos.x = px; pos.y = py; pos.z = pz;
-        direction->x = dx; dir.y = dy; dir.z = dz;
-    } else {
-        register int base PS2_REG("$3") = (int)camera6E00;
-        register Vec6E00 *tmp PS2_REG("$4") = &delta;
-        register u_long128 copy PS2_REG("$6");
-        copy = *(u_long128 *)(base + 0x22020);
-        *(u_long128 *)tmp = copy;
-        *(long long *)&pos = *(long long *)&delta;
-        *(int *)&pos.z = *(int *)&delta.z;
-        copy = *(u_long128 *)(base + 0x22030);
-        *(u_long128 *)tmp = copy;
-        *(long long *)&dir = *(long long *)&delta;
-        *(int *)&dir.z = *(int *)&delta.z;
-    }
-    sub6E00(&delta, source, &pos);
-    float distance = sqrtf(delta.x*delta.x + delta.y*delta.y + delta.z*delta.z);
-    register float volume PS2_REG("$f20");
-    volume = farVol;
-    if (!(nearDist <= distance)) {
-        volume = nearVol;
-        if (!(distance <= farDist)) {
-            volume = farVol + ((nearVol-farVol)*(distance-nearDist))/(farDist-nearDist);
-        }
-    }
-    if (volume <= 0.0f) {
-        *right = 0;
-        *left = 0;
-        return;
-    }
-    pan.a = &pos;
-    pan.b = direction;
-    pan.angle = -1.0471976f;
-    pan.src = source;
-    *left = (int)(volume * pan6E00(&pan));
-    pan.angle = 1.0471976f;
-    *right = (int)(volume * pan6E00(&pan));
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E6E00);
-#endif
 
-Obj7094::Obj7094()
+GamTaskMan::GamTaskMan()
 {
     head4 = 0;
-    m_unk288 = -1;
+    m_history[0] = -1;
     m_unk08 = 2;
     end = arr;
     head0 = 0;
 }
 
-Obj70DC::~Obj70DC()
+GamTaskMan::~GamTaskMan()
 {
-    Node70DC *p = head4;
+    GamTaskNode *p = head4;
     while (p != 0) {
-        Node70DC *cur = p;
+        GamTaskNode *cur = p;
         p = p->next;
-        X70DC_func_001E7C7C(this, cur);
+        func_001E7C7C(this, cur);
     }
     p = head0;
     while (p != 0) {
-        Node70DC *cur = p;
+        GamTaskNode *cur = p;
         p = p->next;
-        X70DC_func_001E7C7C(this, cur);
+        func_001E7C7C(this, cur);
     }
 }
 
-extern "C" void func_001E7184(List7184 *arg0, Node7184 *arg1)
+extern "C" void func_001E7184(GamTaskMan *arg0, GamTaskNode *arg1)
 {
-    Node7184 *cur = arg0->head;
+    GamTaskNode *cur = arg0->head0;
     if (cur == 0) {
         arg1->next = 0;
-        arg0->head = arg1;
+        arg0->head0 = arg1;
         return;
     }
     if (cur->prio > arg1->prio) {
         arg1->next = cur;
-        arg0->head = arg1;
+        arg0->head0 = arg1;
         return;
     }
-    Node7184 *p = cur;
+    GamTaskNode *p = cur;
     while (p != 0) {
-        Node7184 *next = p->next;
+        GamTaskNode *next = p->next;
         if (next == 0) {
             arg1->next = 0;
             p->next = arg1;
@@ -2476,27 +1215,27 @@ extern "C" void func_001E7184(List7184 *arg0, Node7184 *arg1)
 extern "C" void func_001E71F4(void) {
 }
 
-extern "C" int func_001E71FC(Obj71FC *arg0, int arg1, int arg2, int arg3, int arg4, VObj71FC *arg5, void *arg6, int *arg7, void *arg8)
+extern "C" int func_001E71FC(GamTaskMan *arg0, int arg1, int arg2, int arg3, int arg4, CmnITask *arg5, void *arg6, int *arg7, int arg8)
 {
     if (arg2 == -1) {
-        arg2 = arg0->m_unk58;
+        arg2 = arg0->m_base.m_prio;
     }
-    Node71FC *node = (Node71FC *)X_71FC___builtin_new(sizeof(Node71FC));
+    GamTaskNode *node = (GamTaskNode *)operator new(sizeof(GamTaskNode));
     if (node == 0) {
         return 0;
     }
     node->obj = arg5;
     node->next = arg0->head4;
     node->state = 0;
-    node->m_unk14 = arg8;
-    node->id = arg0->nextId++;
+    node->flags = arg8;
+    node->id = arg0->m_unk08++;
     if (arg7 != 0) {
         node->m_unk10 = arg7;
         *arg7 = node->id;
     }
-    X_71FC_func_001E7E50(arg0, node->id);
+    func_001E7E50(arg0, node->id);
     node->m_unk18 = arg6;
-    node->m_unk20 = arg5->v1();
+    node->m_unk20 = arg5->get_task_type();
     node->m_unk28 = arg3;
     node->m_unk24 = arg2;
     if (arg4 == 0) {
@@ -2505,30 +1244,30 @@ extern "C" int func_001E71FC(Obj71FC *arg0, int arg1, int arg2, int arg3, int ar
         node->m_unk2C = arg2 + arg4 - 1;
     }
     node->prio = arg2;
-    arg5->v3();
-    X_71FC_func_001E7184(arg0, node);
+    arg5->init();
+    func_001E7184(arg0, node);
     return 1;
 }
 
-extern "C" void func_001E7340(void *arg0, Node7340 *arg1, int arg2)
+extern "C" void func_001E7340(GamTaskMan *arg0, GamTaskNode *arg1, int arg2)
 {
-    int id = arg1->obj->vfunc1();
+    int id = arg1->obj->get_task_type();
     if ((id == 0x10 || id == 5 || id == 0x13 || id == 0x14) && arg1->state != arg2) {
         if (arg2 == 1) {
-            arg1->obj->vfunc2(1);
+            arg1->obj->pause(1);
         } else if (arg2 == 0) {
-            arg1->obj->vfunc2(0);
+            arg1->obj->pause(0);
         }
     }
 }
 
-extern "C" void func_001E7414(List7414 *arg0, int arg1, int arg2)
+extern "C" void func_001E7414(GamTaskMan *arg0, int arg1, int arg2)
 {
     if (arg1 != -1) {
-        Node7414 *p = arg0->head;
+        GamTaskNode *p = arg0->head0;
         while (p != 0) {
-            if (p->m_unk0C == arg1) {
-                X_7414_func_001E7340(arg0, p, arg2);
+            if (p->id == arg1) {
+                func_001E7340(arg0, p, arg2);
                 p->state = arg2;
                 break;
             }
@@ -2537,35 +1276,35 @@ extern "C" void func_001E7414(List7414 *arg0, int arg1, int arg2)
     }
 }
 
-extern "C" void func_001E747C(List747C *arg0, int *arg1, int arg2)
+extern "C" void func_001E747C(GamTaskMan *arg0, int *arg1, int arg2)
 {
-    for (Node747C *node = arg0->head; node != 0; node = node->next) {
+    for (GamTaskNode *node = arg0->head0; node != 0; node = node->next) {
         for (int *p = arg1; *p != -1; p++) {
-            if (node->obj->vfunc1() == *p && node->state != 2) {
-                X747C_func_001E7340(arg0, node, arg2);
+            if (node->obj->get_task_type() == *p && node->state != 2) {
+                func_001E7340(arg0, node, arg2);
                 node->state = arg2;
             }
         }
     }
 }
 
-extern "C" void func_001E7544(List7544 *arg0, int arg1)
+extern "C" void func_001E7544(GamTaskMan *arg0, int arg1)
 {
-    for (Node7544 *node = arg0->head; node != 0; node = node->next) {
-        int id = node->obj->vfunc1();
+    for (GamTaskNode *node = arg0->head0; node != 0; node = node->next) {
+        int id = node->obj->get_task_type();
         if ((node->obj == 0 || (id != 1 && id != 0x12 && id != 2 && id != 7 && id != 0xF && id != 0x17 && id != 0x11 && id != 5)) && node->state != 2) {
-            X7544_func_001E7340(arg0, node, arg1);
+            func_001E7340(arg0, node, arg1);
             node->state = arg1;
         }
     }
 }
 
-extern "C" void func_001E7618(TskNode7618 **arg0, int arg1)
+extern "C" void func_001E7618(GamTaskNode **arg0, int arg1)
 {
-    TskNode7618 *p = *arg0;
+    GamTaskNode *p = *arg0;
     if (p != 0) {
         do {
-            int res = p->obj->vfunc1(arg1);
+            int res = p->obj->get_task_type();
             arg1 = 2;
             if (p->obj == 0 || ((unsigned int)(res - 1) >= 3U && res != 0x11)) {
                 p->state = 2;
@@ -2575,21 +1314,21 @@ extern "C" void func_001E7618(TskNode7618 **arg0, int arg1)
     }
 }
 
-extern "C" void func_001E7698(int arg0, int arg1)
+extern "C" void func_001E7698(GamTaskMan *arg0, GamTaskNode *arg1)
 {
     if (arg1 != 0) {
-        Xiii_func_001E7DE8((int) arg0, M2C_FIELD(arg1, int *, 0xC));
+        func_001E7DE8(arg0, arg1->id);
     }
 }
 
-extern "C" int X_def_func_001E76B8(List76B8 *arg0, int arg1)
+extern "C" int func_001E76B8(GamTaskMan *arg0, int arg1)
 {
-    Node76B8 *p = arg0->head;
+    GamTaskNode *p = arg0->head0;
     int ret = 0;
     while (p != 0) {
-        if (p->m_unk0C == arg1 && p->state != 2) {
+        if (p->id == arg1 && p->state != 2) {
             p->state = 2;
-            X_76B8_func_001E7698(arg0, p);
+            func_001E7698(arg0, p);
             ret = 1;
             break;
         }
@@ -2598,9 +1337,9 @@ extern "C" int X_def_func_001E76B8(List76B8 *arg0, int arg1)
     return ret;
 }
 
-extern "C" void func_001E7724(Obj7724 *arg0, int arg1)
+extern "C" void func_001E7724(GamTaskMan *arg0, int arg1)
 {
-    if (arg1 != -1 && func_001E76B8(arg0) == 0) {
+    if (arg1 != -1 && func_001E76B8(arg0, arg1) == 0) {
         for (int *p = arg0->arr; p != arg0->end; p++) {
             if (*p == arg1) {
                 return;
@@ -2611,31 +1350,31 @@ extern "C" void func_001E7724(Obj7724 *arg0, int arg1)
     }
 }
 
-extern "C" void func_001E77B4(List77B4 *arg0, int arg1)
+extern "C" void func_001E77B4(GamTaskMan *arg0, int arg1)
 {
-    Node77B4 *p = arg0->head;
+    GamTaskNode *p = arg0->head0;
     while (p != 0) {
         if (p->state != 2) {
-            VObj77B4 *obj = p->obj;
-            if (obj != 0 && arg1 == obj->vfunc1()) {
-                X77B4_func_001E7D08(arg0, p);
+            CmnITask *obj = p->obj;
+            if (obj != 0 && arg1 == obj->get_task_type()) {
+                func_001E7D08(arg0, p);
                 p->state = 2;
-                X77B4_func_001E7698(arg0, p);
+                func_001E7698(arg0, p);
             }
         }
         p = p->next;
     }
 }
 
-extern "C" void func_001E785C(Obj785C *arg0)
+extern "C" void func_001E785C(GamTaskMan *arg0)
 {
-    Node785C *node = arg0->head;
+    GamTaskNode *node = arg0->head0;
     while (node != 0 && arg0->end != arg0->arr) {
         int *p = arg0->arr;
         if (node->state != 2) {
             do {
                 if (node->id == *p) {
-                    X785C_func_001E7D08(arg0, node);
+                    func_001E7D08(arg0, node);
                     node->state = 2;
                     if (--arg0->end == arg0->arr) {
                         return;
@@ -2651,232 +1390,113 @@ extern "C" void func_001E785C(Obj785C *arg0)
 extern "C" void func_001E7908(void) {
 }
 
-extern "C" void func_001E7910(List7910 *arg0, int *arg1)
+extern "C" void func_001E7910(GamTaskMan *arg0, int *arg1)
 {
-    Node7910 *node = arg0->head;
+    GamTaskNode *node = arg0->head0;
     while (node != 0) {
-        Node7910 *next = node->next;
+        GamTaskNode *next = node->next;
         for (int *p = arg1; *p != -1; p++) {
-            if (node->obj->vfunc1() == *p) {
-                X7910_func_001E7724(arg0, node->id);
+            if (node->obj->get_task_type() == *p) {
+                func_001E7724(arg0, node->id);
             }
         }
         node = next;
     }
 }
 
-extern "C" int func_001E79C0(char *arg0, int arg1)
+extern "C" CmnITask *func_001E79C0(GamTaskMan *arg0, int arg1)
 {
-    char *n = M2C_FIELD(arg0, char **, 4);
+    GamTaskNode *n = arg0->head4;
 
     while (n != 0) {
-        if (M2C_FIELD(n, int *, 0xC) == arg1) {
-            return M2C_FIELD(n, int *, 0);
+        if (n->id == arg1) {
+            return n->obj;
         }
-        n = M2C_FIELD(n, char **, 4);
+        n = n->next;
     }
-    n = M2C_FIELD(arg0, char **, 0);
+    n = arg0->head0;
     while (n != 0) {
-        if (M2C_FIELD(n, int *, 0xC) == arg1) {
-            return M2C_FIELD(n, int *, 0);
+        if (n->id == arg1) {
+            return n->obj;
         }
-        n = M2C_FIELD(n, char **, 4);
+        n = n->next;
     }
     return 0;
 }
 
-// NON_MATCHING: 104/149 differ, 6 relocs differ (size 0x254, game 0x25C), 40 edits
-#ifdef NON_MATCHING
-extern "C" void X_func_001C57A0(int) asm("func_001C57A0");
-extern "C" void X_func_001E7184(int, int) asm("func_001E7184");
-extern "C" void X_func_001E785C(int) asm("func_001E785C");
-extern "C" void X_func_001E7C7C(int, int) asm("func_001E7C7C");
-extern "C" void X_func_00204090(int) asm("func_00204090");
-extern "C" int func_001E7A20(int arg0)
-{
-    volatile int current;
-    int temp_s3;
-    int temp_v0_2;
-    int temp_v1;
-    int var_s3;
-    int var_s4;
-    unsigned int temp_v1_3;
-    int temp_a0;
-    int temp_a1;
-    int temp_a1_2;
-    int temp_a1_3;
-    int var_s0;
-    int var_s2;
-    int var_s2_2;
-    int temp_v1_2;
-    int temp_s0;
-    int temp_v0;
-
-    temp_s0 = arg0 + 0x40;
-    temp_s3 = arg0 + 0x84;
-    var_s2 = 0;
-    current = 0;
-    X_func_00204090(temp_s0);
-    temp_a1 = M2C_FIELD(arg0, int *, 0);
-    M2C_FIELD(arg0, int *, 0x284) = temp_s3;
-    current = temp_a1;
-    if (temp_a1 != 0) {
-        if ((unsigned int) M2C_FIELD(temp_s0, unsigned int *, 0x18) < (unsigned int) M2C_FIELD(temp_a1, unsigned int *, 0x34)) {
-            current = 0;
-        } else {
-            M2C_FIELD(arg0, int *, 0) = M2C_FIELD(temp_a1, int *, 4);
-            M2C_FIELD(temp_a1, int *, 4) = 0;
-            current = temp_a1;
-        }
-    } else {
-        current = 0;
-    }
-loop_28:
-    if (current != 0) {
-        temp_v1 = M2C_FIELD(current, int *, 8);
-        if (temp_v1 == 0) {                          
-            temp_v0_2 = ((Virtual7A20 *)M2C_FIELD(current, int *, 0))->X__vfunc_03(M2C_FIELD(current, int *, 0xC), M2C_FIELD(arg0, int *, 0x64), M2C_FIELD(current, int *, 0x18));
-            M2C_FIELD(current, unsigned int *, 0x30) = (unsigned int) M2C_FIELD(current, unsigned int *, 0x34);
-            M2C_FIELD(current, unsigned int *, 0x34) = (unsigned int) (M2C_FIELD(current, unsigned int *, 0x34) + M2C_FIELD(current, int *, 0x28));
-            if (temp_v0_2 != 0) {
-                var_s2 = current;
-            } else if (M2C_FIELD(current, unsigned int *, 0x2C) != 0 && M2C_FIELD(current, unsigned int *, 0x2C) < M2C_FIELD(current, unsigned int *, 0x34)) {
-                var_s2 = current;
-            } else {
-                X_func_001E7184(arg0, current);
-            }
-        } else if (temp_v1 == 2) {
-            var_s2 = current;
-        } else {
-            M2C_FIELD(current, unsigned int *, 0x30) = (unsigned int) M2C_FIELD(current, unsigned int *, 0x34);
-            M2C_FIELD(current, unsigned int *, 0x34) = (unsigned int) (M2C_FIELD(current, unsigned int *, 0x34) + M2C_FIELD(current, int *, 0x28));
-            X_func_001E7184(arg0, current);
-        }
-        temp_a0 = M2C_FIELD(arg0, int *, 0);
-        if (temp_a0 == 0) {
-            current = 0;
-        } else if ((unsigned int) M2C_FIELD(arg0, unsigned int *, 0x58) < (unsigned int) M2C_FIELD(temp_a0, unsigned int *, 0x34)) {
-            current = 0;
-        } else {
-            M2C_FIELD(arg0, int *, 0) = M2C_FIELD(temp_a0, int *, 4);
-            M2C_FIELD(temp_a0, int *, 4) = 0;
-            current = temp_a0;
-        }
-        temp_a1_2 = var_s2;
-        if (var_s2 != 0) {
-            var_s2 = 0;
-            X_func_001E7C7C(arg0, temp_a1_2);
-        }
-        goto loop_28;
-    }
-    if (M2C_FIELD(arg0, int *, 0x284) != temp_s3) {
-        X_func_001E785C(arg0);
-    }
-    var_s0 = M2C_FIELD(arg0, int *, 0);
-    var_s4 = 0;
-    var_s2_2 = 0;
-    if (var_s0 != 0) {
-        var_s3 = 0x280;
-        do {
-            if (M2C_FIELD(var_s0, int *, 8) == 2) {
-                temp_a1_3 = var_s0;
-                var_s0 = M2C_FIELD(var_s0, int *, 4);
-                if (temp_a1_3 == M2C_FIELD(arg0, int *, 0)) {
-                    M2C_FIELD(arg0, int *, 0) = var_s0;
-                } else if (var_s2_2 != var_s0) {
-                    M2C_FIELD(var_s2_2, int *, 4) = var_s0;
-                } else {
-                    M2C_FIELD(var_s0, int *, 4) = 0;
-                }
-                X_func_001E7C7C(arg0, temp_a1_3);
-            } else {
-                var_s2_2 = var_s0;
-                var_s4 += 1;
-                M2C_FIELD((arg0 + var_s3), int *, 8) = (int) M2C_FIELD(var_s0, int *, 0xC);
-                var_s3 += 4;
-                var_s0 = M2C_FIELD(var_s0, int *, 4);
-            }
-        } while (var_s0 != 0);
-    }
-    M2C_FIELD((int) (&((int *)(arg0))[var_s4]), int *, 0x288) = -1;
-    X_func_001C57A0((int)&D_007812C0);
-    return 0;
-}
-#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E7A20);
-#endif
 
-extern "C" void func_001E7C7C(void *arg0, Node7C7C *arg1)
+extern "C" void func_001E7C7C(GamTaskMan *arg0, GamTaskNode *arg1)
 {
-    X_func_001E7698(arg0, arg1);
+    func_001E7698(arg0, arg1);
     if (arg1->obj != 0) {
-        arg1->obj->v5();
+        arg1->obj->term();
         if (arg1->flags & 1) {
-            X___builtin_delete(arg1->obj);
+            operator delete(arg1->obj);
             arg1->flags &= ~1;
         }
         arg1->obj = 0;
     }
     memset(arg1, 0, 0x40);
-    X___builtin_delete(arg1);
+    operator delete(arg1);
 }
 
-extern "C" void func_001E7D08(void *arg0, Node7D08 *arg1)
+extern "C" void func_001E7D08(GamTaskMan *arg0, GamTaskNode *arg1)
 {
-    X_7D08_func_001E7698(arg0, arg1);
+    func_001E7698(arg0, arg1);
     if (arg1->obj != 0) {
-        arg1->obj->v5();
+        arg1->obj->term();
         if (arg1->flags & 1) {
-            X_7D08___builtin_delete(arg1->obj);
+            operator delete(arg1->obj);
             arg1->flags &= ~1;
         }
         arg1->obj = 0;
     }
 }
 
-extern "C" int func_001E7D7C(TskLogger7D7C *arg0, int arg1)
+extern "C" int func_001E7D7C(GamTaskMan *arg0, int arg1)
 {
     if (arg1 == -1) {
         return 0;
     }
-    for (int i = 0; i < 0x100 && arg0->sub.arr[i] != -1; i++) {
-        if (arg0->sub.arr[i] == arg1) {
+    for (int i = 0; i < 0x100 && arg0->m_history[i] != -1; i++) {
+        if (arg0->m_history[i] == arg1) {
             return 1;
         }
     }
     return 0;
 }
 
-extern "C" void func_001E7DE8(TskLogger7DE8 *arg0, int arg1)
+extern "C" void func_001E7DE8(GamTaskMan *arg0, int arg1)
 {
     if (arg1 == -1) {
         return;
     }
-    for (int i = 0; i < 0x100 && arg0->sub.arr[i] != -1; i++) {
-        if (arg0->sub.arr[i] == arg1) {
-            arg0->sub.arr[i] = -2;
+    for (int i = 0; i < 0x100 && arg0->m_history[i] != -1; i++) {
+        if (arg0->m_history[i] == arg1) {
+            arg0->m_history[i] = -2;
         }
     }
 }
 
-extern "C" void func_001E7E50(TskLogger7DE8 *arg0, int arg1)
+extern "C" void func_001E7E50(GamTaskMan *arg0, int arg1)
 {
     if (arg1 == -1) {
         return;
     }
     int i;
-    for (i = 0; i < 0x100 && arg0->sub.arr[i] != -1; i++) {
-        if (arg0->sub.arr[i] == arg1) {
+    for (i = 0; i < 0x100 && arg0->m_history[i] != -1; i++) {
+        if (arg0->m_history[i] == arg1) {
             return;
         }
     }
     if (i < 0xFE) {
-        arg0->sub.arr[i] = arg1;
-        arg0->sub.arr[i + 1] = -1;
+        arg0->m_history[i] = arg1;
+        arg0->m_history[i + 1] = -1;
     }
 }
 
-extern "C" int TskTest__vfunc_04()
+int TskTest::exec(int, int, void *)
 {
     return 0;
 }
@@ -2884,13 +1504,12 @@ extern "C" int TskTest__vfunc_04()
 TskLogger::TskLogger(int arg1)
 {
     m_unk04 = arg1;
-    m_unk08 = X_7ED8_func_001CBE38(D_007812C0, (unsigned int)arg1);
+    m_unk08 = func_001CBE38(&D_007812C0, (unsigned int)arg1);
 }
 
-extern "C" int TskLogger__vfunc_04()
+int TskLogger::exec(int, int, void *)
 {
-    int x;
-    noop(&x);
+    char debugBuffer[16];
     return 0;
 }
 

@@ -53,6 +53,15 @@ public:
             m_head.m_prev = theNode;
             ++m_num;
         }
+        void insert(Node *target, Node *n)
+        {
+            Node *p = target->m_prev;
+            n->m_prev = p;
+            p->m_next = n;
+            n->m_next = target;
+            target->m_prev = n;
+            ++m_num;
+        }
         // The middle case reuses one variable for both neighbours: that is
         // what puts m_next in the register m_prev was in (func_001CBB80).
         void unlink(Node *theNode)
@@ -146,6 +155,22 @@ public:
         Node *n = m_free.pop_back();
         n->m_data = theData;
         m_used.push_back(n);
+    }
+    iterator insert(iterator where, const T &item)
+    {
+        Node *n = m_free.m_head.m_prev;
+        Node *previous = n->m_prev;
+        m_free.m_head.m_prev = previous;
+        previous->m_next = &m_free.m_head;
+        --m_free.m_num;
+        n->m_data = item;
+        m_used.insert(where.m_node, n);
+        return where;
+    }
+    void clearUsed()
+    {
+        if (m_used.m_num != 0)
+            m_free.splice(m_used);
     }
     void clear() { m_free.splice(m_used); }
     iterator erase(iterator thePos)
