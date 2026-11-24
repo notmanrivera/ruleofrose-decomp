@@ -97,9 +97,14 @@ struct MagLifeBwnCtrlMode {
     void *m_vtbl;                       // +0x00
 }; // size 0x04
 
+struct MagLifeBwnCtrlModeNull : public MagLifeBwnCtrlMode {};     // size 0x04
+struct MagLifeBwnCtrlModeWait : public MagLifeBwnCtrlMode {};     // size 0x04
+
 struct MagLifeBwnCtrlModeFollow : public MagLifeBwnCtrlMode {
     int m_unk04;                        // +0x04
 }; // size 0x08
+
+struct MagLifeBwnCtrlModeStay : public MagLifeBwnCtrlMode {};     // size 0x04
 
 struct MagLifeBwnCtrlModeFind : public MagLifeBwnCtrlMode {
     unsigned char m_pad04[0xC];         // +0x04..+0x0F
@@ -112,16 +117,29 @@ struct MagLifeBwnCtrlModeFind : public MagLifeBwnCtrlMode {
     unsigned char m_pad28[0x8];         // +0x28..+0x2F
 }; // size 0x30
 
+struct MagLifeBwnCtrlModeFindEnd : public MagLifeBwnCtrlMode {};  // size 0x04
+struct MagLifeBwnCtrlModeMove : public MagLifeBwnCtrlMode {};     // size 0x04
+struct MagLifeBwnCtrlModeMoveEnd : public MagLifeBwnCtrlMode {};  // size 0x04
+struct MagLifeBwnCtrlModeRot : public MagLifeBwnCtrlMode {};      // size 0x04
+struct MagLifeBwnCtrlModeRotEnd : public MagLifeBwnCtrlMode {};   // size 0x04
+
+struct MagLifeBwnCtrlModeDamage : public MagLifeBwnCtrlMode {
+    int m_unk04;                        // +0x04
+    int m_unk08;                        // +0x08
+}; // size 0x0C
+
 struct MagLifeBwnCtrlModeHug : public MagLifeBwnCtrlMode {
     int m_unk04;                        // +0x04
 }; // size 0x08
+
+struct MagLifeBwnCtrlModeWound : public MagLifeBwnCtrlMode {};    // size 0x04
 
 struct MagLifeBwnCtrlModeBark : public MagLifeBwnCtrlMode {
     unsigned char m_pad04[0x20];        // +0x04..+0x23
     int m_unk24;                        // +0x24
     int m_unk28;                        // +0x28
-    unsigned char m_pad2C[0x8];         // +0x2C..+0x33
-}; // size 0x34
+    unsigned char m_pad2C[0x4];         // +0x2C..+0x2F
+}; // size 0x30
 
 class MagLifeBwnCtrl : public MagLife {
 public:
@@ -140,14 +158,25 @@ public:
     int m_unk80;                        // +0x080
     int m_unk84;                        // +0x084
     MagLifeBwnCtrlMode *m_unk88;        // +0x088
-    unsigned char m_pad8C[0x64];        // +0x08C..+0x0EF
-    MagLifeBwnCtrlModeBark m_modeBark;  // +0x0F0..+0x123
-    int m_unk124;                       // +0x124
+    MagLifeBwnCtrlModeNull m_modeNull;       // +0x08C
+    MagLifeBwnCtrlModeWait m_modeWait;       // +0x090
+    MagLifeBwnCtrlModeFollow m_modeFollow;   // +0x094
+    MagLifeBwnCtrlModeStay m_modeStay;       // +0x09C
+    MagLifeBwnCtrlModeFind m_modeFind;       // +0x0A0
+    MagLifeBwnCtrlModeFindEnd m_modeFindEnd; // +0x0D0
+    MagLifeBwnCtrlModeMove m_modeMove;       // +0x0D4
+    MagLifeBwnCtrlModeMoveEnd m_modeMoveEnd; // +0x0D8
+    MagLifeBwnCtrlModeRot m_modeRot;         // +0x0DC
+    MagLifeBwnCtrlModeRotEnd m_modeRotEnd;   // +0x0E0
+    MagLifeBwnCtrlModeDamage m_modeDamage;   // +0x0E4
+    MagLifeBwnCtrlModeBark m_modeBark;       // +0x0F0..+0x11F
+    MagLifeBwnCtrlModeHug m_modeHug;         // +0x120..+0x127
+    MagLifeBwnCtrlModeWound m_modeWound;     // +0x128..+0x12B
 
     virtual void vfunc09() asm("MagLifeBwnCtrl__vfunc_09");
-}; // size 0x128
+}; // size 0x12C
 
 typedef char MagLifeBwn_size_check[sizeof(MagLifeBwn) == 0xD3C ? 1 : -1];
-typedef char MagLifeBwnCtrl_size_check[sizeof(MagLifeBwnCtrl) == 0x128 ? 1 : -1];
+typedef char MagLifeBwnCtrl_size_check[sizeof(MagLifeBwnCtrl) == 0x12C ? 1 : -1];
 
 #endif

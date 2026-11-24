@@ -2,6 +2,21 @@
 #include "mag/maglifebwn.h"
 #include "utl/utlfind.h"
 #include "mag/magscene.h"
+extern "C" void func_00125A20(MagLifeBwn *, int);
+extern const char D_002EC320[];
+extern const char D_002EC328[];
+extern const char D_002EC330[];
+extern const char D_002EC338[];
+extern const char D_002EC340[];
+extern const char D_002EC348[];
+extern const char D_002EC358[];
+extern const char D_002EC360[];
+extern const char D_002EC370[];
+extern const char D_002EC378[];
+extern const char D_002EC380[];
+extern const char D_002EC388[];
+extern const char D_002EC390[];
+extern const char D_002EC398[];
 extern "C" void func_0017C340(void *, DogVector *, void **, int, float, float);
 float vecYaw(const float *);
 extern "C" int func_0012B19C(MagLifeBwnCtrl *);
@@ -33,7 +48,7 @@ extern "C" void func_0012A394(MagLifeBwnCtrl *);
 extern "C" void func_00125980(MagLifeBwn *);
 extern "C" void func_001258A4(MagLifeBwn *);
 struct MagLifeBwnCtrlModeV2 {
-    virtual void vfunc01();
+    virtual void vfunc01(MagLifeBwnCtrl *);
     virtual void vfunc02(MagLifeBwnCtrl *);
 };
 extern "C" int func_001267F4(int, MagLifeBwnCtrl *, float);
@@ -616,9 +631,73 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnctrl", D_002EC390);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnctrl", D_002EC398);
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnctrl", D_002EC3A0);
-
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A394);
+extern "C" void func_0012A394(MagLifeBwnCtrl *arg0)
+{
+    int mode = arg0->m_unk00;
+    const char *tbl[14] = {
+        D_002EC320, D_002EC328, D_002EC330, D_002EC338,
+        D_002EC340, D_002EC348, D_002EC358, D_002EC360,
+        D_002EC370, D_002EC378, D_002EC380, D_002EC388,
+        D_002EC390, D_002EC398,
+    };
+    switch (mode) {
+    case 0:
+        arg0->m_unk88 = &arg0->m_modeNull;
+        break;
+    case 1:
+        arg0->m_unk88 = &arg0->m_modeWait;
+        break;
+    case 2:
+        arg0->m_unk88 = &arg0->m_modeFollow;
+        break;
+    case 3:
+        arg0->m_unk88 = &arg0->m_modeStay;
+        break;
+    case 4:
+        arg0->m_unk88 = &arg0->m_modeFind;
+        break;
+    case 5:
+        arg0->m_unk88 = &arg0->m_modeFindEnd;
+        break;
+    case 6:
+        arg0->m_unk88 = &arg0->m_modeMove;
+        break;
+    case 7:
+        arg0->m_unk88 = &arg0->m_modeMoveEnd;
+        break;
+    case 8:
+        arg0->m_unk88 = &arg0->m_modeRot;
+        break;
+    case 9:
+        arg0->m_unk88 = &arg0->m_modeRotEnd;
+        break;
+    case 10:
+        arg0->m_unk88 = &arg0->m_modeDamage;
+        break;
+    case 11:
+        arg0->m_unk88 = &arg0->m_modeBark;
+        break;
+    case 12:
+        arg0->m_unk88 = &arg0->m_modeHug;
+        break;
+    case 13:
+        arg0->m_unk88 = &arg0->m_modeWound;
+        break;
+    default:
+        arg0->m_unk88 = 0;
+        ror_assert(D_002EBE28, 0xBF0, D_002EBE40);
+        break;
+    }
+    arg0->m_unk84 = 0;
+    if (arg0->m_unk88 != 0) {
+        if (mode == 1) {
+            func_00125A20(arg0->m_bwn, 2);
+        } else {
+            func_00125A20(arg0->m_bwn, 0);
+        }
+        ((MagLifeBwnCtrlModeV2 *)arg0->m_unk88)->vfunc01(arg0);
+    }
+}
 
 extern "C" void func_0012A56C(MagLifeBwnCtrl *arg0, int arg1, int arg2, int arg3)
 {
@@ -986,7 +1065,7 @@ extern "C" void func_0012B788(MagLifeBwnCtrl *arg0, int arg1)
 {
     Xiiiii_func_0012A56C(arg0, 0xC, arg1, 1);
     if (arg1 >= 0) {
-        arg0->m_unk124 = arg1;
+        arg0->m_modeHug.m_unk04 = arg1;
     }
 }
 
