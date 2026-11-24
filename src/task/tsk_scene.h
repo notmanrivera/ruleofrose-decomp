@@ -15,6 +15,8 @@ struct ScenePlayCmd {
     unsigned char m_pad08[0x40];
 };
 
+struct ScenePlay;
+
 struct ScenePlaySingle {
     ScenePlayCmd *m_unk00;      // +0x00
     int m_unk04;                // +0x04
@@ -22,7 +24,8 @@ struct ScenePlaySingle {
     int m_unk0C;                // +0x0C
     int m_unk10;                // +0x10
     int m_oid;                  // +0x14
-    unsigned char m_pad18[0x84];
+    ScenePlay *m_unk18;         // +0x18
+    unsigned char m_pad1C[0x80];
     void *m_vtable;             // +0x9C
 };
 

@@ -4,6 +4,14 @@
 #include "sdk/string.h"
 #include "game/gamman.h"
 #include "game/gamsnd.h"
+extern "C" void *__builtin_new(size_t);
+extern "C" void func_001F764C(ScenePlaySingle *, int, ScenePlayCmd *);
+static inline ScenePlaySingle *make_single(int arg1, ScenePlayCmd *arg2)
+{
+    ScenePlaySingle *p = (ScenePlaySingle *)__builtin_new(0xC0);
+    func_001F764C(p, arg1, arg2);
+    return p;
+}
 extern "C" int func_001F7788(ScenePlaySingle *, int);
 static inline GamSndMan *getSnd(GamMan *g) { return (GamSndMan *)g->m_snd; }
 extern "C" void func_001F6CB8(void *);
@@ -144,7 +152,13 @@ extern "C" void ScenePlay__vfunc_03(ScenePlay *) {
 
 INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", ScenePlay__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F7F68);
+extern "C" void func_001F7F68(ScenePlay *self, int arg1, ScenePlayCmd *arg2, int arg3)
+{
+    self->m_unk04[self->m_unk30] = make_single(arg1, arg2);
+    self->m_unk04[self->m_unk30]->m_unk18 = self;
+    self->m_unk04[self->m_unk30]->m_oid = arg3;
+    self->m_unk30++;
+}
 
 extern "C" void func_001F8028(int arg0, int arg1)
 {
