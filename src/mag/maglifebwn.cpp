@@ -365,7 +365,44 @@ extern "C" unsigned int func_00123F78(MagLifeBwn *arg0, const DogVector *arg1)
     return ret;
 }
 
+// NON_MATCHING: fn matches; D_002EB980 needs .align 3 in config/rodata_align_manual.tsv
+#ifdef NON_MATCHING
+extern "C" int func_00124008(MagLifeBwn *arg0, int thePosIndex, float theDist)
+{
+    int posidx = thePosIndex;
+    float dist = theDist;
+
+    if (posidx < 0 || posidx > ((arg0->m_unkCA0 - 1) << 16)) {
+        ror_assert(D_002EB870, 0x2E3, "0 <= thePosIndex && thePosIndex <= ((m_num_search_line-1)<<16)");
+    }
+
+    do {
+        if (!(0 <= posidx && posidx <= ((arg0->m_unkCA0 - 1) << 16))) {
+            ror_assert(D_002EB870, 0x2E8, "0 <= posidx && posidx <= ((m_num_search_line-1)<<16)");
+        }
+        int maxIdx = (arg0->m_unkCA0 - 1) << 16;
+        if (posidx >= maxIdx) {
+            posidx = maxIdx;
+            break;
+        } else {
+            unsigned int idx = (unsigned int)posidx >> 16;
+            float len = arg0->m_pathPoints[idx].w;
+            float rem = len * (float)(0x10000 - (posidx & 0xFFFF)) * (1.0f / 65536.0f);
+            if (rem <= dist) {
+                dist -= rem;
+                posidx = (idx + 1) << 16;
+            } else {
+                posidx += (int)((dist * 65536.0f) / len);
+                dist = 0.0f;
+            }
+        }
+    } while (dist > 0.0f);
+
+    return posidx;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00124008);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00124150);
 
