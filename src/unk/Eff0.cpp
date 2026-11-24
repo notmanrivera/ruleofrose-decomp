@@ -2,6 +2,29 @@
 #include "unk/Eff0.h"
 #include "dog/doglightpool.h"
 #include "sdk/string.h"
+struct EffBloodSpray2Particle {
+    EffVec3 m_pos;                      // +0x00
+    float m_unk0C;                      // +0x0C
+    EffVec3 m_vel;                      // +0x10
+    float m_unk1C;                      // +0x1C
+    float m_speed;                      // +0x20
+    float m_grav;                       // +0x24
+    float m_rot;                        // +0x28
+    float m_drot;                       // +0x2C
+    unsigned short m_unk30;             // +0x30
+    short m_age;                        // +0x32
+    short m_alpha;                      // +0x34
+    short m_fade;                       // +0x36
+    unsigned short m_fadeAcc;           // +0x38
+    unsigned char m_pad3A[0x16];        // +0x3A
+}; // size 0x50
+struct EffBloodSpray2 : public Eff0 {
+    unsigned int m_unk24;               // +0x24
+    unsigned int m_unk28;               // +0x28
+    unsigned char m_pad2C[0x14];        // +0x2C
+    EffBloodSpray2Particle m_particles[17]; // +0x40
+};
+extern "C" void func_0016BEDC(EffBloodSpray2 *);
 struct Model_DCC8 {
     unsigned char m_pad00[0x11C];       // +0x000
     void *m_i3r_root;                   // +0x11C
@@ -973,7 +996,55 @@ extern "C" int EffBloodSpray2__vfunc_02(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016BEDC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodSpray2__vfunc_05);
+extern "C" int EffBloodSpray2__vfunc_05(EffBloodSpray2 *arg0)
+{
+    int i;
+    EffBloodSpray2Particle *p = arg0->m_particles;
+    for (i = 0; i < 17; i++, p++) {
+        if (p->m_alpha >= 0x100) {
+            p->m_age++;
+            if (p->m_age >= 17) {
+                if (p->m_alpha < p->m_fade) {
+                    p->m_alpha = 0;
+                    continue;
+                }
+                p->m_alpha = (unsigned short)p->m_alpha - (unsigned short)p->m_fade;
+                p->m_fade = (unsigned short)p->m_fade + p->m_fadeAcc;
+            }
+            p->m_pos.x += p->m_vel.x * p->m_speed;
+            p->m_pos.y += p->m_vel.y * p->m_speed;
+            p->m_pos.z += p->m_vel.z * p->m_speed;
+            p->m_vel.y += p->m_grav;
+            p->m_speed *= 0.95f;
+            p->m_rot += p->m_drot;
+        }
+    }
+    int st = arg0->m_unk0C;
+    arg0->m_unk08 = st;
+    switch (st) {
+    case 0: {
+        unsigned int t = arg0->m_unk24 + 1;
+        arg0->m_unk24 = t;
+        if (t >= arg0->m_unk28 || (arg0->m_flags & 2)) {
+            arg0->m_unk0C = 10;
+        } else if ((t & 1) == 0) {
+            func_0016BEDC(arg0);
+        }
+        return 1;
+    }
+    case 10:
+        for (i = 0; i < 17; i++) {
+            if (arg0->m_particles[i].m_alpha >= 0x100) {
+                break;
+            }
+        }
+        if (i == 17) {
+            return 0;
+        }
+        break;
+    }
+    return 1;
+}
 
 // NON_MATCHING: 187/206 differ, 15 relocs differ (size 0x338, game 0x348), 119 edits
 #ifdef NON_MATCHING
