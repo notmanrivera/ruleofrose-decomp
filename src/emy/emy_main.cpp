@@ -115,7 +115,27 @@ extern "C" void func_00162C5C(int a0, int a1, unsigned short a2, int a3, int a4,
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00162C88);
 
+// NON_MATCHING: 31/38 differ (size 0x98, game 0x9C), 4 edits
+#ifdef NON_MATCHING
+extern "C" void func_001634D4(EmyManager *self, int id)
+{
+    int i = 0;
+    EmyMain *e = self->m_emy[0];
+    while (e == 0 || e->m_id != id) {
+        i++;
+        if (i == 0x40) {
+            return;
+        }
+        e = self->m_emy[i];
+    }
+    EmyVtblEntry *entry = (EmyVtblEntry *)e->m_vtbl + 1;
+    ((void (*)(char *, int))entry->m_fn)((char *)e + entry->m_delta, 3);
+    self->m_emy[i] = 0;
+    self->m_slotVal[i] = 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001634D4);
+#endif
 
 extern "C" void func_00163570(EmyManager *self)
 {
