@@ -1,6 +1,9 @@
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
 #include "utl/utlfind.h"
+extern "C" int func_0012AB20(MagLifeBwnCtrl *) ASM_NOTHROW;
+extern "C" int func_0012ADEC(MagLifeBwnCtrl *) ASM_NOTHROW;
+extern "C" int func_0012AF70(MagLifeBwnCtrl *) ASM_NOTHROW;
 extern "C" void func_0012A56C(MagLifeBwnCtrl *, int, int, int);
 float vecDist(const float *, const float *);
 struct BwnTarget {
@@ -549,9 +552,9 @@ extern "C" void func_0012A71C(MagLifeBwnCtrl *arg0, int arg1)
 
 extern "C" void func_0012A758(MagLifeBwnCtrl *arg0, int arg1, int arg2, int arg3)
 {
-    *(int *)&arg0->m_pad44[0] = arg1;
+    arg0->m_unk44 = arg1;
     if (arg1 >= 0) {
-        utlFindSet((UtlFind *)&arg0->m_pad44[4], arg1, arg3);
+        utlFindSet(&arg0->m_find, arg1, arg3);
     }
     if (arg2 != 0) {
         Xiiiii_func_0012A56C(arg0, 4, 0, 1);
@@ -709,7 +712,34 @@ extern "C" void func_0012B5F8(MagLifeBwnCtrl *arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012B65C);
+extern "C" int func_0012B65C(MagLifeBwnCtrl *arg0)
+{
+    register int ret PS2_REG("$2") = 0;
+    MagLifeBwn *bwn = arg0->m_bwn;
+    if (bwn != 0 && bwn->m_unkCB8 < 4) {
+        arg0->m_unk78 = 0;
+        if (utlFindIsSet(&arg0->m_find) != 0) {
+            func_0012A56C(arg0, 4, 0, 1);
+        } else if (func_0012AF70(arg0) != 0) {
+            arg0->m_bwn->func_0011A704(0xB);
+            func_0012A56C(arg0, 0xB, 0, 0);
+        } else if (func_0012B0D0(arg0) != 0) {
+            arg0->m_bwn->func_0011A704(0xB);
+            func_0012A56C(arg0, 0xB, 0, 0);
+        } else if (func_0012AB20(arg0) != 0) {
+            func_0012A56C(arg0, 4, 1, 1);
+        } else if (func_0012ADEC(arg0) != 0) {
+            arg0->m_bwn->func_0011A704(0xB);
+            func_0012A56C(arg0, 6, 0, 0);
+        } else {
+            arg0->m_bwn->func_0011A704(0xB);
+            arg0->m_unk78 = 0;
+            func_0012A56C(arg0, 2, 0, 0);
+        }
+        ret = 1;
+    }
+    return ret;
+}
 
 extern "C" void func_0012B788(MagLifeBwnCtrl *arg0, int arg1)
 {

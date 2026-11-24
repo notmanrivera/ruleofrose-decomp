@@ -16,6 +16,7 @@
 #define MAG_MAGLIFEBWN_H
 
 #include "mag/maglife.h"
+#include "utl/utlfind.h"
 
 struct MagBwnVec4 {
     float x, y, z, w;
@@ -122,7 +123,8 @@ class MagLifeBwnCtrl : public MagLife {
 public:
     MagBwnVec4 m_targetPos;             // +0x030..+0x03F
     float m_targetRot;                  // +0x040
-    unsigned char m_pad44[0x1C];        // +0x044..+0x05F
+    int m_unk44;                        // +0x044
+    UtlFind m_find;                     // +0x048..+0x05F
     int m_unk60;                        // +0x060
     int m_unk64;                        // +0x064
     int m_unk68;                        // +0x068
