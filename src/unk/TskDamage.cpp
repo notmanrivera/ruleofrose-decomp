@@ -1,7 +1,13 @@
 #include "include_asm.h"
 #include "task/cmnitask.h"
+#include "game/gamman.h"
 #include "game/gamsnd.h"
 #include "mag/magscene.h"
+extern "C" int func_001CBEDC(GamMan *, unsigned int);
+extern "C" int func_001DC48C(void *, int, int, int *);
+extern "C" int func_001D05F4(GamMan *, unsigned int, float *);
+extern "C" void func_001FAE14(void *, int);
+extern "C" void func_001FB084(void *, int);
 
 struct TskDamageObj {
     unsigned char m_pad00[0x120];
@@ -61,7 +67,7 @@ extern "C" int X_func_00163E48(...) asm("func_00163E48");
 extern "C" int X_func_00163E74(...) asm("func_00163E74");
 extern "C" int X_func_001DA074(...) asm("func_001DA074");
 extern "C" int X_func_001DA07C(...) asm("func_001DA07C");
-extern int D_007812C0;
+extern GamMan D_007812C0;
 extern int D_007B2140;
 extern GamTaskMan D_007A3D80;
 extern MagScene D_006FBD80;
@@ -226,7 +232,89 @@ extern "C" int TskDamage__vfunc_04(TskDamage *self)
     return (self->*(self->m_func))();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskDamage", func_001FAC60);
+extern "C" void func_001FAC60(unsigned int arg0, void *arg1, int arg2, int arg3, int arg4, unsigned int arg5, int arg6)
+{
+    float pos[4];
+    int val;
+    int sp20[3];
+
+    if (arg0 == 0xB) {
+        switch ((arg5 >> 23) & 0x1F) {
+        case 0:
+            arg0 = 4;
+            break;
+        case 1:
+            arg0 = 3;
+            break;
+        case 2:
+            func_001DC48C(D_007812C0.m_unq, func_001CBEDC(&D_007812C0, arg5), 0x72, &val);
+            arg0 = 0;
+            switch ((unsigned short)val) {
+            case 3:
+                arg0 = 1;
+                break;
+            case 4:
+                arg0 = 5;
+                break;
+            case 5:
+                arg0 = 6;
+                break;
+            case 6:
+                arg0 = 7;
+                break;
+            case 7:
+                arg0 = 8;
+                break;
+            case 8:
+                arg0 = 9;
+                break;
+            case 9:
+                arg0 = 2;
+                break;
+            case 10:
+                arg0 = 0xA;
+                break;
+            case 0:
+            case 1:
+            case 2:
+                arg0 = 0;
+                break;
+            }
+            break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+            break;
+        }
+    }
+    sp20[2] = arg0;
+    switch (arg0) {
+    case 0:
+    case 1:
+    case 2:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+        func_001D05F4(&D_007812C0, arg5, pos);
+        sp20[0] = arg2;
+        sp20[1] = arg4;
+        func_001FA5BC((int)arg5, arg1, sp20, arg6);
+        return;
+    case 3:
+        func_001FAE14(arg1, arg4);
+        return;
+    case 4:
+        func_001FB084(arg1, arg4);
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskDamage", func_001FAE14);
 
@@ -240,7 +328,8 @@ extern "C" void func_001FB5D4(int arg0, int arg1)
     Xiii_func_001FB624(info[0], arg0, arg1);
 }
 
-INCLUDE_RODATA("asm/nonmatchings/unk/TskDamage", D_002FED70);
+// 8-byte aligned in the original .rodata after func_001FAC60's jump table.
+extern "C" const unsigned int D_002FED70[2] ALIGNED(8) = { 0x54442D18U, 0xC00921FBU };
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskDamage", D_002FED78);
 
