@@ -1,6 +1,7 @@
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
 #include "utl/utlfind.h"
+extern "C" void func_0012A56C(MagLifeBwnCtrl *, int, int, int);
 float vecDist(const float *, const float *);
 struct BwnTarget {
     DogVector m_pos;
@@ -95,7 +96,26 @@ extern "C" void MagLifeBwnCtrlModeNull__vfunc_01(MagLifeBwnCtrlMode *arg0, MagLi
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeNull__vfunc_02);
+extern "C" void MagLifeBwnCtrlModeNull__vfunc_02(int arg0, MagLifeBwnCtrl *arg1)
+{
+    if (arg1->m_unk6C != 0) {
+        return;
+    }
+    if (arg1->m_bwn->m_unkCB8 == 4) {
+        return func_0012A56C(arg1, 0xD, 0, 0);
+    }
+    int unk78 = arg1->m_unk78;
+    if (unk78 == 1) {
+        return func_0012A56C(arg1, 4, 0, 0);
+    } else if (unk78 == 2) {
+        return func_0012A56C(arg1, 3, 0, 0);
+    } else if (unk78 == 4) {
+        return func_0012A56C(arg1, 0xC, -1, 0);
+    }
+    if (func_001268B4(arg0, arg1) == 0) {
+        func_0012A56C(arg1, 1, 0, 0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeWait__vfunc_01);
 
