@@ -28,6 +28,9 @@ extern "C" int func_00125704(MagBwn *self, int theA);
 extern "C" void func_00125A90(MagBwn *self);
 extern "C" void func_0011A14C(MagBwn *self);
 extern "C" void func_0012498C(MagBwn *self);
+struct MagBwnMotions { const char *m[9]; };
+extern const MagBwnMotions D_002EBA18;
+extern const char *D_00297408[];
 
 extern "C" void MagLifeBwn__vfunc_16(MagLifeBwn *arg0, int arg1, int arg2, int arg3)
 {
@@ -446,7 +449,44 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EBA08);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EBA18);
 
+// NON_MATCHING: 36/94 differ, 4 relocs differ (size 0x178, game 0x170), 14 edits
+#ifdef NON_MATCHING
+extern "C" void func_0012481C(MagLifeBwn *arg0, int theMotion, float theRatio)
+{
+    MagBwnMotions motions = D_002EBA18;
+    DogActor *actor = arg0->m_actor;
+    if (actor == 0) {
+        return;
+    }
+    if (theMotion >= 0) {
+        if (theRatio == 0.0f) {
+            if (actor->m_motion_now.m_sub[0].m_no < 0) {
+                return;
+            }
+            if (actor->func_0010AA5C(motions.m[theMotion]) == arg0->m_actor->m_motion_now.m_sub[0].m_no) {
+                arg0->m_actor->func_0010BAC4(0, theRatio, 0x14);
+                return;
+            }
+        } else {
+            if (!(0 <= theMotion && theMotion < (int)(sizeof(motions) / sizeof(motions.m[0])))) {
+                ror_assert(D_002EB870, 0x467, "0 <= theMotion && theMotion < (int)(sizeof(motions)/sizeof(motions[0]))");
+            }
+            if (arg0->m_actor->func_0010AA5C(motions.m[theMotion]) == arg0->m_actor->m_motion_now.m_sub[0].m_no) {
+                arg0->m_actor->func_0010B918(0, theRatio);
+                return;
+            }
+        }
+        arg0->m_actor->func_0010B620(0, motions.m[theMotion], D_00297408);
+        arg0->m_actor->func_0010BAC4(0, theRatio, 0x14);
+    } else {
+        if (actor->m_motion_now.m_sub[0].m_no >= 0) {
+            actor->func_0010B328(0, -1, 0);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_0012481C);
+#endif
 
 extern "C" void func_0012498C(MagBwn *self)
 {
