@@ -4,6 +4,7 @@
 extern "C" int func_0011A028(MagLifePC *);
 extern "C" int func_0011CE50(MagLifePC *);
 extern "C" int func_0011AF04(MagLifePC *);
+extern "C" int func_0011B204(MagLifePC *, float, float);
 
 extern "C" void X_func_001026B0(int, int, int) asm("func_001026B0");
 extern "C" float X_func_0010DA18__8DogActor(DogActor *) asm("func_0010DA18__8DogActor");
@@ -135,15 +136,37 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", func_00120DEC);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", MagLifePCModeWalk2D__vfunc_01);
 
-extern "C" void func_00121054()
+extern "C" void func_00121054(MagLifePCModeWalk2D *arg0, MagLifePC *arg1, const BedPad *arg2)
 {
-    X_func_00120DEC();
+    X_func_00120DEC(arg0, arg1, arg2);
 }
 
 extern "C" void MagLifePCModeWalk2D__vfunc_02(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", MagLifePCModeWalk2D__vfunc_03);
+extern "C" int MagLifePCModeWalk2D__vfunc_03(MagLifePCModeWalk2D *arg0, MagLifePC *arg1, const BedPad *arg2)
+{
+    if (arg1->m_unkDC != 0) {
+        Xiiiui_func_0011C1E8(arg1, 5, 0U, 0);
+        return 2;
+    }
+    if (arg1->m_unk104 > 0.0f) {
+        int r = func_0011B204(arg1, arg1->m_actor->m_unk50.m_y, X_func_0011B128(arg1));
+        int e4 = arg1->m_unkE4;
+        if (r == 0 && e4 < 2) {
+            Xiiiui_func_0011C1E8(arg1, 4, 0U, 0);
+            return 2;
+        }
+        if (arg1->m_unkE0 == 2) {
+            Xiiiui_func_0011C1E8(arg1, 3, 0U, 0);
+            return 2;
+        }
+        func_00121054(arg0, arg1, arg2);
+        return 1;
+    }
+    Xiiiui_func_0011C1E8(arg1, 1, 0U, 0);
+    return 0;
+}
 
 extern "C" void MagLifePCModeRun2D__vfunc_01(MagLifePCModeRun2D *arg0, MagLifePC *arg1)
 {
@@ -165,7 +188,6 @@ extern "C" void MagLifePCModeRun2D__vfunc_02(MagLifePCModeRun2D *arg0, MagLifePC
 
 // NON_MATCHING: 26/58 differ, 3 relocs differ (size 0xE8, game 0xE4), 14 edits
 #ifdef NON_MATCHING
-extern "C" int func_0011B204(MagLifePC *, float, float);
 extern "C" int MagLifePCModeRun2D__vfunc_03(MagLifePCModeRun2D *arg0, MagLifePC *arg1, const BedPad *arg2)
 {
     if (arg1->m_unkDC != 0) {
