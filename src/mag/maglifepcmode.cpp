@@ -1,6 +1,10 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
 #include "mag/magscene.h"
+extern "C" int func_0011BE30(MagLifePC *);
+extern const int D_002EAD68[];
+extern const int D_002EAD78[];
+extern const int D_002EAD88[];
 extern "C" int func_0011A028(MagLifePC *);
 extern "C" int func_0011CE50(MagLifePC *);
 extern "C" int func_0011AF04(MagLifePC *);
@@ -134,7 +138,23 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", pad__17MagLifePCModeWaitR9MagL
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", func_00120DEC);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", MagLifePCModeWalk2D__vfunc_01);
+extern "C" void MagLifePCModeWalk2D__vfunc_01(MagLifePCModeWalk2D *arg0, MagLifePC *arg1)
+{
+    int e4 = arg1->m_unkE4;
+    int ec = arg1->m_unkEC;
+    if (e4 >= 3) {
+        e4 = 2;
+    }
+    int r = func_0011BE30(arg1);
+    int *last = &arg1->m_last0;
+    if (r != 0 || ec == 2 || *last == 4) {
+        return Xiiis_func_0011A320(arg1, D_002EAD68[e4], -1);
+    }
+    if (ec == 0) {
+        return Xiiis_func_0011A320(arg1, D_002EAD78[e4], -1);
+    }
+    Xiiis_func_0011A320(arg1, D_002EAD88[e4], -1);
+}
 
 extern "C" void func_00121054(MagLifePCModeWalk2D *arg0, MagLifePC *arg1, const BedPad *arg2)
 {
