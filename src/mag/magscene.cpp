@@ -692,7 +692,23 @@ extern "C" int func_00133EFC(MagScene *self, int arg1, int arg2, int arg3, int a
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133EFC);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133F68);
+extern "C" int func_00133F68(MagScene *self, int arg1, int arg2, unsigned int arg3, int arg4)
+{
+    for (int i = 0; i < 0x2000; i++) {
+        if (self->m_unk437E0[i].m_sub.m_unk0E == -1) {
+            self->m_unk437E0[i].m_sub.m_unk04 = arg4;
+            self->m_unk437E0[i].m_sub.m_unk0C = arg1;
+            self->m_unk437E0[i].m_sub.m_unk00 = arg2;
+            self->m_unk437E0[i].m_sub.m_unk0E = 2;
+            self->m_unk437E0[i].m_unk00 = (float)(arg3 & 0xFF) / 255.0f;
+            self->m_unk437E0[i].m_unk04 = (float)((arg3 >> 8) & 0xFF) / 255.0f;
+            self->m_unk437E0[i].m_unk08 = (float)((arg3 >> 16) & 0xFF) / 255.0f;
+            self->m_unk437E0[i].m_unk0C = (float)((arg3 >> 24) & 0xFF) / 128.0f;
+            return i;
+        }
+    }
+    return -1;
+}
 
 extern "C" int func_00134114(MagScene *self, int arg1, int arg2, unsigned int arg3)
 {
