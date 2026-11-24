@@ -1,5 +1,29 @@
 #include "ror.h"
 #include "include_asm.h"
+struct MagMenuSp2 {
+    int m_mode;                     // +0x00
+    int m_unk04;                    // +0x04
+    int m_unk08;                    // +0x08
+    int m_unk0C;                    // +0x0C
+    int m_unk10;                    // +0x10
+    void *m_vtable;                 // +0x14
+    int m_unk18;                    // +0x18
+    int m_unk1C;                    // +0x1C
+    void *m_scene20;                // +0x20
+    int m_hide;                     // +0x24
+    int m_unk28;                    // +0x28
+    int m_unk2C;                    // +0x2C
+    void *m_scene;                  // +0x30
+    int m_unk34;                    // +0x34
+    int m_unk38;                    // +0x38
+    int m_unk3C;                    // +0x3C
+    int m_chara[4];                 // +0x40
+    int m_unk50;                    // +0x50
+    int m_unk54[3];                 // +0x54
+    int m_unk60[3];                 // +0x60
+    int m_unk6C;                    // +0x6C
+};
+extern void *_vt$19MagLifeMenuSpecial2[];
 struct MagMenuSp1 {
     int m_mode;                     // +0x00
     int m_unk04;                    // +0x04
@@ -177,7 +201,36 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifemenusp", D_002ED0F8);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifemenusp", MagLifeMenuSpecial2__vfunc_06);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifemenusp", func_0012EEF0);
+extern "C" void func_0012EEF0(MagMenuSp2 *self)
+{
+    int i;
+
+#ifdef TARGET_PS2
+    *(u_long128 *)&self->m_mode = 0;
+#else
+    self->m_mode = self->m_unk04 = self->m_unk08 = self->m_unk0C = 0;
+#endif
+    self->m_unk10 = 1;
+    self->m_unk04 = -1;
+    self->m_mode = 0;
+    self->m_hide = 0;
+    self->m_scene20 = 0;
+    self->m_vtable = _vt$19MagLifeMenuSpecial2;
+    self->m_scene = 0;
+    self->m_unk50 = 0;
+    self->m_unk6C = 0;
+    for (i = 0; i < 4; i++) {
+        self->m_chara[i] = -1;
+    }
+    self->m_unk34 = -1;
+    self->m_scene = 0;
+    for (i = 0; i < 3; i++) {
+        self->m_unk54[i] = 0;
+        self->m_unk60[i] = 0;
+    }
+    self->m_unk04 = -1;
+    self->m_mode = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifemenusp", MagLifeMenuSpecial2__vfunc_01);
 
