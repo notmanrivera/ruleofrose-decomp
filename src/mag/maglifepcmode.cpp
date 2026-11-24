@@ -1,6 +1,7 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
 #include "mag/magscene.h"
+extern "C" int func_0011A028(MagLifePC *);
 extern "C" int func_0011CE50(MagLifePC *);
 extern "C" int func_0011AF04(MagLifePC *);
 
@@ -416,7 +417,27 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", init__17MagLifePCModeRideR9Mag
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", live__17MagLifePCModeRideR9MagLifePC);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", pad__17MagLifePCModeRideR9MagLifePCRC6BedPad);
+extern "C" int pad__17MagLifePCModeRideR9MagLifePCRC6BedPad(MagLifePCModeRide *arg0, MagLifePC *arg1, const BedPad *arg2)
+{
+    int &flag = arg1->m_unk0C;
+    if (flag <= 0 && arg1->m_unk104 > 0.0f) {
+        int mot = func_0011A028(arg1);
+        if ((unsigned int)(mot - 0x8A) < 4U) {
+            Xiiis_func_0011A320(arg1, 0x8E, -1);
+            flag |= 1;
+        } else if ((unsigned int)(mot - 0x91) < 2U) {
+            Xiiis_func_0011A320(arg1, 0x93, -1);
+            flag |= 1;
+        } else if (mot == 0x98) {
+            Xiiis_func_0011A320(arg1, 0x99, -1);
+            flag |= 1;
+        } else if (mot == 0x9C) {
+            Xiiis_func_0011A320(arg1, 0x9D, -1);
+            flag |= 1;
+        }
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", func_00122C9C);
 
