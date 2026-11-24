@@ -16,15 +16,23 @@ struct ScenePlaySingle {
 
 struct ScenePlay {
     void *m_vtable;                     // +0x00
-    unsigned char m_pad04[0x2C];
+    ScenePlaySingle *m_unk04[11];       // +0x04
     int m_unk30;                        // +0x30
     int m_unk34;                        // +0x34
-    unsigned char m_pad38[0x8];
+    int m_unk38;                        // +0x38
+    int m_unk3C;                        // +0x3C
     int m_camera_eff_id;                // +0x40
-    unsigned char m_pad44[0x88];
+    int m_unk44;                        // +0x44
+    unsigned char m_pad48[0x40];
+    int m_unk88;                        // +0x88
+    unsigned char m_pad8C[0x40];
     unsigned int m_imd_load_chr_id[16]; // +0xCC
     int m_imd_load_chr_num;             // +0x10C
     char m_unk110[0x20];                // +0x110
+    unsigned char m_pad130[0x80];
+    unsigned char m_displayMessage[0x90]; // +0x1B0
+    unsigned char m_seManager[0x308];     // +0x240
+    unsigned char m_voiceManager[0x40];   // +0x548
 };
 
 #endif

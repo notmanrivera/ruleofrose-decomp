@@ -2,6 +2,11 @@
 #include "task/cmnitask.h"
 #include "task/tsk_scene.h"
 #include "sdk/string.h"
+extern "C" void ScenePlay__vfunc_03(ScenePlay *);
+extern "C" void func_001F6C64(void *);
+extern "C" void func_001F6EDC(void *);
+extern "C" void func_001F73D4(void *);
+extern void *_vt$9ScenePlay[];
 extern "C" int func_00279C98(char *, const char *, ...);
 extern "C" char *strncpy(char *, const char *, size_t);
 extern "C" char vtbl_15ScenePlaySingle[] asm("_vt$15ScenePlaySingle");
@@ -74,11 +79,24 @@ INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F7788);
 
 INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F7C0C);
 
-INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F7D54);
+extern "C" void func_001F7D54(ScenePlay *self, int arg1)
+{
+    self->m_vtable = _vt$9ScenePlay;
+    func_001F6C64(self->m_displayMessage);
+    func_001F6EDC(self->m_seManager);
+    func_001F73D4(self->m_voiceManager);
+    ScenePlay__vfunc_03(self);
+    self->m_unk3C = arg1;
+    self->m_unk30 = 0;
+    self->m_camera_eff_id = -1;
+    self->m_imd_load_chr_num = 0;
+    self->m_unk44 = 0;
+    self->m_unk88 = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", ScenePlay__vfunc_06);
 
-extern "C" void ScenePlay__vfunc_03(void) {
+extern "C" void ScenePlay__vfunc_03(ScenePlay *) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", ScenePlay__vfunc_05);
