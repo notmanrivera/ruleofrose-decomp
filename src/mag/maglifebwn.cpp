@@ -459,7 +459,36 @@ extern "C" void reset4MapJump__10MagLifeBwn(MagLifeBwn *arg0)
     arg0->m_unkCB8 = func_001252C4(arg0);
 }
 
+// NON_MATCHING: 54/57 differ, 2 relocs differ (size 0xE4, game 0xF0), 22 edits
+#ifdef NON_MATCHING
+void vecLerp(float *theOut, const float *a, const float *b, float t);
+float vecYaw(const float *v);
+extern "C" void func_00125014(MagLifeBwn *arg0)
+{
+    DogVector pos;
+    unsigned int val = arg0->m_unkCA8;
+    int frac = val & 0xFFFF;
+
+    if (frac != 0) {
+        int idx = val >> 16;
+        vecLerp(&pos.m_x, &arg0->m_pathPoints[idx].x, &arg0->m_pathPoints[idx + 1].x,
+                (float)frac * (1.0f / 65536.0f));
+    } else {
+        int idx = val >> 16;
+        pos = *(DogVector *)&arg0->m_pathPoints[idx];
+    }
+
+    DogVector actorPos = arg0->m_actor->m_unk40;
+    pos.m_x -= actorPos.m_x;
+    pos.m_z -= actorPos.m_z;
+    pos.m_w = 1.0f;
+    pos.m_y -= actorPos.m_y;
+    arg0->m_unkCB4 = vecYaw(&pos.m_x);
+    arg0->m_unkCB0 = 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00125014);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00125104);
 

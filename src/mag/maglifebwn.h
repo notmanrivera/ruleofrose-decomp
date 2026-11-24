@@ -63,9 +63,11 @@ public:
     MagBwnVec4 m_pathPoints[0x7F];      // +0x0A0..+0x88F
     unsigned char m_pad890[0x410];      // +0x890..+0xC9F
     int m_unkCA0;                       // +0xCA0
-    int m_padCA4[2];                    // +0xCA4..+0xCAB
+    int m_unkCA4;                       // +0xCA4
+    unsigned int m_unkCA8;              // +0xCA8
     int m_unkCAC;                       // +0xCAC
-    int m_padCB0[2];                    // +0xCB0..+0xCB7
+    int m_unkCB0;                       // +0xCB0
+    float m_unkCB4;                     // +0xCB4
     int m_unkCB8;                       // +0xCB8
     int m_unkCBC;                       // +0xCBC
     int m_unkCC0;                       // +0xCC0 (mode done flag)
