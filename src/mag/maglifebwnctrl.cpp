@@ -2,6 +2,7 @@
 #include "mag/maglifebwn.h"
 #include "utl/utlfind.h"
 #include "mag/magscene.h"
+void vecNormalize(float *);
 extern "C" void func_00125A20(MagLifeBwn *, int);
 extern const char D_002EC320[];
 extern const char D_002EC328[];
@@ -569,7 +570,47 @@ extern "C" void MagLifeBwnCtrlModeHug__vfunc_01(MagLifeBwnCtrlModeHug *arg0, Mag
     arg1->m_unk78 = 4;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeHug__vfunc_02);
+extern "C" void MagLifeBwnCtrlModeHug__vfunc_02(MagLifeBwnCtrlModeHug *arg0, MagLifeBwnCtrl *arg1)
+{
+    int unk04 = arg0->m_unk04;
+    if (unk04 == 0) {
+        DogVector v0;
+        arg1->m_unk74->func_00119F88(&v0);
+        DogVector v1;
+        DogVector *pv1 = &v1;
+        arg1->m_bwn->func_00119F88(pv1);
+        float d = vecDist(&v0.m_x, &pv1->m_x) - 100.0f;
+        if (d != 0.0f) {
+            if (d > 1.0f) {
+                d = 1.0f;
+            }
+            DogVector diff = v0;
+            DogVector *pd = &diff;
+            pd->m_x -= pv1->m_x;
+            pd->m_w = 1.0f;
+            pd->m_y -= pv1->m_y;
+            pd->m_z -= pv1->m_z;
+            vecNormalize(&pd->m_x);
+            pd->m_x *= d;
+            pd->m_w = 1.0f;
+            pd->m_y *= d;
+            pd->m_z *= d;
+            DogActor *actor = arg1->m_bwn->getActor();
+            DogVector *pos = &actor->m_unk40;
+            pos->m_x += pd->m_x;
+            pos->m_y += pd->m_y;
+            pos->m_z += pd->m_z;
+            pos->m_w = 1.0f;
+            actor->m_unk90 = 1;
+        }
+    } else if (unk04 == 1 || unk04 == 2) {
+        MagLifeBwn *bwn = arg1->m_bwn;
+        if (bwn->m_unkCC0 != 0 || bwn->func_0011A064() != 0) {
+            arg1->m_unk78 = 0;
+            func_0012A56C(arg1, 0, 0, 0);
+        }
+    }
+}
 
 extern "C" void MagLifeBwnCtrlModeWound__vfunc_01(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
 {
