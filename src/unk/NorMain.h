@@ -6,13 +6,15 @@
 struct NorMain : public EmyMain {
     int m_unk204[5];                    // +0x204..+0x217
     int m_unk218;                       // +0x218
-    unsigned char m_pad21C[0x10];       // +0x21C..+0x22B
+    int m_unk21C;                       // +0x21C
+    int m_unk220;                       // +0x220
+    unsigned char m_pad224[8];          // +0x224..+0x22B
     unsigned char m_unk22C;             // +0x22C
     unsigned char m_pad22D[3];          // +0x22D..+0x22F
     int m_unk230;                       // +0x230
     unsigned short m_unk234;            // +0x234
     unsigned short m_unk236;            // +0x236
-    unsigned char m_pad238[4];          // +0x238..+0x23B
+    int m_unk238;                       // +0x238
     int m_unk23C;                       // +0x23C
     int m_unk240;                       // +0x240
     int m_unk244;                       // +0x244

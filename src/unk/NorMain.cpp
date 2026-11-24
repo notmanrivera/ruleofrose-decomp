@@ -2,6 +2,13 @@
 #include "unk/NorMain.h"
 #include "game/gamman.h"
 #include "game/gamtrg.h"
+extern "C" int func_0010423C(int, int);
+extern "C" int func_001442DC(int);
+extern "C" int func_00151218(NorMain *);
+extern "C" int func_0015122C(NorMain *);
+extern "C" int func_0015130C(NorMain *);
+extern "C" int func_00151314(NorMain *);
+extern "C" int func_00151328(NorMain *);
 extern "C" void func_001D10D0(void *, int, int);
 extern "C" void func_001D1410(void *, int, int);
 extern "C" void func_001DA228(void *, int, void *);
@@ -56,6 +63,12 @@ extern "C" int X_func_0022B3D8(void *, const char *) asm("func_0022B3D8");
 
 INCLUDE_ASM("asm/nonmatchings/unk/NorMain", func_00150B24);
 
+INCLUDE_RODATA("asm/nonmatchings/unk/NorMain", D_002EF9E0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/NorMain", D_002EF9F0);
+
+INCLUDE_RODATA("asm/nonmatchings/unk/NorMain", D_002EFA00);
+
 extern "C" void NorMain__vfunc_01(NorMain *self, int flags)
 {
     self->m_vtbl = &vtbl_NorMain;
@@ -65,7 +78,49 @@ extern "C" void NorMain__vfunc_01(NorMain *self, int flags)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/NorMain", NorMain__vfunc_04);
+extern "C" void NorMain__vfunc_04(NorMain *self)
+{
+    if (self->m_unk28 != 0 && self->m_nextState == -1) {
+        if (self->m_unk218 != 0 && func_0015122C(self) != 0) {
+            self->m_nextState = 5;
+            return;
+        }
+        if (self->m_unk220 != 0 && func_00151314(self) != 0) {
+            self->m_nextState = 7;
+        }
+        if (self->m_unk21C != 0 && func_0015130C(self) != 0) {
+            self->m_nextState = 6;
+        }
+        if (self->m_unk204[4] != 0 && func_00151218(self) != 0) {
+            self->m_nextState = 4;
+        }
+        if (self->m_unk204[3] != 0 && (self->m_flags30 & 0x11) == 1) {
+            self->m_unk238++;
+            const int table[6] = { 0, 50, 30, 40, 60, 100 };
+            if (func_0010423C(0, 0x63) < table[self->m_unk238]) {
+                self->m_unk238 = 0;
+                self->m_nextState = 3;
+                return;
+            }
+        }
+        if (self->m_unk204[2] != 0 && func_001442DC(self->m_id) != -1) {
+            self->m_unk248 = func_0010423C(0x1E, 0x3C);
+            self->m_nextState = 2;
+        }
+        int seen = func_00151328(self);
+        if (self->m_unk22C != 0) {
+            self->m_unk22C = seen;
+            if (self->m_unk22C == 0 && self->m_unk204[1] != 0) {
+                self->m_nextState = 1;
+            }
+        } else {
+            self->m_unk22C = seen;
+            if (self->m_unk22C != 0 && self->m_unk204[0] != 0) {
+                self->m_nextState = 0;
+            }
+        }
+    }
+}
 
 extern "C" void NorMain__vfunc_05(NorMain *self)
 {
@@ -135,7 +190,7 @@ extern "C" int NorMain__vfunc_02(NorMain *self)
     return 0;
 }
 
-extern "C" int func_00151218()
+extern "C" int func_00151218(NorMain *)
 {
     return X_func_00166108();
 }
@@ -165,12 +220,12 @@ extern "C" int func_0015122C(NorMain *self)
     return ret;
 }
 
-extern "C" int func_0015130C()
+extern "C" int func_0015130C(NorMain *)
 {
     return 0;
 }
 
-extern "C" int func_00151314()
+extern "C" int func_00151314(NorMain *)
 {
     return X_func_00166198();
 }
@@ -254,14 +309,6 @@ extern "C" int NorMain__vfunc_07(NorMain *self)
 #else
 INCLUDE_ASM("asm/nonmatchings/unk/NorMain", NorMain__vfunc_07);
 #endif
-
-INCLUDE_RODATA("asm/nonmatchings/unk/NorMain", D_002EF9E0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/NorMain", D_002EF9F0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/NorMain", D_002EFA00);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/NorMain", D_002EFA08);
 
 extern "C" void func_00151508(NorMain *self)
 {
