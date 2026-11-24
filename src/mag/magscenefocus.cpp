@@ -1,4 +1,10 @@
 #include "include_asm.h"
+struct MagSceneFocusLerp {
+    float m_unk00;
+    float m_unk04;
+    int m_unk08;
+    int m_unk0C;
+};
 extern "C" int Xiiii_memset(int, int, int) asm("memset");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfii_func_00140D40(int, int) asm("func_00140D40");
@@ -44,7 +50,18 @@ extern "C" void func_00140C68(int arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140D40);
+extern "C" float func_00140D40(void *arg0, MagSceneFocusLerp *arg1)
+{
+    int count = arg1->m_unk08 + 1;
+    int max = arg1->m_unk0C;
+    float start = arg1->m_unk00;
+    arg1->m_unk08 = count;
+    float res = start + ((arg1->m_unk04 - start) * (float)count) / (float)max;
+    if (count >= max) {
+        arg1->m_unk0C = 0;
+    }
+    return res;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140D94);
 
