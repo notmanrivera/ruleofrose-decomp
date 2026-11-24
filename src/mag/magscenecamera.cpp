@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "mag/magscene.h"
+#include "dog/dogcamera.h"
 #include "sdk/math.h"
 extern const char D_002EE5D0[];
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))

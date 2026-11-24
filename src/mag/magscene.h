@@ -8,7 +8,7 @@
 
 #include "ror.h"
 #include "dog/dogactor.h"
-#include "dog/dogcamera.h"
+class DogCamera;
 #include "dog/dogtexinfo.h"
 #include "sdk/libgraph.h"
 #include "bed/bedsubmode.h"
