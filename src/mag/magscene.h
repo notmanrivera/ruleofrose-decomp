@@ -65,6 +65,15 @@ struct MagPrivateColli {
     DogVector m_p2;
 };
 
+struct MagUnk29890 {
+    DogModel m_model;               // +0x000
+    int m_unk1A0;                   // +0x1A0
+    unsigned char m_unk1A4[0x37C];  // +0x1A4
+};
+#ifdef TARGET_PS2
+STATIC_ASSERT(sizeof(MagUnk29890) == 0x520, MagUnk29890_size);
+#endif
+
 struct I3dDraw;
 
 // The scene's actors (the characters, the dog...).
@@ -151,6 +160,7 @@ public:
     MagScene();
     ~MagScene();
     DogActor *getActor(int n) { return &m_actor[n]; }
+    MagUnk29890 *getUnk29890(int n) { return &((MagUnk29890 *)&m_unk29890)[n]; }
     void setModelFlag(int n, int f) { m_unk29120[n] |= f; }
     void func_00131840();
     void func_00131A28();

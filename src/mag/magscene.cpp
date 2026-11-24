@@ -526,7 +526,51 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133A0C);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133B80);
 
+// NON_MATCHING: 81/94 differ, 7 relocs differ (size 0x178, game 0x184), 27 edits
+#ifdef NON_MATCHING
+extern "C" float func_0013386C(MagScene *, DogModelHit *, const float *, float, float);
+static inline bool isAliveModel(DogModel *m)
+{
+    if (m->m_i3r_root) {
+        ((I3D_OK == I3rRoot__CheckIdString(m->m_i3r_root)) ? (void)0 : ror_assert(D_002ED570, 248, D_002ED580));
+    }
+    return m->m_i3r_root != 0;
+}
+
+static inline bool isAliveModel(const DogModel *m)
+{
+    if (m->m_i3r_root) {
+        ((I3D_OK == I3rRoot__CheckIdString(m->m_i3r_root)) ? (void)0 : ror_assert(D_002ED570, 248, D_002ED580));
+    }
+    return m->m_i3r_root != 0;
+}
+
+extern "C" float func_00133D10(MagScene *self, const float *theFrom, const float *theTo, int theNo, DogModelHit *theHit, float theRadius)
+{
+    float ret = func_0013386C(self, theHit, theFrom, theTo[1], theRadius);
+    if (ret >= 0.0f) {
+        return ret;
+    }
+    if (theNo >= 0) {
+        return self->getUnk29890(theNo)->m_model.collideWall(theFrom, theTo, theHit, theRadius);
+    }
+    MagUnk29890 *p = self->getUnk29890(0);
+    for (int i = 0; i < 4; i++, p++) {
+        if (p->m_unk1A0 >= 0) {
+            const DogModel *m = &p->m_model;
+            if (isAliveModel(m)) {
+                ret = p->m_model.collideWall(theFrom, theTo, theHit, theRadius);
+                if (ret >= 0.0f) {
+                    return ret;
+                }
+            }
+        }
+    }
+    return -1.0f;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133D10);
+#endif
 
 // NON_MATCHING: 4/26 differ, 4 edits
 #ifdef NON_MATCHING
