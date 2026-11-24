@@ -26,6 +26,20 @@ struct MagFntMan {
 
 class MagLifePos : public MagLife {
 public:
+    DogVector m_pos;                // +0x30
+    DogVector m_unk40;              // +0x40
+    DogVector m_unk50;              // +0x50
+    DogVector m_unk60;              // +0x60
+    DogVector m_unk70;              // +0x70
+
+    MagLifePos()
+    {
+        m_pos.clear();
+        m_unk40.clear();
+        m_unk50.clear();
+        m_unk60.clear();
+        m_unk70.clear();
+    }
     virtual void updatePos();
     virtual void updateSpeed();
     virtual void move();
@@ -33,8 +47,6 @@ public:
 
 class MagLifeWindow : public MagLifePos {
 public:
-    DogVector m_pos;                // +0x30
-    unsigned char m_unk40[0x40];    // +0x40
     int m_unk80;                    // +0x80
     int m_unk84;                    // +0x84
     int m_unk88;                    // +0x88
@@ -42,7 +54,10 @@ public:
     int m_unk90;                    // +0x90
     int m_w;                        // +0x94
     int m_h;                        // +0x98
-    unsigned char m_unk9C[0x10];    // +0x9C
+    int m_unk9C;                    // +0x9C
+    int m_unkA0;                    // +0xA0
+    int m_unkA4;                    // +0xA4
+    int m_unkA8;                    // +0xA8
     int m_unkAC;                    // +0xAC
     float m_unkB0;                  // +0xB0
     float m_unkB4;                  // +0xB4
@@ -54,7 +69,8 @@ public:
     int m_ch_h;                     // +0xCC
     int m_buf_w;                    // +0xD0
     int m_buf_h;                    // +0xD4
-    unsigned char m_unkD8[8];       // +0xD8
+    int m_unkD8;                    // +0xD8
+    int m_unkDC;                    // +0xDC
 
     MagLifeWindow() asm("func_001308BC");
 

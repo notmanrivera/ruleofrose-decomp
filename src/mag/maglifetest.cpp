@@ -1,6 +1,7 @@
 #include "include_asm.h"
 #define MAGLIFE_EXTERNAL_RTTI
 #include "mag/maglife.h"
+#include "mag/maglifewindow.h"
 #include "bed/bedpad.h"
 struct Arg223558 {
     float unk00;
@@ -44,7 +45,33 @@ static inline unsigned int padTriggerU(const BedPad *p) { return p->m_trigger; }
 extern "C" int X_func_00130A2C(...) asm("func_00130A2C");
 extern "C" int X_func_0021B550(...) asm("func_0021B550");
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifetest", func_001308BC);
+MagLifeWindow::MagLifeWindow()
+{
+    m_unk80 = 0;
+    m_unk84 = 0;
+    m_unk88 = 0;
+    m_unk8C = 0;
+    m_unk90 = 0;
+    m_w = 0;
+    m_h = 0;
+    m_unk9C = 0xFF;
+    m_unkA0 = 0xFF;
+    m_unkA4 = 0xFF;
+    m_unkA8 = 0x80;
+    m_unkAC = -1;
+    m_unkB0 = 128.0f;
+    m_unkB4 = 0.0f;
+    m_unkB8 = 0.0f;
+    m_unkBC = 128.0f;
+    m_font_tex = -1;
+    m_fntman = 0;
+    m_ch_w = 0;
+    m_ch_h = 0;
+    m_buf_w = 0;
+    m_buf_h = 0;
+    m_unkD8 = 0;
+    m_unkDC = 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifetest", func_00130A2C);
 
