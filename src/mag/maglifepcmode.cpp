@@ -731,7 +731,51 @@ extern "C" void init__19MagLifePCModeUnholdR9MagLifePC(MagLifePCModeUnhold *arg0
     Xiiis_func_0011A320(arg1, 0xE, -1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", init__17MagLifePCModeRideR9MagLifePC);
+extern "C" void init__17MagLifePCModeRideR9MagLifePC(MagLifePCModeRide *arg0, MagLifePC *arg1)
+{
+    switch (arg1->m_unk08) {
+    case 2:
+        Xiiis_func_0011A320(arg1, 0x89, -1);
+        arg0->m_unk08 = 1;
+        break;
+    case 7:
+        Xiiis_func_0011A320(arg1, 0x90, -1);
+        arg0->m_unk08 = 2;
+        break;
+    case 10:
+        Xiiis_func_0011A320(arg1, 0x98, -1);
+        arg0->m_unk08 = 3;
+        break;
+    case 12:
+        Xiiis_func_0011A320(arg1, 0x9C, -1);
+        arg0->m_unk08 = 4;
+        break;
+    case 3:
+        switch (arg0->m_unk08) {
+        case 1:
+            Xiiis_func_0011A320(arg1, 0x8A, -1);
+            break;
+        case 2:
+            Xiiis_func_0011A320(arg1, 0x91, -1);
+            break;
+        case 3:
+            Xiiis_func_0011A320(arg1, 0x98, -1);
+            break;
+        case 4:
+            Xiiis_func_0011A320(arg1, 0x9C, -1);
+            break;
+        default:
+            X_ror_assert(D_002EAD28, 0x81D, D_002EAD60);
+            break;
+        }
+        break;
+    default:
+        X_ror_assert(D_002EAD28, 0x822, D_002EAD60);
+        break;
+    }
+    arg0->m_unk04 = 1;
+    arg1->m_unk0C = 0;
+}
 
 extern "C" void live__17MagLifePCModeRideR9MagLifePC(MagLifePCModeRide *arg0, MagLifePC *arg1)
 {
