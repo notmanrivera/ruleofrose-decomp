@@ -1,4 +1,14 @@
 #include "include_asm.h"
+struct VoiceEntry {
+    int m_id;
+    int m_unk04;
+    int m_timer;
+};
+struct VoiceManager {
+    VoiceEntry m_entries[0x40];
+    int m_count;
+};
+extern "C" void func_001F728C(VoiceManager *, int);
 extern "C" int Xi_func_001F7644() asm("func_001F7644");
 extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
 extern int _vt$10EmyManager;
@@ -21,7 +31,13 @@ INCLUDE_ASM("asm/nonmatchings/unk/VoiceManager", func_001F70C8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/VoiceManager", func_001F71B8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/VoiceManager", func_001F723C);
+extern "C" void func_001F723C(VoiceManager *self)
+{
+    int n = self->m_count;
+    for (int i = 0; i < n; i++) {
+        func_001F728C(self, 0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/VoiceManager", func_001F728C);
 
