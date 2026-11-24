@@ -15,6 +15,8 @@ public:
     TskDamageObj *m_obj;                // +0x18
     int m_unk1C;                        // +0x1C
     int m_damage;                       // +0x20
+    unsigned char m_pad24[0x24];        // +0x24..+0x47
+    unsigned short m_unk48;             // +0x48
 
     virtual int get_task_type() { return 0x12; }
     virtual void init() {}
@@ -83,7 +85,31 @@ INCLUDE_ASM("asm/nonmatchings/unk/TskDamage", func_001FA5BC);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskDamage", func_001FA768);
 
+// NON_MATCHING: 2/43 differ, 2 edits
+#ifdef NON_MATCHING
+extern "C" void func_001D9F10(void *, int);
+extern "C" void func_001DA07C(void *);
+extern "C" void func_00212FBC(void *, int);
+extern "C" void func_00163624(void *, int, int);
+extern "C" void func_001D1D5C(void *, unsigned int, int, void *);
+extern int D_007A4440;
+extern "C" void func_001FA9C4(TskDamage *self)
+{
+    self->m_obj->m_flg |= 0x400;
+    self->m_obj->m_flg |= 0x2000;
+    func_001D9F10(self->m_obj, 0);
+    func_001DA07C(self->m_obj);
+    func_00212FBC(&D_007A4440, self->m_oid);
+    func_00163624(&D_007B2140, self->m_oid, 2);
+    int d = self->m_damage;
+    self->m_unk48 = 0;
+    self->m_flags |= 0x100;
+    self->m_damage = d + 10000;
+    func_001D1D5C(&D_007812C0, (unsigned int)self->m_oid, 0x1B, &self->m_unk48);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskDamage", func_001FA9C4);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskDamage", func_001FAA70);
 
