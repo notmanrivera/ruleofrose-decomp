@@ -46,7 +46,7 @@ struct GamSndChannels {
     GamSndChannel m_buf[0x30];          // +0x40
 };
 struct ALIGNED(16) GamSnd3D {
-    EffVec4 m_unk00;
+    TskVec4 m_unk00;
     EffVec3 position;                // +0x10
     int m_unk1C;
     unsigned int id;                    // +0x20

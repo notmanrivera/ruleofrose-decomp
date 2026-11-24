@@ -322,7 +322,20 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E1FA4);
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2178);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2350);
+extern "C" void func_001E2350(GamSndMan *, GamSnd3D *item, const TskVec4 *point, const EffVec3 *origin, float distance)
+{
+    item->distance = distance;
+    register const TskVec4 *source PS2_REG("$2") = point;
+    if (origin != 0) {
+        item->m_unk00.f[0] = source->f[0] - origin->x;
+        item->m_unk00.f[1] = source->f[1] - origin->y;
+        item->m_unk00.f[2] = source->f[2] - origin->z;
+        return;
+    }
+    // Keep the full-vector copy in a2 while source remains in v0.
+    register u_long128 copy PS2_REG("$6") = *(const u_long128 *)source;
+    *(u_long128 *)&item->m_unk00 = copy;
+}
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E239C);
 
