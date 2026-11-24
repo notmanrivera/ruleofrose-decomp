@@ -2,6 +2,8 @@
 #include "include_asm.h"
 #include "game/gamtrg.h"
 #include "game/gamman.h"
+#include "spr/sprtexture.h"
+#include "unk/Eff0.h"
 extern "C" int Xiii_func_001DB7CC(int, int) asm("func_001DB7CC");
 extern "C" int Xiiii_func_001CB8E4(int, int, int) asm("func_001CB8E4");
 extern "C" int Xiiii_func_001DB520(int, int, int) asm("func_001DB520");
@@ -338,26 +340,13 @@ extern "C" void func_001CCC30(GamMan *, int);
 extern "C" int func_001C0148(int, int);
 extern "C" int func_001C0298(int, int);
 extern "C" int func_001C02B8(int, int);
-struct __attribute__((aligned(8))) DogVector {
-    float m_x;
-    float m_y;
-    float m_z;
-    float m_w;
-    DogVector() {}
-    DogVector(float x, float y, float z, float w)
-    {
-        m_x = x;
-        m_y = y;
-        m_z = z;
-        m_w = w;
-    }
-};
+
 struct PcEffParam {
     int m_kind;
     int m_unk04;
     int m_unk08;
     int m_unk0C;
-    DogVector m_pos;
+    EffVec4A8 m_pos;
     float m_rot[3];
     int m_num;
     int m_pad[20];
@@ -2464,7 +2453,11 @@ extern "C" void func_001CB8E4(int arg0, int arg1, int arg2)
 extern "C" void func_001CB970(void *arg0, void *arg1, int arg2, float *arg3)
 {
     if (arg2 == 0x32) {
-        DogVector pos(arg3[0], arg3[1], arg3[2], 50.0f);
+        EffVec4A8 pos;
+        pos.x = arg3[0];
+        pos.y = arg3[1];
+        pos.z = arg3[2];
+        pos.w = 50.0f;
         PcEffParam param;
         param.m_kind = arg2;
         param.m_pos = pos;
@@ -3030,8 +3023,8 @@ extern "C" void func_001CF518(GamMan *self, int arg1)
     }
 }
 
-struct S2dMes {
-    void setMessageSpriteDispOn_(int a, int b, bool c = true)
+
+inline void S2dMes::setMessageSpriteDispOn_(int a, int b, bool c)
     {
         X_func_00191F98(this, a);
         X_func_00191ED0(this, a);
@@ -3041,24 +3034,23 @@ struct S2dMes {
             X_func_00191DC8(this, a, b);
         }
     }
-    void setMessageSpriteStdPoint(int a, int b, int c, int d)
+inline void S2dMes::setMessageSpriteStdPoint(int a, int b, int c, int d)
     {
         func_00191C00(this, a, b, c, d);
     }
-    void setMessageSpriteOffPoint(int a, int b, int c)
+inline void S2dMes::setMessageSpriteOffPoint(int a, int b, int c)
     {
         func_00191C64((char *)this, a, b, c);
     }
-    void setMessageSpriteFadeIn_(int a, int b)
+inline void S2dMes::setMessageSpriteFadeIn_(int a, int b)
     {
         X_func_00191F98(this, a);
         X_void_191E04(this, a, b);
     }
-    void setMessageSpriteFadeOut(int a, int b)
+inline void S2dMes::setMessageSpriteFadeOut(int a, int b)
     {
         X_void_191E58(this, a, b);
     }
-};
 
 static inline S2dMes *getS2dMes()
 {
@@ -3152,15 +3144,15 @@ extern "C" void func_001CFB38(GamMan *arg0, int arg1)
 
 extern "C" float func_001CFB48(int arg0, unsigned int arg1, unsigned int arg2)
 {
-    DogVector v1;
-    DogVector v2;
+    EffVec4A8 v1;
+    EffVec4A8 v2;
 
     if (Xiiu_func_001D046C(arg0, arg1) == 0 || Xiiu_func_001D046C(arg0, arg2) == 0) {
         return 0.0f;
     }
     Xiiui_func_001D05F4(arg0, arg1, (int)&v1);
     Xiiui_func_001D05F4(arg0, arg2, (int)&v2);
-    return func_00217F10(v2.m_x - v1.m_x, v2.m_z - v1.m_z);
+    return func_00217F10(v2.x - v1.x, v2.z - v1.z);
 }
 
 extern "C" int func_001CFBE4(int arg0, unsigned int arg1, int arg2)

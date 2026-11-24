@@ -12,6 +12,7 @@
 #include "bed/bedsubmode.h"
 #include "mag/maglifeman.h"
 #include "mag/maglifepc.h"
+#include "spr/sprtexture.h"
 
 class BedPad;
 class MagLifeWindow;
@@ -76,7 +77,9 @@ public:
     MagLifePC m_pc;                 // +0x2ADC0..+0x2AFDF (size 0x220)
     unsigned char m_unk2AFE0[0xD40];
     int m_unk2BD20;                 // +0x2BD20
-    unsigned char m_unk2BD24[0x179F4];
+    unsigned char m_unk2BD24[0x16E8C];
+    S2dMes m_s2dMes;                 // +0x42BB0: message sprites
+    unsigned char m_unk43500[0x218];
     int m_unk43718;                 // +0x43718
     TxtToken m_option_bucket[16];   // +0x4371C
     unsigned char m_unk437DC[0x41D24];

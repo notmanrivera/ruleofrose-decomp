@@ -1,200 +1,255 @@
-#include "ror.h"
+#include "msg/msgman.h"
+#include "mag/magsystem.h"
+#include "game/gamman.h"
+#include "spr/sprtexture.h"
 #include "include_asm.h"
-struct m2c_block8 { int w[2]; };
-struct m2c_ulong { long v; } __attribute__((packed));
-#define M2C_ULONG(expr, offset) (((m2c_ulong *)((char *)(expr) + (offset)))->v)
-extern "C" int Xii_func_00183B74(int) asm("func_00183B74");
-extern int D_002F6F40;
-extern int D_002F6F48;
-extern int D_002F6F50;
-extern int D_002F6F58;
-extern int D_002F6F60;
-extern int D_002F6F68;
-extern int D_002F6F70;
-extern int D_002F6F78;
-extern int D_002F6F80;
-extern int D_002F6F88;
-extern int D_002F6F90;
-extern int D_002F6F98;
-extern int D_002F6FA0;
-extern int D_002F6FA8;
-extern int D_002F6FB0;
-extern int D_002F6FB8;
-extern int D_002F6FC0;
-extern int D_002F6FC8;
-extern int D_002F6FD0;
-extern int D_002F6FD8;
-extern int D_002F6FE0;
-extern int D_002F6FE8;
-extern int D_002F6FF0;
-extern int D_002F6FF8;
-extern int D_002F7000;
-extern int D_002F7008;
-extern int D_002F7010;
-extern int D_002F7018;
-extern int D_002F7020;
-extern int D_002F7028;
-extern int D_002F7030;
-extern int D_002F7038;
-extern int D_002F7040;
-extern int D_002F7048;
-extern int D_002F7050;
-extern int D_002F7058;
-extern int D_002F7060;
-extern int D_002F7068;
-extern int D_002F7070;
-extern int D_002F7078;
-extern int D_002F7080;
-extern int D_002F7088;
-extern int D_002F7090;
-extern int D_002F7098;
-extern int D_002F70A0;
-extern int D_002F70A8;
-extern int D_002F70B0;
-extern int D_002F70B8;
-extern int D_002F70C0;
-extern int D_002F70C8;
-extern int D_002F70D0;
-extern int D_002F70D8;
-extern int D_002F70E0;
-extern int D_002F70E8;
-extern int D_002F70F0;
-extern int D_002F70F8;
-extern int D_002F7100;
-extern int D_002F7108;
-extern int D_002F7110;
-extern int D_002F7118;
-extern int D_002F7120;
-extern int D_002F7128;
-extern int D_002F7130;
-extern int D_002F7138;
-extern int D_002F7140;
-extern int D_002F7148;
-extern int D_002F7150;
-extern int D_002F7158;
-extern int D_002F7160;
-extern int D_002F7168;
-extern int D_002F7170;
-extern int D_002F7178;
-extern int D_002F7180;
-extern int D_002F7188;
-extern int D_002F7190;
-extern int D_002F7198;
-extern int D_002F71A0;
-extern int D_002F71A8;
-extern int D_002F71B0;
-extern int D_002F71B8;
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" int Xii_func_00185760(int) asm("func_00185760");
-extern "C" int Xiii_func_001850FC(int, int) asm("func_001850FC");
-extern "C" int Xiiiiu_func_001857C8(int, int, int, unsigned int) asm("func_001857C8");
-extern "C" int Xiiu_func_00135594(int, unsigned int) asm("func_00135594");
-extern "C" int Xiiuiii_func_00134A00(int, unsigned int, int, int, int) asm("func_00134A00");
-extern "C" int X_func_001856FC(...) asm("func_001856FC");
-extern "C" int X_func_00185760(...) asm("func_00185760");
-#include "sdk/string.h"
-extern "C" int Xii_atoi(int) asm("atoi");
-extern "C" int Xiii_func_0018454C(int, int) asm("func_0018454C");
-extern "C" int Xiiii_memcpy(int, int, int) asm("memcpy");
-extern "C" int Xiiii_memset(int, int, int) asm("memset");
-extern "C" void X_func_00135088(void *, int, int, int, int) asm("func_00135088");
-extern "C" void X_func_00191E04(void *, int, int) asm("func_00191E04");
-extern "C" void func_00191F98(void *, int);
-static inline void msg6624_set(void *sub, int ch, int val)
-{
-    func_00191F98(sub, ch);
-    X_func_00191E04(sub, ch, val);
-}
-extern "C" void X_func_00191D20(void *, int, int) asm("func_00191D20");
-extern "C" void X_func_00191D74(void *, int, int) asm("func_00191D74");
-extern "C" void X_func_00191DC8(void *, int, int) asm("func_00191DC8");
-extern "C" void X_func_00191ED0(void *, int) asm("func_00191ED0");
-extern "C" void X_func_00191F98(void *, int) asm("func_00191F98");
-extern "C" void func_0013511C(void *, int, int, int, int);
-extern char *D_002997D0[];
-struct MsgSub5F68 {
-    char pad[0x100];
-    char buf[64];
-};
-struct RingBuf {
-    int m_wpos;
-    int m_rpos;
-    int m_used;
-    int m_unk0C;
-    int m_cap;
-    char m_pad[0x2C];
-    char m_buf[1];
-};
+extern "C" void func_00135088(MagScene *, int, int, int, int);
+extern "C" void func_0013511C(MagScene *, int, int, int, int);
+extern "C" void func_00134A00(MagScene *, unsigned int, int, int, int);
+extern "C" void func_00135594(MagScene *, unsigned int);
+extern "C" void func_00134FA0(MagScene *, int, int);
+extern "C" void func_00135014(MagScene *, int, int);
+extern "C" void func_00134F2C(MagScene *, int, int);
+extern "C" int func_00191BA8(S2dMes *, int, int, int);
+extern "C" int func_00191C64(S2dMes *, int, int, int);
+extern "C" int func_00191D20(S2dMes *, int, int);
+extern "C" int func_00191D74(S2dMes *, int, int);
+extern "C" int func_00191DC8(S2dMes *, int, int);
+extern "C" int func_00191E04(S2dMes *, int, int);
+extern "C" int func_00191E58(S2dMes *, int, int);
+extern "C" int func_00191ED0(S2dMes *, int);
+extern "C" int func_00191F98(S2dMes *, int);
 extern "C" int func_001E5250(void *, int, int, int, int, int);
-static inline void *getGamSnd(void *g) { return (char *)g + 0x18E00; }
-extern "C" int func_00279C98(char *, const char *, ...);
-extern const char D_002F7200[];
-extern int *D_007B205C;
-struct MsgWin;
-extern "C" void func_00185268(MsgWin *, int);
-extern "C" void func_00185594(MsgWin *, int);
-extern "C" void func_001856F4(MsgWin *self, int theA);
-extern "C" void func_001853CC(void *, int);
-extern "C" unsigned int strlen(const char *);
-extern "C" void func_00191BA8(void *, int, int, int);
-extern "C" void func_00191C64(void *, int, int, int);
+extern "C" int func_001DC48C(void *, int, int, int *);
 extern "C" void func_001801C8(void *, int);
-extern int D_007B2580;
-extern "C" int Xiii_func_00191E58(int, int, int) asm("func_00191E58");
-extern int D_006FBD80;
-extern "C" int Xii_func_00185704(int) asm("func_00185704");
-extern "C" int Xiii_func_00184F2C(int, int) asm("func_00184F2C");
-extern "C" int Xiiii_func_00184578(int, int, int) asm("func_00184578");
-extern "C" int Xiiii_func_00184600(int, int, int) asm("func_00184600");
-struct MsgNameEnt { int id; char *name; };
-extern MsgNameEnt D_00299738[];
-extern int D_002F73E4;
-extern "C" int Xiiiii_func_001DC48C(int, int, int, int) asm("func_001DC48C");
-extern char D_002F71F0[];
-extern int D_007812C0;
-extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
-extern "C" int Xi_func_00184008(void *) asm("func_00184008");
-extern "C" void Xv_func_00183C4C(void *) asm("func_00183C4C");
-extern "C" void Xv_func_00183BB8(void *) asm("func_00183BB8");
-extern "C" int Xii_func_00184A94(int) asm("func_00184A94");
+extern "C" int func_00279C98(char *, const char *, ...);
+extern "C" long long func_0027BBA8(const char *, int, int);
+extern "C" int func_00183BB8(MsgWin *);
+extern "C" int func_00184A94(MsgWin *);
+extern "C" int func_00184F2C(MsgWin *, const char *);
+extern "C" int func_001850FC(MsgWin *, const char *);
+extern "C" void func_00185594(MsgWin *, int);
 extern "C" int atoi(const char *);
-extern "C" long long func_0027BBA8(const char *theStr, int theA, int theBase);
-extern const char *D_00298FE8[];
-extern "C" void func_00134FA0(void *theScene, int theNo, int theA);
-extern "C" void func_00135014(void *theScene, int theNo, int theA);
-extern "C" void func_00134F2C(void *theScene, int theNo, int theA);
-struct MsgWin {
-    union {
-        int m[0x40];
-        struct {
-            int m_no;           // +0x00
-            int m_unk04[3];
-            void *m_system;     // +0x10: MagSystem (its scene is at +0x12540)
-            int m_unk14;
-            char *m_str;        // +0x18
-            int m_pos;          // +0x1C
-        };
-    };
-};
-struct MsgQueue {
-    int m_unk00;
-    int m_pos;                  // +0x04
-    int m_used;                 // +0x08
-    int m_unk0C;
-    int m_size;                 // +0x10
-};
+
+extern "C" int func_001831A8(MsgQueue *arg0);
 extern "C" int func_001831C4(MsgQueue *self);
+extern "C" int func_001831CC(MsgQueue *self);
+extern "C" void func_001831F8(MsgQueue *self, const char *src, int len);
+extern "C" char *func_001832A4(MsgQueue *self);
+extern "C" void func_001832B8(MsgQueue *self, int theN);
+extern "C" const char *func_001832E8(unsigned int theN);
+extern "C" int func_00183B74(MsgWin *arg0);
+extern "C" int func_00183C4C(MsgWin *self);
+extern "C" int func_00184008(MsgWin *arg0);
+extern "C" char *func_00184048(MsgWin *arg0, int arg1);
+extern "C" int func_001844C4(MsgWin *arg0, const char *arg1, const char *arg2);
 extern "C" int func_0018454C(MsgWin *self, const char *theStr);
 extern "C" int func_00184578(MsgWin *self, const char *theStr, int *theOut);
+extern "C" int func_00184600(MsgWin *self, const char *theStr, int *theOut);
+extern "C" int func_00184698(MsgWin *self, const char *theStr, char *theOut);
+extern "C" int func_00184710(MsgWin *arg0, char *arg1);
+extern "C" char *func_001847BC(MsgWin *arg0, int theId);
+extern "C" int func_00184820(MsgWin *arg0, signed char arg1);
+extern "C" void func_00185268(MsgWin *self, int arg1);
+extern "C" void func_00185348(MsgWin *self);
+extern "C" void func_001853CC(MsgWin *arg0, int arg1);
+extern "C" void func_001854AC(MsgWin *self);
+extern "C" void func_00185670(MsgWin *self);
+extern "C" void func_001856F4(MsgWin *self, int theA);
+extern "C" void func_00185704(MsgWin *self);
+extern "C" int func_00185760(MsgWin *arg0);
+extern "C" int func_001857C8(MsgWin *arg0, int arg1, int arg2, unsigned int arg3);
+extern "C" int func_001857FC();
+extern "C" int func_00185804();
+extern "C" int func_0018580C(MsgWin *arg0);
+extern "C" int func_00185848();
+extern "C" int func_00185850(MsgWin *arg0);
+extern "C" int func_00185954();
+extern "C" int func_0018595C(MsgWin *arg0);
+extern "C" int func_001859CC(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_001859FC(MsgWin *arg0);
+extern "C" int func_00185A74(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00185AA4(MsgWin *self);
+extern "C" int func_00185B58(MsgWin *arg0, unsigned char *arg1, int *arg2);
+extern "C" int func_00185BBC(MsgWin *arg0);
+extern "C" int func_00185BF8(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00185C04(MsgWin *arg0);
+extern "C" int func_00185C84(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00185C90(MsgWin *arg0);
+extern "C" int func_00185CDC(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00185CE8(MsgWin *arg0);
+extern "C" int func_00185D20(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00185D2C(MsgWin *self);
+extern "C" int func_00185DEC(MsgWin *self, const unsigned char *theStr, int *theLen);
+extern "C" int func_00185EA4(MsgWin *self);
+extern "C" int func_00185F68(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00186018(MsgWin *arg0);
+extern "C" int func_00186088(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_001861CC(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00186204(MsgWin *self);
+extern "C" int func_00186258(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00186290(MsgWin *self);
+extern "C" int func_001862E4(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_001863BC(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00186494(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_001864CC(MsgWin *self);
+extern "C" int func_00186540(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00186578(MsgWin *self);
+extern "C" int func_001865EC(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00186624(MsgWin *self);
+extern "C" int func_00186714(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_0018674C(MsgWin *self);
+extern "C" int func_00186804(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_0018683C(MsgWin *self);
+extern "C" int func_00186880(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_001868B8(MsgWin *arg0);
+extern "C" int func_00186928(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00186960(MsgWin *self);
+extern "C" int func_00186A04(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00186A3C(MsgWin *self);
+extern "C" int func_00186AB4(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00186AEC(MsgWin *self);
+extern "C" int func_00186B44(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00186B80(MsgWin *self);
+extern "C" int func_00186C38(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00186C70(MsgWin *self);
+extern "C" int func_00186CB8(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00186CF4(MsgWin *self);
+extern "C" int func_00186D0C();
+extern "C" int func_00186D14(MsgWin *self);
+extern "C" int func_00186DC4(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00186EF4(MsgWin *self);
+extern "C" int func_00186F90(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00186FC0(MsgWin *self);
+extern "C" int func_0018704C(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_0018707C(MsgWin *self);
+extern "C" int func_00187114(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00187220(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_00187250(MsgWin *self);
+extern "C" int func_0018728C();
+extern "C" int func_00187294(MsgWin *self);
+extern "C" int func_001872CC();
+extern "C" int func_001872D4(MsgWin *self);
+extern "C" int func_00187368(MsgWin *self, const char *theStr, int *theLen);
+extern "C" int func_001873FC();
+extern "C" int func_00187404();
+extern "C" int func_0018740C();
+extern "C" int func_00187414();
+extern "C" int func_0018741C(MsgWin *arg0);
+extern "C" int func_00187464(MsgWin *arg0);
+extern "C" int func_001874AC(MsgWin *arg0);
 
-extern "C" int func_001831A8(int arg0)
+
+extern MsgWin::Command D_002F6F40;
+extern MsgWin::Parser D_002F6F48;
+extern MsgWin::Command D_002F6F50;
+extern MsgWin::Parser D_002F6F58;
+extern MsgWin::Command D_002F6F60;
+extern MsgWin::Parser D_002F6F68;
+extern MsgWin::Command D_002F6F70;
+extern MsgWin::Parser D_002F6F78;
+extern MsgWin::Command D_002F6F80;
+extern MsgWin::Parser D_002F6F88;
+extern MsgWin::Command D_002F6F90;
+extern MsgWin::Parser D_002F6F98;
+extern MsgWin::Command D_002F6FA0;
+extern MsgWin::Parser D_002F6FA8;
+extern MsgWin::Command D_002F6FB0;
+extern MsgWin::Parser D_002F6FB8;
+extern MsgWin::Command D_002F6FC0;
+extern MsgWin::Parser D_002F6FC8;
+extern MsgWin::Command D_002F6FD0;
+extern MsgWin::Parser D_002F6FD8;
+extern MsgWin::Command D_002F6FE0;
+extern MsgWin::Parser D_002F6FE8;
+extern MsgWin::Command D_002F6FF0;
+extern MsgWin::Parser D_002F6FF8;
+extern MsgWin::Command D_002F7000;
+extern MsgWin::Parser D_002F7008;
+extern MsgWin::Command D_002F7010;
+extern MsgWin::Parser D_002F7018;
+extern MsgWin::Command D_002F7020;
+extern MsgWin::Parser D_002F7028;
+extern MsgWin::Command D_002F7030;
+extern MsgWin::Parser D_002F7038;
+extern MsgWin::Command D_002F7040;
+extern MsgWin::Parser D_002F7048;
+extern MsgWin::Command D_002F7050;
+extern MsgWin::Parser D_002F7058;
+extern MsgWin::Command D_002F7060;
+extern MsgWin::Parser D_002F7068;
+extern MsgWin::Command D_002F7070;
+extern MsgWin::Parser D_002F7078;
+extern MsgWin::Command D_002F7080;
+extern MsgWin::Parser D_002F7088;
+extern MsgWin::Command D_002F7090;
+extern MsgWin::Parser D_002F7098;
+extern MsgWin::Command D_002F70A0;
+extern MsgWin::Parser D_002F70A8;
+extern MsgWin::Command D_002F70B0;
+extern MsgWin::Parser D_002F70B8;
+extern MsgWin::Command D_002F70C0;
+extern MsgWin::Parser D_002F70C8;
+extern MsgWin::Command D_002F70D0;
+extern MsgWin::Parser D_002F70D8;
+extern MsgWin::Command D_002F70E0;
+extern MsgWin::Parser D_002F70E8;
+extern MsgWin::Command D_002F70F0;
+extern MsgWin::Parser D_002F70F8;
+extern MsgWin::Command D_002F7100;
+extern MsgWin::Parser D_002F7108;
+extern MsgWin::Command D_002F7110;
+extern MsgWin::Parser D_002F7118;
+extern MsgWin::Command D_002F7120;
+extern MsgWin::Parser D_002F7128;
+extern MsgWin::Command D_002F7130;
+extern MsgWin::Parser D_002F7138;
+extern MsgWin::Command D_002F7140;
+extern MsgWin::Parser D_002F7148;
+extern MsgWin::Command D_002F7150;
+extern MsgWin::Parser D_002F7158;
+extern MsgWin::Command D_002F7160;
+extern MsgWin::Parser D_002F7168;
+extern MsgWin::Command D_002F7170;
+extern MsgWin::Parser D_002F7178;
+extern MsgWin::Command D_002F7180;
+extern MsgWin::Parser D_002F7188;
+extern MsgWin::Command D_002F7190;
+extern MsgWin::Parser D_002F7198;
+extern MsgWin::Command D_002F71A0;
+extern MsgWin::Parser D_002F71A8;
+extern MsgWin::Command D_002F71B0;
+extern MsgWin::Parser D_002F71B8;
+#include "sdk/string.h"
+static inline S2dMes *messageSprites(MagScene *scene) { return &scene->m_s2dMes; }
+static inline void *uniqueObjects(GamMan *game) { return game->m_unq; }
+static inline void *getGamSnd(GamMan *game) { return game->m_snd; }
+static inline void msg6624_set(S2dMes *sub, int ch, int val)
 {
-    int temp_a0;
-    int temp_v0;
+    func_00191F98(sub, ch);
+    func_00191E04(sub, ch, val);
+}
+extern char *D_002997D0[];
 
-    temp_a0 = (*(int *)(int *)((char *)(arg0) + 0x8));
-    temp_v0 = (*(int *)(int *)((char *)(arg0) + 0x10)) - (*(int *)(int *)((char *)(arg0) + 0x4));
-    return (temp_a0 < temp_v0) ? temp_a0 : temp_v0;
+
+extern const char D_002F7200[];
+extern int *D_007B205C;
+extern int D_007B2580;
+extern MagScene D_006FBD80;
+
+extern MsgNameEnt D_00299738[];
+extern int D_002F73E4;
+extern char D_002F71F0[];
+extern GamMan D_007812C0;
+extern const char *D_00298FE8[];
+
+
+
+extern "C" int func_001831A8(MsgQueue *arg0)
+{
+    int used = arg0->m_used;
+    int space = arg0->m_size - arg0->m_pos;
+    return used < space ? used : space;
 }
 
 
@@ -210,10 +265,10 @@ extern "C" int func_001831CC(MsgQueue *self)
 }
 
 
-extern "C" void func_001831F8(RingBuf *self, const char *src, int len)
+extern "C" void func_001831F8(MsgQueue *self, const char *src, int len)
 {
     while (len > 0) {
-        int chunk = self->m_cap - self->m_wpos;
+        int chunk = self->m_size - self->m_wpos;
         if (len < chunk) {
             chunk = len;
         }
@@ -223,14 +278,14 @@ extern "C" void func_001831F8(RingBuf *self, const char *src, int len)
         len -= chunk;
         memcpy(self->m_buf + self->m_wpos, src, chunk);
         src += chunk;
-        self->m_wpos = (self->m_wpos + chunk) % self->m_cap;
+        self->m_wpos = (self->m_wpos + chunk) % self->m_size;
         self->m_used += chunk;
     }
 }
 
 extern "C" char *func_001832A4(MsgQueue *self)
 {
-    return (char *)self + self->m_pos + 0x40;
+    return self->m_buf + self->m_pos;
 }
 
 
@@ -251,116 +306,113 @@ extern "C" const char *func_001832E8(unsigned int theN)
 }
 
 
-extern "C" int func_0018330C(int arg0)
+MsgWin::MsgWin()
 {
-    M2C_FIELD(arg0, int *, 8) = 0;
-    M2C_FIELD(arg0, int *, 0x18) = 0;
-    *(m2c_block8 *)((char *)(arg0) + 0x12c) = *(m2c_block8 *)((char *)(&D_002F6F40) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x274) = *(m2c_block8 *)((char *)(&D_002F6F48) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x134) = *(m2c_block8 *)((char *)(&D_002F6F50) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x27c) = *(m2c_block8 *)((char *)(&D_002F6F58) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x13c) = *(m2c_block8 *)((char *)(&D_002F6F60) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x284) = *(m2c_block8 *)((char *)(&D_002F6F68) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x144) = *(m2c_block8 *)((char *)(&D_002F6F70) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x28c) = *(m2c_block8 *)((char *)(&D_002F6F78) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x14c) = *(m2c_block8 *)((char *)(&D_002F6F80) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x294) = *(m2c_block8 *)((char *)(&D_002F6F88) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x154) = *(m2c_block8 *)((char *)(&D_002F6F90) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x29c) = *(m2c_block8 *)((char *)(&D_002F6F98) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x15c) = *(m2c_block8 *)((char *)(&D_002F6FA0) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x2a4) = *(m2c_block8 *)((char *)(&D_002F6FA8) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x164) = *(m2c_block8 *)((char *)(&D_002F6FB0) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x2ac) = *(m2c_block8 *)((char *)(&D_002F6FB8) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x16c) = *(m2c_block8 *)((char *)(&D_002F6FC0) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x2b4) = *(m2c_block8 *)((char *)(&D_002F6FC8) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x174) = *(m2c_block8 *)((char *)(&D_002F6FD0) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x2bc) = *(m2c_block8 *)((char *)(&D_002F6FD8) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x17c) = *(m2c_block8 *)((char *)(&D_002F6FE0) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x2c4) = *(m2c_block8 *)((char *)(&D_002F6FE8) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x184) = *(m2c_block8 *)((char *)(&D_002F6FF0) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x2cc) = *(m2c_block8 *)((char *)(&D_002F6FF8) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x18c) = *(m2c_block8 *)((char *)(&D_002F7000) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x2d4) = *(m2c_block8 *)((char *)(&D_002F7008) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x194) = *(m2c_block8 *)((char *)(&D_002F7010) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x2dc) = *(m2c_block8 *)((char *)(&D_002F7018) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x19c) = *(m2c_block8 *)((char *)(&D_002F7020) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x2e4) = *(m2c_block8 *)((char *)(&D_002F7028) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x1a4) = *(m2c_block8 *)((char *)(&D_002F7030) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x2ec) = *(m2c_block8 *)((char *)(&D_002F7038) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x1ac) = *(m2c_block8 *)((char *)(&D_002F7040) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x2f4) = *(m2c_block8 *)((char *)(&D_002F7048) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x1b4) = *(m2c_block8 *)((char *)(&D_002F7050) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x2fc) = *(m2c_block8 *)((char *)(&D_002F7058) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x1bc) = *(m2c_block8 *)((char *)(&D_002F7060) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x304) = *(m2c_block8 *)((char *)(&D_002F7068) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x1c4) = *(m2c_block8 *)((char *)(&D_002F7070) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x30c) = *(m2c_block8 *)((char *)(&D_002F7078) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x1cc) = *(m2c_block8 *)((char *)(&D_002F7080) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x314) = *(m2c_block8 *)((char *)(&D_002F7088) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x1d4) = *(m2c_block8 *)((char *)(&D_002F7090) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x31c) = *(m2c_block8 *)((char *)(&D_002F7098) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x1dc) = *(m2c_block8 *)((char *)(&D_002F70A0) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x324) = *(m2c_block8 *)((char *)(&D_002F70A8) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x1e4) = *(m2c_block8 *)((char *)(&D_002F70B0) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x32c) = *(m2c_block8 *)((char *)(&D_002F70B8) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x1ec) = *(m2c_block8 *)((char *)(&D_002F70C0) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x334) = *(m2c_block8 *)((char *)(&D_002F70C8) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x1f4) = *(m2c_block8 *)((char *)(&D_002F70D0) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x33c) = *(m2c_block8 *)((char *)(&D_002F70D8) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x1fc) = *(m2c_block8 *)((char *)(&D_002F70E0) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x344) = *(m2c_block8 *)((char *)(&D_002F70E8) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x204) = *(m2c_block8 *)((char *)(&D_002F70F0) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x34c) = *(m2c_block8 *)((char *)(&D_002F70F8) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x20c) = *(m2c_block8 *)((char *)(&D_002F7100) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x354) = *(m2c_block8 *)((char *)(&D_002F7108) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x214) = *(m2c_block8 *)((char *)(&D_002F7110) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x35c) = *(m2c_block8 *)((char *)(&D_002F7118) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x21c) = *(m2c_block8 *)((char *)(&D_002F7120) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x364) = *(m2c_block8 *)((char *)(&D_002F7128) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x224) = *(m2c_block8 *)((char *)(&D_002F7130) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x36c) = *(m2c_block8 *)((char *)(&D_002F7138) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x22c) = *(m2c_block8 *)((char *)(&D_002F7140) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x374) = *(m2c_block8 *)((char *)(&D_002F7148) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x234) = *(m2c_block8 *)((char *)(&D_002F7150) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x37c) = *(m2c_block8 *)((char *)(&D_002F7158) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x23c) = *(m2c_block8 *)((char *)(&D_002F7160) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x384) = *(m2c_block8 *)((char *)(&D_002F7168) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x244) = *(m2c_block8 *)((char *)(&D_002F7170) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x38c) = *(m2c_block8 *)((char *)(&D_002F7178) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x24c) = *(m2c_block8 *)((char *)(&D_002F7180) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x394) = *(m2c_block8 *)((char *)(&D_002F7188) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x254) = *(m2c_block8 *)((char *)(&D_002F7190) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x39c) = *(m2c_block8 *)((char *)(&D_002F7198) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x25c) = *(m2c_block8 *)((char *)(&D_002F71A0) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x3a4) = *(m2c_block8 *)((char *)(&D_002F71A8) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x264) = *(m2c_block8 *)((char *)(&D_002F71B0) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x3ac) = *(m2c_block8 *)((char *)(&D_002F71B8) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x26c) = *(m2c_block8 *)((char *)(&D_002F6F40) + 0x0);
-    *(m2c_block8 *)((char *)(arg0) + 0x3b4) = *(m2c_block8 *)((char *)(&D_002F6F48) + 0x0);
-    return Xii_func_00183B74(arg0);
+    this->m_open = 0;
+    this->m_str = 0;
+    this->m_commands[0] = D_002F6F40;
+    this->m_parsers[0] = D_002F6F48;
+    this->m_commands[1] = D_002F6F50;
+    this->m_parsers[1] = D_002F6F58;
+    this->m_commands[2] = D_002F6F60;
+    this->m_parsers[2] = D_002F6F68;
+    this->m_commands[3] = D_002F6F70;
+    this->m_parsers[3] = D_002F6F78;
+    this->m_commands[4] = D_002F6F80;
+    this->m_parsers[4] = D_002F6F88;
+    this->m_commands[5] = D_002F6F90;
+    this->m_parsers[5] = D_002F6F98;
+    this->m_commands[6] = D_002F6FA0;
+    this->m_parsers[6] = D_002F6FA8;
+    this->m_commands[7] = D_002F6FB0;
+    this->m_parsers[7] = D_002F6FB8;
+    this->m_commands[8] = D_002F6FC0;
+    this->m_parsers[8] = D_002F6FC8;
+    this->m_commands[9] = D_002F6FD0;
+    this->m_parsers[9] = D_002F6FD8;
+    this->m_commands[10] = D_002F6FE0;
+    this->m_parsers[10] = D_002F6FE8;
+    this->m_commands[11] = D_002F6FF0;
+    this->m_parsers[11] = D_002F6FF8;
+    this->m_commands[12] = D_002F7000;
+    this->m_parsers[12] = D_002F7008;
+    this->m_commands[13] = D_002F7010;
+    this->m_parsers[13] = D_002F7018;
+    this->m_commands[14] = D_002F7020;
+    this->m_parsers[14] = D_002F7028;
+    this->m_commands[15] = D_002F7030;
+    this->m_parsers[15] = D_002F7038;
+    this->m_commands[16] = D_002F7040;
+    this->m_parsers[16] = D_002F7048;
+    this->m_commands[17] = D_002F7050;
+    this->m_parsers[17] = D_002F7058;
+    this->m_commands[18] = D_002F7060;
+    this->m_parsers[18] = D_002F7068;
+    this->m_commands[19] = D_002F7070;
+    this->m_parsers[19] = D_002F7078;
+    this->m_commands[20] = D_002F7080;
+    this->m_parsers[20] = D_002F7088;
+    this->m_commands[21] = D_002F7090;
+    this->m_parsers[21] = D_002F7098;
+    this->m_commands[22] = D_002F70A0;
+    this->m_parsers[22] = D_002F70A8;
+    this->m_commands[23] = D_002F70B0;
+    this->m_parsers[23] = D_002F70B8;
+    this->m_commands[24] = D_002F70C0;
+    this->m_parsers[24] = D_002F70C8;
+    this->m_commands[25] = D_002F70D0;
+    this->m_parsers[25] = D_002F70D8;
+    this->m_commands[26] = D_002F70E0;
+    this->m_parsers[26] = D_002F70E8;
+    this->m_commands[27] = D_002F70F0;
+    this->m_parsers[27] = D_002F70F8;
+    this->m_commands[28] = D_002F7100;
+    this->m_parsers[28] = D_002F7108;
+    this->m_commands[29] = D_002F7110;
+    this->m_parsers[29] = D_002F7118;
+    this->m_commands[30] = D_002F7120;
+    this->m_parsers[30] = D_002F7128;
+    this->m_commands[31] = D_002F7130;
+    this->m_parsers[31] = D_002F7138;
+    this->m_commands[32] = D_002F7140;
+    this->m_parsers[32] = D_002F7148;
+    this->m_commands[33] = D_002F7150;
+    this->m_parsers[33] = D_002F7158;
+    this->m_commands[34] = D_002F7160;
+    this->m_parsers[34] = D_002F7168;
+    this->m_commands[35] = D_002F7170;
+    this->m_parsers[35] = D_002F7178;
+    this->m_commands[36] = D_002F7180;
+    this->m_parsers[36] = D_002F7188;
+    this->m_commands[37] = D_002F7190;
+    this->m_parsers[37] = D_002F7198;
+    this->m_commands[38] = D_002F71A0;
+    this->m_parsers[38] = D_002F71A8;
+    this->m_commands[39] = D_002F71B0;
+    this->m_parsers[39] = D_002F71B8;
+    this->m_commands[40] = D_002F6F40;
+    this->m_parsers[40] = D_002F6F48;
+    func_00183B74(this);
 }
 
-extern "C" void func_00183B24(int arg0, int arg1)
+MsgWin::~MsgWin()
 {
-    Xv_func_00183C4C((void *)arg0);
-    if (arg1 & 1) {
-        return Xv___builtin_delete((void *)arg0);
-    }
+    func_00183C4C(this);
 }
 
-extern "C" int func_00183B74(int arg0)
+extern "C" int func_00183B74(MsgWin *arg0)
 {
-    M2C_FIELD(arg0, int *, 0x2C) = 1;
-    M2C_FIELD(arg0, int *, 0x68) = 0x9C;
-    M2C_FIELD(arg0, int *, 0x28) = M2C_FIELD(arg0, int *, 0x0) = -1;
-    M2C_FIELD(arg0, int *, 0x20) = 0;
-    M2C_FIELD(arg0, int *, 0x10) = 0;
-    M2C_FIELD(arg0, int *, 0x104) = 0;
-    M2C_FIELD(arg0, int *, 0x90) = 0;
-    M2C_FIELD(arg0, int *, 0x84) = 0;
-    M2C_FIELD(arg0, int *, 0x24) = 0;
-    M2C_FIELD(arg0, int *, 0xC) = 0;
-    M2C_FIELD(arg0, int *, 0x18) = 0;
+    arg0->m_unk2C = 1;
+    arg0->m_unk68 = 0x9C;
+    arg0->m_unk28 = arg0->m_no = -1;
+    arg0->m_unk20 = 0;
+    arg0->m_system = 0;
+    arg0->m_str104 = 0;
+    arg0->m_unk90 = 0;
+    arg0->m_unk84 = 0;
+    arg0->m_unk24 = 0;
+    arg0->m_unk0C = 0;
+    arg0->m_str = 0;
     return 0;
 }
 
@@ -368,20 +420,20 @@ INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00183BB8);
 
 extern "C" int func_00183C4C(MsgWin *self)
 {
-    if (self->m[8 / 4] == 0) {
+    if (self->m_open == 0) {
         return -1;
     }
 
-    self->m[0] = -1;
+    self->m_no = -1;
     func_00185268(self, 0);
     func_001853CC(self, 0);
     func_00185594(self, 0);
     func_001856F4(self, 0);
-    self->m[0x10 / 4] = 0;
-    self->m[8 / 4] = 0;
-    if (self->m[0x28 / 4] != -1) {
-        func_001801C8(&D_007B2580, self->m[0x28 / 4]);
-        self->m[0x28 / 4] = -1;
+    self->m_system = 0;
+    self->m_open = 0;
+    if (self->m_unk28 != -1) {
+        func_001801C8(&D_007B2580, self->m_unk28);
+        self->m_unk28 = -1;
     }
     return 0;
 }
@@ -390,22 +442,22 @@ INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00183CE0);
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00183DB0);
 
-extern "C" int func_00184008(int arg0)
+extern "C" int func_00184008(MsgWin *arg0)
 {
-    if (M2C_FIELD(arg0, int *, 8) == 0) {
+    if (arg0->m_open == 0) {
         return -1;
     }
-    if (M2C_FIELD(arg0, int *, 0x14) == 1) {
-        Xii_func_00184A94(arg0);
+    if (arg0->m_unk14 == 1) {
+        func_00184A94(arg0);
     }
     return 0;
 }
 
-extern "C" char *func_00184048(int arg0, int arg1)
+extern "C" char *func_00184048(MsgWin *arg0, int arg1)
 {
-    char *base = (char *)&D_007812C0;
+    void *unq = uniqueObjects(&D_007812C0);
     int v = 0;
-    Xiiiii_func_001DC48C((int)(base + 0x22220), arg1 & 0xFFFF, 0xC, (int)&v);
+    func_001DC48C(unq, arg1 & 0xFFFF, 0xC, &v);
     if (!v) {
         return D_002F71F0;
     }
@@ -1068,7 +1120,7 @@ INCLUDE_RODATA("asm/nonmatchings/msg/msgman", D_002F7200);
 
 INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00184128);
 
-extern "C" int func_001844C4(void *arg0, const char *arg1, const char *arg2)
+extern "C" int func_001844C4(MsgWin *arg0, const char *arg1, const char *arg2)
 {
     int len = strlen(arg1);
     if (len == 0) {
@@ -1123,18 +1175,6 @@ extern "C" int func_00184600(MsgWin *self, const char *theStr, int *theOut)
 }
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
-extern "C" int func_00184698(MsgWin *self, const char *theStr, char *theOut)
-{
-    memset(theOut, 0, 16);
-    int n = func_0018454C(self, theStr);
-    if (n) {
-        memcpy(theOut, theStr, n < 16 ? n : 15);
-    }
-    return n;
-}
-#else
 extern "C" int func_00184698(MsgWin *self, const char *theStr, char *theOut)
 {
     int n;
@@ -1147,10 +1187,9 @@ extern "C" int func_00184698(MsgWin *self, const char *theStr, char *theOut)
     memcpy(theOut, theStr, n < 16 ? n : 15);
     return n;
 }
-#endif
 
 
-extern "C" int func_00184710(void *arg0, char *arg1)
+extern "C" int func_00184710(MsgWin *arg0, char *arg1)
 {
     if (*arg1 == 0x1A) {
         *arg1 = 0;
@@ -1165,7 +1204,7 @@ extern "C" int func_00184710(void *arg0, char *arg1)
     return 0x29;
 }
 
-extern "C" char *func_001847BC(int arg0, int theId)
+extern "C" char *func_001847BC(MsgWin *arg0, int theId)
 {
     int i = 0;
 
@@ -1178,7 +1217,7 @@ extern "C" char *func_001847BC(int arg0, int theId)
     return D_00299738[i].name;
 }
 
-extern "C" int func_00184820(int arg0, signed char arg1)
+extern "C" int func_00184820(MsgWin *arg0, signed char arg1)
 {
     int temp_a1 = arg1 & 0xFF;
     unsigned int temp_v1 = temp_a1 - 0x20;
@@ -1219,70 +1258,70 @@ INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_001850FC);
 extern "C" void func_00185268(MsgWin *self, int arg1)
 {
     if (arg1 == 1) {
-        self->m[0xC8 / 4] = arg1;
-        char *p = (char *)&D_006FBD80;
-        void *s = p + 0x42BB0;
-        int n = self->m[0xCC / 4];
-        X_func_00191F98(s, 0);
-        X_func_00191ED0(s, 0);
-        X_func_00191D20(s, 0, 1);
-        X_func_00191D74(s, 0, 1);
-        X_func_00191DC8(s, 0, (n <= 0) ? 0 : (n - 1));
+        self->m_unkC8 = arg1;
+        S2dMes *s2d = messageSprites(&D_006FBD80);
+        S2dMes *s = s2d;
+        int n = self->m_unkCC;
+        func_00191F98(s, 0);
+        func_00191ED0(s, 0);
+        func_00191D20(s, 0, 1);
+        func_00191D74(s, 0, 1);
+        func_00191DC8(s, 0, (n <= 0) ? 0 : (n - 1));
     } else {
-        self->m[0xC8 / 4] = 0;
-        char *p = (char *)&D_006FBD80;
-        void *s = p + 0x42BB0;
-        X_func_00191D20(s, 0, 0);
-        X_func_00191D74(s, 0, 0);
+        self->m_unkC8 = 0;
+        S2dMes *s2d = messageSprites(&D_006FBD80);
+        S2dMes *s = s2d;
+        func_00191D20(s, 0, 0);
+        func_00191D74(s, 0, 0);
     }
 }
 
 extern "C" void func_00185348(MsgWin *self)
 {
-    if (self->m[0xC8 / 4] == 1) {
-        char *p = (char *)&D_006FBD80;
-        void *sub = p + 0x42BB0;
-        func_00191BA8(sub, 0, self->m[0x5C / 4] * 0x10, self->m[0x60 / 4] * 0x10);
-        func_00191C64(sub, 0, self->m[0x38 / 4] * 0x10, self->m[0x3C / 4] * 0x10);
+    if (self->m_unkC8 == 1) {
+        S2dMes *s2d = messageSprites(&D_006FBD80);
+        S2dMes *sub = s2d;
+        func_00191BA8(sub, 0, self->m_unk5C * 0x10, self->m_unk60 * 0x10);
+        func_00191C64(sub, 0, self->m_unk38 * 0x10, self->m_unk3C * 0x10);
     }
 }
 
-extern "C" void func_001853CC(void *arg0, int arg1)
+extern "C" void func_001853CC(MsgWin *arg0, int arg1)
 {
-    MsgWin *self = (MsgWin *)arg0;
+    MsgWin *self = arg0;
     if (arg1 == 1) {
-        self->m[0xD0 / 4] = arg1;
-        char *p = (char *)&D_006FBD80;
-        void *s = p + 0x42BB0;
-        int n = self->m[0xD4 / 4];
-        X_func_00191F98(s, 2);
-        X_func_00191ED0(s, 2);
-        X_func_00191D20(s, 2, 1);
-        X_func_00191D74(s, 2, 1);
-        X_func_00191DC8(s, 2, (n <= 0) ? 0 : (n - 1));
+        self->m_unkD0 = arg1;
+        S2dMes *s2d = messageSprites(&D_006FBD80);
+        S2dMes *s = s2d;
+        int n = self->m_unkD4;
+        func_00191F98(s, 2);
+        func_00191ED0(s, 2);
+        func_00191D20(s, 2, 1);
+        func_00191D74(s, 2, 1);
+        func_00191DC8(s, 2, (n <= 0) ? 0 : (n - 1));
     } else {
-        self->m[0xD0 / 4] = 0;
-        char *p = (char *)&D_006FBD80;
-        void *s = p + 0x42BB0;
-        X_func_00191D20(s, 2, 0);
-        X_func_00191D74(s, 2, 0);
+        self->m_unkD0 = 0;
+        S2dMes *s2d = messageSprites(&D_006FBD80);
+        S2dMes *s = s2d;
+        func_00191D20(s, 2, 0);
+        func_00191D74(s, 2, 0);
     }
 }
 
 extern "C" void func_001854AC(MsgWin *self)
 {
-    if (self->m[0xD0 / 4] == 1) {
-        if (self->m[0xC4 / 4] == 2) {
-            char *p = (char *)&D_006FBD80;
-            void *sub = p + 0x42BB0;
-            func_00191BA8(sub, 2, self->m[0x50 / 4] * 0x10, self->m[0x54 / 4] * 0x10);
-            int x = (self->m[0x68 / 4] >> 1) - 0xC;
+    if (self->m_unkD0 == 1) {
+        if (self->m_unkC4 == 2) {
+            S2dMes *s2d = messageSprites(&D_006FBD80);
+            S2dMes *sub = s2d;
+            func_00191BA8(sub, 2, self->m_unk50 * 0x10, self->m_unk54 * 0x10);
+            int x = (self->m_unk68 >> 1) - 0xC;
             func_00191C64(sub, 2, x * 0x10, 0xBA0);
         } else {
-            char *p = (char *)&D_006FBD80;
-            void *sub = p + 0x42BB0;
-            func_00191BA8(sub, 2, self->m[0x5C / 4] * 0x10, self->m[0x60 / 4] * 0x10);
-            func_00191C64(sub, 2, self->m[0x38 / 4] * 0x10, self->m[0x3C / 4] * 0x10);
+            S2dMes *s2d = messageSprites(&D_006FBD80);
+            S2dMes *sub = s2d;
+            func_00191BA8(sub, 2, self->m_unk5C * 0x10, self->m_unk60 * 0x10);
+            func_00191C64(sub, 2, self->m_unk38 * 0x10, self->m_unk3C * 0x10);
         }
     }
 }
@@ -1291,54 +1330,54 @@ INCLUDE_ASM("asm/nonmatchings/msg/msgman", func_00185594);
 
 extern "C" void func_00185670(MsgWin *self)
 {
-    if (self->m[0xD8 / 4] == 1) {
-        char *p = (char *)&D_006FBD80;
-        void *sub = p + 0x42BB0;
-        func_00191BA8(sub, 1, self->m[0x5C / 4] * 0x10, self->m[0x60 / 4] * 0x10);
-        func_00191C64(sub, 1, self->m[0x48 / 4] * 0x10, self->m[0x4C / 4] * 0x10);
+    if (self->m_unkD8 == 1) {
+        S2dMes *s2d = messageSprites(&D_006FBD80);
+        S2dMes *sub = s2d;
+        func_00191BA8(sub, 1, self->m_unk5C * 0x10, self->m_unk60 * 0x10);
+        func_00191C64(sub, 1, self->m_unk48 * 0x10, self->m_unk4C * 0x10);
     }
 }
 
 extern "C" void func_001856F4(MsgWin *self, int theA)
 {
-    self->m[9] = theA;
+    self->m_unk24 = theA;
 }
 
 
-extern "C" void func_001856FC(void) {
+extern "C" void func_001856FC(MsgWin *arg0) {
 }
 
 extern "C" void func_00185704(MsgWin *self)
 {
     if (self->m_system) {
-        func_00134FA0((char *)self->m_system + 0x12540, self->m_no, self->m[0x88 / 4]);
-        func_00135014((char *)self->m_system + 0x12540, self->m_no, self->m[0x8C / 4]);
+        func_00134FA0(&self->m_system->m_scene, self->m_no, self->m_unk88);
+        func_00135014(&self->m_system->m_scene, self->m_no, self->m_unk8C);
     }
 }
 
 
-extern "C" int func_00185760(int arg0)
+extern "C" int func_00185760(MsgWin *arg0)
 {
     int temp_a1;
     int var_v0 = 0;
 
-    Xii_func_00185704(arg0);
-    temp_a1 = M2C_FIELD(arg0, int *, 0x34);
+    func_00185704(arg0);
+    temp_a1 = arg0->m_unk34;
     if (temp_a1 != 0) {
         if (temp_a1 == 1) {
-            var_v0 = ((M2C_FIELD(arg0, int *, 0x78) - M2C_FIELD(arg0, int *, 0x70)) >> 1) -
-                     (Xiii_func_00184F2C(arg0, M2C_FIELD(arg0, int *, 0x18) + M2C_FIELD(arg0, int *, 0x1C)) >> 1);
+            var_v0 = ((arg0->m_unk78 - arg0->m_unk70) >> 1) -
+                     (func_00184F2C(arg0, arg0->m_str + arg0->m_pos) >> 1);
         }
     }
     return var_v0;
 }
 
-extern "C" int func_001857C8(int arg0, int arg1, int arg2, unsigned int arg3)
+extern "C" int func_001857C8(MsgWin *arg0, int arg1, int arg2, unsigned int arg3)
 {
     int temp_v1;
 
     temp_v1 = ((int) ((arg3 >> 0x1F) + arg3) >> 1) - ((int) (arg1 * arg2) / 2);
-    return ((M2C_FIELD(arg0, int *, 0x44) ^ 0x26) != 0) ? temp_v1 : (temp_v1 + 0xA);
+    return ((arg0->m_unk44 ^ 0x26) != 0) ? temp_v1 : (temp_v1 + 0xA);
 }
 
 extern "C" int func_001857FC()
@@ -1353,10 +1392,10 @@ extern "C" int func_00185804()
 }
 
 
-extern "C" int func_0018580C(int arg0)
+extern "C" int func_0018580C(MsgWin *arg0)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x38)) = X_func_00185760();
-    (*(int *)(int *)((char *)(arg0) + 0x3C)) = (int) ((*(int *)(int *)((char *)(arg0) + 0x3C)) + (*(int *)(int *)((char *)(arg0) + 0x44)));
+    arg0->m_unk38 = func_00185760(arg0);
+    arg0->m_unk3C = (int) (arg0->m_unk3C + arg0->m_unk44);
     return 0;
 }
 
@@ -1367,30 +1406,30 @@ extern "C" int func_00185848()
 }
 
 
-extern "C" int func_00185850(int arg0)
+extern "C" int func_00185850(MsgWin *arg0)
 {
     int temp_a3;
     int temp_v0;
     int temp_v0_2;
 
-    if (M2C_FIELD(arg0, int *, 0x2C) == 1) {
-        Xiiu_func_00135594(M2C_FIELD(arg0, int *, 0x10) + 0x12540, M2C_FIELD(arg0, unsigned int *, 0));
+    if (arg0->m_unk2C == 1) {
+        func_00135594(&arg0->m_system->m_scene, arg0->m_no);
     }
-    M2C_FIELD(arg0, int *, 0x38) = Xii_func_00185760(arg0);
-    M2C_FIELD(arg0, int *, 0x3C) = 0;
-    M2C_FIELD(arg0, int *, 0xB4) = 0;
-    M2C_FIELD(arg0, int *, 0xA4) = 0;
-    M2C_FIELD(arg0, int *, 0xA8) = 0;
-    if (M2C_FIELD(arg0, int *, 0x84) == 1) {
-        temp_v0 = Xiii_func_001850FC(arg0, M2C_FIELD(arg0, int *, 0x18) + M2C_FIELD(arg0, int *, 0x1C));
-        M2C_FIELD(arg0, int *, 0x80) = temp_v0;
-        temp_a3 = M2C_FIELD(arg0, int *, 0x54) + Xiiiiu_func_001857C8(arg0, M2C_FIELD(arg0, int *, 0x44), temp_v0, M2C_FIELD(arg0, unsigned int *, 0x6C));
-        M2C_FIELD(arg0, int *, 0x60) = temp_a3;
-        Xiiuiii_func_00134A00(M2C_FIELD(arg0, int *, 0x10) + 0x12540, M2C_FIELD(arg0, unsigned int *, 0), M2C_FIELD(arg0, int *, 0x5C), temp_a3, M2C_FIELD(arg0, int *, 0x64));
+    arg0->m_unk38 = func_00185760(arg0);
+    arg0->m_unk3C = 0;
+    arg0->m_unkB4 = 0;
+    arg0->m_unkA4 = 0;
+    arg0->m_unkA8 = 0;
+    if (arg0->m_unk84 == 1) {
+        temp_v0 = func_001850FC(arg0, arg0->m_str + arg0->m_pos);
+        arg0->m_unk80 = temp_v0;
+        temp_a3 = arg0->m_unk54 + func_001857C8(arg0, arg0->m_unk44, temp_v0, arg0->m_unk6C);
+        arg0->m_unk60 = temp_a3;
+        func_00134A00(&arg0->m_system->m_scene, arg0->m_no, arg0->m_unk5C, temp_a3, arg0->m_unk64);
     } else {
-        temp_v0_2 = M2C_FIELD(arg0, int *, 0x54);
-        M2C_FIELD(arg0, int *, 0x60) = temp_v0_2;
-        Xiiuiii_func_00134A00(M2C_FIELD(arg0, int *, 0x10) + 0x12540, M2C_FIELD(arg0, unsigned int *, 0), M2C_FIELD(arg0, int *, 0x5C), temp_v0_2, M2C_FIELD(arg0, int *, 0x64));
+        temp_v0_2 = arg0->m_unk54;
+        arg0->m_unk60 = temp_v0_2;
+        func_00134A00(&arg0->m_system->m_scene, arg0->m_no, arg0->m_unk5C, temp_v0_2, arg0->m_unk64);
     }
     return 1;
 }
@@ -1401,24 +1440,24 @@ extern "C" int func_00185954()
 }
 
 
-extern "C" int func_0018595C(int arg0)
+extern "C" int func_0018595C(MsgWin *arg0)
 {
     int v;
-    int n = Xiiii_func_00184578(arg0, M2C_FIELD(arg0, int *, 0x18) + M2C_FIELD(arg0, int *, 0x1C), (int)&v);
+    int n = func_00184578(arg0, arg0->m_str + arg0->m_pos, &v);
     int c;
 
-    M2C_FIELD(arg0, int *, 0x1C) += n;
+    arg0->m_pos += n;
     if (n <= 0) {
         return 0;
     }
     c = v;
     if (c == 0) {
-        M2C_FIELD(arg0, int *, 0xA0) = 0;
+        arg0->m_unkA0 = 0;
     } else {
-        M2C_FIELD(arg0, int *, 0xA0) = 1;
+        arg0->m_unkA0 = 1;
     }
-    M2C_FIELD(arg0, int *, 0xB0) = c;
-    M2C_FIELD(arg0, int *, 0xAC) = c;
+    arg0->m_unkB0 = c;
+    arg0->m_unkAC = c;
     return 0;
 }
 
@@ -1430,26 +1469,26 @@ extern "C" int func_001859CC(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-extern "C" int func_001859FC(int arg0)
+extern "C" int func_001859FC(MsgWin *arg0)
 {
     int v;
-    int n = Xiiii_func_00184578(arg0, M2C_FIELD(arg0, int *, 0x18) + M2C_FIELD(arg0, int *, 0x1C), (int)&v);
+    int n = func_00184578(arg0, arg0->m_str + arg0->m_pos, &v);
     int c;
 
-    M2C_FIELD(arg0, int *, 0x1C) += n;
+    arg0->m_pos += n;
     if (n <= 0) {
         return 0;
     }
     c = v;
     if (c == 0) {
-        M2C_FIELD(arg0, int *, 0xA0) = 0;
-        M2C_FIELD(arg0, int *, 0xA8) = 0;
+        arg0->m_unkA0 = 0;
+        arg0->m_unkA8 = 0;
     } else {
-        M2C_FIELD(arg0, int *, 0xA0) = 1;
-        M2C_FIELD(arg0, int *, 0xA8) = 1;
+        arg0->m_unkA0 = 1;
+        arg0->m_unkA8 = 1;
     }
-    M2C_FIELD(arg0, int *, 0xB0) = c;
-    M2C_FIELD(arg0, int *, 0xAC) = c;
+    arg0->m_unkB0 = c;
+    arg0->m_unkAC = c;
     return 0;
 }
 
@@ -1473,35 +1512,35 @@ extern "C" int func_00185AA4(MsgWin *self)
         }
         v = D_007B205C[v];
     } else {
-        int n = Xiiii_func_00184600((int)self, (int)(self->m_str + self->m_pos), (int)&v);
+        int n = func_00184600(self, self->m_str + self->m_pos, &v);
         self->m_pos += n;
         if (n <= 0) {
             return 0;
         }
     }
-    self->m[0x90 / 4] = v;
+    self->m_unk90 = v;
     return 0;
 }
 
-extern "C" int func_00185B58(int arg0, unsigned char *arg1, int *arg2)
+extern "C" int func_00185B58(MsgWin *arg0, unsigned char *arg1, int *arg2)
 {
     int v;
 
     if (*arg1 == 0x67) {
         int n = 1;
         *arg2 = n;
-        *arg2 += Xiiii_func_00184578(arg0, (int)(arg1 + n), (int)&v);
+        *arg2 += func_00184578(arg0, (const char *)(arg1 + n), &v);
     } else {
-        *arg2 = Xiiii_func_00184600(arg0, (int)arg1, (int)&v);
+        *arg2 = func_00184600(arg0, (const char *)arg1, &v);
     }
     return 0;
 }
 
-extern "C" int func_00185BBC(int arg0)
+extern "C" int func_00185BBC(MsgWin *arg0)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x34)) = 1;
-    (*(int *)(int *)((char *)(arg0) + 0x38)) = X_func_00185760();
-    X_func_001856FC(arg0);
+    arg0->m_unk34 = 1;
+    arg0->m_unk38 = func_00185760(arg0);
+    func_001856FC(arg0);
     return 0;
 }
 
@@ -1513,17 +1552,17 @@ extern "C" int func_00185BF8(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-extern "C" int func_00185C04(int arg0)
+extern "C" int func_00185C04(MsgWin *arg0)
 {
     int temp_a3;
     int temp_v0;
 
-    M2C_FIELD(arg0, int *, 0x84) = 1;
-    temp_v0 = Xiii_func_001850FC(arg0, M2C_FIELD(arg0, int *, 0x18) + M2C_FIELD(arg0, int *, 0x1C));
-    M2C_FIELD(arg0, int *, 0x80) = temp_v0;
-    temp_a3 = M2C_FIELD(arg0, int *, 0x54) + Xiiiiu_func_001857C8(arg0, M2C_FIELD(arg0, int *, 0x44), temp_v0, M2C_FIELD(arg0, unsigned int *, 0x6C));
-    M2C_FIELD(arg0, int *, 0x60) = temp_a3;
-    Xiiuiii_func_00134A00(M2C_FIELD(arg0, int *, 0x10) + 0x12540, M2C_FIELD(arg0, unsigned int *, 0), M2C_FIELD(arg0, int *, 0x5C), temp_a3, M2C_FIELD(arg0, int *, 0x64));
+    arg0->m_unk84 = 1;
+    temp_v0 = func_001850FC(arg0, arg0->m_str + arg0->m_pos);
+    arg0->m_unk80 = temp_v0;
+    temp_a3 = arg0->m_unk54 + func_001857C8(arg0, arg0->m_unk44, temp_v0, arg0->m_unk6C);
+    arg0->m_unk60 = temp_a3;
+    func_00134A00(&arg0->m_system->m_scene, arg0->m_no, arg0->m_unk5C, temp_a3, arg0->m_unk64);
     return 0;
 }
 
@@ -1534,14 +1573,14 @@ extern "C" int func_00185C84(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-extern "C" int func_00185C90(int arg0)
+extern "C" int func_00185C90(MsgWin *arg0)
 {
     int temp_v1;
 
-    M2C_FIELD(arg0, int *, 0x84) = 0;
-    temp_v1 = M2C_FIELD(arg0, int *, 0x54);
-    M2C_FIELD(arg0, int *, 0x60) = temp_v1;
-    Xiiuiii_func_00134A00(M2C_FIELD(arg0, int *, 0x10) + 0x12540, M2C_FIELD(arg0, unsigned int *, 0), M2C_FIELD(arg0, int *, 0x5C), temp_v1, M2C_FIELD(arg0, int *, 0x64));
+    arg0->m_unk84 = 0;
+    temp_v1 = arg0->m_unk54;
+    arg0->m_unk60 = temp_v1;
+    func_00134A00(&arg0->m_system->m_scene, arg0->m_no, arg0->m_unk5C, temp_v1, arg0->m_unk64);
     return 0;
 }
 
@@ -1552,11 +1591,11 @@ extern "C" int func_00185CDC(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-extern "C" int func_00185CE8(int arg0)
+extern "C" int func_00185CE8(MsgWin *arg0)
 {
-    (*(int *)(int *)((char *)(arg0) + 0x34)) = 0;
-    (*(int *)(int *)((char *)(arg0) + 0x38)) = X_func_00185760();
-    X_func_001856FC(arg0);
+    arg0->m_unk34 = 0;
+    arg0->m_unk38 = func_00185760(arg0);
+    func_001856FC(arg0);
     return 0;
 }
 
@@ -1586,9 +1625,9 @@ extern "C" int func_00185D2C(MsgWin *self)
             return 0;
         }
     }
-    char *s = func_00184048((int)self, v);
-    self->m[0xFC / 4] = 0;
-    *(char **)&self->m[0x104 / 4] = s;
+    char *s = func_00184048(self, v);
+    self->m_unkFC = 0;
+    self->m_str104 = s;
     return 0;
 }
 
@@ -1611,27 +1650,27 @@ extern "C" int func_00185DEC(MsgWin *self, const unsigned char *theStr, int *the
             return 0;
         }
     }
-    char *s = func_00184048((int)self, v);
-    self->m[0x100 / 4] = 0;
-    *(char **)&self->m[0x108 / 4] = s;
+    char *s = func_00184048(self, v);
+    self->m_unk100 = 0;
+    self->m_str108 = s;
     return 0;
 }
 
 extern "C" int func_00185EA4(MsgWin *self)
 {
     char buf[32];
-    memset(*(void **)&self->m[0x104 / 4], 0, 0x20);
+    memset(self->m_str104, 0, 0x20);
     int n = func_00184698(self, self->m_str + self->m_pos, buf);
     if (n < 0) {
         return 0;
     }
     self->m_pos += n;
     for (int i = 0; i < n; i++) {
-        ((MsgSub5F68 *)((char *)self + 0xC))->buf[i * 2] = D_002997D0[buf[i]][0];
-        ((MsgSub5F68 *)((char *)self + 0xC))->buf[i * 2 + 1] = D_002997D0[buf[i]][1];
+        self->m_buf10C[i * 2] = D_002997D0[buf[i]][0];
+        self->m_buf10C[i * 2 + 1] = D_002997D0[buf[i]][1];
     }
-    self->m[0xFC / 4] = 0;
-    *(char **)&self->m[0x104 / 4] = (char *)self + 0x10C;
+    self->m_unkFC = 0;
+    self->m_str104 = self->m_buf10C;
     return 0;
 }
 
@@ -1644,32 +1683,32 @@ extern "C" int func_00185F68(MsgWin *self, const char *theStr, int *theLen)
     }
     *theLen += n;
     for (int i = 0; i < n; i++) {
-        ((MsgSub5F68 *)((char *)self + 0xC))->buf[i * 2] = D_002997D0[buf[i]][0];
-        ((MsgSub5F68 *)((char *)self + 0xC))->buf[i * 2 + 1] = D_002997D0[buf[i]][1];
+        self->m_buf10C[i * 2] = D_002997D0[buf[i]][0];
+        self->m_buf10C[i * 2 + 1] = D_002997D0[buf[i]][1];
     }
-    self->m[0xFC / 4] = 0;
-    *(char **)&self->m[0x104 / 4] = (char *)self + 0x10C;
+    self->m_unkFC = 0;
+    self->m_str104 = self->m_buf10C;
     return 0;
 }
 
-extern "C" int func_00186018(int arg0)
+extern "C" int func_00186018(MsgWin *arg0)
 {
     int v;
-    int n = Xiiii_func_00184578(arg0, M2C_FIELD(arg0, int *, 0x18) + M2C_FIELD(arg0, int *, 0x1C), (int)&v);
+    int n = func_00184578(arg0, arg0->m_str + arg0->m_pos, &v);
     int c;
 
-    M2C_FIELD(arg0, int *, 0x1C) += n;
+    arg0->m_pos += n;
     if (n <= 0) {
         return 0;
     }
     c = v;
     if (c == 0) {
-        M2C_FIELD(arg0, int *, 0x94) = 0;
+        arg0->m_unk94 = 0;
     } else {
-        M2C_FIELD(arg0, int *, 0x94) = 1;
+        arg0->m_unk94 = 1;
     }
-    M2C_FIELD(arg0, int *, 0x9C) = c;
-    M2C_FIELD(arg0, int *, 0x98) = c;
+    arg0->m_unk9C = c;
+    arg0->m_unk98 = c;
     return 1;
 }
 
@@ -1697,7 +1736,7 @@ extern "C" int func_00186204(MsgWin *self)
     int n = func_00184578(self, self->m_str + self->m_pos, &v);
     self->m_pos += n;
     if (n > 0) {
-        self->m[14] = v;
+        self->m_unk38 = v;
     }
     return 0;
 }
@@ -1717,7 +1756,7 @@ extern "C" int func_00186290(MsgWin *self)
     int n = func_00184578(self, self->m_str + self->m_pos, &v);
     self->m_pos += n;
     if (n > 0) {
-        self->m[15] = v;
+        self->m_unk3C = v;
     }
     return 0;
 }
@@ -1751,20 +1790,6 @@ extern "C" int func_00186494(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
-extern "C" int func_001864CC(MsgWin *self)
-{
-    int v;
-    int n = func_00184578(self, self->m_str + self->m_pos, &v);
-    self->m_pos += n;
-    if (n > 0) {
-        self->m[34] = v;
-        func_00134FA0((char *)self->m_system + 0x12540, self->m_no, v);
-    }
-    return 0;
-}
-#else
 extern "C" int func_001864CC(MsgWin *self)
 {
     int v;
@@ -1774,11 +1799,10 @@ extern "C" int func_001864CC(MsgWin *self)
     if (n <= 0) {
         return 0;
     }
-    self->m[0x22] = v;
-    func_00134FA0((char *)self->m_system + 0x12540, self->m_no, v);
+    self->m_unk88 = v;
+    func_00134FA0(&self->m_system->m_scene, self->m_no, v);
     return 0;
 }
-#endif
 
 
 extern "C" int func_00186540(MsgWin *self, const char *theStr, int *theLen)
@@ -1789,20 +1813,6 @@ extern "C" int func_00186540(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-// NON_MATCHING: close, not identical yet.
-#ifdef NON_MATCHING
-extern "C" int func_00186578(MsgWin *self)
-{
-    int v;
-    int n = func_00184578(self, self->m_str + self->m_pos, &v);
-    self->m_pos += n;
-    if (n > 0) {
-        self->m[35] = v;
-        func_00135014((char *)self->m_system + 0x12540, self->m_no, v);
-    }
-    return 0;
-}
-#else
 extern "C" int func_00186578(MsgWin *self)
 {
     int v;
@@ -1812,11 +1822,10 @@ extern "C" int func_00186578(MsgWin *self)
     if (n <= 0) {
         return 0;
     }
-    self->m[0x23] = v;
-    func_00135014((char *)self->m_system + 0x12540, self->m_no, v);
+    self->m_unk8C = v;
+    func_00135014(&self->m_system->m_scene, self->m_no, v);
     return 0;
 }
-#endif
 
 
 extern "C" int func_001865EC(MsgWin *self, const char *theStr, int *theLen)
@@ -1835,9 +1844,9 @@ extern "C" int func_00186624(MsgWin *self)
     if (n <= 0) {
         return 0;
     }
-    X_func_00135088((char *)self->m_system + 0x12540, self->m_no, v, 0, 0x80);
-    char *p = (char *)&D_006FBD80;
-    void *sub = p + 0x42BB0;
+    func_00135088(&self->m_system->m_scene, self->m_no, v, 0, 0x80);
+    S2dMes *s2d = messageSprites(&D_006FBD80);
+    S2dMes *sub = s2d;
     msg6624_set(sub, 0, v);
     msg6624_set(sub, 2, v);
     msg6624_set(sub, 1, v);
@@ -1860,12 +1869,12 @@ extern "C" int func_0018674C(MsgWin *self)
     if (n <= 0) {
         return 0;
     }
-    func_0013511C((char *)self->m_system + 0x12540, self->m_no, v, 0, 0x80);
-    char *p = (char *)&D_006FBD80;
-    void *sub = p + 0x42BB0;
-    Xiii_func_00191E58((int)sub, 0, v);
-    Xiii_func_00191E58((int)sub, 2, v);
-    Xiii_func_00191E58((int)sub, 1, v);
+    func_0013511C(&self->m_system->m_scene, self->m_no, v, 0, 0x80);
+    S2dMes *s2d = messageSprites(&D_006FBD80);
+    S2dMes *sub = s2d;
+    func_00191E58(sub, 0, v);
+    func_00191E58(sub, 2, v);
+    func_00191E58(sub, 1, v);
     return 0;
 }
 
@@ -1893,17 +1902,17 @@ extern "C" int func_00186880(MsgWin *self, const char *theStr, int *theLen)
 }
 
 
-extern "C" int func_001868B8(int arg0)
+extern "C" int func_001868B8(MsgWin *arg0)
 {
     int v;
-    int n = Xiiii_func_00184578(arg0, M2C_FIELD(arg0, int *, 0x18) + M2C_FIELD(arg0, int *, 0x1C), (int)&v);
+    int n = func_00184578(arg0, arg0->m_str + arg0->m_pos, &v);
 
-    M2C_FIELD(arg0, int *, 0x1C) += n;
+    arg0->m_pos += n;
     if (n <= 0) {
         return 0;
     }
-    char *p = (char *)&D_006FBD80;
-    Xiii_func_00191E58((int)(p + 0x42BB0), 3, v);
+    S2dMes *s2d = messageSprites(&D_006FBD80);
+    func_00191E58(s2d, 3, v);
     return 0;
 }
 
@@ -1923,11 +1932,11 @@ extern "C" int func_00186960(MsgWin *self)
     if (n <= 0) {
         return 0;
     }
-    if (self->m[0x28 / 4] != -1) {
-        func_001801C8(&D_007B2580, self->m[0x28 / 4]);
-        self->m[0x28 / 4] = -1;
+    if (self->m_unk28 != -1) {
+        func_001801C8(&D_007B2580, self->m_unk28);
+        self->m_unk28 = -1;
     }
-    self->m[0x28 / 4] = func_001E5250(getGamSnd(&D_007812C0), v, -1, 0, 0, 0);
+    self->m_unk28 = func_001E5250(getGamSnd(&D_007812C0), v, -1, 0, 0, 0);
     return 0;
 }
 
@@ -1947,11 +1956,11 @@ extern "C" int func_00186A3C(MsgWin *self)
     if (n <= 0) {
         return 0;
     }
-    if (self->m[0x28 / 4] == -1) {
+    if (self->m_unk28 == -1) {
         return 0;
     }
-    func_001801C8(&D_007B2580, self->m[0x28 / 4]);
-    self->m[0x28 / 4] = -1;
+    func_001801C8(&D_007B2580, self->m_unk28);
+    self->m_unk28 = -1;
     return 0;
 }
 
@@ -1970,7 +1979,7 @@ extern "C" int func_00186AEC(MsgWin *self)
 
     self->m_pos += n;
     if (n > 0) {
-        self->m[0x10] = v;
+        self->m_unk40 = v;
         return 1;
     }
     return 0;
@@ -1993,13 +2002,13 @@ extern "C" int func_00186B80(MsgWin *self)
     if (n <= 0) {
         return 0;
     }
-    self->m[0x44 / 4] = v;
-    if (self->m[0x84 / 4] == 1) {
-        int a = Xiii_func_001850FC((int)self, (int)(self->m_str + self->m_pos));
-        self->m[0x80 / 4] = a;
-        int y = self->m[0x54 / 4] + Xiiiiu_func_001857C8((int)self, self->m[0x44 / 4], a, (unsigned int)self->m[0x6C / 4]);
-        self->m[0x60 / 4] = y;
-        Xiiuiii_func_00134A00((int)self->m_system + 0x12540, (unsigned int)self->m_no, self->m[0x5C / 4], y, self->m[0x64 / 4]);
+    self->m_unk44 = v;
+    if (self->m_unk84 == 1) {
+        int a = func_001850FC(self, self->m_str + self->m_pos);
+        self->m_unk80 = a;
+        int y = self->m_unk54 + func_001857C8(self, self->m_unk44, a, (unsigned int)self->m_unk6C);
+        self->m_unk60 = y;
+        func_00134A00(&self->m_system->m_scene, (unsigned int)self->m_no, self->m_unk5C, y, self->m_unk64);
     }
     return 0;
 }
@@ -2032,7 +2041,7 @@ extern "C" int func_00186CB8(MsgWin *self, const char *theStr, int *theLen)
 
 extern "C" int func_00186CF4(MsgWin *self)
 {
-    self->m[8] = self->m[8] != 1;
+    self->m_unk20 = self->m_unk20 != 1;
     return 1;
 }
 
@@ -2051,16 +2060,16 @@ extern "C" int func_00186D14(MsgWin *self)
     if (n <= 0) {
         return 0;
     }
-    self->m[0xC0 / 4] = 1;
-    self->m[0xCC / 4] = v;
+    self->m_unkC0 = 1;
+    self->m_unkCC = v;
     if (v == 0) {
         func_00185268(self, 0);
     } else {
         func_00185268(self, 1);
     }
     func_001853CC(self, 0);
-    if (self->m[0xC4 / 4] == 1) {
-        self->m[0x38 / 4] = self->m[0x68 / 4] - self->m[0x40 / 4];
+    if (self->m_unkC4 == 1) {
+        self->m_unk38 = self->m_unk68 - self->m_unk40;
     }
     return 1;
 }
@@ -2083,14 +2092,14 @@ extern "C" int func_00186EF4(MsgWin *self)
     if (n <= 0) {
         return 0;
     }
-    self->m[0xD4 / 4] = v;
+    self->m_unkD4 = v;
     if (v == 0) {
         func_001853CC(self, 0);
     } else {
         func_001853CC(self, 1);
     }
-    if (self->m[0xC4 / 4] == 1) {
-        self->m[0x38 / 4] = self->m[0x68 / 4] - self->m[0x40 / 4];
+    if (self->m_unkC4 == 1) {
+        self->m_unk38 = self->m_unk68 - self->m_unk40;
     }
     return 0;
 }
@@ -2111,14 +2120,14 @@ extern "C" int func_00186FC0(MsgWin *self)
     if (n <= 0) {
         return 0;
     }
-    self->m[0xC0 / 4] = 1;
-    self->m[0xD4 / 4] = v;
+    self->m_unkC0 = 1;
+    self->m_unkD4 = v;
     if (v == 0) {
         func_001853CC(self, 0);
     } else {
         func_001853CC(self, 1);
     }
-    self->m[0xC4 / 4] = 2;
+    self->m_unkC4 = 2;
     return 1;
 }
 
@@ -2138,16 +2147,15 @@ extern "C" int func_0018707C(MsgWin *self)
     if (n <= 0) {
         return 0;
     }
-    self->m[0xDC / 4] = v;
+    self->m_unkDC = v;
     if (v == 0) {
         func_00185594(self, 0);
     } else {
         func_00185594(self, 1);
     }
-    int *p = (int *)self;
-    p[0x48 / 4] = p[0x38 / 4];
-    p[0x4C / 4] = p[0x3C / 4];
-    p[0x38 / 4] += p[0x40 / 4];
+    self->m_unk48 = self->m_unk38;
+    self->m_unk4C = self->m_unk3C;
+    self->m_unk38 += self->m_unk40;
     return 0;
 }
 
@@ -2171,8 +2179,8 @@ extern "C" int func_00187220(MsgWin *self, const char *theStr, int *theLen)
 
 extern "C" int func_00187250(MsgWin *self)
 {
-    self->m[0x30 / 4] = 1;
-    func_00134F2C((char *)self->m_system + 0x12540, self->m_no, 1);
+    self->m_unk30 = 1;
+    func_00134F2C(&self->m_system->m_scene, self->m_no, 1);
     return 0;
 }
 
@@ -2185,8 +2193,8 @@ extern "C" int func_0018728C()
 
 extern "C" int func_00187294(MsgWin *self)
 {
-    self->m[0x30 / 4] = 0;
-    func_00134F2C((char *)self->m_system + 0x12540, self->m_no, 0);
+    self->m_unk30 = 0;
+    func_00134F2C(&self->m_system->m_scene, self->m_no, 0);
     return 0;
 }
 
@@ -2200,7 +2208,7 @@ extern "C" int func_001872CC()
 extern "C" int func_001872D4(MsgWin *self)
 {
     int v;
-    char *buf = (char *)self + 0x10C;
+    char *buf = self->m_buf10C;
     int n = func_00184578(self, self->m_str + self->m_pos, &v);
     self->m_pos += n;
     if (n < 0) {
@@ -2208,8 +2216,8 @@ extern "C" int func_001872D4(MsgWin *self)
     }
     v = D_007B205C[v];
     func_00279C98(buf, D_002F7200, v);
-    *(char **)((char *)self + 0x104) = buf;
-    *(int *)((char *)self + 0xFC) = 0;
+    self->m_str104 = buf;
+    self->m_unkFC = 0;
     return 0;
 }
 
@@ -2222,9 +2230,9 @@ extern "C" int func_00187368(MsgWin *self, const char *theStr, int *theLen)
         return 0;
     }
     v = D_007B205C[v];
-    func_00279C98((char *)self + 0x10C, D_002F7200, v);
-    *(char **)((char *)self + 0x108) = (char *)self + 0x10C;
-    *(int *)((char *)self + 0x100) = 0;
+    func_00279C98(self->m_buf10C, D_002F7200, v);
+    self->m_str108 = self->m_buf10C;
+    self->m_unk100 = 0;
     return 0;
 }
 
@@ -2254,7 +2262,7 @@ extern "C" int func_00187414()
 
 // Two windows of 0x3BC bytes: the copied pointer keeps the first call's
 // argument separate from the parameter (the game copies $a0 to $s0 and back).
-extern "C" int func_0018741C(int arg0)
+extern "C" int func_0018741C(MsgWin *arg0)
 {
     MsgWin *p = (MsgWin *)arg0;
     MsgWin *q;
@@ -2262,14 +2270,14 @@ extern "C" int func_0018741C(int arg0)
     q = p;
     i = 1;
     for (; i >= 0; i--) {
-        Xv_func_00183BB8(q);
-        q = (MsgWin *)((char *)q + 0x3BC);
+        func_00183BB8(q);
+        q = q + 1;
         p = q;
     }
     return 0;
 }
 
-extern "C" int func_00187464(int arg0)
+extern "C" int func_00187464(MsgWin *arg0)
 {
     MsgWin *p = (MsgWin *)arg0;
     MsgWin *q;
@@ -2277,14 +2285,14 @@ extern "C" int func_00187464(int arg0)
     q = p;
     i = 1;
     for (; i >= 0; i--) {
-        Xv_func_00183C4C(q);
-        q = (MsgWin *)((char *)q + 0x3BC);
+        func_00183C4C(q);
+        q = q + 1;
         p = q;
     }
     return 0;
 }
 
-extern "C" int func_001874AC(int arg0)
+extern "C" int func_001874AC(MsgWin *arg0)
 {
     MsgWin *p = (MsgWin *)arg0;
     MsgWin *q;
@@ -2292,8 +2300,8 @@ extern "C" int func_001874AC(int arg0)
     q = p;
     i = 1;
     for (; i >= 0; i--) {
-        Xi_func_00184008(q);
-        q = (MsgWin *)((char *)q + 0x3BC);
+        func_00184008(q);
+        q = q + 1;
         p = q;
     }
     return 0;

@@ -116,6 +116,12 @@ struct S2dMes : public MagLife {
     virtual ~S2dMes() asm("S2dMes__vfunc_01");
     virtual void live() asm("S2dMes__vfunc_02");
     virtual void render(tag_I3dRenderStage_s *) asm("S2dMes__vfunc_06");
+    void setMessageSpriteDispOn_(int a, int b, bool c = true);
+    void setMessageSpriteStdPoint(int a, int b, int c, int d);
+    void setMessageSpriteOffPoint(int a, int b, int c);
+    void setMessageSpriteFadeIn_(int a, int b);
+    void setMessageSpriteFadeOut(int a, int b);
+
 };
 
 STATIC_ASSERT(sizeof(S2dCineSco) == 0x92C, S2dCineSco_size);

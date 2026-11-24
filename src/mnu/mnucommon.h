@@ -8,6 +8,8 @@
 #ifndef MNU_MNUCOMMON_H
 #define MNU_MNUCOMMON_H
 
+#include "msg/msgman.h"
+
 struct MnuRpkEntry {
     int m_id;                           // +0x00
     const char *m_name;                 // +0x04
@@ -70,12 +72,7 @@ struct MnuRpk {
     }
 }; // size 0x8EC
 
-struct MnuMsgWin {
-    unsigned char m_data[0x3BC];
-
-    MnuMsgWin() asm("func_0018330C");
-    ~MnuMsgWin() asm("func_00183B24");
-}; // size 0x3BC
+typedef MsgWin MnuMsgWin; // shared message-window type, size 0x3BC
 
 struct MnuSub104Base {
     int m_open;                         // +0x000
