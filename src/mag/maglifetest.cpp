@@ -42,8 +42,8 @@ public:
 };
 static inline unsigned int padTriggerU(const BedPad *p) { return p->m_trigger; }
 // Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_func_00130A2C(...) asm("func_00130A2C");
-extern "C" int X_func_0021B550(...) asm("func_0021B550");
+extern "C" int func_00130A2C(MagLifeNoise *, int, NoiseDrawParam *, int, int, int, int);
+extern "C" int func_0021B550(int, int, unsigned long long);
 
 MagLifeWindow::MagLifeWindow()
 {
@@ -75,7 +75,29 @@ MagLifeWindow::MagLifeWindow()
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifetest", func_00130A2C);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifetest", func_00130C34);
+static inline int clamp0(int n)
+{
+    if (n < 0) {
+        n = 0;
+    }
+    return n;
+}
+
+extern "C" int func_00130C34(MagLifeNoise *self, int prim, NoiseDrawParam *param)
+{
+    if (param->unk18 == 0) {
+        return prim;
+    }
+
+    prim = func_0021B550(prim, 8, 0);
+    prim = func_0021B550(prim, 1, 0x3F202020);
+    prim = func_0021B550(prim, 0x47, 0x31001);
+
+    prim = func_00130A2C(self, prim, param, 0x190, 0x190, clamp0((param->unk18 + 3) / 4), 1);
+    prim = func_00130A2C(self, prim, param, 0x258, 0x258, clamp0((param->unk18 + 2) / 4), 0);
+    prim = func_00130A2C(self, prim, param, 0x378, 0x378, clamp0((param->unk18 + 1) / 4), 1);
+    return func_00130A2C(self, prim, param, 0x3E8, 0x3E8, clamp0(param->unk18 / 4), 0);
+}
 
 // NON_MATCHING: 2/15 differ, 4 edits
 #ifdef NON_MATCHING
