@@ -1,6 +1,11 @@
 #include "ror.h"
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
+extern "C" void func_0012481C(MagLifeBwn *, int, float);
+extern "C" int func_00103F38();
+extern "C" int func_00103F08();
+extern "C" void func_00103EDC(int);
+extern "C" int func_001252C4(MagLifeBwn *);
 extern const char D_002EB208[];
 extern "C" void func_00125A20(MagLifeBwn *, int);
 extern "C" float func_001040A0();
@@ -434,13 +439,31 @@ extern "C" void func_00124E18(MagBwn *self)
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", live__10MagLifeBwn);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", reset4MapJump__10MagLifeBwn);
+extern "C" void reset4MapJump__10MagLifeBwn(MagLifeBwn *arg0)
+{
+    arg0->MagLifeControlChara::reset4MapJump();
+    arg0->message(0, 0, 0);
+    arg0->func_0011A130();
+    func_0012481C(arg0, -1, 0.0f);
+    arg0->m_unkCAC = 0;
+    arg0->m_unkCD0 = -1;
+    int maxHp = func_00103F38() / 5;
+    int hp = func_00103F08();
+    if (hp < maxHp) {
+        hp += maxHp / 4;
+        if (hp > maxHp) {
+            hp = maxHp;
+        }
+        func_00103EDC(hp + 1);
+    }
+    arg0->m_unkCB8 = func_001252C4(arg0);
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00125014);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00125104);
 
-extern "C" int func_001252C4()
+extern "C" int func_001252C4(MagLifeBwn *)
 {
     float temp_f1;
     int temp_s0;
