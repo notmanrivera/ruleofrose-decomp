@@ -187,7 +187,46 @@ extern "C" int func_0014159C(const char *arg0, const char *arg1)
     return -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00141634);
+extern "C" int func_00141634(const char *arg0, const char *arg1, char *arg2)
+{
+    int out = 0;
+    int i = 0;
+    int count = 0;
+    int len0 = strlen(arg0);
+    int len1 = strlen(arg1);
+    register int start PS2_REG("$5") = 0; // pin global-alloc register to match game's $a1/$a2/$a0 split
+
+    if (len0 > 0) {
+        do {
+            register int j PS2_REG("$6");
+            for (j = 0; j < len1; j++) {
+                if (arg0[i] == arg1[j]) {
+                    break;
+                }
+            }
+            if (j != len1) {
+                int n = i - start;
+                if (n > 0) {
+                    memcpy(&arg2[out], &arg0[start], n);
+                    out += n;
+                    arg2[out++] = 0;
+                    count++;
+                }
+                start = i + 1;
+            }
+            i++;
+        } while (i < len0);
+    }
+
+    int n = i - start;
+    if (n > 0) {
+        memcpy(&arg2[out], &arg0[start], n);
+        out += n;
+        arg2[out] = 0;
+        count++;
+    }
+    return count;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/magscenefocus", D_002EEB90);
 
