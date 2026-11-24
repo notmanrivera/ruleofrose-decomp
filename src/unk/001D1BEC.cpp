@@ -1,4 +1,9 @@
 #include "include_asm.h"
+struct GamMan25E4 {
+    unsigned char m_pad00[0x21F48];
+    unsigned int m_sysFlg;
+};
+extern "C" void func_0013FB3C(void *, int, int);
 extern "C" float func_001D4A3C(void *, unsigned int, int);
 extern "C" void func_001DA740(void *, int, void *);
 extern "C" void func_001DB520(void *, int, void *);
@@ -143,7 +148,6 @@ extern "C" int Xiiu_func_001D2D00(int, unsigned int) asm("func_001D2D00");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_attachActor__9MagSystemiii(...) asm("attachActor__9MagSystemiii");
 extern "C" int X_func_00130DE0(...) asm("func_00130DE0");
-extern "C" int X_func_0013FB3C(...) asm("func_0013FB3C");
 extern "C" int X_func_001CBE38(...) asm("func_001CBE38");
 extern "C" int X_func_001D046C(...) asm("func_001D046C");
 extern "C" int X_func_001D10D0(...) asm("func_001D10D0");
@@ -333,7 +337,31 @@ extern "C" void func_001D2428(int arg0, unsigned int arg1, int arg2)
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2494);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D25E4);
+extern "C" void func_001D25E4(GamMan25E4 *arg0, int arg1)
+{
+    int off = 0x12540;
+
+    switch (arg1) {
+    case 0:
+        if (arg0->m_sysFlg & 0x08000000) {
+            func_0013FB3C((char *)&D_006E9840 + off, arg1, 7);
+        }
+        if (arg0->m_sysFlg & 0x10000000) {
+            return func_0013FB3C((char *)&D_006E9840 + off, 1, 6);
+        }
+        return;
+    case 1:
+        if (arg0->m_sysFlg & 0x10000000) {
+            return func_0013FB3C((char *)&D_006E9840 + off, arg1, 6);
+        }
+        break;
+    case 2:
+        if (arg0->m_sysFlg & 0x08000000) {
+            func_0013FB3C((char *)&D_006E9840 + off, 0, 7);
+        }
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2724);
 
