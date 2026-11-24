@@ -144,7 +144,10 @@ struct MnuItem {
     MnuSub104 m_sub1B64;                // +0x1B64..0x1C67
     MnuMsgWin m_msgWin[2];              // +0x1C68..0x23DF
     int m_param;                        // +0x23E0
-    unsigned char m_pad23E4[0x10];      // +0x23E4
+    int m_unk23E4;                      // +0x23E4
+    int m_unk23E8;                      // +0x23E8
+    int m_unk23EC;                      // +0x23EC
+    int m_unk23F0;                      // +0x23F0
     int m_unk23F4;                      // +0x23F4
     int m_unk23F8;                      // +0x23F8
     int m_unk23FC;                      // +0x23FC

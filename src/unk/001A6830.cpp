@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "001A6830.h"
 #include "game/gamman.h"
+extern "C" void func_001CB460(GamMan *, int, void *);
+extern "C" void func_001CB490(GamMan *, int, void *);
 extern "C" void func_001AF024(MnuItem *);
 extern "C" int func_0018741C(MnuMsgWin *);
 extern "C" void Xvp_func_001AEBC8(void *) asm("func_001AEBC8");
@@ -97,7 +99,6 @@ extern "C" int X_func_001AB4E0(...) asm("func_001AB4E0");
 extern "C" int X_func_0018C190_1(int, int) asm("func_0018C190");
 extern int D_002A8848;
 extern int D_002AAD70;
-extern "C" int X_func_001AF024(...) asm("func_001AF024");
 extern "C" int X_func_001AF3F0(...) asm("func_001AF3F0");
 extern "C" int X_func_001DC48C(...) asm("func_001DC48C");
 extern "C" void Xv_func_001AE574(int) asm("func_001AE574");
@@ -1961,7 +1962,21 @@ extern "C" void func_001AEF9C(MnuItem *arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF024);
+extern "C" void func_001AF024(MnuItem *arg0)
+{
+    unsigned short max;
+    unsigned short cur;
+    func_001CB460(&D_007812C0, 0x1B, &cur);
+    func_001CB460(&D_007812C0, 0x1C, &max);
+    int v = (int)(100.0f / ((float)max / (float)cur));
+    arg0->m_unk23EC = v;
+    arg0->m_unk23E4 = v;
+    func_001CB490(&D_007812C0, 0x1B, &cur);
+    func_001CB490(&D_007812C0, 0x1C, &max);
+    int v2 = (int)(100.0f / ((float)max / (float)cur));
+    arg0->m_unk23F0 = v2;
+    arg0->m_unk23E8 = v2;
+}
 
 extern "C" void func_001AF130(MnuItem *arg0)
 {
@@ -2026,7 +2041,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF3F0);
 extern "C" void func_001AF44C(MnuItem *arg0, int arg1)
 {
     if (arg1 == 0) {
-        X_func_001AF024();
+        func_001AF024(arg0);
         X_func_001AF21C(arg0, -1);
         char *base = (char *)&D_007812C0;
         arg0->m_equipIdx = X_func_001AF3F0(arg0, M2C_FIELD(base, unsigned short *, 0x2220C));
