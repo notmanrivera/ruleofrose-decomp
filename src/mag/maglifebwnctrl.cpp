@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
 #include "utl/utlfind.h"
+#include "mag/magscene.h"
+extern "C" void func_0017C340(void *, DogVector *, void **, int, float, float);
 float vecYaw(const float *);
 extern "C" int func_0012B19C(MagLifeBwnCtrl *);
 extern "C" int func_0010423C(int, int);
@@ -673,7 +675,43 @@ extern "C" void func_0012AB18(void) {
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012AB20);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012ADEC);
+extern "C" int func_0012ADEC(MagLifeBwnCtrl *arg0)
+{
+    int ret = 0;
+    if (arg0->m_unk74 != 0) {
+        int found = 0;
+        DogVector pos;
+        register int i PS2_REG("$16") = 0;
+        arg0->m_unk74->func_00119F88(&pos);
+        float rot = arg0->m_unk74->func_00119FB0();
+        DogVector dir(0.0f, 0.0f, 1.0f, 1.0f);
+        DogVector *pDir = &dir;
+        vecTurnY(&pDir->m_x, rot);
+        do {
+            i++;
+            float dist = i * 300.0f;
+            DogVector p = *pDir;
+            DogVector *pp = &p;
+            pp->m_x *= dist;
+            pp->m_w = 1.0f;
+            pp->m_y *= dist;
+            pp->m_z *= dist;
+            pp->m_x += pos.m_x;
+            pp->m_w = 1.0f;
+            pp->m_y += pos.m_y;
+            pp->m_z += pos.m_z;
+            void *hit;
+            func_0017C340(&arg0->m_scene->m_unk437DC[0x41C50], pp, &hit, 0, 100.0f, 0.0f);
+            if (hit == 0) {
+                break;
+            }
+            found = 1;
+            *(u_long128 *)&arg0->m_targetPos = *(u_long128 *)pp;
+        } while (i < 10);
+        ret = found;
+    }
+    return ret;
+}
 
 // NON_MATCHING: 45/88 differ, 4 relocs differ, 17 edits
 #ifdef NON_MATCHING
