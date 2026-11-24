@@ -1,4 +1,10 @@
 #include "include_asm.h"
+struct Obj2D00;
+extern "C" int func_001DB17C(int, int);
+extern "C" int func_001D046C(int, unsigned int);
+extern "C" int func_001D2B8C(int, int);
+extern "C" int func_001D2BA8(int, unsigned int);
+extern "C" void *func_001D2D00(Obj2D00 *, unsigned int);
 struct Vec2_4730 {
     float x;
     float y;
@@ -119,7 +125,6 @@ extern "C" int X_func_001D9F08(...) asm("func_001D9F08");
 extern "C" int X_func_001DA228(...) asm("func_001DA228");
 extern "C" int X_func_001DA740(...) asm("func_001DA740");
 extern "C" int X_func_001DAC8C(...) asm("func_001DAC8C");
-extern "C" int X_func_001DB17C(...) asm("func_001DB17C");
 extern "C" int X_func_001DB18C(...) asm("func_001DB18C");
 extern "C" int X_func_001DB19C(...) asm("func_001DB19C");
 extern "C" int X_func_001DB31C(...) asm("func_001DB31C");
@@ -202,7 +207,21 @@ extern "C" void func_001D1F74(int arg0, unsigned int arg1, int arg2, int arg3)
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D1FD8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D217C);
+extern "C" int func_001D217C(int arg0, unsigned int arg1, int arg2)
+{
+    if (func_001D046C(arg0, arg1) == 0) {
+        return -1;
+    }
+    switch ((arg1 >> 0x1C) & 3) {
+    case 0:
+        return func_001DB17C((int)func_001D2D00((Obj2D00 *)arg0, arg1), arg2);
+    case 1:
+        return func_001DB17C(func_001D2B8C(arg0, arg1), arg2);
+    case 2:
+        return func_001DB17C(func_001D2BA8(arg0, arg1), arg2);
+    }
+    return 0;
+}
 
 extern "C" int func_001D2270(int arg0, unsigned int arg1, int arg2, int arg3)
 {
