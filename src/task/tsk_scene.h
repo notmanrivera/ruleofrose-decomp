@@ -9,8 +9,14 @@ struct SceneVoice {
     int m_unk08;                // +0x08
 };
 
-struct ScenePlaySingle {
+struct ScenePlayCmd {
     int m_unk00;                // +0x00
+    int m_unk04;                // +0x04
+    unsigned char m_pad08[0x40];
+};
+
+struct ScenePlaySingle {
+    ScenePlayCmd *m_unk00;      // +0x00
     int m_unk04;                // +0x04
     int m_unk08;                // +0x08
     int m_unk0C;                // +0x0C

@@ -4,6 +4,7 @@
 #include "sdk/string.h"
 #include "game/gamman.h"
 #include "game/gamsnd.h"
+extern "C" int func_001F7788(ScenePlaySingle *, int);
 static inline GamSndMan *getSnd(GamMan *g) { return (GamSndMan *)g->m_snd; }
 extern "C" void func_001F6CB8(void *);
 extern "C" void func_001F71B8(void *);
@@ -28,7 +29,6 @@ extern "C" void PLScenePlay__vfunc_06(int arg0, int arg1);
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_001F7644(...) asm("func_001F7644");
 extern "C" int X_func_001F76E0(...) asm("func_001F76E0");
-extern "C" int X_func_001F7788(...) asm("func_001F7788");
 extern "C" int X_func_001F7C0C(...) asm("func_001F7C0C");
 
 extern "C" void func_001F7570(SceneVoice *self, int id, int vol, int pan, int arg4)
@@ -60,7 +60,7 @@ extern "C" void func_001F7610(int arg0)
 extern "C" void func_001F7644(void) {
 }
 
-extern "C" void func_001F764C(ScenePlaySingle *self, int arg1, int arg2)
+extern "C" void func_001F764C(ScenePlaySingle *self, int arg1, ScenePlayCmd *arg2)
 {
     self->m_vtable = vtbl_15ScenePlaySingle;
     self->m_unk04 = 1;
@@ -87,7 +87,26 @@ extern "C" int func_001F76B0(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F76E0);
+extern "C" int func_001F76E0(ScenePlaySingle *self)
+{
+    if (self->m_unk04 == 0) {
+        return 0;
+    }
+    self->m_unk0C++;
+    ScenePlayCmd *cmd = &self->m_unk00[self->m_unk10];
+    if (cmd->m_unk04 == 0) {
+        return 0;
+    }
+    int next;
+    do {
+        next = 0;
+        ScenePlayCmd *cur = &self->m_unk00[self->m_unk10];
+        if (self->m_unk0C >= cur->m_unk00) {
+            next = func_001F7788(self, 0);
+        }
+    } while (next != 0);
+    return self->m_unk04 != 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F7788);
 
