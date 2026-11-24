@@ -7,7 +7,8 @@
 #
 # 1. Lists the worker's commits not yet in the current branch (by patch, so
 #    commits already cherry-picked are skipped) and refuses any that touch
-#    something other than src/**.cpp.
+#    something other than src/**.cpp or src/**.h (a header change also
+#    checks every .cpp that includes it).
 #    Commits that add inline assembly statements with instructions in them
 #    are refused too: a function must be C++ to count. Empty barriers
 #    (asm volatile("" ::: "memory")), register hints (register int x
@@ -75,11 +76,16 @@ COMMITS="$(git cherry "$BRANCH" "wt/$NAME" | sed -n 's/^+ //p')"
 if [ -z "$COMMITS" ]; then
   echo "wt/$NAME: nothing new"
 else
-  BAD="$(for c in $COMMITS; do git show --name-only --format= "$c"; done | sort -u | grep -v '^src/.*\.cpp$' || true)"
-  [ -z "$BAD" ] || { echo "refusing: commits touch files outside src/*.cpp:"; echo "$BAD"; exit 1; }
+  BAD="$(for c in $COMMITS; do git show --name-only --format= "$c"; done | sort -u | grep -vE '^src/.*\.(cpp|h)$' || true)"
+  [ -z "$BAD" ] || { echo "refusing: commits touch files outside src/*.cpp and src/*.h:"; echo "$BAD"; exit 1; }
   ASM="$(for c in $COMMITS; do git show --format= "$c"; done | grep -E '^\+([^"]*[;{])?[[:space:]]*(__asm__|asm)([[:space:]]+(volatile|goto)|__volatile__)*[[:space:]]*\([[:space:]]*"[^"]' || true)"
   [ -z "$ASM" ] || { echo "refusing: commits add inline assembly:"; echo "$ASM" | head -5; exit 1; }
-  FILES="$(for c in $COMMITS; do git show --name-only --format= "$c"; done | sort -u | sed 's|^src/||; s|\.cpp$||')"
+  # A header (a member named where padding was) can change any file that
+  # includes it: those are checked too.
+  TOUCHED="$(for c in $COMMITS; do git show --name-only --format= "$c"; done | sort -u)"
+  HDRS="$(echo "$TOUCHED" | sed -n 's|^src/\(.*\.h\)$|\1|p')"
+  USERS="$(for h in $HDRS; do grep -rlF "#include \"$h\"" src --include='*.cpp' || true; done)"
+  FILES="$( { echo "$TOUCHED" | grep '\.cpp$'; echo "$USERS"; } | sed '/^$/d; s|^src/||; s|\.cpp$||' | sort -u)"
   echo "wt/$NAME: $(echo "$COMMITS" | wc -l | tr -d ' ') commits on: $(echo $FILES)"
 
   # Checked with this checkout's compile server on each file as it will be
