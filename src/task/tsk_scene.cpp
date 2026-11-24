@@ -4,6 +4,16 @@
 #include "sdk/string.h"
 #include "game/gamman.h"
 #include "game/gamsnd.h"
+#include "mag/magsystem.h"
+extern MagSystem D_006E9840;
+extern MagScene D_006FBD80;
+extern "C" void func_001F723C(void *);
+extern "C" void func_001FBBD0(void);
+extern "C" void func_00139010(MagScene *, int);
+extern "C" void func_0017756C(void *, int);
+extern "C" void func_001F6DFC(void *, int, int);
+static inline MagScene *getMagScene(MagSystem *s) { return &s->m_scene; }
+static inline void *getEffMan(MagScene *s) { return s->m_unk837E0; }
 extern "C" void *__builtin_new(size_t);
 extern "C" void func_001F764C(ScenePlaySingle *, int, ScenePlayCmd *);
 static inline ScenePlaySingle *make_single(int arg1, ScenePlayCmd *arg2)
@@ -70,7 +80,7 @@ extern "C" void func_001F7644(void) {
 
 extern "C" void func_001F764C(ScenePlaySingle *self, int arg1, ScenePlayCmd *arg2)
 {
-    self->m_vtable = vtbl_15ScenePlaySingle;
+    *(void **)&self->m_pad1C[0x80] = vtbl_15ScenePlaySingle;
     self->m_unk04 = 1;
     self->m_unk00 = arg2;
     self->m_unk08 = arg1;
@@ -150,7 +160,24 @@ extern "C" void ScenePlay__vfunc_06(ScenePlay *self, int flags)
 extern "C" void ScenePlay__vfunc_03(ScenePlay *) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", ScenePlay__vfunc_05);
+extern "C" void ScenePlay__vfunc_05(ScenePlay *self)
+{
+    func_001F723C(self->m_seManager);
+    func_001FBBD0();
+    for (int i = 0; i < self->m_imd_load_chr_num; i++) {
+        func_00139010(getMagScene(&D_006E9840), self->m_imd_load_chr_id[i]);
+    }
+    self->m_imd_load_chr_num = 0;
+    for (int i = 0; i < self->m_unk30; i++) {
+        delete self->m_unk04[i];
+    }
+    self->m_unk30 = 0;
+    if (self->m_camera_eff_id != -1) {
+        func_0017756C(getEffMan(&D_006FBD80), self->m_camera_eff_id);
+        self->m_camera_eff_id = -1;
+    }
+    func_001F6DFC(self->m_displayMessage, -1, 0);
+}
 
 extern "C" void func_001F7F68(ScenePlay *self, int arg1, ScenePlayCmd *arg2, int arg3)
 {

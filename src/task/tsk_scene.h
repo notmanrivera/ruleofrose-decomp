@@ -26,7 +26,8 @@ struct ScenePlaySingle {
     int m_oid;                  // +0x14
     ScenePlay *m_unk18;         // +0x18
     unsigned char m_pad1C[0x80];
-    void *m_vtable;             // +0x9C
+
+    virtual ~ScenePlaySingle(); // vtable pointer: +0x9C
 };
 
 struct ScenePlay {
