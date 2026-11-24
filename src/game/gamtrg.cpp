@@ -34,19 +34,7 @@ struct GamTrgVec2 {
     float x, y;
 } __attribute__((aligned(16)));
 
-struct GamTrgMapInfo {
-    int m_unk00;
-    int m_unk04;
-    int m_unk08;
-    int m_unk0C;
-    int m_unk10;
-    int m_unk14;
-    int m_unk18;
-    int m_unk1C;
-    float m_unk20;
-    float m_unk24;
-    float m_unk28;
-};
+
 
 struct GamTrgSecta {
     unsigned char m_unk00[0x1C];

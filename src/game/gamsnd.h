@@ -17,7 +17,7 @@ struct ALIGNED(8) SND_PARAM {
     int id;                            // +0x1C
     unsigned short m_unk20, m_unk22, m_unk24, m_unk26;
     unsigned short m_unk28;
-    short m_unk2A, m_unk2C, m_unk2E, m_unk30;
+    unsigned short m_unk2A, m_unk2C, m_unk2E, m_unk30;
     unsigned short m_unk32, m_unk34, m_unk36;
 };
 // File buffers have word alignment. Whole-table assignment emits the game's
@@ -25,7 +25,10 @@ struct ALIGNED(8) SND_PARAM {
 struct GamSndSETable { SND_PARAM m_entries[0x400]; } __attribute__((packed, aligned(4)));
 struct GamSndStreamTable { SND_PARAM m_entries[0x384]; } __attribute__((packed, aligned(4)));
 struct GamSndMessage {
-    int m_unk00, m_unk04, m_unk08, m_unk0C;
+    union { int m_unk00; unsigned int m_u00; float m_f00; };
+    int m_unk04;
+    union { int m_unk08; float m_f08; };
+    int m_unk0C;
     int m_unk10, m_unk14;
     float m_unk18;
     int m_unk1C, m_unk20, m_unk24, m_unk28, m_unk2C;
@@ -44,6 +47,13 @@ struct GamSndChannels {
     int m_max;                         // +0x08
     unsigned char m_unk0C[0x34];
     GamSndChannel m_buf[0x30];          // +0x40
+    void clear()
+    {
+        for (GamSndChannel *p = m_begin; p != m_end; ++p) p->~GamSndChannel();
+        m_end = m_buf;
+        m_max = 0x30;
+        m_begin = m_buf;
+    }
 };
 struct ALIGNED(16) GamSnd3D {
     TskVec4 m_unk00;
@@ -79,8 +89,9 @@ struct GamSndMan {
     GamSndBgm m_unk15A0[5];             // +0x15A0
     GamSndStream m_unk1654[3];          // +0x1654
     int m_unk1678, m_unk167C;
-    GamSndAmbient m_unk1680[8];         // +0x1680
-    int m_unk1700, m_unk1704, m_unk1708, m_unk170C;
+    int m_unk1680, m_currentBgm;       // +0x1680, +0x1684
+    GamSndAmbient m_ambient[8];        // +0x1688
+    int m_unk1708, m_unk170C;
     int m_unk1710, m_unk1714, m_unk1718;
     int m_unk171C, m_unk1720, m_unk1724;
     int m_bankIds[65];                  // +0x1728
@@ -105,7 +116,8 @@ struct GamTaskBase {
     void *m_vtable;
     unsigned char m_unk04[0x14];
     int m_prio;
-    unsigned char m_unk1C[0x28];
+    int m_unk1C, m_unk20, m_unk24;
+    unsigned char m_unk28[0x1C];
     GamTaskBase() asm("func_00203D94");
     ~GamTaskBase() asm("func_00203DA8");
 };
@@ -117,10 +129,18 @@ struct GamTaskMan {
     int arr[0x80];                      // +0x84
     int *end;                          // +0x284
     int m_history[0x100];               // +0x288
+    GamTaskNode *popReady()
+    {
+        GamTaskNode *p = head0;
+        if (p == 0 || (unsigned int)m_base.m_prio < p->prio) return 0;
+        head0 = p->next;
+        p->next = 0;
+        return p;
+    }
     GamTaskMan() asm("func_001E7094");
     ~GamTaskMan() asm("func_001E70DC");
 };
-struct GamSndPan { void *m_unk00; int m_unk04; float m_unk08; void *m_unk0C; };
+struct GamSndPan { const TskVec4 *m_position; const TskVec4 *m_direction; float m_angle; const TskVec4 *m_source; };
 class TskSnd;
 class TskLogger : public CmnITask {
 public:
@@ -153,7 +173,7 @@ extern "C" {
 void func_001E107C(GamSndMan *);
 void func_001E111C(GamSndMan *, int);
 void func_001E1FA4(GamSndMan *);
-void func_001E1920(GamSndMan *, int *, int, int);
+void func_001E1920(GamSndMan *, int, int, int);
 void func_001E3C24(GamSndMan *, EffVec3 *);
 void func_001E4120(GamSndMan *);
 int func_001E43A4(GamSndMan *, unsigned int, int, unsigned int);
@@ -166,7 +186,7 @@ int func_001E4B48(GamSndMan *, int, SND_PARAM *);
 int func_001E4C1C(GamSndMan *, int, SND_PARAM **);
 int func_001E4CBC(GamSndMan *, int);
 int func_001E4D04(GamSndMan *, const char *);
-int func_001E4EBC(GamSndMan *, unsigned int, int, EffVec3 *, int);
+int func_001E4EBC(GamSndMan *, unsigned int, int, EffVec4 *, int);
 int func_001E50C8(GamSndMan *, int, int, int, float, int, int, int);
 int func_001E5250(GamSndMan *, int, int, EffVec4 *, int, int);
 int func_001E5428(GamSndMan *, int, int, int, int, int, int, float);
@@ -188,6 +208,7 @@ void func_001E7340(GamTaskMan *, GamTaskNode *, int);
 void func_001E7698(GamTaskMan *, GamTaskNode *);
 int func_001E76B8(GamTaskMan *, int);
 void func_001E7724(GamTaskMan *, int);
+CmnITask *func_001E79C0(GamTaskMan *, int);
 void func_001E7C7C(GamTaskMan *, GamTaskNode *);
 void func_001E7D08(GamTaskMan *, GamTaskNode *);
 int func_001E7D7C(GamTaskMan *, int);

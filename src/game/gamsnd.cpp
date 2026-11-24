@@ -5,6 +5,7 @@
 #include "game/gamsnd.h"
 #include "sdk/string.h"
 #include "bed/bedmemory.h"
+#include "snd/sndman.h"
 #include "ror.h"
 #include "include_asm.h"
 #include "task/cmnitask.h"
@@ -14,7 +15,6 @@
 void heapFree(void *);
 void *operator new(unsigned int);
 void operator delete(void *);
-class SndMan;
 extern SndMan D_007B2580;
 extern GamMan D_007812C0;
 extern GamTaskMan D_007A3D80;
@@ -31,7 +31,7 @@ int snprintf(char *, unsigned int, const char *, ...);
 void func_001C6A40(GamMan *, unsigned int);
 int func_001C6C28(GamMan *);
 int func_001CBE38(GamMan *, unsigned int);
-void *func_0017EA44(void *, int);
+GamTrgMapInfo *func_0017EA44(void *, int);
 void func_001DBA3C(GamMapObj *, unsigned int, float *, int);
 int func_0017F5E8(SndMan *, int);
 int func_0017F8FC(SndMan *, int);
@@ -41,23 +41,27 @@ void func_00180078(SndMan *, int, int);
 int func_001800D0(SndMan *, int);
 void func_001801C8(SndMan *, int);
 int func_001809D8(SndMan *, int, void *, int);
-void func_00180B30(SndMan *);
+int func_00180B30(SndMan *, int);
 int func_00180CA8(SndMan *, int);
-void func_00180CE0(SndMan *, int, int, int, float, int);
+int func_00180CE0(SndMan *, int, int, int, float, int);
 int func_00180EA8(SndMan *, int);
 void func_001F8FC0(TskSnd *, unsigned int, GamSndMessage *);
 void func_0023A080(int);
 void rxSndReverbSetDepth(int, int);
-void func_002378B0(void *, void *, int);
-void func_00237408(void *, void *, void *);
+void func_002378B0(void *, void *, const void *);
+void func_00237408(void *, const void *, const void *);
 void func_002375D8(void *, void *);
 float func_00237580(void *, void *);
 }
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 
 // The generic byte-copy inline preserves the unaligned default-record copy.
+static inline GamSndChannel *channelAt(GamSndChannels *channels, int byteOffset)
+{
+    return (GamSndChannel *)((char *)channels->m_begin + byteOffset);
+}
 static inline void copySoundParam(void *dst, const void *src) { memcpy(dst, src, sizeof(SND_PARAM)); }
-static inline float *soundCamera(MagScene *scene) { return scene->m_unk2AB70; }
+static inline DogEntityEx *soundCamera(MagScene *scene) { return &scene->m_soundTransform; }
 static inline GamMapObj *soundMap(GamMan *game) { return (GamMapObj *)game->m_mapObj; }
 static inline bool soundDisabled(const unsigned int *flags, unsigned int mask) { return (*flags & mask) != 0; }
 extern "C" int func_001E0BB0(GamTrgMan *arg0, int arg1)
@@ -179,7 +183,7 @@ extern "C" void func_001E0F1C(GamSndMan *arg0)
     arg0->m_unk170C = -1;
     arg0->m_unk1710 = -1;
     arg0->m_unk1718 = -1;
-    arg0->m_unk1680[0].m_unk04 = -1;
+    arg0->m_currentBgm = -1;
     arg0->m_unk15A0[0].m_unk0C = -1;
     arg0->m_unk15A0[4].m_unk00 = 0;
     arg0->m_unk15A0[0].m_unk00 = 0;
@@ -190,15 +194,14 @@ extern "C" void func_001E0F1C(GamSndMan *arg0)
 extern "C" void func_001E100C(GamSndMan *arg0, EffVec3 *v)
 {
     EffVec3 tmp;
-    char *base;
-    float *src;
+    DogEntityEx *src;
 
     if (arg0->m_queue.m_used.m_num != 0) {
         if (arg0->m_mode == 1) {
             src = soundCamera(&D_006FBD80);
-            tmp.x = src[0x10];
-            tmp.y = src[0x11];
-            tmp.z = src[0x12];
+            tmp.x = src->m_unk40.m_x;
+            tmp.y = src->m_unk40.m_y;
+            tmp.z = src->m_unk40.m_z;
             func_001E3C24(arg0, &tmp);
         } else {
             func_001E3C24(arg0, v);
@@ -225,17 +228,17 @@ INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E111C);
 
 extern "C" void func_001E15D0(GamSndMan *arg0, const GamSndBgm *arg1)
 {
-    arg0->m_unk1680[0].m_unk04 = 0;
+    arg0->m_currentBgm = 0;
     arg0->m_unk15A0[0] = *arg1;
 }
 
 // Existing address-preparation debt: retain until the original inline is identified.
 static inline int *relative1620(char *base, int offset) { return (int *)(base + offset); }
 extern "C" void func_001E1620(GamSndMan *arg0, int arg1, int arg2, int arg3) {
-    if (arg0->m_unk1680[0].m_unk04 < 0) {
+    if (arg0->m_currentBgm < 0) {
         return;
     }
-    arg0->m_unk1680[0].m_unk04 = 0;
+    arg0->m_currentBgm = 0;
 
     if (arg1 != 1) {
         int *p = &arg0->m_unk15A0[0].m_unk0C;
@@ -247,33 +250,33 @@ extern "C" void func_001E1620(GamSndMan *arg0, int arg1, int arg2, int arg3) {
         } else {
             *p = arg3;
         }
-        arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk10 = 0;
-        arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk14 = 0;
+        arg0->m_unk15A0[arg0->m_currentBgm].m_unk10 = 0;
+        arg0->m_unk15A0[arg0->m_currentBgm].m_unk14 = 0;
     }
 after_if1:
 
     if (arg1 != 2) {
         char *base20 = (char *)arg0 + 0x20;
-        register int index PS2_REG("$3") = arg0->m_unk1680[0].m_unk04;
+        register int index PS2_REG("$3") = arg0->m_currentBgm;
         char *base14 = (char *)arg0 + 0x14;
         if (arg2 != 0) {
             if (arg2 == *relative1620(base20, index * 0x24 + 0x1580)) {
-                *relative1620(base20, arg0->m_unk1680[0].m_unk04 * 0x24 + 0x1580) = 0;
-                arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk04 = 0;
-                arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk08 = 0;
+                *relative1620(base20, arg0->m_currentBgm * 0x24 + 0x1580) = 0;
+                arg0->m_unk15A0[arg0->m_currentBgm].m_unk04 = 0;
+                arg0->m_unk15A0[arg0->m_currentBgm].m_unk08 = 0;
             }
-            if (arg2 == *relative1620(base14, arg0->m_unk1680[0].m_unk04 * 0xC + 0x1640)) {
-                *relative1620(base14, arg0->m_unk1680[0].m_unk04 * 0xC + 0x1640) = 0;
+            if (arg2 == *relative1620(base14, arg0->m_currentBgm * 0xC + 0x1640)) {
+                *relative1620(base14, arg0->m_currentBgm * 0xC + 0x1640) = 0;
                 goto clear_1658;
             }
         } else {
             *relative1620(base20, index * 0x24 + 0x1580) = 0;
-            arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk04 = 0;
-            arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk08 = 0;
-            *relative1620(base14, arg0->m_unk1680[0].m_unk04 * 0xC + 0x1640) = 0;
+            arg0->m_unk15A0[arg0->m_currentBgm].m_unk04 = 0;
+            arg0->m_unk15A0[arg0->m_currentBgm].m_unk08 = 0;
+            *relative1620(base14, arg0->m_currentBgm * 0xC + 0x1640) = 0;
         clear_1658:
-            arg0->m_unk1654[arg0->m_unk1680[0].m_unk04].m_unk04 = 0;
-            arg0->m_unk1654[arg0->m_unk1680[0].m_unk04].m_unk08 = 0;
+            arg0->m_unk1654[arg0->m_currentBgm].m_unk04 = 0;
+            arg0->m_unk1654[arg0->m_currentBgm].m_unk08 = 0;
         }
     }
 }
@@ -283,7 +286,7 @@ extern "C" void func_001E17B4(GamSndMan *arg0, int arg1)
     GamSndMessage msg;
 
     func_001E111C(arg0, 0);
-    int val = arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk0C;
+    int val = arg0->m_unk15A0[arg0->m_currentBgm].m_unk0C;
     if (val != -1 && arg1 != 1) {
         msg.m_unk14 = 0x1E;
         msg.m_unk04 = 0;
@@ -291,14 +294,14 @@ extern "C" void func_001E17B4(GamSndMan *arg0, int arg1)
         func_001E5660(arg0, val, 0x1B, &msg);
     }
     if (arg1 != 2) {
-        int val2 = arg0->m_unk15A0[arg0->m_unk1680[0].m_unk04].m_unk00;
+        int val2 = arg0->m_unk15A0[arg0->m_currentBgm].m_unk00;
         if (val2 != 0) {
             msg.m_unk14 = 0x1E;
             msg.m_unk04 = 0;
             msg.m_unk08 = 0;
             func_001E5E58(arg0, val2, 0x13, &msg);
         }
-        int val3 = arg0->m_unk1654[arg0->m_unk1680[0].m_unk04].m_unk00;
+        int val3 = arg0->m_unk1654[arg0->m_currentBgm].m_unk00;
         if (val3 != 0) {
             msg.m_unk14 = 0x1E;
             msg.m_unk04 = 0;
@@ -310,7 +313,7 @@ extern "C" void func_001E17B4(GamSndMan *arg0, int arg1)
         msg.m_unk14 = 0x1E;
         msg.m_unk04 = 0;
         msg.m_unk08 = 0;
-        func_001E5E58(arg0, arg0->m_unk1680[i].m_unk08, 0x15, &msg);
+        func_001E5E58(arg0, arg0->m_ambient[i].m_unk00, 0x15, &msg);
     }
     func_001E4120(arg0);
     arg0->m_unk1870 |= 1;
@@ -417,7 +420,7 @@ extern "C" void func_001E2C40(GamSndMan *arg0, int arg1) {
 extern "C" void func_001E2DB4(GamSndMan *self, unsigned int id, EffVec3 *position, int scene, int flags)
 {
     if (scene == -1) scene = func_001C6C28(&D_007812C0);
-    float *entry = (float *)func_0017EA44(D_00298EE0, scene);
+    GamTrgMapInfo *entry = func_0017EA44(D_00298EE0, scene);
     if (entry) {
         GamSnd3D item;
         item.flags = flags | 1;
@@ -426,9 +429,9 @@ extern "C" void func_001E2DB4(GamSndMan *self, unsigned int id, EffVec3 *positio
         item.handle = -1;
         item.id = id;
         item.zero = 0;
-        item.position.x = position->x + entry[8];
-        item.position.y = position->y + entry[9];
-        item.position.z = position->z + entry[10];
+        item.position.x = position->x + entry->m_unk20;
+        item.position.y = position->y + entry->m_unk24;
+        item.position.z = position->z + entry->m_unk28;
         SND_PARAM *data;
         if (func_001E4C1C(self, id, &data)) item.data = data;
         else item.data = 0;
@@ -693,7 +696,7 @@ extern "C" void func_001E4540(GamSndMan *arg0, char *arg1, int arg2) {
 
 extern "C" void func_001E46B8(GamSndMan *arg0, int arg1)
 {
-    func_00180B30(&D_007B2580);
+    func_00180B30(&D_007B2580, arg1);
     arg0->m_bankIds[arg1] = -1;
 }
 
@@ -870,7 +873,7 @@ extern "C" int func_001E4DB0(GamSndMan *arg0, int arg1, int arg2, int arg3)
 
     temp_v0 = func_001E4D04(arg0, (const char *)arg1);
     if (temp_v0 != 0) {
-        return func_001E4EBC(arg0, temp_v0, arg2, (EffVec3 *)arg3, 0);
+        return func_001E4EBC(arg0, temp_v0, arg2, (EffVec4 *)arg3, 0);
     }
     return -1;
 }
@@ -1172,9 +1175,9 @@ extern "C" float func_001E6D54(GamSndPan *arg0)
     char vec[0x10];
 
     func_00237340(mat);
-    func_00237830(mat, mat, arg0->m_unk08);
-    func_002378B0(mat, mat, arg0->m_unk04);
-    func_00237408(vec, arg0->m_unk0C, arg0->m_unk00);
+    func_00237830(mat, mat, arg0->m_angle);
+    func_002378B0(mat, mat, arg0->m_direction);
+    func_00237408(vec, arg0->m_source, arg0->m_position);
     func_002375D8(vec, vec);
     return ((func_00237580(mat[2], vec) + 1.0f) * 0.5f * 0.7f) + 0.3f;
 }

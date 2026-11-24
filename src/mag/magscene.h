@@ -121,7 +121,8 @@ public:
     float m_unk2AA48;               // +0x2AA48
     float m_unk2AA4C;               // +0x2AA4C
     unsigned char m_unk2AA50[0x120];
-    float m_unk2AB70[0x51];
+    DogEntityEx m_soundTransform;   // +0x2AB70 (transform__11DogEntityEx)
+    unsigned char m_unk2AC60[0x54];
     float m_opt_zoom_ratio;         // +0x2ACB4
     unsigned char m_unk2ACB8[0xE4];
     int m_unk2AD9C;                 // +0x2AD9C

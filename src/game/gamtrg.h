@@ -342,6 +342,20 @@ struct GamUnqMan {
     void *m_raw;                        // +0x58: raw unq data header
 };
 
+struct GamTrgMapInfo {
+    int m_unk00;
+    int m_unk04;
+    int m_unk08;
+    int m_unk0C;
+    int m_unk10;
+    int m_unk14;
+    int m_unk18;
+    int m_unk1C;
+    float m_unk20;
+    float m_unk24;
+    float m_unk28;
+};
+
 // Trigger entry (0xB0 bytes, aligned 16 -> GamList::Node is 0xC0 bytes).
 struct GamTrgElem {
     float m_minX;                       // +0x00
