@@ -136,7 +136,11 @@ extern "C" void live__13MagLifeWindow(MagLifeWindow *self)
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifewindow", render__13MagLifeWindowP20tag_I3dRenderStage_s);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifewindow", func_00130214);
+extern "C" void func_00130214(MagLifeWindow *self, int *theX, int *theY)
+{
+    *theX = (int)self->m_pos.m_x;
+    *theY = (int)self->m_pos.m_y;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifewindow", func_00130230);
 
