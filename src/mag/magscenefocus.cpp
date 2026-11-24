@@ -1,6 +1,22 @@
 #include "include_asm.h"
+extern "C" void func_00237830(void *, void *, float);
+struct MagSceneFocusObj {
+    unsigned char m_pad00[0x508];
+    float (*m_unk508)[4][4];
+    float *m_unk50C;
+    int m_unk510;
+    unsigned char m_pad514[0xC];
+};
+struct MagSceneFocusLerp {
+    float m_unk00;
+    float m_unk04;
+    int m_unk08;
+    int m_unk0C;
+};
 struct MagSceneFocus {
-    unsigned char m_pad00[0x853BC];
+    unsigned char m_pad00[0x29540];
+    MagSceneFocusObj m_unk29540[4];
+    unsigned char m_pad2A9C0[0x853BC - 0x2A9C0];
     int m_unk853BC;
     int m_unk853C0;
     int m_unk853C4;
@@ -12,14 +28,12 @@ struct MagSceneFocus {
     int m_unk853DC;
     int m_unk853E0;
     int m_unk853E4;
+    unsigned char m_pad853E8[0x14];
+    MagSceneFocusLerp m_unk853FC;
+    MagSceneFocusLerp m_unk8540C;
+    MagSceneFocusLerp m_unk8541C;
 };
 extern "C" void func_00140B20(MagSceneFocus *, int);
-struct MagSceneFocusLerp {
-    float m_unk00;
-    float m_unk04;
-    int m_unk08;
-    int m_unk0C;
-};
 extern "C" int Xiiii_memset(int, int, int) asm("memset");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfii_func_00140D40(int, int) asm("func_00140D40");
@@ -29,7 +43,15 @@ extern "C" int strcmp(const char *, const char *);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140390);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_0014062C);
+extern "C" void func_0014062C(MagSceneFocus *arg0)
+{
+    MagSceneFocusObj *obj = arg0->m_unk29540;
+    for (int i = 0; i < 4; i++, obj++) {
+        for (int j = 0; j < obj->m_unk510; j++) {
+            func_00237830(&obj->m_unk508[j], &obj->m_unk508[j], obj->m_unk50C[j]);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_001406B8);
 
