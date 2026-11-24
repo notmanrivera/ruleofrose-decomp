@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "unk/NorMain.h"
+extern "C" int func_001513EC(EmyMain *);
 extern "C" void func_00166C8C(EmyOut *, float *);
 extern "C" void func_001D89C4(void *, float *);
 extern const int D_002EFA60[];
@@ -1138,7 +1139,39 @@ extern "C" void NorOutCoax__vfunc_02(NorOutCoax *self)
     func_0016649C(self->m_owner, 0);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", NorOutCoax__vfunc_03);
+extern "C" int NorOutCoax__vfunc_03(NorOutCoax *self)
+{
+    func_0016649C(self->m_owner, 0);
+    X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
+    if (func_001513EC(self->m_owner) == 0 && self->m_unk04 != 2) {
+        X_func_001680A0(self, 0x14, 0);
+        self->m_unk04 = 2;
+    }
+    switch (self->m_unk04) {
+    case 0:
+        if (self->m_unk28 != 0) {
+            ((EmyOut *)self->m_owner->m_unk1F8)->m_unk04 = 0;
+            X_func_001694CC(self, 0x59);
+            X_func_001680A0(self, 0x12, 0);
+            self->m_unk04 = 1;
+        }
+        break;
+    case 1:
+        if (NorAnimDone(&D_007812C0, self)) {
+            X_func_001680A0(self, 0x13, 0x100);
+        }
+        break;
+    case 2:
+        if (NorAnimDone(&D_007812C0, self)) {
+            func_0016649C(self->m_owner, 1);
+            X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
+            func_0016649C(self->m_owner, 1);
+            return 8;
+        }
+        break;
+    }
+    return -1;
+}
 
 extern "C" void NorOutTest__vfunc_02(NorOutTest *self)
 {
