@@ -931,7 +931,36 @@ extern "C" int func_001E4E20(GamSndMan *arg0, int arg1, int arg2, int arg3, int 
     return -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E4EBC);
+extern "C" int func_001E4EBC(GamSndMan *self, unsigned int id, int pan, EffVec4 *position, int flags)
+{
+    struct { int left, right; SND_PARAM *param; TskVec4 vec; } stack;
+    int handle;
+    if (soundDisabled(&D_007A320C, 1)) return -1;
+    if (!func_001E4908(self, id, &stack.param, 1)) return -1;
+    if (position) {
+        stack.vec.f[0] = position->x; stack.vec.f[1] = position->y;
+        stack.vec.f[2] = position->z; stack.vec.f[3] = position->w;
+        func_001E6E00(self->m_mode, &stack.vec, stack.param, &stack.left, &stack.right, 100.0f);
+        handle = func_0017F8FC(&D_007B2580, id);
+        func_00180CE0(&D_007B2580, handle, stack.left, stack.right, -1024.0f, 0);
+    } else {
+        handle = func_0017F8FC(&D_007B2580, id);
+        if (pan) {
+            float factor = (float)stack.param->m_unk28 * 0.00390625f;
+            stack.left = (int)((float)stack.param->m_unk26 * factor);
+            stack.right = (int)((float)stack.param->m_unk26 * (1.0f - factor));
+        } else { stack.left = 100; stack.right = 100; }
+        func_00180CE0(&D_007B2580, handle, stack.left, stack.right, -1024.0f, 0);
+    }
+    GamSndChannels *channels = &self->m_channels;
+    int offset = handle * sizeof(GamSndChannel);
+    channelAt(channels, offset)->flags = flags;
+    channelAt(channels, offset)->m_unk0C = id;
+    channelAt(channels, offset)->m_unk18 = handle;
+    channelAt(channels, offset)->m_unk04 = stack.left;
+    channelAt(channels, offset)->m_unk08 = stack.right;
+    return handle;
+}
 
 extern "C" int func_001E50C8(GamSndMan *arg0, int arg1, int arg2, int arg3, float fparg0, int arg4, int arg5, int arg6) {
     GamSndMessage msg;
