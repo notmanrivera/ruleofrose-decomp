@@ -878,7 +878,59 @@ extern "C" void live__18MagLifePCModeRopedR9MagLifePC(MagLifePCModeRoped *arg0, 
     X_func_001207A8(arg0, arg1);
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", pad__18MagLifePCModeRopedR9MagLifePCRC6BedPad);
+extern "C" int pad__18MagLifePCModeRopedR9MagLifePCRC6BedPad(MagLifePCModeRoped *arg0, MagLifePC *arg1, const BedPad *arg2)
+{
+    if (arg1->m_unkDC != 0) {
+        Xiiiui_func_0011C1E8(arg1, 5, 0U, 0);
+        return 2;
+    }
+    int flag = arg1->m_unk54;
+    int mot;
+    if (flag == 1) {
+        mot = 0x74;
+    } else {
+        if (flag != 3) {
+            X_ror_assert(D_002EAD28, 0x8F7, "flag == MAG_CTRL_PC_ROPED5");
+        }
+        mot = 0x79;
+    }
+    if (Xii_func_0011A054(arg1) != 0 || func_0011A028(arg1) == mot) {
+        int dir = 0;
+        if (arg1->m_unk104 > 0.0f) {
+            if (arg1->m_unk108 > 0.3f) {
+                dir = 2;
+            } else if (arg1->m_unk108 < -0.3f) {
+                dir = 1;
+            } else if (arg1->m_unk10C > 0.3f) {
+                dir = 4;
+            } else if (arg1->m_unk10C < -0.3f) {
+                dir = 3;
+            }
+        }
+        Xiiis_func_0011A320(arg1, mot + dir, -1);
+        if (dir != 0) {
+            int r = func_0010423C(0, 0x63);
+            int snd;
+            if (r < 0xF) {
+                snd = 0x3F;
+            } else if (r < 0x23) {
+                snd = 0x32;
+            } else if (r < 0x37) {
+                snd = 0x33;
+            } else if (r < 0x46) {
+                snd = 0x2E;
+            } else if (r < 0x55) {
+                snd = 0x34;
+            } else {
+                snd = -1;
+            }
+            if (snd >= 0) {
+                X_func_001026B0(snd, 0xF, 0);
+            }
+        }
+    }
+    return 1;
+}
 
 extern "C" void init__19MagLifePCModeReloadR9MagLifePC(MagLifePCModeReload *arg0, MagLifePC *arg1)
 {
