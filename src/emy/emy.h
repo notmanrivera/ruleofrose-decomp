@@ -67,7 +67,7 @@ struct EmyMain {
     int m_curState;                     // +0x3C
     int m_stateChanged;                 // +0x40
     EmyOut *m_curOut;                   // +0x44
-    unsigned char m_unk48[0xA0];        // +0x48..+0xE7
+    EmyOut *m_unk48[0x28];              // +0x48..+0xE7
     int m_unkE8;                        // +0xE8
     unsigned char m_padEC[0x3C];        // +0xEC..+0x127
     unsigned char m_stateFlags[0x28];   // +0x128..+0x14F

@@ -26,7 +26,7 @@ extern int vtbl_EmyManager asm("_vt$10EmyManager");
 
 extern "C" void *X_memset(void *, int, int) asm("memset");
 extern "C" void X_memset_v(void *, int, int) asm("memset");
-extern "C" void X___builtin_delete(void *) asm("__builtin_delete");
+extern "C" void __builtin_delete(void *) ASM_NOTHROW;
 extern "C" void X_func_0014582C(EmyMain *, int) asm("func_0014582C");
 extern "C" int X_func_00154734(EmyMain *) asm("func_00154734");
 extern "C" void X_func_00154748(EmyMain *) asm("func_00154748");
@@ -44,8 +44,19 @@ extern "C" void X_func_00166518(EmyMain *) asm("func_00166518");
 extern "C" int X_func_001665B8(EmyMain *, int) asm("func_001665B8");
 extern "C" int X_func_00166A0C(EmyMain *) asm("func_00166A0C");
 extern "C" int X_func_0016968C(void *, int) asm("func_0016968C");
-extern "C" void X_func_001DA740(void *, int, int) asm("func_001DA740");
+extern "C" void func_0016957C(void *, int);
+extern "C" int func_001CBE38(void *, unsigned int);
+extern "C" void attachActor__9MagSystemiii(void *, int, int, int);
+extern "C" void func_001CCC30(void *, unsigned int);
+extern "C" void func_001DA228(void *, int, void *);
+extern "C" void func_001DA740(void *, int, void *);
+extern "C" void func_001E7724(void *, int);
+extern "C" int func_001E7D7C(void *, int);
 extern "C" void X_func_00202F10(void *) asm("func_00202F10");
+
+extern int D_006E9840;
+extern int D_007812C0;
+extern int D_007A3D80;
 
 extern "C" void func_00162698(EmyManager *self);
 extern "C" void func_00163570(EmyManager *self);
@@ -76,7 +87,7 @@ extern "C" void EmyManager_vfunc06(EmyManager *self, int flags)
     self->m_vtbl = &vtbl_EmyManager;
     func_00163570(self);
     if (flags & 1) {
-        return X___builtin_delete(self);
+        return __builtin_delete(self);
     }
 }
 
@@ -771,12 +782,43 @@ extern "C" void *func_00164118(EmyMain *self, int id, int arg2, void *objStat, i
     X_memset(&self->m_unk154, 0, 0x70);
     self->m_objStat = objStat;
     if (arg6 != 0) {
-        X_func_001DA740(objStat, 0x59, arg6);
+        func_001DA740(objStat, 0x59, (void *)arg6);
     }
     return X_memset(self->m_unk48, 0, sizeof(self->m_unk48));
 }
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", EmyMain__vfunc_01);
+extern "C" void EmyMain__vfunc_01(EmyMain *self, int flags)
+{
+    unsigned int sp0;
+    self->m_vtbl = &vtbl_EmyMain;
+    func_001DA228(self->m_objStat, 0x67, &sp0);
+    if (sp0 != 0) {
+        attachActor__9MagSystemiii(&D_006E9840, func_001CBE38(&D_007812C0, sp0), -1, 0);
+        func_001CCC30(&D_007812C0, sp0);
+        sp0 = 0;
+        func_001DA740(self->m_objStat, 0x67, &sp0);
+    }
+    if (self->m_brain != 0) {
+        func_0016957C(self->m_brain, 3);
+        self->m_brain = 0;
+    }
+    for (int i = 0; i < 0x28; i++) {
+        EmyOut *out = self->m_unk48[i];
+        if (out != 0) {
+            EmyVtblEntry *entry = (EmyVtblEntry *)out->m_vtbl + 1;
+            ((void (*)(char *, int))entry->m_fn)((char *)out + entry->m_delta, 3);
+        }
+    }
+    if (func_001E7D7C(&D_007A3D80, self->m_unk1F4) != 0) {
+        func_001E7724(&D_007A3D80, self->m_unk1F4);
+    }
+    if (func_001E7D7C(&D_007A3D80, self->m_unk1FC) != 0) {
+        func_001E7724(&D_007A3D80, self->m_unk1FC);
+    }
+    if (flags & 1) {
+        __builtin_delete(self);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00164364);
 
