@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "game/gamman.h"
+#include "game/gamtrg.h"
 struct GamSndMan;
 struct GamTaskMan;
 struct Tbl2_4370 {
@@ -18,6 +19,19 @@ struct Scene4370 {
 struct Sys4440 {
     unsigned char m_pad00[0xDC24];
     int m_unkDC24;
+};
+struct StatOut544C {
+    int m_unk00;
+    int m_unk04;
+    int m_unk08;
+    int m_unk0C;
+    unsigned int m_unk10;
+    int m_unk14;
+    int m_unk18;
+    int m_unk1C;
+};
+struct BufC0_544C {
+    char m_data[0xC0];
 };
 extern const Tbl2_4370 D_002FC130;
 extern Scene4370 D_006FBD80;
@@ -390,4 +404,50 @@ INCLUDE_ASM("asm/nonmatchings/unk/001D3B44", func_001D50A8);
 extern "C" void func_001D5444(void) {
 }
 
+// NON_MATCHING: 1/113 differ, 1 edits
+#ifdef NON_MATCHING
+extern const char D_002FC178[];
+extern const GamCb225D0 D_002FC1D8;
+extern "C" ObjStat *func_001D2B8C(GamMan *, unsigned int);
+extern "C" int func_001F5558(unsigned int, float *, const char *);
+extern "C" void func_001D890C(ObjStat *, float *);
+extern "C" int func_001D7C20(GamMan *, int *, unsigned int, StatOut544C *, void *);
+extern "C" int func_001E7D7C(GamTaskMan *, int);
+extern "C" void func_001EF184(void *, unsigned int, StatOut544C *, int, int, int, int);
+extern "C" int func_001E71FC(GamTaskMan *, int, int, int, int, void *, int, int *, int);
+extern "C" int func_001D544C(GamMan *arg0, unsigned int arg1, StatOut544C *arg2, int arg3)
+{
+    ObjStat *obj = func_001D2B8C(arg0, arg1);
+    int *secta = obj->m_secta;
+    if (obj->m_flg & 0x80) {
+        return 0;
+    }
+
+    float *pos = arg0->m_unk225B0;
+    if (func_001F5558(arg1, pos, D_002FC178) == 0) {
+        func_001D890C(obj, pos);
+    }
+    arg0->m_unk225A0 = func_001D4A3C(arg0, arg1, 0);
+    arg0->m_unk225D0 = D_002FC1D8;
+
+    int ret = func_001D7C20(arg0, secta, arg1, arg2, 0);
+    if (ret != 0 && arg2 != 0) {
+        unsigned int oid = arg2->m_unk10;
+        if (arg3 == 0) {
+            if (((oid >> 23) & 0x1F) == 2) {
+                ACHRstat *chr = (ACHRstat *)func_001D2B8C(arg0, oid);
+                arg2->m_unk10 = arg1;
+                int *slot = &chr->m_unk3E8;
+                if (func_001E7D7C(&D_007A3D80, *slot) == 0) {
+                    void *buf = (void *)new BufC0_544C;
+                    func_001EF184(buf, oid, arg2, 8, 0x1E, 0, 0);
+                    func_001E71FC(&D_007A3D80, 1, -1, 1, 0, buf, 0, slot, 0x11);
+                }
+            }
+        }
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001D3B44", func_001D544C);
+#endif

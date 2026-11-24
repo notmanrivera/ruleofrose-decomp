@@ -92,6 +92,12 @@ struct GamElem22540 {
     char m_unk04[28];
 } __attribute__((aligned(8)));
 
+// m_unk225D0's 8-byte callback/entry (ldl/ldr aligned to 4).
+struct GamCb225D0 {
+    int m_w0;
+    int m_w1;
+};
+
 // Still asm (game/gamtrg.cpp); what it returns is not known.
 extern "C" int func_001D966C(int);
 
@@ -236,7 +242,11 @@ public:
     int m_unk22530;                                 // +0x22530
     unsigned char m_pad22534[0xC];
     GamElem22540 m_unk22540[3];                     // +0x22540: func_001C6470 copies one in from D_006FBD80+0x2AAE0; m_val -1.0f means unused
-    unsigned char m_pad225A0[0x38];
+    float m_unk225A0;                               // +0x225A0
+    unsigned char m_pad225A4[0xC];
+    float m_unk225B0[4];                            // +0x225B0
+    unsigned char m_pad225C0[0x10];
+    GamCb225D0 m_unk225D0;                          // +0x225D0
     int m_msgMode;                                  // +0x225D8: chgMsgMode (MSG_MODE)
     unsigned int m_realMemSize;                     // +0x225DC: get_real_mem_size, reveal_mem_size
     unsigned char m_pad225E0[0x4];
