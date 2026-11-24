@@ -118,6 +118,11 @@ struct EmyOut {
 };
 STATIC_ASSERT(sizeof(EmyOut) == 0x38, EmyOut_size);
 
+struct EmyOut3C : public EmyOut {
+    int m_unk38;                        // +0x38
+    int m_unk3C;                        // +0x3C
+};
+
 // Per-group scheduling entry in EmyManager (+0x148, 8 entries, stride 0x3C).
 struct EmyGroup {
     int m_unk00;                        // +0x00 (+0x148 for group 0)

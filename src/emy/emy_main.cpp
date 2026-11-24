@@ -277,7 +277,63 @@ extern "C" int func_001637A4()
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001637CC);
+extern "C" int func_001637CC(EmyManager *self, int arg1)
+{
+    for (int i = 0; i < 0x40; i++) {
+        EmyMain *p = self->m_emy[i];
+        if (p != 0) {
+            EmyVtblEntry *entry = (EmyVtblEntry *)p->m_vtbl + 3;
+            int r = ((int (*)(char *))entry->m_fn)((char *)p + entry->m_delta);
+            switch (r) {
+            case 0:
+                if (p->m_curState == 0xB) {
+                    if (((EmyOut3C *)p->m_curOut)->m_unk3C == arg1) {
+                        return 1;
+                    }
+                } else if (p->m_curState == 0xC) {
+                    if (((EmyOut3C *)p->m_curOut)->m_unk38 == arg1) {
+                        return 1;
+                    }
+                }
+                break;
+            case 1:
+                if (p->m_curState == 0xB) {
+                    if (((EmyOut3C *)p->m_curOut)->m_unk3C == arg1) {
+                        return 1;
+                    }
+                } else if (p->m_curState == 0xC) {
+                    if (((EmyOut3C *)p->m_curOut)->m_unk38 == arg1) {
+                        return 1;
+                    }
+                }
+                break;
+            case 2:
+                if (p->m_curState == 0xB) {
+                    if (((EmyOut3C *)p->m_curOut)->m_unk3C == arg1) {
+                        return 1;
+                    }
+                } else if (p->m_curState == 0xC) {
+                    if (((EmyOut3C *)p->m_curOut)->m_unk38 == arg1) {
+                        return 1;
+                    }
+                }
+                break;
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            default:
+                break;
+            }
+        }
+    }
+    return 0;
+}
 
 extern float D_002F1360[];
 
