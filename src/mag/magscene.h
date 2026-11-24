@@ -36,14 +36,16 @@ int txtParse(TxtToken *theToken, int theMax, char *theText);
 struct MagUnk437E0Sub {
     int m_unk00;                    // +0x00
     int m_unk04;                    // +0x04
-    short m_unk08;                  // +0x08
-    short m_unk0A;                  // +0x0A
+    int m_unk08;                    // +0x08
     short m_unk0C;                  // +0x0C
     short m_unk0E;                  // +0x0E
 }; // size 0x10
 
 struct MagUnk437E0 {
-    float m_unk00;                  // +0x00
+    union {
+        float m_unk00;              // +0x00
+        int m_unk00_i;
+    };
     int m_unk04;                    // +0x04
     int m_unk08;                    // +0x08
     int m_unk0C;                    // +0x0C
