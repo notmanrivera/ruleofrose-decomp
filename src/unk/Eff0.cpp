@@ -2,6 +2,26 @@
 #include "unk/Eff0.h"
 #include "dog/doglightpool.h"
 #include "sdk/string.h"
+struct EffBloodSpray1Particle {
+    EffVec3 m_pos;                      // +0x00
+    float m_unk0C;                      // +0x0C
+    EffVec3 m_vel;                      // +0x10
+    float m_unk1C;                      // +0x1C
+    short m_alpha;                      // +0x20
+    short m_fade;                       // +0x22
+    unsigned short m_fadeAcc;           // +0x24
+    unsigned short m_pad26;             // +0x26
+    float m_speed;                      // +0x28
+    float m_grav;                       // +0x2C
+    float m_rot;                        // +0x30
+    float m_drot;                       // +0x34
+    unsigned char m_pad38[0x08];        // +0x38
+}; // size 0x40
+struct EffBloodSpray1 : public Eff0 {
+    int m_timer24;                      // +0x24
+    unsigned char m_pad28[0x18];        // +0x28
+    EffBloodSpray1Particle m_particles[9]; // +0x40
+};
 struct EffBreath1 : public Eff0 {
     unsigned char m_pad24[0x4C];        // +0x24
     int m_unk70;                        // +0x70
@@ -682,7 +702,41 @@ extern "C" int EffBloodSpray1__vfunc_02(int obj,int param)
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodSpray1__vfunc_02);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodSpray1__vfunc_05);
+extern "C" int EffBloodSpray1__vfunc_05(EffBloodSpray1 *arg0)
+{
+    int i;
+    EffBloodSpray1Particle *p;
+
+    arg0->m_timer24++;
+    if (arg0->m_timer24 >= 9) {
+        p = arg0->m_particles;
+        for (i = 0; i < 9; i++, p++) {
+            if (p->m_alpha >= 0x100) {
+                if (p->m_alpha < p->m_fade) {
+                    p->m_alpha = 0;
+                } else {
+                    p->m_alpha = (unsigned short)p->m_alpha - (unsigned short)p->m_fade;
+                    p->m_fade = (unsigned short)p->m_fade + p->m_fadeAcc;
+                }
+            }
+        }
+    }
+    p = arg0->m_particles;
+    for (i = 0; i < 9; i++, p++) {
+        if (p->m_alpha >= 0x100) {
+            p->m_pos.x += p->m_vel.x * p->m_speed;
+            p->m_pos.y += p->m_vel.y * p->m_speed;
+            p->m_pos.z += p->m_vel.z * p->m_speed;
+            p->m_vel.y += p->m_grav;
+            p->m_speed *= 0.975f;
+            p->m_rot += p->m_drot;
+        }
+    }
+    if (arg0->m_particles[0].m_alpha < 0x100) {
+        return 0;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodSpray1__vfunc_08);
 
