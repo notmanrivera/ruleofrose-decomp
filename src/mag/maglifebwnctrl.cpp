@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
 #include "utl/utlfind.h"
+extern "C" int func_0012B19C(MagLifeBwnCtrl *);
+extern "C" int func_0010423C(int, int);
 extern "C" int func_0012AB20(MagLifeBwnCtrl *) ASM_NOTHROW;
 extern "C" int func_0012ADEC(MagLifeBwnCtrl *) ASM_NOTHROW;
 extern "C" int func_0012AF70(MagLifeBwnCtrl *) ASM_NOTHROW;
@@ -724,7 +726,31 @@ extern "C" int func_0012B3D0(MagLifeBwnCtrl *arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012B4A0);
+extern "C" void func_0012B4A0(MagLifeBwnCtrl *arg0)
+{
+    MagLifeBwn *bwn = arg0->m_bwn;
+    if (bwn != 0 && bwn->m_unkCB8 < 4) {
+        bwn->func_0011A704(0xB);
+        arg0->m_unk78 = 0;
+        if (func_0012B300(arg0) != 0) {
+            func_0012A56C(arg0, 2, 0, 1);
+            return;
+        }
+        if (func_0012B19C(arg0) != 0) {
+            func_0012A56C(arg0, 8, 0, 0);
+            return;
+        }
+        if (func_0012B3D0(arg0) != 0) {
+            arg0->m_bwn->message(1, 0x44, (void *)1);
+            return;
+        }
+        MagLifeBwn *bwn2 = arg0->m_bwn;
+        bwn2->m_unk04 = -1;
+        bwn2->m_unk00 = -1;
+        const int tbl[6] = { 3, 4, 5, 6, 0x27, 0x12 };
+        arg0->m_bwn->message(1, tbl[func_0010423C(0, 5)], (void *)1);
+    }
+}
 
 extern "C" void func_0012B5F8(MagLifeBwnCtrl *arg0)
 {
@@ -772,8 +798,6 @@ extern "C" void func_0012B788(MagLifeBwnCtrl *arg0, int arg1)
         arg0->m_unk124 = arg1;
     }
 }
-
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnctrl", D_002EC448);
 
 extern "C" void func_0012B7CC(MagLifeBwnCtrl *arg0, int theLevel)
 {
