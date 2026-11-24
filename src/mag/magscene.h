@@ -54,9 +54,9 @@ struct MagUnk437E0 {
         float m_unk00;              // +0x00
         int m_unk00_i;
     };
-    int m_unk04;                    // +0x04
-    int m_unk08;                    // +0x08
-    int m_unk0C;                    // +0x0C
+    float m_unk04;                  // +0x04
+    float m_unk08;                  // +0x08
+    float m_unk0C;                  // +0x0C
     MagUnk437E0Sub m_sub;           // +0x10..+0x1F
 } ALIGNED(8); // size 0x20
 
