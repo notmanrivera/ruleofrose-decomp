@@ -2,6 +2,18 @@
 #include "unk/Eff0.h"
 #include "dog/doglightpool.h"
 #include "sdk/string.h"
+struct EffBreath1 : public Eff0 {
+    unsigned char m_pad24[0x4C];        // +0x24
+    int m_unk70;                        // +0x70
+    unsigned char m_pad74[0x110];       // +0x74
+    float m_unk184;                     // +0x184
+    float m_unk188;                     // +0x188
+    float m_unk18C;                     // +0x18C
+    float m_unk190;                     // +0x190
+};
+struct Obj_E65C;
+extern "C" int func_0016E65C(Obj_E65C *);
+extern "C" void func_0016E438(char *);
 struct EffBreath1SpaceArg : public Eff0Arg {
     float m_p0[3];                      // +0x10
     float m_p1[3];                      // +0x1C
@@ -1407,7 +1419,37 @@ extern "C" void EffBloodStay3Prim__vfunc_08(int obj, int render, int state, int 
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBreath1__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBreath1__vfunc_05);
+extern "C" int EffBreath1__vfunc_05(EffBreath1 *arg0)
+{
+    func_0016E438((char *)arg0);
+    int t = (arg0->m_unk70 + 1) % 70;
+    arg0->m_unk70 = t;
+    if (t == 0) {
+        if (func_0016E65C((Obj_E65C *)arg0) != 0) {
+            arg0->m_unk188 = 0.06f;
+            arg0->m_unk18C = 8.0f;
+            arg0->m_unk184 = 0.0f;
+            arg0->m_unk190 = 0.0f;
+        } else {
+            arg0->m_unk70 = 0x37;
+            arg0->m_unk188 = 0.0f;
+            arg0->m_unk18C = 0.0f;
+            arg0->m_unk190 = 0.0f;
+            arg0->m_unk184 = 0.0f;
+        }
+    } else {
+        float f = arg0->m_unk184 + arg0->m_unk188;
+        arg0->m_unk184 = f;
+        if (f >= 1.0f) {
+            arg0->m_unk184 = 1.0f;
+            arg0->m_unk188 = -0.015f;
+        }
+        float g = arg0->m_unk190 + 0.015f;
+        arg0->m_unk190 = g;
+        arg0->m_unk18C += g;
+    }
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBreath1__vfunc_08);
 
