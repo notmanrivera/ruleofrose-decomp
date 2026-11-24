@@ -1,7 +1,15 @@
 #include "include_asm.h"
+#include "ror.h"
 #include "sdk/string.h"
+#include "dog/dogtexinfo.h"
 extern "C" int strncmp(const char *, const char *, size_t);
 extern "C" void func_00237830(void *, void *, float);
+struct MagSceneFocusTexName {
+    unsigned short m_data[0x0F];
+};
+extern const MagSceneFocusTexName D_002EEB10;
+extern const char D_002EEB40[];
+extern const char D_002EEB58[];
 struct MagSceneFocusGif {
     unsigned long long m_tag0;
     unsigned long long m_tag1;
@@ -27,7 +35,8 @@ struct MagSceneFocusLerp {
     int m_unk0C;
 };
 struct MagSceneFocus {
-    unsigned char m_pad00[0x29540];
+    unsigned char m_pad00[0x29520];
+    DogTexInfo m_tex_info;
     MagSceneFocusObj m_unk29540[4];
     unsigned char m_pad2A9C0[0x853BC - 0x2A9C0];
     int m_unk853BC;
@@ -99,7 +108,28 @@ extern "C" void func_00140A84(int arg0)
 
 INCLUDE_RODATA("asm/nonmatchings/mag/magscenefocus", D_002EEB10);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140B20);
+extern "C" void func_00140B20(MagSceneFocus *arg0, int arg1) {
+    int tex = arg0->m_unk853C0;
+    if (arg1 == 0) {
+        if (tex != -1) {
+            arg0->m_tex_info.releaseTex(tex);
+            arg0->m_unk853C0 = -1;
+        }
+        arg0->m_unk853BC = 0;
+        arg0->m_unk853D4 = 0;
+        arg0->m_unk853DC = 0;
+        return;
+    }
+    if (tex == -1) {
+        MagSceneFocusTexName buf = D_002EEB10;
+        int idx = arg0->m_tex_info.func_00116B5C(&buf, "efffocus");
+        arg0->m_unk853C0 = idx;
+        if (idx == tex) {
+            ror_assert(D_002EEB40, 0x89, D_002EEB58);
+        }
+    }
+    arg0->m_unk853BC = arg1;
+}
 
 extern "C" void func_00140C68(int arg0)
 {
