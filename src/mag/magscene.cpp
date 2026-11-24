@@ -3,6 +3,8 @@
 #include "mag/magscene.h"
 #include "mag/maglifewindow.h"
 #include "dog/dogtexinfo.h"
+class MagScene;
+extern "C" void func_001311F4(MagScene *, int *);
 struct MagLifeBase {
     unsigned char m_unk00[0x14];
     void *m_vtbl;
@@ -72,7 +74,15 @@ MagLifeTest::MagLifeTest()
     m_unk84 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131184);
+extern "C" void func_00131184(MagScene *arg0, int arg1, int arg2, int arg3)
+{
+    int arr[8];
+    arr[0] = arg3 ? 4 : 0;
+    arr[1] = 2;
+    arr[2] = arg1;
+    arr[5] = arg2;
+    func_001311F4(arg0, arr);
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001311BC);
 
