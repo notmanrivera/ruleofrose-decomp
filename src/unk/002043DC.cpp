@@ -1,4 +1,8 @@
 #include "include_asm.h"
+#include "sdk/eekernel.h"
+#include "sdk/libgraph.h"
+extern "C" int rxGsVSync(int);
+extern "C" int sceGsPutDrawEnv(sceGifTag *);
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_atoi(...) asm("atoi");
 extern "C" int X_func_0017F164(...) asm("func_0017F164");
@@ -41,7 +45,19 @@ extern "C" void func_0020483C()
 
 INCLUDE_ASM("asm/nonmatchings/unk/002043DC", func_00204864);
 
-INCLUDE_ASM("asm/nonmatchings/unk/002043DC", func_0020491C);
+extern "C" void func_0020491C()
+{
+    sceGsDBuff db;
+
+    sceGsResetGraph(0, 1, 2, 1);
+    sceGsSetDefDBuff(&db, 0, 0x280, 0xE0, 2, 0x31, 1);
+    FlushCache(0);
+    rxGsVSync(0);
+    sceGsPutDrawEnv(&db.giftag0);
+    sceGsSyncPath(0, 0);
+    sceGsPutDrawEnv(&db.giftag1);
+    sceGsSyncPath(0, 0);
+}
 
 extern "C" void func_0020499C()
 {
