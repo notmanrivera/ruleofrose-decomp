@@ -266,15 +266,43 @@ extern "C" void MagLifePCModeTurn__vfunc_01(MagLifePCModeTurn *arg0, MagLifePC *
     arg0->m_unk04 = X_func_0011B128(arg1);
 }
 
-extern "C" void func_00121348()
+extern "C" void func_00121348(MagLifePCModeTurn *arg0, MagLifePC *arg1, const BedPad *arg2)
 {
-    X_func_001207A8();
+    X_func_001207A8(arg0, arg1, arg2);
 }
 
 extern "C" void MagLifePCModeTurn__vfunc_02(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", MagLifePCModeTurn__vfunc_03);
+extern "C" int MagLifePCModeTurn__vfunc_03(MagLifePCModeTurn *arg0, MagLifePC *arg1, const BedPad *arg2)
+{
+    float diff = X_func_0011B128(arg1) - arg0->m_unk04;
+    if (diff < -DOG_PI) {
+        diff += DOG_PI2;
+    } else if (diff >= DOG_PI) {
+        diff -= DOG_PI2;
+    }
+    float limit = DOG_PI * 0.1f;
+    int ok = 0;
+    if (-limit <= diff && diff < limit) {
+        ok = 1;
+    }
+    if (Xii_func_0011A054(arg1) != 0 || !ok) {
+        int e0 = arg1->m_unkE0;
+        if (e0 == 1) {
+            Xiiiui_func_0011C1E8(arg1, 2, 0U, 0);
+            return 2;
+        }
+        if (e0 == 2) {
+            Xiiiui_func_0011C1E8(arg1, 3, 0U, 0);
+            return 2;
+        }
+        Xiiiui_func_0011C1E8(arg1, 1, 0U, 0);
+        return 0;
+    }
+    func_00121348(arg0, arg1, arg2);
+    return 1;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcmode", D_002EAD60);
 
