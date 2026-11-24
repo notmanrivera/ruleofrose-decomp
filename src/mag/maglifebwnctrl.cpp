@@ -648,7 +648,21 @@ extern "C" int func_0012B300(MagLifeBwnCtrl *arg0)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012B3D0);
+extern "C" int func_0012B3D0(MagLifeBwnCtrl *arg0)
+{
+    DogVector v0;
+    arg0->m_unk74->func_00119F88(&v0);
+    DogVector v1;
+    arg0->m_bwn->func_00119F88(&v1);
+    float dy = v1.m_y - v0.m_y;
+    if (dy < -100.0f || dy > 100.0f) {
+        return 1;
+    }
+    if (vecDist(&v1.m_x, &v0.m_x) < 95.0f) {
+        return 1;
+    }
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012B4A0);
 
