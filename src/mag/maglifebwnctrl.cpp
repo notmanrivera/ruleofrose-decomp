@@ -16,7 +16,9 @@ struct BwnTarget {
     DogVector m_unk10;
     int m_id;
     int m_unk24;
-    int m_unk28[6];
+    int m_unk28[2];
+    float m_unk30;
+    int m_unk34[3];
 };
 struct BwnTargetList {
     BwnTarget m_item[32];
@@ -425,7 +427,57 @@ extern "C" void MagLifeBwnCtrlModeBark__vfunc_01(MagLifeBwnCtrlModeBark *arg0, M
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_00128E6C);
+extern "C" int func_00128E6C(int arg0, MagLifeBwnCtrl *arg1, BwnTargetList *arg2, int arg3)
+{
+    register int ret PS2_REG("$2") = 0;
+    MagLifeControlChara *ch = arg1->m_unk74;
+    DogVector pos;
+    if (ch != 0) {
+        MagLifeBwn *bwn = arg1->m_bwn;
+        if (bwn != 0) {
+            switch (arg3) {
+            case 0:
+                ch = bwn;
+            case 1:
+                ch->func_00119F88(&pos);
+                break;
+            case 2:
+                {
+                    ch->func_00119F88(&pos);
+                    float rot = arg1->m_unk74->func_00119FB0();
+                    DogVector ofs(0.0f, 0.0f, 500.0f, 1.0f);
+                    DogVector *pOfs = &ofs;
+                    vecTurnY(&pOfs->m_x, rot);
+                    pos.m_x += pOfs->m_x;
+                    pos.m_y += pOfs->m_y;
+                    pos.m_z += pOfs->m_z;
+                    pos.m_w = 1.0f;
+                }
+                break;
+            default:
+                ror_assert(D_002EBE28, 0x851, D_002EBE40);
+                break;
+            }
+            int n = func_0010376C(arg2, &pos, 0.0f, 0, 1, 500.0f);
+            ret = -1;
+            if (n > 0) {
+                ret = 0;
+                if (n != 1) {
+                    int best = -1;
+                    float minDist = 100000.0f;
+                    for (int i = 0; i < n; i++) {
+                        if (arg2->m_item[i].m_unk30 < minDist) {
+                            minDist = arg2->m_item[i].m_unk30;
+                            best = i;
+                        }
+                    }
+                    ret = best;
+                }
+            }
+        }
+    }
+    return ret;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnctrl", D_002EC108);
 
