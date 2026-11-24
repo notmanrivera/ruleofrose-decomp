@@ -19,11 +19,12 @@ class TskSnd : public CmnITask {
 public:
     char m_name04[0x20];                // +0x04..+0x23
     int (TskSnd::*m_func)();            // +0x24 (8 bytes)
-    unsigned char m_pad2C[0x08];        // +0x2C..+0x33
+    int (TskSnd::*m_func2C)(int, int);  // +0x2C (8 bytes)
     int m_mode;                         // +0x34
     int m_maxCnt;                       // +0x38
     int m_cnt;                          // +0x3C
-    unsigned char m_pad40[0x40];        // +0x40..+0x7F
+    int m_unk40;                        // +0x40
+    unsigned char m_pad44[0x3C];        // +0x44..+0x7F
     int m_unk80;                        // +0x80
     int m_val84;                        // +0x84
     int m_val88;                        // +0x88
@@ -31,7 +32,9 @@ public:
     int m_unk90;                        // +0x90
     int m_unk94;                        // +0x94
     float m_unk98;                      // +0x98
-    unsigned char m_pad9C[0x0C];        // +0x9C..+0xA7
+    int m_unk9C;                        // +0x9C
+    int m_unkA0;                        // +0xA0
+    int m_unkA4;                        // +0xA4
     int m_unkA8;                        // +0xA8
     int m_unkAC;                        // +0xAC
     int m_unkB0;                        // +0xB0
@@ -99,7 +102,23 @@ extern "C" float func_001F9294(TskSnd *self)
     return var_f0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskSnd", func_001F92C8);
+extern "C" int func_001F92C8(TskSnd *self)
+{
+    switch (self->m_unk40) {
+    case 0x64: {
+        float t = func_001F9294(self);
+        float inv = 1.0f - t;
+        self->m_cnt++;
+        int v1 = (int)((float)self->m_val84 * t + (float)self->m_unkA0 * inv);
+        int v2 = (int)((float)self->m_val88 * t + (float)self->m_unkA4 * inv);
+        return (self->*(self->m_func2C))(v1, v2);
+    }
+    case 0x65:
+        return 1;
+    default:
+        return 0;
+    }
+}
 
 extern "C" int func_001F93D8(TskSnd *self, int arg1, int arg2)
 {
