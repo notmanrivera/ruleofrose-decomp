@@ -2,6 +2,9 @@
 #include "emy/emy.h"
 #include "dog/dogactor.h"
 #include "sdk/string.h"
+#include "game/gamman.h"
+#include "game/gamtrg.h"
+extern "C" int func_00169BAC(int, int, void *, float, float);
 extern "C" void func_001664A4(EmyMain *, int);
 extern "C" void func_001DA130(void *, int, int);
 extern "C" int func_00104394(int, int, int);
@@ -32,7 +35,6 @@ struct EmyEntry24 {
 
 extern EmyEntry24 D_002F18B8[];
 extern int D_006E9840;
-extern int D_007812C0;
 extern int D_007A3350;
 extern int vtbl_EmyOut asm("_vt$6EmyOut");
 
@@ -222,7 +224,13 @@ extern "C" void func_00166004(EmyMain *self)
     X_func_00169A98(&stack, &stack.sp10, 60.0f);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166048);
+extern "C" int func_00166048(EmyMain *self)
+{
+    int pcOid = D_007812C0.m_pc ? D_007812C0.m_pc->m_oid : 0;
+    int r1 = func_00169BAC(0, pcOid, self->m_objStat, 60.0f, 6.2831853f);
+    int r2 = func_00169BAC(0, D_007812C0.m_dog->m_oid, self->m_objStat, 60.0f, 6.2831853f);
+    return (r1 != 0) | (r2 != 0);
+}
 
 extern "C" int func_00166108(EmyMain *self)
 {
