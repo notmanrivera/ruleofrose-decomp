@@ -1,6 +1,14 @@
 #include "ror.h"
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
+extern "C" void func_001249B4(MagLifeBwn *);
+extern "C" int func_001233F4(MagLifeBwn *, int, int, int);
+extern "C" void func_00125368(MagLifeBwn *);
+extern int D_002EBB40[];
+struct MagLifeBwnModeV {
+    virtual void vfunc01();
+    virtual void vfunc02(MagLifeBwn *);
+};
 extern "C" void func_0012481C(MagLifeBwn *, int, float);
 extern "C" int func_00103F38();
 extern "C" int func_00103F08();
@@ -16,7 +24,7 @@ extern const char D_002EB870[];
 extern "C" int Xi_func_00103F08() asm("func_00103F08");
 extern "C" int Xi_func_00103F38() asm("func_00103F38");
 typedef MagLifeBwn MagBwn;
-extern "C" void func_00125704(MagBwn *self, int theA);
+extern "C" int func_00125704(MagBwn *self, int theA);
 extern "C" void func_00125A90(MagBwn *self);
 extern "C" void func_0011A14C(MagBwn *self);
 extern "C" void func_0012498C(MagBwn *self);
@@ -437,7 +445,36 @@ extern "C" void func_00124E18(MagBwn *self)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", live__10MagLifeBwn);
+extern "C" void live__10MagLifeBwn(MagLifeBwn *arg0)
+{
+    if (arg0->m_actor == 0) {
+        return;
+    }
+    if (arg0->m_unkCE4 != 0) {
+        func_001249B4(arg0);
+        return;
+    }
+    arg0->m_unkCBC = arg0->m_unkCB8;
+    arg0->m_unk04++;
+    arg0->m_unkCB8 = func_001252C4(arg0);
+    arg0->func_0011A738(D_002EBB40);
+    func_001249B4(arg0);
+    if (arg0->m_unkCEC == 0) {
+        func_001233F4(arg0, 2, 0, 0);
+    }
+    if (func_00125704(arg0, 1) == 0) {
+        if (arg0->m_unkCEC != 0) {
+            ((MagLifeBwnModeV *)arg0->m_unkCEC)->vfunc02(arg0);
+        }
+        if (arg0->m_unkCC4 > 0) {
+            arg0->m_unkCAC = 0;
+        } else {
+            arg0->m_unkCC4 = 1;
+            arg0->m_unkCAC++;
+        }
+    }
+    func_00125368(arg0);
+}
 
 extern "C" void reset4MapJump__10MagLifeBwn(MagLifeBwn *arg0)
 {

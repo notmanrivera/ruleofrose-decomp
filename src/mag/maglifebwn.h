@@ -80,7 +80,7 @@ public:
     float m_unkCE0;                     // +0xCE0
     int m_unkCE4;                       // +0xCE4 (render pause flag)
     int m_unkCE8;                       // +0xCE8 (saved motion no)
-    int m_unkCEC;                       // +0xCEC
+    MagLifeBwnMode *m_unkCEC;           // +0xCEC
     MagLifeBwnModeNull m_modeNull;      // +0xCF0
     MagLifeBwnModeOne m_modeOne;        // +0xCF4
     MagLifeBwnModeWait m_modeWait;      // +0xCF8
