@@ -450,7 +450,17 @@ extern "C" void func_0012A7CC(MagLifeBwnCtrl *arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A808);
+extern "C" void func_0012A808(MagLifeBwnCtrl *arg0, MagBwnVec4 *arg1)
+{
+    if (arg0->m_bwn != 0) {
+        if (arg0->m_bwn->getActor() != 0) {
+            DogActor *actor = arg0->m_bwn->getActor();
+            *(u_long128 *)&actor->m_unk40 = *(u_long128 *)arg1;
+            actor->m_unk90 = 1;
+            Xiiiii_func_0012A56C(arg0, 0, 0, 0);
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A89C);
 
