@@ -1,6 +1,6 @@
 # Próxima sesión del coordinador
 
-Reescrito el 2026-11-23 (tarde), a 40.33 %. Las versiones anteriores
+Reescrito el 2026-11-23 (tarde), a 40.33 %; puesto al día esa noche. Las versiones anteriores
 (12 al 15 de noviembre) están en el historial de git; lo que seguía vigente
 de ellas está aquí. Léelo después de `CLAUDE.md`, `notes/PROJECT_STATE.md`
 (sobre todo el último «Estado») y `docs/DECOMPILING.md`.
@@ -9,40 +9,49 @@ de ellas está aquí. Léelo después de `CLAUDE.md`, `notes/PROJECT_STATE.md`
 
 - Docker, `tools/match.py --server start`, la pestaña «Progreso workers» de
   Orca (`tools/orca/bars.py --watch 20`).
-- Smoke: `tools/cpp_perm_queue.py --minutes 10 --max-off 40 --skip
-  build/workers/codex-owns.txt --avoid unk/001B64C4,unk/00166AD0` (salta lo
-  ya probado; solo toma intentos de tamaño exacto y referencias correctas;
-  no integra un MATCH que empeore `tools/rules_check.py`: queda en su log
-  para pasarlo a tipos).
-- Workers: Codex (5 h por ventana, briefs `codex-brief-close*`), OpenCode
-  (brief `opencode-brief-order5.txt`), Hydrogen en pausa (lo dosifica el
-  dueño). Neon/Argon (Antigravity) vuelven el 29–30 nov: **G8–G14** son
-  suyas (`build/workers/fable-tasks.tsv`); no tomarlas antes.
+- Smoke: `tools/cpp_perm_queue.py --max-off 40 --skip
+  build/workers/codex-owns.txt --avoid spr/sprtexture,msg/msgman,unk/001B64C4`
+  (desde R28: 3 min por función, solo los tipos de casi que cierra, pesos de
+  pases y puntuación nuevos; no integra un MATCH que empeore
+  `tools/rules_check.py`). `codex-owns.txt` se vació el 23 nov (la lista
+  vieja está en `codex-owns.old-close.txt`).
+- Workers: Codex hace **G13 y G14** desde el 23 nov (con permiso del dueño;
+  brief `codex-brief-g13g14.txt`); OpenCode (brief `opencode-brief-order5.txt`),
+  Hydrogen en pausa (lo dosifica el dueño). Neon/Argon (Antigravity) vuelven
+  el 29–30 nov: **G8–G12** son suyas (`build/workers/fable-tasks.tsv`).
+- Herramientas nuevas del 23 nov: `tools/disc_scan.py` (busca donantes con
+  símbolos en una imagen de disco; `--deep` mira dentro de archivos
+  grandes) y `tools/retype.py` (cambia desplazamientos por miembros de la
+  cabecera y solo deja lo que sigue idéntico; pásala tras cada tarea G).
 - Todo cambio que integre o haga el coordinador debe pasar
   `tools/rules_check.py` (no subir la deuda de desplazamientos ni de alias).
 
 ## Trabajo para el coordinador, de más a menos útil
 
-1. **`mw/sound` con los nombres de PoPoLoCrois.** Dividirla en sus
-   archivos reales por prefijo (`rxSndSys`, `rxSndVoice`, `rxSndSe`,
-   `rxSndPcm`, `rxSndAdpcm`, `rxSndBgm`, `rxSys`, `rxFile`, `rxTh`, `rxGs`...)
-   en `config/splits_manual.tsv`, con la prueba en cada fila; luego empezar
-   a decompilarla (hoy 0 %). Para el port, su API es la frontera: se puede
-   reimplementar en nativo sin decompilar el driver IOP.
-2. **Tipos de PoPoLoCrois.** Leer su DWARF 1 (`zipzip11/ps2-dwarf1` o un
-   lector propio) para `rxmpeg.c` (nuestro `snd/rxmpeg`) y las cabeceras rx
-   que use su código. Solo derivar nombres/tipos; nada de su código.
-3. **Más donantes con símbolos.** Juegos con «RX Lib. Team» en sus créditos
-   (Boku to Maou, Phase Paradox, Wa ga Ryuu o Miyo...) podrían nombrar las
-   270 funciones de `mw/sound` que faltan; `tools/donor_symbols.py` acepta
-   más entradas en `DONORS`. Para el código propio del juego, la mejor pista
-   sigue siendo el **prototipo de localización del 19-jul-2006** (Hidden
-   Palace): Sly 1 sacó sus nombres de uno así. Solo desde discos propios.
-4. **Pagar deuda de legibilidad** donde más rinde: los archivos con más
-   desplazamientos en código exacto (`tools/rules_check.py --list`), sin
-   tocar los reservados para Neon/Argon. Tras bajar un archivo,
-   `tools/rules_check.py --update <archivo>`.
-5. **Intentos cercanos de `unk/MnuDiary`**: `vfunc_05` (Smoke llegó a
+1. **Decompilar la librería RX (`rx/`, 25 archivos, 0 %).** Ya tiene sus
+   límites y nombres originales (R24 + la versión de depuración de Arc the
+   Lad de 2002: `rxsnd.c`, `sndse.c`, `rxfile.c`...) y 580 funciones con
+   nombre. Primero averiguar sus opciones de compilador
+   (`tools/flag_sweep.py` en un archivo pequeño, como `rx/rxgsvs`): puede
+   no ser `-Os` como el juego. Para el port, su API es la frontera: se
+   puede reimplementar en nativo sin decompilar el driver IOP.
+2. **Tipos de la librería RX (R25).** Del `.mdebug` (stabs) de
+   `disc/arc_koga/DATAIMG_KOGA_MAIN.ELF`: structs y prototipos para las
+   cabeceras de `rx/`. Solo derivar nombres/tipos; nada de su código.
+3. **Donantes: búsqueda cerrada para la librería RX** (R26,
+   `notes/research/R26-rx-donors.md`): diez discos revisados; solo
+   PoPoLoCrois y el CD de 2002 escondido en Arc the Lad tienen símbolos.
+   Para el código propio del juego no hay donante. Si llega un disco nuevo:
+   `tools/disc_scan.py --deep <imagen>`.
+4. **Pagar deuda de legibilidad** (2,385 desplazamientos): casi todos están
+   en funciones con `int arg0` (borradores de m2c), así que antes hay que
+   saber la clase (trabajo de las G); `tools/retype.py` hace lo mecánico
+   después. Sin tocar los archivos reservados.
+5. **Smoke tras R28:** si sigue sin cerrar, `--resume` en los parciales
+   (MnuDiary vfunc_05, func_00198CA8, renderPreMain) y una herramienta
+   pequeña que pruebe pines `PS2_REG` y declaraciones de funciones
+   llamadas (`void`/`throw()`), que es lo que piden los casi atascados.
+6. **Intentos cercanos de `unk/MnuDiary`**: `vfunc_05` (Smoke llegó a
    puntuación 4, `build/cpp_perm/MnuDiary__vfunc_05/`), `func_0019AFB0`,
    `func_0019BD6C`, `func_0019B384` (tamaño exacto, registros). Quedan 18
    funciones en asm, varias grandes (`func_0019E474`, 5.7 KB).
