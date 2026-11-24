@@ -12,7 +12,14 @@ extern "C" void func_00125A90(MagBwn *self);
 extern "C" void func_0011A14C(MagBwn *self);
 extern "C" void func_0012498C(MagBwn *self);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", MagLifeBwn__vfunc_16);
+extern "C" void MagLifeBwn__vfunc_16(MagLifeBwn *arg0, int arg1, int arg2, int arg3)
+{
+    int *next = arg0->m_nextMode;
+    next[1] = -1;
+    next[0] = arg1;
+    arg0->m_nextMode[2] = arg2;
+    arg0->m_nextMode[3] = arg3;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EAFA0);
 
