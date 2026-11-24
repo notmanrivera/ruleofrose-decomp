@@ -201,7 +201,15 @@ extern "C" void func_0012E23C(MagMenuSp1 *self)
     self->m_mode = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifemenusp", MagLifeMenuSpecial__vfunc_01);
+extern "C" void MagLifeMenuSpecial__vfunc_01(MagMenuSp1 *self, int arg1)
+{
+    self->m_vtable = _vt$18MagLifeMenuSpecial;
+    MagLifeMenuSpecial__vfunc_10((MagMenuSp *)self);
+    self->m_vtable = _vt$8MagLife0;
+    if (arg1 & 1) {
+        return __builtin_delete(self);
+    }
+}
 
 extern "C" void MagLifeMenuSpecial2__vfunc_09(MagMenuSp2 *self)
 {
