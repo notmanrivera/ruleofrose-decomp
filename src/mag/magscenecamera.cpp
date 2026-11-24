@@ -1,6 +1,7 @@
 #include "include_asm.h"
 #include "mag/magscene.h"
 #include "sdk/math.h"
+extern const char D_002EE5D0[];
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 
@@ -67,4 +68,30 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscenecamera", func_0013D8F8);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenecamera", func_0013DFE0);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscenecamera", func_0013E190);
+extern "C" void func_0013E190(MagScene *self, const DogVector *thePos, int theI, int theMax, float theF)
+{
+    if (!thePos) {
+        ror_assert(D_002EE5D0, 0x398, "thePos");
+    }
+    if (!(theI >= 0 && theI < theMax)) {
+        ror_assert(D_002EE5D0, 0x399, "theI >= 0 && theI < theMax");
+    }
+    if (!(theF >= 0.0f && theF <= 1.0f)) {
+        ror_assert(D_002EE5D0, 0x39A, "theF >= 0.0f && theF <= 1.0f");
+    }
+    const DogVector *p1 = thePos + theI;
+    float z = p1->m_z;
+    float y = p1->m_y;
+    float x = p1->m_x;
+    const DogVector *p2 = thePos + (theI + 1) % theMax;
+    if (theF > 0.0f) {
+        x += (p2->m_x - x) * theF;
+        y += (p2->m_y - y) * theF;
+        z += (p2->m_z - z) * theF;
+    }
+    DogCamera *cam = self->getCamera();
+    cam->m_unk40.m_x = x;
+    cam->m_unk40.m_y = y;
+    cam->m_unk40.m_z = z;
+    cam->m_unk90 = 1;
+}
