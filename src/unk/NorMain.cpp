@@ -2,8 +2,11 @@
 #include "unk/NorMain.h"
 #include "game/gamman.h"
 #include "game/gamtrg.h"
+extern "C" void func_001D10D0(void *, int, int);
+extern "C" void func_001D1410(void *, int, int);
 extern "C" void func_001DA228(void *, int, void *);
 extern "C" int func_00169BAC(float, float, int, int, void *);
+extern "C" void func_001CB460(void *, int, unsigned short *);
 struct NorStateTable {
     unsigned char m_unk00;
     unsigned char m_count;
@@ -137,7 +140,30 @@ extern "C" int func_00151218()
     return X_func_00166108();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/NorMain", func_0015122C);
+extern "C" int func_0015122C(NorMain *self)
+{
+    unsigned short sp0;
+    int ret = 0;
+
+    func_001CB460(&D_007812C0, 0x1B, &sp0);
+    if (self->m_unk230 != 0) {
+        return 0;
+    }
+    register int max PS2_REG("$2") = self->m_unk234;
+    int half = max >> 1;
+    if ((int)sp0 < half || self->m_unk1E8 >= 0xE11 || self->m_unk23C >= 4) {
+        ((EmyObjStatView *)self->m_objStat)->m_flags |= 0x400;
+        self->m_unk1E4 = 6;
+        self->m_unk230 = 1;
+        ret = 1;
+    }
+    if (self->m_unk230 == 0) {
+        func_001D10D0(&D_007812C0, self->m_id, 0x800);
+    } else {
+        func_001D1410(&D_007812C0, self->m_id, 0x800);
+    }
+    return ret;
+}
 
 extern "C" int func_0015130C()
 {
@@ -206,7 +232,6 @@ extern "C" int func_00151448(NorMain *self)
 
 // NON_MATCHING: 30/43 differ, 1 reloc differs (size 0xAC, game 0xA8), 10 edits
 #ifdef NON_MATCHING
-extern "C" void func_001CB460(void *, int, unsigned short *);
 extern "C" int NorMain__vfunc_07(NorMain *self)
 {
     unsigned short sp0;
