@@ -1,4 +1,7 @@
 #include "include_asm.h"
+#include "game/gamman.h"
+extern "C" int func_001E5E58(void *, unsigned int, int, void *);
+static inline void *getGamSnd(GamMan *g) { return g->m_snd; }
 struct VoiceEntry {
     int m_id;
     int m_unk04;
@@ -48,7 +51,16 @@ extern "C" void func_001F723C(VoiceManager *self)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/VoiceManager", func_001F728C);
+extern "C" void func_001F728C(VoiceManager *self, int idx)
+{
+    if (idx < self->m_count) {
+        func_001E5E58(getGamSnd(&D_007812C0), self->m_entries[idx].m_id, 1, 0);
+        int last = --self->m_count;
+        if (last != idx) {
+            self->m_entries[idx] = self->m_entries[last];
+        }
+    }
+}
 
 extern "C" void func_001F7338(VoiceManager *self, int arg1, int arg2)
 {
