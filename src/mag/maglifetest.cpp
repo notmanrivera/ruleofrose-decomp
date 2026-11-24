@@ -6,6 +6,14 @@ class MagLifeTest : public MagLifeControlChara {
 public:
     int m_unk80;                    // +0x80
 };
+class MagLifeNoise : public MagLife {
+public:
+    int m_unk30;                    // +0x30
+    int m_unk34;                    // +0x34
+    MagLifeNoise() asm("func_00130DA4");
+    virtual ~MagLifeNoise() {}
+    virtual void render(tag_I3dRenderStage_s *theStage);
+};
 static inline unsigned int padTriggerU(const BedPad *p) { return p->m_trigger; }
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_func_00130A2C(...) asm("func_00130A2C");
@@ -17,7 +25,15 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifetest", func_00130A2C);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifetest", func_00130C34);
 
+// NON_MATCHING: 2/15 differ, 4 edits
+#ifdef NON_MATCHING
+MagLifeNoise::MagLifeNoise() : m_unk30(0)
+{
+    m_unk34 = 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifetest", func_00130DA4);
+#endif
 
 extern "C" void func_00130DE0(int arg0, int arg1)
 {
