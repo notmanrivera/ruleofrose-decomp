@@ -597,7 +597,58 @@ extern "C" int func_001D2D7C(Obj2D7C *arg0, int arg1, int arg2)
     return 0;
 }
 
+// NON_MATCHING: 1/113 differ, 1 edits
+#ifdef NON_MATCHING
+#include "game/gamlist.h"
+typedef struct {
+    unsigned char m_pad00[0x100]; // +0x00
+    unsigned int m_oid;           // +0x100
+    unsigned char m_pad104[0x1C]; // +0x104
+    unsigned int m_unk120;        // +0x120
+} Obj2E2CItem;
+typedef struct {
+    unsigned char m_pad00[0x1D340]; // +0x00
+    GamList<Obj2E2CItem *> m_achrList; // +0x1D340
+} Obj2E2C;
+extern "C" int func_001D2E2C(Obj2E2C *arg0, GamList<Obj2E2CItem *> *arg1, int arg2, unsigned int arg3, unsigned int arg4)
+{
+    GamList<Obj2E2CItem *>::iterator it;
+    GamList<Obj2E2CItem *>::iterator last;
+    int count;
+
+    if (arg1 == 0) {
+        if (arg2 == -1) {
+            return arg0->m_achrList.size();
+        }
+    } else if (arg1->size() != 0) {
+        arg1->clearUsed();
+    }
+
+    count = 0;
+    it = arg0->m_achrList.begin();
+    last = arg0->m_achrList.end();
+    goto test;
+    do {
+        if (arg2 != -1 && arg2 != (int)(((*it)->m_oid >> 0x17) & 0x1F)) {
+            ++it;
+        } else if (arg3 != 0 && ((*it)->m_unk120 & arg3) == 0) {
+            ++it;
+        } else if (arg4 != 0 && ((*it)->m_unk120 & arg4) != 0) {
+            ++it;
+        } else {
+            if (arg1 != 0) {
+                arg1->push_back(*it);
+            }
+            count++;
+            ++it;
+        }
+    test:;
+    } while (it != last);
+    return count;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2E2C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D2FF0);
 
