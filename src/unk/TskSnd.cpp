@@ -112,7 +112,21 @@ extern "C" int func_001F93D8(TskSnd *self, int arg1, int arg2)
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskSnd", func_001F9484);
+extern "C" int func_001F9484(TskSnd *self, int arg1, int arg2)
+{
+    if (arg1 == 0 && arg2 == 0) {
+        if (self->m_unkA8 != 0) {
+            func_001E5660(getSnd(&D_007812C0), self->m_unk80, 0x17, 0);
+        } else {
+            func_001E5660(getSnd(&D_007812C0), self->m_unk80, 1, 0);
+        }
+        return 1;
+    }
+    if (func_001E5C40(getSnd(&D_007812C0), self->m_unk80, self->m_unk8C, arg1, arg2) != 0 && self->m_cnt <= self->m_maxCnt) {
+        return 0;
+    }
+    return 1;
+}
 
 extern "C" int func_001F9550(TskSnd *self, int arg1, int arg2)
 {
