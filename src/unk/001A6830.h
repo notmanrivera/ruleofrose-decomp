@@ -16,8 +16,14 @@ struct MnuBoardTblEnt {
     int m_val;
 }; // size 0x08
 
+struct MnuItemUnq {
+    unsigned char m_pad00[0xB0];
+    int m_flags;                        // +0xB0
+};
+
 struct MnuItemStockEnt {
-    unsigned char m_pad00[0x08];
+    MnuItemUnq *m_unq;                  // +0x00
+    unsigned char m_pad04[0x04];
     unsigned short m_itemId;            // +0x08
     unsigned short m_count;             // +0x0A
     unsigned char m_pad0C[0x04];

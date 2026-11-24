@@ -2098,7 +2098,37 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF928);
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AFF5C);
 
+// NON_MATCHING: 71/74 differ (size 0x128, game 0x120), 51 edits
+#ifdef NON_MATCHING
+extern "C" void func_001B05EC(MnuItem *arg0, int arg1)
+{
+    for (int i = 0; i < 12; i++) {
+        MnuItemStockEnt *ent = arg0->m_slots[i];
+        if (ent->m_itemId != 0xA00) {
+            int idx = i + 0x30;
+            MnuRpk *rpk = &arg0->m_rpk[0];
+            if (arg1 == 0x10008) {
+                rpk->m_sprTbl[idx].m_rgba[0] = 0x80;
+                rpk->m_sprTbl[idx].m_rgba[1] = 0x80;
+                rpk->m_sprTbl[idx].m_rgba[2] = 0x80;
+                rpk->m_sprTbl[idx].m_rgba[3] = 0x80;
+            } else if (arg1 & ent->m_unq->m_flags) {
+                rpk->m_sprTbl[idx].m_rgba[0] = 0x80;
+                rpk->m_sprTbl[idx].m_rgba[1] = 0x80;
+                rpk->m_sprTbl[idx].m_rgba[2] = 0x80;
+                rpk->m_sprTbl[idx].m_rgba[3] = 0x80;
+            } else {
+                rpk->m_sprTbl[idx].m_rgba[0] = 0x80;
+                rpk->m_sprTbl[idx].m_rgba[1] = 0x80;
+                rpk->m_sprTbl[idx].m_rgba[2] = 0x80;
+                rpk->m_sprTbl[idx].m_rgba[3] = 0x28;
+            }
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B05EC);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001B070C);
 
