@@ -1,13 +1,16 @@
 #include "ror.h"
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
+extern const char D_002EBB70[];
 extern "C" void func_001249B4(MagLifeBwn *);
 extern "C" int func_001233F4(MagLifeBwn *, int, int, int);
 extern "C" void func_00125368(MagLifeBwn *);
 extern int D_002EBB40[];
 struct MagLifeBwnModeV {
-    virtual void vfunc01();
+    virtual void vfunc01(MagLifeBwn *);
     virtual void vfunc02(MagLifeBwn *);
+    virtual void vfunc03();
+    virtual int vfunc04(MagLifeBwn *, int);
 };
 extern "C" void func_0012481C(MagLifeBwn *, int, float);
 extern "C" int func_00103F38();
@@ -667,7 +670,75 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EBBB8);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EBBC0);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00125704);
+extern "C" int func_00125704(MagBwn *self, int theA)
+{
+    int *next = self->m_nextMode;
+    int mode = next[0];
+    if (mode < 0) {
+        return 0;
+    }
+
+    int ok = 1;
+    if (self->m_unkCEC != 0) {
+        ok = ((MagLifeBwnModeV *)self->m_unkCEC)->vfunc04(self, theA);
+    }
+    if (ok == 0 && mode != 0) {
+        return 1;
+    }
+
+    if (self->m_unk00 != 0) {
+        *(long long *)&self->m_last0 = *(long long *)&self->m_unk00;
+        *(long long *)&self->m_last2 = *(long long *)&self->m_unk08;
+    }
+    *(long long *)&self->m_unk00 = *(long long *)next;
+    *(long long *)&self->m_unk08 = *(long long *)&self->m_nextMode[2];
+    next[1] = -1;
+    next[0] = -1;
+
+    switch (self->m_unk00) {
+    case 0:
+        self->m_unkCEC = &self->m_modeNull;
+        break;
+    case 1:
+        self->m_unkCEC = &self->m_modeOne;
+        break;
+    case 2:
+        self->m_unkCEC = &self->m_modeWait;
+        break;
+    case 3:
+        self->m_unkCEC = &self->m_modeSit;
+        break;
+    case 4:
+        self->m_unkCEC = &self->m_modeFuse;
+        break;
+    case 5:
+        self->m_unkCEC = &self->m_modeMove;
+        break;
+    case 6:
+        self->m_unkCEC = &self->m_modePath;
+        break;
+    case 7:
+        self->m_unkCEC = &self->m_modeTurn;
+        break;
+    case 8:
+        self->m_unkCEC = &self->m_modeRotate;
+        break;
+    case 9:
+        self->m_unkCEC = &self->m_modeWall;
+        break;
+    default:
+        self->m_unkCEC = 0;
+        ror_assert(D_002EB870, 0x7C3, D_002EBB70);
+        break;
+    }
+
+    self->m_unkCC4 = 1;
+    self->m_unkCAC = 0;
+    if (self->m_unkCEC != 0) {
+        ((MagLifeBwnModeV *)self->m_unkCEC)->vfunc01(self);
+    }
+    return 1;
+}
 
 extern "C" void func_001258A4(MagLifeBwn *arg0)
 {
