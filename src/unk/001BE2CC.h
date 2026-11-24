@@ -22,6 +22,7 @@ public:
     FileReadReq *m_req;                 // +0x00
     int m_fd;                           // +0x04
 
+    FileReader();
     ~FileReader();
 }; // size 0x08
 

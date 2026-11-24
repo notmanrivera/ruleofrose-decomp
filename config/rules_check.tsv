@@ -37,7 +37,6 @@ msg/msgman	211	30
 sequence/sequence	0	5
 snd/rxmpeg	81	109
 snd/sndman	14	31
-spr/sprtexture	161	74
 system/sysnowloading	52	101
 task/naga_chunk	39	11
 task/tsk_bg_load	9	5

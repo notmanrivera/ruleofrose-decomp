@@ -57,7 +57,7 @@ sequence/sequence	0	0
 snd/rxmpeg	0	0
 snd/sndman	0	0
 spr/sprman	0	0
-spr/sprtexture	3	3
+spr/sprtexture	0	0
 system/sysnowloading	0	0
 task/naga_chunk	0	0
 task/tsk_bg_load	0	0

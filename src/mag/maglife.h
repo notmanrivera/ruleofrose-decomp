@@ -26,6 +26,12 @@
 #ifndef MAG_MAGLIFE_H
 #define MAG_MAGLIFE_H
 
+// Partial files can retain the original RTTI and its strings in asm. The
+// class layout and method bodies are shared with fully translated files.
+#if defined(TARGET_PS2) && defined(MAGLIFE_EXTERNAL_RTTI)
+#pragma interface
+#endif
+
 #include "ror.h"
 #include "dog/dogactor.h"
 
@@ -41,6 +47,18 @@ public:
     int m_unk0C;                    // +0x0C
     int m_unk10;                    // +0x10: live() mask
     // +0x14: vtable
+
+    MagLife0()
+    {
+#ifdef TARGET_PS2
+        *(u_long128 *)&m_unk00 = 0;
+#else
+        m_unk00 = m_unk04 = m_unk08 = m_unk0C = 0;
+#endif
+        m_unk10 = 1;
+        m_unk04 = -1;
+        m_unk00 = 0;
+    }
 
     virtual ~MagLife0() {}
     virtual void live() { m_unk04++; }
@@ -59,6 +77,8 @@ public:
     int m_hide;                     // +0x24
     int m_unk28;                    // +0x28
     int m_unk2C;                    // +0x2C
+
+    MagLife() { m_hide = 0; m_scene = 0; }
 
     virtual void live() { m_unk04++; }
     virtual const char *getName() { return 0; }

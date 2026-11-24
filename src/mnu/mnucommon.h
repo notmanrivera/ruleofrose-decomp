@@ -11,7 +11,10 @@
 struct MnuRpkEntry {
     int m_id;                           // +0x00
     const char *m_name;                 // +0x04
-    unsigned char m_pad08[0x10];        // +0x08..0x17
+    const char *m_texName;              // +0x08
+    int m_unk0C;                        // +0x0C
+    int m_flags;                        // +0x10
+    void *m_data;                       // +0x14
 }; // size 0x18
 
 struct MnuSprElem {
@@ -28,7 +31,9 @@ struct MnuSprElem {
     int m_unkD0;                        // +0x0D0
     int m_unkD4;                        // +0x0D4
     int m_iconId;                       // +0x0D8
-    unsigned char m_padDC[0x68];        // +0x0DC..0x143
+    unsigned char m_padDC[0x24];
+    int m_unk100;                       // +0x100
+    unsigned char m_pad104[0x40];        // +0x0DC..0x143
     int m_unk144;                       // +0x144
     int m_unk148;                       // +0x148
     char *m_text;                       // +0x14C
