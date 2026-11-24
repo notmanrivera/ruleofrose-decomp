@@ -2,6 +2,11 @@
 #include "task/cmnitask.h"
 #include "game/gamman.h"
 #include "game/gamsnd.h"
+extern GamTaskMan D_007A3D80;
+struct Buf40_97C8 {
+    char m_data[0x40];
+};
+extern "C" void func_001F4088(CmnITask *, int, void *, int);
 struct SndMan;
 extern SndMan D_007B2580;
 extern "C" int func_001800D0(SndMan *, int);
@@ -169,6 +174,12 @@ extern "C" int func_001F97C0()
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskSnd", func_001F97C8);
+extern "C" void func_001F97C8(void *arg0, int arg1)
+{
+    int prio = D_007A3D80.m_base.m_prio + arg1;
+    CmnITask *task = (CmnITask *)new Buf40_97C8;
+    func_001F4088(task, 1, arg0, 0);
+    func_001E71FC(&D_007A3D80, 1, prio, 1, 0, task, 0, 0, 1);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/TskSnd", D_002FEA70);
