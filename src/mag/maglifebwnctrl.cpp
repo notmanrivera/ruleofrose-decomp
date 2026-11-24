@@ -379,7 +379,21 @@ extern "C" void MagLifeBwnCtrlModeWound__vfunc_01(MagLifeBwnCtrlMode *arg0, MagL
     arg1->m_unk08 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeWound__vfunc_02);
+extern "C" void MagLifeBwnCtrlModeWound__vfunc_02(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
+{
+    int &step = arg1->m_unk08;
+    MagLifeBwn *bwn = arg1->m_bwn;
+    if (step == 0) {
+        if (bwn->m_unkCB8 < 3) {
+            bwn->m_unk04 = -1;
+            bwn->m_unk00 = -1;
+            arg1->m_bwn->message(1, 0x70, 0);
+            step = 1;
+        }
+    } else if (bwn->func_0011A054() != 0) {
+        Xiiiii_func_0012A56C(arg1, 0, 0, 0);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnctrl", D_002EC320);
 
