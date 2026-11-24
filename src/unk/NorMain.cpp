@@ -112,7 +112,17 @@ extern "C" int func_00151314()
 
 INCLUDE_ASM("asm/nonmatchings/unk/NorMain", func_00151328);
 
-INCLUDE_ASM("asm/nonmatchings/unk/NorMain", func_001513EC);
+extern "C" int func_001513EC(NorMain *self)
+{
+    int t = self->m_unk1E8 - 1000;
+    if (t < 0) {
+        return 0;
+    }
+    if (t == 0) {
+        return 1;
+    }
+    return (t % 700) < 200;
+}
 
 extern "C" int func_00151424(NorMain *self)
 {
