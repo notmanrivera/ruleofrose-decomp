@@ -128,7 +128,7 @@ public:
     int m_unk68;                        // +0x068
     int m_unk6C;                        // +0x06C
     MagLifeBwn *m_bwn;                  // +0x070
-    int m_unk74;                        // +0x074
+    MagLifeControlChara *m_unk74;       // +0x074
     int m_unk78;                        // +0x078
     int m_unk7C;                        // +0x07C
     int m_unk80;                        // +0x080

@@ -613,7 +613,21 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012ADEC);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012AF70);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012B0D0);
+extern "C" int func_0012B0D0(MagLifeBwnCtrl *arg0)
+{
+    register int ret PS2_REG("$2") = 0;
+    MagLifeBwn *bwn = arg0->m_bwn;
+    if (bwn != 0 && bwn->m_unkCB8 < 3) {
+        MagLifeControlChara *ch = arg0->m_unk74;
+        if (ch != 0) {
+            DogVector pos;
+            ch->func_00119F88(&pos);
+            BwnTargetList list;
+            ret = func_0010376C(&list, &pos, 0.0f, 0, 1, 500.0f) > 0;
+        }
+    }
+    return ret;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012B19C);
 
