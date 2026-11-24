@@ -2467,7 +2467,57 @@ extern "C" CmnITask *func_001E79C0(GamTaskMan *arg0, int arg1)
     return 0;
 }
 
+// NON_MATCHING: 139/140 differ, 8 relocs differ (size 0x230, game 0x25C), 96 edits
+#ifdef NON_MATCHING
+extern "C" void func_00204090(GamTaskBase *);
+extern "C" void func_001C57A0(GamMan *);
+extern "C" int func_001E7A20(GamTaskMan *self)
+{
+    func_00204090(&self->m_base);
+    self->end = self->arr;
+    GamTaskNode *current = self->popReady();
+    while (current != 0) {
+        GamTaskNode *retired = 0;
+        if (current->state == 0) {
+            int result = current->obj->exec(current->id, self->m_base.m_unk24, current->m_unk18);
+            current->m_unk30 = current->prio;
+            current->prio += current->m_unk28;
+            if (result || (current->m_unk2C != 0 && (unsigned int)current->m_unk2C < current->prio)) retired = current;
+            else func_001E7184(self, current);
+        } else if (current->state == 2) retired = current;
+        else {
+            current->m_unk30 = current->prio;
+            current->prio += current->m_unk28;
+            func_001E7184(self, current);
+        }
+        current = self->popReady();
+        if (retired) func_001E7C7C(self, retired);
+    }
+    if (self->end != self->arr) func_001E785C(self);
+    GamTaskNode *node = self->head0;
+    GamTaskNode *previous = 0;
+    int count = 0;
+    while (node != 0) {
+        if (node->state == 2) {
+            GamTaskNode *old = node;
+            node = node->next;
+            if (old == self->head0) self->head0 = node;
+            else if (previous != node) previous->next = node;
+            else node->next = 0;
+            func_001E7C7C(self, old);
+        } else {
+            previous = node;
+            self->m_history[count++] = node->id;
+            node = node->next;
+        }
+    }
+    self->m_history[count] = -1;
+    func_001C57A0(&D_007812C0);
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E7A20);
+#endif
 
 extern "C" void func_001E7C7C(GamTaskMan *arg0, GamTaskNode *arg1)
 {
