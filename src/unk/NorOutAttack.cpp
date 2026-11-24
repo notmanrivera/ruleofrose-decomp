@@ -1,5 +1,7 @@
 #include "include_asm.h"
 #include "unk/NorMain.h"
+extern "C" void func_00166C8C(EmyOut *, float *);
+extern "C" void func_001D89C4(void *, float *);
 extern const int D_002EFA60[];
 extern int *D_00298DD8[];
 
@@ -100,7 +102,7 @@ extern "C" void func_00152CFC(NorOutAttack *);
 extern "C" void func_00152DA4(NorOutAttack *);
 extern "C" void func_00152E40(NorOutAttack *);
 extern "C" void func_00152E90(NorOutAttack *);
-extern "C" void X_func_00152F3C(NorOutAttack *) asm("func_00152F3C");
+extern "C" void func_00152F3C(NorOutAttack *);
 extern "C" int func_001536CC(void);
 extern "C" void func_0016649C(EmyMain *, int);
 extern "C" int X_func_00166AD0(...) asm("func_00166AD0");
@@ -605,7 +607,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_00152748);
 extern "C" void func_00152B24(NorOutAttack *self)
 {
     if (!NorAnimDone(&D_007812C0, self)) {
-        return X_func_00152F3C(self);
+        return func_00152F3C(self);
     }
     X_func_001680A0(self, (self->m_unk50 == 0) ? 0x24 : 0x25, 0x100);
     self->m_unk04 = 3;
@@ -614,7 +616,7 @@ extern "C" void func_00152B24(NorOutAttack *self)
 
 extern "C" void func_00152BB4(NorOutAttack *self)
 {
-    X_func_00152F3C(self);
+    func_00152F3C(self);
     X_func_001693EC(self, 0xC, 0x1E, 0x58);
     if (--self->m_unk58 <= 0) {
         self->m_unk5C = X_func_0010423C(1, 3);
@@ -691,7 +693,33 @@ extern "C" void func_00152F34(void)
 {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_00152F3C);
+extern "C" void func_00152F3C(NorOutAttack *self)
+{
+    struct {
+        float vec[4];
+        int sp10;
+        int sp14;
+    } stack;
+    int base;
+    int s1;
+
+    X_func_00166B74(self, stack.vec);
+    stack.vec[3] = self->m_unk74;
+    base = (int)&D_006E9840;
+    s1 = base + 0x12540;
+    if (X_func_0013166C(s1, 0x15, (int)stack.vec) == 0) {
+        X_func_00167D88(self, stack.vec, -30.0f);
+        if (X_func_0013166C(s1, 0x15, (int)stack.vec) == 0) {
+            func_00166C8C(self, stack.vec);
+            X_func_0017C340((void *)(base + 0x9796C), stack.vec, &stack.sp10, 0, 40.0f, 0.0f);
+            if (stack.sp14 != 0) {
+                func_001D89C4((void *)self->m_unk08, stack.vec);
+            }
+        } else {
+            func_001D89C4((void *)self->m_unk08, stack.vec);
+        }
+    }
+}
 
 extern "C" void NorOutBitten__vfunc_02(NorOutBitten *self)
 {
