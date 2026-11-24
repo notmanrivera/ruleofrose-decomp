@@ -595,7 +595,51 @@ extern "C" void func_001E386C(GamSndMan *self, GamSnd3D *item)
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3C24);
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E4120);
+extern "C" void func_001E4120(GamSndMan *self)
+{
+    GamList<GamSnd3D>::iterator it, last;
+    GamSndMessage msg;
+    it = self->m_queue.begin();
+    last = self->m_queue.end();
+    while (it != last) {
+        GamSnd3D *item = &*it;
+        unsigned int id = item->id;
+        int handle = item->handle;
+        if (item->flags & 1) {
+            if (func_001E5B60(self, id, handle)) {
+                unsigned int id = (*it).id;
+                int offset = handle * sizeof(GamSndChannel);
+                GamSndChannels *channels = &self->m_channels;
+                GamSndChannel *channel = channelAt(channels, offset);
+                msg.m_u00 = id;
+                msg.m_unk0C = channel->m_unk18;
+                msg.m_unk20 = channel->m_unk04;
+                msg.m_unk24 = channel->m_unk08;
+                msg.m_unk14 = 30;
+                msg.m_unk04 = 0;
+                msg.m_unk08 = 0;
+                self->m_unk15A0[self->m_currentBgm].m_unk18 = (*it).id;
+                self->m_unk15A0[self->m_currentBgm].m_unk1C = channelAt(channels, offset)->m_unk04;
+                self->m_unk15A0[self->m_currentBgm].m_unk20 = channelAt(channels, offset)->m_unk08;
+                func_001E5660(self, id, 0x15, &msg);
+            }
+        } else if (func_001E6368(self, id, handle)) {
+            GamSndChannel *channel = &self->m_channels.m_begin[handle];
+            msg.m_u00 = (*it).id;
+            msg.m_unk0C = channel->m_unk18;
+            msg.m_unk20 = channel->m_unk04;
+            msg.m_unk24 = channel->m_unk08;
+            msg.m_unk14 = 60;
+            msg.m_unk04 = 0;
+            msg.m_unk08 = 0;
+            msg.m_unk28 = 0;
+            TskSnd *task = (TskSnd *)operator new(0xC0);
+            func_001F8FC0(task, 0, &msg);
+            func_001E71FC(&D_007A3D80, 1, -1, 1, 0, (CmnITask *)task, 0, 0, 1);
+        }
+        ++it;
+    }
+}
 
 extern "C" void func_001E4354(void) {
 }
