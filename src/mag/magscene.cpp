@@ -915,7 +915,29 @@ extern "C" int func_00135B64(MagScene *self)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135B78);
+extern "C" void func_00135B78(MagScene *self)
+{
+    if (self->m_unk2BE5C) {
+        int kind = self->m_unk2BE50;
+        if (kind != 0x10000) {
+            self->m_unk2BE5C->vfunc10();
+        }
+        self->m_life_man.remove(self->m_unk2BE5C);
+        if (self->m_unk2BE50 >= 0x1000B && self->m_unk2BE50 <= 0x1000F) {
+            delete self->m_unk2BE5C;
+        }
+        self->m_unk2BE5C = 0;
+        self->m_unk2BE50 = -1;
+        self->func_0013F09C();
+        BedSubMode *sub = &self->m_sub_mode;
+        ((int *)sub)[1] = -1;
+        ((int *)sub)[0] = 4;
+        if (kind == 0x10010) {
+            self->func_0013F1E4();
+            func_001357B0(self, 0x10005, 0);
+        }
+    }
+}
 
 extern "C" void func_00135CAC(MagScene *self, const char *theTexName)
 {

@@ -19,6 +19,12 @@
 class BedPad;
 class MagLifeWindow;
 
+class MagLifeMenu : public MagLife {
+public:
+    virtual void vfunc09();
+    virtual void vfunc10();
+};
+
 // The 0x6C bytes MagScene keeps per window; func_001BEBEC fills them.
 struct MagWindowPage {
     unsigned char m_unk00[0x6C];
@@ -114,7 +120,12 @@ public:
     MagLifeBwn m_bwn;               // +0x2AFE0..+0x2BD1B (size 0xD3C)
     unsigned char m_pad2BD1C[4];
     int m_unk2BD20;                 // +0x2BD20
-    unsigned char m_unk2BD24[0x15B2C];
+    unsigned char m_unk2BD24[0x12C];
+    int m_unk2BE50;                 // +0x2BE50
+    int m_unk2BE54;                 // +0x2BE54
+    int m_unk2BE58;                 // +0x2BE58
+    MagLifeMenu *m_unk2BE5C;        // +0x2BE5C
+    unsigned char m_unk2BE60[0x159F0];
     MagLife m_unk41850;             // +0x41850
     unsigned char m_unk41880[0x10];
     MagLife m_unk41890;             // +0x41890
