@@ -1,6 +1,8 @@
 #include "ror.h"
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
+extern const char D_002EB208[];
+extern "C" void func_00125A20(MagLifeBwn *, int);
 extern "C" float func_001040A0();
 extern "C" int func_00104004(DogVector *thePos, unsigned int *theOut, float theA);
 extern "C" int Xiii_func_00125704(MagLifeBwn *, int) asm("func_00125704");
@@ -501,7 +503,23 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EBBC0);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00125704);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_001258A4);
+extern "C" void func_001258A4(MagLifeBwn *arg0)
+{
+    arg0->m_unkCE4 = 1;
+    if (arg0->m_actor != 0) {
+        arg0->m_unkCE8 = arg0->m_actor->getMotionNo();
+        int st = arg0->func_0011A028();
+        int flag = (st >= 0) ? (arg0->m_tbl_motion_state[st].m_flag & 0xF0) : 0x30;
+        if (flag != 0) {
+            if (flag == 0x10) {
+                arg0->m_actor->func_0010B1B0(arg0->m_actor->func_0010AA5C(D_002EB208), 0, 0.016666694f, -1, -1);
+            } else if (flag == 0x30) {
+                arg0->m_actor->m_motion_now.setMainSpeed(0.0f);
+            }
+        }
+    }
+    func_00125A20(arg0, 0);
+}
 
 extern "C" void func_00125980(MagBwn *self)
 {
