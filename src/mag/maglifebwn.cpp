@@ -339,7 +339,23 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00124008);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00124150);
 
+// NON_MATCHING: 20/22 differ, 1 reloc differs (size 0x58, game 0x54), 11 edits
+#ifdef NON_MATCHING
+extern "C" int message__10MagLifeBwniiPv(MagLifeBwn *arg0, int arg1, int arg2, void *arg3)
+{
+    if (arg0->m_actor != 0 && (unsigned int)arg1 < 0xAU) {
+        if (arg0->m_nextMode[0] >= 0 && arg0->m_nextMode[0] == arg1) {
+            return -2;
+        }
+        if (func_001233F4(arg0, arg1, arg2, (int)arg3) == 0) {
+            return -1;
+        }
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", message__10MagLifeBwniiPv);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EB980);
 
