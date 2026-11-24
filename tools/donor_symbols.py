@@ -9,7 +9,7 @@ relocations of its code. Today: PoPoLoCrois - Tsuki no Okite no Bouken
 (SCPS-15063, Japan, 2004; build with .symtab, .relmain, DWARF 1 .debug and
 .line; its own code built with Metrowerks, Sony's RX library with GCC).
 Both games link SCE Japan's RX library (RX_SCE_LIBRARY_VERSION:4: our
-mw/sound, rxSnd*/rxFile*/rxTh*/rxSys*/rxGs*) and much of the same SDK.
+rx/, formerly mw/sound: rxSnd*/rxFile*/rxTh*/rxSys*/rxGs*) and much of the same SDK.
 
 Arc the Lad: Twilight of the Spirits's hidden 2002 disc (inside ARC.000 on
 the US retail SCUS-97231, found by tools/disc_scan.py --deep) keeps two

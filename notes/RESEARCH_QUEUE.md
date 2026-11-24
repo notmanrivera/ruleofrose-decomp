@@ -35,7 +35,9 @@ judgement and go to Sonnet.
   Done 2026-11-23 (Sonnet): no RX file names in the donor (its DWARF covers
   only game code) but one .text section symbol per object gives 25 objects;
   applied as mw/sound/*, mw/sys/*, mw/file/*, mw/thread/*, mw/gs/vsync
-  (placeholder names), full build green. R25 must look for RX types in
+  (placeholder names), full build green. Then renamed to the real file
+  names (rx/rxsnd, rx/sndse, rx/rxfile, rx/filecdrom...) from Arc the Lad's
+  hidden 2002 debug build (.mdebug file descriptors). R25 must look for RX types in
   the rx/include headers the DWARF does list (rxgeom.h, rxpkt.h...).
 - [ ] R25 RX library types from PoPoLoCrois's DWARF 1 (2026-11-23). From
   the same .debug: the structs, enums and function prototypes of the RX

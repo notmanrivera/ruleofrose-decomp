@@ -58,8 +58,8 @@ roadmap: `notes/PROJECT_STATE.md` (Spanish). Setup: `README.md` (English).
   the type_info object its `__tf<Class>` returns.
   `donor-<game>` names come from another game's symbol table, by masked
   byte-identical code (`tools/donor_symbols.py`; today PoPoLoCrois SCPS-15063
-  and Arc the Lad's hidden 2002 debug build: the RX library in mw/sound and
-  SDK functions): exact for the shared code. `tools/disc_scan.py` checks a
+  and Arc the Lad's hidden 2002 debug build: the RX library and
+  SDK functions; the library is `rx/`): exact for the shared code. `tools/disc_scan.py` checks a
   disc image for donors.
 - Never commit PS2Recomp's symbol database (GPL); only derived names.
 - Keep original identifiers where the binary reveals them (mangled names,
