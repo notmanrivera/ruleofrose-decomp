@@ -494,7 +494,38 @@ extern "C" void func_001E1920(GamSndMan *self, int restart, int mode, int reset)
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E1920);
 #endif
 
+// NON_MATCHING: 37/118 differ (size 0x1D8, game 0x1D4), 27 edits
+#ifdef NON_MATCHING
+extern "C" void func_001E1FA4(GamSndMan *self)
+{
+    GamSndChannels *channels;
+    int i;
+    self->m_currentBgm = -1;
+    self->m_unk1708 = 0;
+    for (i = 0; i < 4; i++) {
+        self->m_unk15A0[i].m_unk0C = -1;
+        self->m_unk15A0[i].m_unk00 = 0;
+    }
+    channels = &self->m_channels;
+    for (i = 0; i < 48; i++) {
+        (channels->m_begin + i)->flags = 0;
+        (channels->m_begin + i)->m_unk0C = 0;
+        (channels->m_begin + i)->m_unk18 = -1;
+        (channels->m_begin + i)->m_unk04 = 0;
+        (channels->m_begin + i)->m_unk08 = 0;
+    }
+    if (func_001E7D7C(&D_007A3D80, self->m_unk170C)) func_001E7724(&D_007A3D80, self->m_unk170C);
+    if (func_001E7D7C(&D_007A3D80, self->m_unk1710)) func_001E7724(&D_007A3D80, self->m_unk1710);
+    if (func_001E7D7C(&D_007A3D80, self->m_unk1718)) func_001E7724(&D_007A3D80, self->m_unk1718);
+    self->m_unk1718 = -1;
+    self->m_unk170C = -1;
+    self->m_unk1710 = -1;
+    channels->clear();
+    self->m_queue.clearUsed();
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E1FA4);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E2178);
 
