@@ -1,4 +1,42 @@
 #include "include_asm.h"
+struct Obj1FD8Item {
+    unsigned char m_pad00[0x120];
+    int m_unk120;
+    unsigned char m_pad124[4];
+    unsigned short m_unk128;
+};
+struct Obj1FD8 {
+    struct Node {
+        Node *m_prev;
+        Node *m_next;
+        Obj1FD8Item *m_data;
+    };
+    class iterator {
+    public:
+        Node *m_node;
+        iterator() : m_node(0) {}
+        iterator(Node *theNode) : m_node(theNode) {}
+        iterator(const iterator &theIt) : m_node(theIt.m_node) {}
+        Obj1FD8Item *&operator*() const { return m_node->m_data; }
+        iterator &operator++()
+        {
+            m_node = m_node->m_next;
+            return *this;
+        }
+        bool operator!=(const iterator &theIt) const { return m_node != theIt.m_node; }
+    };
+    unsigned char m_pad00[0x1D350];
+    Node m_achrHead;
+    unsigned char m_pad1D35C[0x634];
+    Node m_fchrHead;
+    unsigned char m_pad1D99C[0x4884];
+    unsigned char m_unq[1];
+    iterator achrBegin() { return iterator(m_achrHead.m_next); }
+    iterator achrEnd() { return iterator(&m_achrHead); }
+    iterator fchrBegin() { return iterator(m_fchrHead.m_next); }
+    iterator fchrEnd() { return iterator(&m_fchrHead); }
+};
+extern "C" void func_001DCD38(void *, int, int);
 struct GamMan25E4 {
     unsigned char m_pad00[0x21F48];
     unsigned int m_sysFlg;
@@ -261,7 +299,61 @@ extern "C" void func_001D1F74(int arg0, unsigned int arg1, int arg2, int arg3)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D1FD8);
+extern "C" void func_001D1FD8(Obj1FD8 *arg0, unsigned int arg1, int arg2, int arg3)
+{
+    unsigned int uid = arg1 & 0xFFFF;
+    int kind = (int)(uid >> 9);
+
+    func_001DCD38(arg0->m_unq, uid, arg2);
+    switch (kind) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+        {
+            Obj1FD8::iterator it;
+            Obj1FD8::iterator last;
+            it = arg0->achrBegin();
+            last = arg0->achrEnd();
+            while (it != last) {
+                Obj1FD8Item *item = *it;
+                if (item->m_unk128 == uid) {
+                    if (arg3 != 0) {
+                        item->m_unk120 |= arg2;
+                    } else {
+                        item->m_unk120 &= ~arg2;
+                    }
+                }
+                ++it;
+            }
+        }
+        break;
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+        {
+            Obj1FD8::iterator it;
+            Obj1FD8::iterator last;
+            it = arg0->fchrBegin();
+            last = arg0->fchrEnd();
+            while (it != last) {
+                Obj1FD8Item *item = *it;
+                if (item->m_unk128 == uid) {
+                    if (arg3 != 0) {
+                        item->m_unk120 |= arg2;
+                    } else {
+                        item->m_unk120 &= ~arg2;
+                    }
+                }
+                ++it;
+            }
+        }
+        break;
+    }
+}
 
 extern "C" int func_001D217C(int arg0, unsigned int arg1, int arg2)
 {
