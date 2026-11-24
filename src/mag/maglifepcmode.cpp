@@ -405,7 +405,33 @@ extern "C" int MagLifePCModeAttacking__vfunc_03(MagLifePCModeAttacking *arg0, Ma
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", init__19MagLifePCModeDamageR9MagLifePC);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", live__19MagLifePCModeDamageR9MagLifePC);
+extern "C" void live__19MagLifePCModeDamageR9MagLifePC(MagLifePCModeDamage *arg0, MagLifePC *arg1)
+{
+    X_func_001207A8(arg0, arg1);
+    if (Xii_func_0011A054(arg1) != 0) {
+        int dc = arg1->m_unkDC;
+        if (arg1->m_unk54 == 1 || arg1->m_unk54 == 3) {
+            Xiiiui_func_0011C1E8(arg1, 7, 0U, 0);
+            return;
+        }
+        if (arg1->m_mode_hold.m_unk04 != 0) {
+            Xiiiui_func_0011C1E8(arg1, 8, 0U, 0);
+            return;
+        }
+        if (arg1->m_mode_ride.m_unk04 != 0) {
+            Xiiiui_func_0011C1E8(arg1, 9, 3U, 0);
+            return;
+        }
+        if (dc != 0) {
+            Xiiiui_func_0011C1E8(arg1, 5, 0U, 0);
+            return;
+        }
+        Xiiiui_func_0011C1E8(arg1, 1, 0U, 0);
+        return;
+    } else if (arg1->m_actor != 0 && arg1->m_actor->getMotionNo() < 2) {
+        Xiiiui_func_0011C1E8(arg1, 1, 0U, 0);
+    }
+}
 
 extern "C" void init__17MagLifePCModeItemR9MagLifePC(MagLifePCModeItem *arg0, MagLifePC *arg1)
 {
