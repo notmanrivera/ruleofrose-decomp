@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "emy/emy.h"
+#include "dog/dogactor.h"
 
 struct EmyMainVtbl3 {
     unsigned char m_pad[0x200];
@@ -23,7 +24,7 @@ extern "C" int X_func_0010423C(int, int) asm("func_0010423C");
 extern "C" int X_func_00104394(int, int, int) asm("func_00104394");
 extern "C" int X_func_00118FEC__9MagSystem(void *) asm("func_00118FEC__9MagSystem");
 extern "C" int X_func_001442D4() asm("func_001442D4");
-extern "C" void X_func_00165280(EmyMain *, void *) asm("func_00165280");
+extern "C" void func_00165280(EmyMain *, float *);
 extern "C" void X_func_00165570(EmyMain *) asm("func_00165570");
 extern "C" void X_func_00166AD0(EmyOut *) asm("func_00166AD0");
 extern "C" void X_func_00168478(EmyOut *) asm("func_00168478");
@@ -67,7 +68,38 @@ extern "C" void func_00165060(EmyMain *self)
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165074);
 
+// NON_MATCHING: fn matches; D_002F1520 needs .align 3 in config/rodata_align_manual.tsv
+#ifdef NON_MATCHING
+extern DogActor D_006FE6A0[];
+extern "C" float *func_001D2B8C(void *, unsigned int);
+extern "C" int func_001CBE38(void *, unsigned int);
+extern "C" void func_001D890C(float *, float *);
+
+static inline float *getBone_5280(const char *name, float (*mat)[4], DogActor *actor)
+{
+    actor->vfunc17(mat, actor->getNodeIndexByName(name));
+    return mat[3];
+}
+
+static inline void copyVec_5280(float *dst, const float *src)
+{
+    dst[0] = src[0];
+    dst[1] = src[1];
+    dst[2] = src[2];
+}
+
+extern "C" void func_00165280(EmyMain *arg0, float *arg1)
+{
+    float sp[4];
+    float mat[4][4];
+    float *temp_s3 = func_001D2B8C(&D_007812C0, arg0->m_id);
+    copyVec_5280(arg1, getBone_5280("Bip01 Spine1", mat, &D_006FE6A0[func_001CBE38(&D_007812C0, arg0->m_id)]));
+    func_001D890C(temp_s3, sp);
+    arg1[1] = sp[1];
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165280);
+#endif
 
 extern "C" void func_00165398(EmyMain *self, int arg1, int arg2, int arg3)
 {
@@ -147,7 +179,7 @@ extern "C" void func_00166004(EmyMain *self)
         float sp10;
     } stack;
 
-    X_func_00165280(self, &stack);
+    func_00165280(self, (float *)&stack);
     X_func_0016A6B4(&stack.sp10);
     X_func_00169A98(&stack, &stack.sp10, 60.0f);
 }
