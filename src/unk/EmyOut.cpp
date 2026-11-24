@@ -2,6 +2,7 @@
 #include "emy/emy.h"
 #include "dog/dogactor.h"
 #include "sdk/string.h"
+extern "C" int func_00104394(int, int, int);
 struct EmySlot154 {
     int m_unk00;
     int m_unk04;
@@ -125,7 +126,20 @@ extern "C" void func_00165398(EmyMain *self, int arg1, int arg2, int arg3)
     self->m_unk16C = X_func_00104394(1, arg3, 4);
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165404);
+extern "C" void func_00165404(EmyMain *self, int arg1, int arg2, int arg3)
+{
+    EmyMain154 *m = (EmyMain154 *)self;
+    for (int i = 0; i < 4; i++) {
+        if (m->m_slots[i].m_unk00 == 0) {
+            m->m_slots[i].m_unk00 = arg1;
+            m->m_slots[i].m_unk10 = 0;
+            m->m_slots[i].m_unk0C = arg2;
+            m->m_slots[i].m_unk14 = 0;
+            m->m_slots[i].m_unk18 = func_00104394(1, arg3, 4);
+            return;
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165498);
 
