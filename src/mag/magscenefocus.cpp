@@ -103,7 +103,27 @@ extern "C" float func_00140D40(void *arg0, MagSceneFocusLerp *arg1)
     return res;
 }
 
+// NON_MATCHING: 4/51 differ, 6 edits
+#ifdef NON_MATCHING
+extern "C" float func_00140E60(int, int, int, float, float);
+extern "C" void func_00140D94(MagSceneFocus *arg0, int arg1, int arg2, float fparg0, float fparg1)
+{
+    switch (arg1) {
+    case 1:
+        arg0->m_unk853CC = func_00140E60((int)arg0, (int)&arg0->m_unk8540C, arg2,
+                                         (fparg0 < 0.0f) ? arg0->m_unk853CC : fparg0, fparg1);
+        break;
+    case 2:
+        arg0->m_unk853D0 = func_00140E60((int)arg0, (int)&arg0->m_unk8541C, arg2,
+                                         (fparg0 < 0.0f) ? arg0->m_unk853D0 : fparg0, fparg1);
+        break;
+    default:
+        break;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140D94);
+#endif
 
 extern "C" float func_00140E60(int arg0, int arg1, int arg2, float fparg0, float fparg1)
 {
