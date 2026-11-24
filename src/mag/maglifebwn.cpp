@@ -404,19 +404,25 @@ extern "C" void func_0012498C(MagBwn *self)
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_001249B4);
 
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EBAB8);
-
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EBAD0);
-
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EBAE8);
-
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EBAF8);
-
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EBB08);
-
-INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwn", D_002EBB18);
-
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00124D7C);
+extern "C" void func_00124D7C(MagLifeBwn *arg0)
+{
+    int mode = arg0->m_unkCB8;
+    const char *nodes[] = {
+        "Bip01 L Clavicle",
+        "Bip01 L UpperArm",
+        "Bip01 L Forearm",
+        "Bip01 L Hand",
+        "Bip01 L Finger0",
+        0,
+    };
+    if (mode == 3) {
+        if (arg0->m_actor->m_motion_now.m_sub[1].m_no < 0) {
+            arg0->m_actor->func_0010B620(1, "w_blend_wait", nodes);
+        }
+    } else if (arg0->m_actor->m_motion_now.m_sub[1].m_no >= 0) {
+        arg0->m_actor->func_0010B328(1, -1, nodes);
+    }
+}
 
 extern "C" void func_00124E18(MagBwn *self)
 {
