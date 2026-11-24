@@ -73,7 +73,7 @@ class Reject(Exception):
 
 def game_files():
     rows = configure.load_splits()
-    return [r[4] for r in rows if r[0] < GAME_END and not r[4].startswith(("sdk", "sce", "mw/"))
+    return [r[4] for r in rows if r[0] < GAME_END and not r[4].startswith(("sdk", "sce", "mw/", "rx/"))
             and (ROOT / f"asm/{r[4]}.s").exists()]
 
 

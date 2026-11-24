@@ -45,7 +45,7 @@ def main():
     for i, row in enumerate(rows):
         start, name = row[0], row[4]
         end = rows[i + 1][0] if i + 1 < len(rows) else TEXT_END
-        group = "sdk" if name.startswith("sdk/") else "middleware" if name.startswith("mw/") else "game"
+        group = "sdk" if name.startswith("sdk/") else "middleware" if name.startswith(("mw/", "rx/")) else "game"
         g = groups[group]
         g[0] += 1
         g[2] += end - start
