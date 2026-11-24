@@ -68,7 +68,13 @@ public:
     int m_unk2A9E8[2];
     int m_shadow_point_on;          // +0x2A9F0
     void *m_shadow_point;           // +0x2A9F4
-    unsigned char m_unk2A9F8[0x2BC];
+    unsigned char m_unk2A9F8[0x18];
+    float m_unk2AA10;               // +0x2AA10
+    float m_unk2AA14;               // +0x2AA14
+    unsigned char m_unk2AA18[0x30];
+    float m_unk2AA48;               // +0x2AA48
+    float m_unk2AA4C;               // +0x2AA4C
+    unsigned char m_unk2AA50[0x264];
     float m_opt_zoom_ratio;         // +0x2ACB4
     unsigned char m_unk2ACB8[0xE4];
     int m_unk2AD9C;                 // +0x2AD9C

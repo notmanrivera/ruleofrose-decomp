@@ -102,7 +102,12 @@ extern "C" int func_00131608(MagScene *self)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131618);
+extern "C" void func_00131618(MagScene *arg0, float fparg0)
+{
+    arg0->m_unk2AA4C = fparg0;
+    arg0->m_unk2AA48 = arg0->m_unk2AA10;
+    arg0->m_unk2AA14 = fparg0;
+}
 
 extern "C" void func_0013164C(MagScene *self)
 {
