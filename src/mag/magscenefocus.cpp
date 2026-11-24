@@ -2,6 +2,17 @@
 #include "sdk/string.h"
 extern "C" int strncmp(const char *, const char *, size_t);
 extern "C" void func_00237830(void *, void *, float);
+struct MagSceneFocusGif {
+    unsigned long long m_tag0;
+    unsigned long long m_tag1;
+    unsigned long long m_prim;
+    unsigned long long m_nop;
+    unsigned long long m_v0;
+    unsigned long long m_v1;
+    unsigned long long m_v2;
+    unsigned long long m_v3;
+};
+extern "C" MagSceneFocusGif *func_0021B4D0(void *, int, int, int);
 struct MagSceneFocusObj {
     unsigned char m_pad00[0x508];
     float (*m_unk508)[4][4];
@@ -57,7 +68,23 @@ extern "C" void func_0014062C(MagSceneFocus *arg0)
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_001406B8);
 
+// NON_MATCHING: 55/59 differ, 1 reloc differs (size 0xEC, game 0xF4), 60 edits
+#ifdef NON_MATCHING
+extern "C" MagSceneFocusGif *func_00140990(void *arg0, int arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9)
+{
+    MagSceneFocusGif *q = func_0021B4D0(arg0, 4, 0x10, 0);
+    q->m_prim = ((long long)arg1 << 6) | 0x116;
+    q->m_v0 = (long long)arg2 | ((long long)arg3 << 16);
+    q->m_v2 = (long long)arg4 | ((long long)arg5 << 16);
+    q->m_v1 = (long long)arg6 | ((long long)arg7 << 16);
+    q->m_v3 = (long long)arg8 | ((long long)arg9 << 16);
+    q->m_tag1 = 0x5353F0ULL;
+    q->m_tag0 = 0x6400000000008001ULL;
+    return q + 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140990);
+#endif
 
 extern "C" void func_00140A84(int arg0)
 {
