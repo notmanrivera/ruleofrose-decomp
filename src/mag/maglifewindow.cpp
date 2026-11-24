@@ -142,7 +142,12 @@ extern "C" void func_00130214(MagLifeWindow *self, int *theX, int *theY)
     *theY = (int)self->m_pos.m_y;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifewindow", func_00130230);
+extern "C" void func_00130230(MagLifeWindow *self, int *theX, int *theY, int *theZ)
+{
+    *theX = (int)self->m_pos.m_x;
+    *theY = (int)self->m_pos.m_y;
+    *theZ = (int)self->m_pos.m_z;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifewindow", D_002ED2F0);
 
