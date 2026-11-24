@@ -1,6 +1,7 @@
 #include "include_asm.h"
 #include "task/cmnitask.h"
 #include "sdk/math.h"
+extern "C" float func_0026CAD0(float x);
 struct EventEntry64 {
     unsigned char unk00[0x40];
 };
@@ -221,7 +222,34 @@ extern "C" int func_00217DA4(EventTestTask *self, int arg1, int arg2)
     return changed;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00217F10);
+INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301DE8);
+
+extern "C" float func_00217F10(float x, float y)
+{
+    float len = sqrtf(x * x + y * y);
+    if (len == 0.0f) {
+        return 0.0f;
+    }
+
+    float ang = func_0026CAD0(x / len);
+    if (y < 0.0f) {
+        ang = -ang;
+    }
+    if (ang < -3.14159265358979323846) {
+        ang += 6.28318530717958647692;
+    }
+    if (ang > 3.14159265358979323846) {
+        ang -= 6.28318530717958647692;
+    }
+    ang = -ang + 1.57079632679489661923;
+    if (ang < -3.14159265358979323846) {
+        ang += 6.28318530717958647692;
+    }
+    if (ang > 3.14159265358979323846) {
+        ang -= 6.28318530717958647692;
+    }
+    return ang;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_002180E4);
 
@@ -298,22 +326,6 @@ extern "C" void func_002184B8(void) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_002184C0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301DE8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301E08);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301E10);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301E18);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301E20);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301E28);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301E30);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301E38);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301E40);
 
