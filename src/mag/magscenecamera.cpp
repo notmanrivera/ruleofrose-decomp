@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "mag/magscene.h"
+#include "sdk/math.h"
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 
@@ -42,7 +43,13 @@ extern "C" float func_0013D4D0(int arg0)
     return (float) M2C_FIELD(temp_v0, int *, 0x20) + M2C_FIELD(temp_v0, float *, 0x28);
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscenecamera", func_0013D52C);
+extern "C" void func_0013D52C(MagScene *arg0, float fparg0)
+{
+    float ipart;
+    MagUnk29890Sub *p = (*(MagUnk29890 (*)[3])&arg0->m_unk29890)[arg0->m_unk2AD68].m_unk1AC[arg0->m_unk2AD64];
+    p->m_unk28 = modff(fparg0, &ipart);
+    p->m_unk20 = (int)ipart;
+}
 
 extern "C" int func_0013D5AC__8MagScenePi(int arg0, int arg1)
 {

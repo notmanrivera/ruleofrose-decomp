@@ -66,10 +66,19 @@ struct MagPrivateColli {
     DogVector m_p2;
 };
 
+struct MagUnk29890Sub {
+    unsigned char m_unk00[0x20];
+    int m_unk20;                    // +0x20
+    unsigned char m_unk24[0x4];
+    float m_unk28;                  // +0x28
+};
+
 struct MagUnk29890 {
     DogModel m_model;               // +0x000
     int m_unk1A0;                   // +0x1A0
-    unsigned char m_unk1A4[0x37C];  // +0x1A4
+    unsigned char m_unk1A4[0x8];    // +0x1A4
+    MagUnk29890Sub **m_unk1AC;      // +0x1AC
+    unsigned char m_unk1B0[0x370];  // +0x1B0
 };
 #ifdef TARGET_PS2
 STATIC_ASSERT(sizeof(MagUnk29890) == 0x520, MagUnk29890_size);
