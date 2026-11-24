@@ -1,6 +1,7 @@
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
 #include "utl/utlfind.h"
+float vecYaw(const float *);
 extern "C" int func_0012B19C(MagLifeBwnCtrl *);
 extern "C" int func_0010423C(int, int);
 extern "C" int func_0012AB20(MagLifeBwnCtrl *) ASM_NOTHROW;
@@ -718,7 +719,36 @@ extern "C" int func_0012B0D0(MagLifeBwnCtrl *arg0)
     return ret;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012B19C);
+extern "C" int func_0012B19C(MagLifeBwnCtrl *arg0)
+{
+    DogVector v0;
+    arg0->m_unk74->func_00119F88(&v0);
+    DogVector v1;
+    DogVector *pv1 = &v1;
+    arg0->m_bwn->func_00119F88(pv1);
+    DogVector d = v0;
+    DogVector *pd = &d;
+    pd->m_x -= pv1->m_x;
+    pd->m_w = 1.0f;
+    pd->m_y -= pv1->m_y;
+    pd->m_z -= pv1->m_z;
+    float yaw = vecYaw(&pd->m_x);
+    float diff = arg0->m_bwn->func_00119FB0() - yaw;
+    float r;
+    if (diff < -DOG_PI) {
+        r = diff + DOG_PI2;
+    } else {
+        r = diff;
+        if (r >= DOG_PI) {
+            r -= DOG_PI2;
+        }
+    }
+    if (r < -0.052359883f || r > 0.052359883f) {
+        arg0->m_targetRot = yaw;
+        return 1;
+    }
+    return 0;
+}
 
 extern "C" int func_0012B300(MagLifeBwnCtrl *arg0)
 {
