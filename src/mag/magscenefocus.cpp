@@ -1,4 +1,19 @@
 #include "include_asm.h"
+struct MagSceneFocus {
+    unsigned char m_pad00[0x853BC];
+    int m_unk853BC;
+    int m_unk853C0;
+    int m_unk853C4;
+    float m_unk853C8;
+    float m_unk853CC;
+    float m_unk853D0;
+    int m_unk853D4;
+    int m_unk853D8;
+    int m_unk853DC;
+    int m_unk853E0;
+    int m_unk853E4;
+};
+extern "C" void func_00140B20(MagSceneFocus *, int);
 struct MagSceneFocusLerp {
     float m_unk00;
     float m_unk04;
@@ -113,7 +128,17 @@ extern "C" int func_00141770(const char *arg0)
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00141770);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_001417E4);
+extern "C" void func_001417E4(MagSceneFocus *arg0, int arg1, int arg2)
+{
+    if (arg1 != 0) {
+        func_00140B20(arg0, 3);
+        arg0->m_unk853D4 = arg1;
+        arg0->m_unk853D8 = arg2;
+        arg0->m_unk853DC = 0;
+        arg0->m_unk853E0 = -1;
+        arg0->m_unk853E4 = -1;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_0014186C);
 
