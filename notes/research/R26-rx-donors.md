@@ -25,7 +25,20 @@ the coordinator's checks first.
     Extracted to disc/arc_nested/ (git-ignored). No names to gain.
 - **Rule of Rose 19-jul-2006 build (SLUS-28064)** is the owner's trade demo,
   checked 2026-11-15 (RESEARCH_QUEUE "Trade demo"): stripped.
-- Still open, need discs: Wa ga Ryuu o Miyo demo PAPX-90521 and retail
+- **Second batch (owner's discs, 2026-11-23)**, all with
+  `$RX_SCE_LIBRARY_VERSION:4` and `rxsnd`, all stripped:
+  Wa ga Ryuu o Miyo User Taikenban PAPX-90521 (`PAPX_905.21`) and retail
+  SCPS-15080 (`SCPS_150.80`, VER 3.02): `.symtab`/`.strtab` headers kept
+  but empty (size 0), single merged PROGBITS section; Phase Paradox
+  SCPS-15005 and Boku to Maou Taikenban PAPX-90212: no symbol sections.
+  Their strings name more RX modules (rxHeap*, rxFont*, rxRend*,
+  rxCellMap*, rxColi*, rxMc*) that Rule of Rose does not link (it keeps
+  only 7 rx* strings), so they add nothing. Extracted to disc/wagaryu,
+  disc/wagaryu_demo, disc/phasepdx, disc/okage_demo (git-ignored).
+  Conclusion: version 4 of the library was in use from 2001 (Phase
+  Paradox) to 2006, and PoPoLoCrois SCPS-15063 stays the only donor with
+  symbols found so far.
+- Previously listed as open: Wa ga Ryuu o Miyo demo PAPX-90521 and retail
   SCPS-15080 (credits "RX Lib.チーム", 2004: best lead), PoPoLoCrois
   Hajimari no Bouken SCPS-15027/15028 (2002), Boku to Maou PAPX-90212 and
   Phase Paradox PCPX-96316 (2001, older library). Check each with
