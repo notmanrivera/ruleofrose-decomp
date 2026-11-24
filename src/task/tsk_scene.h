@@ -9,6 +9,15 @@ struct SceneVoice {
     int m_unk08;                // +0x08
 };
 
+struct SceneEffParam {
+    int m_kind;                 // +0x00
+    int m_unk04;                // +0x04
+    int m_unk08;                // +0x08
+    int m_unk0C;                // +0x0C
+    void *m_unk10;              // +0x10
+    unsigned char m_pad14[0x6C];
+};
+
 struct ScenePlayCmd {
     int m_unk00;                // +0x00
     int m_unk04;                // +0x04
@@ -38,8 +47,8 @@ struct ScenePlay {
     int m_unk38;                        // +0x38
     int m_unk3C;                        // +0x3C
     int m_camera_eff_id;                // +0x40
-    int m_unk44;                        // +0x44
-    unsigned char m_pad48[0x40];
+    void *m_unk44;                      // +0x44
+    char m_unk48[0x40];                 // +0x48
     void *m_unk88;                      // +0x88
     char m_unk8C[0x40];                 // +0x8C
     unsigned int m_imd_load_chr_id[16]; // +0xCC

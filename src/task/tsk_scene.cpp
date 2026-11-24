@@ -228,7 +228,42 @@ extern "C" void func_001F8028(int arg0, int arg1)
     M2C_FIELD(arg0, int *, 0x34) = arg1;
 }
 
+// NON_MATCHING: 7/93 differ, 2 relocs differ, 11 edits
+#ifdef NON_MATCHING
+extern "C" int func_00176CC8(void *, void *);
+extern "C" void func_001F8034(ScenePlay *self, const char *arg1)
+{
+    int stage = D_007B205C->m_unk7C;
+    if (self->m_unk44 != 0) {
+        heapFree(self->m_unk44);
+        self->m_unk44 = 0;
+    }
+    if (arg1 != 0 && strlen(arg1) != 0) {
+        FileReader reader;
+        strcpy(self->m_unk48, "data/");
+        char *path = self->m_unk48;
+        snprintf(path, 0x40, "%sevt/%02d/camera/", path, stage);
+        strcpy(path + strlen(path), arg1);
+        self->m_unk44 = D_006E9800.alloc(0x20000, D_002FE858, 0x316, 0, 1);
+        FileReadReq req;
+        req.m_unk08 = 1;
+        req.m_name = path;
+        req.m_size = 0x20000;
+        req.m_buf = self->m_unk44;
+        req.m_unk14 = 0;
+        req.m_offset = 0;
+        req.m_unk20 = 1;
+        reader.func_001BE524(&req, 0);
+        SceneEffParam param;
+        param.m_unk10 = self->m_unk44;
+        param.m_kind = 0xD;
+        param.m_unk08 = 0;
+        self->m_camera_eff_id = func_00176CC8(MagSystem::m_current_system->m_scene.m_unk837E0, &param);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F8034);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/task/tsk_scene", D_002FE858);
 
