@@ -83,8 +83,10 @@ public:
     DogActor m_actor[MAG_MAX_ACTOR]; // +0x02920
     int m_unk29120[0x100];          // +0x29120: per model (func_00138ED0's result)
     DogTexInfo m_tex_info;          // +0x29520
-    unsigned char m_unk29540[0x3E0];
-    unsigned char m_unk29920[0x10B0];
+    unsigned char m_unk29540[0x350];
+    DogModel m_unk29890;            // +0x29890..+0x29A2F
+    int m_unk29A30;                 // +0x29A30
+    unsigned char m_unk29A34[0xF9C];
     int m_shadow[4];                // +0x2A9D0
     int m_shadow_direct_on;         // +0x2A9E0
     void *m_shadow_direct;          // +0x2A9E4

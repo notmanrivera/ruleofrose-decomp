@@ -405,7 +405,37 @@ extern "C" float func_00133440(MagScene *self, int theNo)
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133454);
 
+// NON_MATCHING: 33/72 differ, 1 reloc differs (size 0x120, game 0x124), 13 edits
+#ifdef NON_MATCHING
+extern "C" float func_00133B80(MagScene *, DogModelHit *, const float *, float);
+static inline bool modelIsAlive(DogModel *m)
+{
+    if (m->m_i3r_root) {
+        ((I3D_OK == I3rRoot__CheckIdString(m->m_i3r_root)) ? (void)0 : ror_assert(D_002ED570, 248, D_002ED580));
+    }
+    return m->m_i3r_root != 0;
+}
+
+extern "C" float func_00133658(MagScene *self, DogModelHit *arg1, const float *arg2, float fparg0)
+{
+    float ret = -1.0f;
+    if (fparg0 > 0.0f) {
+        ret = func_00133B80(self, arg1, arg2, fparg0);
+        if (ret < 0.0f) {
+            ret = -1.0f;
+            if (self->m_unk29A30 >= 0) {
+                if (modelIsAlive(&self->m_unk29890)) {
+                    return self->m_unk29890.collideSphere(arg1, arg2, fparg0);
+                }
+                ret = -1.0f;
+            }
+        }
+    }
+    return ret;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133658);
+#endif
 
 extern "C" float func_0013377C(MagScene *self, DogVector *arg1, DogVector *arg2)
 {
