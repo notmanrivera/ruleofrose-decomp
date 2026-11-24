@@ -373,7 +373,6 @@ extern "C" unsigned int func_00123F78(MagLifeBwn *arg0, const DogVector *arg1)
 }
 
 // NON_MATCHING: fn matches; D_002EB980 needs .align 3 in config/rodata_align_manual.tsv
-#ifdef NON_MATCHING
 extern "C" int func_00124008(MagLifeBwn *arg0, int thePosIndex, float theDist)
 {
     int posidx = thePosIndex;
@@ -407,9 +406,6 @@ extern "C" int func_00124008(MagLifeBwn *arg0, int thePosIndex, float theDist)
 
     return posidx;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00124008);
-#endif
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00124150);
 

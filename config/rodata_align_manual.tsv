@@ -4,3 +4,5 @@ D_002FC0B8	3	unk/001D1BEC's first doubles (0x2FC0B8): the game has zero padding 
 D_002EF448	3	unk/HfmMain double constant (1.5707963267948966, loaded with ld in func_00148620) immediately follows 5-entry jtbl_002EF430 (0x2EF430..0x2EF444). Once func_001484EC compiles from C++, the jump table ends at 0x2EF444 and splat's D_002EF448 lacks .align 3.
 D_002FD770	4	game/gamsnd: "game/gamsnd.cpp" (16 bytes) sits at 0x2FD770, 16-aligned, after jtbl_002FD750 (0x14 bytes + 12 zero bytes). Once func_001E0C2C compiles from C++ its table is 0x14 bytes and the string must still land at +0x20.
 D_002F2A18	3	unk/EffLight2: an int table at 0x2F2A18, 8-aligned (4 zero bytes after "light3_%02d" at 0x2F2A0C-0x2F2A13). Once func_0017653C compiles from C++ the asm pieces follow its table directly and it lands 4 bytes early.
+D_002EEBD0	3	mag/magscenefocus: 8-byte data after the strings of func_00141770 ("far2"...); once that function compiles from C++ the data lands early without .align 3 (Hydrogen, e470002 Blocker).
+D_002EB980	3	mag/maglifebwn: 8-byte data after func_00124008's strings; it lands early without .align 3 once that function compiles from C++ (Hydrogen, 16eb5d3 Blocker).
