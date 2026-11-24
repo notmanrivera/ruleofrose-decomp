@@ -159,10 +159,6 @@ extern "C" void func_0018F824(SprTexture *self)
 INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018F824);
 #endif
 
-// NON_MATCHING: 1/58 differ, 1 edits
-#ifdef NON_MATCHING
-#define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
-extern "C" int Xii_heapFree__FPv(int) asm("heapFree__FPv");
 extern "C" int func_0018F9CC(SprTexture *self, int id)
 {
     unsigned int i = 0;
@@ -172,11 +168,11 @@ extern "C" int func_0018F9CC(SprTexture *self, int id)
         i++;
         if (self->m_entries[i].m_id < 0) goto fail;
     }
-    entry = self->m_entries + i;
-    if (entry->m_id < 0) {
+    if (self->m_entries[i].m_id < 0) {
 fail:
         return 0;
     }
+    entry = &self->m_entries[i];
     if (entry->m_data != 0) {
         int flags = entry->m_flags;
         if (flags & 8) {
@@ -188,9 +184,6 @@ fail:
     }
     return 1;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/spr/sprtexture", func_0018F9CC);
-#endif
 
 extern "C" int func_0018FAB4(SprTexture *self, int id)
 {
