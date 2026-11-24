@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
+extern "C" int func_0011AF04(MagLifePC *);
 
 extern "C" void X_func_001026B0(int, int, int) asm("func_001026B0");
 extern "C" float X_func_0010DA18__8DogActor(DogActor *) asm("func_0010DA18__8DogActor");
@@ -221,7 +222,21 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", init__17MagLifePCModeItemR9Mag
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", live__17MagLifePCModeItemR9MagLifePC);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", init__18MagLifePCModeDogGoR9MagLifePC);
+extern "C" void init__18MagLifePCModeDogGoR9MagLifePC(MagLifePCModeDogGo *arg0, MagLifePC *arg1)
+{
+    int v = func_0011AF04(arg1);
+    int mot = 0xF;
+    if (arg1->m_unk54 == 3) {
+        mot = 0x7E;
+    } else if (v != 0) {
+        mot = 0x12;
+    } else if (arg1->m_unkE4 == 2) {
+        mot = 0x15;
+    }
+    Xiiis_func_0011A320(arg1, mot, -1);
+    X_func_0011AF30(arg1, 0xF, 1);
+    arg1->m_unk08 = 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", live__18MagLifePCModeDogGoR9MagLifePC);
 
