@@ -4,6 +4,8 @@
 #include "mag/maglifewindow.h"
 #include "dog/dogtexinfo.h"
 #include "bed/bedmemory.h"
+extern "C" void live__10MagLifeBwn(MagLifeBwn *);
+extern "C" void MagLifeBwnCtrl__vfunc_02(void *);
 extern "C" float func_00133454(MagScene *, DogModelHit *, DogVector *, DogVector *, int);
 extern BedMemory D_006E9800;
 extern "C" void func_00176C50(void *);
@@ -246,7 +248,24 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magscene", D_002ED580);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00132048);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_0013233C);
+extern "C" void func_0013233C(MagScene *self)
+{
+    MagLifeBwn *bwn = &self->m_bwn;
+    if (bwn->m_actor) {
+        live__10MagLifeBwn(bwn);
+        MagLifeBwnCtrl__vfunc_02(&self->m_unk2BD20);
+        if (self->m_pc.m_actor) {
+            DogVector bwnPos = bwn->m_actor->m_unk40;
+            DogVector pcPos = self->m_pc.m_actor->m_unk40;
+            float dy = bwnPos.m_y - pcPos.m_y;
+            if (-250.0f <= dy && dy <= 250.0f) {
+                self->m_unk29120[self->m_unk853B4] |= 0x60;
+            } else {
+                self->m_unk29120[self->m_unk853B4] &= ~0x60;
+            }
+        }
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00132430);
 

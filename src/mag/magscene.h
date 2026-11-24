@@ -13,6 +13,7 @@
 #include "bed/bedsubmode.h"
 #include "mag/maglifeman.h"
 #include "mag/maglifepc.h"
+#include "mag/maglifebwn.h"
 #include "spr/sprtexture.h"
 
 class BedPad;
@@ -103,7 +104,8 @@ public:
     DogVector m_unk2ADA0;           // +0x2ADA0
     DogVector m_unk2ADB0;           // +0x2ADB0
     MagLifePC m_pc;                 // +0x2ADC0..+0x2AFDF (size 0x220)
-    unsigned char m_unk2AFE0[0xD40];
+    MagLifeBwn m_bwn;               // +0x2AFE0..+0x2BD1B (size 0xD3C)
+    unsigned char m_pad2BD1C[4];
     int m_unk2BD20;                 // +0x2BD20
     unsigned char m_unk2BD24[0x15B2C];
     MagLife m_unk41850;             // +0x41850
@@ -119,7 +121,9 @@ public:
     unsigned char m_unk437DC[4];
     MagUnk437E0 m_unk437E0[0x2000]; // +0x437E0
     unsigned char m_unk837E0[0x12C8]; // +0x837E0
-    unsigned char m_unk84AA8[0xA58];  // +0x84AA8
+    unsigned char m_unk84AA8[0x90C];  // +0x84AA8
+    int m_unk853B4;                 // +0x853B4
+    unsigned char m_unk853B8[0x148];
 
     MagScene();
     ~MagScene();
