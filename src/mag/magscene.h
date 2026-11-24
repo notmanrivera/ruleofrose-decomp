@@ -54,6 +54,11 @@ struct MagUnk437E0 {
     MagUnk437E0Sub m_sub;           // +0x10..+0x1F
 } ALIGNED(8); // size 0x20
 
+struct MagPrivateColli {
+    DogVector m_p1;
+    DogVector m_p2;
+};
+
 struct I3dDraw;
 
 // The scene's actors (the characters, the dog...).

@@ -4,6 +4,7 @@
 #include "mag/maglifewindow.h"
 #include "dog/dogtexinfo.h"
 #include "bed/bedmemory.h"
+extern const char D_002ED4B8[];
 extern "C" void live__10MagLifeBwn(MagLifeBwn *);
 extern "C" void MagLifeBwnCtrl__vfunc_02(void *);
 extern "C" float func_00133454(MagScene *, DogModelHit *, DogVector *, DogVector *, int);
@@ -931,16 +932,34 @@ extern "C" void func_00135DCC(MagScene *self)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135E20);
+extern "C" int func_00135E20(MagPrivateColli *theColli, const float *theP1, const float *theP2)
+{
+#line 2740
+    ASSERT(theP1);
+    ASSERT(theP2);
+    ASSERT(theP1[1] != theP2[1]);
+    MagPrivateColli *p = theColli;
+    for (int i = 0; i < 256; i++, p++) {
+        if (p->m_p1.m_y == p->m_p2.m_y) {
+            p->m_p1.m_x = theP1[0];
+            p->m_p1.m_y = theP1[1];
+            p->m_p1.m_z = theP1[2];
+            p->m_p1.m_w = 0.0f;
+            p->m_p2.m_x = theP2[0];
+            p->m_p2.m_y = theP2[1];
+            p->m_p2.m_z = theP2[2];
+            p->m_p2.m_w = 0.0f;
+            return i;
+        }
+    }
+#line 2764
+    ASSERT_S(0, D_002ED4B8);
+    return -1;
+}
 
 // NON_MATCHING: function matches (0x60/0x60), blocked on .rodata (D_002ED788 bundles 0x50 bytes of trailing maglifebwnctrl.h / 9DogEntity strings)
 #ifdef NON_MATCHING
 #define MAX_PRIVATE_COLLI 256
-struct MagPrivateColli {
-    DogVector m_p1;
-    DogVector m_p2;
-};
-
 extern "C" void func_00135F44(MagPrivateColli *theColli, int theID)
 {
 #line 2773
