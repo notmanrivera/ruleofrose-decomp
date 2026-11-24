@@ -1,5 +1,9 @@
 #include "include_asm.h"
 #include "emy/emy.h"
+#include "sdk/math.h"
+struct GrgOutDisappear;
+extern const float D_002EFC98[][8][4];
+extern "C" int func_00154D78(void);
 struct GrgOutWalk;
 extern const signed char D_002F0410[][3];
 extern "C" int func_0015582C(GrgOutWalk *);
@@ -99,7 +103,7 @@ extern "C" int X_func_0010423C(int, int) asm("func_0010423C");
 extern "C" int X_func_00118FEC(void *) asm("func_00118FEC__9MagSystem");
 extern "C" int X_func_00154408(GrgMain *) asm("func_00154408");
 extern "C" int X_func_00154668(...) asm("func_00154668");
-extern "C" int X_func_00154E20(GrgOutDisappear *) asm("func_00154E20");
+extern "C" int func_00154E20(GrgOutDisappear *);
 extern "C" short X_func_0015558C(GrgOutWalk *) asm("func_0015558C");
 extern "C" int X_func_00155648(GrgOutWalk *) asm("func_00155648");
 extern "C" int X_func_00166AD0(...) asm("func_00166AD0");
@@ -404,7 +408,7 @@ extern "C" void GrgOutDisappear__vfunc_02(GrgOutDisappear *self)
     self->m_unk3C = 0;
     X_func_001C6CCC(&D_007812C0, 5, &self->m_unk44);
     self->m_unk48 = 0;
-    res = X_func_00154E20(self);
+    res = func_00154E20(self);
     self->m_unk04 = 0;
     self->m_unk40 = res;
 }
@@ -443,7 +447,22 @@ extern "C" int func_00154D78(void)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", func_00154E20);
+extern "C" int func_00154E20(GrgOutDisappear *self)
+{
+    float target[4];
+    float pos[4];
+    int area = func_00154D78();
+    int idx = self->m_unk48;
+    target[3] = 0.0f;
+    target[0] = D_002EFC98[area][idx][0];
+    target[1] = D_002EFC98[area][idx][1];
+    target[2] = D_002EFC98[area][idx][2];
+    X_func_001D890C((void *)self->m_unk08, pos);
+    float dx = target[0] - pos[0];
+    float dz = target[2] - pos[2];
+    float half = sqrtf(dx * dx + dz * dz) * 0.5f;
+    return X_func_0010423C((int)(half * 0.7f), (int)(half * 1.3f));
+}
 
 extern "C" void GrgOutDisappear__vfunc_04(GrgOutDisappear *self)
 {
