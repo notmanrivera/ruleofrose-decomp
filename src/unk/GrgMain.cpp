@@ -9,7 +9,7 @@ extern "C" int func_00154584(GrgMain *);
 extern "C" int func_00154668(GrgMain *);
 struct GrgOutDisappear;
 extern const float D_002EFC98[][8][4];
-extern "C" int func_00154D78(void);
+extern "C" int func_00154D78(GrgOutDisappear *);
 struct GrgOutWalk;
 extern const signed char D_002F0410[][3];
 extern "C" int func_0015582C(GrgOutWalk *);
@@ -128,6 +128,15 @@ extern int D_006E9840;
 extern GrgWrdGlobal D_007812C0;
 extern GrgGlobalA D_007A4440;
 extern GrgGlobalB *D_007B205C;
+
+static inline int GrgAnimDone(void *world, EmyOut *obj)
+{
+    int r = X_func_001D19A8(world, obj->m_unk00);
+    if (r) {
+        obj->m_owner->m_unk2C = 1;
+    }
+    return r;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", func_00153E40);
 
@@ -460,13 +469,57 @@ extern "C" void GrgOutDisappear__vfunc_02(GrgOutDisappear *self)
     self->m_unk40 = res;
 }
 
+// NON_MATCHING: 11/104 differ, 17 edits
+#ifdef NON_MATCHING
+extern "C" void func_001DA740(void *, int, void *);
+extern "C" int GrgOutDisappear__vfunc_03(GrgOutDisappear *self)
+{
+    int area[4];
+    float pos[4];
+    float rot[4];
+
+    switch (self->m_unk04) {
+    case 0:
+        self->m_unk3C++;
+        X_func_001C6CCC(&D_007812C0, 5, area);
+        if (self->m_unk48 != 0 || area[0] != self->m_unk44) {
+            self->m_unk48 = 0;
+            self->m_unk40 = func_00154E20(self);
+        }
+        if (self->m_unk3C > self->m_unk40) {
+            int a = func_00154D78(self);
+            int idx = self->m_unk48;
+            pos[3] = 0.0f;
+            pos[0] = D_002EFC98[a][idx][0];
+            pos[1] = D_002EFC98[a][idx][1];
+            pos[2] = D_002EFC98[a][idx][2];
+            func_001DA740((void *)self->m_unk08, 5, pos);
+            rot[0] = rot[2] = rot[3] = 0.0f;
+            rot[1] = D_002EFC98[a][0][3];
+            func_001DA740((void *)self->m_unk08, 6, rot);
+            X_func_001D23F8(&D_007812C0, self->m_unk00, 0);
+            self->m_unk04 = 1;
+        }
+        break;
+    case 1:
+        if (GrgAnimDone(&D_007812C0, self)) {
+            ((GrgMain *)self->m_owner)->m_unk237++;
+            return 9;
+        }
+        break;
+    }
+    return -1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgOutDisappear__vfunc_03);
+#endif
 
 // D_002EFBC8..D_002EFC48: the end of unk/NorOutAttack's .rodata now (config/splits_manual.tsv)
 
-extern "C" int func_00154D78(void)
+extern "C" int func_00154D78(GrgOutDisappear *self)
 {
     GrgAreaInfo info;
+    (void)self;
 
     X_func_001C6CCC(&D_007812C0, 5, &info);
     switch (info.m_id) {
@@ -498,7 +551,7 @@ extern "C" int func_00154E20(GrgOutDisappear *self)
 {
     float target[4];
     float pos[4];
-    int area = func_00154D78();
+    int area = func_00154D78(self);
     int idx = self->m_unk48;
     target[3] = 0.0f;
     target[0] = D_002EFC98[area][idx][0];
@@ -642,15 +695,6 @@ extern "C" void GrgOutTest__vfunc_02(GrgOutTest *self)
 {
     D_007B205C->m_unk14C = 1;
     self->m_unk04 = 0;
-}
-
-static inline int GrgAnimDone(void *world, EmyOut *obj)
-{
-    int r = X_func_001D19A8(world, obj->m_unk00);
-    if (r) {
-        obj->m_owner->m_unk2C = 1;
-    }
-    return r;
 }
 
 extern "C" int GrgOutTest__vfunc_03(GrgOutTest *self)
