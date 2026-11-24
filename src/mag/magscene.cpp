@@ -399,7 +399,16 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00134460);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001344C4);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00134624);
+extern "C" int func_00134624(MagScene *self, const MagUnk437E0 *arg1)
+{
+    for (int i = 0; i < 0x2000; i++) {
+        if (self->m_unk437E0[i].m_sub.m_unk0E == -1) {
+            self->m_unk437E0[i] = *arg1;
+            return i;
+        }
+    }
+    return -1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00134698);
 

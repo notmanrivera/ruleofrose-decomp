@@ -50,7 +50,7 @@ struct MagUnk437E0 {
     int m_unk08;                    // +0x08
     int m_unk0C;                    // +0x0C
     MagUnk437E0Sub m_sub;           // +0x10..+0x1F
-}; // size 0x20
+} ALIGNED(8); // size 0x20
 
 struct I3dDraw;
 
@@ -107,13 +107,9 @@ public:
     unsigned char m_unk43500[0x218];
     int m_unk43718;                 // +0x43718
     TxtToken m_option_bucket[16];   // +0x4371C
-    union {
-        unsigned char m_unk437DC[0x41D24];
-        struct {
-            unsigned char m_pad437DC[4];
-            MagUnk437E0 m_unk437E0[0x2000]; // +0x437E0
-        };
-    };
+    unsigned char m_unk437DC[4];
+    MagUnk437E0 m_unk437E0[0x2000]; // +0x437E0
+    unsigned char m_unk837E0[0x1D20];
 
     MagScene();
     ~MagScene();
