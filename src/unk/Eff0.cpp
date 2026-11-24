@@ -2,6 +2,39 @@
 #include "unk/Eff0.h"
 #include "dog/doglightpool.h"
 #include "sdk/string.h"
+struct Model_DCC8 {
+    unsigned char m_pad00[0x11C];       // +0x000
+    void *m_i3r_root;                   // +0x11C
+    unsigned char m_pad120[0x1A0 - 0x120];
+    int m_unk1A0;                       // +0x1A0
+};
+struct EffBreath1Arg : public Eff0Arg {
+    EffVec3 m_unk10;                    // +0x10
+    EffVec3 m_unk1C;                    // +0x1C
+    float m_unk28;                      // +0x28
+    EffVec4 m_unk2C;                    // +0x2C
+    Model_DCC8 *m_model;                // +0x3C
+};
+struct EffBreath1_02 : public Eff0 {
+    EffVec3 m_unk24;                    // +0x24
+    EffVec3 m_unk30;                    // +0x30
+    float m_unk3C;                      // +0x3C
+    EffVec4 m_unk40;                    // +0x40
+    Model_DCC8 *m_model;                // +0x50
+    int m_node;                         // +0x54
+    unsigned char m_pad58[0x08];        // +0x58
+    float m_unk60;                      // +0x60
+    float m_unk64;                      // +0x64
+    float m_unk68;                      // +0x68
+    float m_unk6C;                      // +0x6C
+    int m_unk70;                        // +0x70
+    unsigned char m_pad74[0x180 - 0x74];
+    int m_unk180;                       // +0x180
+    float m_unk184;                     // +0x184
+    float m_unk188;                     // +0x188
+    float m_unk18C;                     // +0x18C
+    float m_unk190;                     // +0x190
+};
 struct Scale4_CEBC {
     float v[4];
 };
@@ -1664,7 +1697,43 @@ extern "C" void EffBloodStay3Prim__vfunc_08(int obj, int render, int state, int 
   prim08End(prim08Vertex(prim08Packet(cmd, matrix), (void *) (obj + 0x30), new_var));
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBreath1__vfunc_02);
+extern "C" int EffBreath1__vfunc_02(EffBreath1_02 *arg0, EffBreath1Arg *arg1)
+{
+    if (!Eff0__vfunc_02(arg0, arg1)) {
+        return 0;
+    }
+    arg0->m_unk24 = arg1->m_unk10;
+    const char *p = D_002F21C0;
+    arg0->m_unk30 = arg1->m_unk1C;
+    arg0->m_unk3C = arg1->m_unk28;
+    arg0->m_unk40 = arg1->m_unk2C;
+    Model_DCC8 *model = arg1->m_model;
+    arg0->m_model = model;
+    if (model->m_i3r_root == 0) {
+        ror_assert(D_002F21D0, 0x131, D_002F21E0);
+    }
+    if (p == 0) {
+        ror_assert(D_002F21D0, 0x131, D_002F21F0);
+    }
+    arg0->m_node = func_0022B3D8(model->m_i3r_root, p);
+    if ((arg0->m_model->m_unk1A0 & 0xFF00) == 0x2400) {
+        arg0->m_unk68 = 0.0f;
+        arg0->m_unk60 = 8.0f;
+        arg0->m_unk64 = 25.0f;
+        arg0->m_unk6C = 1.0f;
+    } else {
+        arg0->m_unk60 = 0.0f;
+        arg0->m_unk64 = 14.0f;
+        arg0->m_unk68 = 0.0f;
+        arg0->m_unk6C = 1.0f;
+    }
+    arg0->m_unk184 = 0.0f;
+    arg0->m_unk70 = 0x3E;
+    arg0->m_unk188 = 0.0f;
+    arg0->m_unk180 = 0;
+    func_0016E438((char *)arg0);
+    return 1;
+}
 
 extern "C" int EffBreath1__vfunc_05(EffBreath1 *arg0)
 {
