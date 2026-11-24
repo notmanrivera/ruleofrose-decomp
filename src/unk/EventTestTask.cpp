@@ -1,5 +1,27 @@
 #include "include_asm.h"
 #include "task/cmnitask.h"
+struct EventEntry64 {
+    unsigned char unk00[0x40];
+};
+struct EventTestTask {
+    void *m_vtable;
+    int m_unk04;
+    int m_unk08;
+    int m_unk0C;
+    int m_unk10;
+    int m_unk14;
+    int m_unk18;
+    int m_unk1C;
+    int m_unk20;
+    int m_unk24;
+    int m_unk28;
+};
+extern int D_002DB2A4;
+extern const unsigned char D_00301AF8[];
+extern unsigned char D_007B4E08[];
+extern unsigned char D_007B4E28[];
+extern EventEntry64 D_007B4EC8[0x28];
+extern int D_007B5968[0x28];
 extern "C" int Xiiii_strncpy(int, int, int) asm("strncpy");
 extern "C" void Xff_func_00218424(float, float) asm("func_00218424");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
@@ -14,7 +36,29 @@ extern "C" int X_func_00218424(...) asm("func_00218424");
 extern int D_003079A9;
 extern int D_006E9840;
 
-INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00216828);
+extern "C" void func_00216828(EventTestTask *self)
+{
+    int i;
+
+    self->m_vtable = &_vt$13EventTestTask;
+    D_002DB2A4 = 0;
+    D_007B4E08[0] = D_00301AF8[0];
+    D_007B4E28[0] = D_00301AF8[0];
+    for (i = 0; i < 0x28; i++) {
+        D_007B4EC8[i].unk00[0] = D_00301AF8[0];
+        D_007B5968[i] = 0;
+    }
+    self->m_unk28 = 0;
+    self->m_unk24 = 0;
+    self->m_unk20 = 0;
+    self->m_unk1C = 0;
+    self->m_unk04 = 0;
+    self->m_unk08 = 0;
+    self->m_unk0C = 0;
+    self->m_unk10 = 0;
+    self->m_unk14 = 0;
+    self->m_unk18 = 0;
+}
 
 extern "C" void EventTestTask__vfunc_06(int arg0, int arg1)
 {
