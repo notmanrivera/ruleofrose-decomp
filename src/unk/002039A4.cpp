@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "game/gamsnd.h"
+#include "game/gamman.h"
 extern "C" void func_00203F38(GamTaskBase *);
 extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
@@ -24,7 +25,6 @@ extern "C" int X_func_0020E664(...) asm("func_0020E664");
 extern "C" int X_func_0020E690(...) asm("func_0020E690");
 extern int D_002FF6A8;
 extern int D_002FF6E8;
-extern int D_007812C0;
 extern int D_007A4440;
 extern int D_007B2580;
 
@@ -127,7 +127,10 @@ extern "C" void func_00204090(int arg0)
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_002040AC);
+extern "C" void func_002040AC()
+{
+    D_007812C0.m_unk22368 = (unsigned int)((float)(D_007812C0.m_vcount * 1000) / 25.0f);
+}
 
 extern "C" void func_00204148()
 {

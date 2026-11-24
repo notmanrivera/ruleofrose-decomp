@@ -228,7 +228,7 @@ public:
     unsigned int m_jumpAreaAct[2];                  // +0x222DC: regist_jump_area_act, get_jump_area_act
     unsigned char m_pad222E4[0x80];
     unsigned int m_emyParam;                        // +0x22364: setEmyParam
-    unsigned char m_pad22368[0x4];
+    unsigned int m_unk22368;                        // +0x22368
     char m_unk2236C[4][0x40];                       // +0x2236C: four strings: func_001C143C clears the first byte of each
     int m_unk2246C;                                 // +0x2246C
     unsigned char m_pad22470[0xC0];
