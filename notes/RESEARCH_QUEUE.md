@@ -17,6 +17,62 @@ judgement and go to Sonnet.
 
 ## Open
 
+- [x] R24 Split mw/sound into its real files from PoPoLoCrois's debug info
+  (2026-11-23). disc/popolo/SCPS_150.63 (owner's disc, git-ignored) keeps
+  .symtab, DWARF 1 .debug and .line, and its RX library is byte-identical
+  to ours (tools/donor_symbols.py: 586 names, symbols/donor_symbols.tsv,
+  313 of the 583 functions in mw/sound). Find, for every donor function
+  that we matched: its compile unit / source file name (DWARF 1
+  TAG_compile_unit AT_name, .line ranges, or STT_FILE entries in .symtab)
+  and its order inside that unit; map them to our addresses and propose
+  file boundaries for mw/sound (rows for config/splits_manual.tsv: start,
+  end, name, evidence), with .data/.rodata/.bss boundaries where the donor
+  shows them. Note gaps (our functions with no donor match) and whether
+  they fall inside one donor file. Derive names/paths only, never code.
+  Tools: pyelftools (DWARF 1 is not supported: parse .debug by hand, the
+  format is in zipzip11/ps2-dwarf1 and the DWARF 1.1 spec). Read-only;
+  output notes/research/R24-mwsound-split.md plus a TSV in build/research/.
+  Done 2026-11-23 (Sonnet): no RX file names in the donor (its DWARF covers
+  only game code) but one .text section symbol per object gives 25 objects;
+  applied as mw/sound/*, mw/sys/*, mw/file/*, mw/thread/*, mw/gs/vsync
+  (placeholder names), full build green. R25 must look for RX types in
+  the rx/include headers the DWARF does list (rxgeom.h, rxpkt.h...).
+- [ ] R25 RX library types from PoPoLoCrois's DWARF 1 (2026-11-23). From
+  the same .debug: the structs, enums and function prototypes of the RX
+  library (rxSnd*, rxSys*, rxFile*, rxTh*, rxGs*, rxmpeg), with member
+  names, offsets, sizes and types, and which ones our code uses (our
+  snd/rxmpeg, callers of rx* in src/). Output a proposed header layout
+  (include/rx/*.h, one per original header if the DWARF shows them) in
+  notes/research/R25-rx-types.md; names and types only, no code. Depends
+  on R24's DWARF parser (reuse it).
+- [ ] R27 Where to pay the readability debt cheapest (2026-11-23).
+  tools/rules_check.py --list gives 2,395 raw offsets and 3,501 alias
+  declarations in matched code (config/rules_check.tsv). Rank files by
+  offsets that a header already names (the class header exists and has a
+  member at that offset) vs offsets that need a new member; group by
+  class; estimate the effort per file; list the alias declarations that a
+  real prototype could replace without changing the bytes (same arg types
+  in registers). Exclude the G8-G14 files reserved for Neon/Argon
+  (build/workers/fable-tasks.tsv) and files a worker owns
+  (build/workers/codex-owns.txt). Output
+  notes/research/R27-readability-debt.md: a per-file plan, top 15 first.
+- [ ] R28 Which near misses Smoke can close (2026-11-23). Smoke
+  (tools/cpp_perm.py + tools/cpp_perm_queue.py, log
+  build/workers/cpp-perm.log, runs in build/cpp_perm/) has 3 matches in
+  its history; the 11-23 round took 20 candidates (exact size, right
+  relocations) with no new match. From the log and the run directories:
+  base score vs best score per candidate, minutes spent, which mutations
+  improved the score, and what the remaining diff is (registers only,
+  instruction order, extra/missing instruction). Recommend: candidate
+  filter (base score cutoff, size), minutes per function, and whether to
+  use more of its mutation passes or a second pass with Cyrax rewrites.
+  Output notes/research/R28-smoke-yield.md.
+- [x] R26 Other games with the RX library and symbols (2026-11-23, owner
+  with ChatGPT; prompt notes/research/R26-rx-donors-prompt.md). Results and
+  checks in notes/research/R26-rx-donors.md: Suikoden Tactics has no RX;
+  Arc the Lad's hidden 2002 CD (inside ARC.000) has RX 4 but is stripped.
+  Next discs to get: Wa ga Ryuu o Miyo PAPX-90521 / SCPS-15080.
+
 - [x] R23 Make our permuters find more matches (2026-11-22). Code names:
   **Sektor** = the official decomp-permuter (tools/perm_official.py; random
   mutations; C only: 62 of 77 queued near misses could not be prepared,

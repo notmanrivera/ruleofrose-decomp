@@ -192,7 +192,31 @@ segments:
       - [0x116728, cpp, debug/naga_debug] # .text (certain)
       - [0x116828, cpp, unk/EventTestTask] # .text (manual)
       - [0x118500, asm, mw/i3d] # .text (manual)
-      - [0x137D00, asm, mw/sound] # .text (manual)
+      - [0x137D00, asm, mw/sound/sndinit] # .text (manual)
+      - [0x137DD0, asm, mw/sound/sndsys] # .text (manual)
+      - [0x138538, asm, mw/sound/sndiop] # .text (manual)
+      - [0x138DC8, asm, mw/sound/sndspu] # .text (manual)
+      - [0x139E58, asm, mw/sound/sndreverb] # .text (manual)
+      - [0x13A180, asm, mw/sound/sndxseq] # .text (manual)
+      - [0x13B238, asm, mw/sound/sndbgm] # .text (manual)
+      - [0x13BD70, asm, mw/sound/sndse] # .text (manual)
+      - [0x13CB08, asm, mw/sound/sndpcm] # .text (manual)
+      - [0x13DBD0, asm, mw/sound/sndadpcm] # .text (manual)
+      - [0x13F960, asm, mw/sound/sndrpc] # .text (manual)
+      - [0x13FF58, asm, mw/sys/sys] # .text (manual)
+      - [0x142AA8, asm, mw/sys/sysmon] # .text (manual)
+      - [0x1433E8, asm, mw/file/file] # .text (manual)
+      - [0x145948, asm, mw/file/fileload] # .text (manual)
+      - [0x145CB0, asm, mw/file/sif] # .text (manual)
+      - [0x146278, asm, mw/file/device] # .text (manual)
+      - [0x146318, asm, mw/file/devhost] # .text (manual)
+      - [0x146840, asm, mw/file/devcdrom] # .text (manual)
+      - [0x148018, asm, mw/file/devhdd] # .text (manual)
+      - [0x148660, asm, mw/file/devlocal] # .text (manual)
+      - [0x148FD8, asm, mw/file/request] # .text (manual)
+      - [0x149B88, asm, mw/thread/thread] # .text (manual)
+      - [0x14AFE8, asm, mw/thread/threadsync] # .text (manual)
+      - [0x14B1F8, asm, mw/gs/vsync] # .text (manual)
       - [0x14B490, asm, sdk/libcdvd] # .text (signature)
       - [0x14D220, asm, sdk/libmc] # .text (signature)
       - [0x14EA58, asm, sdk/libmpeg] # .text (signature)
@@ -1703,7 +1727,19 @@ segments:
       - [0x1D9E08, data, unk/002155F4] # .data (anchor)
       - [0x1DB2A0, data, unk/EventTestTask] # .data (manual)
       - [0x1DB330, data, mw/i3d] # .data (manual)
-      - [0x1DB638, data, mw/sound] # .data (manual)
+      - [0x1DB638, data, mw/sound/sndsys] # .data (manual)
+      - [0x1DB95C, data, mw/sound/sndiop] # .data (manual)
+      - [0x1DB968, data, mw/sound/sndspu] # .data (manual)
+      - [0x1DB980, data, mw/sound/sndadpcm] # .data (manual)
+      - [0x1DB9C0, data, mw/sound/sndrpc] # .data (manual)
+      - [0x1DB9D0, data, mw/sys/sys] # .data (manual)
+      - [0x1DBE98, data, mw/sys/sysmon] # .data (manual)
+      - [0x1DBEB0, data, mw/file/devhost] # .data (manual)
+      - [0x1DC1C0, data, mw/file/devcdrom] # .data (manual)
+      - [0x1DC220, data, mw/file/devhdd] # .data (manual)
+      - [0x1DC228, data, mw/file/request] # .data (manual)
+      - [0x1DC260, data, mw/thread/thread] # .data (manual)
+      - [0x1DC278, data, mw/gs/vsync] # .data (manual)
       - [0x1DC2D0, data, sdk/libcdvd] # .data (signature)
       - [0x1DDE88, data, sdk/libmc] # .data (signature)
       - [0x1DDEA8, data, sdk/libmpeg] # .data (signature)
@@ -2136,7 +2172,27 @@ segments:
       - [0x201AC0, .rodata, debug/naga_debug] # .rodata (certain)
       - [0x201B00, .rodata, unk/EventTestTask] # .rodata (manual)
       - [0x201E78, rodata, mw/i3d] # .rodata (manual)
-      - [0x203CB0, rodata, mw/sound] # .rodata (manual)
+      - [0x203CB0, rodata, mw/sound/sndinit] # .rodata (manual)
+      - [0x203CE8, rodata, mw/sound/sndiop] # .rodata (manual)
+      - [0x203D10, rodata, mw/sound/sndspu] # .rodata (manual)
+      - [0x203F38, rodata, mw/sound/sndxseq] # .rodata (manual)
+      - [0x2041A8, rodata, mw/sound/sndbgm] # .rodata (manual)
+      - [0x2041F0, rodata, mw/sound/sndse] # .rodata (manual)
+      - [0x204238, rodata, mw/sound/sndpcm] # .rodata (manual)
+      - [0x2042C8, rodata, mw/sound/sndadpcm] # .rodata (manual)
+      - [0x204398, rodata, mw/sound/sndrpc] # .rodata (manual)
+      - [0x204400, rodata, mw/sys/sys] # .rodata (manual)
+      - [0x204A48, rodata, mw/sys/sysmon] # .rodata (manual)
+      - [0x204AD8, rodata, mw/file/file] # .rodata (manual)
+      - [0x204B38, rodata, mw/file/fileload] # .rodata (manual)
+      - [0x204B90, rodata, mw/file/sif] # .rodata (manual)
+      - [0x204D40, rodata, mw/file/devhost] # .rodata (manual)
+      - [0x204D68, rodata, mw/file/devcdrom] # .rodata (manual)
+      - [0x204E10, rodata, mw/file/devhdd] # .rodata (manual)
+      - [0x204E70, rodata, mw/file/devlocal] # .rodata (manual)
+      - [0x204F30, rodata, mw/file/request] # .rodata (manual)
+      - [0x204FC8, rodata, mw/thread/thread] # .rodata (manual)
+      - [0x205008, rodata, mw/thread/threadsync] # .rodata (manual)
       - [0x205048, rodata, sdk/libcdvd] # .rodata (signature)
       - [0x2052D8, rodata, sdk/libmc] # .rodata (signature)
       - [0x205390, rodata, sdk/libmpeg] # .rodata (signature)
@@ -2172,7 +2228,26 @@ segments:
       - { type: bss, vram: 0x007A3350, name: system/sysnowloading } # .bss
       - { type: bss, vram: 0x007B2060, name: unk/0020ED9C } # .bss
       - { type: bss, vram: 0x007B4E08, name: unk/EventTestTask } # .bss
-      - { type: bss, vram: 0x007B5AC0, name: mw/sound } # .bss
+      - { type: bss, vram: 0x007B5AC0, name: mw/sound/sndsys } # .bss
+      - { type: bss, vram: 0x007B6B00, name: mw/sound/sndiop } # .bss
+      - { type: bss, vram: 0x007B6B80, name: mw/sound/sndspu } # .bss
+      - { type: bss, vram: 0x007B97C0, name: mw/sound/sndxseq } # .bss
+      - { type: bss, vram: 0x007BBBC0, name: mw/sound/sndbgm } # .bss
+      - { type: bss, vram: 0x007BBED0, name: mw/sound/sndse } # .bss
+      - { type: bss, vram: 0x007BC400, name: mw/sound/sndpcm } # .bss
+      - { type: bss, vram: 0x007BEFC0, name: mw/sound/sndadpcm } # .bss
+      - { type: bss, vram: 0x007C9300, name: mw/sound/sndrpc } # .bss
+      - { type: bss, vram: 0x007CC340, name: mw/sys/sys } # .bss
+      - { type: bss, vram: 0x007CE800, name: mw/sys/sysmon } # .bss
+      - { type: bss, vram: 0x007DABB0, name: mw/file/file } # .bss
+      - { type: bss, vram: 0x007DF9C0, name: mw/file/device } # .bss
+      - { type: bss, vram: 0x007DFA50, name: mw/file/devhost } # .bss
+      - { type: bss, vram: 0x007DFB80, name: mw/file/devcdrom } # .bss
+      - { type: bss, vram: 0x007F0C18, name: mw/file/devhdd } # .bss
+      - { type: bss, vram: 0x007F1EC0, name: mw/file/devlocal } # .bss
+      - { type: bss, vram: 0x007F6910, name: mw/file/request } # .bss
+      - { type: bss, vram: 0x00807F40, name: mw/thread/thread } # .bss
+      - { type: bss, vram: 0x00818640, name: mw/gs/vsync } # .bss
       - { type: bss, vram: 0x00818680, name: sdk/libcdvd } # .bss
       - { type: bss, vram: 0x00818940, name: sdk/libmc } # .bss
       - { type: bss, vram: 0x00819F40, name: sdk/libmpeg } # .bss
