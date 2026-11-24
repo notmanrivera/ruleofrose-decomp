@@ -610,7 +610,18 @@ extern "C" int func_001E435C(GamSndMan *arg0, int arg1)
     return r;
 }
 
-INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E43A4);
+extern "C" int func_001E43A4(GamSndMan *self, unsigned int bank, int, unsigned int check)
+{
+    // The result stays in a0 until the final boolean normalization.
+    register int result PS2_REG("$4") = 1;
+    if (bank >= 65U) result = 0;
+    else if (check != 0) {
+        register int value PS2_REG("$2") = self->m_bankIds[bank];
+        value = ~value;
+        result = value != 0;
+    }
+    return result != 0;
+}
 
 extern "C" void func_001E43E0(GamSndMan *arg0, char *arg1, int *arg2, int *arg3)
 {
