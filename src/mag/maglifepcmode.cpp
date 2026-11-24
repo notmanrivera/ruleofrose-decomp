@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
 #include "mag/magscene.h"
+extern "C" float func_0011D720(MagLifePC *);
+void vecTurnY(float *, float);
 extern "C" void func_00102AB8(DogVector *theOut, int theA);
 extern "C" int func_0011BE30(MagLifePC *);
 extern const int D_002EAD68[];
@@ -33,12 +35,30 @@ extern "C" void X_ror_assert(const char *, int, const char *) asm("ror_assert");
 extern const char D_002EAD28[];
 extern const char D_002EAD60[];
 
-extern "C" void func_00120788(MagLifePCMode *arg0, MagLifePC *arg1, int arg2)
+extern "C" void func_00120788(MagLifePCMode *arg0, MagLifePC *arg1, DogVector *arg2, float arg3, float arg4)
 {
-    X_func_0011EE00(arg1, arg2);
+    X_func_0011EE00(arg1, (int)arg2);
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", func_001207A8);
+extern "C" void func_001207A8(MagLifePCMode *arg0, MagLifePC *arg1)
+{
+    DogActor *actor = arg1->m_actor;
+    DogVector move;
+    float rot = 0.0f;
+    float turn = rot;
+    if (actor->func_0010DB18() < 0) {
+        float t = actor->func_0010DA4C();
+        if (t >= 0.0f) {
+            DogVector abs;
+            float dt = func_0011D720(arg1);
+            actor->func_00109348(t * 2.0f, (t + dt) * 2.0f, move, &turn, &abs);
+            rot = abs.m_y;
+        }
+    }
+    move.m_w = 1.0f;
+    vecTurnY(&move.m_x, actor->m_unk50.m_y);
+    func_00120788(arg0, arg1, &move, rot, turn);
+}
 
 extern "C" void live__13MagLifePCModeR9MagLifePC(MagLifePCMode *arg0, MagLifePC *arg1)
 {
