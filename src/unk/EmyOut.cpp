@@ -4,6 +4,13 @@
 #include "sdk/string.h"
 #include "game/gamman.h"
 #include "game/gamtrg.h"
+extern "C" void func_001DA228(void *, int, void *);
+extern "C" void func_001DA740(void *, int, void *);
+extern "C" int func_001C6FE0(GamMan *, int, unsigned int, int);
+extern "C" int func_001DC48C(void *, int, int, unsigned short *);
+extern "C" int func_001CA8E8(GamMan *, unsigned short, int, unsigned short, int, int, int);
+extern "C" void func_001CC250(GamMan *, int, unsigned int, unsigned short, int, int);
+extern "C" void func_00169810(int, unsigned int);
 extern "C" int func_001E5E58(void *, int, int, void *);
 extern "C" int func_001E5660(void *, int, int, void *);
 static inline void *getGamSnd(GamMan *g) { return g->m_snd; }
@@ -56,9 +63,6 @@ extern "C" void X_func_00169A98(void *, void *, float) asm("func_00169A98");
 extern "C" void X_func_0016A6B4(void *) asm("func_0016A6B4");
 extern "C" int X_func_001CBEDC(void *, int) asm("func_001CBEDC");
 extern "C" void X_func_001DA130(void *, int, int) asm("func_001DA130");
-extern "C" void X_func_001DA228(void *, int, int *) asm("func_001DA228");
-extern "C" void X_func_001DA740(void *, int, int *) asm("func_001DA740");
-extern "C" void X_func_001DC48C(void *, int, int, unsigned short *) asm("func_001DC48C");
 extern "C" void X_func_00202F60(void *) asm("func_00202F60");
 extern "C" void X_func_00202FBC(void *) asm("func_00202FBC");
 extern "C" void X_func_002039A4(void *) asm("func_002039A4");
@@ -215,8 +219,8 @@ extern "C" int func_00165734(EmyMain *self)
     if (D_007A3350 == 0) {
         return 0;
     }
-    X_func_001DA228((void *)D_007A3350, 8, &a);
-    X_func_001DA228(self->m_objStat, 8, &b);
+    func_001DA228((void *)D_007A3350, 8, &a);
+    func_001DA228(self->m_objStat, 8, &b);
     return a == b;
 }
 
@@ -301,7 +305,36 @@ set_flag:
     self->m_flags30 |= flag;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_0016621C);
+extern "C" void func_0016621C(EmyMain *self)
+{
+    unsigned short sp0;
+    unsigned short sp2;
+    int sp4;
+
+    func_001DA228(self->m_objStat, 0x66, &sp0);
+    if (sp0 == 0xA00) {
+        sp0 = 0;
+        sp4 = 0;
+        func_001DA740(self->m_objStat, 0x66, &sp0);
+        func_001DA740(self->m_objStat, 0x67, &sp4);
+        return;
+    }
+    sp4 = func_001C6FE0(&D_007812C0, 2, 5U, -1);
+    func_001DA740(self->m_objStat, 0x67, &sp4);
+    if (sp4 == 0) {
+        sp0 = 0;
+        func_001DA740(self->m_objStat, 0x66, &sp0);
+        return;
+    }
+    func_001DA228(self->m_objStat, 0x66, &sp0);
+    func_001DC48C(D_007812C0.m_unq, sp0, 0xF, &sp2);
+    if (sp2 != 0xFFFF) {
+        func_001CA8E8(&D_007812C0, sp2, sp4, sp0, 0, -1, 1);
+    } else {
+        func_001CC250(&D_007812C0, -1, (unsigned int)sp4, sp0, 0, 0);
+    }
+    func_00169810(self->m_id, (unsigned int)sp4);
+}
 
 extern "C" void func_00166364(EmyMain *self, int arg1)
 {
@@ -330,7 +363,7 @@ extern "C" int func_0016640C(EmyMain *self)
 {
     int r;
 
-    X_func_001DA740(self->m_objStat, 0x1B, &r);
+    func_001DA740(self->m_objStat, 0x1B, &r);
     return r;
 }
 
@@ -452,7 +485,7 @@ extern "C" void *func_001669A4(EmyMain *self)
 {
     unsigned short idx;
 
-    X_func_001DC48C((char *)&D_007812C0 + 0x22220, X_func_001CBEDC(&D_007812C0, self->m_id), 0x20, &idx);
+    func_001DC48C(D_007812C0.m_unq, X_func_001CBEDC(&D_007812C0, self->m_id), 0x20, &idx);
     return &D_002F18B8[idx];
 }
 
