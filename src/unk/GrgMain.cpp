@@ -597,7 +597,42 @@ extern "C" void GrgOutTest__vfunc_02(GrgOutTest *self)
     self->m_unk04 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgOutTest__vfunc_03);
+static inline int GrgAnimDone(void *world, EmyOut *obj)
+{
+    int r = X_func_001D19A8(world, obj->m_unk00);
+    if (r) {
+        obj->m_owner->m_unk2C = 1;
+    }
+    return r;
+}
+
+extern "C" int GrgOutTest__vfunc_03(GrgOutTest *self)
+{
+    switch (self->m_unk04) {
+    case 0:
+        X_func_001680A0(self, 0x15, 0);
+        self->m_unk04 = 1;
+        break;
+    case 1:
+        if (GrgAnimDone(&D_007812C0, self)) {
+            X_func_001680A0(self, 0x16, 0);
+            self->m_unk04 = 2;
+        }
+        break;
+    case 2:
+        if (GrgAnimDone(&D_007812C0, self)) {
+            X_func_001680A0(self, 0x15, 0);
+            self->m_unk04 = 1;
+        }
+        break;
+    case 3:
+        if (GrgAnimDone(&D_007812C0, self)) {
+            self->m_unk04 = 1;
+        }
+        break;
+    }
+    return -1;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/GrgMain", D_002F01C0);
 
