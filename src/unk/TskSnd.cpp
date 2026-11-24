@@ -2,6 +2,12 @@
 #include "task/cmnitask.h"
 #include "game/gamman.h"
 #include "game/gamsnd.h"
+struct SndMan;
+extern SndMan D_007B2580;
+extern "C" int func_001800D0(SndMan *, int);
+extern "C" void func_001801C8(SndMan *, int);
+extern "C" int func_0017FD58(SndMan *, char *, int, int, int);
+extern "C" void func_00180078(SndMan *, int, int);
 static inline GamSndMan *getSnd(GamMan *g) { return (GamSndMan *)g->m_snd; }
 
 class TskSnd : public CmnITask {
@@ -131,7 +137,18 @@ extern "C" int func_001F9670(TskSnd *self)
     return 1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskSnd", func_001F96C0);
+extern "C" int func_001F96C0(TskSnd *self)
+{
+    if (func_001800D0(&D_007B2580, self->m_unk8C) != -1) {
+        func_001801C8(&D_007B2580, self->m_unk8C);
+        return 0;
+    }
+    func_0017FD58(&D_007B2580, self->m_name04, self->m_unkAC, self->m_unkB0, self->m_unkA8);
+    if (self->m_unkA8 != 0) {
+        func_00180078(&D_007B2580, self->m_unkB0, 1);
+    }
+    return 1;
+}
 
 extern "C" int func_001F974C(TskSnd *self)
 {
