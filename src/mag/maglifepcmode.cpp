@@ -153,9 +153,9 @@ extern "C" void MagLifePCModeRun2D__vfunc_01(MagLifePCModeRun2D *arg0, MagLifePC
     Xiiis_func_0011A320(arg1, 0x31, -1);
 }
 
-extern "C" void func_001211AC()
+extern "C" void func_001211AC(MagLifePCModeRun2D *arg0, MagLifePC *arg1, const BedPad *arg2)
 {
-    X_func_00120DEC();
+    X_func_00120DEC(arg0, arg1, arg2);
 }
 
 extern "C" void MagLifePCModeRun2D__vfunc_02(MagLifePCModeRun2D *arg0, MagLifePC *arg1)
@@ -163,7 +163,33 @@ extern "C" void MagLifePCModeRun2D__vfunc_02(MagLifePCModeRun2D *arg0, MagLifePC
     X_func_0011BDC0(arg1);
 }
 
+// NON_MATCHING: 26/58 differ, 3 relocs differ (size 0xE8, game 0xE4), 14 edits
+#ifdef NON_MATCHING
+extern "C" int func_0011B204(MagLifePC *, float, float);
+extern "C" int MagLifePCModeRun2D__vfunc_03(MagLifePCModeRun2D *arg0, MagLifePC *arg1, const BedPad *arg2)
+{
+    if (arg1->m_unkDC != 0) {
+        Xiiiui_func_0011C1E8(arg1, 5, 0U, 0);
+        return 2;
+    }
+    if (arg1->m_unk104 > 0.0f) {
+        if (func_0011B204(arg1, arg1->m_actor->m_unk50.m_y, X_func_0011B128(arg1)) != 0) {
+            if (arg1->m_unkE0 == 1) {
+                Xiiiui_func_0011C1E8(arg1, 2, 0U, 0);
+                return 2;
+            }
+            func_001211AC(arg0, arg1, arg2);
+            return 1;
+        }
+        Xiiiui_func_0011C1E8(arg1, 4, 0U, 0);
+        return 2;
+    }
+    Xiiiui_func_0011C1E8(arg1, 1, 0U, 0);
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", MagLifePCModeRun2D__vfunc_03);
+#endif
 
 extern "C" void MagLifePCModeTurn__vfunc_01(MagLifePCModeTurn *arg0, MagLifePC *arg1)
 {
