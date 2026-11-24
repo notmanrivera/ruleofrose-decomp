@@ -61,7 +61,9 @@ extern "C" void func_00141184(MagSceneFocus *, int, int, float);
 extern "C" int Xiiii_memset(int, int, int) asm("memset");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfii_func_00140D40(int, int) asm("func_00140D40");
-extern "C" int Xii_func_0014186C(int) asm("func_0014186C");
+extern "C" void func_0014186C(MagSceneFocus *);
+extern "C" int func_001419D8(MagSceneFocus *, char *);
+extern "C" char *strlwr(char *);
 extern "C" int strcmp(const char *, const char *);
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 
@@ -145,7 +147,7 @@ extern "C" void func_00140C68(int arg0)
         M2C_FIELD(arg0, float *, 0x853D0) = Xfii_func_00140D40((int) arg0, arg0 + 0x8541C);
     }
     if (M2C_FIELD(arg0, int *, 0x853D4) != 0) {
-        Xii_func_0014186C(arg0);
+        func_0014186C((MagSceneFocus *)arg0);
     }
 }
 
@@ -317,7 +319,40 @@ extern "C" void func_001417E4(MagSceneFocus *arg0, int arg1, int arg2)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_0014186C);
+extern "C" void func_0014186C(MagSceneFocus *arg0)
+{
+    int n = arg0->m_unk853E0 + 1;
+    int max = arg0->m_unk853E4;
+    arg0->m_unk853E0 = n;
+    if (n >= max) {
+        int len;
+        char buf[0x80];
+        goto next;
+        do {
+            strlwr(buf);
+            if (!func_001419D8(arg0, buf)) {
+                return;
+            }
+            arg0->m_unk853DC += len;
+        next:
+            buf[0] = '\r';
+            buf[1] = '\n';
+            buf[2] = '\0';
+            len = func_0014159C((const char *)(arg0->m_unk853D4 + arg0->m_unk853DC), buf);
+            register int off PS2_REG("$5") = arg0->m_unk853DC; // pin $a1 so base+off stays in each branch
+            if (len >= 0 && arg0->m_unk853D8 >= off + len) {
+                memcpy(buf, (void *)(arg0->m_unk853D4 + off), len);
+                buf[len] = '\0';
+                len += 2;
+            } else {
+                len = arg0->m_unk853D8 - off;
+                memcpy(buf, (void *)(arg0->m_unk853D4 + off), len);
+                buf[len] = '\0';
+            }
+        } while (strlen(buf) != 0);
+        func_00140B20(arg0, 0);
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/magscenefocus", D_002EEBD0);
 
