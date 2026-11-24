@@ -2217,7 +2217,55 @@ extern "C" int func_001AF1D4()
     return var_a1;
 }
 
+// NON_MATCHING: 6/117 differ, 10 edits
+#ifdef NON_MATCHING
+extern "C" int func_001B1B34(MnuItem *, int);
+extern "C" int func_001AF4D0(int, int);
+extern "C" int func_001AF4FC(int, int);
+extern "C" void func_0018C448(MnuRpk *, int, int);
+extern "C" void func_0018C4D8(MnuRpk *, int, int);
+extern "C" void func_001AF21C(MnuItem *arg0, int arg1)
+{
+    GamItemHave *have = D_007812C0.getItemHavePtr();
+    GamItem *end = have->m_end;
+    GamItem *it = have->m_begin;
+
+    if (arg1 < 0) {
+        int i = 0;
+        while (it != end) {
+            arg0->m_slots[i] = (MnuItemStockEnt *)it;
+            it++;
+            i++;
+        }
+        return;
+    }
+
+    for (int i = 0; it != end; it++, i++) {
+        if (i == arg1) {
+            arg0->m_slots[arg1] = (MnuItemStockEnt *)it;
+            break;
+        }
+    }
+
+    MnuRpk *rpk = &arg0->m_rpk[0];
+    if (func_001B1B34(arg0, arg1) != 0xA00) {
+        int idx = arg1 + 0x30;
+        func_0018C448(rpk, idx, func_001AF4D0((int)arg0, func_001B1B34(arg0, arg1)));
+        rpk->m_sprTbl[idx].m_iconId = func_001AF4FC((int)arg0, func_001B1B34(arg0, arg1));
+        func_0018C4D8(rpk, idx, 0);
+        rpk->m_sprTbl[idx].m_vis0C = 1;
+        rpk->m_sprTbl[idx].m_vis10 = 1;
+    } else {
+        int idx = arg1 + 0x30;
+        func_0018C448(rpk, idx, func_001AF4D0((int)arg0, 0xB3B));
+        func_0018C4D8(rpk, idx, 0);
+        rpk->m_sprTbl[idx].m_vis0C = 0;
+        rpk->m_sprTbl[idx].m_vis10 = 0;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF21C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AF3F0);
 
