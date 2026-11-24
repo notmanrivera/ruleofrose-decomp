@@ -88,6 +88,19 @@ judgement and go to Sonnet.
   types; (3) which runtime parts the PC/Vita port could reuse (MIT allows
   it with attribution) and what they assume. Names and facts only, no
   code copied. Output notes/research/R29-recomp.md.
+- [ ] R30 Check RozuRecomp's SDK/libgcc name leads (2026-11-24; [flash]).
+  RozuRecomp (github.com/RibhuNoodleBoodle/RozuRecomp, GPL, PS2Recomp on
+  our NTSC SLUS_214.48) names ~29 functions we leave unnamed; the list is
+  in build/research/R30/rozu_leads.txt (not committed: its names come
+  from PS2Recomp's signature database). Most are tiny libmpeg accessors
+  (sceMpegDispWidth, 0x10 bytes), libcdvd/sif/tty wrappers, kernel TLB
+  handlers and libgcc exception helpers (__sjthrow...). Byte signatures
+  that short collide (sceVu0ClampVector is given to three addresses), so
+  confirm each with independent evidence: callers and argument use, the
+  neighbouring named functions of the same library (link order), strings,
+  our donors (tools/donor_symbols.py). Output a list of confirmed names
+  with their evidence, for config/symbol_addrs_manual.txt. main was
+  confirmed and applied (crt0's last call).
 - [x] R28 Which near misses Smoke can close (2026-11-23). Smoke
   (tools/cpp_perm.py + tools/cpp_perm_queue.py, log
   build/workers/cpp-perm.log, runs in build/cpp_perm/) has 3 matches in
