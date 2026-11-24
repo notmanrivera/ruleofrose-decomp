@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
 #include "mag/magscene.h"
+extern "C" int func_0010423C(int theMin, int theMax);
+extern "C" int func_001034B8();
 extern "C" float func_0011D720(MagLifePC *);
 void vecTurnY(float *, float);
 extern "C" void func_00102AB8(DogVector *theOut, int theA);
@@ -141,7 +143,34 @@ extern "C" void init__17MagLifePCModeWaitR9MagLifePC(MagLifePCModeWait *arg0, Ma
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", init__17MagLifePCModeWaitR9MagLifePC);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", func_00120A54);
+extern "C" void func_00120A54(MagLifePCModeWait *arg0, MagLifePC *arg1)
+{
+    int cur = arg1->m_unkE4;
+    int prev = arg1->m_unkF0;
+    if (prev != cur) {
+        if (prev == 1 && cur == 0) {
+            Xiiis_func_0011A320(arg1, 8, -1);
+        } else {
+            Xiiis_func_0011A320(arg1, 0, -1);
+        }
+    }
+    if (cur == 0 && (arg1->m_unk130 + 1) % 5400 == 0) {
+        unsigned int r = func_0010423C(0, 7);
+        if (r < 5U) {
+            if (r != 4) {
+                Xiiis_func_0011A320(arg1, r + 0x9F, -1);
+                return;
+            }
+            DogVector pos;
+            arg1->func_00119F88(&pos);
+            if (func_001034B8() == 0x35 && pos.m_x >= 1000.0f) {
+                Xiiis_func_0011A320(arg1, 0xA3, -1);
+                return;
+            }
+            Xiiis_func_0011A320(arg1, func_0010423C(0, 3) + 0x9F, -1);
+        }
+    }
+}
 
 extern "C" void live__17MagLifePCModeWaitR9MagLifePC(MagLifePCModeWait *arg0, MagLifePC *arg1)
 {
