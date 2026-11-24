@@ -125,7 +125,52 @@ extern "C" void MagLifeBwnCtrlModeNull__vfunc_02(int arg0, MagLifeBwnCtrl *arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeWait__vfunc_01);
+extern "C" void MagLifeBwnCtrlModeWait__vfunc_01(int arg0, MagLifeBwnCtrl *arg1)
+{
+    MagLifeBwn *bwn = arg1->m_bwn;
+    MagBwnVec4 v0;
+    MagBwnVec4 v1;
+    if (bwn == 0) {
+        return;
+    }
+    if (arg1->m_unk78 == 1) {
+        func_0012A56C(arg1, 4, 0, 0);
+        return;
+    }
+    if (arg1->m_unk78 == 2) {
+        func_0012A56C(arg1, 3, 0, 0);
+        return;
+    }
+    if (arg1->m_unk74 == 0) {
+        goto msg2;
+    }
+    ((DogVector *)&v0)->clear();
+    arg1->m_unk74->func_00119F88((DogVector *)&v0);
+    ((DogVector *)&v1)->clear();
+    if (arg1->m_bwn == 0) {
+        return;
+    }
+    arg1->m_bwn->func_00119F88((DogVector *)&v1);
+    if (vecDist(&v1.x, &v0.x) > 170.0f) {
+        func_0012A56C(arg1, 2, 0, 0);
+        return;
+    }
+    bwn = arg1->m_bwn;
+    if (bwn->m_unkCB8 == 4) {
+        func_0012A56C(arg1, 0xD, 0, 0);
+        return;
+    }
+    if (bwn->m_unkCB8 == 3) {
+    msg2:
+        bwn->message(2, 0, 0);
+        return;
+    }
+    if (func_001267F4(arg0, arg1, 500.0f) > 0) {
+        func_0012A56C(arg1, 0xB, 0, 0);
+    } else {
+        arg1->m_bwn->message(2, 0, 0);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeWait__vfunc_02);
 
