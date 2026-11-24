@@ -95,7 +95,20 @@ extern "C" void MagLifeBwnCtrlModeStay__vfunc_01(MagLifeBwnCtrlMode *arg0, MagLi
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeStay__vfunc_02);
+extern "C" void MagLifeBwnCtrlModeStay__vfunc_02(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
+{
+    int &step = arg1->m_unk08;
+    if (arg1->m_bwn != 0) {
+        if (step == 0) {
+            if (arg1->m_bwn->message(3, 0, 0) >= 0) {
+                step = 1;
+            }
+        }
+        if (arg1->m_bwn->m_unkCB8 == 4) {
+            Xiiiii_func_0012A56C(arg1, 0xD, 0, 0);
+        }
+    }
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnctrl", D_002EBD00);
 
