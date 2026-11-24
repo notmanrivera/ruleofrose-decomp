@@ -1,5 +1,14 @@
 #include "include_asm.h"
 #include "emy/emy.h"
+struct BdlOutWalk;
+extern "C" int func_0010423C(int, int);
+extern "C" void func_0014BAF8(BdlOutWalk *, float *);
+extern "C" float func_00169A14(float *);
+extern "C" void func_001670DC(BdlOutWalk *, float *, float);
+extern "C" void func_0014BDBC(BdlOutWalk *, int);
+extern "C" int func_001D19A8(void *, unsigned int);
+extern "C" void func_00202F10(void *);
+extern int D_007812C0;
 
 struct BdlVtblEntry {
     short m_delta;
@@ -259,7 +268,54 @@ extern "C" void BdlOutWalk__vfunc_02(BdlOutWalk *self)
     self->m_unk04 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/BdlMain", BdlOutWalk__vfunc_03);
+static inline int checkHit(BdlOutWalk *self)
+{
+    int r = func_001D19A8(&D_007812C0, self->m_unk00);
+    if (r) {
+        self->m_owner->m_unk2C = 1;
+    }
+    return r;
+}
+
+extern "C" int BdlOutWalk__vfunc_03(BdlOutWalk *self)
+{
+    float vec[4];
+    int step = self->m_unk04;
+    self->m_unk38++;
+
+    switch (step) {
+    case 0: {
+        int r = func_0010423C(1, 0x64);
+        if (r < 0x51) {
+            func_0014BAF8(self, vec);
+            if (func_00169A14(vec) >= 100.0f) {
+                func_001670DC(self, vec, 0.0f);
+                func_0014BED0(self, 1);
+                break;
+            }
+        }
+        func_0014BDBC(self, r);
+        break;
+    }
+    case 1:
+        if (self->m_unk24 != 0) {
+            func_00202F10(self->m_owner->m_unk1F0);
+            func_0014BED0(self, 0);
+        }
+        break;
+    case 2:
+        if (self->m_unk38 >= 0x1E) {
+            func_0014BED0(self, 0);
+        }
+        break;
+    case 3:
+        if (checkHit(self) != 0) {
+            func_0014BED0(self, 0);
+        }
+        break;
+    }
+    return -1;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/BdlMain", D_002EF618);
 
