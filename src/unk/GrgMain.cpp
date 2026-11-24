@@ -1,5 +1,9 @@
 #include "include_asm.h"
 #include "emy/emy.h"
+struct GrgOutWalk;
+extern const signed char D_002F0410[][3];
+extern "C" int func_0015582C(GrgOutWalk *);
+extern "C" int func_00155BB4(GrgOutWalk *);
 
 struct GrgVtblEntry {
     short m_delta;
@@ -478,7 +482,27 @@ INCLUDE_RODATA("asm/nonmatchings/unk/GrgMain", D_002F0118);
 
 INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgOutWalk__vfunc_03);
 
-INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", func_00155498);
+extern "C" int func_00155498(GrgOutWalk *self)
+{
+    int r = X_func_0010423C(0, D_002F0410[(unsigned short)self->m_unk3A][2]);
+    unsigned short idx = (unsigned short)self->m_unk3A;
+    if (r < D_002F0410[idx][0]) {
+        if (X_func_00155648(self) != 0) {
+            return 0;
+        }
+        return func_00155BB4(self);
+    }
+    if (r < D_002F0410[idx][1]) {
+        if (func_0015582C(self) != 0) {
+            return 1;
+        }
+        if (X_func_00155648(self) != 0) {
+            return 0;
+        }
+        return func_00155BB4(self);
+    }
+    return func_00155BB4(self);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/GrgMain", D_002F0150);
 
