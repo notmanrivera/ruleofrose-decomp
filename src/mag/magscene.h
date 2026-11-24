@@ -33,6 +33,23 @@ struct TxtToken {
     };
 };
 int txtParse(TxtToken *theToken, int theMax, char *theText);
+struct MagUnk437E0Sub {
+    int m_unk00;                    // +0x00
+    int m_unk04;                    // +0x04
+    short m_unk08;                  // +0x08
+    short m_unk0A;                  // +0x0A
+    short m_unk0C;                  // +0x0C
+    short m_unk0E;                  // +0x0E
+}; // size 0x10
+
+struct MagUnk437E0 {
+    float m_unk00;                  // +0x00
+    int m_unk04;                    // +0x04
+    int m_unk08;                    // +0x08
+    int m_unk0C;                    // +0x0C
+    MagUnk437E0Sub m_sub;           // +0x10..+0x1F
+}; // size 0x20
+
 struct I3dDraw;
 
 // The scene's actors (the characters, the dog...).
@@ -88,7 +105,13 @@ public:
     unsigned char m_unk43500[0x218];
     int m_unk43718;                 // +0x43718
     TxtToken m_option_bucket[16];   // +0x4371C
-    unsigned char m_unk437DC[0x41D24];
+    union {
+        unsigned char m_unk437DC[0x41D24];
+        struct {
+            unsigned char m_pad437DC[4];
+            MagUnk437E0 m_unk437E0[0x2000]; // +0x437E0
+        };
+    };
 
     MagScene();
     ~MagScene();
