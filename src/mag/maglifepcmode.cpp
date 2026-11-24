@@ -250,7 +250,21 @@ extern "C" void live__20MagLifePCModeDogComeR9MagLifePC(MagLifePCModeDogCome *ar
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", init__20MagLifePCModeDogStayR9MagLifePC);
+extern "C" void init__20MagLifePCModeDogStayR9MagLifePC(MagLifePCModeDogStay *arg0, MagLifePC *arg1)
+{
+    X_func_0011AF30(arg1, 0x11, 3);
+    int v = func_0011AF04(arg1);
+    int mot = 0x11;
+    if (arg1->m_unk54 == 3) {
+        mot = 0x80;
+    } else if (v != 0) {
+        mot = 0x14;
+    } else if (arg1->m_unkE4 == 2) {
+        mot = 0x17;
+    }
+    Xiiis_func_0011A320(arg1, mot, -1);
+    arg1->m_unk08 = 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", live__20MagLifePCModeDogStayR9MagLifePC);
 
