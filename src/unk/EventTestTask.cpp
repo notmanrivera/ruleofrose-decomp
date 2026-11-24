@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "task/cmnitask.h"
 #include "sdk/math.h"
+#define MAGLIFE_EXTERNAL_RTTI
+#include "mag/magsystem.h"
 extern "C" float func_0026CAD0(float x);
 struct EventEntry64 {
     unsigned char unk00[0x40];
@@ -36,7 +38,11 @@ extern "C" int X_func_00217D2C(...) asm("func_00217D2C");
 extern "C" int X_func_00217D68(...) asm("func_00217D68");
 extern "C" int X_func_00218424(...) asm("func_00218424");
 extern int D_003079A9;
-extern int D_006E9840;
+extern MagSystem D_006E9840;
+extern int D_002DB2B8;
+extern "C" void func_00131618(MagScene *arg0, float fparg0);
+extern "C" int func_00216AD0(EventTestTask *self);
+static inline unsigned int padRepeatU(const BedPad *p) { return p->m_repeat; }
 
 extern "C" void func_00216828(EventTestTask *self)
 {
@@ -73,7 +79,53 @@ extern "C" void EventTestTask__vfunc_06(int arg0, int arg1)
 extern "C" void EventTestTask__vfunc_03(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", EventTestTask__vfunc_04);
+extern "C" int EventTestTask__vfunc_04(EventTestTask *self)
+{
+    MagSystem *sys = &D_006E9840;
+    MagSystemPad *pad1 = &sys->m_pad_ref[1];
+    MagSystemPad *pad0 = &sys->m_pad_ref[0];
+
+    if ((pad1->m_pad->m_press >> BEDPAD_BIT_UP) & 1) {
+        self->m_unk1C++;
+    } else {
+        self->m_unk1C = 0;
+    }
+    if ((pad1->m_pad->m_press >> BEDPAD_BIT_DOWN) & 1) {
+        self->m_unk20++;
+    } else {
+        self->m_unk20 = 0;
+    }
+    if ((pad1->m_pad->m_press >> BEDPAD_BIT_LEFT) & 1) {
+        self->m_unk24++;
+    } else {
+        self->m_unk24 = 0;
+    }
+    if ((pad1->m_pad->m_press >> BEDPAD_BIT_RIGHT) & 1) {
+        self->m_unk28++;
+    } else {
+        self->m_unk28 = 0;
+    }
+    self->m_unk04++;
+    if ((padRepeatU(pad0->m_pad) >> BEDPAD_BIT_R3) & 1) {
+        D_002DB2A4 = (D_002DB2A4 + 1) % 3;
+    }
+    if (padRepeatU(pad1->m_pad) & 1) {
+        if (D_002DB2A4 == 3) {
+            D_002DB2A4 = 0;
+        } else {
+            D_002DB2A4 = 3;
+        }
+    }
+    if (D_002DB2B8 != 0) {
+        MagSystem *sys2 = &D_006E9840;
+        MagScene *scene = &sys2->m_scene;
+        sys2->func_001188A8(0, 0, 2, 0.99f, 0.99f, 0.99f, 1.0f);
+        scene->m_unk2AA84 = 0;
+        func_00131618(scene, 10000.0f);
+    }
+    func_00216AD0(self);
+    return 0;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301B00);
 

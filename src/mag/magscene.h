@@ -130,7 +130,9 @@ public:
     unsigned char m_unk2AA18[0x30];
     float m_unk2AA48;               // +0x2AA48
     float m_unk2AA4C;               // +0x2AA4C
-    unsigned char m_unk2AA50[0x120];
+    unsigned char m_unk2AA50[0x34];
+    int m_unk2AA84;                 // +0x2AA84
+    unsigned char m_unk2AA88[0xE8];
     DogEntityEx m_soundTransform;   // +0x2AB70 (transform__11DogEntityEx)
     unsigned char m_unk2AC60[0x54];
     float m_opt_zoom_ratio;         // +0x2ACB4
