@@ -2,6 +2,33 @@
 #include "unk/Eff0.h"
 #include "dog/doglightpool.h"
 #include "sdk/string.h"
+struct Scale4_CEBC {
+    float v[4];
+};
+struct CollCheck_CEBC {
+    unsigned int m_flags;               // +0x00
+    void *m_actor;                      // +0x04
+    float m_cx;                         // +0x08
+    float m_cy;                         // +0x0C
+    float m_cz;                         // +0x10
+    float m_r1;                         // +0x14
+    float m_hy;                         // +0x18
+    float m_unk1C;                      // +0x1C
+    float m_r2;                         // +0x20
+    unsigned char m_pad24[0x3C];        // +0x24
+};
+struct Obj_Stay1_CEBC {
+    unsigned char m_pad00[0x24];        // +0x00
+    EffVec4 m_pts[4];                   // +0x24
+    int m_count;                        // +0x64
+    unsigned char m_pad68[0xA0 - 0x68]; // +0x68
+    EffVec3 m_pos;                      // +0xA0
+    unsigned char m_padAC[0x4];         // +0xAC
+    float m_radius;                     // +0xB0
+};
+extern const Scale4_CEBC D_002F20E0;
+extern "C" int func_001702E4(CollCheck_CEBC *);
+extern "C" void func_001703C0(CollCheck_CEBC *);
 struct EffBg1Buf24 {
     unsigned char m_pad00[0x10];        // +0x00
     int m_unk10;                        // +0x10
@@ -1220,7 +1247,37 @@ extern "C" int func_0016CCB8(int obj, int param)
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016CCB8);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016CEBC);
+extern "C" int func_0016CEBC(Obj_Stay1_CEBC *arg0, void *arg1)
+{
+    CollCheck_CEBC chk;
+    EffVec4 *pt = arg0->m_pts;
+    chk.m_actor = arg1;
+    chk.m_cx = arg0->m_pos.x + pt->x;
+    chk.m_cy = arg0->m_pos.y + pt->y;
+    chk.m_cz = arg0->m_pos.z + pt->z;
+    chk.m_hy = 10.0f;
+    float r = arg0->m_radius * 0.5f;
+    chk.m_flags = 0;
+    chk.m_r1 = r;
+    chk.m_unk1C = r;
+    chk.m_r2 = r;
+    if (func_001702E4(&chk)) {
+        Scale4_CEBC scales = D_002F20E0;
+        for (int i = 0; i < arg0->m_count; i++, pt++) {
+            chk.m_flags = 0;
+            chk.m_cx = arg0->m_pos.x + pt->x;
+            chk.m_cz = arg0->m_pos.z + pt->z;
+            float r2 = (arg0->m_radius * 0.5f) * scales.v[i];
+            chk.m_unk1C = r2;
+            chk.m_r1 = r2;
+            func_001703C0(&chk);
+            if (chk.m_flags & 0xF) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 extern "C" int X_Eff0__vfunc_02_Stay2(Obj_Stay2 *, Arg_Stay2 *) asm("Eff0__vfunc_02");
 extern "C" int EffBloodStay2__vfunc_02(Obj_Stay2 *arg0, Arg_Stay2 *arg1)
