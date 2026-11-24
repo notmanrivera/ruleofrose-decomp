@@ -9,6 +9,7 @@ extern "C" int Xiiii_memset(int, int, int) asm("memset");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfii_func_00140D40(int, int) asm("func_00140D40");
 extern "C" int Xii_func_0014186C(int) asm("func_0014186C");
+extern "C" int strcmp(const char *, const char *);
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140390);
@@ -96,7 +97,21 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magscenefocus", D_002EEB90);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/magscenefocus", D_002EEBA0);
 
+// NON_MATCHING: fn matches; D_002EEBD0 needs .align 3 in config/rodata_align_manual.tsv
+#ifdef NON_MATCHING
+extern "C" int func_00141770(const char *arg0)
+{
+    if (strcmp(arg0, "far1far2") == 0) {
+        return 3;
+    }
+    if (strcmp(arg0, "far1") == 0) {
+        return 1;
+    }
+    return (strcmp(arg0, "far2") == 0) ? 2 : 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00141770);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_001417E4);
 
