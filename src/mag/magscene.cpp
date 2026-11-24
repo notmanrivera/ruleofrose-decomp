@@ -3,6 +3,12 @@
 #include "mag/magscene.h"
 #include "mag/maglifewindow.h"
 #include "dog/dogtexinfo.h"
+#include "bed/bedmemory.h"
+extern BedMemory D_006E9800;
+extern "C" void func_00176C50(void *);
+extern "C" void func_0019237C(void *);
+extern "C" void func_00138804(MagScene *);
+extern "C" void func_00194548();
 class MagScene;
 extern "C" void func_001311F4(MagScene *, int *);
 struct MagLifeBase {
@@ -213,7 +219,23 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131B90__8MagSceneP7I3dDraw);
 void func_00131F6C(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131F74);
+extern "C" void func_00131F74(MagScene *self)
+{
+    func_00176C50(self->m_unk837E0);
+    func_0019237C(self->m_unk84AA8);
+    if (self->m_unk02908) {
+        D_006E9800.free(self->m_unk02908);
+        self->m_unk02908 = 0;
+    }
+    for (int i = 0; i < MAG_MAX_ACTOR; i++) {
+        self->m_actor[i].release(0);
+    }
+    func_00138804(self);
+    self->m_tex_info.release();
+    self->m_life_man.remove(&self->m_unk41850);
+    self->m_life_man.term();
+    func_00194548();
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/magscene", D_002ED538);
 

@@ -8,6 +8,7 @@
 
 #include "ror.h"
 #include "dog/dogactor.h"
+#include "dog/dogtexinfo.h"
 #include "sdk/libgraph.h"
 #include "bed/bedsubmode.h"
 #include "mag/maglifeman.h"
@@ -79,7 +80,9 @@ public:
     void *m_unk02908;               // +0x02908
     unsigned char m_unk0290C[0x14];
     DogActor m_actor[MAG_MAX_ACTOR]; // +0x02920
-    int m_unk29120[0x200];          // +0x29120: per model (func_00138ED0's result)
+    int m_unk29120[0x100];          // +0x29120: per model (func_00138ED0's result)
+    DogTexInfo m_tex_info;          // +0x29520
+    unsigned char m_unk29540[0x3E0];
     unsigned char m_unk29920[0x10B0];
     int m_shadow[4];                // +0x2A9D0
     int m_shadow_direct_on;         // +0x2A9E0
@@ -115,7 +118,8 @@ public:
     TxtToken m_option_bucket[16];   // +0x4371C
     unsigned char m_unk437DC[4];
     MagUnk437E0 m_unk437E0[0x2000]; // +0x437E0
-    unsigned char m_unk837E0[0x1D20];
+    unsigned char m_unk837E0[0x12C8]; // +0x837E0
+    unsigned char m_unk84AA8[0xA58];  // +0x84AA8
 
     MagScene();
     ~MagScene();
