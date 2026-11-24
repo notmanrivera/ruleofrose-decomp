@@ -2,6 +2,7 @@
 #include "task/cmnitask.h"
 #include "task/tsk_scene.h"
 #include "sdk/string.h"
+extern "C" int func_00279C98(char *, const char *, ...);
 extern "C" char *strncpy(char *, const char *, size_t);
 extern "C" char vtbl_15ScenePlaySingle[] asm("_vt$15ScenePlaySingle");
 extern "C" char vtbl_11PLScenePlay[] asm("_vt$11PLScenePlay");
@@ -104,7 +105,14 @@ extern "C" void func_001F836C(ScenePlay *self, const char *str)
     self->m_unk110[0x1F] = '\0';
 }
 
-INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F839C);
+extern "C" char *func_001F839C(char *dst, const char *src)
+{
+    char buf[0x20];
+    strcpy(buf, src);
+    *strstr(buf, ".") = '\0';
+    func_00279C98(dst, "%s/%s", buf, buf);
+    return dst;
+}
 
 INCLUDE_RODATA("asm/nonmatchings/task/tsk_scene", D_002FE898);
 
