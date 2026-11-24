@@ -3,6 +3,7 @@
 #include "mag/magscene.h"
 #include "mag/maglifewindow.h"
 #include "dog/dogtexinfo.h"
+#include "utl/utltm2.h"
 #include "bed/bedmemory.h"
 extern "C" void func_00130258(MagLifeWindow *w, int a, int b, const char *str, int d);
 extern const char D_002ED4B8[];
@@ -217,7 +218,38 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magscene", D_002ED500);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131840__8MagScene);
 
+// NON_MATCHING: function matches (0x168/0x168), blocked on .rodata (D_002ED538 needs .align 3 in config/rodata_align_manual.tsv)
+#ifdef NON_MATCHING
+struct I3dPicture {
+    unsigned char m_unk00[0x50];
+    void *m_pixels;
+};
+extern "C" void func_00137330(MagScene *);
+extern "C" Tm2Picture *func_00104E64(Tm2Header *h, int theN);
+extern "C" int func_001BEDC0(MagWindowPage *arg0, void *arg1, int arg2, int arg3, int arg4);
+
+void MagScene::func_00131A28()
+{
+    func_00137330(this);
+    tag_I3dTexInfo_s *texInfo = m_tex_info.m_tex_info;
+    for (int i = 0; i < 4; i++) {
+        void *p = ((I3dPicture *)texInfo[m_unk028F4[i]].pPicture)->m_pixels;
+#line 554
+        ASSERT(p);
+        DogTexData *d = &m_tex_info.m_tex_data[m_unk028F4[i]];
+        Tm2Picture *pic = func_00104E64((Tm2Header *)d->m_data, 0);
+        if (pic->ImageType == 5) {
+            func_001BEDC0(&m_unk02744[i], p, 0x200, 0x100, 8);
+        } else {
+            func_001BEDC0(&m_unk02744[i], p, 0x200, 0x100, 4);
+        }
+    }
+    m_unk854E0 = this;
+    m_unk854E8 = this;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131A28__8MagScene);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131B90__8MagSceneP7I3dDraw);
 

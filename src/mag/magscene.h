@@ -141,7 +141,11 @@ public:
     unsigned char m_unk837E0[0x12C8]; // +0x837E0
     unsigned char m_unk84AA8[0x90C];  // +0x84AA8
     int m_unk853B4;                 // +0x853B4
-    unsigned char m_unk853B8[0x148];
+    unsigned char m_unk853B8[0x128];
+    MagScene *m_unk854E0;           // +0x854E0
+    int m_unk854E4;                 // +0x854E4
+    MagScene *m_unk854E8;           // +0x854E8
+    unsigned char m_unk854EC[0x14];
 
     MagScene();
     ~MagScene();
