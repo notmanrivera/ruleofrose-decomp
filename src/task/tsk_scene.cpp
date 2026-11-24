@@ -5,6 +5,19 @@
 #include "game/gamman.h"
 #include "game/gamsnd.h"
 #include "mag/magsystem.h"
+#include "bed/bedmemory.h"
+#include "utl/filereader.h"
+struct SceneGameState {
+    unsigned char m_pad00[0x7C];
+    int m_unk7C;
+};
+extern BedMemory D_006E9800;
+extern SceneGameState *D_007B205C;
+extern const char D_002FE858[];
+extern "C" int snprintf(char *, size_t, const char *, ...);
+extern "C" int func_001BE768(const char *);
+extern "C" void func_001417E4(MagScene *, void *, int);
+void heapFree(void *);
 extern MagSystem D_006E9840;
 extern MagScene D_006FBD80;
 extern "C" void func_001F723C(void *);
@@ -197,7 +210,31 @@ INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F8034);
 
 INCLUDE_RODATA("asm/nonmatchings/task/tsk_scene", D_002FE858);
 
-INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F81A8);
+extern "C" void func_001F81A8(ScenePlay *self, const char *arg1)
+{
+    int stage = D_007B205C->m_unk7C;
+    if (self->m_unk88 != 0) {
+        heapFree(self->m_unk88);
+        self->m_unk88 = 0;
+    }
+    if (arg1 != 0 && strlen(arg1) != 0) {
+        char *path = self->m_unk8C;
+        FileReader reader;
+        snprintf(path, 0x40, "data/evt/%02d/focus/%s", stage, arg1);
+        int size = func_001BE768(path);
+        self->m_unk88 = D_006E9800.alloc(size, D_002FE858, 0x354, 0, 1);
+        FileReadReq req;
+        req.m_unk08 = 1;
+        req.m_name = path;
+        req.m_unk14 = 0;
+        req.m_offset = 0;
+        req.m_buf = self->m_unk88;
+        req.m_size = size;
+        req.m_unk20 = 1;
+        reader.func_001BE524(&req, 0);
+        func_001417E4(&MagSystem::m_current_system->m_scene, self->m_unk88, size);
+    }
+}
 
 extern "C" int ScenePlay__vfunc_04(ScenePlay *self)
 {

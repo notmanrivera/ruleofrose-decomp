@@ -40,8 +40,8 @@ struct ScenePlay {
     int m_camera_eff_id;                // +0x40
     int m_unk44;                        // +0x44
     unsigned char m_pad48[0x40];
-    int m_unk88;                        // +0x88
-    unsigned char m_pad8C[0x40];
+    void *m_unk88;                      // +0x88
+    char m_unk8C[0x40];                 // +0x8C
     unsigned int m_imd_load_chr_id[16]; // +0xCC
     int m_imd_load_chr_num;             // +0x10C
     char m_unk110[0x20];                // +0x110
