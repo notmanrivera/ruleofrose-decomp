@@ -4,6 +4,8 @@
 struct TskDamageObj {
     unsigned char m_pad00[0x120];
     int m_flg;                          // +0x120
+    unsigned char m_pad124[0x2C8];      // +0x124..+0x3EB
+    unsigned int m_unk3EC[4];           // +0x3EC
 };
 
 class TskDamage : public CmnITask {
@@ -15,7 +17,8 @@ public:
     TskDamageObj *m_obj;                // +0x18
     int m_unk1C;                        // +0x1C
     int m_damage;                       // +0x20
-    unsigned char m_pad24[0x24];        // +0x24..+0x47
+    unsigned char m_pad24[0x20];        // +0x24..+0x43
+    unsigned int m_unk44;               // +0x44
     unsigned short m_unk48;             // +0x48
 
     virtual int get_task_type() { return 0x12; }
@@ -111,7 +114,47 @@ extern "C" void func_001FA9C4(TskDamage *self)
 INCLUDE_ASM("asm/nonmatchings/unk/TskDamage", func_001FA9C4);
 #endif
 
+// NON_MATCHING: 76/87 differ, 1 reloc differs (size 0x15C, game 0x160), 1 edits
+#ifdef NON_MATCHING
+extern "C" int func_0010423C(int, int);
+extern "C" int func_001FAA70(TskDamage *self)
+{
+    unsigned int arr[8];
+    int count = 0;
+    register unsigned int mask PS2_REG("$17") = 0xFFFFFF;
+    unsigned int *p = self->m_obj->m_unk3EC;
+
+    if ((p[0] & 1) != 0) {
+    } else {
+        arr[count++] = 1;
+    }
+    if (!(p[0] & 2)) {
+        arr[count++] = 2;
+    }
+    if (!(p[0] & 4)) {
+        arr[count++] = 4;
+    }
+    if (!(p[0] & 8)) {
+        arr[count++] = 8;
+    }
+    if (!(p[0] & 0x10)) {
+        arr[count++] = 0x10;
+    }
+    if (count == 0) {
+        return 0;
+    }
+    unsigned int val = arr[func_0010423C(0, count - 1)];
+    self->m_unk44 = val;
+    self->m_obj->m_unk3EC[val >> 24] |= (val & mask);
+    unsigned int f = self->m_obj->m_unk3EC[0];
+    if ((f & 7) == 7 || (f & 0x1E) == 0x1E || (f & 0x19) == 0x19) {
+        return 1;
+    }
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/TskDamage", func_001FAA70);
+#endif
 
 extern "C" void TskDamage__vfunc_05(TskDamage *self)
 {
