@@ -1,4 +1,5 @@
 #include "include_asm.h"
+#include "mag/magscene.h"
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 
@@ -11,7 +12,17 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscenecamera", func_0013C664);
 extern "C" void func_0013C928(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscenecamera", func_0013C930);
+extern "C" void func_0013C930(MagScene *arg0)
+{
+    arg0->getCamera()->save();
+    arg0->m_unk2AD84 = arg0->m_unk2AD50;
+    arg0->m_unk2AD88 = arg0->m_unk2AD58;
+    arg0->m_unk2AD8C = arg0->m_unk2AD5C;
+    arg0->m_unk2AD90 = arg0->m_unk2AD60;
+    arg0->m_unk2AD94 = arg0->m_unk2AD64;
+    arg0->m_unk2AD98 = arg0->m_unk2AD68;
+    arg0->m_unk2AD80++;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenecamera", func_0013CA10);
 

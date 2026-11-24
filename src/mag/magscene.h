@@ -8,6 +8,7 @@
 
 #include "ror.h"
 #include "dog/dogactor.h"
+#include "dog/dogcamera.h"
 #include "dog/dogtexinfo.h"
 #include "sdk/libgraph.h"
 #include "bed/bedsubmode.h"
@@ -124,7 +125,22 @@ public:
     DogEntityEx m_soundTransform;   // +0x2AB70 (transform__11DogEntityEx)
     unsigned char m_unk2AC60[0x54];
     float m_opt_zoom_ratio;         // +0x2ACB4
-    unsigned char m_unk2ACB8[0xE4];
+    unsigned char m_unk2ACB8[0x98];
+    int m_unk2AD50;                 // +0x2AD50
+    int m_unk2AD54;                 // +0x2AD54
+    int m_unk2AD58;                 // +0x2AD58
+    float m_unk2AD5C;               // +0x2AD5C
+    float m_unk2AD60;               // +0x2AD60
+    int m_unk2AD64;                 // +0x2AD64
+    int m_unk2AD68;                 // +0x2AD68
+    unsigned char m_unk2AD6C[0x14];
+    int m_unk2AD80;                 // +0x2AD80
+    int m_unk2AD84;                 // +0x2AD84
+    int m_unk2AD88;                 // +0x2AD88
+    float m_unk2AD8C;               // +0x2AD8C
+    float m_unk2AD90;               // +0x2AD90
+    int m_unk2AD94;                 // +0x2AD94
+    int m_unk2AD98;                 // +0x2AD98
     int m_unk2AD9C;                 // +0x2AD9C
     DogVector m_unk2ADA0;           // +0x2ADA0
     DogVector m_unk2ADB0;           // +0x2ADB0
@@ -162,6 +178,7 @@ public:
     MagScene();
     ~MagScene();
     DogActor *getActor(int n) { return &m_actor[n]; }
+    DogCamera *getCamera() { return (DogCamera *)&m_soundTransform; }
     MagUnk29890 *getUnk29890(int n) { return &((MagUnk29890 *)&m_unk29890)[n]; }
     void setModelFlag(int n, int f) { m_unk29120[n] |= f; }
     void func_00131840();
