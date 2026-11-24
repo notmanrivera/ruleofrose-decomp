@@ -1,6 +1,25 @@
 #include "include_asm.h"
 #include "unk/Eff0.h"
 #include "dog/doglightpool.h"
+struct Param_D8E8 {
+    int m_kind;
+    int m_unk04;
+    int m_unk08;
+    int m_pad[29];
+};
+struct Entry_D8E8 {
+    unsigned char pad00[0x24];
+    int m_24[1];
+};
+struct EffMgr_D8E8 {
+    int m_00;
+    Entry_D8E8 *m_04[1];
+};
+struct Scene_D8E8 {
+    unsigned char pad00[0x837E0];
+    EffMgr_D8E8 m_effMgr;
+};
+extern "C" int func_00176CC8(void *, void *);
 extern "C" float modff(float, float *);
 struct EffBg1Chunk {
     unsigned short m_type;              // +0x00
@@ -1185,7 +1204,21 @@ extern "C" int EffBloodStay3__vfunc_02(int arg0, int arg1)
 
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBloodStay3__vfunc_05);
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016D8E8);
+extern "C" int func_0016D8E8(int arg0, int arg1)
+{
+    Param_D8E8 param;
+    if (D_00298E10 == -1) {
+        param.m_kind = 5;
+        param.m_unk08 = 0;
+        D_00298E10 = func_00176CC8(&((Scene_D8E8 *)D_00298E08)->m_effMgr, &param);
+        if (D_00298E10 == -1) {
+            return 0;
+        }
+    }
+    EffMgr_D8E8 *mgr = &((Scene_D8E8 *)D_00298E08)->m_effMgr;
+    mgr->m_04[D_00298E10]->m_24[arg0] = arg1;
+    return 1;
+}
 
 extern "C" int EffBloodStay3Prim__vfunc_02(int arg0, int arg1)
 {
