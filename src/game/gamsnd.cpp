@@ -2149,7 +2149,56 @@ extern "C" float func_001E6D54(GamSndPan *arg0)
     return ((func_00237580(mat[2], vec) + 1.0f) * 0.5f * 0.7f) + 0.3f;
 }
 
+// NON_MATCHING: 100/160 differ, 4 relocs differ (size 0x280, game 0x294), 48 edits
+#ifdef NON_MATCHING
+extern "C" void func_001E6E00(int mode, void *src, SND_PARAM *info, int *left, int *right, float)
+{
+    register const TskVec4 *source PS2_REG("$21") = (const TskVec4 *)src;
+    TskVec4 pos, dir, delta;
+    GamSndPan pan;
+    memset(&pos, 0, sizeof(pos));
+    pos.f[3] = 1.0f;
+    register TskVec4 *direction PS2_REG("$20") = &dir;
+    memset(direction, 0, sizeof(dir));
+    register float farDist PS2_REG("$f24") = info->m_unk2C;
+    register float farVol PS2_REG("$f22") = info->m_unk30;
+    register float nearVol PS2_REG("$f23") = info->m_unk2E;
+    register float nearDist PS2_REG("$f21") = info->m_unk2A;
+    if (mode != 0) {
+        if (mode != 1) { *right = 64; *left = 64; return; }
+        const DogEntityEx *camera = soundCamera(&D_006FBD80);
+        float px = camera->m_unk40.m_x, py = camera->m_unk40.m_y, pz = camera->m_unk40.m_z;
+        float dx = camera->m_unk50.m_x, dy = camera->m_unk50.m_y, dz = camera->m_unk50.m_z;
+        pos.f[0] = px; pos.f[1] = py; pos.f[2] = pz;
+        direction->f[0] = dx; dir.f[1] = dy; dir.f[2] = dz;
+    } else {
+        register const GamMan *game PS2_REG("$3") = &D_007812C0;
+        register TskVec4 *tmp PS2_REG("$4") = &delta;
+        register u_long128 copy PS2_REG("$6");
+        copy = *(const u_long128 *)game->m_pcPos;
+        *(u_long128 *)tmp = copy;
+        memcpy(&pos, &delta, sizeof(EffVec3));
+        copy = *(const u_long128 *)game->m_pcRot;
+        *(u_long128 *)tmp = copy;
+        memcpy(&dir, &delta, sizeof(EffVec3));
+    }
+    func_00237408(&delta, source, &pos);
+    float distance = sqrtf(delta.f[0]*delta.f[0] + delta.f[1]*delta.f[1] + delta.f[2]*delta.f[2]);
+    register float volume PS2_REG("$f20") = farVol;
+    if (!(nearDist <= distance)) {
+        volume = nearVol;
+        if (!(distance <= farDist)) volume = farVol + ((nearVol-farVol)*(distance-nearDist))/(farDist-nearDist);
+    }
+    if (volume <= 0.0f) { *right = 0; *left = 0; return; }
+    pan.m_position = &pos; pan.m_direction = direction;
+    pan.m_angle = -1.0471976f; pan.m_source = source;
+    *left = (int)(volume * func_001E6D54(&pan));
+    pan.m_angle = 1.0471976f;
+    *right = (int)(volume * func_001E6D54(&pan));
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E6E00);
+#endif
 
 GamTaskMan::GamTaskMan()
 {
