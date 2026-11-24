@@ -1,17 +1,29 @@
 #include "include_asm.h"
 #include "task/cmnitask.h"
+#include "game/gamman.h"
+#include "game/gamsnd.h"
+static inline GamSndMan *getSnd(GamMan *g) { return (GamSndMan *)g->m_snd; }
 
 class TskSnd : public CmnITask {
 public:
-    unsigned char m_pad04[0x20];        // +0x04..+0x23
+    char m_name04[0x20];                // +0x04..+0x23
     int (TskSnd::*m_func)();            // +0x24 (8 bytes)
     unsigned char m_pad2C[0x08];        // +0x2C..+0x33
     int m_mode;                         // +0x34
     int m_maxCnt;                       // +0x38
     int m_cnt;                          // +0x3C
-    unsigned char m_pad40[0x44];        // +0x40..+0x83
+    unsigned char m_pad40[0x40];        // +0x40..+0x7F
+    int m_unk80;                        // +0x80
     int m_val84;                        // +0x84
     int m_val88;                        // +0x88
+    int m_unk8C;                        // +0x8C
+    int m_unk90;                        // +0x90
+    int m_unk94;                        // +0x94
+    float m_unk98;                      // +0x98
+    unsigned char m_pad9C[0x0C];        // +0x9C..+0xA7
+    int m_unkA8;                        // +0xA8
+    int m_unkAC;                        // +0xAC
+    int m_unkB0;                        // +0xB0
 
     virtual int get_task_type() { return 0; }
     virtual void init() {}
@@ -21,7 +33,6 @@ public:
 };
 
 extern "C" int X_func_001E6734(...) asm("func_001E6734");
-extern int D_007812C0;
 
 extern "C" void func_001F8FB8(void) {
 }
@@ -114,7 +125,11 @@ extern "C" int func_001F9658(TskSnd *self, int *arg1, int *arg2)
     return 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskSnd", func_001F9670);
+extern "C" int func_001F9670(TskSnd *self)
+{
+    func_001E50C8(getSnd(&D_007812C0), self->m_unk80, self->m_val84, self->m_val88, self->m_unk98, self->m_unk90, 0, 0);
+    return 1;
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskSnd", func_001F96C0);
 
