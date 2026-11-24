@@ -1,4 +1,6 @@
 #include "include_asm.h"
+#include "game/gamsnd.h"
+extern "C" void func_00203F38(GamTaskBase *);
 extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
 extern "C" int Xii_func_00180EA8(int) asm("func_00180EA8");
@@ -17,7 +19,6 @@ extern "C" int X_func_00180CA8(...) asm("func_00180CA8");
 extern "C" int X_func_001C0D44(...) asm("func_001C0D44");
 extern "C" int X_func_001C0D70(...) asm("func_001C0D70");
 extern "C" int X_func_00203DD0(...) asm("func_00203DD0");
-extern "C" int X_func_00203F38(...) asm("func_00203F38");
 extern "C" int X_func_002041F8(...) asm("func_002041F8");
 extern "C" int X_func_0020E664(...) asm("func_0020E664");
 extern "C" int X_func_0020E690(...) asm("func_0020E690");
@@ -77,7 +78,7 @@ INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_00203DD0);
 extern "C" void func_00203EA8(int arg0)
 {
     if ((*(int *)(int *)((char *)(arg0) + 0x0)) == 0) {
-        X_func_00203F38();
+        func_00203F38((GamTaskBase *)arg0);
         (*(int *)(int *)((char *)(arg0) + 0x28)) = (int) ((*(int *)(int *)((char *)(arg0) + 0x28)) + ((*(int *)(int *)((char *)(arg0) + 0xC)) - (*(int *)(int *)((char *)(arg0) + 0x14))));
     }
     (*(int *)(int *)((char *)(arg0) + 0x0)) = 1;
@@ -87,7 +88,7 @@ extern "C" void func_00203EA8(int arg0)
 extern "C" void func_00203EFC(int arg0)
 {
     if ((*(int *)(int *)((char *)(arg0) + 0x0)) != 0) {
-        X_func_00203F38();
+        func_00203F38((GamTaskBase *)arg0);
         (*(int *)(int *)((char *)(arg0) + 0x14)) = (int) (*(int *)(int *)((char *)(arg0) + 0xC));
     }
     (*(int *)(int *)((char *)(arg0) + 0x0)) = 0;
@@ -96,7 +97,19 @@ extern "C" void func_00203EFC(int arg0)
 
 INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_00203F38);
 
-INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_00204014);
+extern "C" void func_00204014(GamTaskBase *arg0)
+{
+    int temp_a0;
+
+    arg0->m_prio = arg0->m_prio + 1;
+    func_00203F38(arg0);
+    if (arg0->m_vtable != 0) {
+        temp_a0 = arg0->m_unk20;
+        arg0->m_unk1C = temp_a0;
+        arg0->m_unk20 = arg0->m_unk0C - arg0->m_unk28;
+        arg0->m_unk24 = temp_a0;
+    }
+}
 
 extern "C" void func_0020406C(int arg0, int arg1)
 {

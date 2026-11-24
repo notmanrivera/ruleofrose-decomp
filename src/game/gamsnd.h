@@ -114,10 +114,11 @@ struct GamTaskNode {
 };
 struct GamTaskBase {
     void *m_vtable;
-    unsigned char m_unk04[0x14];
+    int m_unk04, m_unk08, m_unk0C, m_unk10, m_unk14;
     int m_prio;
     int m_unk1C, m_unk20, m_unk24;
-    unsigned char m_unk28[0x1C];
+    int m_unk28;
+    unsigned char m_unk2C[0x18];
     GamTaskBase() asm("func_00203D94");
     ~GamTaskBase() asm("func_00203DA8");
 };
