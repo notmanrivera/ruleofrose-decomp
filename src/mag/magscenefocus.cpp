@@ -41,7 +41,7 @@ struct MagSceneFocus {
     unsigned char m_pad2A9C0[0x853BC - 0x2A9C0];
     int m_unk853BC;
     int m_unk853C0;
-    int m_unk853C4;
+    float m_unk853C4;
     float m_unk853C8;
     float m_unk853CC;
     float m_unk853D0;
@@ -56,6 +56,8 @@ struct MagSceneFocus {
     MagSceneFocusLerp m_unk8541C;
 };
 extern "C" void func_00140B20(MagSceneFocus *, int);
+extern "C" void func_00140FDC(MagSceneFocus *, int, int);
+extern "C" void func_00141184(MagSceneFocus *, int, int, float);
 extern "C" int Xiiii_memset(int, int, int) asm("memset");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfii_func_00140D40(int, int) asm("func_00140D40");
@@ -195,7 +197,32 @@ extern "C" float func_00140E60(int arg0, int arg1, int arg2, float fparg0, float
     return fparg0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140E88);
+extern "C" void func_00140E88(MagSceneFocus *arg0, int arg1, int arg2)
+{
+    if (arg0->m_unk853C0 != -1) {
+        float temp = arg0->m_unk853C8;
+        int flag = (arg2 & 1) ? 0 : 0x70;
+        float f;
+        arg0->m_unk853C4 = 0.0f;
+        if (temp <= 0.0f) {
+            f = 0.01f;
+        } else {
+            f = temp;
+        }
+        arg0->m_unk853C8 = f;
+        if (arg0->m_unk853BC & 2) {
+            func_00140FDC(arg0, arg1, flag);
+            func_00141184(arg0, arg1, flag, arg0->m_unk853D0);
+            func_00140FDC(arg0, arg1, flag);
+            func_00141184(arg0, arg1, flag, arg0->m_unk853D0);
+        }
+        if (arg0->m_unk853BC & 1) {
+            func_00140FDC(arg0, arg1, flag);
+            func_00141184(arg0, arg1, flag, arg0->m_unk853CC);
+        }
+        arg0->m_unk853C8 = temp;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140FDC);
 
