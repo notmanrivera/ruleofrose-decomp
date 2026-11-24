@@ -1,6 +1,7 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
 #include "mag/magscene.h"
+extern "C" void func_00102AB8(DogVector *theOut, int theA);
 extern "C" int func_0011BE30(MagLifePC *);
 extern const int D_002EAD68[];
 extern const int D_002EAD78[];
@@ -356,7 +357,33 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", init__19MagLifePCModeDamageR9M
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", live__19MagLifePCModeDamageR9MagLifePC);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", init__17MagLifePCModeItemR9MagLifePC);
+extern "C" void init__17MagLifePCModeItemR9MagLifePC(MagLifePCModeItem *arg0, MagLifePC *arg1)
+{
+    int oid = arg1->m_unk08;
+    if (oid == 0) {
+        X_ror_assert(D_002EAD28, 0x5CE, "oid != 0");
+    }
+    DogVector pos;
+    func_00102AB8(&pos, oid);
+    DogActor *actor = arg1->m_actor;
+    if (actor == 0) {
+        X_ror_assert(D_002EAD28, 0x5D4, "actor != __null");
+    }
+    DogVector actor_pos = actor->m_unk40;
+    float dy = -(pos.m_y - actor_pos.m_y);
+    int mot;
+    if (dy < 50.0f) {
+        mot = 0x81;
+    } else if (dy < 100.0f) {
+        mot = 0x83;
+    } else if (dy < 160.0f) {
+        mot = 0x85;
+    } else {
+        mot = 0x87;
+    }
+    arg1->m_unk0C = mot;
+    Xiiis_func_0011A320(arg1, mot, -1);
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", live__17MagLifePCModeItemR9MagLifePC);
 
