@@ -1,3 +1,6 @@
+extern "C" const char D_002F2720[];
+class DogActor;
+struct EffMan;
 #include "include_asm.h"
 #include "unk/EffLight2.h"
 
@@ -18,7 +21,6 @@ struct DogLightPool {
 
 extern "C" const char D_002F2700[];
 extern "C" const char D_002F2710[];
-extern "C" const char D_002F2720[];
 extern "C" const char D_002F2730[];
 extern "C" const char D_002F28D0[];
 extern "C" const char D_002F28E8[];
@@ -55,12 +57,12 @@ extern "C" int X_func_00173618(EffFoot1Prim *, int, int, int) asm("func_00173618
 extern "C" int X_func_00173620() asm("func_00173620");
 extern "C" int X_func_00173628(EffFoot1Prim *, int, int, int) asm("func_00173628");
 extern "C" void X_func_00173840(void *, void *, EffFoot2State *) asm("func_00173840");
-extern "C" void X_func_00173948(void *, void *, const char *, EffFoot2State *) asm("func_00173948");
+extern "C" void func_00173948(void *, DogActor *, const char *, EffFoot2State *);
 extern "C" void X_func_00174C4C(EffGeneric1 *, float *, float, float) asm("func_00174C4C");
 extern "C" float X_func_00174D14(EffGeneric1 *, EffGenericTrack *) asm("func_00174D14");
 extern "C" void X_func_0017653C(EffLight3 *) asm("func_0017653C");
 extern "C" void X_func_001765E8(EffLight3 *, float) asm("func_001765E8");
-extern "C" void X_func_00176CC8(int, EffFoot1SpawnParam *) asm("func_00176CC8");
+extern "C" int func_00176CC8(EffMan *, Eff0Arg *);
 extern "C" int X_func_0022AAB8(EffRetSub **) asm("func_0022AAB8");
 extern "C" int X_func_0022AAD0(EffRetSub **, int) asm("func_0022AAD0");
 extern "C" void X_func_0021AB30(int, EffVec4 *) asm("func_0021AB30");
@@ -210,7 +212,7 @@ extern "C" void func_001730D4(EffFoot1 *self, void *actor)
                 param.m_pos[0] = chk.m_pts[i][0];
                 param.m_pos[1] = chk.m_pts[i][1];
                 param.m_pos[2] = chk.m_pts[i][2];
-                X_func_00176CC8(D_00298E08 + 0x837E0, &param);
+                func_00176CC8((EffMan *)(D_00298E08 + 0x837E0), (Eff0Arg *)&param);
             }
         }
     }
@@ -351,96 +353,50 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F2760);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F2770);
 
-extern "C" void func_00173840(void *self, void *actor, EffFoot2State *state)
+extern "C" void func_00173840(void *self, DogActor *actor, EffFoot2State *state)
 {
     float f = X_func_0010DA4C__8DogActor(actor);
     if (f >= 0.0f) {
         int bits = X_func_0010BCC8__8DogActoriff(actor, -1, f, f + 1.0f);
         if (bits & 0x10000000) {
-            X_func_00173948(self, actor, "Bip01 L Toe0", state);
+            func_00173948(self, actor, "Bip01 L Toe0", state);
         }
         if (bits & 0x20000000) {
-            X_func_00173948(self, actor, "Bip01 R Toe0", state);
+            func_00173948(self, actor, "Bip01 R Toe0", state);
         }
         if (bits & 0x04000000) {
-            X_func_00173948(self, actor, "Bip01 L Finger0", state);
+            func_00173948(self, actor, "Bip01 L Finger0", state);
         }
         if (bits & 0x08000000) {
-            X_func_00173948(self, actor, "Bip01 R Finger0", state);
+            func_00173948(self, actor, "Bip01 R Finger0", state);
         }
     }
 }
 
-// NON_MATCHING: 2/82 differ, 2 edits
-#ifdef NON_MATCHING
-extern "C" int X_173948_22B3D8(void *, const char *) asm("func_0022B3D8");
-extern "C" void X_173948_176CC8(int, void *) asm("func_00176CC8");
-struct Vec4_173948 {
-    float x, y, z, w;
-    Vec4_173948() {
-        z = y = x = 0.0f;
-        w = 1.0f;
-    }
-} __attribute__((aligned(16)));
-struct EffParam_173948 {
-    int kind;
-    int unk04;
-    int unk08;
-    int unk0C;
-    int unk10;
-    float pos[3];
-    float f20;
-    float f24;
-    char pad28[0x58];
-};
-class DogEntity_173948 {
-public:
-    char pad0[0x40];
-    float x, y, z;              // 0x40..0x48
-    char pad4C[0x8];
-    float f54;                  // 0x54
-    char pad58[0x3C];
-    virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
-    virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8();
-    virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12();
-    virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16();
-    virtual void v17();
-    virtual void v18(Vec4_173948 *, int);
-};
-class DogModel_173948 : public DogEntity_173948 {
-public:
-    char pad98[0x84];
-    void *m_i3r_root;           // 0x11C
-    int getNodeIndexByName(const char *p) {
-        if (!m_i3r_root) ror_assert(D_002F2720, 0x131, "m_i3r_root");
-        if (!p) ror_assert(D_002F2720, 0x131, "p");
-        return X_173948_22B3D8(m_i3r_root, p);
-    }
-};
-extern "C" void func_00173948(void *arg0, DogModel_173948 *arg1, const char *arg2, EffFoot2State *arg3)
+#define ASSERT_FILE D_002F2720
+#include "mag/magscene.h"
+#include "unk/EffMan.h"
+#undef ASSERT_FILE
+extern "C" void func_00173948(void *, DogActor *actor, const char *name, EffFoot2State *state)
 {
-    (void)arg0;
     EffVec3 pos;
-    pos.x = arg1->x;
-    pos.y = arg1->y;
-    pos.z = arg1->z;
-    Vec4_173948 vec;
-    arg1->v18(&vec, arg1->getNodeIndexByName(arg2));
-    EffParam_173948 param;
-    param.kind = 0x20;
-    param.unk10 = arg3->m_unk00;
-    param.pos[0] = vec.x;
-    param.pos[1] = pos.y;
-    param.pos[2] = vec.z;
-    param.f20 = arg1->f54;
-    param.f24 = arg3->m_unk08;
-    param.unk08 = 0;
-    X_173948_176CC8(D_00298E08 + 0x837E0, &param);
-    arg3->m_unk04--;
+    pos.x = actor->m_unk40.m_x;
+    pos.y = actor->m_unk40.m_y;
+    pos.z = actor->m_unk40.m_z;
+    DogVector vec(0.0f, 0.0f, 0.0f, 1.0f);
+    actor->vfunc18(vec, actor->getNodeIndexByName(name));
+    EffFoot2PrimArg param;
+    param.m_kind = 0x20;
+    param.m_unk10 = state->m_unk00;
+    param.m_pos.x = vec.m_x;
+    param.m_pos.y = pos.y;
+    param.m_pos.z = vec.m_z;
+    param.m_unk20 = actor->m_unk50.m_y;
+    param.m_unk24 = state->m_unk08;
+    param.m_delay = 0;
+    func_00176CC8((EffMan *)((MagScene *)D_00298E08)->m_unk837E0, &param);
+    --state->m_unk04;
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/EffLight2", func_00173948);
-#endif
 
 extern "C" int EffFoot2Prim__vfunc_02(EffFoot2Prim *self, EffFoot2PrimArg *arg1)
 {
@@ -516,7 +472,8 @@ extern "C" void EffGeneric1_dtor(EffGeneric1 *self, int flags)
     }
 }
 
-INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F27E0);
+// The following vector is 16-aligned in the original read-only data.
+extern "C" const float D_002F27E0[4] __attribute__((section(".rodata"), aligned(16))) = {1.0f, 1.0f, 1.0f, 1.0f};
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EffLight2", D_002F27F0);
 

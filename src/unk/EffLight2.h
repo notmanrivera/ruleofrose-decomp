@@ -85,12 +85,12 @@ struct EffFoot2State {
     float m_unk08;                      // +0x08
 };
 
-struct EffFoot2PrimArg {
-    unsigned char m_pad00[0x10];        // +0x00
+struct EffFoot2PrimArg : public Eff0Arg {        // +0x00
     int m_unk10;                        // +0x10
     EffVec3 m_pos;                      // +0x14
     float m_unk20;                      // +0x20
     float m_unk24;                      // +0x24
+    unsigned char m_unk28[0x58];        // +0x28: common 0x80-byte spawn packet
 };
 
 struct EffFoot2Prim : public Eff0 {
