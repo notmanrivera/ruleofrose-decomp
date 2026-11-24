@@ -1,5 +1,13 @@
 #include "include_asm.h"
 #include "emy/emy.h"
+extern int D_002F13F0[];
+extern int D_002F1400[];
+extern int D_002F1410[];
+extern int D_002F1420[];
+extern int D_002F1430[];
+extern int D_002F1440[];
+extern int D_002F1450[];
+extern int D_002F1460[];
 
 struct EmyVtblEntry {
     short m_delta;
@@ -447,7 +455,38 @@ extern "C" void func_00163C50()
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00163C74);
+extern "C" int func_00163C74(EmyManager *self, int id, unsigned int arg2)
+{
+    EmyMain *p = X_func_001636A4_ii(self, id);
+    if (p == 0) {
+        return 0;
+    }
+    EmyVtblEntry *entry = (EmyVtblEntry *)p->m_vtbl + 3;
+    unsigned int r = ((unsigned int (*)(char *))entry->m_fn)((char *)p + entry->m_delta);
+    if (r >= 4) {
+        return 0;
+    }
+    unsigned int idx = p->m_unk07;
+    switch (arg2) {
+    case 0:
+        return D_002F13F0[idx];
+    case 1:
+        return D_002F1400[idx];
+    case 2:
+        return D_002F1410[idx];
+    case 3:
+        return D_002F1420[idx];
+    case 4:
+        return D_002F1430[idx];
+    case 5:
+        return D_002F1440[idx];
+    case 6:
+        return D_002F1450[idx];
+    case 7:
+    default:
+        return D_002F1460[idx];
+    }
+}
 
 extern "C" int func_00163D90()
 {
