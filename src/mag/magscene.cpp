@@ -484,7 +484,45 @@ extern "C" float func_0013377C(MagScene *self, DogVector *arg1, DogVector *arg2)
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_0013386C);
 
+// NON_MATCHING: 19/93 differ, 19 edits
+#ifdef NON_MATCHING
+extern "C" float func_00234050(const DogVector *, const DogVector *, const DogVector *, const DogVector *, float *, float *);
+void vecNormalize(float *v);
+extern "C" float fabsf(float);
+extern "C" float func_00133A0C(MagScene *self, DogModelHit *theHit, const DogVector &theP, const DogVector &theD)
+{
+#line 1740
+    ASSERT(theD.m_y == 0.0f);
+    MagPrivateColli *p = self->m_private_colli;
+    for (int i = 0; i < 256; i++, p++) {
+        if (p->m_p1.m_y == p->m_p2.m_y) {
+            continue;
+        }
+        if (fabsf((p->m_p1.m_y + p->m_p2.m_y) * 0.5f - theP.m_y) > fabsf(p->m_p1.m_y - p->m_p2.m_y) * 0.5f) {
+            continue;
+        }
+        MagPrivateColli col = *p;
+        col.m_p1.m_y = theP.m_y;
+        col.m_p2.m_x -= p->m_p1.m_x;
+        col.m_p2.m_y = 0.0f;
+        col.m_p2.m_z -= p->m_p1.m_z;
+        col.m_p2.m_w = 1.0f;
+        float t0, t1;
+        if (func_00234050(&theP, &theD, &col.m_p1, &col.m_p2, &t0, &t1) == 0.0f) {
+            if (theHit) {
+                theHit->m_normal.m_x = -col.m_p2.m_z;
+                theHit->m_normal.m_y = 0.0f;
+                theHit->m_normal.m_z = col.m_p2.m_x;
+                vecNormalize(&theHit->m_normal.m_x);
+            }
+            return t0;
+        }
+    }
+    return -1.0f;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133A0C);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133B80);
 

@@ -72,7 +72,8 @@ struct I3dDraw;
 
 class MagScene {
 public:
-    unsigned char m_unk00000[0x2040];
+    MagPrivateColli m_private_colli[256]; // +0x00000
+    unsigned char m_unk02000[0x40];
     int m_shadow_type;              // +0x02040
     void *m_shadow_light;           // +0x02044
     unsigned char m_unk02048[8];
