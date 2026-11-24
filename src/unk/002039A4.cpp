@@ -1,6 +1,31 @@
 #include "include_asm.h"
 #include "game/gamsnd.h"
 #include "game/gamman.h"
+struct TskEnemyTurn {
+    void *m_vtable;
+    int m_active;
+    int m_oid;
+    int m_chrID;
+    void *m_actor;
+    int *m_donePtr;
+    int m_targetOid;
+    float m_mtnSpeed;
+    int m_curMtn;
+    int m_turnDir;
+    float m_stopAngle;
+    float m_targetPos[3];
+    int m_unk38;
+    int m_sndHandle;
+    int m_sndTimer;
+    int m_sndType;
+    int m_paused;
+};
+extern "C" int func_00180CA8(void *, int);
+extern "C" int func_0010423C(int, int);
+extern "C" int func_0016A8A4(int, int);
+extern "C" int func_00169A98(const float *, const float *, float);
+extern const int D_002FF6A8[];
+extern const int D_002FF6E8[];
 extern "C" void func_00203DD0(GamTaskBase *);
 extern "C" void func_00203F38(GamTaskBase *);
 extern "C" int Xii___builtin_delete(int) asm("__builtin_delete");
@@ -14,17 +39,11 @@ extern "C" int X_func_00279C98(...) asm("func_00279C98");
 extern "C" int X_sceClose(...) asm("sceClose");
 extern "C" int X_sceOpen(...) asm("sceOpen");
 // Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_func_0010423C(...) asm("func_0010423C");
-extern "C" int X_func_00169A98(...) asm("func_00169A98");
-extern "C" int X_func_0016A8A4(...) asm("func_0016A8A4");
-extern "C" int X_func_00180CA8(...) asm("func_00180CA8");
 extern "C" int X_func_001C0D44(...) asm("func_001C0D44");
 extern "C" int X_func_001C0D70(...) asm("func_001C0D70");
 extern "C" int X_func_002041F8(...) asm("func_002041F8");
 extern "C" int X_func_0020E664(...) asm("func_0020E664");
 extern "C" int X_func_0020E690(...) asm("func_0020E690");
-extern int D_002FF6A8;
-extern int D_002FF6E8;
 extern int D_007A4440;
 extern int D_007B2580;
 
@@ -56,7 +75,39 @@ extern "C" void func_00203A00(int arg0)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_00203A28);
+extern "C" void func_00203A28(TskEnemyTurn *self, const float *pos)
+{
+    if (self->m_sndHandle >= 0) {
+        int h = func_00180CA8(&D_007B2580, self->m_sndHandle);
+        if (h != -1) {
+            return;
+        }
+        self->m_sndHandle = h;
+    }
+    if (--self->m_sndTimer > 0) {
+        return;
+    }
+    if (func_00169A98(pos, self->m_targetPos, 180.0f) != 0) {
+        return;
+    }
+    self->m_sndTimer = func_0010423C(0x1E, 0x50);
+    switch (self->m_sndType) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+        self->m_sndHandle = func_0016A8A4(self->m_oid, 0xC);
+        break;
+    case 6:
+        self->m_sndHandle = func_0016A8A4(self->m_oid, D_002FF6A8[func_0010423C(0, 0xF)]);
+        break;
+    case 10:
+        self->m_sndHandle = func_0016A8A4(self->m_oid, D_002FF6E8[func_0010423C(0, 3)]);
+        break;
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/002039A4", func_00203B44);
 
