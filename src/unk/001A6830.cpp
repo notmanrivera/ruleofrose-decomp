@@ -1,7 +1,13 @@
 #include "include_asm.h"
 #include "001A6830.h"
 #include "game/gamman.h"
+extern "C" int func_00131550(void *) ASM_NOTHROW;
+extern "C" void func_00131184(void *, int, int, int) ASM_NOTHROW;
+extern "C" void func_001311BC(void *, int, int, int) ASM_NOTHROW;
 #include "bed/bedpad.h"
+extern "C" void func_001AE7F8(MnuNow *);
+extern "C" int func_001AE848(MnuNow *, int);
+extern "C" int func_001AE868(MnuNow *, int);
 extern "C" void *func_0021B550(void *, int, unsigned long long);
 extern "C" void *func_0021C140(void *, void *, void *, void *);
 extern "C" void *func_0021C8C8(int, float, int, int, int);
@@ -1481,9 +1487,6 @@ INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001ADCD8);
 
 // NON_MATCHING: 8/77 differ, 8 edits
 #ifdef NON_MATCHING
-extern "C" int func_00131550(void *) ASM_NOTHROW;
-extern "C" void func_00131184(void *, int, int, int) ASM_NOTHROW;
-extern "C" void func_001311BC(void *, int, int, int) ASM_NOTHROW;
 extern "C" int func_001ADDD0(MnuBoard *arg0, int arg1)
 {
     int ret = 0;
@@ -1819,7 +1822,51 @@ extern "C" int func_001AE698()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE6A0);
+extern "C" int func_001AE6A0(MnuNow *arg0, int arg1)
+{
+    int ret = 0;
+
+    if (arg0->m_open == 0) {
+        return -1;
+    }
+
+    switch (arg0->m_step0) {
+    case 0:
+        arg0->m_step0 = 3;
+    case 3:
+        arg0->m_step0 = 4;
+        func_001AE7F8(arg0);
+        func_00131184(((MnuSysScene *)arg0->m_sys)->m_scene, 4, 7, 0);
+        break;
+    case 4:
+        if (arg0->m_mode == 0) {
+            int r = func_001AE868(arg0, arg1);
+            if (r != 0) {
+                if (r == 1) {
+                    arg0->m_step0 = 6;
+                }
+            }
+        }
+        func_001AE848(arg0, arg1);
+        break;
+    case 6: {
+        int step = 7;
+        func_001311BC(((MnuSysScene *)arg0->m_sys)->m_scene, 4, 7, 0);
+        arg0->m_step0 = step;
+    }
+    case 7:
+    default: {
+        bool ok = !(func_00131550(((MnuSysScene *)arg0->m_sys)->m_scene) < 5);
+        if (ok == 1) {
+            arg0->m_step0 = 0;
+            ret = 1;
+            arg0->m_subStep = 0;
+        }
+        break;
+    }
+    }
+    return ret;
+}
 
 extern "C" int func_001AE7F0()
 {
@@ -1837,7 +1884,7 @@ extern "C" void func_001AE7F8(MnuNow *arg0)
     rpk->m_unk04 = 1;
 }
 
-extern "C" int func_001AE848(MnuNow *arg0)
+extern "C" int func_001AE848(MnuNow *arg0, int)
 {
     X_func_0018C068(&arg0->m_rpk);
     return 0;

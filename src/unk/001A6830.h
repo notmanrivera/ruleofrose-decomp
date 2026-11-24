@@ -11,6 +11,11 @@
 
 #include "mnu/mnusvld.h"
 
+struct MnuSysScene {
+    unsigned char m_pad00[0x12540];
+    unsigned char m_scene[4];
+};
+
 struct MnuBoardTblEnt {
     int m_key;
     int m_val;
