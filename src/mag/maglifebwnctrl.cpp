@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
 #include "utl/utlfind.h"
+extern "C" void func_00125980(MagLifeBwn *);
+extern "C" void func_001258A4(MagLifeBwn *);
 struct MagLifeBwnCtrlModeV2 {
     virtual void vfunc01();
     virtual void vfunc02(MagLifeBwnCtrl *);
@@ -574,4 +576,21 @@ extern "C" void func_0012B788(MagLifeBwnCtrl *arg0, int arg1)
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnctrl", D_002EC448);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012B7CC);
+extern "C" void func_0012B7CC(MagLifeBwnCtrl *arg0, int theLevel)
+{
+    if (!(theLevel >= 0 && theLevel <= 2)) {
+        Xiiii_ror_assert(D_002EBE28, 0xF52, "theLevel >= MAG_BWNCTRL_LEVEL_AUTO && theLevel <= MAG_BWNCTRL_LEVEL_MANUAL");
+    }
+    if (arg0->m_unk6C == theLevel) {
+        return;
+    }
+    arg0->m_unk6C = theLevel;
+    if (theLevel == 0) {
+        func_00125980(arg0->m_bwn);
+        Xiiiii_func_0012A56C(arg0, 0, 0, 1);
+    } else if (theLevel == 2) {
+        if (arg0->m_bwn != 0) {
+            func_001258A4(arg0->m_bwn);
+        }
+    }
+}
