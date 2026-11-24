@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "task/cmnitask.h"
+#include "sdk/math.h"
 struct EventEntry64 {
     unsigned char unk00[0x40];
 };
@@ -89,7 +90,18 @@ INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301C10);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00217260);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_00217BEC);
+extern "C" void func_00217BEC(EventTestTask *self)
+{
+    float angle = 0.25f * (float)self->m_unk04;
+
+    if (angle < -3.14159265358979323846) {
+        angle += 6.28318530717958647692;
+    }
+    if (angle > 3.14159265358979323846) {
+        angle -= 6.28318530717958647692;
+    }
+    sinf(angle);
+}
 
 extern "C" void func_00217CAC(void) {
 }
@@ -225,14 +237,6 @@ extern "C" void func_002184B8(void) {
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/EventTestTask", func_002184C0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301DC8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301DD0);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301DD8);
-
-INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301DE0);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/EventTestTask", D_00301DE8);
 
