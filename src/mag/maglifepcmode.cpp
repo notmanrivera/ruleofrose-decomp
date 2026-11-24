@@ -157,7 +157,19 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcmode", D_002EAD98);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", init__22MagLifePCModeAtkWait2DR9MagLifePC);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", func_00121604);
+extern "C" float func_00121604(float fparg0)
+{
+    if ((fparg0 <= -1.5707963f) || (fparg0 > 1.5707963f)) {
+        return 0.0f;
+    }
+    if ((fparg0 <= 0.05f) && (fparg0 >= -0.05f)) {
+        return 0.0f;
+    }
+    if (fparg0 < 0.0f) {
+        return -0.1f;
+    }
+    return 0.1f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", live__22MagLifePCModeAtkWait2DR9MagLifePC);
 
