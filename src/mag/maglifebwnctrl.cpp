@@ -1,5 +1,9 @@
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
+struct MagLifeBwnCtrlModeV {
+    virtual void vfunc01();
+    virtual void vfunc02();
+};
 
 extern "C" int Xii_getMainMotionNo__C14DogMotionBlend(const DogMotionBlend *) asm("getMainMotionNo__C14DogMotionBlend");
 extern "C" int Xiii_func_0010AA5C__8DogActorPCc(DogActor *, const char *) asm("func_0010AA5C__8DogActorPCc");
@@ -34,7 +38,12 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_001268B4);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_00126928);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeNull__vfunc_01);
+extern "C" void MagLifeBwnCtrlModeNull__vfunc_01(MagLifeBwnCtrlMode *arg0, MagLifeBwnCtrl *arg1)
+{
+    if (arg1->m_bwn != 0) {
+        ((MagLifeBwnCtrlModeV *)arg0)->vfunc02();
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeNull__vfunc_02);
 
