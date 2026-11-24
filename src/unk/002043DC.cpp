@@ -28,7 +28,7 @@ extern int D_007B2580;
 
 INCLUDE_ASM("asm/nonmatchings/unk/002043DC", func_002043DC);
 
-INCLUDE_ASM("asm/nonmatchings/unk/002043DC", func_002045A8);
+INCLUDE_ASM("asm/nonmatchings/unk/002043DC", main);
 
 INCLUDE_ASM("asm/nonmatchings/unk/002043DC", func_002046D4);
 

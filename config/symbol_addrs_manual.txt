@@ -534,3 +534,8 @@ func_0013FF00__8MagScenei = 0x0013FF00; // type:func size:0x130
 // the old assembler rejects in an INCLUDE_ASM (.end without .ent). The last
 // case ends at 0x001C6FE0.
 func_001C6F08 = 0x001C6F08; // type:func size:0xD8
+
+// main: sdk/crt0 _start calls it last (after _InitSys, FlushCache, the
+// init-function pointer and atexit), with argc/argv: the standard crt0 hand-off.
+// Name also given by RozuRecomp's function table (lead only).
+main = 0x002045A8; // type:func size:0x12C
