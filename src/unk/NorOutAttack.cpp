@@ -91,7 +91,7 @@ extern "C" void func_0015195C(NorOutAttack *);
 extern "C" int func_001519B8(NorOutAttack *);
 extern "C" int X_func_00151F1C(NorOutAttack *) asm("func_00151F1C");
 extern "C" int func_001520CC(NorOutAttack *);
-extern "C" void X_func_0015246C(NorOutAttack *) asm("func_0015246C");
+extern "C" void func_0015246C(NorOutAttack *);
 extern "C" int X_func_00152544(NorOutAttack *) asm("func_00152544");
 extern "C" void func_00152B24(NorOutAttack *);
 extern "C" void func_00152BB4(NorOutAttack *);
@@ -102,7 +102,7 @@ extern "C" void func_00152E40(NorOutAttack *);
 extern "C" void func_00152E90(NorOutAttack *);
 extern "C" void X_func_00152F3C(NorOutAttack *) asm("func_00152F3C");
 extern "C" int func_001536CC(void);
-extern "C" int X_func_0016649C(EmyMain *, int) asm("func_0016649C");
+extern "C" void func_0016649C(EmyMain *, int);
 extern "C" int X_func_00166AD0(...) asm("func_00166AD0");
 extern "C" int X_func_00166B74(EmyOut *, float *) asm("func_00166B74");
 extern "C" int X_func_00166DA4(EmyOut *, int) asm("func_00166DA4");
@@ -227,7 +227,7 @@ extern "C" void NorOutAttack__vfunc_04(NorOutAttack *self)
     X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x40);
     X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x10000000);
     X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
-    X_func_0016649C(self->m_owner, 1);
+    func_0016649C(self->m_owner, 1);
     X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
 }
 
@@ -285,10 +285,10 @@ extern "C" int func_001519B8(NorOutAttack *self)
             self->m_unk48 = frame;
             inRange1 = (float)NorInRange(frame, 15, 55);
             if (inRange1 != 0.0f) {
-                X_func_0016649C(self->m_owner, 0);
+                func_0016649C(self->m_owner, 0);
                 X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
             } else {
-                X_func_0016649C(self->m_owner, 1);
+                func_0016649C(self->m_owner, 1);
                 X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
             }
             inRange2 = (float)NorInRange(self->m_unk48, 20, 50);
@@ -316,7 +316,7 @@ extern "C" int func_001519B8(NorOutAttack *self)
             }
             if (NorAnimDone(&D_007812C0, self)) {
                 ret = 8;
-                X_func_0016649C(self->m_owner, 1);
+                func_0016649C(self->m_owner, 1);
                 X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
                 X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x40);
                 X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x10000000);
@@ -381,10 +381,10 @@ extern "C" int func_001520CC(NorOutAttack *self)
             frame1 = (unsigned int)self->m_unk48 + 1;
             self->m_unk48 = (int)frame1;
             if (frame1 >= 0xFU) {
-                X_func_0016649C(owner1, 0);
+                func_0016649C(owner1, 0);
                 X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
             } else {
-                X_func_0016649C(owner1, 1);
+                func_0016649C(owner1, 1);
                 X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
             }
             inRange = (float)NorInRange(self->m_unk48, 19, 25);
@@ -418,14 +418,14 @@ extern "C" int func_001520CC(NorOutAttack *self)
             frame3 = (unsigned int)self->m_unk48 + 1;
             self->m_unk48 = (int)frame3;
             if (frame3 < 0x1EU) {
-                X_func_0016649C(owner3, 0);
+                func_0016649C(owner3, 0);
                 X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
             } else {
-                X_func_0016649C(owner3, 1);
+                func_0016649C(owner3, 1);
                 X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
             }
             if (NorAnimDone(&D_007812C0, self)) {
-                X_func_0016649C(self->m_owner, 1);
+                func_0016649C(self->m_owner, 1);
                 X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
                 self->m_unk48 = 0;
                 X_func_001517E0(self);
@@ -435,7 +435,26 @@ extern "C" int func_001520CC(NorOutAttack *self)
     return -1;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_0015246C);
+extern "C" void func_0015246C(NorOutAttack *self)
+{
+    int off = 0x12540;
+    X_func_0016947C(self);
+    self->m_owner->m_unk150 = 0;
+    if (self->m_unk50 == 0) {
+        X_func_0013166C((int)&D_006E9840 + off, 6, 0);
+    } else {
+        X_func_0013166C((int)&D_006E9840 + off, 9, 0);
+    }
+    X_func_001694CC(self, 0x5B);
+    if (((NorMain *)self->m_owner)->m_unk218 == 0) {
+        X_func_001694CC(self, 0x65);
+    } else {
+        X_func_001694CC(self, 0x64);
+    }
+    X_func_001680A0(self, 0x23, 0);
+    self->m_unk04 = 6;
+    func_0016649C(self->m_owner, 1);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFB28);
 
@@ -458,7 +477,7 @@ extern "C" int func_00152544(NorOutAttack *self)
     if (st == 3 || st == 8) {
         if (X_func_001442DC(self->m_unk00) != minusOne) {
             X_func_00144308(1);
-            X_func_0015246C(self);
+            func_0015246C(self);
             return -1;
         }
     }
@@ -526,10 +545,10 @@ extern "C" void func_00152748(NorOutAttack *incoming)
     unsigned int frame = (unsigned int)self->m_unk48 + 1;
     self->m_unk48 = (int)frame;
     if (frame >= 11U) {
-        X_func_0016649C(owner, 0);
+        func_0016649C(owner, 0);
         X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
     } else {
-        X_func_0016649C(owner, 1);
+        func_0016649C(owner, 1);
         X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
     }
     if (!NorAnimDone(&D_007812C0, self)) {
@@ -539,7 +558,7 @@ extern "C" void func_00152748(NorOutAttack *incoming)
             unsigned int worldFlags = *(unsigned int *)((char *)&D_007812C0 + 0x21F48);
             if (!(bool)X_func_0013166C(motion, 22, 0) && !(worldFlags & 0x2000) && (worldFlags & 4)) {
                 int anim;
-                X_func_0016649C(self->m_owner, 0);
+                func_0016649C(self->m_owner, 0);
                 X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x40);
                 X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x10000000);
                 X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x04000000);
@@ -574,7 +593,7 @@ extern "C" void func_00152748(NorOutAttack *incoming)
         X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x40);
         X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x10000000);
         X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
-        X_func_0016649C(self->m_owner, 1);
+        func_0016649C(self->m_owner, 1);
         X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
         X_func_001517E0(self);
     }
@@ -659,7 +678,7 @@ extern "C" void func_00152E90(NorOutAttack *self)
     X_func_001693EC(self, 0xC, 0x1E, 0x58);
     if (X_func_00118FEC(&D_006E9840) == 3) {
         if (++self->m_unk54 >= 0x51) {
-            return X_func_0015246C(self);
+            return func_0015246C(self);
         }
     } else {
         X_func_001680A0(self, (self->m_unk50 == 0) ? 0x24 : 0x25, 0x100);
@@ -700,14 +719,14 @@ extern "C" int NorOutBitten__vfunc_03(NorOutBitten *self)
             X_func_001693EC(self, 0xA, 0x19, 0x52);
             if (X_func_00151448(self->m_owner) == 0) {
                 X_func_0016947C(self);
-                X_func_0016649C(self->m_owner, 0);
+                func_0016649C(self->m_owner, 0);
                 X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
                 X_func_001680A0(self, 0x18, 0);
                 self->m_unk3C = 0;
                 self->m_unk38 = 0;
                 X_func_001694CC(self, 0x56);
                 X_func_001694CC(self, 0x63);
-                X_func_0016649C(self->m_owner, 0);
+                func_0016649C(self->m_owner, 0);
                 X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
                 self->m_unk04 = 1;
             }
@@ -716,10 +735,10 @@ extern "C" int NorOutBitten__vfunc_03(NorOutBitten *self)
             frame = self->m_unk3C + 1;
             self->m_unk3C = frame;
             if (frame < 0x30) {
-                X_func_0016649C(self->m_owner, 0);
+                func_0016649C(self->m_owner, 0);
                 X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
             } else {
-                X_func_0016649C(self->m_owner, 1);
+                func_0016649C(self->m_owner, 1);
                 X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
             }
             inRange = (float)NorInRange(self->m_unk3C, 0x1D, 0x2B);
@@ -737,7 +756,7 @@ extern "C" int NorOutBitten__vfunc_03(NorOutBitten *self)
             }
             if (NorAnimDone(&D_007812C0, self)) {
                 ret = 8;
-                X_func_0016649C(self->m_owner, 1);
+                func_0016649C(self->m_owner, 1);
                 X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
             }
             return ret;
@@ -982,7 +1001,7 @@ extern "C" int NorOutCounter__vfunc_03(NorOutCounter *self)
     switch (self->m_unk04) {
         case 0:
             self->m_unk38++;
-            X_func_0016649C(self->m_owner, 0);
+            func_0016649C(self->m_owner, 0);
             X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
             if ((float)NorInRange(self->m_unk38, 17, 38) != 0.0f) {
                 if ((self->m_unk3C == 0) && (X_func_00118FEC(&D_006E9840) != 9)) {
@@ -1010,11 +1029,11 @@ extern "C" int NorOutCounter__vfunc_03(NorOutCounter *self)
             return ret;
         case 2:
             self->m_unk38++;
-            X_func_0016649C(self->m_owner, 0);
+            func_0016649C(self->m_owner, 0);
             X_func_001D10D0(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
             if (NorAnimDone(&D_007812C0, self)) {
                 ret = 8;
-                X_func_0016649C(self->m_owner, 1);
+                func_0016649C(self->m_owner, 1);
                 X_func_001D1410(&D_007812C0, (unsigned int)self->m_unk00, 0x400);
             }
             return ret;
@@ -1035,7 +1054,7 @@ extern "C" void NorOutCoax__vfunc_02(NorOutCoax *self)
 {
     X_func_00167230(self, 0, 0.39269906282424927f);
     self->m_unk04 = 0;
-    X_func_0016649C(self->m_owner, 0);
+    func_0016649C(self->m_owner, 0);
 }
 
 INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", NorOutCoax__vfunc_03);
