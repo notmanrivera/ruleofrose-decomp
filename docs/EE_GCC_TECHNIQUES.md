@@ -13,6 +13,12 @@ not lower the "edits" count, change approach or move on. Do not read the
 whole `src/<file>.cpp`: work.py's scratch file has the draft, the twin, the
 earlier attempt and the class layout; grep the file for the names you need.
 
+**Record what worked:** every function commit carries a second line,
+`Technique: <the change that closed the last difference>` on a MATCH or
+`Blocker: <what still differs>` on a NON_MATCHING attempt (since
+2026-11-24). `tools/techniques.py` counts them by family and by model;
+techniques that keep paying off get promoted into this list.
+
 ## Branches: `bnel`/`beql` (likely) vs `bne`/`beq`
 
 - **`throw()` on the callees near the branch** (`ASM_NOTHROW`, include/ror.h):
