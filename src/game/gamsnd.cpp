@@ -1693,7 +1693,167 @@ extern "C" void func_001E5DE4(GamSndMan *arg0, int arg1, int arg2, int arg3, int
     }
 }
 
+// NON_MATCHING: 239/326 differ, 20 relocs differ (size 0x518, game 0x510), 96 edits
+#ifdef NON_MATCHING
+extern "C" int func_001E5E58(GamSndMan *arg0, unsigned int arg1, int arg2, GamSndMessage *arg3) {
+    GamSndMessage *sp10;
+    GamSndChannel *temp_v1_4;
+    int *var_s0;
+    GamSndChannels *var_s1;
+    int temp_a1;
+    int temp_a1_2;
+    int temp_a1_3;
+    int temp_a1_4;
+    int temp_a1_5;
+    int temp_s0;
+    int temp_s5;
+    int temp_v0;
+    int temp_v1_3;
+    int var_s3;
+    int var_v0;
+    TskSnd *temp_v0_2;
+    TskSnd *temp_v0_3;
+    GamSndChannel *temp_v1;
+    GamSndChannel *temp_v1_2;
+    GamSndChannel *temp_v1_5;
+
+    sp10 = 0;
+    var_s3 = 0;
+loop_1:
+    var_s1 = &arg0->m_channels;
+    temp_s5 = var_s3 * 0x28;
+    temp_v1 = channelAt(var_s1, temp_s5);
+    if (temp_v1->flags & 1) goto block_31;
+    if ((temp_v0 = temp_v1->m_unk0C, (temp_v0 != 0)) && (temp_v0 == arg1)) {
+        if (func_00180CA8(&D_007B2580, temp_v1->m_unk18) == -1) {
+            channelAt(var_s1, temp_s5)->m_unk0C = 0;
+            goto block_31;
+        }
+        // The original command-6 path reads the saved pointer before case 5 sets it.
+        switch (arg2) {
+        default: goto block_31;
+        case 22:
+            return 1;
+        case 1:
+        case 8:
+            temp_s0 = var_s3 * 0x28;
+            temp_v1_2 = channelAt(var_s1, temp_s0);
+            if (!(temp_v1_2->flags & 0x80)) {
+                func_00180EA8(&D_007B2580, temp_v1_2->m_unk18);
+                channelAt(var_s1, temp_s0)->m_unk0C = 0;
+                channelAt(var_s1, temp_s0)->m_unk18 = -1;
+                channelAt(var_s1, temp_s0)->m_unk04 = 0;
+                channelAt(var_s1, temp_s0)->m_unk08 = 0;
+                if (arg2 == 1) {
+                    goto block_33;
+                }
+            }
+            goto block_31;
+        case 2:
+        case 9:
+            temp_a1 = var_s3 * 0x28;
+            channelAt(var_s1, temp_a1)->m_unk04 = (int) arg3->m_unk00;
+            channelAt(var_s1, temp_a1)->m_unk08 = (int) arg3->m_unk04;
+            func_00180CE0(&D_007B2580, channelAt(var_s1, temp_a1)->m_unk18, arg3->m_unk00, arg3->m_unk04, -1024.0f, 0);
+            var_s3 += 1;
+            if (arg2 == 2) {
+                goto block_33;
+            }
+            goto block_32;
+        case 3:
+        case 10:
+            func_00180CE0(&D_007B2580, channelAt(var_s1, (var_s3 * 0x28))->m_unk18, -1024, -1024, arg3->m_f00, 0);
+            var_s3 += 1;
+            if (arg2 == 3) {
+                goto block_33;
+            }
+            goto block_32;
+        case 5:
+        case 11:
+            temp_a1_2 = var_s3 * 0x28;
+            channelAt(var_s1, temp_a1_2)->m_unk08 = (int) arg3->m_unk04;
+            sp10 = arg3;
+            channelAt(var_s1, temp_a1_2)->m_unk04 = (int) arg3->m_unk00;
+            func_00180CE0(&D_007B2580, channelAt(var_s1, temp_a1_2)->m_unk18, arg3->m_unk00, arg3->m_unk04, arg3->m_f08, arg3->m_unk10);
+            var_s3 += 1;
+            if (arg2 == 5) {
+                goto block_33;
+            }
+            goto block_32;
+        case 6:
+        case 12:
+            func_00180CE0(&D_007B2580, channelAt(var_s1, (var_s3 * 0x28))->m_unk18, -1024, -1024, -1024.0f, sp10->m_unk10);
+            goto block_33;
+        case 19:
+            arg3->m_u00 = arg1;
+            temp_a1_3 = var_s3 * 0x28;
+            arg3->m_unk0C = (int) channelAt(var_s1, temp_a1_3)->m_unk18;
+            arg3->m_unk20 = (int) channelAt(var_s1, temp_a1_3)->m_unk04;
+            arg3->m_unk24 = (int) channelAt(var_s1, temp_a1_3)->m_unk08;
+            if (func_001E7D7C(&D_007A3D80, arg0->m_unk1710) != 0) {
+                func_001E7724(&D_007A3D80, arg0->m_unk1710);
+                arg0->m_unk1710 = -1;
+            }
+            var_s0 = &arg0->m_unk1710;
+block_26:
+            temp_v0_2 = (TskSnd *)operator new(0xC0);
+            func_001F8FC0(temp_v0_2, 0, arg3);
+            func_001E71FC(&D_007A3D80, 1, -1, 1, 0, (CmnITask *)temp_v0_2, 0, var_s0, 0x11);
+            return *var_s0;
+        case 21:
+            arg3->m_u00 = arg1;
+            temp_v1_3 = var_s3 * 0x28;
+            arg3->m_unk0C = (int) channelAt(var_s1, temp_v1_3)->m_unk18;
+            arg3->m_unk20 = (int) channelAt(var_s1, temp_v1_3)->m_unk04;
+            arg3->m_unk24 = (int) channelAt(var_s1, temp_v1_3)->m_unk08;
+            temp_v0_3 = (TskSnd *)operator new(0xC0);
+            func_001F8FC0(temp_v0_3, 0, arg3);
+            func_001E71FC(&D_007A3D80, 1, -1, 1, 0, (CmnITask *)temp_v0_3, 0, 0, 1);
+            return arg0->m_unk1710;
+        case 20:
+            arg3->m_u00 = arg1;
+            temp_a1_4 = var_s3 * 0x28;
+            arg3->m_unk0C = (int) channelAt(var_s1, temp_a1_4)->m_unk18;
+            arg3->m_unk20 = (int) channelAt(var_s1, temp_a1_4)->m_unk04;
+            arg3->m_unk24 = (int) channelAt(var_s1, temp_a1_4)->m_unk08;
+            if (func_001E7D7C(&D_007A3D80, arg0->m_unk1714) != 0) {
+                func_001E7724(&D_007A3D80, arg0->m_unk1714);
+                arg0->m_unk1714 = -1;
+            }
+            var_s0 = &arg0->m_unk1714;
+            goto block_26;
+        case 4:
+            temp_a1_5 = var_s3 * 0x28;
+            temp_v1_4 = channelAt(var_s1, temp_a1_5);
+            temp_v1_4->flags |= 0x10;
+            func_00180EEC(&D_007B2580, channelAt(var_s1, temp_a1_5)->m_unk18, arg3);
+            goto block_31;
+        case 33:
+            temp_v1_5 = channelAt(var_s1, var_s3 * 0x28);
+            var_v0 = 0;
+            if (temp_v1_5->m_unk04 == arg3->m_u00) {
+                var_v0 = 1;
+                if (temp_v1_5->m_unk08 != arg3->m_unk04) {
+                    goto block_33;
+                }
+            }
+            return var_v0;
+        }
+    } else {
+block_31:
+        var_s3 += 1;
+block_32:
+        if (var_s3 >= 0x30) {
+block_33:
+            var_v0 = 0;
+            return var_v0;
+        }
+        goto loop_1;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E5E58);
+#endif
 
 extern "C" int func_001E6368(GamSndMan *arg0, int arg1, int arg2)
 {
