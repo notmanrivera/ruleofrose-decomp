@@ -1,5 +1,10 @@
 #include "include_asm.h"
 #include "emy/emy.h"
+extern "C" void func_00166434(EmyMain *);
+extern "C" int func_00165074(EmyMain *, int, const float *, float);
+extern "C" void func_00165060(EmyMain *);
+extern "C" void func_00166534(EmyMain *);
+extern "C" void func_00165038(EmyMain *);
 extern int D_002F13F0[];
 extern int D_002F1400[];
 extern int D_002F1410[];
@@ -84,7 +89,40 @@ extern "C" int EmyManager__vfunc_04(EmyManager *self)
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_0016278C);
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_001629C0);
+extern "C" void func_001629C0(EmyManager *self)
+{
+    for (int i = 0; i < 0x40; i++) {
+        EmyMain *e = self->m_emy[i];
+        if (e == 0) {
+            continue;
+        }
+        func_00166434(e);
+        int *sub = &e->m_unk1C8;
+        if (sub[0] != 0) {
+            EmyGroup *g = &self->m_groups[sub[0]];
+            func_00165074(e, g->m_unk0C, g->m_unk10, g->m_unk20);
+            if (sub[1] != 3) {
+                continue;
+            }
+        }
+        if (e->m_unk08 != 0) {
+            if (((EmyObjStatView *)e->m_objStat)->m_flags & 0x200) {
+                func_00165060(e);
+            } else {
+                if (e->m_unk1E4 > 0) {
+                    func_00166534(e);
+                }
+                func_00165038(e);
+                EmyVtblEntry *e4 = (EmyVtblEntry *)e->m_vtbl + 4;
+                ((void (*)(char *))e4->m_fn)((char *)e + e4->m_delta);
+                EmyVtblEntry *e5 = (EmyVtblEntry *)e->m_vtbl + 5;
+                ((void (*)(char *))e5->m_fn)((char *)e + e5->m_delta);
+                EmyVtblEntry *e6 = (EmyVtblEntry *)e->m_vtbl + 6;
+                ((void (*)(char *))e6->m_fn)((char *)e + e6->m_delta);
+            }
+        }
+    }
+}
 
 extern "C" void func_00162AFC(EmyManager *self, int idx, int val)
 {
