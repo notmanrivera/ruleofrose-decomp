@@ -344,7 +344,20 @@ extern "C" void MagLifeBwnCtrlModeSitOut__vfunc_01(void) {
 extern "C" void MagLifeBwnCtrlModeSitOut__vfunc_02(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeHug__vfunc_01);
+extern "C" void MagLifeBwnCtrlModeHug__vfunc_01(MagLifeBwnCtrlModeHug *arg0, MagLifeBwnCtrl *arg1)
+{
+    int &unk04 = arg0->m_unk04;
+    if (unk04 == 1 || unk04 == 2) {
+        arg1->m_bwn->message(1, unk04 + 0x7E, (void *)1);
+    } else {
+        unk04 = 0;
+        MagLifeBwn *bwn = arg1->m_bwn;
+        bwn->m_unk04 = -1;
+        bwn->m_unk00 = -1;
+        arg1->m_bwn->message(1, 2, (void *)1);
+    }
+    arg1->m_unk78 = 4;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeHug__vfunc_02);
 
