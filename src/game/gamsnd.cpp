@@ -881,7 +881,87 @@ extern "C" void func_001E386C(GamSndMan *self, GamSnd3D *item)
         func_001E63C0(self, item->id, item->handle, left, right);
 }
 
+// NON_MATCHING: 263/314 differ, 12 relocs differ (size 0x4E8, game 0x4FC), 120 edits
+#ifdef NON_MATCHING
+extern "C" int func_001D05F4(GamMan *, int, float *);
+extern "C" void func_001E3C24(GamSndMan *self, EffVec3 *position)
+{
+    GamSnd3D *nearest[4];
+    TskVec4 v;
+    if (self->m_unk1870&1) return;
+    if ((int)D_007812C0.m_sysFlg2>=0) {
+        int scene=func_001C6C28(&D_007812C0);
+        GamTrgMapInfo *obj=func_0017EA44(D_00298EE0,scene);
+        if (obj) {
+            memset(nearest,0,0x10);
+            GamList<GamSnd3D>::iterator it, end;
+            it=self->m_queue.begin();
+            end=self->m_queue.end();
+            while(it!=end) {
+                float distance;
+                GamSnd3D *item=&*it;
+                if (item->zero) {
+                    if (!func_001D05F4(&D_007812C0,item->zero,(float *)&v) || (((*it).flags&2) && (*it).scene!=scene)) {
+                        ++it;
+                        continue;
+                    }
+                    distance=(v.f[0]-position->x)+(v.f[1]-position->y)+(v.f[2]-position->z);
+                    func_001E2350(self,&*it,(const TskVec4 *)&v,0,distance);
+                } else {
+                    float x=(item->position.x-obj->m_unk20)-position->x;
+                    if(x<0.0f) x=-x;
+                    distance=x;
+                    v.f[0]=((*it).position.x-obj->m_unk20)-position->x;
+                    v.f[1]=((*it).position.y-obj->m_unk24)-position->y;
+                    v.f[2]=((*it).position.z-obj->m_unk28)-position->z;
+                    func_001E2350(self,&*it,(const TskVec4 *)&(*it).position,(const EffVec3 *)&obj->m_unk20,x);
+                }
+                float dx=(*it).m_unk00.f[0]-position->x;
+                bool far=dx<0.0f ? dx < -15000.0f : dx > 15000.0f;
+                if (!far) {
+                    float dz=(*it).m_unk00.f[2]-position->z;
+                    far=dz<0.0f ? dz < -15000.0f : dz > 15000.0f;
+                }
+                if (far) {
+                    GamSnd3D *p=&*it;
+                    int handle=p->handle;
+                    if(handle!=-1) {
+                        if(p->flags&1) {
+                            GamSndMessage msg;
+                            msg.m_unk0C=handle;
+                            GamSndChannel *entry=&self->m_channels.m_begin[handle];
+                            msg.m_unk20=entry->m_unk04; msg.m_unk14=10; msg.m_unk24=entry->m_unk08; msg.m_unk04=0; msg.m_unk08=0;
+                            if(func_001E7D7C(&D_007A3D80,self->m_unk1718)) {
+                                func_001E7724(&D_007A3D80,self->m_unk1718);
+                                self->m_unk1718=-1;
+                            }
+                            TskSnd *task=(TskSnd *)operator new(0xC0);
+                            func_001F8FC0(task,1,&msg);
+                            func_001E71FC(&D_007A3D80,1,-1,1,0,(CmnITask *)task,0,&self->m_unk1718,0x11);
+                        } else func_001E649C(self,p->id,handle);
+                        (*it).handle=-1;
+                    }
+                } else {
+                    GamSnd3D *p=&*it;
+                    int count=!(p->flags&1)?3:4;
+                    for(int i=0;i<count;i++) {
+                        if(!nearest[i]) { nearest[i]=p; break; }
+                        if(distance<nearest[i]->distance) {
+                            for(int j=count-1;i<j;j--) if(nearest[j-1]) nearest[j]=nearest[j-1];
+                            nearest[i]=&*it;
+                            break;
+                        }
+                    }
+                }
+                ++it;
+            }
+            for(int i=0;i<4;i++) if(nearest[i]) func_001E386C(self,nearest[i]);
+        }
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3C24);
+#endif
 
 extern "C" void func_001E4120(GamSndMan *self)
 {
