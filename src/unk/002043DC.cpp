@@ -3,7 +3,10 @@
 #include "sdk/libgraph.h"
 #include "game/gamsnd.h"
 #include "snd/sndman.h"
-#define T0_MODE ((volatile unsigned int *)0x10000010)
+#include "sdk/string.h"
+#include "mag/magsystem.h"
+#include "game/gamman.h"
+#include "system/sysnowloading.h"
 extern "C" int rxGsVSync(int);
 extern "C" int sceGsPutDrawEnv(sceGifTag *);
 extern "C" void func_00203EA8(GamTaskBase *);
@@ -14,6 +17,25 @@ extern "C" void func_001E7A20(GamTaskMan *);
 extern "C" void update__9MagSystem(void *);
 extern "C" void func_001C53D8(void *);
 static inline GamTaskBase *getTaskBase(GamTaskMan *t) { return &t->m_base; }
+struct SysNowLoadingCtor : public SysNowLoading {
+    SysNowLoadingCtor() {
+        m_texBuf = 0;
+        m_dmaBuf = 0;
+        m_dmaChan = 0;
+        m_frame = 0;
+    }
+};
+static inline void setVRate(int r) { MagSystem::m_v_rate = r; }
+extern SysNowLoadingCtor *D_002D8FFC;
+extern "C" void func_0020499C();
+extern "C" void func_0020491C();
+extern "C" void func_00204148();
+extern "C" void func_002052AC(SysNowLoading *);
+extern "C" void func_0013C928(MagScene *);
+extern "C" void func_0020E3D8(int, int);
+extern "C" void func_001C1B48(GamMan *);
+extern "C" void func_001C204C(GamMan *, int);
+extern "C" void func_00205394(SysNowLoading *);
 // Translated mechanically from m2c drafts: only what matches byte for byte.
 extern "C" int X_atoi(...) asm("atoi");
 extern "C" int X_func_0017F164(...) asm("func_0017F164");
@@ -27,8 +49,7 @@ extern "C" int X_scePad2Init(...) asm("scePad2Init");
 extern "C" int X_startSequence__9MagSystemi(...) asm("startSequence__9MagSystemi");
 extern "C" int X_strcmp(...) asm("strcmp");
 extern "C" int X_term__9MagSystem(...) asm("term__9MagSystem");
-extern int D_006E9840;
-extern int D_007812C0;
+extern MagSystem D_006E9840;
 extern GamTaskMan D_007A3D80;
 extern int D_007A4440;
 extern int D_007B2140;
@@ -39,7 +60,6 @@ INCLUDE_ASM("asm/nonmatchings/unk/002043DC", func_002043DC);
 
 // NON_MATCHING: 1 reloc differs, 1 edits
 #ifdef NON_MATCHING
-#include "sdk/string.h"
 extern char D_007B45D0[];
 extern const char *D_002D9E18;
 extern int D_002D8FF8;
@@ -97,7 +117,37 @@ int main(int argc, char **argv)
 INCLUDE_ASM("asm/nonmatchings/unk/002043DC", main);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/002043DC", func_002046D4);
+extern "C" void func_002046D4(int arg0)
+{
+    func_0020499C();
+    func_0020491C();
+    func_00204148();
+    D_006E9840.func_00117DC8();
+    D_002D8FFC = new SysNowLoadingCtor;
+    if (D_002D8FFC != 0) {
+        func_002052AC(D_002D8FFC);
+        D_006E9840.func_00117F80(1, 1, 1, 1, 1, 1, 0);
+        func_0013C928(&D_006E9840.m_scene);
+        D_006E9840.start();
+        func_0020E3D8(D_006E9840.m_unk97A6C, 1);
+        func_001C1B48(&D_007812C0);
+        if (arg0 != -1) {
+            func_001C204C(&D_007812C0, arg0);
+        }
+        func_00205394(D_002D8FFC);
+        SysNowLoadingCtor *p = D_002D8FFC;
+        if (p != 0) {
+            func_00205394(p);
+            delete p;
+        }
+        D_007812C0.m_cursolInitFlgItem = 1;
+        D_007812C0.m_cursolInitFlgStock = 1;
+        D_002D8FFC = 0;
+        D_006E9840.setDisplay448();
+        setVRate(2);
+        D_006E9840.setDisplay448();
+    }
+}
 
 extern "C" void func_0020483C()
 {
