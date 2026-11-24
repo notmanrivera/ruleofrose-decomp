@@ -1,5 +1,24 @@
 #include "include_asm.h"
 #include "emy/emy.h"
+#include "bed/bedmemory.h"
+struct EmyBrainParam {
+    unsigned char m_rows;
+    unsigned char m_cols;
+    unsigned char m_pad02[0x0A];
+    const signed char *m_data;
+};
+struct EmyBrainPair {
+    signed char m_col;
+    signed char m_val;
+};
+extern BedMemory D_006E9800;
+extern const char D_002F14B8[];
+extern "C" void *__builtin_new(unsigned int);
+extern "C" void heapFree__FPv(void *);
+extern "C" void func_00169538(void *, int);
+extern "C" void func_00169614(void *, int, void *);
+extern "C" void func_001D84C8(void *, int, int);
+extern "C" void func_001D85F8(void *, unsigned short, unsigned short);
 extern "C" void func_00166434(EmyMain *);
 extern "C" int func_00165074(EmyMain *, int, const float *, float);
 extern "C" void func_00165060(EmyMain *);
@@ -820,7 +839,57 @@ extern "C" void EmyMain__vfunc_01(EmyMain *self, int flags)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00164364);
+extern "C" int func_00164364(EmyMain *self, int arg1, const EmyBrainParam *param)
+{
+    int r = 0;
+    void *brain = __builtin_new(0xA8);
+    func_00169538(brain, arg1);
+    self->m_brain = brain;
+
+    int cols = param->m_cols;
+    int rows = param->m_rows;
+    const signed char *data = param->m_data;
+    EmyBrainPair *buf = (EmyBrainPair *)D_006E9800.alloc(cols * 2, D_002F14B8, 0x91, 0, 2);
+
+    if (rows != 0) {
+        do {
+            int c = 0;
+            int count = 0;
+            if (cols != 0) {
+                EmyBrainPair *dst = buf;
+                int base = r * cols;
+                do {
+                    signed char v = data[base + c];
+                    if (v != 0) {
+                        dst->m_val = v;
+                        count++;
+                        dst->m_col = c;
+                        dst++;
+                    }
+                    c++;
+                } while (c < cols);
+            }
+            if (count != 0) {
+                void *node = __builtin_new(0x20);
+                func_001D84C8(node, r, count);
+                if (count > 0) {
+                    int rem = count;
+                    EmyBrainPair *src = buf;
+                    do {
+                        rem--;
+                        func_001D85F8(node, src->m_col, src->m_val);
+                        src++;
+                    } while (rem != 0);
+                }
+                func_00169614(self->m_brain, r, node);
+            }
+            r++;
+        } while (r < rows);
+    }
+
+    heapFree__FPv(buf);
+    return 0;
+}
 
 INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00164508);
 
