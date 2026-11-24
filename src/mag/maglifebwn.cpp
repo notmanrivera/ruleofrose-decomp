@@ -1,6 +1,7 @@
 #include "ror.h"
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
+extern "C" int func_00123BB8(MagLifeBwn *);
 extern const char D_002EBB70[];
 extern "C" void func_001249B4(MagLifeBwn *);
 extern "C" int func_001233F4(MagLifeBwn *, int, int, int);
@@ -607,7 +608,47 @@ extern "C" void func_00125014(MagLifeBwn *arg0)
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00125014);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwn", func_00125104);
+extern "C" int func_00125104(MagLifeBwn *arg0)
+{
+    if (func_00123BB8(arg0) == -1) {
+        arg0->func_0011A320(2, -1);
+        return -1;
+    }
+
+    float diff = arg0->m_unkCB4 - arg0->func_00119FB0();
+    if (diff < -DOG_PI) {
+        diff += DOG_PI2;
+    } else if (diff >= DOG_PI) {
+        diff -= DOG_PI2;
+    }
+
+    if (-0.15707964f < diff && diff < 0.15707964f) {
+        return 1;
+    }
+
+    if (arg0->m_unkCB0 == 0) {
+        int mot;
+        if (-1.0471976f < diff && diff < 0.0f) {
+            mot = 0x2B;
+        } else if (-2.0943952f < diff && diff < 0.0f) {
+            mot = 0x2C;
+        } else if (diff < 0.0f) {
+            mot = 0x2D;
+        } else if (0.0f < diff && diff < 1.0471976f) {
+            mot = 0x2E;
+        } else if (0.0f < diff && diff < 2.0943952f) {
+            mot = 0x2F;
+        } else {
+            mot = 0x30;
+        }
+        arg0->func_0011A320(mot, -1);
+        arg0->m_unkCB0 = 1;
+    } else if (arg0->func_0011A054() != 0) {
+        arg0->m_unkCB0 = 0;
+    }
+
+    return 0;
+}
 
 extern "C" int func_001252C4(MagLifeBwn *)
 {
