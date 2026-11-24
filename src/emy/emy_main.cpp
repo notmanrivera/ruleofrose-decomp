@@ -101,7 +101,24 @@ extern "C" void func_00162B50(EmyManager *self, int idx)
     self->m_groups[idx].m_unk28 = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/emy/emy_main", func_00162B68);
+extern "C" void func_00162B68(EmyManager *self, int idx, int arg2, int arg3, int arg4, int arg5, const float *pos, float arg7)
+{
+    if (idx < 9 && arg2 < 0x11 && arg4 < 0x11) {
+        self->m_groups[idx].m_unk24 = 1;
+        self->m_groups[idx].m_unk2C = 0;
+        self->m_groups[idx].m_unk00 = arg2;
+        if (arg3 < 0x3C) {
+            arg3 = 0x3C;
+        }
+        self->m_groups[idx].m_unk04 = arg3;
+        self->m_groups[idx].m_unk08 = arg4;
+        self->m_groups[idx].m_unk0C = arg5;
+        self->m_groups[idx].m_unk10[0] = pos[0];
+        self->m_groups[idx].m_unk10[1] = pos[1];
+        self->m_groups[idx].m_unk10[2] = pos[2];
+        self->m_groups[idx].m_unk20 = arg7;
+    }
+}
 
 extern "C" void func_00162C2C(int a0, int a1, unsigned short a2, int a3, int a4, int a5, int a6, int a7, int a8)
 {

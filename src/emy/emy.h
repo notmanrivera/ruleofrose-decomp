@@ -120,7 +120,13 @@ STATIC_ASSERT(sizeof(EmyOut) == 0x38, EmyOut_size);
 
 // Per-group scheduling entry in EmyManager (+0x148, 8 entries, stride 0x3C).
 struct EmyGroup {
-    unsigned char m_pad00[0x24];        // +0x00..+0x23
+    int m_unk00;                        // +0x00 (+0x148 for group 0)
+    int m_unk04;                        // +0x04 (+0x14C)
+    int m_unk08;                        // +0x08 (+0x150)
+    int m_unk0C;                        // +0x0C (+0x154)
+    float m_unk10[3];                   // +0x10..+0x1B (+0x158..+0x160)
+    float m_unk1C;                      // +0x1C (+0x164)
+    float m_unk20;                      // +0x20 (+0x168)
     int m_unk24;                        // +0x24 (+0x16C for group 0)
     int m_unk28;                        // +0x28 (+0x170 for group 0)
     int m_unk2C;                        // +0x2C
