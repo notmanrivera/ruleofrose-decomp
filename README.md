@@ -19,11 +19,11 @@ findings and the roadmap.
 |---|---|
 | Matching build | ✅ SHA-1 `fa157dc8…1997` of the load image, with C++ linked in |
 | Decompiled | 462,772 of 1,147,560 bytes of game code (40.33%), byte for byte, in 127 of 134 game files (the rest of their functions still asm); 96 of them also pass a modern 32-bit g++ and clang++ (`tools/host_check.py`) for the ports; `tools/progress.py` |
-| File split | 146 files ([config/splits.tsv](config/splits.tsv)): 125 game files (72 named from assert paths, 53 inferred `unk/...` files), the engine middleware (`mw/i3d` graphics, `mw/sound`) and 19 SDK runs (crt0 included); `.text`, `.rodata`, `.data` and `.bss` each split per file |
+| File split | 179 files ([config/splits.tsv](config/splits.tsv)): 134 game files, the engine middleware (`mw/i3d` graphics; Sony's RX library as its 25 original files in `rx/`, names from a debug build hidden on Arc the Lad's disc) and 19 SDK runs (crt0 included); `.text`, `.rodata`, `.data` and `.bss` each split per file |
 | Compiler | **ee-gcc 2.96 (SCE), `-Os -G0 -fno-exceptions -fno-strict-aliasing`**: 3/3 test functions match byte for byte ([details](matching/compiler_id/README.md)) |
 | Functions found by Ghidra | 7,230 |
-| Functions with their original name | 1,733 exact (`.gnu.linkonce`) + 111 inferred from vtable overrides + 648 SDK/libc/libgcc functions by signature + 287 from another game's symbol table (PoPoLoCrois SCPS-15063: Sony's RX library, 313 of 583 `mw/sound` functions; `tools/donor_symbols.py`) |
-| Readability debt | matched code still has 2,395 raw-offset field accesses and 3,501 alias declarations; `tools/rules_check.py` lets them only go down |
+| Functions with their original name | 1,733 exact (`.gnu.linkonce`) + 111 inferred from vtable overrides + 648 SDK/libc/libgcc functions by signature + 288 from other games' symbol tables (PoPoLoCrois SCPS-15063 and Arc the Lad's 2002 debug build: Sony's RX library, ~315 of 583 `rx/` functions; `tools/donor_symbols.py`, `tools/disc_scan.py`) |
+| Readability debt | matched code still has 2,385 raw-offset field accesses and 3,501 alias declarations; `tools/rules_check.py` lets them only go down, `tools/retype.py` pays offsets down where the header has the member |
 | Virtual methods tied to a class only | 651 (`Class::vfunc_NN`) |
 | Parameter types applied | 1,267 functions (demangler validated against Ghidra's GCC2 one: 1,160/1,160 equivalent) |
 | C++ classes / vtables | 289 / 284, hierarchy in [notes/class_hierarchy.txt](notes/class_hierarchy.txt) |

@@ -52,7 +52,7 @@ Orden en `.text` (según `notes/object_layout.txt`): `bed/` → `utl/` → `dog/
 - `task/`: todas las tareas heredan de `CmnITask`.
 - `mnu/`, `snd/`, `spr/`, `mcd/`, `msg/`, `sequence/`, `system/`, `debug/`.
 
-Audio por el driver IOP `RXSNDDRV.IRX` con su librería cliente en el EE (`mw/sound`); no es exclusivo del juego: Arc the Lad: Twilight of the Spirits (SCUS-97231) y Wild Arms 5 (SLUS-21615), también de Sony, lo cargan (registros de PCSX2; investigación externa del 2026-11-16, ver `notes/BUILDS.md`). Es la **RX Library de SCE Japón** (`RX_SCE_LIBRARY_VERSION:4`; créditos «RX Lib. Team» en juegos de Sony desde 2001): PoPoLoCrois (SCPS-15063) la enlaza con símbolos y nombra 313 de las 583 funciones de `mw/sound` (2026-11-23).
+Audio por el driver IOP `RXSNDDRV.IRX` con su librería cliente en el EE (`mw/sound`); no es exclusivo del juego: Arc the Lad: Twilight of the Spirits (SCUS-97231) y Wild Arms 5 (SLUS-21615), también de Sony, lo cargan (registros de PCSX2; investigación externa del 2026-11-16, ver `notes/BUILDS.md`). Es la **RX Library de SCE Japón** (`RX_SCE_LIBRARY_VERSION:4`; créditos «RX Lib. Team» en juegos de Sony desde 2001): PoPoLoCrois (SCPS-15063) la enlaza con símbolos y nombra 313 de las 583 funciones de `mw/sound` (2026-11-23). Esa noche: dividida en sus 25 archivos originales (`rx/rxsnd`, `rx/sndse`, `rx/rxfile`, `rx/filecdrom`...; R24 + la versión de depuración de 2002 escondida en `ARC.000` del disco de Arc the Lad, hallada con `tools/disc_scan.py --deep`).
 
 ## Assets
 
