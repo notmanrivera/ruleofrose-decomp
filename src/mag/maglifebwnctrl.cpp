@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
 #include "utl/utlfind.h"
+extern "C" void func_00104150(int);
+extern "C" void func_0012A394(MagLifeBwnCtrl *);
 extern "C" void func_00125980(MagLifeBwn *);
 extern "C" void func_001258A4(MagLifeBwn *);
 struct MagLifeBwnCtrlModeV2 {
@@ -427,7 +429,19 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnctrl", D_002EC3A0);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A394);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A56C);
+extern "C" void func_0012A56C(MagLifeBwnCtrl *arg0, int arg1, int arg2, int arg3)
+{
+    if (arg1 < 0) {
+        ror_assert(D_002EBE28, 0xC0B, "theMode >= 0");
+    }
+    func_00104150(1);
+    if ((arg1 == 0xD || arg0->m_bwn->func_00119CEC(0, 0.0f) <= 0) && (arg0->m_unk00 != arg1 || arg3 != 0)) {
+        arg0->m_unk00 = arg1;
+        arg0->m_unk08 = arg2;
+        arg0->m_unk04 = -1;
+        func_0012A394(arg0);
+    }
+}
 
 extern "C" void MagLifeBwnCtrl__vfunc_02(MagLifeBwnCtrl *arg0)
 {
