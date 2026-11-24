@@ -144,7 +144,33 @@ extern "C" int func_00151448(NorMain *self)
     return (unsigned int)~v >> 0x1F;
 }
 
+// NON_MATCHING: 30/43 differ, 1 reloc differs (size 0xAC, game 0xA8), 10 edits
+#ifdef NON_MATCHING
+extern int D_007812C0;
+extern "C" void func_001CB460(void *, int, unsigned short *);
+extern "C" void func_001DA228(void *, int, unsigned short *);
+extern "C" int NorMain__vfunc_07(NorMain *self)
+{
+    unsigned short sp0;
+    int flag;
+
+    func_001CB460(&D_007812C0, 0x1B, &sp0);
+    flag = (int)sp0 < ((self->m_unk234 * 3) >> 2);
+    if (self->m_unk1E8 >= 0xE11) {
+        flag = 1;
+    }
+    func_001DA228(self->m_objStat, 0x1B, &sp0);
+    if (sp0 < ((unsigned int)self->m_unk236 >> 1)) {
+        flag = 1;
+    }
+    if (self->m_unk230 != 0 || flag == 0) {
+        return 0;
+    }
+    return 1;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/NorMain", NorMain__vfunc_07);
+#endif
 
 INCLUDE_RODATA("asm/nonmatchings/unk/NorMain", D_002EF9E0);
 

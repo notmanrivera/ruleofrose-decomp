@@ -10,7 +10,9 @@ struct NorMain : public EmyMain {
     unsigned char m_unk22C;             // +0x22C
     unsigned char m_pad22D[3];          // +0x22D..+0x22F
     int m_unk230;                       // +0x230
-    unsigned char m_pad234[8];          // +0x234..+0x23B
+    unsigned short m_unk234;            // +0x234
+    unsigned short m_unk236;            // +0x236
+    unsigned char m_pad238[4];          // +0x238..+0x23B
     int m_unk23C;                       // +0x23C
     int m_unk240;                       // +0x240
     int m_unk244;                       // +0x244
