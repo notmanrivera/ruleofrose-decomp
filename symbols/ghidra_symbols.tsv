@@ -1010,6 +1010,7 @@ addr	kind	class	name	size	source	mangled	signature	params
 00249bb0	function		CreateThreadDirect	54	donor-popolo	CreateThreadDirect		
 00249c08	function		DeleteThreadDirect	28	donor-popolo	DeleteThreadDirect		
 00249c30	function		rxThBgMain	bc	donor-popolo	rxThBgMain		
+00249cf0	function		rxThDummyMain	54	donor-popolo	rxThDummyMain		
 00249e08	function		rxThAddBgFunc	98	donor-popolo	rxThAddBgFunc		
 0024a1b8	function		ExecCallback	5c	donor-popolo	ExecCallback		
 0024a258	function		rxThAddCallback	84	donor-popolo	rxThAddCallback		
@@ -1017,6 +1018,7 @@ addr	kind	class	name	size	source	mangled	signature	params
 0024aae0	function		rxThGetCurrentIndex	5c	donor-popolo	rxThGetCurrentIndex		
 0024af68	function		rxThVSyncFunc	34	donor-popolo	rxThVSyncFunc		
 0024afa0	function		rxThVSync	44	donor-popolo	rxThVSync		
+0024b0e0	function		rxThDrawSyncFunc	24	donor-arc2002	rxThDrawSyncFunc		
 0024b1f8	function		SyncVCallback	80	donor-popolo	SyncVCallback		
 0024b278	function		rxGsVSyncInit	88	donor-popolo	rxGsVSyncInit		
 0024b300	function		rxGsVSyncTerm	5c	donor-popolo	rxGsVSyncTerm		
@@ -1471,7 +1473,6 @@ addr	kind	class	name	size	source	mangled	signature	params
 0026a328	function		sceDbcSetWorkAddr	6c	sce-sdb	sceDbcSetWorkAddr		
 0026a6f8	function		sceDbcGetConnection	f4	sce-sdb	sceDbcGetConnection		
 0026ad80	function		sceDbcSendData2	1b0	sce-sdb	sceDbcSendData2		
-0026b1b0	function		DPRINT	28	donor-popolo	DPRINT		
 0026b1d8	function		scePad2Init	40	sce-sdb	scePad2Init		
 0026b218	function		scePad2End	68	sce-sdb	scePad2End		
 0026b280	function		scePad2CreateSocket	108	sce-sdb	scePad2CreateSocket		

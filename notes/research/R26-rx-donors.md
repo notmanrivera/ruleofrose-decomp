@@ -38,6 +38,18 @@ the coordinator's checks first.
   Conclusion: version 4 of the library was in use from 2001 (Phase
   Paradox) to 2006, and PoPoLoCrois SCPS-15063 stays the only donor with
   symbols found so far.
+- **Correction (2026-11-23, tools/disc_scan.py --deep):** the 2002 CD
+  inside ARC.000 also holds `DATAIMG/KOGA/MAIN.ELF` (6.1 MB, sha256
+  bda03816...) and `MAIN_OLD.ELF` (sha256 e6885b4b...): debug builds with
+  .symtab (7,167 / 7,026 symbols, 4,052 functions, 404 rx*), .mdebug and
+  .stab, RX library version 4, no relocations. tools/donor_symbols.py got a
+  relocation-free mode (masks from j/jal, lui and lui-based immediates) and
+  both as donors arc2002/arc2002old: 155 matches, 151 agree with
+  PoPoLoCrois's names (cross-validation), 1 disagrees (a debug-print stub,
+  DPRINT vs MapDebugPrintf: dropped), 1 new name kept (rxThDrawSyncFunc;
+  the other two were already SDK names). The 2002 RX library is older than
+  ours, so most of the 270 unnamed mw/sound functions still differ.
+  Extracted to disc/arc_koga/ (git-ignored).
 - Previously listed as open: Wa ga Ryuu o Miyo demo PAPX-90521 and retail
   SCPS-15080 (credits "RX Lib.チーム", 2004: best lead), PoPoLoCrois
   Hajimari no Bouken SCPS-15027/15028 (2002), Boku to Maou PAPX-90212 and

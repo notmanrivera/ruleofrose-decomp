@@ -1014,6 +1014,7 @@ rxFileGetOverrideDevice = 0x00249A68; // type:func size:0x68 // provenance=donor
 CreateThreadDirect = 0x00249BB0; // type:func size:0x54 // provenance=donor-popolo
 DeleteThreadDirect = 0x00249C08; // type:func size:0x28 // provenance=donor-popolo
 rxThBgMain = 0x00249C30; // type:func size:0xBC // provenance=donor-popolo
+rxThDummyMain = 0x00249CF0; // type:func size:0x54 // provenance=donor-popolo
 rxThAddBgFunc = 0x00249E08; // type:func size:0x98 // provenance=donor-popolo
 ExecCallback = 0x0024A1B8; // type:func size:0x5C // provenance=donor-popolo
 rxThAddCallback = 0x0024A258; // type:func size:0x84 // provenance=donor-popolo
@@ -1021,6 +1022,7 @@ rxThRemoveCallback = 0x0024A2E0; // type:func size:0x30 // provenance=donor-popo
 rxThGetCurrentIndex = 0x0024AAE0; // type:func size:0x5C // provenance=donor-popolo
 rxThVSyncFunc = 0x0024AF68; // type:func size:0x34 // provenance=donor-popolo
 rxThVSync = 0x0024AFA0; // type:func size:0x44 // provenance=donor-popolo
+rxThDrawSyncFunc = 0x0024B0E0; // type:func size:0x24 // provenance=donor-arc2002
 SyncVCallback = 0x0024B1F8; // type:func size:0x80 // provenance=donor-popolo
 rxGsVSyncInit = 0x0024B278; // type:func size:0x88 // provenance=donor-popolo
 rxGsVSyncTerm = 0x0024B300; // type:func size:0x5C // provenance=donor-popolo
@@ -1475,7 +1477,6 @@ sceDbcGetIopDmabuff = 0x0026A2C8; // type:func size:0x60 // provenance=sce-sdb
 sceDbcSetWorkAddr = 0x0026A328; // type:func size:0x6C // provenance=sce-sdb
 sceDbcGetConnection = 0x0026A6F8; // type:func size:0xF4 // provenance=sce-sdb
 sceDbcSendData2 = 0x0026AD80; // type:func size:0x1B0 // provenance=sce-sdb
-DPRINT = 0x0026B1B0; // type:func size:0x28 // provenance=donor-popolo
 scePad2Init = 0x0026B1D8; // type:func size:0x40 // provenance=sce-sdb
 scePad2End = 0x0026B218; // type:func size:0x68 // provenance=sce-sdb
 scePad2CreateSocket = 0x0026B280; // type:func size:0x108 // provenance=sce-sdb
