@@ -1,5 +1,15 @@
 #include "include_asm.h"
 #include "unk/NorMain.h"
+#include "dog/dogactor.h"
+struct NorActorSlot {
+    unsigned char m_pad[0x2920];
+    DogActor m_actor;
+};
+static inline DogActor *NorGetActor(int base, int idx)
+{
+    return &((NorActorSlot *)(idx * 0x4D0 + base))->m_actor;
+}
+extern "C" int func_00169A98(const float *, const float *, float);
 extern "C" int func_001E5250(void *, int, int, float *, int, int);
 extern "C" int func_001513EC(EmyMain *);
 extern "C" void func_00166C8C(EmyOut *, float *);
@@ -399,7 +409,31 @@ INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFAB8);
 
 INCLUDE_RODATA("asm/nonmatchings/unk/NorOutAttack", D_002EFAD8);
 
-INCLUDE_ASM("asm/nonmatchings/unk/NorOutAttack", func_00151D4C);
+extern "C" int func_00151D4C(NorOutAttack *self, unsigned int target)
+{
+    float pos1[4];
+    float pos2[4];
+    float mat[4][4];
+
+    const char *name1 = "Bip01 Spine1";
+    int idx1 = X_func_001CBE38(&D_007812C0, target);
+    DogActor *targetActor = NorGetActor((int)&D_006FBD80, idx1);
+    targetActor->vfunc17(mat, targetActor->getNodeIndexByName(name1));
+    float *p2 = pos2;
+    pos1[0] = mat[3][0];
+    pos1[1] = mat[3][1];
+    pos1[2] = mat[3][2];
+
+    const char *name2 = "p_hit";
+    int idx2 = X_func_001CBE38(&D_007812C0, (unsigned int)self->m_unk00);
+    DogActor *selfActor = NorGetActor((int)&D_006FBD80, idx2);
+    selfActor->vfunc17(mat, selfActor->getNodeIndexByName(name2));
+    p2[0] = mat[3][0];
+    p2[1] = mat[3][1];
+    p2[2] = mat[3][2];
+
+    return func_00169A98(p2, pos1, 55.0f) != 0;
+}
 
 extern "C" int func_00151F1C(NorOutAttack *self)
 {
