@@ -4,6 +4,7 @@
 #include "mag/maglifewindow.h"
 #include "dog/dogtexinfo.h"
 #include "bed/bedmemory.h"
+extern "C" float func_00133454(MagScene *, DogModelHit *, DogVector *, DogVector *, int);
 extern BedMemory D_006E9800;
 extern "C" void func_00176C50(void *);
 extern "C" void func_0019237C(void *);
@@ -387,7 +388,16 @@ INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133454);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133658);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_0013377C);
+extern "C" float func_0013377C(MagScene *self, DogVector *arg1, DogVector *arg2)
+{
+    DogModelHit hit;
+    hit.m_node = -1;
+    float r = func_00133454(self, &hit, arg1, arg2, 0);
+    if (0.0f <= r && r <= 1.0f) {
+        return arg1->m_y + arg2->m_y * r;
+    }
+    return 100000.0f;
+}
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_0013386C);
 
