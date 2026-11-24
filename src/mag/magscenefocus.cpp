@@ -55,9 +55,14 @@ struct MagSceneFocus {
     MagSceneFocusLerp m_unk8540C;
     MagSceneFocusLerp m_unk8541C;
 };
+extern "C" MagSceneFocusGif *func_00140990(void *, int, int, int, int, int, int, int, int, int);
 extern "C" void func_00140B20(MagSceneFocus *, int);
 extern "C" void func_00140FDC(MagSceneFocus *, int, int);
 extern "C" void func_00141184(MagSceneFocus *, int, int, float);
+extern "C" int func_0021F7E0(int, float);
+extern "C" void *func_00223298(int, float);
+extern "C" void *func_0021B550(void *, int, unsigned long long);
+extern "C" void func_002232F0(int, void *);
 extern "C" int Xiiii_memset(int, int, int) asm("memset");
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 extern "C" float Xfii_func_00140D40(int, int) asm("func_00140D40");
@@ -226,7 +231,25 @@ extern "C" void func_00140E88(MagSceneFocus *arg0, int arg1, int arg2)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscenefocus", func_00140FDC);
+extern "C" void func_00140FDC(MagSceneFocus *arg0, int arg1, int arg2)
+{
+    int temp_s2 = func_0021F7E0(arg1, arg0->m_unk853C4 + 860.0f);
+    arg0->m_unk853C4 += 0.01f;
+    void *p = func_00223298(temp_s2, 0.0f);
+    p = func_0021B550(p, 0x4C, 0x40138ULL);
+    p = func_0021B550(p, 0x18, 0ULL);
+    p = func_0021B550(p, 6, (((unsigned int)(arg2 << 13) >> 8) | 0x24020000U) | ((unsigned long long)0x9000 << 18));
+    p = func_0021B550(p, 0x3F, 0ULL);
+    p = func_0021B550(p, 8, 5ULL);
+    p = func_0021B550(p, 0x4A, 1ULL);
+    p = func_0021B550(p, 1, 0x80808080ULL);
+    p = func_0021B550(p, 0x14, 0x60ULL);
+    p = func_0021B550(p, 0x47, 0x31001ULL);
+    p = func_0021B550(p, 0x42, 0ULL);
+    p = func_00140990(p, 1, 0, 0, 0x2000, 0x1C00, 0, 0, 0x1000, 0x1000);
+    p = func_0021B550(p, 0x4A, 0ULL);
+    func_002232F0(temp_s2, p);
+}
 
 INCLUDE_RODATA("asm/nonmatchings/mag/magscenefocus", D_002EEB40);
 
