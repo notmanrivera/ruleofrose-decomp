@@ -1,6 +1,20 @@
 #include "include_asm.h"
 #include "emy/emy.h"
 #include "dog/dogactor.h"
+#include "sdk/string.h"
+struct EmySlot154 {
+    int m_unk00;
+    int m_unk04;
+    int m_unk08;
+    int m_unk0C;
+    int m_unk10;
+    int m_unk14;
+    int m_unk18;
+};
+struct EmyMain154 {
+    unsigned char m_pad00[0x154];
+    EmySlot154 m_slots[4];
+};
 
 struct EmyMainVtbl3 {
     unsigned char m_pad[0x200];
@@ -117,7 +131,15 @@ INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165498);
 
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165570);
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165638);
+extern "C" void func_00165638(EmyMain *self, int arg1)
+{
+    EmyMain154 *m = (EmyMain154 *)self;
+    for (int i = 0; i < 4; i++) {
+        if (m->m_slots[i].m_unk0C == arg1) {
+            memset(&m->m_slots[i], 0, sizeof(EmySlot154));
+        }
+    }
+}
 
 extern "C" int func_001656B4(EmyMain *self)
 {
