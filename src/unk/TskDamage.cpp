@@ -1,12 +1,36 @@
 #include "include_asm.h"
 #include "task/cmnitask.h"
+#include "game/gamsnd.h"
+#include "mag/magscene.h"
 
 struct TskDamageObj {
     unsigned char m_pad00[0x120];
     int m_flg;                          // +0x120
-    unsigned char m_pad124[0x2C8];      // +0x124..+0x3EB
+    unsigned char m_pad124[0x2BC];      // +0x124..+0x3DF
+    int m_unk3E0;                       // +0x3E0
+    unsigned char m_pad3E4[8];          // +0x3E4..+0x3EB
     unsigned int m_unk3EC[4];           // +0x3EC
 };
+
+struct TskDamageEffParam {
+    int m_kind;                         // +0x00
+    int m_unk04;                        // +0x04
+    int m_unk08;                        // +0x08
+    int m_unk0C;                        // +0x0C
+    float m_x;                          // +0x10
+    float m_y;                          // +0x14
+    float m_z;                          // +0x18
+    int m_unk1C;                        // +0x1C
+    float m_unk20;                      // +0x20
+    int m_unk24;                        // +0x24
+    float m_unk28;                      // +0x28
+    unsigned char m_pad2C[0x54];        // +0x2C..+0x7F
+};
+
+static inline void *getEffMan(MagScene *s)
+{
+    return s->m_unk837E0;
+}
 
 class TskDamage : public CmnITask {
 public:
@@ -32,13 +56,18 @@ extern "C" char vtbl_9TskDamage[] asm("_vt$9TskDamage");
 extern "C" void Xv_func_001F9E58(TskDamage *) asm("func_001F9E58");
 extern "C" int Xiii_func_001CB460(int, int, int) asm("func_001CB460");
 extern "C" int Xiii_func_001FB624(int, int, int) asm("func_001FB624");
-extern "C" int X_func_00163E10(...) asm("func_00163E10");
+extern "C" int func_00163E10(void *, int, int);
 extern "C" int X_func_00163E48(...) asm("func_00163E48");
 extern "C" int X_func_00163E74(...) asm("func_00163E74");
 extern "C" int X_func_001DA074(...) asm("func_001DA074");
 extern "C" int X_func_001DA07C(...) asm("func_001DA07C");
 extern int D_007812C0;
 extern int D_007B2140;
+extern GamTaskMan D_007A3D80;
+extern MagScene D_006FBD80;
+extern "C" TskDamageObj *func_001D2B8C(void *, unsigned int);
+extern "C" void func_001D890C(TskDamageObj *, float *);
+extern "C" void func_00176CC8(void *, TskDamageEffParam *);
 
 extern "C" void func_001F9E38(TskDamage *self)
 {
@@ -84,7 +113,35 @@ INCLUDE_RODATA("asm/nonmatchings/unk/TskDamage", D_002FEBE8);
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskDamage", func_001F9E58);
 
-INCLUDE_ASM("asm/nonmatchings/unk/TskDamage", func_001FA5BC);
+extern "C" void func_001FA5BC(int arg0, void *arg1, int *arg2, int arg3)
+{
+    TskDamageObj *obj = func_001D2B8C(&D_007812C0, (unsigned int)arg0);
+    if (!(obj->m_flg & 0x400)) {
+        int *unk3E0 = &obj->m_unk3E0;
+        func_00163E10(&D_007B2140, arg0, 1);
+        GamTaskMan *taskMan = &D_007A3D80;
+        if (func_001E7D7C(taskMan, *unk3E0) != 0) {
+            func_001E7724(taskMan, *unk3E0);
+            *unk3E0 = -1;
+        }
+        TskDamage *task = (TskDamage *)::operator new(0x80);
+        ((void (*)(TskDamage *, int, void *, int *, int))func_001F9E38)(task, arg0, arg1, arg2, arg3);
+        func_001E71FC(taskMan, 1, -1, 1, 0, task, 0, unk3E0, 0x11);
+        float pos[4];
+        TskDamageEffParam param;
+        func_001D890C(obj, pos);
+        param.m_kind = 1;
+        param.m_x = pos[0];
+        param.m_y = pos[1] - 40.0f;
+        param.m_z = pos[2];
+        param.m_unk20 = -1.0f;
+        param.m_unk08 = 0;
+        param.m_unk1C = 0;
+        param.m_unk24 = 0;
+        param.m_unk28 = (arg3 == 2) ? 1.75f : 1.0f;
+        func_00176CC8(getEffMan(&D_006FBD80), &param);
+    }
+}
 
 INCLUDE_ASM("asm/nonmatchings/unk/TskDamage", func_001FA768);
 
@@ -210,7 +267,7 @@ extern "C" int func_001FBB04(TskDamage *self)
         temp_v1->m_flg &= ~0x200;
         int temp_v1_2 = self->m_oid;
         if (self->m_damage < 0x2710) {
-            X_func_00163E10((int)&D_007B2140, temp_v1_2, 0);
+            func_00163E10(&D_007B2140, temp_v1_2, 0);
             X_func_00163E74((int)&D_007B2140, self->m_oid);
             return 1;
         }
