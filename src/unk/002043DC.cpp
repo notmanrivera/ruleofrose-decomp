@@ -2,6 +2,7 @@
 #include "sdk/eekernel.h"
 #include "sdk/libgraph.h"
 #include "game/gamsnd.h"
+#include "snd/sndman.h"
 #define T0_MODE ((volatile unsigned int *)0x10000010)
 extern "C" int rxGsVSync(int);
 extern "C" int sceGsPutDrawEnv(sceGifTag *);
@@ -31,12 +32,70 @@ extern int D_007812C0;
 extern GamTaskMan D_007A3D80;
 extern int D_007A4440;
 extern int D_007B2140;
-extern int D_007B2580;
+extern SndMan D_007B2580;
 extern int D_007B45C0;
 
 INCLUDE_ASM("asm/nonmatchings/unk/002043DC", func_002043DC);
 
+// NON_MATCHING: 1 reloc differs, 1 edits
+#ifdef NON_MATCHING
+#include "sdk/string.h"
+extern char D_007B45D0[];
+extern const char *D_002D9E18;
+extern int D_002D8FF8;
+void heapInit();
+void *heapAlloc(int);
+void *heapRealloc(void *, int);
+void heapFree(void *);
+static inline char *getSndName(SndMan *s) { return (char *)s->m_unk04; }
+extern "C" int func_002043DC(int, char **);
+extern "C" int snprintf(char *, size_t, const char *, ...);
+extern "C" void func_00241B20(const char *);
+extern "C" void rxSysSetBootFileName(const char *);
+extern "C" int func_0025D7D0();
+extern "C" void func_0025D770(int, int);
+extern "C" void rxSysInit();
+extern "C" void func_0023FF80(void *(*)(int));
+extern "C" void func_0023FFB0(void *(*)(int));
+extern "C" void func_0023FFE0(void *(*)(void *, int));
+extern "C" void func_00240010(void (*)(void *));
+extern "C" void rxSysAddExceptionHandler();
+extern "C" void func_00243608(int);
+extern "C" void func_002046D4(int);
+extern "C" void func_00204864();
+extern "C" void func_0020483C();
+int main(int argc, char **argv)
+{
+    int mode;
+    int handle;
+
+    mode = func_002043DC(argc, argv);
+    snprintf(D_007B45D0, 0x40, "0.1.%sn.%s.%s", D_002D9E18, "Jul 27 2006", "22:25:45");
+    if (0) {
+        snprintf(D_007B45D0, 0x40, "0.1.%s.%s.%s", D_002D9E18, "Jul 27 2006", "22:25:45");
+    }
+    func_00241B20("IOPRP300.IMG");
+    rxSysSetBootFileName("cdrom0:");
+    handle = func_0025D7D0();
+    D_002D8FF8 = handle;
+    func_0025D770(handle, 5);
+    rxSysInit();
+    heapInit();
+    func_0023FF80(heapAlloc);
+    func_0023FFB0(heapAlloc);
+    func_0023FFE0(heapRealloc);
+    func_00240010(heapFree);
+    strcpy(getSndName(&D_007B2580), argv[0]);
+    rxSysAddExceptionHandler();
+    func_00243608(1);
+    func_002046D4(mode);
+    func_00204864();
+    func_0020483C();
+    return 0;
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/002043DC", main);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/unk/002043DC", func_002046D4);
 
