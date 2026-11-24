@@ -762,6 +762,24 @@ def mnudiary_perm():
 STALE_HOURS = 6
 
 
+def triage_bar():
+    """tools/regalloc_triage.py over every file (log build/workers/regalloc-triage.log:
+    "[i/N] file: counts"): how far the sort of the NON_MATCHING attempts is."""
+    path = os.path.join(ST, "regalloc-triage.log")
+    try:
+        lines = open(path, encoding="utf-8", errors="replace").read().splitlines()
+    except OSError:
+        return []
+    last = next((ln for ln in reversed(lines) if re.match(r"\[\d+/\d+\]", ln)), "")
+    m = re.match(r"\[(\d+)/(\d+)\]\s*(\S+)", last)
+    if not m:
+        return []
+    i, n = int(m.group(1)), int(m.group(2))
+    running = alive("regalloc_triage", path, 10)
+    head = col("Clasificar casi resueltas", "bold") + col(" (regalloc_triage, sin cuota) ", "dim") +         (col("trabajando", "green") if running else col("terminado" if i == n else "parado", "dim" if i == n else "yellow"))
+    return [head, f"   {bar(100 * i / n, 24)} {i}/{n} archivos  {col(m.group(3).rstrip(':'), 'cyan')}"]
+
+
 def recent(name, hours):
     """Whether build/workers/<name> changed in the last hours."""
     try:
@@ -822,7 +840,7 @@ def render(reset=False):
     for log_name, fn in (("qwen.log", qwen), ("qwen-names.log", qwen_names),
                          ("cpp-perm.log", cpp_perm), ("mnudiary-perm.log", mnudiary_perm), ("perm-official.log", perm_official), ("perm-loop.log", permuter),
                          ("auto-run.log", auto_m2c), ("twin-sweep.log", twin_sweeps),
-                         ("flag-sweep.log", flag_sweep)):
+                         ("flag-sweep.log", flag_sweep), ("regalloc-triage.log", triage_bar)):
         if not recent(log_name, STALE_HOURS):
             continue
         part = fn()
