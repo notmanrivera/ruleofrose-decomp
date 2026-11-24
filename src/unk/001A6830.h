@@ -113,7 +113,8 @@ struct MnuMovie {
     int m_unk50;                        // +0x0050
     MnuRpk m_rpk;                       // +0x0054..0x093F
     int m_sys;                          // +0x0940
-    unsigned char m_pad944[0x24];       // +0x0944
+    int m_renderCtx;                    // +0x0944
+    unsigned char m_pad948[0x20];       // +0x0948
     int m_scene;                        // +0x0968
     int m_unk96C;                       // +0x096C
     int m_active;                       // +0x0970

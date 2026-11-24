@@ -2,6 +2,13 @@
 #include "001A6830.h"
 #include "game/gamman.h"
 #include "bed/bedpad.h"
+extern "C" void *func_0021B550(void *, int, unsigned long long);
+extern "C" void *func_0021C140(void *, void *, void *, void *);
+extern "C" void *func_0021C8C8(int, float, int, int, int);
+extern "C" void *func_0021C940(int, int, int);
+extern "C" void *func_002233E8(int);
+extern "C" void func_00223408(int, void *);
+extern "C" void func_001812A8(int *);
 extern "C" void func_00181150(int);
 extern "C" int func_001816B0(int);
 extern "C" int func_0018173C(int);
@@ -1564,7 +1571,30 @@ extern "C" int func_001AE02C()
 }
 
 
-INCLUDE_ASM("asm/nonmatchings/unk/001A6830", func_001AE040);
+extern "C" void func_001AE040(MnuMovie *arg0, int arg1)
+{
+    void *t0;
+    void *t1;
+    void *t2;
+    void *t3;
+
+    arg0->m_renderCtx = arg1;
+    if (arg1 != 0) {
+        int *p = &D_007B40C0;
+        if (p[1] == 1) {
+            func_001812A8(p);
+        }
+        t0 = func_0021B550(func_002233E8(arg1), 0x42, 0x44);
+        t1 = func_0021C940(0x7000, 0x7200, 0x80000);
+        t2 = func_0021C940(0x9000, 0x7600, 0x80000);
+        t3 = func_0021C8C8(0, 1.0f, 0, 0, 0x80);
+        t0 = func_0021C140(t0, t1, t2, t3);
+        t1 = func_0021C940(0x7000, 0x8A00, 0x80000);
+        t2 = func_0021C940(0x9000, 0x8E00, 0x80000);
+        t3 = func_0021C8C8(0, 1.0f, 0, 0, 0x80);
+        func_00223408(arg1, func_0021C140(t0, t1, t2, t3));
+    }
+}
 
 extern "C" int func_001AE188(MnuMovie *arg0)
 {
