@@ -58,7 +58,60 @@ extern "C" void func_0012F824(MagFadeKey *self, MagFadeReq *theReq)
 }
 
 
+// NON_MATCHING: 3/68 differ, 3 edits
+#ifdef NON_MATCHING
+extern "C" void MagLifeFadeKeyHole__vfunc_02(MagFadeKey *self)
+{
+    int mode = self->m_mode;
+    int done = 0;
+
+    self->m_unk04++;
+    switch (mode) {
+    case 2:
+    case 3:
+    case 6:
+    case 7:
+        if (++self->m_time > self->m_count) {
+            done = 1;
+        }
+        break;
+    case 4:
+    case 5:
+        if (++self->m_time >= self->m_count) {
+            self->m_ratio0 = self->m_ratio2;
+            self->m_count = 0;
+            self->m_time = 0;
+        } else {
+            self->m_ratio0 = self->m_ratio1 + ((self->m_ratio2 - self->m_ratio1) * (float)self->m_time) / (float)self->m_count;
+        }
+        break;
+    }
+
+    if (done) {
+        self->m_time = 0;
+        switch (mode) {
+        case 2:
+            self->m_mode = 3;
+            self->m_unk04 = -1;
+            return;
+        case 3:
+            self->m_mode = 4;
+            break;
+        case 6:
+            self->m_mode = 7;
+            break;
+        case 7:
+            self->m_mode = 8;
+            break;
+        default:
+            return;
+        }
+        self->m_unk04 = -1;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/mag/maglifewindow", MagLifeFadeKeyHole__vfunc_02);
+#endif
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifewindow", MagLifeFadeKeyHole__vfunc_06);
 
