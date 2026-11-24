@@ -6,3 +6,4 @@ D_002FD770	4	game/gamsnd: "game/gamsnd.cpp" (16 bytes) sits at 0x2FD770, 16-alig
 D_002F2A18	3	unk/EffLight2: an int table at 0x2F2A18, 8-aligned (4 zero bytes after "light3_%02d" at 0x2F2A0C-0x2F2A13). Once func_0017653C compiles from C++ the asm pieces follow its table directly and it lands 4 bytes early.
 D_002EEBD0	3	mag/magscenefocus: 8-byte data after the strings of func_00141770 ("far2"...); once that function compiles from C++ the data lands early without .align 3 (Hydrogen, e470002 Blocker).
 D_002EB980	3	mag/maglifebwn: 8-byte data after func_00124008's strings; it lands early without .align 3 once that function compiles from C++ (Hydrogen, 16eb5d3 Blocker).
+D_002F1520	3	unk/EmyOut: 8-byte data after func_00165280's literals; it lands early without .align 3 once that function compiles from C++ (Hydrogen, 31949b9 Blocker).

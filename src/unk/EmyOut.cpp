@@ -95,7 +95,6 @@ extern "C" void func_00165060(EmyMain *self)
 INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165074);
 
 // NON_MATCHING: fn matches; D_002F1520 needs .align 3 in config/rodata_align_manual.tsv
-#ifdef NON_MATCHING
 extern DogActor D_006FE6A0[];
 extern "C" float *func_001D2B8C(void *, unsigned int);
 extern "C" int func_001CBE38(void *, unsigned int);
@@ -123,9 +122,6 @@ extern "C" void func_00165280(EmyMain *arg0, float *arg1)
     func_001D890C(temp_s3, sp);
     arg1[1] = sp[1];
 }
-#else
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165280);
-#endif
 
 extern "C" void func_00165398(EmyMain *self, int arg1, int arg2, int arg3)
 {
