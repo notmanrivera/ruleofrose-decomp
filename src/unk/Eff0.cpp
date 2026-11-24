@@ -2,6 +2,39 @@
 #include "unk/Eff0.h"
 #include "dog/doglightpool.h"
 #include "sdk/string.h"
+struct EffBg1Buf24 {
+    unsigned char m_pad00[0x10];        // +0x00
+    int m_unk10;                        // +0x10
+};
+struct EffBg1_B50C : public Eff0 {
+    EffBg1Buf24 *m_buf24;               // +0x24
+    unsigned char m_pad28[0x18];        // +0x28
+    void *m_data;                       // +0x40
+    unsigned short m_curFrame;          // +0x44
+    unsigned short m_maxFrame;          // +0x46
+};
+struct EffBg1TexKey {
+    unsigned short m_frame;             // +0x00
+    unsigned char m_pad02[0x02];        // +0x02
+    char m_name[0x24];                  // +0x04
+}; // size 0x28
+struct EffBg1TexTrack {
+    unsigned short m_type;              // +0x00
+    unsigned short m_size;              // +0x02
+    float m_tag[8];                     // +0x04
+    unsigned short m_numKeys;           // +0x24
+    unsigned short m_pad26;             // +0x26
+    EffBg1TexKey m_keys[1];             // +0x28
+};
+struct EffBg1MatItem {
+    unsigned char m_pad00[0x18];        // +0x00
+    const char *m_name;                 // +0x18
+};
+extern "C" void *func_001700B0(void *, const void *, int *);
+extern "C" int func_0022AAB8(void *);
+extern "C" EffBg1MatItem **func_0022AAD0(void *, int);
+extern "C" int strcasecmp(const char *, const char *);
+extern "C" void func_00139568(int, const char *, const char *);
 struct FogParam_AE00 {
     float m_color[3];                   // +0x00
     float m_unk0C;                      // +0x0C
@@ -686,7 +719,36 @@ extern "C" void renderPreMain__6EffBg1PQ24Eff011RENDERPARAM(int arg0, int arg1)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", func_0016B50C);
+extern "C" void func_0016B50C(EffBg1_B50C *self, EffBg1TexTrack *track)
+{
+    void *mat = func_001700B0(&self->m_buf24->m_unk10, track->m_tag, 0);
+    if (mat != 0) {
+        unsigned short num = track->m_numKeys;
+        int i = num - 1;
+        EffBg1TexKey *k = (EffBg1TexKey *)track + num;
+        if (i >= 0) {
+            for (;;) {
+                if (self->m_curFrame >= k->m_frame) {
+                    break;
+                }
+                i--;
+                if (i < 0) {
+                    return;
+                }
+                k--;
+            }
+            if (i >= 0) {
+                int n = func_0022AAB8(mat);
+                for (i = 0; i < n; i++) {
+                    EffBg1MatItem *item = *func_0022AAD0(mat, i);
+                    if (item->m_name != 0 && strcasecmp(item->m_name, k->m_name) != 0) {
+                        func_00139568(D_00298E08, item->m_name, k->m_name);
+                    }
+                }
+            }
+        }
+    }
+}
 
 extern "C" int func_0016B62C(int arg0)
 {
