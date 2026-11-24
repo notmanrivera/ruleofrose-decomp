@@ -1,6 +1,10 @@
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
 #include "utl/utlfind.h"
+struct MagLifeBwnCtrlModeV2 {
+    virtual void vfunc01();
+    virtual void vfunc02(MagLifeBwnCtrl *);
+};
 extern "C" int func_001267F4(int, MagLifeBwnCtrl *, float);
 struct MagLifeBwnCtrlModeV {
     virtual void vfunc01();
@@ -383,7 +387,19 @@ INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A394);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_0012A56C);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrl__vfunc_02);
+extern "C" void MagLifeBwnCtrl__vfunc_02(MagLifeBwnCtrl *arg0)
+{
+    if (arg0->m_unk6C != 2) {
+        if (arg0->m_unk88 == 0) {
+            Xiiiii_func_0012A56C(arg0, 0, 0, 1);
+            if (arg0->m_unk88 == 0) {
+                return;
+            }
+        }
+        arg0->m_unk84++;
+        ((MagLifeBwnCtrlModeV2 *)arg0->m_unk88)->vfunc02(arg0);
+    }
+}
 
 extern "C" void MagLifeBwnCtrl__vfunc_09(void) {
 }

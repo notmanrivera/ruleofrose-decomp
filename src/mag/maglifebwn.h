@@ -114,13 +114,16 @@ public:
     unsigned char m_pad44[0x1C];        // +0x044..+0x05F
     int m_unk60;                        // +0x060
     int m_unk64;                        // +0x064
-    unsigned char m_pad68[0x8];         // +0x068..+0x06F
+    int m_unk68;                        // +0x068
+    int m_unk6C;                        // +0x06C
     MagLifeBwn *m_bwn;                  // +0x070
     int m_unk74;                        // +0x074
     int m_unk78;                        // +0x078
     int m_unk7C;                        // +0x07C
     int m_unk80;                        // +0x080
-    unsigned char m_pad84[0x6C];        // +0x084..+0x0EF
+    int m_unk84;                        // +0x084
+    MagLifeBwnCtrlMode *m_unk88;        // +0x088
+    unsigned char m_pad8C[0x64];        // +0x08C..+0x0EF
     MagLifeBwnCtrlModeBark m_modeBark;  // +0x0F0..+0x123
     int m_unk124;                       // +0x124
 
