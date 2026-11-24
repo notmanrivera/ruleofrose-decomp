@@ -788,7 +788,24 @@ extern "C" void func_001E34EC(GamSndMan *arg0, int arg1, int arg2) {
     }
 }
 
+// NON_MATCHING: 22/91 differ, 25 edits
+#ifdef NON_MATCHING
+extern "C" void func_001E3698(GamSndMan *self, int key)
+{
+    GamList<GamSnd3D>::iterator it;
+    GamList<GamSnd3D>::iterator end;
+    it = self->m_queue.begin();
+    end = self->m_queue.end();
+    while (it != end) {
+        if ((*it).zero == key) {
+            func_001E5660(self, (*it).id, 1, 0);
+            it = self->m_queue.erase(it);
+        } else ++it;
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E3698);
+#endif
 
 extern "C" void func_001E3804(GamSndMan *arg0)
 {
