@@ -1,5 +1,6 @@
 #include "include_asm.h"
 #include "task/cmnitask.h"
+#include "task/tsk_scene.h"
 extern "C" char vtbl_15ScenePlaySingle[] asm("_vt$15ScenePlaySingle");
 extern "C" char vtbl_11PLScenePlay[] asm("_vt$11PLScenePlay");
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
@@ -37,7 +38,16 @@ extern "C" void func_001F7610(int arg0)
 extern "C" void func_001F7644(void) {
 }
 
-INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F764C);
+extern "C" void func_001F764C(ScenePlaySingle *self, int arg1, int arg2)
+{
+    self->m_vtable = vtbl_15ScenePlaySingle;
+    self->m_unk04 = 1;
+    self->m_unk00 = arg2;
+    self->m_unk08 = arg1;
+    self->m_unk0C = -1;
+    self->m_unk10 = 0;
+    self->m_oid = -1;
+}
 
 extern "C" void ScenePlaySingle__vfunc_01(int arg0, int arg1)
 {
