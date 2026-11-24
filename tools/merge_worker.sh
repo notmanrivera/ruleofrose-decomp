@@ -7,7 +7,8 @@
 #
 # 1. Lists the worker's commits not yet in the current branch (by patch, so
 #    commits already cherry-picked are skipped) and refuses any that touch
-#    something other than src/**.cpp or src/**.h (a header change also
+#    something other than src/**.cpp, src/**.h or config/rules_check.tsv
+#    (whose baselines may only go down; a header change also
 #    checks every .cpp that includes it).
 #    Commits that add inline assembly statements with instructions in them
 #    are refused too: a function must be C++ to count. Empty barriers
@@ -76,7 +77,7 @@ COMMITS="$(git cherry "$BRANCH" "wt/$NAME" | sed -n 's/^+ //p')"
 if [ -z "$COMMITS" ]; then
   echo "wt/$NAME: nothing new"
 else
-  BAD="$(for c in $COMMITS; do git show --name-only --format= "$c"; done | sort -u | grep -vE '^src/.*\.(cpp|h)$' || true)"
+  BAD="$(for c in $COMMITS; do git show --name-only --format= "$c"; done | sort -u | grep -vE '^src/.*\.(cpp|h)$|^config/rules_check\.tsv$' || true)"
   [ -z "$BAD" ] || { echo "refusing: commits touch files outside src/*.cpp and src/*.h:"; echo "$BAD"; exit 1; }
   ASM="$(for c in $COMMITS; do git show --format= "$c"; done | grep -E '^\+([^"]*[;{])?[[:space:]]*(__asm__|asm)([[:space:]]+(volatile|goto)|__volatile__)*[[:space:]]*\([[:space:]]*"[^"]' || true)"
   [ -z "$ASM" ] || { echo "refusing: commits add inline assembly:"; echo "$ASM" | head -5; exit 1; }
@@ -122,6 +123,18 @@ else
     git reset -q --hard "$BEFORE"
     echo "refusing: the host check (modern g++ and clang++ for a PC) got worse:"; echo "$hc" | grep -v "^host check:" | head -12
     exit 1
+  fi
+  # A worker may lower its files' baselines (rules_check.py --update after
+  # paying debt down) but never raise one or add a row.
+  if ! git diff --quiet "$BEFORE" HEAD -- config/rules_check.tsv; then
+    up="$(git show "$BEFORE:config/rules_check.tsv" | awk -F'	' 'NR==FNR {o[$1]=$2" "$3; next}
+      /^#/ {next} !($1 in o) {print "new row: " $0; next}
+      {split(o[$1], v, " "); if ($2+0 > v[1]+0 || $3+0 > v[2]+0) print "raised: " $1 " " o[$1] " -> " $2 " " $3}' - config/rules_check.tsv)"
+    if [ -n "$up" ]; then
+      git reset -q --hard "$BEFORE"
+      echo "refusing: config/rules_check.tsv baselines raised or added:"; echo "$up" | head -12
+      exit 1
+    fi
   fi
   # Readability rules (CLAUDE.md): no file may get more raw offsets or alias
   # declarations in matched code than its baseline in config/rules_check.tsv.
