@@ -1,6 +1,12 @@
 #include "include_asm.h"
 #include "emy/emy.h"
 #include "sdk/math.h"
+struct GrgMain;
+extern "C" int func_00154474(GrgMain *);
+extern "C" int func_001544C8(GrgMain *);
+extern "C" int func_001544D0(GrgMain *);
+extern "C" int func_00154584(GrgMain *);
+extern "C" int func_00154668(GrgMain *);
 struct GrgOutDisappear;
 extern const float D_002EFC98[][8][4];
 extern "C" int func_00154D78(void);
@@ -56,7 +62,7 @@ struct GrgMain : EmyMain {
     int m_unk204[0x0C];                 // +0x204..+0x233
     unsigned char m_unk234;             // +0x234
     unsigned char m_unk235;             // +0x235
-    signed char m_unk236;               // +0x236
+    unsigned char m_unk236;             // +0x236
     unsigned char m_unk237;             // +0x237
     int m_unk238;                       // +0x238
     int m_unk23C;                       // +0x23C
@@ -134,7 +140,47 @@ extern "C" void GrgMain__vfunc_01(GrgMain *self, int flags)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/GrgMain", GrgMain__vfunc_04);
+extern "C" void GrgMain__vfunc_04(GrgMain *self)
+{
+    if (self->m_unk28 == 0 || self->m_unk2C == 0 || self->m_nextState != -1) {
+        return;
+    }
+    if (self->m_unk204[8] != 0 && self->m_unk240 != 0) {
+        self->m_unk240 = 0;
+        self->m_nextState = 8;
+    }
+    if (self->m_unk204[7] != 0 && func_001544C8(self) != 0) {
+        self->m_nextState = 7;
+    }
+    int r = func_00154668(self);
+    if (self->m_unk236 != 0) {
+        self->m_unk236 = r;
+        if (self->m_unk236 == 0 && self->m_unk204[6] != 0) {
+            self->m_nextState = 6;
+        }
+    } else {
+        self->m_unk236 = r;
+        if (self->m_unk236 != 0 && self->m_unk204[5] != 0) {
+            self->m_nextState = 5;
+        }
+    }
+    if (func_00154474(self) == 0) {
+        if (self->m_unk235 != 0 && self->m_unk204[4] != 0) {
+            self->m_unk235 = 0;
+            self->m_nextState = 4;
+        }
+    } else if (self->m_unk235 == 0) {
+        self->m_unk235 = 1;
+    }
+    if (self->m_unk204[1] != 0 && func_001544D0(self) != 0) {
+        self->m_nextState = 1;
+    }
+    if (self->m_unk204[0] != 0 && func_00154584(self) != 0) {
+        ((EmyObjStatView *)self->m_objStat)->m_flags &= ~0x10000000;
+        ((EmyObjStatView *)self->m_objStat)->m_flags &= ~0x80;
+        self->m_nextState = 0;
+    }
+}
 
 extern "C" void GrgMain__vfunc_05(GrgMain *self)
 {
@@ -243,8 +289,9 @@ extern "C" int func_00154474(GrgMain *self)
     return a == b;
 }
 
-extern "C" int func_001544C8(void)
+extern "C" int func_001544C8(GrgMain *self)
 {
+    (void)self;
     return 0;
 }
 
