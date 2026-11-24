@@ -1,5 +1,9 @@
 #include "include_asm.h"
 #include "unk/NorMain.h"
+#include "game/gamman.h"
+#include "game/gamtrg.h"
+extern "C" void func_001DA228(void *, int, void *);
+extern "C" int func_00169BAC(float, float, int, int, void *);
 struct NorStateTable {
     unsigned char m_unk00;
     unsigned char m_count;
@@ -145,7 +149,28 @@ extern "C" int func_00151314()
     return X_func_00166198();
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/NorMain", func_00151328);
+extern "C" int func_00151328(NorMain *self)
+{
+    float dist;
+    int oid;
+    int r1;
+    int r2;
+
+    func_001DA228(self->m_objStat, 0x5F, &dist);
+    if (D_007812C0.m_pc != 0) {
+        oid = D_007812C0.m_pc->m_oid;
+    } else {
+        oid = 0;
+    }
+    r1 = func_00169BAC(dist, 3.1415926f, 1, oid, self->m_objStat);
+    if (D_007812C0.m_dog != 0) {
+        oid = D_007812C0.m_dog->m_oid;
+    } else {
+        oid = 0;
+    }
+    r2 = func_00169BAC(dist, 3.1415926f, 1, oid, self->m_objStat);
+    return (r1 != 0) | (r2 != 0);
+}
 
 extern "C" int func_001513EC(NorMain *self)
 {
@@ -181,9 +206,7 @@ extern "C" int func_00151448(NorMain *self)
 
 // NON_MATCHING: 30/43 differ, 1 reloc differs (size 0xAC, game 0xA8), 10 edits
 #ifdef NON_MATCHING
-extern int D_007812C0;
 extern "C" void func_001CB460(void *, int, unsigned short *);
-extern "C" void func_001DA228(void *, int, unsigned short *);
 extern "C" int NorMain__vfunc_07(NorMain *self)
 {
     unsigned short sp0;
