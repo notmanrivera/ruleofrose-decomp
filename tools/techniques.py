@@ -77,12 +77,38 @@ def load_stats():
     return by
 
 
-def model_of(stats, file, t):
+def worker_subjects():
+    """subject -> model, from each worker's own branch (wt/<name>): covers
+    merges done by hand, which stats.tsv does not log."""
+    out = {}
+    wdir = os.path.join(ROOT, "build", "workers")
+    for fn in os.listdir(wdir) if os.path.isdir(wdir) else []:
+        if not fn.endswith(".env"):
+            continue
+        name = fn[:-4]
+        env = open(os.path.join(wdir, fn), encoding="utf-8", errors="replace").read()
+        m = re.search(r"^MODEL='([^']*)'", env, re.M) or re.search(r"^PRIMARY='([^']*)'", env, re.M)
+        model = (m.group(1) if m and m.group(1) else name).removeprefix("auto · ")
+        log = subprocess.run(["git", "-C", ROOT, "log", "--format=%s", f"wt/{name}", "--since=30 days ago"],
+                             capture_output=True, text=True, encoding="utf-8", errors="replace").stdout
+        for s in log.splitlines():
+            out.setdefault(s.strip(), model)
+    return out
+
+
+def model_of(stats, file, t, subject=None, by_subject=None):
     rows = stats.get(file, [])
     i = bisect.bisect_left(rows, (t - 120, ""))   # logged after the merge, allow 2 min skew
     if i < len(rows) and rows[i][0] - t < 6 * 3600:
         return rows[i][1]
+    if by_subject and subject in by_subject:
+        return by_subject[subject]
     return "?"
+
+
+# A Blocker that names only data alignment: the function itself matches, the
+# coordinator can finish it in config/rodata_align_manual.tsv.
+ALIGN_ONLY = re.compile(r"fn matches|function matches|\.align|rodata_align|alignment of|aligned rodata", re.I)
 
 
 def family(text):
@@ -107,8 +133,10 @@ def main():
         return
     fam = {"Technique": collections.Counter(), "Blocker": collections.Counter()}
     by_model = collections.defaultdict(collections.Counter)
+    by_subject = worker_subjects()
     for c in tagged:
-        c["model"] = model_of(stats, c["file"], c["time"])
+        c["model"] = model_of(stats, c["file"], c["time"], f"{c['file']}: {c['func']}"
+                              + (" (NON_MATCHING)" if c["nm"] else ""), by_subject)
         for kind, text in c["tags"]:
             f = family(text)
             fam[kind][f] += 1
@@ -126,6 +154,26 @@ def main():
         for m, cnt in sorted(by_model.items(), key=lambda kv: -sum(kv[1].values())):
             top = ", ".join(f"{f} {n}" for f, n in cnt.most_common(4))
             print(f"  {sum(cnt.values()):4}  {m}: {top}")
+    # Attempts whose Blocker is only data alignment and that are still
+    # NON_MATCHING in src/: ready for config/rodata_align_manual.tsv.
+    ready = []
+    for c in tagged:
+        if not c["nm"]:
+            continue
+        for kind, text in c["tags"]:
+            if kind == "Blocker" and ALIGN_ONLY.search(text):
+                src = os.path.join(ROOT, "src", c["file"] + ".cpp")
+                try:
+                    still = re.search(rf"INCLUDE_ASM\([^)]*\b{re.escape(c['func'])}\)",
+                                      open(src, encoding="utf-8", errors="replace").read())
+                except OSError:
+                    still = None
+                if still:
+                    ready.append((c, text))
+    if ready:
+        print("\nOnly data alignment left (finish with tools/rodata_align_fix.py):")
+        for c, text in ready:
+            print(f"  {c['file']} {c['func']}  ({c['hash']}: {text})")
     if a.list:
         print()
         for c in tagged:

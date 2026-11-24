@@ -73,6 +73,9 @@ techniques that keep paying off get promoted into this list.
   the game did.
 - Order of a call's arguments decides the order of their setup.
 - `p += a; p += b;` keeps two adds; `p + a + b` folds them.
+- Read fields in the order the asm loads them, even backwards
+  (`p->m_z`, `p->m_y`, `p->m_x`), and re-read a member after a store when
+  the game reloads it (`m_unk236` in GrgMain__vfunc_04).
 
 ## Addresses and `addu` operand order
 
@@ -82,6 +85,10 @@ techniques that keep paying off get promoted into this list.
   flip the `addu` operands.
 - An array inside the struct (`t->arr[i]`) takes two address registers; a
   pointer member (`T *arr`) one.
+- A global table declared with its real shape (`D_002F0410[][3]`,
+  `D_002EFC98[][4][3]`) instead of flat index arithmetic, and a pointer
+  local to the owning object (`EffMgr *m = ...`), flip the `addu` operands
+  (five matches on 2026-11-24: GrgMain, emy_main, magscenecamera, Eff0).
 
 ## Control flow, switch, loops
 
@@ -98,6 +105,13 @@ techniques that keep paying off get promoted into this list.
   delay slot differently.
 - `return f(...)` (non-void) is a tail call `j`; a final call with the result
   unused keeps `jal` and the epilogue.
+- Early returns (`if (d <= near) return;`) rather than the rest of the body
+  nested in an `if`: the most common control-flow fix on 2026-11-24 (six
+  matches in Eff0, emy_main, tsk_scene).
+- In a class family (enemies `Nor*`, `Grg*`), an instruction sequence
+  repeated across the file's functions is the family's inline helper
+  (`NorAnimDone`, `GrgAnimDone`): write it once in the header and call it
+  everywhere (four matches).
 
 ## Ideas from gt4-decomp: confirmed at `-Os`
 
