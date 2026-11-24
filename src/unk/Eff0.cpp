@@ -1,6 +1,28 @@
 #include "include_asm.h"
 #include "unk/Eff0.h"
 #include "dog/doglightpool.h"
+extern "C" float modff(float, float *);
+struct EffBg1Chunk {
+    unsigned short m_type;              // +0x00
+    unsigned short m_size;              // +0x02
+    float m_tag[8];                     // +0x04
+    float m_du;                         // +0x24
+    float m_dv;                         // +0x28
+    float m_u;                          // +0x2C
+    float m_v;                          // +0x30
+};
+struct EffBg1Data {
+    unsigned short m_flags;             // +0x00
+    unsigned short m_chunkCount;        // +0x02
+    unsigned char m_pad04[0x0C];        // +0x04
+    EffBg1Chunk m_chunks[1];            // +0x10
+};
+struct EffBg1 : public Eff0 {
+    unsigned char m_pad24[0x1C];        // +0x24
+    EffBg1Data *m_data;                 // +0x40
+    unsigned short m_curFrame;          // +0x44
+    unsigned short m_maxFrame;          // +0x46
+};
 extern "C" int X_func_00223558(...) asm("func_00223558");
 struct Arg_Stay2 {
     unsigned char pad00[0x10];
@@ -457,7 +479,26 @@ extern "C" int EffBg1__vfunc_02(int obj,int param)
 INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBg1__vfunc_02);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/unk/Eff0", EffBg1__vfunc_05);
+extern "C" int EffBg1__vfunc_05(EffBg1 *self)
+{
+    float ipart;
+    self->m_curFrame++;
+    if (self->m_curFrame > self->m_maxFrame) {
+        self->m_curFrame = self->m_curFrame - self->m_maxFrame - 1;
+    }
+    char *p = (char *)self->m_data->m_chunks;
+    for (int i = 0; i < self->m_data->m_chunkCount; i++) {
+        EffBg1Chunk *c = (EffBg1Chunk *)p;
+        if (c->m_type == 4) {
+            c->m_u += c->m_du / 60.0f;
+            c->m_v += c->m_dv / 60.0f;
+            c->m_u = modff(c->m_u, &ipart);
+            c->m_v = modff(c->m_v, &ipart);
+        }
+        p += c->m_size;
+    }
+    return 1;
+}
 
 extern "C" void renderPreMain__6EffBg1PQ24Eff011RENDERPARAM(int arg0, int arg1)
 {
