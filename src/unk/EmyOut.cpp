@@ -2,6 +2,8 @@
 #include "emy/emy.h"
 #include "dog/dogactor.h"
 #include "sdk/string.h"
+extern "C" void func_001664A4(EmyMain *, int);
+extern "C" void func_001DA130(void *, int, int);
 extern "C" int func_00104394(int, int, int);
 struct EmySlot154 {
     int m_unk00;
@@ -271,7 +273,20 @@ extern "C" void func_00166364(EmyMain *self, int arg1)
     self->m_unk1CC = 0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00166378);
+extern "C" void func_00166378(EmyMain *self, int arg1)
+{
+    self->m_unk08 = arg1;
+    if (arg1 == 0) {
+        func_001DA130(self->m_objStat, arg1, 1);
+        func_001664A4(self, 1);
+        ((EmyObjStatView *)self->m_objStat)->m_flags |= 0x400;
+        ((EmyObjStatView *)self->m_objStat)->m_flags |= 0x2000;
+    } else {
+        func_001664A4(self, 0);
+        ((EmyObjStatView *)self->m_objStat)->m_flags &= ~0x400;
+        ((EmyObjStatView *)self->m_objStat)->m_flags &= ~0x2000;
+    }
+}
 
 extern "C" int func_0016640C(EmyMain *self)
 {
