@@ -5,6 +5,9 @@
 #include "dog/dogtexinfo.h"
 #include "utl/utltm2.h"
 #include "bed/bedmemory.h"
+#include "sdk/math.h"
+extern "C" float func_002337E0(const float *, const float *, const float *, float *);
+void vecNormalize(float *v);
 extern "C" void func_00130258(MagLifeWindow *w, int a, int b, const char *str, int d);
 extern const char D_002ED4B8[];
 extern "C" void live__10MagLifeBwn(MagLifeBwn *);
@@ -524,7 +527,40 @@ extern "C" float func_00133A0C(MagScene *self, DogModelHit *theHit, const DogVec
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133A0C);
 #endif
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00133B80);
+extern "C" float fabsf(float);
+extern "C" float func_00133B80(MagScene *self, DogModelHit *theHit, const float *thePos, float theR)
+{
+#line 1794
+    ASSERT(theR > 0.0f);
+    MagPrivateColli *p = self->m_private_colli;
+    for (int i = 0; i < 256; i++, p++) {
+        if (p->m_p1.m_y == p->m_p2.m_y) {
+            continue;
+        }
+        if (fabsf((p->m_p1.m_y + p->m_p2.m_y) * 0.5f - thePos[1]) > fabsf(p->m_p1.m_y - p->m_p2.m_y) * 0.5f) {
+            continue;
+        }
+        DogVector p1 = p->m_p1;
+        p1.m_y = thePos[1];
+        DogVector d = p->m_p2;
+        float *pd = &d.m_x;
+        pd[0] -= p->m_p1.m_x;
+        pd[3] = 1.0f;
+        pd[1] = 0.0f;
+        pd[2] -= p->m_p1.m_z;
+        float t;
+        if (sqrtf(func_002337E0(thePos, &p1.m_x, pd, &t)) <= theR) {
+            if (theHit) {
+                theHit->m_normal.m_x = -d.m_z;
+                theHit->m_normal.m_y = 0.0f;
+                theHit->m_normal.m_z = d.m_x;
+                vecNormalize(&theHit->m_normal.m_x);
+            }
+            return 1.0f;
+        }
+    }
+    return -1.0f;
+}
 
 // NON_MATCHING: 81/94 differ, 7 relocs differ (size 0x178, game 0x184), 27 edits
 #ifdef NON_MATCHING
