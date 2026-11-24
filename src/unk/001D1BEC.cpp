@@ -1,4 +1,8 @@
 #include "include_asm.h"
+extern "C" float func_001D4A3C(void *, unsigned int, int);
+extern "C" void func_001DA740(void *, int, void *);
+extern "C" void func_001DB520(void *, int, void *);
+extern "C" void func_001D0EFC(int, void *, float, int);
 struct Obj2C0CItem {
     unsigned char m_pad00[0x100];
     unsigned int m_oid;
@@ -142,22 +146,18 @@ extern "C" int X_func_00130DE0(...) asm("func_00130DE0");
 extern "C" int X_func_0013FB3C(...) asm("func_0013FB3C");
 extern "C" int X_func_001CBE38(...) asm("func_001CBE38");
 extern "C" int X_func_001D046C(...) asm("func_001D046C");
-extern "C" int X_func_001D0EFC(...) asm("func_001D0EFC");
 extern "C" int X_func_001D10D0(...) asm("func_001D10D0");
 extern "C" int X_func_001D1410(...) asm("func_001D1410");
 extern "C" int X_func_001D2B8C(...) asm("func_001D2B8C");
 extern "C" int X_func_001D2BA8(...) asm("func_001D2BA8");
 extern "C" int X_func_001D2D00(...) asm("func_001D2D00");
 extern "C" int X_func_001D3A38(...) asm("func_001D3A38");
-extern "C" int X_func_001D4A3C(...) asm("func_001D4A3C");
 extern "C" int X_func_001D9F08(...) asm("func_001D9F08");
 extern "C" int X_func_001DA228(...) asm("func_001DA228");
-extern "C" int X_func_001DA740(...) asm("func_001DA740");
 extern "C" int X_func_001DAC8C(...) asm("func_001DAC8C");
 extern "C" int X_func_001DB18C(...) asm("func_001DB18C");
 extern "C" int X_func_001DB19C(...) asm("func_001DB19C");
 extern "C" int X_func_001DB31C(...) asm("func_001DB31C");
-extern "C" int X_func_001DB520(...) asm("func_001DB520");
 extern int D_006E9840;
 extern int D_006FBD80;
 extern int D_006FE6A0;
@@ -196,7 +196,30 @@ extern "C" int func_001D1C80(int arg0, unsigned int arg1, int arg2, int arg3)
     return var_v0;
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/001D1BEC", func_001D1D5C);
+extern "C" int func_001D1D5C(int arg0, unsigned int arg1, int arg2, void *arg3)
+{
+    if (func_001D046C(arg0, arg1) == 0) {
+        return 0;
+    }
+    switch ((arg1 >> 0x1C) & 3) {
+    case 0:
+        func_001DB520(func_001D2D00((Obj2D00 *)arg0, arg1), arg2, arg3);
+        break;
+    case 1:
+        {
+            void *obj = (void *)func_001D2B8C(arg0, arg1);
+            func_001DA740(obj, arg2, arg3);
+            if (arg2 == 0x18 && ((arg1 >> 0x17) & 0x1F) == 2) {
+                func_001D0EFC(arg0, obj, func_001D4A3C((void *)arg0, arg1, 0), 0);
+            }
+        }
+        break;
+    case 2:
+        func_001DB520((void *)func_001D2BA8(arg0, arg1), arg2, arg3);
+        break;
+    }
+    return 1;
+}
 
 extern "C" void func_001D1E88(int arg0, unsigned int arg1, float fparg0)
 {
