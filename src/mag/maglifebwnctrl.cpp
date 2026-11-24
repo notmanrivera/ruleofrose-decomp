@@ -1,7 +1,7 @@
 #include "include_asm.h"
 #include "mag/maglifebwn.h"
 #include "utl/utlfind.h"
-extern "C" int Xiiif_func_001267F4(int, MagLifeBwnCtrl *, float) asm("func_001267F4");
+extern "C" int func_001267F4(int, MagLifeBwnCtrl *, float);
 struct MagLifeBwnCtrlModeV {
     virtual void vfunc01();
     virtual void vfunc02();
@@ -46,7 +46,7 @@ extern "C" int func_001268B4(int arg0, MagLifeBwnCtrl *arg1)
     if (bwn->m_unkCB8 >= 3) {
         return ret;
     }
-    if (Xiiif_func_001267F4(arg0, arg1, 200.0f) > 0) {
+    if (func_001267F4(arg0, arg1, 200.0f) > 0) {
         Xiiiii_func_0012A56C(arg1, 0xB, 0, 0);
         return 1;
     }
