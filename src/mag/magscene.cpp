@@ -102,7 +102,38 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magscene", D_002ED4B8);
 
 INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001311F4);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00131550);
+extern "C" int func_00131550(MagScene *self)
+{
+    int mode;
+    switch (self->m_unk43700) {
+    case 0:
+    case 4:
+        mode = self->m_unk41850.m_unk00;
+        break;
+    case 1:
+    case 2:
+        mode = self->m_unk41890.m_unk00;
+        break;
+    default:
+        return 0;
+    }
+    switch (mode) {
+    case 1:
+    case 5:
+        return 2;
+    case 2:
+    case 3:
+        return 3;
+    case 6:
+    case 7:
+        return 4;
+    case 4:
+        return 5;
+    case 8:
+        return 6;
+    }
+    return 0;
+}
 
 extern "C" int func_00131608(MagScene *self)
 {

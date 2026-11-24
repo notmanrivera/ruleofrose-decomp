@@ -102,9 +102,15 @@ public:
     MagLifePC m_pc;                 // +0x2ADC0..+0x2AFDF (size 0x220)
     unsigned char m_unk2AFE0[0xD40];
     int m_unk2BD20;                 // +0x2BD20
-    unsigned char m_unk2BD24[0x16E8C];
+    unsigned char m_unk2BD24[0x15B2C];
+    MagLife m_unk41850;             // +0x41850
+    unsigned char m_unk41880[0x10];
+    MagLife m_unk41890;             // +0x41890
+    unsigned char m_unk418C0[0x12F0];
     S2dMes m_s2dMes;                 // +0x42BB0: message sprites
-    unsigned char m_unk43500[0x218];
+    unsigned char m_unk43500[0x200];
+    int m_unk43700;                 // +0x43700
+    unsigned char m_unk43704[0x14];
     int m_unk43718;                 // +0x43718
     TxtToken m_option_bucket[16];   // +0x4371C
     unsigned char m_unk437DC[4];
