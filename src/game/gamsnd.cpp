@@ -224,7 +224,93 @@ extern "C" void func_001E107C(GamSndMan *arg0)
     func_001E6734(arg0, 0xF, 0x80, 0x80, 0, -1);
 }
 
+// NON_MATCHING: 282/294 differ, 11 relocs differ (size 0x498, game 0x4B4), 57 edits
+#ifdef NON_MATCHING
+extern "C" int func_001F9658(TskSnd *, int *, int *);
+extern "C" void func_001E111C(GamSndMan *self, int mode)
+{
+    SND_PARAM *param;
+    if (self->m_currentBgm < 0) {
+        self->m_unk1708 = 0;
+        ++self->m_currentBgm;
+        self->m_unk15A0[self->m_currentBgm].m_unk00 = 0;
+        self->m_unk15A0[self->m_currentBgm].m_unk0C = -1;
+        self->m_unk15A0[self->m_currentBgm].m_unk18 = -1;
+        self->m_unk1654[self->m_currentBgm].m_unk00 = 0;
+        int offset = 0;
+        int remaining = 47;
+        do {
+            GamSndChannels *entries = &self->m_channels;
+            GamSndChannel *channel = channelAt(entries, offset);
+            unsigned int flags = channel->flags;
+            if (!(flags & 0x80)) {
+                if (flags & 1) {
+                    if (mode != 1) {
+                        unsigned int id = channel->m_unk14;
+                        if (id != -1U && (flags & 0x100)) {
+                            int status = func_001E5B60(self, id, channel->m_unk18);
+                            if (status != 5 && status != -1) {
+                                self->m_unk15A0[self->m_currentBgm].m_unk0C = channelAt(entries, offset)->m_unk14;
+                                if (func_001E7D7C(&D_007A3D80, self->m_unk1718)) {
+                                    TskSnd *task = (TskSnd *)func_001E79C0(&D_007A3D80, self->m_unk1718);
+                                    func_001F9658(task, &self->m_unk15A0[self->m_currentBgm].m_unk10, &self->m_unk15A0[self->m_currentBgm].m_unk14);
+                                } else {
+                                    self->m_unk15A0[self->m_currentBgm].m_unk10 = channelAt(entries, offset)->m_unk04;
+                                    self->m_unk15A0[self->m_currentBgm].m_unk14 = channelAt(entries, offset)->m_unk08;
+                                }
+                            }
+                            int index = self->m_currentBgm;
+                            if (self->m_unk15A0[index].m_unk10 == 0 && self->m_unk15A0[index].m_unk14 == 0 && index > 0) {
+                                self->m_unk15A0[index].m_unk0C = self->m_unk15A0[index-1].m_unk0C;
+                                self->m_unk15A0[self->m_currentBgm].m_unk10 = self->m_unk15A0[self->m_currentBgm-1].m_unk10;
+                                self->m_unk15A0[self->m_currentBgm].m_unk14 = self->m_unk15A0[self->m_currentBgm-1].m_unk14;
+                            }
+                        }
+                    }
+                } else if (mode != 2) {
+                    unsigned int id = channel->m_unk0C;
+                    if (id != 0 && id != 0x0B030352 && func_001E6368(self, id, channel->m_unk18)) {
+                        GamSndChannel *active = channelAt(entries, offset);
+                        id = active->m_unk0C;
+                        if ((id >> 24) == 0xB) {
+                            int index = self->m_currentBgm;
+                            GamSndBgm *bgm = &self->m_unk15A0[index];
+                            if (bgm->m_unk00 == 0) {
+                                bgm->m_unk00 = id;
+                                if (func_001E7D7C(&D_007A3D80, self->m_unk1710)) {
+                                    TskSnd *task = (TskSnd *)func_001E79C0(&D_007A3D80, self->m_unk1710);
+                                    func_001F9658(task, &self->m_unk15A0[self->m_currentBgm].m_unk04, &self->m_unk15A0[self->m_currentBgm].m_unk08);
+                                } else {
+                                    self->m_unk15A0[self->m_currentBgm].m_unk04 = channelAt(entries, offset)->m_unk04;
+                                    self->m_unk15A0[self->m_currentBgm].m_unk08 = channelAt(entries, offset)->m_unk08;
+                                }
+                            } else {
+                                self->m_unk1654[index].m_unk00 = id;
+                                self->m_unk1654[self->m_currentBgm].m_unk04 = channelAt(entries, offset)->m_unk04;
+                                self->m_unk1654[self->m_currentBgm].m_unk08 = channelAt(entries, offset)->m_unk08;
+                            }
+                        } else {
+                            param = 0;
+                            func_001E4908(self, active->m_unk0C, &param, 1);
+                            GamSndChannel *entry = channelAt(entries, offset);
+                            if ((entry->flags & 0x10) || (param && param->m_unk36)) {
+                                self->m_ambient[self->m_unk1708].m_unk00 = entry->m_unk0C;
+                                self->m_ambient[self->m_unk1708].m_unk04 = channelAt(entries, offset)->m_unk04;
+                                self->m_ambient[self->m_unk1708].m_unk08 = channelAt(entries, offset)->m_unk08;
+                                ++self->m_unk1708;
+                            }
+                        }
+                    }
+                }
+            }
+            --remaining;
+            offset += sizeof(GamSndChannel);
+        } while (remaining >= 0);
+    }
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/game/gamsnd", func_001E111C);
+#endif
 
 extern "C" void func_001E15D0(GamSndMan *arg0, const GamSndBgm *arg1)
 {
