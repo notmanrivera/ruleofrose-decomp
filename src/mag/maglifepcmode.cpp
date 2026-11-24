@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "mag/maglifepc.h"
 #include "mag/magscene.h"
+extern "C" int func_0012CA28(MagLifePC *arg0);
+extern const int D_002EAD98[];
 extern "C" int func_0011C64C(MagLifePC *, MagPCItemData *, int, float);
 extern "C" int func_0011CBF4(MagLifePC *, int);
 extern "C" int func_0011CC14(MagLifePC *, int);
@@ -347,7 +349,32 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcmode", D_002EAD88);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/maglifepcmode", D_002EAD98);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifepcmode", init__22MagLifePCModeAtkWait2DR9MagLifePC);
+extern "C" void init__22MagLifePCModeAtkWait2DR9MagLifePC(MagLifePCModeAtkWait2D *arg0, MagLifePC *arg1)
+{
+    int *last = &arg1->m_last0;
+    int hhh = func_0012CA28(arg1);
+    if (hhh < 0) {
+        arg1->m_target_id = 0;
+        hhh = 0;
+    }
+    if (!(0 <= hhh && hhh < 5)) {
+        X_ror_assert(D_002EAD28, 0x34C, "0 <= hhh && hhh < 5");
+    }
+    int wc = arg1->m_unk21C;
+    if (!(0 <= wc && wc < 4)) {
+        X_ror_assert(D_002EAD28, 0x34E, "0 <= wc && wc < 4");
+    }
+    if (arg1->m_unkE4 == 2) {
+        wc += 4;
+    }
+    if (*last == 0xA || *last == 0xF || *last == 0x10 || *last == 0x11 || *last == 6) {
+        arg1->func_0011A27C(D_002EAD98[wc * 5 + hhh], -1);
+    } else {
+        Xiiis_func_0011A320(arg1, D_002EAD98[wc * 5 + hhh], -1);
+    }
+    X_func_0011DFD0(arg1);
+    arg1->m_unk08 = 0;
+}
 
 extern "C" float func_00121604(MagLifePCModeAtkWait2D *arg0, float fparg0)
 {
