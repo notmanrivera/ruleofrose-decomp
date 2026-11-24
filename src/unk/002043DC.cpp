@@ -7,6 +7,7 @@
 #include "mag/magsystem.h"
 #include "game/gamman.h"
 #include "system/sysnowloading.h"
+extern "C" int atoi(const char *);
 extern "C" int rxGsVSync(int);
 extern "C" int sceGsPutDrawEnv(sceGifTag *);
 extern "C" void func_00203EA8(GamTaskBase *);
@@ -37,7 +38,6 @@ extern "C" void func_001C1B48(GamMan *);
 extern "C" void func_001C204C(GamMan *, int);
 extern "C" void func_00205394(SysNowLoading *);
 // Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_atoi(...) asm("atoi");
 extern "C" int X_func_0017F164(...) asm("func_0017F164");
 extern "C" int X_func_002049D4(...) asm("func_002049D4");
 extern "C" int X_sceDbcEnd(...) asm("sceDbcEnd");
@@ -46,8 +46,6 @@ extern "C" int X_sceMcEnd(...) asm("sceMcEnd");
 extern "C" int X_sceMcInit(...) asm("sceMcInit");
 extern "C" int X_scePad2End(...) asm("scePad2End");
 extern "C" int X_scePad2Init(...) asm("scePad2Init");
-extern "C" int X_startSequence__9MagSystemi(...) asm("startSequence__9MagSystemi");
-extern "C" int X_strcmp(...) asm("strcmp");
 extern "C" int X_term__9MagSystem(...) asm("term__9MagSystem");
 extern MagSystem D_006E9840;
 extern GamTaskMan D_007A3D80;
@@ -56,7 +54,58 @@ extern int D_007B2140;
 extern SndMan D_007B2580;
 extern int D_007B45C0;
 
-INCLUDE_ASM("asm/nonmatchings/unk/002043DC", func_002043DC);
+extern "C" int func_002043DC(int argc, char **argv)
+{
+    int ret = 0x63;
+    int mode = 0;
+
+    for (int i = 1; i < argc; i++) {
+        char *s = argv[i];
+        switch (mode) {
+        case 0:
+            if (s[0] == '-') {
+                switch (s[1]) {
+                case 'a':
+                    break;
+                case 'm':
+                    if (s[2] != '\0') {
+                        ret = atoi(s + 2);
+                    } else {
+                        mode = 'm';
+                    }
+                    break;
+                case 'l':
+                    mode = 'l';
+                    break;
+                }
+            } else {
+                if ((unsigned char)(s[0] - '0') < 10) {
+                    atoi(s);
+                }
+            }
+            break;
+        case 'm':
+            if ((unsigned int)(*(unsigned char *)s - '0') < 10) {
+                ret = atoi(s);
+                mode = 0;
+            }
+            break;
+        case 'l':
+            if (strcmp(s, "fre") == 0) {
+                D_006E9840.startSequence(1);
+            } else if (strcmp(s, "ger") == 0) {
+                D_006E9840.startSequence(2);
+            } else if (strcmp(s, "spa") == 0) {
+                D_006E9840.startSequence(3);
+            } else if (strcmp(s, "ita") == 0) {
+                D_006E9840.startSequence(4);
+            }
+            mode = 0;
+            break;
+        }
+    }
+    return ret;
+}
 
 // NON_MATCHING: 1 reloc differs, 1 edits
 #ifdef NON_MATCHING
@@ -68,7 +117,6 @@ void *heapAlloc(int);
 void *heapRealloc(void *, int);
 void heapFree(void *);
 static inline char *getSndName(SndMan *s) { return (char *)s->m_unk04; }
-extern "C" int func_002043DC(int, char **);
 extern "C" int snprintf(char *, size_t, const char *, ...);
 extern "C" void func_00241B20(const char *);
 extern "C" void rxSysSetBootFileName(const char *);
