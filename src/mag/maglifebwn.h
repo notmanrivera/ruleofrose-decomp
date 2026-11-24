@@ -105,7 +105,11 @@ struct MagLifeBwnCtrlModeFind : public MagLifeBwnCtrlMode {
     unsigned char m_pad04[0xC];         // +0x04..+0x0F
     MagBwnVec4 m_unk10;                 // +0x10..+0x1F
     float m_unk20;                      // +0x20
-    unsigned char m_pad24[0xC];         // +0x24..+0x2F
+    unsigned char m_unk24;              // +0x24
+    unsigned char m_unk25;              // +0x25
+    unsigned char m_unk26;              // +0x26
+    signed char m_unk27;                // +0x27
+    unsigned char m_pad28[0x8];         // +0x28..+0x2F
 }; // size 0x30
 
 struct MagLifeBwnCtrlModeHug : public MagLifeBwnCtrlMode {

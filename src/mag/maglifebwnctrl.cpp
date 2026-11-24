@@ -214,7 +214,31 @@ INCLUDE_RODATA("asm/nonmatchings/mag/maglifebwnctrl", D_002EC028);
 
 INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", MagLifeBwnCtrlModeFind__vfunc_02);
 
-INCLUDE_ASM("asm/nonmatchings/mag/maglifebwnctrl", func_00128724);
+extern "C" int func_00128724(MagLifeBwnCtrlModeFind *arg0, DogVector *arg1)
+{
+    DogVector v = *arg1;
+    MagBwnVec4 *pos = &arg0->m_unk10;
+    v.m_y -= pos->y;
+    v.m_w = 1.0f;
+    v.m_x -= pos->x;
+    v.m_z -= pos->z;
+    if (v.m_y < -50.0f || v.m_y > 50.0f) {
+        return 0;
+    }
+    vecTurnY(&v.m_x, -arg0->m_unk20);
+    if (v.m_x >= -30.0f && v.m_x <= 30.0f) {
+        if (arg0->m_unk27 != 0) {
+            if (v.m_z > 76.0f && v.m_z <= 100.0f) {
+                return 1;
+            }
+        } else {
+            if (v.m_z >= -100.0f && v.m_z < -76.0f) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 extern "C" int func_00128854(MagLifeBwnCtrlModeFind *arg0, MagLifeBwnCtrl *arg1, MagBwnVec4 *arg2, int arg3)
 {
