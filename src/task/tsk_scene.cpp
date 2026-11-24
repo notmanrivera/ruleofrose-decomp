@@ -2,6 +2,8 @@
 #include "task/cmnitask.h"
 #include "task/tsk_scene.h"
 #include "sdk/string.h"
+extern "C" void func_001F6CB8(void *);
+extern "C" void func_001F71B8(void *);
 extern "C" void ScenePlay__vfunc_05(ScenePlay *);
 extern "C" void VoiceManager__vfunc_01(void *, int);
 extern "C" void SeManager__vfunc_01(void *, int);
@@ -21,11 +23,7 @@ extern "C" void ScenePlaySingle__vfunc_01(int arg0, int arg1);
 extern "C" void PLScenePlay__vfunc_06(int arg0, int arg1);
 #define M2C_FIELD(expr, type, offset) (*(type)((char *)(expr) + (offset)))
 // Translated mechanically from m2c drafts: only what matches byte for byte.
-extern "C" int X_func_001F6CB8(...) asm("func_001F6CB8");
-extern "C" int X_func_001F71B8(...) asm("func_001F71B8");
-extern "C" int X_func_001F7610(...) asm("func_001F7610");
 extern "C" int X_func_001F7644(...) asm("func_001F7644");
-extern "C" int X_func_001F76B0(...) asm("func_001F76B0");
 extern "C" int X_func_001F76E0(...) asm("func_001F76E0");
 extern "C" int X_func_001F7788(...) asm("func_001F7788");
 extern "C" int X_func_001F7C0C(...) asm("func_001F7C0C");
@@ -130,7 +128,19 @@ INCLUDE_RODATA("asm/nonmatchings/task/tsk_scene", D_002FE858);
 
 INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F81A8);
 
-INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", ScenePlay__vfunc_04);
+extern "C" int ScenePlay__vfunc_04(ScenePlay *self)
+{
+    for (int i = 0; i < self->m_unk30; i++) {
+        func_001F76B0((int)self->m_unk04[i]);
+    }
+    if (--self->m_unk34 <= 0) {
+        return 1;
+    }
+    func_001F6CB8(self->m_displayMessage);
+    func_001F71B8(self->m_seManager);
+    func_001F7610((int)self->m_voiceManager);
+    return 0;
+}
 
 extern "C" void func_001F836C(ScenePlay *self, const char *str)
 {
