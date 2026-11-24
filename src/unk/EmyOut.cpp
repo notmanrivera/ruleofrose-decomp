@@ -148,7 +148,20 @@ extern "C" void func_00165404(EmyMain *self, int arg1, int arg2, int arg3)
     }
 }
 
-INCLUDE_ASM("asm/nonmatchings/unk/EmyOut", func_00165498);
+extern "C" void func_00165498(EmyMain *self, int arg1)
+{
+    EmyMain154 *m = (EmyMain154 *)self;
+    for (int i = 0; i < 4; i++) {
+        if (m->m_slots[i].m_unk00 == arg1) {
+            if (m->m_slots[i].m_unk0C < 3) {
+                func_001E5E58(getGamSnd(&D_007812C0), arg1, 8, 0);
+            } else {
+                func_001E5660(getGamSnd(&D_007812C0), arg1, 8, 0);
+            }
+            memset(&m->m_slots[i], 0, sizeof(EmySlot154));
+        }
+    }
+}
 
 extern "C" void func_00165570(EmyMain *self)
 {
