@@ -4,6 +4,7 @@
 #include "mag/maglifewindow.h"
 #include "dog/dogtexinfo.h"
 #include "bed/bedmemory.h"
+extern "C" void func_00130258(MagLifeWindow *w, int a, int b, const char *str, int d);
 extern const char D_002ED4B8[];
 extern "C" void live__10MagLifeBwn(MagLifeBwn *);
 extern "C" void MagLifeBwnCtrl__vfunc_02(void *);
@@ -798,7 +799,21 @@ INCLUDE_RODATA("asm/nonmatchings/mag/magscene", D_002ED680);
 
 INCLUDE_RODATA("asm/nonmatchings/mag/magscene", D_002ED6A8);
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_00135234__8MagSceneiiiii);
+void MagScene::func_00135234(int winNo, int theB, int theC, int str, int theE)
+{
+#line 2369
+    ASSERT(str != __null);
+#line 2371
+    ASSERT_S(winNo >= 0 && winNo < MAX_WINDOW, D_002ED680);
+    if (m_window[winNo]) {
+        func_00130258(m_window[winNo], theB, theC, (const char *)str, theE);
+        tag_I3dTexInfo_s *pti = m_tex_info.getTexInfo(m_unk028F4[winNo]);
+#line 2381
+        ASSERT(pti);
+        ASSERT(pti->pPicture);
+        updatePicture(pti->pPicture);
+    }
+}
 
 extern "C" void func_00135364(MagScene *self, int winNo, int theA, int theB)
 {
