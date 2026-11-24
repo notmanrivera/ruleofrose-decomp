@@ -84,7 +84,15 @@ extern "C" void func_00131184(MagScene *arg0, int arg1, int arg2, int arg3)
     func_001311F4(arg0, arr);
 }
 
-INCLUDE_ASM("asm/nonmatchings/mag/magscene", func_001311BC);
+extern "C" void func_001311BC(MagScene *arg0, int arg1, int arg2, int arg3)
+{
+    int arr[8];
+    arr[0] = arg3 ? 4 : 0;
+    arr[1] = 6;
+    arr[2] = arg1;
+    arr[5] = arg2;
+    func_001311F4(arg0, arr);
+}
 
 // D_002ED478: the end of mag/maglifetest's .rodata now (config/splits_manual.tsv)
 
