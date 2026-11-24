@@ -221,7 +221,71 @@ extern "C" void func_001D4730(int arg0, Vec2_4730 *arg1)
     arg1[2] = tmp;
 }
 
+// NON_MATCHING: 1/113 differ, 1 edits
+#ifdef NON_MATCHING
+extern "C" int func_001D05F4(GamMan *, unsigned int, float *);
+extern "C" void func_001D1C80(GamMan *, unsigned int, int, void *);
+extern "C" void func_001D1D5C(GamMan *, unsigned int, int, void *);
+extern "C" int func_001CFBE4(GamMan *, unsigned int, float *);
+extern "C" void func_001D480C(GamMan *arg0, unsigned int arg1)
+{
+    float pos[4];
+    Vec2_4730 pts[4];
+    struct {
+        int f0;
+        int f4;
+        int f8;
+        int fC;
+        float f10;
+        char pad[0x1C];
+    } stack;
+    float minX;
+    float minY;
+    float maxX;
+    float maxY;
+    float dx;
+    float dy;
+    float size;
+    int i;
+
+    func_001D05F4(arg0, arg1, pos);
+    minY = 10000.0f;
+    func_001D1C80(arg0, arg1, 0x1003, pts);
+    maxY = -10000.0f;
+    func_001D4730((int)arg0, pts);
+    minX = 10000.0f;
+    func_001D1D5C(arg0, arg1, 0x1003, pts);
+    maxX = -10000.0f;
+    pos[0] = (pts[0].x + pts[1].x + pts[2].x + pts[3].x) * 0.25f;
+    pos[2] = (pts[0].y + pts[1].y + pts[2].y + pts[3].y) * 0.25f;
+    func_001CFBE4(arg0, arg1, pos);
+    i = 0;
+    while (i < 4) {
+        if (pts[i].x < minX) {
+            minX = pts[i].x;
+        }
+        if (pts[i].y < minY) {
+            minY = pts[i].y;
+        }
+        if (maxX < pts[i].x) {
+            maxX = pts[i].x;
+        }
+        if (maxY < pts[i].y) {
+            maxY = pts[i].y;
+        }
+        i++;
+    }
+    dx = maxX - minX;
+    dy = maxY - minY;
+    size = (dy < dx) ? dx : dy;
+    func_001D1C80(&D_007812C0, arg1, 0x18, &stack);
+    stack.f4 = 4;
+    stack.f10 = size;
+    func_001D1D5C(&D_007812C0, arg1, 0x18, &stack);
+}
+#else
 INCLUDE_ASM("asm/nonmatchings/unk/001D3B44", func_001D480C);
+#endif
 
 extern "C" void func_001D49D0(int arg0, unsigned int arg1, float fparg0)
 {
