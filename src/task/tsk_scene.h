@@ -14,4 +14,17 @@ struct ScenePlaySingle {
     void *m_vtable;             // +0x9C
 };
 
+struct ScenePlay {
+    void *m_vtable;                     // +0x00
+    unsigned char m_pad04[0x2C];
+    int m_unk30;                        // +0x30
+    int m_unk34;                        // +0x34
+    unsigned char m_pad38[0x8];
+    int m_camera_eff_id;                // +0x40
+    unsigned char m_pad44[0x88];
+    unsigned int m_imd_load_chr_id[16]; // +0xCC
+    int m_imd_load_chr_num;             // +0x10C
+    char m_unk110[0x20];                // +0x110
+};
+
 #endif

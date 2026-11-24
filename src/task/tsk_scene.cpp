@@ -1,6 +1,8 @@
 #include "include_asm.h"
 #include "task/cmnitask.h"
 #include "task/tsk_scene.h"
+#include "sdk/string.h"
+extern "C" char *strncpy(char *, const char *, size_t);
 extern "C" char vtbl_15ScenePlaySingle[] asm("_vt$15ScenePlaySingle");
 extern "C" char vtbl_11PLScenePlay[] asm("_vt$11PLScenePlay");
 extern "C" void Xv___builtin_delete(void *) asm("__builtin_delete");
@@ -96,7 +98,11 @@ INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F81A8);
 
 INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", ScenePlay__vfunc_04);
 
-INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F836C);
+extern "C" void func_001F836C(ScenePlay *self, const char *str)
+{
+    strncpy(self->m_unk110, str, 0x1F);
+    self->m_unk110[0x1F] = '\0';
+}
 
 INCLUDE_ASM("asm/nonmatchings/task/tsk_scene", func_001F839C);
 
